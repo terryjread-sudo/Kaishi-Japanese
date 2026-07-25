@@ -1,0 +1,17 @@
+{
+  "version": "2.1.0",
+  "released": "2026-07-25",
+  "title": "50 illustrated Memory Scenes",
+  "changes": [
+    "Added 50 individual illustrated Memory Scenes for common beginner kanji words.",
+    "Memory Scenes replace the generated memory link when artwork is available.",
+    "Added clearer guidance above Again, Hard, Good and Easy.",
+    "Added automatic update checking with Update now and Later options.",
+    "Added a What's New message after an update.",
+    "Added acknowledgement of the original Kaishi 1.5k Anki deck."
+  ],
+  "acknowledgement": {
+    "name": "Kaishi 1.5k",
+    "url": "https://ankiweb.net/shared/info/1196762551"
+  }
+}

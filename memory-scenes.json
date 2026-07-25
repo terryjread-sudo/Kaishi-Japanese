@@ -1,0 +1,302 @@
+{
+  "話|はなし": {
+    "image": "memory-scenes/hanashi-story.webp",
+    "alt": "Illustrated memory scene for 話 (はなし), meaning story.",
+    "caption": "Hana reads a story while the kanji 話 appears on the book.",
+    "kanjiNote": "Look for the shape of 話 inside the scene."
+  },
+  "本|ほん": {
+    "image": "memory-scenes/hon-book.webp",
+    "alt": "Illustrated memory scene for 本 (ほん), meaning book.",
+    "caption": "A building made from books forms the shape of 本.",
+    "kanjiNote": "Look for the shape of 本 inside the scene."
+  },
+  "人|ひと": {
+    "image": "memory-scenes/hito-person.webp",
+    "alt": "Illustrated memory scene for 人 (ひと), meaning person.",
+    "caption": "A standing person mirrors the simple shape of 人.",
+    "kanjiNote": "Look for the shape of 人 inside the scene."
+  },
+  "日|ひ": {
+    "image": "memory-scenes/hi-sun.webp",
+    "alt": "Illustrated memory scene for 日 (ひ), meaning day / sun.",
+    "caption": "The sun shines through a frame shaped like 日.",
+    "kanjiNote": "Look for the shape of 日 inside the scene."
+  },
+  "月|つき": {
+    "image": "memory-scenes/tsuki-moon.webp",
+    "alt": "Illustrated memory scene for 月 (つき), meaning moon / month.",
+    "caption": "A glowing moon is drawn inside the kanji 月.",
+    "kanjiNote": "Look for the shape of 月 inside the scene."
+  },
+  "火|ひ": {
+    "image": "memory-scenes/hi-fire.webp",
+    "alt": "Illustrated memory scene for 火 (ひ), meaning fire.",
+    "caption": "Campfire logs and flames form the kanji 火.",
+    "kanjiNote": "Look for the shape of 火 inside the scene."
+  },
+  "水|みず": {
+    "image": "memory-scenes/mizu-water.webp",
+    "alt": "Illustrated memory scene for 水 (みず), meaning water.",
+    "caption": "A waterfall flows around the strokes of 水.",
+    "kanjiNote": "Look for the shape of 水 inside the scene."
+  },
+  "木|き": {
+    "image": "memory-scenes/ki-tree.webp",
+    "alt": "Illustrated memory scene for 木 (き), meaning tree.",
+    "caption": "A tree trunk and branches form 木.",
+    "kanjiNote": "Look for the shape of 木 inside the scene."
+  },
+  "金|かね": {
+    "image": "memory-scenes/kane-gold.webp",
+    "alt": "Illustrated memory scene for 金 (かね), meaning money / gold.",
+    "caption": "Golden coins and a roof-like shape build 金.",
+    "kanjiNote": "Look for the shape of 金 inside the scene."
+  },
+  "土|つち": {
+    "image": "memory-scenes/tsuchi-soil.webp",
+    "alt": "Illustrated memory scene for 土 (つち), meaning earth / soil.",
+    "caption": "A seed sprouts from soil arranged as 土.",
+    "kanjiNote": "Look for the shape of 土 inside the scene."
+  },
+  "山|やま": {
+    "image": "memory-scenes/yama-mountain.webp",
+    "alt": "Illustrated memory scene for 山 (やま), meaning mountain.",
+    "caption": "Three mountain peaks match 山.",
+    "kanjiNote": "Look for the shape of 山 inside the scene."
+  },
+  "川|かわ": {
+    "image": "memory-scenes/kawa-river.webp",
+    "alt": "Illustrated memory scene for 川 (かわ), meaning river.",
+    "caption": "Three streams of a river echo 川.",
+    "kanjiNote": "Look for the shape of 川 inside the scene."
+  },
+  "田|た": {
+    "image": "memory-scenes/ta-ricefield.webp",
+    "alt": "Illustrated memory scene for 田 (た), meaning rice field.",
+    "caption": "Four rice paddies form the boxes of 田.",
+    "kanjiNote": "Look for the shape of 田 inside the scene."
+  },
+  "口|くち": {
+    "image": "memory-scenes/kuchi-mouth.webp",
+    "alt": "Illustrated memory scene for 口 (くち), meaning mouth.",
+    "caption": "An open mouth makes the square shape of 口.",
+    "kanjiNote": "Look for the shape of 口 inside the scene."
+  },
+  "目|め": {
+    "image": "memory-scenes/me-eye.webp",
+    "alt": "Illustrated memory scene for 目 (め), meaning eye.",
+    "caption": "An eye is divided into the inner lines of 目.",
+    "kanjiNote": "Look for the shape of 目 inside the scene."
+  },
+  "耳|みみ": {
+    "image": "memory-scenes/mimi-ear.webp",
+    "alt": "Illustrated memory scene for 耳 (みみ), meaning ear.",
+    "caption": "An ear follows the blocky outline of 耳.",
+    "kanjiNote": "Look for the shape of 耳 inside the scene."
+  },
+  "手|て": {
+    "image": "memory-scenes/te-hand.webp",
+    "alt": "Illustrated memory scene for 手 (て), meaning hand.",
+    "caption": "The palm lines of a hand form 手.",
+    "kanjiNote": "Look for the shape of 手 inside the scene."
+  },
+  "足|あし": {
+    "image": "memory-scenes/ashi-foot.webp",
+    "alt": "Illustrated memory scene for 足 (あし), meaning foot / leg.",
+    "caption": "A foot and lower leg follow the strokes of 足.",
+    "kanjiNote": "Look for the shape of 足 inside the scene."
+  },
+  "学|まなぶ": {
+    "image": "memory-scenes/manabu-study.webp",
+    "alt": "Illustrated memory scene for 学 (まなぶ), meaning study / learn.",
+    "caption": "A learner studies beneath the roof of 学.",
+    "kanjiNote": "Look for the shape of 学 inside the scene."
+  },
+  "生|いきる": {
+    "image": "memory-scenes/ikiru-life.webp",
+    "alt": "Illustrated memory scene for 生 (いきる), meaning life / live.",
+    "caption": "A new plant grows through the strokes of 生.",
+    "kanjiNote": "Look for the shape of 生 inside the scene."
+  },
+  "先|さき": {
+    "image": "memory-scenes/saki-ahead.webp",
+    "alt": "Illustrated memory scene for 先 (さき), meaning before / ahead.",
+    "caption": "An arrow points ahead beneath 先.",
+    "kanjiNote": "Look for the shape of 先 inside the scene."
+  },
+  "毎|まい": {
+    "image": "memory-scenes/mai-every.webp",
+    "alt": "Illustrated memory scene for 毎 (まい), meaning every.",
+    "caption": "A calendar repeats each day around 毎.",
+    "kanjiNote": "Look for the shape of 毎 inside the scene."
+  },
+  "友|とも": {
+    "image": "memory-scenes/tomo-friend.webp",
+    "alt": "Illustrated memory scene for 友 (とも), meaning friend.",
+    "caption": "Two friends link arms around 友.",
+    "kanjiNote": "Look for the shape of 友 inside the scene."
+  },
+  "名|な": {
+    "image": "memory-scenes/na-name.webp",
+    "alt": "Illustrated memory scene for 名 (な), meaning name.",
+    "caption": "A large name badge displays 名.",
+    "kanjiNote": "Look for the shape of 名 inside the scene."
+  },
+  "時|じ": {
+    "image": "memory-scenes/ji-time.webp",
+    "alt": "Illustrated memory scene for 時 (じ), meaning time / hour.",
+    "caption": "A clock face highlights 時.",
+    "kanjiNote": "Look for the shape of 時 inside the scene."
+  },
+  "間|あいだ": {
+    "image": "memory-scenes/aida-between.webp",
+    "alt": "Illustrated memory scene for 間 (あいだ), meaning between / space.",
+    "caption": "A doorway shows the space between two rooms: 間.",
+    "kanjiNote": "Look for the shape of 間 inside the scene."
+  },
+  "子|こ": {
+    "image": "memory-scenes/ko-child.webp",
+    "alt": "Illustrated memory scene for 子 (こ), meaning child.",
+    "caption": "A child sits in the curved shape of 子.",
+    "kanjiNote": "Look for the shape of 子 inside the scene."
+  },
+  "大|おおきい": {
+    "image": "memory-scenes/ookii-big.webp",
+    "alt": "Illustrated memory scene for 大 (おおきい), meaning big.",
+    "caption": "A huge tree spreads its arms like 大.",
+    "kanjiNote": "Look for the shape of 大 inside the scene."
+  },
+  "小|ちいさい": {
+    "image": "memory-scenes/chiisai-small.webp",
+    "alt": "Illustrated memory scene for 小 (ちいさい), meaning small.",
+    "caption": "Tiny shoots and seeds sit around 小.",
+    "kanjiNote": "Look for the shape of 小 inside the scene."
+  },
+  "上|うえ": {
+    "image": "memory-scenes/ue-up.webp",
+    "alt": "Illustrated memory scene for 上 (うえ), meaning up / above.",
+    "caption": "An arrow rises above the line in 上.",
+    "kanjiNote": "Look for the shape of 上 inside the scene."
+  },
+  "下|した": {
+    "image": "memory-scenes/shita-down.webp",
+    "alt": "Illustrated memory scene for 下 (した), meaning down / below.",
+    "caption": "An arrow drops below the line in 下.",
+    "kanjiNote": "Look for the shape of 下 inside the scene."
+  },
+  "中|なか": {
+    "image": "memory-scenes/naka-middle.webp",
+    "alt": "Illustrated memory scene for 中 (なか), meaning inside / middle.",
+    "caption": "A line passes through the centre of a lantern: 中.",
+    "kanjiNote": "Look for the shape of 中 inside the scene."
+  },
+  "前|まえ": {
+    "image": "memory-scenes/mae-front.webp",
+    "alt": "Illustrated memory scene for 前 (まえ), meaning before / front.",
+    "caption": "A road arrow points to the front beneath 前.",
+    "kanjiNote": "Look for the shape of 前 inside the scene."
+  },
+  "後|うしろ": {
+    "image": "memory-scenes/ushiro-behind.webp",
+    "alt": "Illustrated memory scene for 後 (うしろ), meaning after / behind.",
+    "caption": "A person looks behind at 後.",
+    "kanjiNote": "Look for the shape of 後 inside the scene."
+  },
+  "今|いま": {
+    "image": "memory-scenes/ima-now.webp",
+    "alt": "Illustrated memory scene for 今 (いま), meaning now.",
+    "caption": "A clock marks this exact moment under 今.",
+    "kanjiNote": "Look for the shape of 今 inside the scene."
+  },
+  "見|みる": {
+    "image": "memory-scenes/miru-see.webp",
+    "alt": "Illustrated memory scene for 見 (みる), meaning see / look.",
+    "caption": "Eyes and glasses make 見 easy to spot.",
+    "kanjiNote": "Look for the shape of 見 inside the scene."
+  },
+  "聞|きく": {
+    "image": "memory-scenes/kiku-hear.webp",
+    "alt": "Illustrated memory scene for 聞 (きく), meaning hear / listen.",
+    "caption": "Headphones and an ear sit inside the gate of 聞.",
+    "kanjiNote": "Look for the shape of 聞 inside the scene."
+  },
+  "食|たべる": {
+    "image": "memory-scenes/taberu-eat.webp",
+    "alt": "Illustrated memory scene for 食 (たべる), meaning eat.",
+    "caption": "A bowl, lid and chopsticks build 食.",
+    "kanjiNote": "Look for the shape of 食 inside the scene."
+  },
+  "飲|のむ": {
+    "image": "memory-scenes/nomu-drink.webp",
+    "alt": "Illustrated memory scene for 飲 (のむ), meaning drink.",
+    "caption": "A person drinks while the strokes of 飲 wrap around the bottle.",
+    "kanjiNote": "Look for the shape of 飲 inside the scene."
+  },
+  "行|いく": {
+    "image": "memory-scenes/iku-go.webp",
+    "alt": "Illustrated memory scene for 行 (いく), meaning go.",
+    "caption": "A walking traveller follows the road-like strokes of 行.",
+    "kanjiNote": "Look for the shape of 行 inside the scene."
+  },
+  "来|くる": {
+    "image": "memory-scenes/kuru-come.webp",
+    "alt": "Illustrated memory scene for 来 (くる), meaning come.",
+    "caption": "Someone comes through a doorway shaped around 来.",
+    "kanjiNote": "Look for the shape of 来 inside the scene."
+  },
+  "車|くるま": {
+    "image": "memory-scenes/kuruma-car.webp",
+    "alt": "Illustrated memory scene for 車 (くるま), meaning car / vehicle.",
+    "caption": "A car body and wheels frame 車.",
+    "kanjiNote": "Look for the shape of 車 inside the scene."
+  },
+  "電|でんき": {
+    "image": "memory-scenes/denki-electricity.webp",
+    "alt": "Illustrated memory scene for 電 (でんき), meaning electricity.",
+    "caption": "A glowing bulb and lightning surround 電.",
+    "kanjiNote": "Look for the shape of 電 inside the scene."
+  },
+  "駅|えき": {
+    "image": "memory-scenes/eki-station.webp",
+    "alt": "Illustrated memory scene for 駅 (えき), meaning station.",
+    "caption": "A station sign displays 駅 above the platform.",
+    "kanjiNote": "Look for the shape of 駅 inside the scene."
+  },
+  "国|くに": {
+    "image": "memory-scenes/kuni-country.webp",
+    "alt": "Illustrated memory scene for 国 (くに), meaning country.",
+    "caption": "A map is protected inside the border of 国.",
+    "kanjiNote": "Look for the shape of 国 inside the scene."
+  },
+  "校|こう": {
+    "image": "memory-scenes/kou-school.webp",
+    "alt": "Illustrated memory scene for 校 (こう), meaning school.",
+    "caption": "A school building incorporates 校.",
+    "kanjiNote": "Look for the shape of 校 inside the scene."
+  },
+  "道|どう": {
+    "image": "memory-scenes/dou-road.webp",
+    "alt": "Illustrated memory scene for 道 (どう), meaning road / way.",
+    "caption": "A winding road curves around 道.",
+    "kanjiNote": "Look for the shape of 道 inside the scene."
+  },
+  "船|ふね": {
+    "image": "memory-scenes/fune-ship.webp",
+    "alt": "Illustrated memory scene for 船 (ふね), meaning ship / boat.",
+    "caption": "A ship sails beneath the strokes of 船.",
+    "kanjiNote": "Look for the shape of 船 inside the scene."
+  },
+  "空|そら": {
+    "image": "memory-scenes/sora-sky.webp",
+    "alt": "Illustrated memory scene for 空 (そら), meaning sky.",
+    "caption": "Clouds and open blue sky surround 空.",
+    "kanjiNote": "Look for the shape of 空 inside the scene."
+  },
+  "雨|あめ": {
+    "image": "memory-scenes/ame-rain.webp",
+    "alt": "Illustrated memory scene for 雨 (あめ), meaning rain.",
+    "caption": "Raindrops fall beneath the roof of 雨.",
+    "kanjiNote": "Look for the shape of 雨 inside the scene."
+  }
+}
