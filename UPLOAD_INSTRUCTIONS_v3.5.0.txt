@@ -1,0 +1,7 @@
+KAISHI QUEST v3.5.0 — CACHE RESET
+
+Upload every file and folder in this package to the repository root and replace existing files.
+
+This version intentionally disables the update banner and unregisters old service workers.
+After GitHub Pages publishes, open the normal site and reload once.
+The header should show v3.5.0 with no update prompt.

@@ -1,13 +1,12 @@
 {
-  "version": "3.4.4",
+  "version": "3.5.0",
   "released": "2026-07-26",
-  "title": "Picture Match and scene-pack loading repair",
+  "title": "Cache reset and reliable picture loading",
   "changes": [
-    "Picture Match now uses an explicit game state instead of behaving like a normal study session.",
-    "Scene packs are preloaded and verified before a Picture Match session starts.",
-    "Sprite URLs are resolved from the site root using document.baseURI.",
-    "Missing scene-pack files now display a visible error instead of a blank card.",
-    "The Exit button returns to the Picture Match menu while playing."
+    "Disabled the unreliable in-app update banner.",
+    "Unregisters old service workers and clears old caches.",
+    "Cache-busts JavaScript, CSS, app data and scene-pack images.",
+    "Adds explicit visible dimensions to sprite containers."
   ],
   "packsPlanned": 30,
   "packsIncluded": 3,

@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.4.4';
+const APP_VERSION='3.5.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -55,7 +55,7 @@ function visual(v){return `${v.picture?`<img class="picture" src="${media(v.pict
 function sceneKey(v){return `${v.word}|${v.reading}`}
 function sceneSheet(scene){
  const file=`scene-pack-${String(scene.pack).padStart(2,'0')}.webp`;
- return new URL(file,document.baseURI).href;
+ const url=new URL(file,document.baseURI);url.searchParams.set('v',APP_VERSION);return url.href;
 }
 function requiredScenePacks(words=illustratedWords()){
  return [...new Set(words.map(v=>memoryScenes[sceneKey(v)]?.pack).filter(Boolean))].sort((a,b)=>a-b);
@@ -198,63 +198,56 @@ function versionParts(v){return String(v||'0').split('.').map(n=>parseInt(n,10)|
 function newerVersion(a,b){const x=versionParts(a),y=versionParts(b);for(let i=0;i<3;i++){if(x[i]>y[i])return true;if(x[i]<y[i])return false}return false}
 function showUpdateBanner(info){latestVersionInfo=info;$('#updateTitle').textContent=`Kaishi Quest ${info.version} is available`;$('#updateSummary').textContent=(info.changes||[]).slice(0,2).join(' • ')||'A new version is ready.';$('#updateBanner').hidden=false;$('#updateStatus').textContent=`Update available: v${info.version}`}
 async function checkForUpdates(manual=false){
- try{
-  const info=await fetch(`version.json?ts=${Date.now()}`,{cache:'no-store'}).then(r=>{
-   if(!r.ok)throw Error('version');
-   return r.json();
-  });
-
-  if(newerVersion(info.version,APP_VERSION)){
-   showUpdateBanner(info);
-   const reg=await navigator.serviceWorker?.getRegistration();
-   if(reg){
-    await reg.update();
-    waitingWorker=reg.waiting||null;
-   }
-  }else{
-   $('#updateBanner').hidden=true;
-   waitingWorker=null;
-   $('#updateStatus').textContent=`You’re running the latest version (v${APP_VERSION}).`;
-   if(manual)toast('You’re up to date');
-  }
- }catch(e){
-  $('#updateBanner').hidden=true;
-  $('#updateStatus').textContent='Could not check for updates.';
-  if(manual)toast('Update check failed');
- }
+ $('#updateBanner').hidden=true;
+ $('#updateStatus').textContent=`You’re running Kaishi Quest v${APP_VERSION}.`;
+ if(manual)toast(`Current version: v${APP_VERSION}`);
 }
 async function applyUpdate(){
- $('#applyUpdate').disabled=true;
- $('#applyUpdate').textContent='Updating…';
+ $('#updateBanner').hidden=true;
  try{
-  const reg=await navigator.serviceWorker?.getRegistration();
-  const worker=waitingWorker||reg?.waiting;
-  if(worker){
-   worker.postMessage({type:'SKIP_WAITING'});
-   setTimeout(()=>location.reload(),2500);
-   return;
-  }
-  if(reg)await reg.update();
-  if(reg?.waiting){
-   reg.waiting.postMessage({type:'SKIP_WAITING'});
-   setTimeout(()=>location.reload(),2500);
-   return;
-  }
   const regs=await navigator.serviceWorker?.getRegistrations()||[];
   await Promise.all(regs.map(r=>r.unregister()));
   const keys=await caches.keys();
   await Promise.all(keys.map(k=>caches.delete(k)));
  }catch(e){}
- location.replace(`${location.pathname}?updated=${Date.now()}`);
+ location.replace(`${location.pathname}?reset=${Date.now()}`);
 }
 function showWhatsNew(){const previous=localStorage.getItem('kq-last-version');if(previous!==APP_VERSION){fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(info=>{$('#whatsNewTitle').textContent=`What’s new in ${info.version}`;$('#whatsNewContent').innerHTML=`<p>${info.title||''}</p><ul>${(info.changes||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;$('#whatsNewDialog').showModal();localStorage.setItem('kq-last-version',APP_VERSION)}).catch(()=>localStorage.setItem('kq-last-version',APP_VERSION))}}
-async function setupServiceWorker(){if(!('serviceWorker'in navigator))return;const reg=await navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`,{updateViaCache:'none'});if(reg.waiting){waitingWorker=reg.waiting}reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){waitingWorker=w}})});navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload())}
-async function init(){$('#updateBanner').hidden=true;try{[vocab,memoryScenes]=await Promise.all([fetch('data/vocabulary.json').then(r=>{if(!r.ok)throw Error('data');return r.json()}),fetch('memory-scenes.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);updateHome();
- const health=await verifyScenePacks();
- if(health.failed.length){
-  console.error('Scene packs failed to load',health.failed);
-  $('#summary').textContent=`Picture packs unavailable: ${health.failed.map(n=>String(n).padStart(2,'0')).join(', ')}`;
+async function setupServiceWorker(){
+ try{
+  const regs=await navigator.serviceWorker?.getRegistrations()||[];
+  await Promise.all(regs.map(r=>r.unregister()));
+  const keys=await caches.keys();
+  await Promise.all(keys.map(k=>caches.delete(k)));
+ }catch(e){}
+}
+async function init(){
+ $('#updateBanner').hidden=true;
+ $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
+ try{
+  [vocab,memoryScenes]=await Promise.all([
+   fetch(`data/vocabulary.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data');return r.json()}),
+   fetch(`memory-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))
+  ]);
+  updateHome();
+  const health=await verifyScenePacks();
+  if(health.failed.length){
+   console.error('Scene packs failed to load',health.failed);
+   $('#summary').textContent=`Picture packs unavailable: ${health.failed.map(n=>String(n).padStart(2,'0')).join(', ')}`;
+  }
+ }catch(e){
+  console.error('Initialisation failed',e);
+  $('#summary').textContent='Could not load app data.';
+  $('#card').innerHTML=`<div class="eyebrow">Loading error</div><h2>Kaishi Quest could not start.</h2><p class="muted">${esc(e?.message||'Unknown error')}</p>`;
  }
-}catch(e){$('#summary').textContent='Could not load vocabulary. Run the app through a local web server rather than opening index.html directly.'}$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio;await setupServiceWorker();checkForUpdates();showWhatsNew()}
+ $('#newLimit').value=settings.newLimit;
+ $('#sessionSize').value=settings.sessionSize;
+ $('#activeWords').value=settings.activeWords;
+ $('#pictureDifficulty').value=settings.pictureDifficulty;
+ $('#mnemonicStyle').value=settings.mnemonicStyle;
+ $('#autoAudio').checked=settings.autoAudio;
+ await setupServiceWorker();
+ $('#updateBanner').hidden=true;
+}
 $('#studyBtn').onclick=makeSession;$('#gamesBtn').onclick=()=>show('games');$('#gamesBack').onclick=()=>show('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{if(pictureGameActive){pictureGameActive=false;session=[];index=0;show('games')}else{updateHome();show('home')}};$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
 init();
