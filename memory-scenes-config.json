@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "sceneKeyFormat": "word|reading",
-  "totalScenes": 94,
+  "totalScenes": 122,
   "premiumAnimeScenes": 50,
   "pictureMatchEnabled": true,
   "pictureMatchModes": [
@@ -15,5 +15,9 @@
     "max": 4,
     "default": 4
   },
-  "fallback": "text mnemonic"
+  "fallback": "text mnemonic",
+  "v31ScenePackCards": 50,
+  "v31NewVocabularyMappings": 28,
+  "v31UpgradedMappings": 22,
+  "latestPack": "v3.1-scene-pack-01"
 }

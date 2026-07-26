@@ -1,15 +1,18 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "released": "2026-07-26",
-  "title": "Interleaved learning and Picture Match",
+  "title": "50-card anime Memory Scene pack",
   "changes": [
-    "Lessons now mix 2–4 active words instead of completing every stage for one word at a time.",
-    "Added Picture → Word, Word → Picture, Picture → Reading and Picture → Meaning games.",
-    "Added Easy, Normal and Expert Picture Match difficulty.",
-    "Added 50 new cartoon/anime-style Memory Scene cards.",
-    "Picture questions participate in spaced repetition and progress tracking."
+    "Added a 50-card anime-style Memory Scene pack.",
+    "Added 28 new illustrated vocabulary mappings.",
+    "Upgraded 22 existing mappings with the new card artwork.",
+    "The new cards work in lessons and all Picture Match modes.",
+    "Updated the offline cache version so the new artwork loads correctly."
   ],
-  "premiumAnimeScenes": 50,
+  "scenePackCards": 50,
+  "newMappings": 28,
+  "upgradedMappings": 22,
+  "totalMappedScenes": 122,
   "acknowledgement": {
     "name": "Kaishi 1.5k Anki deck",
     "url": "https://ankiweb.net/shared/info/1196762551"

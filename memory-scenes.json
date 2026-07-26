@@ -162,10 +162,12 @@
     "kanjiNote": "Look for the shape of 間 inside the scene."
   },
   "子|こ": {
-    "image": "memory-scenes/ko-child.webp",
-    "alt": "Illustrated memory scene for 子 (こ), meaning child.",
-    "caption": "A child sits in the curved shape of 子.",
-    "kanjiNote": "Look for the shape of 子 inside the scene."
+    "image": "memory-scenes/v31-42-f7e959d5b.webp",
+    "alt": "Anime-style illustrated vocabulary card for 子, read こ, meaning child.",
+    "caption": "Connect こ with “child” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 子 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "大|おおきい": {
     "image": "memory-scenes/ookii-big.webp",
@@ -180,32 +182,36 @@
     "kanjiNote": "Look for the shape of 小 inside the scene."
   },
   "上|うえ": {
-    "image": "memory-scenes/v3-26-309af5c52.webp",
-    "alt": "Cartoon anime-style memory scene for 上, read うえ, meaning up; above.",
-    "caption": "Look at the scene, say “うえ”, and connect it with “up; above”.",
-    "kanjiNote": "Find the written form 上 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-25-daf97fe0e.webp",
+    "alt": "Anime-style illustrated vocabulary card for 上, read うえ, meaning up; above.",
+    "caption": "Connect うえ with “up; above” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 上 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "下|した": {
-    "image": "memory-scenes/v3-27-6d0c688c1.webp",
-    "alt": "Cartoon anime-style memory scene for 下, read した, meaning down; below.",
-    "caption": "Look at the scene, say “した”, and connect it with “down; below”.",
-    "kanjiNote": "Find the written form 下 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-26-6a4f3b85e.webp",
+    "alt": "Anime-style illustrated vocabulary card for 下, read した, meaning down; below.",
+    "caption": "Connect した with “down; below” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 下 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "中|なか": {
-    "image": "memory-scenes/naka-middle.webp",
-    "alt": "Illustrated memory scene for 中 (なか), meaning inside / middle.",
-    "caption": "A line passes through the centre of a lantern: 中.",
-    "kanjiNote": "Look for the shape of 中 inside the scene."
+    "image": "memory-scenes/v31-27-50c52df19.webp",
+    "alt": "Anime-style illustrated vocabulary card for 中, read なか, meaning inside; middle.",
+    "caption": "Connect なか with “inside; middle” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 中 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "前|まえ": {
-    "image": "memory-scenes/mae-front.webp",
-    "alt": "Illustrated memory scene for 前 (まえ), meaning before / front.",
-    "caption": "A road arrow points to the front beneath 前.",
-    "kanjiNote": "Look for the shape of 前 inside the scene."
+    "image": "memory-scenes/v31-21-2bb2065bb.webp",
+    "alt": "Anime-style illustrated vocabulary card for 前, read まえ, meaning front; before.",
+    "caption": "Connect まえ with “front; before” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 前 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "後|うしろ": {
     "image": "memory-scenes/ushiro-behind.webp",
@@ -448,12 +454,12 @@
     "pack": "v3.0-first-50"
   },
   "先生|せんせい": {
-    "image": "memory-scenes/v3-20-ca5c6a1e7.webp",
-    "alt": "Cartoon anime-style memory scene for 先生, read せんせい, meaning teacher.",
-    "caption": "Look at the scene, say “せんせい”, and connect it with “teacher”.",
-    "kanjiNote": "Find the written form 先生 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-47-6d1a2efe6.webp",
+    "alt": "Anime-style illustrated vocabulary card for 先生, read せんせい, meaning teacher.",
+    "caption": "Connect せんせい with “teacher” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 先生 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "家|いえ": {
     "image": "memory-scenes/v3-21-abe6f3d92.webp",
@@ -488,116 +494,116 @@
     "pack": "v3.0-first-50"
   },
   "左|ひだり": {
-    "image": "memory-scenes/v3-28-db51c2089.webp",
-    "alt": "Cartoon anime-style memory scene for 左, read ひだり, meaning left.",
-    "caption": "Look at the scene, say “ひだり”, and connect it with “left”.",
-    "kanjiNote": "Find the written form 左 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-23-9e9860fa8.webp",
+    "alt": "Anime-style illustrated vocabulary card for 左, read ひだり, meaning left.",
+    "caption": "Connect ひだり with “left” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 左 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "右|みぎ": {
-    "image": "memory-scenes/v3-29-6c9ea0e08.webp",
-    "alt": "Cartoon anime-style memory scene for 右, read みぎ, meaning right.",
-    "caption": "Look at the scene, say “みぎ”, and connect it with “right”.",
-    "kanjiNote": "Find the written form 右 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-24-0e2e4dcde.webp",
+    "alt": "Anime-style illustrated vocabulary card for 右, read みぎ, meaning right.",
+    "caption": "Connect みぎ with “right” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 右 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "大きい|おおきい": {
-    "image": "memory-scenes/v3-30-856c88078.webp",
-    "alt": "Cartoon anime-style memory scene for 大きい, read おおきい, meaning big.",
-    "caption": "Look at the scene, say “おおきい”, and connect it with “big”.",
-    "kanjiNote": "Find the written form 大きい inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-01-f5c5d4f0b.webp",
+    "alt": "Anime-style illustrated vocabulary card for 大きい, read おおきい, meaning big.",
+    "caption": "Connect おおきい with “big” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 大きい within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "小さい|ちいさい": {
-    "image": "memory-scenes/v3-31-0ca880056.webp",
-    "alt": "Cartoon anime-style memory scene for 小さい, read ちいさい, meaning small.",
-    "caption": "Look at the scene, say “ちいさい”, and connect it with “small”.",
-    "kanjiNote": "Find the written form 小さい inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-02-1d2f2185f.webp",
+    "alt": "Anime-style illustrated vocabulary card for 小さい, read ちいさい, meaning small.",
+    "caption": "Connect ちいさい with “small” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 小さい within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "新しい|あたらしい": {
-    "image": "memory-scenes/v3-32-a375891d3.webp",
-    "alt": "Cartoon anime-style memory scene for 新しい, read あたらしい, meaning new.",
-    "caption": "Look at the scene, say “あたらしい”, and connect it with “new”.",
-    "kanjiNote": "Find the written form 新しい inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-03-035cee5fa.webp",
+    "alt": "Anime-style illustrated vocabulary card for 新しい, read あたらしい, meaning new.",
+    "caption": "Connect あたらしい with “new” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 新しい within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "古い|ふるい": {
-    "image": "memory-scenes/v3-33-396a0112b.webp",
-    "alt": "Cartoon anime-style memory scene for 古い, read ふるい, meaning old.",
-    "caption": "Look at the scene, say “ふるい”, and connect it with “old”.",
-    "kanjiNote": "Find the written form 古い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-04-f51d02b55.webp",
+    "alt": "Anime-style illustrated vocabulary card for 古い, read ふるい, meaning old.",
+    "caption": "Connect ふるい with “old” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 古い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "長い|ながい": {
-    "image": "memory-scenes/v3-34-65d8fe1c1.webp",
-    "alt": "Cartoon anime-style memory scene for 長い, read ながい, meaning long.",
-    "caption": "Look at the scene, say “ながい”, and connect it with “long”.",
-    "kanjiNote": "Find the written form 長い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-05-06e8848e5.webp",
+    "alt": "Anime-style illustrated vocabulary card for 長い, read ながい, meaning long.",
+    "caption": "Connect ながい with “long” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 長い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "短い|みじかい": {
-    "image": "memory-scenes/v3-35-6eccef5f4.webp",
-    "alt": "Cartoon anime-style memory scene for 短い, read みじかい, meaning short.",
-    "caption": "Look at the scene, say “みじかい”, and connect it with “short”.",
-    "kanjiNote": "Find the written form 短い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-06-5ac319d43.webp",
+    "alt": "Anime-style illustrated vocabulary card for 短い, read みじかい, meaning short.",
+    "caption": "Connect みじかい with “short” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 短い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "高い|たかい": {
-    "image": "memory-scenes/v3-36-66b6e1127.webp",
-    "alt": "Cartoon anime-style memory scene for 高い, read たかい, meaning high; expensive.",
-    "caption": "Look at the scene, say “たかい”, and connect it with “high; expensive”.",
-    "kanjiNote": "Find the written form 高い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-07-aab456b89.webp",
+    "alt": "Anime-style illustrated vocabulary card for 高い, read たかい, meaning high; expensive.",
+    "caption": "Connect たかい with “high; expensive” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 高い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "安い|やすい": {
-    "image": "memory-scenes/v3-37-7aa18b47f.webp",
-    "alt": "Cartoon anime-style memory scene for 安い, read やすい, meaning cheap.",
-    "caption": "Look at the scene, say “やすい”, and connect it with “cheap”.",
-    "kanjiNote": "Find the written form 安い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-08-7345f2e36.webp",
+    "alt": "Anime-style illustrated vocabulary card for 安い, read やすい, meaning cheap.",
+    "caption": "Connect やすい with “cheap” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 安い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "良い|よい": {
-    "image": "memory-scenes/v3-38-5779b5b33.webp",
-    "alt": "Cartoon anime-style memory scene for 良い, read よい, meaning good.",
-    "caption": "Look at the scene, say “よい”, and connect it with “good”.",
-    "kanjiNote": "Find the written form 良い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-15-76ef5bc24.webp",
+    "alt": "Anime-style illustrated vocabulary card for 良い, read よい, meaning good.",
+    "caption": "Connect よい with “good” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 良い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "悪い|わるい": {
-    "image": "memory-scenes/v3-39-e9384cc57.webp",
-    "alt": "Cartoon anime-style memory scene for 悪い, read わるい, meaning bad.",
-    "caption": "Look at the scene, say “わるい”, and connect it with “bad”.",
-    "kanjiNote": "Find the written form 悪い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-16-6515affda.webp",
+    "alt": "Anime-style illustrated vocabulary card for 悪い, read わるい, meaning bad.",
+    "caption": "Connect わるい with “bad” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 悪い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "多い|おおい": {
-    "image": "memory-scenes/v3-40-ffa102eaa.webp",
-    "alt": "Cartoon anime-style memory scene for 多い, read おおい, meaning many; a lot.",
-    "caption": "Look at the scene, say “おおい”, and connect it with “many; a lot”.",
-    "kanjiNote": "Find the written form 多い inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-13-ebb030b26.webp",
+    "alt": "Anime-style illustrated vocabulary card for 多い, read おおい, meaning many.",
+    "caption": "Connect おおい with “many” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 多い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "少ない|すくない": {
-    "image": "memory-scenes/v3-41-8b5162f2e.webp",
-    "alt": "Cartoon anime-style memory scene for 少ない, read すくない, meaning few; little.",
-    "caption": "Look at the scene, say “すくない”, and connect it with “few; little”.",
-    "kanjiNote": "Find the written form 少ない inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-14-b9c74987c.webp",
+    "alt": "Anime-style illustrated vocabulary card for 少ない, read すくない, meaning few; little.",
+    "caption": "Connect すくない with “few; little” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 少ない within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "毎日|まいにち": {
     "image": "memory-scenes/v3-42-b4772e805.webp",
@@ -640,20 +646,20 @@
     "pack": "v3.0-first-50"
   },
   "友達|ともだち": {
-    "image": "memory-scenes/v3-48-ac475c12c.webp",
-    "alt": "Cartoon anime-style memory scene for 友達, read ともだち, meaning friend.",
-    "caption": "Look at the scene, say “ともだち”, and connect it with “friend”.",
-    "kanjiNote": "Find the written form 友達 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-36-1472901a8.webp",
+    "alt": "Anime-style illustrated vocabulary card for 友達, read ともだち, meaning friend.",
+    "caption": "Connect ともだち with “friend” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 友達 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "家族|かぞく": {
-    "image": "memory-scenes/v3-49-391ba0a00.webp",
-    "alt": "Cartoon anime-style memory scene for 家族, read かぞく, meaning family.",
-    "caption": "Look at the scene, say “かぞく”, and connect it with “family”.",
-    "kanjiNote": "Find the written form 家族 inside the illustrated card.",
-    "style": "v3-anime",
-    "pack": "v3.0-first-50"
+    "image": "memory-scenes/v31-37-0fba2979e.webp",
+    "alt": "Anime-style illustrated vocabulary card for 家族, read かぞく, meaning family.",
+    "caption": "Connect かぞく with “family” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 家族 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   },
   "日本|にほん": {
     "image": "memory-scenes/v3-50-98163e174.webp",
@@ -662,5 +668,229 @@
     "kanjiNote": "Find the written form 日本 inside the illustrated card.",
     "style": "v3-anime",
     "pack": "v3.0-first-50"
+  },
+  "難しい|むずかしい": {
+    "image": "memory-scenes/v31-09-68a00153d.webp",
+    "alt": "Anime-style illustrated vocabulary card for 難しい, read むずかしい, meaning difficult.",
+    "caption": "Connect むずかしい with “difficult” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 難しい within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "簡単|かんたん": {
+    "image": "memory-scenes/v31-10-df1def82f.webp",
+    "alt": "Anime-style illustrated vocabulary card for 簡単, read かんたん, meaning easy; simple.",
+    "caption": "Connect かんたん with “easy; simple” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 簡単 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "早い|はやい": {
+    "image": "memory-scenes/v31-11-15af5ea8f.webp",
+    "alt": "Anime-style illustrated vocabulary card for 早い, read はやい, meaning early; fast.",
+    "caption": "Connect はやい with “early; fast” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 早い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "遅い|おそい": {
+    "image": "memory-scenes/v31-12-09c73779b.webp",
+    "alt": "Anime-style illustrated vocabulary card for 遅い, read おそい, meaning late; slow.",
+    "caption": "Connect おそい with “late; slow” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 遅い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "強い|つよい": {
+    "image": "memory-scenes/v31-17-71510902a.webp",
+    "alt": "Anime-style illustrated vocabulary card for 強い, read つよい, meaning strong.",
+    "caption": "Connect つよい with “strong” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 強い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "弱い|よわい": {
+    "image": "memory-scenes/v31-18-ff2d390e1.webp",
+    "alt": "Anime-style illustrated vocabulary card for 弱い, read よわい, meaning weak.",
+    "caption": "Connect よわい with “weak” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 弱い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "近い|ちかい": {
+    "image": "memory-scenes/v31-19-9eab95363.webp",
+    "alt": "Anime-style illustrated vocabulary card for 近い, read ちかい, meaning near.",
+    "caption": "Connect ちかい with “near” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 近い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "遠い|とおい": {
+    "image": "memory-scenes/v31-20-d0be8ba70.webp",
+    "alt": "Anime-style illustrated vocabulary card for 遠い, read とおい, meaning far.",
+    "caption": "Connect とおい with “far” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 遠い within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "後ろ|うしろ": {
+    "image": "memory-scenes/v31-22-f4ec13d24.webp",
+    "alt": "Anime-style illustrated vocabulary card for 後ろ, read うしろ, meaning behind; back.",
+    "caption": "Connect うしろ with “behind; back” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 後ろ within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "外|そと": {
+    "image": "memory-scenes/v31-28-7040886c4.webp",
+    "alt": "Anime-style illustrated vocabulary card for 外, read そと, meaning outside.",
+    "caption": "Connect そと with “outside” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 外 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "冬|ふゆ": {
+    "image": "memory-scenes/v31-29-34826c29a.webp",
+    "alt": "Anime-style illustrated vocabulary card for 冬, read ふゆ, meaning winter.",
+    "caption": "Connect ふゆ with “winter” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 冬 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "春|はる": {
+    "image": "memory-scenes/v31-30-b39cf5dd5.webp",
+    "alt": "Anime-style illustrated vocabulary card for 春, read はる, meaning spring.",
+    "caption": "Connect はる with “spring” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 春 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "夏|なつ": {
+    "image": "memory-scenes/v31-31-fbff0446e.webp",
+    "alt": "Anime-style illustrated vocabulary card for 夏, read なつ, meaning summer.",
+    "caption": "Connect なつ with “summer” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 夏 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "秋|あき": {
+    "image": "memory-scenes/v31-32-a57c39477.webp",
+    "alt": "Anime-style illustrated vocabulary card for 秋, read あき, meaning autumn.",
+    "caption": "Connect あき with “autumn” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 秋 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "朝|あさ": {
+    "image": "memory-scenes/v31-33-6f122859d.webp",
+    "alt": "Anime-style illustrated vocabulary card for 朝, read あさ, meaning morning.",
+    "caption": "Connect あさ with “morning” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 朝 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "昼|ひる": {
+    "image": "memory-scenes/v31-34-4396d716d.webp",
+    "alt": "Anime-style illustrated vocabulary card for 昼, read ひる, meaning noon; daytime.",
+    "caption": "Connect ひる with “noon; daytime” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 昼 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "夜|よる": {
+    "image": "memory-scenes/v31-35-33ace0a08.webp",
+    "alt": "Anime-style illustrated vocabulary card for 夜, read よる, meaning night; evening.",
+    "caption": "Connect よる with “night; evening” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 夜 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "子供|こども": {
+    "image": "memory-scenes/v31-38-01954e0f7.webp",
+    "alt": "Anime-style illustrated vocabulary card for 子供, read こども, meaning child.",
+    "caption": "Connect こども with “child” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 子供 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "大人|おとな": {
+    "image": "memory-scenes/v31-39-b463e985b.webp",
+    "alt": "Anime-style illustrated vocabulary card for 大人, read おとな, meaning adult.",
+    "caption": "Connect おとな with “adult” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 大人 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "男|おとこ": {
+    "image": "memory-scenes/v31-40-3123d515d.webp",
+    "alt": "Anime-style illustrated vocabulary card for 男, read おとこ, meaning man; male.",
+    "caption": "Connect おとこ with “man; male” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 男 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "女|おんな": {
+    "image": "memory-scenes/v31-41-0982b3e1f.webp",
+    "alt": "Anime-style illustrated vocabulary card for 女, read おんな, meaning woman; female.",
+    "caption": "Connect おんな with “woman; female” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 女 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "親|おや": {
+    "image": "memory-scenes/v31-43-4d21adb02.webp",
+    "alt": "Anime-style illustrated vocabulary card for 親, read おや, meaning parent.",
+    "caption": "Connect おや with “parent” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 親 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "学生|がくせい": {
+    "image": "memory-scenes/v31-44-0ae429218.webp",
+    "alt": "Anime-style illustrated vocabulary card for 学生, read がくせい, meaning student.",
+    "caption": "Connect がくせい with “student” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 学生 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "仕事|しごと": {
+    "image": "memory-scenes/v31-45-c268144bd.webp",
+    "alt": "Anime-style illustrated vocabulary card for 仕事, read しごと, meaning work; job.",
+    "caption": "Connect しごと with “work; job” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 仕事 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "勉強|べんきょう": {
+    "image": "memory-scenes/v31-46-3c904acdf.webp",
+    "alt": "Anime-style illustrated vocabulary card for 勉強, read べんきょう, meaning study.",
+    "caption": "Connect べんきょう with “study” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 勉強 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "病院|びょういん": {
+    "image": "memory-scenes/v31-48-e72986a25.webp",
+    "alt": "Anime-style illustrated vocabulary card for 病院, read びょういん, meaning hospital.",
+    "caption": "Connect びょういん with “hospital” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 病院 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "お金|おかね": {
+    "image": "memory-scenes/v31-49-f49298650.webp",
+    "alt": "Anime-style illustrated vocabulary card for お金, read おかね, meaning money.",
+    "caption": "Connect おかね with “money” using the illustrated scene.",
+    "kanjiNote": "Notice the written form お金 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
+  },
+  "時計|とけい": {
+    "image": "memory-scenes/v31-50-6b0049197.webp",
+    "alt": "Anime-style illustrated vocabulary card for 時計, read とけい, meaning clock; watch.",
+    "caption": "Connect とけい with “clock; watch” using the illustrated scene.",
+    "kanjiNote": "Notice the written form 時計 within the card.",
+    "style": "v3.1-anime-card",
+    "pack": "v3.1-scene-pack-01"
   }
 }

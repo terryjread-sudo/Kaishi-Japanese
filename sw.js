@@ -1,4 +1,4 @@
-const C='kaishi-v3-0-0';
+const C='kaishi-v3-1-0';
 const CORE=['./','index.html','styles.css','app.js','manifest.webmanifest','version.json','memory-scenes.json','data/vocabulary.json','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(C))));
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
