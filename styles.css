@@ -43,3 +43,19 @@
   aspect-ratio:3 / 4;
   border-radius:12px;
 }
+
+/* v3.4.2 sprite repair */
+.quiz-picture,
+.quiz-picture.scene-sprite,
+.memory-scene-image.scene-sprite,
+.choice-sprite{
+  max-height:none !important;
+}
+.quiz-picture.scene-sprite{
+  width:min(100%,390px);
+  aspect-ratio:3 / 4;
+}
+.memory-scene-image.scene-sprite,
+.choice-sprite{
+  aspect-ratio:3 / 4;
+}

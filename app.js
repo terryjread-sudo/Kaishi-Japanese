@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.4.0';
+const APP_VERSION='3.4.2';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -68,7 +68,11 @@ function sceneSprite(scene,extraClass=''){
  return `<div class="scene-sprite ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}" style="${sceneSpriteStyle(scene)}"></div>`;
 }
 
-function memoryScene(v){const s=memoryScenes[sceneKey(v)]||Object.values(memoryScenes).find(x=>x.word===v.word&&x.reading===v.reading);if(!s)return'';return `<section class="memory-scene"><h3>🖼️ Memory Scene</h3><img src="${s.image}" alt="${s.alt||''}" loading="lazy" decoding="async"><p class="memory-caption">${s.caption||''}</p>${s.kanjiNote?`<p class="memory-note">${s.kanjiNote}</p>`:''}</section>`}
+function memoryScene(v){
+ const s=memoryScenes[sceneKey(v)]||Object.values(memoryScenes).find(x=>x.word===v.word&&x.reading===v.reading);
+ if(!s)return'';
+ return `<section class="memory-scene"><h3>🖼️ Memory Scene</h3>${sceneSprite(s,'memory-scene-image')}<p class="memory-caption">${s.caption||''}</p>${s.kanjiNote?`<p class="memory-note">${s.kanjiNote}</p>`:''}</section>`;
+}
 function sceneEmoji(v){const m=(v.meaning||'').toLowerCase();if(/eat|food|meal/.test(m))return'🍜';if(/drink|water|tea|coffee/.test(m))return'🥤';if(/school|study|learn|teacher|student/.test(m))return'🎓';if(/go|come|walk|run|travel/.test(m))return'🚶';if(/see|look|watch|eye/.test(m))return'👀';if(/say|speak|talk|word/.test(m))return'💬';if(/person|friend|family|child/.test(m))return'👤';if(/time|day|week|year/.test(m))return'⏰';if(/money|buy|shop|price/.test(m))return'🛍️';if(/love|like|happy|fun/.test(m))return'✨';return'🎬'}
 function cleanText(t=''){return String(t).replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim()}
 function generatedMnemonic(v){const emoji=sceneEmoji(v),meaning=cleanText(v.meaning),context=cleanText(v.sentenceMeaning||v.sentence||'');const written=v.word===v.reading?`The kana ${v.reading} flashes across the scene like a subtitle.`:`The written form ${v.word} appears as a huge sign in the middle of the action.`;const base=`${emoji} Picture this exaggerated scene: ${context||`something unmistakably showing “${meaning}”`}. ${written} A character points at it and clearly calls out “${v.reading}!” three times. Freeze the picture, the sound ${v.reading}, and the meaning “${meaning}” together.`;const additions={clear:'',funny:' Make one detail absurdly oversized or embarrassingly funny.',gamer:' Turn it into a game level: collecting the glowing word unlocks the meaning.',ghibli:' Imagine it as a warm hand-drawn fantasy moment with wind, movement and a striking visual reveal.',pokemon:' Imagine a friendly creature using the word as a named move that produces the meaning.'};return base+(additions[settings.mnemonicStyle]||'')}
@@ -131,9 +135,32 @@ function versionParts(v){return String(v||'0').split('.').map(n=>parseInt(n,10)|
 function newerVersion(a,b){const x=versionParts(a),y=versionParts(b);for(let i=0;i<3;i++){if(x[i]>y[i])return true;if(x[i]<y[i])return false}return false}
 function showUpdateBanner(info){latestVersionInfo=info;$('#updateTitle').textContent=`Kaishi Quest ${info.version} is available`;$('#updateSummary').textContent=(info.changes||[]).slice(0,2).join(' • ')||'A new version is ready.';$('#updateBanner').hidden=false;$('#updateStatus').textContent=`Update available: v${info.version}`}
 async function checkForUpdates(manual=false){try{const info=await fetch(`version.json?ts=${Date.now()}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('version');return r.json()});if(newerVersion(info.version,APP_VERSION)){showUpdateBanner(info);const reg=await navigator.serviceWorker?.getRegistration();if(reg){await reg.update();if(reg.waiting)waitingWorker=reg.waiting}}else{$('#updateStatus').textContent=`You’re running the latest version (v${APP_VERSION}).`;if(manual)toast('You’re up to date')}}catch{$('#updateStatus').textContent='Could not check for updates.';if(manual)toast('Update check failed')}}
-function applyUpdate(){if(waitingWorker){waitingWorker.postMessage({type:'SKIP_WAITING'});return}location.reload()}
+async function applyUpdate(){
+ $('#applyUpdate').disabled=true;
+ $('#applyUpdate').textContent='Updating…';
+ try{
+  const reg=await navigator.serviceWorker?.getRegistration();
+  const worker=waitingWorker||reg?.waiting;
+  if(worker){
+   worker.postMessage({type:'SKIP_WAITING'});
+   setTimeout(()=>location.reload(),2500);
+   return;
+  }
+  if(reg)await reg.update();
+  if(reg?.waiting){
+   reg.waiting.postMessage({type:'SKIP_WAITING'});
+   setTimeout(()=>location.reload(),2500);
+   return;
+  }
+  const regs=await navigator.serviceWorker?.getRegistrations()||[];
+  await Promise.all(regs.map(r=>r.unregister()));
+  const keys=await caches.keys();
+  await Promise.all(keys.map(k=>caches.delete(k)));
+ }catch(e){}
+ location.replace(`${location.pathname}?updated=${Date.now()}`);
+}
 function showWhatsNew(){const previous=localStorage.getItem('kq-last-version');if(previous!==APP_VERSION){fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(info=>{$('#whatsNewTitle').textContent=`What’s new in ${info.version}`;$('#whatsNewContent').innerHTML=`<p>${info.title||''}</p><ul>${(info.changes||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;$('#whatsNewDialog').showModal();localStorage.setItem('kq-last-version',APP_VERSION)}).catch(()=>localStorage.setItem('kq-last-version',APP_VERSION))}}
-async function setupServiceWorker(){if(!('serviceWorker'in navigator))return;const reg=await navigator.serviceWorker.register('sw.js');if(reg.waiting){waitingWorker=reg.waiting;checkForUpdates()}reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){waitingWorker=w;checkForUpdates()}})});navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload())}
+async function setupServiceWorker(){if(!('serviceWorker'in navigator))return;const reg=await navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`,{updateViaCache:'none'});if(reg.waiting){waitingWorker=reg.waiting;checkForUpdates()}reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){waitingWorker=w;checkForUpdates()}})});navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload())}
 async function init(){try{[vocab,memoryScenes]=await Promise.all([fetch('data/vocabulary.json').then(r=>{if(!r.ok)throw Error('data');return r.json()}),fetch('memory-scenes.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);updateHome()}catch(e){$('#summary').textContent='Could not load vocabulary. Run the app through a local web server rather than opening index.html directly.'}$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio;await setupServiceWorker();checkForUpdates();showWhatsNew()}
 $('#studyBtn').onclick=makeSession;$('#gamesBtn').onclick=()=>show('games');$('#gamesBack').onclick=()=>show('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{updateHome();show('home')};$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
 init();

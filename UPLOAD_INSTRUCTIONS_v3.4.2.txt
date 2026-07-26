@@ -1,0 +1,26 @@
+KAISHI QUEST v3.4.2 — FULL REPAIR RELEASE
+
+This is a complete upload package, not a patch.
+
+UPLOAD
+1. Extract the ZIP.
+2. Upload every file and folder inside Kaishi_Quest_v3.4.2_full_repair
+   to the ROOT of the GitHub repository.
+3. Replace existing files.
+4. Commit as:
+   Release Kaishi Quest v3.4.2 full repair
+
+IMPORTANT
+The package must include app.js, index.html, styles.css, sw.js and version.json.
+Uploading version.json alone causes the endless “update available” banner.
+
+AFTER GITHUB PAGES FINISHES
+1. Open the normal website in Chrome first.
+2. Reload it.
+3. Confirm the header says v3.4.2.
+4. Then reopen the installed PWA.
+
+If the installed app still shows an older version:
+Android Settings > Apps > Chrome > Storage is NOT required.
+Instead, in Chrome open the site, tap site information, Site settings,
+then Clear & reset for this website only. Reload and reinstall the PWA.

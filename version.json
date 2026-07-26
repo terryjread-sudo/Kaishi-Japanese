@@ -1,9 +1,15 @@
 {
-  "version": "3.4.1",
-  "title": "Repair release",
-  "fixes": [
-    "Memory scenes now use sprite renderer instead of obsolete s.image property.",
-    "Removes image clipping caused by max-height.",
-    "Service worker version bump to force cache refresh."
-  ]
+  "version": "3.4.2",
+  "released": "2026-07-26",
+  "title": "Full update and sprite repair",
+  "changes": [
+    "Fixed Memory Scenes so they render from sprite sheets instead of the removed image property.",
+    "Reworked the update button to recover from a stuck service worker.",
+    "Changed navigation and core files to refresh from the network before using cache.",
+    "Forced immediate service-worker activation and removed obsolete caches.",
+    "Retained scene packs 01, 02 and 03."
+  ],
+  "packsPlanned": 30,
+  "packsIncluded": 3,
+  "mappedWords": 103
 }
