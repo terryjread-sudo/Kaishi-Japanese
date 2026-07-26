@@ -1,10 +1,10 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.5.1';
+const APP_VERSION='3.5.2';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
-let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, spriteHealth=new Map();
+let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, spriteHealth=new Map(), sceneImageCache=new Map();
 const defaults={newLimit:5,sessionSize:15,activeWords:4,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 let progress=loadJSON('kq-progress',{});
@@ -88,15 +88,67 @@ async function verifyScenePacks(words=illustratedWords()){
  return {packs,failed:packs.filter((_,i)=>!results[i])};
 }
 function sceneSprite(scene,extraClass=''){
- const url=sceneSheet(scene);
  const col=Math.max(0,Math.min(9,Number(scene.col)||0));
  const row=Math.max(0,Math.min(4,Number(scene.row)||0));
- return `<div class="scene-sprite ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}">
-  <img class="scene-sheet-image" src="${url}" alt="" aria-hidden="true"
-       style="width:1000%;height:500%;left:-${col*100}%;top:-${row*100}%"
-       onerror="this.parentElement.classList.add('scene-sprite-error');this.remove()">
- </div>`;
+ return `<canvas class="scene-sprite scene-canvas ${extraClass}"
+   data-pack="${Number(scene.pack)||1}"
+   data-row="${row}"
+   data-col="${col}"
+   role="img"
+   aria-label="${esc(scene.alt||'Memory scene')}"></canvas>`;
 }
+function loadSceneSheet(pack){
+ const url=sceneSheet({pack});
+ if(sceneImageCache.has(url))return sceneImageCache.get(url);
+ const promise=new Promise((resolve,reject)=>{
+  const img=new Image();
+  img.decoding='async';
+  img.onload=()=>resolve(img);
+  img.onerror=()=>reject(new Error(`Could not load scene-pack-${String(pack).padStart(2,'0')}.webp`));
+  img.src=url;
+ });
+ sceneImageCache.set(url,promise);
+ return promise;
+}
+async function drawSceneCanvas(canvas){
+ const pack=Number(canvas.dataset.pack)||1;
+ const row=Number(canvas.dataset.row)||0;
+ const col=Number(canvas.dataset.col)||0;
+ try{
+  const img=await loadSceneSheet(pack);
+  if(!canvas.isConnected)return;
+  const cssWidth=Math.max(240,Math.round(canvas.getBoundingClientRect().width||360));
+  const cssHeight=Math.round(cssWidth*4/3);
+  const scale=Math.min(2,window.devicePixelRatio||1);
+  canvas.width=Math.round(cssWidth*scale);
+  canvas.height=Math.round(cssHeight*scale);
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(scale,0,0,scale,0,0);
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  const sourceW=img.naturalWidth/10;
+  const sourceH=img.naturalHeight/5;
+  ctx.clearRect(0,0,cssWidth,cssHeight);
+  ctx.drawImage(img,col*sourceW,row*sourceH,sourceW,sourceH,0,0,cssWidth,cssHeight);
+  canvas.classList.remove('scene-sprite-error');
+ }catch(error){
+  console.error(error);
+  canvas.classList.add('scene-sprite-error');
+  const width=Math.max(240,Math.round(canvas.getBoundingClientRect().width||360));
+  const height=Math.round(width*4/3);
+  canvas.width=width;
+  canvas.height=height;
+  const ctx=canvas.getContext('2d');
+  ctx.font='bold 18px sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(error.message||'Scene image failed to load',width/2,height/2);
+ }
+}
+function renderSceneCanvases(root=document){
+ root.querySelectorAll('canvas.scene-canvas').forEach(drawSceneCanvas);
+}
+
 
 function memoryScene(v){
  const s=memoryScenes[sceneKey(v)]||Object.values(memoryScenes).find(x=>x.word===v.word&&x.reading===v.reading);
@@ -127,6 +179,7 @@ if(skill==='sentence'){let sentence=v.sentence||`「${v.word}」 means ____.`;le
 function renderCurrent(){
  try{
   renderCurrentUnsafe();
+  requestAnimationFrame(()=>renderSceneCanvases($('#card')||document));
  }catch(error){
   console.error('Card rendering failed',error);
   const c=$('#card');
@@ -137,7 +190,7 @@ function renderCurrent(){
   }
  }
 }
-function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v)};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
+function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v);requestAnimationFrame(()=>renderSceneCanvases($('#answer')))};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
 function showHint(v){hintUsed=true;const s=memoryScenes[sceneKey(v)];alert(s?s.caption:mnemonic(v))}
 function bindChoices(answer,skill,onReveal){document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(revealed)return;revealed=true;const val=decodeURIComponent(b.dataset.answer);const ok=val===answer;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('.choice').forEach(x=>{if(decodeURIComponent(x.dataset.answer)===answer)x.classList.add('correct');x.disabled=true});if(onReveal)onReveal(ok);setTimeout(()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),900)})}
 function grade(v,skill,rating,correct){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();next()}
@@ -168,6 +221,7 @@ function renderPictureQuestion(v,mode='picture-word'){
   answer=`${scene.pack}:${scene.row}:${scene.col}`;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class=\"choice picture-choice\" data-answer=\"${encodeURIComponent(`${s.pack}:${s.row}:${s.col}`)}\">${sceneSprite(s,'choice-sprite')}<span>${x.meaning}</span></button>`}).join('');
  }
  c.innerHTML=`<div class="eyebrow">Picture Match</div>${prompt}<div class="choices picture-choices">${buttons}</div>`;
+ requestAnimationFrame(()=>renderSceneCanvases(c));
  bindChoices(answer,'picture');
 }
 async function startPictureGame(mode){

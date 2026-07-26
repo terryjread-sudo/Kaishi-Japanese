@@ -107,3 +107,28 @@
   color:#9f1239;
   font-weight:700;
 }
+
+/* v3.5.2 canvas scene renderer */
+canvas.scene-canvas{
+  position:static !important;
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:3 / 4 !important;
+  object-fit:contain;
+  background:#f8fafc;
+}
+.quiz-picture.scene-canvas{
+  width:min(100%,390px) !important;
+  margin:0 auto 16px;
+}
+.memory-scene-image.scene-canvas{
+  width:100% !important;
+}
+.choice-sprite.scene-canvas{
+  width:100% !important;
+}
+.scene-sheet-image{
+  display:none !important;
+}

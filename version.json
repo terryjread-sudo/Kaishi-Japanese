@@ -1,13 +1,13 @@
 {
-  "version": "3.5.1",
+  "version": "3.5.2",
   "released": "2026-07-26",
-  "title": "Picture engine and session switching repair",
+  "title": "Canvas picture renderer",
   "changes": [
-    "Replaced CSS background sprites with clipped real image elements.",
-    "Picture Match now completely replaces any active normal study session.",
-    "Opening Picture Match automatically exits and clears the normal study session.",
-    "Exit now clears the current session before returning home or to the game menu.",
-    "Added a visible error message if a scene-pack image cannot load."
+    "Replaced CSS and nested-image sprite cropping with canvas drawing.",
+    "Scene sheets are loaded as real images and the selected grid cell is drawn directly.",
+    "Canvas rendering runs after every Picture Match card and Memory Scene is inserted.",
+    "Starting Picture Match clears any existing normal learning session.",
+    "Exit clears the active session before returning to the correct menu."
   ],
   "packsPlanned": 30,
   "packsIncluded": 3,

@@ -1,0 +1,19 @@
+KAISHI QUEST v3.5.2 — CANVAS PICTURE REPAIR
+
+Direct URL tests proved that GitHub Pages can serve the scene-pack images and JSON.
+This release therefore replaces the browser sprite-display code.
+
+UPLOAD
+1. Extract the ZIP.
+2. Upload every file and folder inside it to the repository root.
+3. Replace existing files.
+4. Commit as:
+   Release Kaishi Quest v3.5.2 canvas picture renderer
+
+TEST
+1. Confirm the header says v3.5.2.
+2. Tap Picture Match.
+3. Select Picture → Word.
+4. A cropped card should be drawn onto a canvas.
+
+The update banner remains disabled.
