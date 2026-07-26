@@ -1,0 +1,22 @@
+KAISHI QUEST v4.0.1 — IMAGE RUNTIME FIX
+
+ROOT CAUSE
+v4.0.0's new game image renderer called esc(...), but the compiled app did
+not contain that helper function. The diagnostics page did not use that
+renderer, so diagnostics worked while game cards failed.
+
+UPLOAD
+1. Extract this ZIP.
+2. Open the Kaishi_Quest_v4.0.1_image_runtime_fix folder.
+3. Upload every file inside it to the repository root.
+4. Replace the existing files and commit.
+5. Wait for GitHub Pages to publish.
+6. Confirm the header shows v4.0.1.
+
+TEST
+1. Open Settings and use “Open image diagnostics”.
+2. Return to the app.
+3. Open Picture Match → Picture → Word.
+4. Also test Word → Picture and a normal Study memory scene.
+
+This is a full replacement package.

@@ -54,3 +54,38 @@
   font-weight:700;
   overflow-wrap:anywhere;
 }
+
+.scene-image-wrap{
+  display:block;
+  margin:0;
+  width:100%;
+}
+.quiz-picture-wrap{
+  width:min(100%,390px);
+  margin:0 auto 16px;
+}
+.scene-image-fallback{
+  min-height:180px;
+  padding:18px;
+  place-items:center;
+  text-align:center;
+  border:2px dashed #fb7185;
+  border-radius:16px;
+  background:#fff1f2;
+  color:#9f1239;
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+.scene-image-fallback:not([hidden]){
+  display:grid;
+}
+.settings-link{
+  display:block;
+  padding:14px 16px;
+  border-radius:14px;
+  background:#ede9fe;
+  color:#5b21b6;
+  font-weight:800;
+  text-align:center;
+  text-decoration:none;
+}
