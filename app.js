@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='4.0.0';
+const APP_VERSION='4.0.1';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -14,6 +14,7 @@ function save(){localStorage.setItem('kq-progress',JSON.stringify(progress));loc
 function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0)}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
 function day(){return new Date().toISOString().slice(0,10)}
+function esc(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function pFor(id){const p=progress[id]||(progress[id]={stage:0,due:0,interval:0,ease:2.5,reps:0,lapses:0,mnemonic:'',skills:{}});p.skills=p.skills||{};SKILLS.forEach(s=>p.skills[s]||(p.skills[s]={attempts:0,correct:0,strength:0}));return p}
 function dueWords(){const now=Date.now();return vocab.filter(v=>{const p=progress[v.id];return p&&p.due<=now})}
 function started(){return Object.keys(progress).length}
@@ -75,12 +76,28 @@ function sceneImageUrl(scene){
 function sceneSprite(scene,extraClass=''){
  const src=sceneImageUrl(scene);
  if(!src)return `<div class="scene-image-error">No image is mapped for this word.</div>`;
- return `<img class="scene-image ${extraClass}"
-   src="${src}"
-   alt="${esc(scene.alt||'Memory scene')}"
-   loading="eager"
-   decoding="async"
-   onerror="this.hidden=true;this.insertAdjacentHTML('afterend','<div class=&quot;scene-image-error&quot;>Image failed to load: ${esc(scene.file||'unknown')}</div>')">`;
+ const filename=esc(scene.file||'unknown');
+ return `<figure class="scene-image-wrap ${extraClass}-wrap">
+   <img class="scene-image ${extraClass}"
+     src="${esc(src)}"
+     alt="${esc(scene.alt||'Memory scene')}"
+     data-scene-file="${filename}"
+     loading="eager"
+     decoding="async">
+   <figcaption class="scene-image-fallback" hidden>Image failed to load: ${filename}</figcaption>
+ </figure>`;
+}
+function wireSceneImages(root=document){
+ root.querySelectorAll('img.scene-image').forEach(img=>{
+  const fallback=img.parentElement?.querySelector('.scene-image-fallback');
+  const showError=()=>{
+   img.hidden=true;
+   if(fallback)fallback.hidden=false;
+   console.error('Scene image failed',img.dataset.sceneFile,img.currentSrc||img.src);
+  };
+  img.addEventListener('error',showError,{once:true});
+  if(img.complete&&!img.naturalWidth)showError();
+ });
 }
 
 function memoryScene(v){
@@ -112,6 +129,7 @@ if(skill==='sentence'){let sentence=v.sentence||`「${v.word}」 means ____.`;le
 function renderCurrent(){
  try{
   renderCurrentUnsafe();
+  wireSceneImages($('#card')||document);
  }catch(error){
   console.error('Card rendering failed',error);
   const c=$('#card');
@@ -122,7 +140,7 @@ function renderCurrent(){
   }
  }
 }
-function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v)};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
+function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v);wireSceneImages($('#answer'))};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
 function showHint(v){hintUsed=true;const s=memoryScenes[sceneKey(v)];alert(s?s.caption:mnemonic(v))}
 function bindChoices(answer,skill,onReveal){document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(revealed)return;revealed=true;const val=decodeURIComponent(b.dataset.answer);const ok=val===answer;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('.choice').forEach(x=>{if(decodeURIComponent(x.dataset.answer)===answer)x.classList.add('correct');x.disabled=true});if(onReveal)onReveal(ok);setTimeout(()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),900)})}
 function grade(v,skill,rating,correct){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();next()}
@@ -153,6 +171,7 @@ function renderPictureQuestion(v,mode='picture-word'){
   answer=`${scene.pack}:${scene.row}:${scene.col}`;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class=\"choice picture-choice\" data-answer=\"${encodeURIComponent(`${s.pack}:${s.row}:${s.col}`)}\">${sceneSprite(s,'choice-sprite')}<span>${x.meaning}</span></button>`}).join('');
  }
  c.innerHTML=`<div class="eyebrow">Picture Match</div>${prompt}<div class="choices picture-choices">${buttons}</div>`;
+ wireSceneImages(c);
  bindChoices(answer,'picture');
 }
 async function startPictureGame(mode){

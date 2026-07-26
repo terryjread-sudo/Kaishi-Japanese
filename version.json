@@ -1,13 +1,12 @@
 {
-  "version": "4.0.0",
+  "version": "4.0.1",
   "released": "2026-07-26",
-  "title": "Direct image architecture",
+  "title": "Image runtime repair",
   "changes": [
-    "Removed CSS sprite cropping and canvas rendering.",
-    "Every illustrated word now loads a standalone validated WebP image.",
-    "Picture Match has its own clean session state.",
-    "Opening Picture Match or Study cancels the previous session.",
-    "Added an image diagnostics page."
+    "Fixed the missing HTML escaping helper that stopped game image cards from rendering.",
+    "Added reliable image load/error handlers without inline JavaScript.",
+    "Added an Image Diagnostics link to Settings.",
+    "Added visible filename fallbacks when an image cannot load."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,
