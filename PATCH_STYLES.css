@@ -1,0 +1,12 @@
+/* Ensure no clipping of sprite images */
+.quiz-picture{
+    max-height:none !important;
+}
+.quiz-picture.scene-sprite{
+    width:min(100%,390px);
+    aspect-ratio:3/4;
+    max-height:none;
+}
+.memory-scene-image.scene-sprite{
+    aspect-ratio:3/4;
+}

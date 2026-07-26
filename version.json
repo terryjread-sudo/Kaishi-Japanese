@@ -1,16 +1,9 @@
 {
-  "version": "3.4.0",
-  "released": "2026-07-26",
-  "title": "Scene Pack 03",
-  "changes": [
-    "Added root-level scene-pack-03.webp.",
-    "Added 50 action and everyday vocabulary scene mappings.",
-    "Rebuilt the generated artwork into a precise 10 by 5 grid.",
-    "Each sprite cell is now exactly 3:4, preventing neighbouring-image bleed.",
-    "Updated the offline service-worker cache."
-  ],
-  "packsPlanned": 30,
-  "packsIncluded": 3,
-  "mappedWords": 103,
-  "newUniqueMappings": 48
+  "version": "3.4.1",
+  "title": "Repair release",
+  "fixes": [
+    "Memory scenes now use sprite renderer instead of obsolete s.image property.",
+    "Removes image clipping caused by max-height.",
+    "Service worker version bump to force cache refresh."
+  ]
 }

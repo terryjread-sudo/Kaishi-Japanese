@@ -1,0 +1,24 @@
+// PATCH FOR v3.4.1
+// Replace the existing memoryScene() function with this version.
+
+function memoryScene(v){
+    const s =
+        memoryScenes[sceneKey(v)] ||
+        Object.values(memoryScenes).find(
+            x => x.word === v.word && x.reading === v.reading
+        );
+
+    if(!s) return '';
+
+    return `
+        <section class="memory-scene">
+            <h3>🖼️ Memory Scene</h3>
+            ${sceneSprite(s,'memory-scene-image')}
+            <p class="memory-caption">${s.caption||''}</p>
+            ${s.kanjiNote ? `<p class="memory-note">${s.kanjiNote}</p>` : ''}
+        </section>
+    `;
+}
+
+// Also ensure APP_VERSION = '3.4.1'
+// and update the service worker cache version to v3.4.1.
