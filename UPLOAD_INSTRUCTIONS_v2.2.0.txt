@@ -1,0 +1,28 @@
+KAISHI QUEST v2.2.0 — 259 MORE MEMORY SCENES
+
+This is a complete overlay update for the existing v2.1.0 repository.
+
+UPLOAD
+1. Extract this ZIP.
+2. Open the Kaishi_Quest_v2.2.0_ready folder.
+3. Upload everything inside it to the ROOT of terryjread-sudo/Kakashi-Web.
+4. Keep the memory-scenes folder and all image filenames unchanged.
+5. Allow GitHub to replace files with the same name.
+6. Commit with:
+   Release Kaishi Quest v2.2.0 with 309 Memory Scenes
+
+WHAT IS INCLUDED
+- 259 new individual WebP Memory Scene cards.
+- The original 50 Memory Scenes, making 309 in total.
+- Updated memory-scenes.json mapping.
+- New memory-scenes-config.json configuration summary.
+- Updated index.html, app.js, sw.js and version.json.
+- Existing automatic update prompts and acknowledgement are retained.
+
+IMPORTANT
+Existing v2.1.0 users should receive the v2.2.0 update prompt after GitHub Pages finishes publishing.
+Images are cached only when viewed, so users do not download all 309 images at startup.
+
+ACKNOWLEDGEMENT
+Vocabulary is adapted from the Kaishi 1.5k Anki deck:
+https://ankiweb.net/shared/info/1196762551

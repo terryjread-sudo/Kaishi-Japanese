@@ -1,0 +1,17 @@
+Kaishi Quest v2.1.0 package manifest
+
+Updated files:
+- index.html
+- app.js
+- styles.css
+- sw.js
+
+New files:
+- version.json
+- memory-scenes.json
+- memory-scenes/ (50 individual WebP images)
+- UPLOAD_INSTRUCTIONS.txt
+- FILE_MANIFEST.txt
+
+Image count: 50
+Images are cached as they are viewed rather than all during installation.

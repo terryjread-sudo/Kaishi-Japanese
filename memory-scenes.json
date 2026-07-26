@@ -298,5 +298,2077 @@
     "alt": "Illustrated memory scene for 雨 (あめ), meaning rain.",
     "caption": "Raindrops fall beneath the roof of 雨.",
     "kanjiNote": "Look for the shape of 雨 inside the scene."
+  },
+  "する|する": {
+    "image": "memory-scenes/051-word-000-8470acc.webp",
+    "alt": "Illustrated memory scene for する (する), meaning to do, to make.",
+    "caption": "🎴 to do, to make. Say する while finding する in the scene.",
+    "kanjiNote": "The written form する is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 12
+  },
+  "事|こと": {
+    "image": "memory-scenes/052-word-001-125cd49.webp",
+    "alt": "Illustrated memory scene for 事 (こと), meaning thing, incident.",
+    "caption": "🎴 thing, incident. Say こと while finding 事 in the scene.",
+    "kanjiNote": "The written form 事 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 14
+  },
+  "なる|なる": {
+    "image": "memory-scenes/053-word-002-01a0c6e.webp",
+    "alt": "Illustrated memory scene for なる (なる), meaning to become, to result in, to come (to do).",
+    "caption": "🚉 to become, to result in, to come (to do). Say なる while finding なる in the scene.",
+    "kanjiNote": "The written form なる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 15
+  },
+  "ある|ある": {
+    "image": "memory-scenes/054-word-003-0f5e1d8.webp",
+    "alt": "Illustrated memory scene for ある (ある), meaning to have, to exist (inanimate).",
+    "caption": "🎴 to have, to exist (inanimate). Say ある while finding ある in the scene.",
+    "kanjiNote": "The written form ある is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 16
+  },
+  "それ|それ": {
+    "image": "memory-scenes/055-word-004-3906cbc.webp",
+    "alt": "Illustrated memory scene for それ (それ), meaning that.",
+    "caption": "🎴 that. Say それ while finding それ in the scene.",
+    "kanjiNote": "The written form それ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 17
+  },
+  "私|わたし": {
+    "image": "memory-scenes/056-word-005-e1ea452.webp",
+    "alt": "Illustrated memory scene for 私 (わたし), meaning I (polite, general).",
+    "caption": "🎴 I (polite, general). Say わたし while finding 私 in the scene.",
+    "kanjiNote": "The written form 私 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 19
+  },
+  "言う|いう": {
+    "image": "memory-scenes/057-word-006-49bec87.webp",
+    "alt": "Illustrated memory scene for 言う (いう), meaning to say.",
+    "caption": "💬 to say. Say いう while finding 言う in the scene.",
+    "kanjiNote": "The written form 言う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 20
+  },
+  "いる|いる": {
+    "image": "memory-scenes/058-word-007-e511de4.webp",
+    "alt": "Illustrated memory scene for いる (いる), meaning to have, to exist (animate).",
+    "caption": "🎴 to have, to exist (animate). Say いる while finding いる in the scene.",
+    "kanjiNote": "The written form いる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 21
+  },
+  "思う|おもう": {
+    "image": "memory-scenes/059-word-008-8c44c3b.webp",
+    "alt": "Illustrated memory scene for 思う (おもう), meaning to think.",
+    "caption": "💡 to think. Say おもう while finding 思う in the scene.",
+    "kanjiNote": "The written form 思う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 25
+  },
+  "その|その": {
+    "image": "memory-scenes/060-word-009-1921656.webp",
+    "alt": "Illustrated memory scene for その (その), meaning that one.",
+    "caption": "🎴 that one. Say その while finding その in the scene.",
+    "kanjiNote": "The written form その is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 28
+  },
+  "この|この": {
+    "image": "memory-scenes/061-word-010-9f2a076.webp",
+    "alt": "Illustrated memory scene for この (この), meaning this one.",
+    "caption": "🎴 this one. Say この while finding この in the scene.",
+    "kanjiNote": "The written form この is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 30
+  },
+  "そう|そう": {
+    "image": "memory-scenes/062-word-011-d669529.webp",
+    "alt": "Illustrated memory scene for そう (そう), meaning in such manner, that way.",
+    "caption": "🎴 in such manner, that way. Say そう while finding そう in the scene.",
+    "kanjiNote": "The written form そう is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 31
+  },
+  "無い|ない": {
+    "image": "memory-scenes/063-word-012-61e8b3b.webp",
+    "alt": "Illustrated memory scene for 無い (ない), meaning nonexistent, not being.",
+    "caption": "🎴 nonexistent, not being. Say ない while finding 無い in the scene.",
+    "kanjiNote": "The written form 無い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 33
+  },
+  "来る|くる": {
+    "image": "memory-scenes/064-word-013-d0e3513.webp",
+    "alt": "Illustrated memory scene for 来る (くる), meaning to come.",
+    "caption": "🚉 to come. Say くる while finding 来る in the scene.",
+    "kanjiNote": "The written form 来る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 34
+  },
+  "さん|さん": {
+    "image": "memory-scenes/065-word-014-5eb0bc6.webp",
+    "alt": "Illustrated memory scene for さん (さん), meaning san.",
+    "caption": "🎴 san. Say さん while finding さん in the scene.",
+    "kanjiNote": "The written form さん is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 35
+  },
+  "いい|いい": {
+    "image": "memory-scenes/066-word-015-3b5d947.webp",
+    "alt": "Illustrated memory scene for いい (いい), meaning good.",
+    "caption": "🚉 good. Say いい while finding いい in the scene.",
+    "kanjiNote": "The written form いい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 37
+  },
+  "見る|みる": {
+    "image": "memory-scenes/067-word-016-7f544e9.webp",
+    "alt": "Illustrated memory scene for 見る (みる), meaning to see, to look at.",
+    "caption": "👀 to see, to look at. Say みる while finding 見る in the scene.",
+    "kanjiNote": "The written form 見る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 38
+  },
+  "くれる|くれる": {
+    "image": "memory-scenes/068-word-017-61e79ab.webp",
+    "alt": "Illustrated memory scene for くれる (くれる), meaning to give (receiver is in the speaker's group).",
+    "caption": "💬 to give (receiver is in the speaker's group). Say くれる while finding くれる in the scene.",
+    "kanjiNote": "The written form くれる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 39
+  },
+  "これ|これ": {
+    "image": "memory-scenes/069-word-018-1fefdbd.webp",
+    "alt": "Illustrated memory scene for これ (これ), meaning this.",
+    "caption": "🎴 this. Say これ while finding これ in the scene.",
+    "kanjiNote": "The written form これ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 40
+  },
+  "俺|おれ": {
+    "image": "memory-scenes/070-word-019-e5f35e0.webp",
+    "alt": "Illustrated memory scene for 俺 (おれ), meaning I (male).",
+    "caption": "🎴 I (male). Say おれ while finding 俺 in the scene.",
+    "kanjiNote": "The written form 俺 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 42
+  },
+  "やる|やる": {
+    "image": "memory-scenes/071-word-020-0e9223b.webp",
+    "alt": "Illustrated memory scene for やる (やる), meaning to&nbsp;do.",
+    "caption": "🎴 to&nbsp;do. Say やる while finding やる in the scene.",
+    "kanjiNote": "The written form やる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 46
+  },
+  "物|もの": {
+    "image": "memory-scenes/072-word-021-8615a59.webp",
+    "alt": "Illustrated memory scene for 物 (もの), meaning thing, object.",
+    "caption": "🎴 thing, object. Say もの while finding 物 in the scene.",
+    "kanjiNote": "The written form 物 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 51
+  },
+  "あの|あの": {
+    "image": "memory-scenes/073-word-022-6370f60.webp",
+    "alt": "Illustrated memory scene for あの (あの), meaning that one there.",
+    "caption": "🎴 that one there. Say あの while finding あの in the scene.",
+    "kanjiNote": "The written form あの is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 53
+  },
+  "もう|もう": {
+    "image": "memory-scenes/074-word-023-27191c1.webp",
+    "alt": "Illustrated memory scene for もう (もう), meaning already, yet.",
+    "caption": "📖 already, yet. Say もう while finding もう in the scene.",
+    "kanjiNote": "The written form もう is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 56
+  },
+  "行く|いく": {
+    "image": "memory-scenes/075-word-024-746a980.webp",
+    "alt": "Illustrated memory scene for 行く (いく), meaning to go.",
+    "caption": "🚉 to go. Say いく while finding 行く in the scene.",
+    "kanjiNote": "The written form 行く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 58
+  },
+  "ここ|ここ": {
+    "image": "memory-scenes/076-word-025-60a62ac.webp",
+    "alt": "Illustrated memory scene for ここ (ここ), meaning here.",
+    "caption": "🎴 here. Say ここ while finding ここ in the scene.",
+    "kanjiNote": "The written form ここ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 59
+  },
+  "何|なに・なん": {
+    "image": "memory-scenes/077-word-026-d3ffc76.webp",
+    "alt": "Illustrated memory scene for 何 (なに・なん), meaning what.",
+    "caption": "🎴 what. Say なに・なん while finding 何 in the scene.",
+    "kanjiNote": "The written form 何 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 62
+  },
+  "自分|じぶん": {
+    "image": "memory-scenes/078-word-027-65cd46e.webp",
+    "alt": "Illustrated memory scene for 自分 (じぶん), meaning self, oneself.",
+    "caption": "🎴 self, oneself. Say じぶん while finding 自分 in the scene.",
+    "kanjiNote": "The written form 自分 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 65
+  },
+  "聞く|きく": {
+    "image": "memory-scenes/079-word-028-ab5c95b.webp",
+    "alt": "Illustrated memory scene for 聞く (きく), meaning to hear.",
+    "caption": "💬 to hear. Say きく while finding 聞く in the scene.",
+    "kanjiNote": "The written form 聞く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 67
+  },
+  "知る|しる": {
+    "image": "memory-scenes/080-word-029-45a74b3.webp",
+    "alt": "Illustrated memory scene for 知る (しる), meaning to know.",
+    "caption": "💡 to know. Say しる while finding 知る in the scene.",
+    "kanjiNote": "The written form 知る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 68
+  },
+  "人|じん": {
+    "image": "memory-scenes/081-word-030-61ab30d.webp",
+    "alt": "Illustrated memory scene for 人 (じん), meaning person from (nationality).",
+    "caption": "👥 person from (nationality). Say じん while finding 人 in the scene.",
+    "kanjiNote": "The written form 人 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 71
+  },
+  "顔|かお": {
+    "image": "memory-scenes/082-word-031-cda8dce.webp",
+    "alt": "Illustrated memory scene for 顔 (かお), meaning face.",
+    "caption": "🧍 face. Say かお while finding 顔 in the scene.",
+    "kanjiNote": "The written form 顔 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 76
+  },
+  "今朝|けさ": {
+    "image": "memory-scenes/083-word-032-6fa59a1.webp",
+    "alt": "Illustrated memory scene for 今朝 (けさ), meaning this morning.",
+    "caption": "🕰️ this morning. Say けさ while finding 今朝 in the scene.",
+    "kanjiNote": "The written form 今朝 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 81
+  },
+  "出る|でる": {
+    "image": "memory-scenes/084-word-033-8fc35ee.webp",
+    "alt": "Illustrated memory scene for 出る (でる), meaning to&nbsp;go out, to&nbsp;leave.",
+    "caption": "🚉 to&nbsp;go out, to&nbsp;leave. Say でる while finding 出る in the scene.",
+    "kanjiNote": "The written form 出る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 81
+  },
+  "そして|そして": {
+    "image": "memory-scenes/085-word-034-59bbbb5.webp",
+    "alt": "Illustrated memory scene for そして (そして), meaning and, and then.",
+    "caption": "🎴 and, and then. Say そして while finding そして in the scene.",
+    "kanjiNote": "The written form そして is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 82
+  },
+  "どう|どう": {
+    "image": "memory-scenes/086-word-035-d17aa56.webp",
+    "alt": "Illustrated memory scene for どう (どう), meaning how, what.",
+    "caption": "🎴 how, what. Say どう while finding どう in the scene.",
+    "kanjiNote": "The written form どう is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 88
+  },
+  "考える|かんがえる": {
+    "image": "memory-scenes/087-word-036-8fc5947.webp",
+    "alt": "Illustrated memory scene for 考える (かんがえる), meaning to think, to consider.",
+    "caption": "💡 to think, to consider. Say かんがえる while finding 考える in the scene.",
+    "kanjiNote": "The written form 考える is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 91
+  },
+  "はい|はい": {
+    "image": "memory-scenes/088-word-037-2668a18.webp",
+    "alt": "Illustrated memory scene for はい (はい), meaning yes (polite).",
+    "caption": "🎴 yes (polite). Say はい while finding はい in the scene.",
+    "kanjiNote": "The written form はい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 92
+  },
+  "ちょっと|ちょっと": {
+    "image": "memory-scenes/089-word-038-78aa9dc.webp",
+    "alt": "Illustrated memory scene for ちょっと (ちょっと), meaning a little.",
+    "caption": "🎴 a little. Say ちょっと while finding ちょっと in the scene.",
+    "kanjiNote": "The written form ちょっと is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 93
+  },
+  "まだ|まだ": {
+    "image": "memory-scenes/090-word-039-3a77da4.webp",
+    "alt": "Illustrated memory scene for まだ (まだ), meaning yet, more.",
+    "caption": "🎴 yet, more. Say まだ while finding まだ in the scene.",
+    "kanjiNote": "The written form まだ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 96
+  },
+  "じゃ|じゃ": {
+    "image": "memory-scenes/091-word-040-e4269d4.webp",
+    "alt": "Illustrated memory scene for じゃ (じゃ), meaning then, well.",
+    "caption": "🎴 then, well. Say じゃ while finding じゃ in the scene.",
+    "kanjiNote": "The written form じゃ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 98
+  },
+  "また|また": {
+    "image": "memory-scenes/092-word-041-e24ff59.webp",
+    "alt": "Illustrated memory scene for また (また), meaning again, also.",
+    "caption": "🎴 again, also. Say また while finding また in the scene.",
+    "kanjiNote": "The written form また is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 99
+  },
+  "彼女|かのじょ": {
+    "image": "memory-scenes/093-word-042-18d4a1c.webp",
+    "alt": "Illustrated memory scene for 彼女 (かのじょ), meaning she, her, girlfriend.",
+    "caption": "👥 she, her, girlfriend. Say かのじょ while finding 彼女 in the scene.",
+    "kanjiNote": "The written form 彼女 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 100
+  },
+  "出来る|できる": {
+    "image": "memory-scenes/094-word-043-71eb24e.webp",
+    "alt": "Illustrated memory scene for 出来る (できる), meaning to be able to do, to be good at.",
+    "caption": "🚉 to be able to do, to be good at. Say できる while finding 出来る in the scene.",
+    "kanjiNote": "The written form 出来る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 103
+  },
+  "本当|ほんとう": {
+    "image": "memory-scenes/095-word-044-41fe4e4.webp",
+    "alt": "Illustrated memory scene for 本当 (ほんとう), meaning truth, reality.",
+    "caption": "🎴 truth, reality. Say ほんとう while finding 本当 in the scene.",
+    "kanjiNote": "The written form 本当 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 108
+  },
+  "ため|ため": {
+    "image": "memory-scenes/096-word-045-5035062.webp",
+    "alt": "Illustrated memory scene for ため (ため), meaning sake, purpose.",
+    "caption": "🎴 sake, purpose. Say ため while finding ため in the scene.",
+    "kanjiNote": "The written form ため is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 109
+  },
+  "そこ|そこ": {
+    "image": "memory-scenes/097-word-046-fb18237.webp",
+    "alt": "Illustrated memory scene for そこ (そこ), meaning there.",
+    "caption": "🎴 there. Say そこ while finding そこ in the scene.",
+    "kanjiNote": "The written form そこ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 110
+  },
+  "もらう|もらう": {
+    "image": "memory-scenes/098-word-047-f1d5fc9.webp",
+    "alt": "Illustrated memory scene for もらう (もらう), meaning to receive.",
+    "caption": "🎴 to receive. Say もらう while finding もらう in the scene.",
+    "kanjiNote": "The written form もらう is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 112
+  },
+  "待つ|まつ": {
+    "image": "memory-scenes/099-word-048-693e343.webp",
+    "alt": "Illustrated memory scene for 待つ (まつ), meaning to wait.",
+    "caption": "🎴 to wait. Say まつ while finding 待つ in the scene.",
+    "kanjiNote": "The written form 待つ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 114
+  },
+  "言葉|ことば": {
+    "image": "memory-scenes/100-word-049-e4df70c.webp",
+    "alt": "Illustrated memory scene for 言葉 (ことば), meaning word, language.",
+    "caption": "💬 word, language. Say ことば while finding 言葉 in the scene.",
+    "kanjiNote": "The written form 言葉 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 115
+  },
+  "入る|はいる": {
+    "image": "memory-scenes/101-word-050-96f16f4.webp",
+    "alt": "Illustrated memory scene for 入る (はいる), meaning to enter.",
+    "caption": "🎴 to enter. Say はいる while finding 入る in the scene.",
+    "kanjiNote": "The written form 入る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 116
+  },
+  "ちゃん|ちゃん": {
+    "image": "memory-scenes/102-word-051-d21f693.webp",
+    "alt": "Illustrated memory scene for ちゃん (ちゃん), meaning chan.",
+    "caption": "🎴 chan. Say ちゃん while finding ちゃん in the scene.",
+    "kanjiNote": "The written form ちゃん is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 120
+  },
+  "ところ|ところ": {
+    "image": "memory-scenes/103-word-052-316aa46.webp",
+    "alt": "Illustrated memory scene for ところ (ところ), meaning place.",
+    "caption": "🎴 place. Say ところ while finding ところ in the scene.",
+    "kanjiNote": "The written form ところ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 124
+  },
+  "今日|きょう": {
+    "image": "memory-scenes/104-word-053-c6db0d7.webp",
+    "alt": "Illustrated memory scene for 今日 (きょう), meaning today.",
+    "caption": "🕰️ today. Say きょう while finding 今日 in the scene.",
+    "kanjiNote": "The written form 今日 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 125
+  },
+  "声|こえ": {
+    "image": "memory-scenes/105-word-054-8db2ef3.webp",
+    "alt": "Illustrated memory scene for 声 (こえ), meaning voice, sound.",
+    "caption": "💬 voice, sound. Say こえ while finding 声 in the scene.",
+    "kanjiNote": "The written form 声 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 127
+  },
+  "持つ|もつ": {
+    "image": "memory-scenes/106-word-055-af51de5.webp",
+    "alt": "Illustrated memory scene for 持つ (もつ), meaning to have, to hold.",
+    "caption": "🎴 to have, to hold. Say もつ while finding 持つ in the scene.",
+    "kanjiNote": "The written form 持つ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 128
+  },
+  "あれ|あれ": {
+    "image": "memory-scenes/107-word-056-af8fe63.webp",
+    "alt": "Illustrated memory scene for あれ (あれ), meaning that over there.",
+    "caption": "🎴 that over there. Say あれ while finding あれ in the scene.",
+    "kanjiNote": "The written form あれ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 129
+  },
+  "少し|すこし": {
+    "image": "memory-scenes/108-word-057-3275889.webp",
+    "alt": "Illustrated memory scene for 少し (すこし), meaning a bit, a little while.",
+    "caption": "🎴 a bit, a little while. Say すこし while finding 少し in the scene.",
+    "kanjiNote": "The written form 少し is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 131
+  },
+  "見える|みえる": {
+    "image": "memory-scenes/109-word-058-d9fb62e.webp",
+    "alt": "Illustrated memory scene for 見える (みえる), meaning be visible.",
+    "caption": "🎴 be visible. Say みえる while finding 見える in the scene.",
+    "kanjiNote": "The written form 見える is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 133
+  },
+  "違う|ちがう": {
+    "image": "memory-scenes/110-word-059-7b70c76.webp",
+    "alt": "Illustrated memory scene for 違う (ちがう), meaning to&nbsp;differ, to&nbsp;be wrong.",
+    "caption": "🎴 to&nbsp;differ, to&nbsp;be wrong. Say ちがう while finding 違う in the scene.",
+    "kanjiNote": "The written form 違う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 134
+  },
+  "方|ほう": {
+    "image": "memory-scenes/111-word-060-96cb7d6.webp",
+    "alt": "Illustrated memory scene for 方 (ほう), meaning direction, side.",
+    "caption": "🎴 direction, side. Say ほう while finding 方 in the scene.",
+    "kanjiNote": "The written form 方 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 135
+  },
+  "方|かた": {
+    "image": "memory-scenes/112-word-061-a743f61.webp",
+    "alt": "Illustrated memory scene for 方 (かた), meaning person (polite form).",
+    "caption": "👥 person (polite form). Say かた while finding 方 in the scene.",
+    "kanjiNote": "The written form 方 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 135
+  },
+  "あなた|あなた": {
+    "image": "memory-scenes/113-word-062-d7c45d9.webp",
+    "alt": "Illustrated memory scene for あなた (あなた), meaning you (usually when one doesn't know the person).",
+    "caption": "👥 you (usually when one doesn't know the person). Say あなた while finding あなた in the scene.",
+    "kanjiNote": "The written form あなた is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 136
+  },
+  "男|おとこ": {
+    "image": "memory-scenes/114-word-063-d88fd1a.webp",
+    "alt": "Illustrated memory scene for 男 (おとこ), meaning man, male.",
+    "caption": "🎴 man, male. Say おとこ while finding 男 in the scene.",
+    "kanjiNote": "The written form 男 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 138
+  },
+  "使う|つかう": {
+    "image": "memory-scenes/115-word-064-b59c87d.webp",
+    "alt": "Illustrated memory scene for 使う (つかう), meaning to use.",
+    "caption": "🎴 to use. Say つかう while finding 使う in the scene.",
+    "kanjiNote": "The written form 使う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 140
+  },
+  "くん|くん": {
+    "image": "memory-scenes/116-word-065-18a60f4.webp",
+    "alt": "Illustrated memory scene for くん (くん), meaning kun (usu. used with men younger or of the same age).",
+    "caption": "🎴 kun (usu. used with men younger or of the same age). Say くん while finding くん in the scene.",
+    "kanjiNote": "The written form くん is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 140
+  },
+  "分かる|わかる": {
+    "image": "memory-scenes/117-word-066-4281e94.webp",
+    "alt": "Illustrated memory scene for 分かる (わかる), meaning to understand.",
+    "caption": "💡 to understand. Say わかる while finding 分かる in the scene.",
+    "kanjiNote": "The written form 分かる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 142
+  },
+  "ただ|ただ": {
+    "image": "memory-scenes/118-word-067-730c538.webp",
+    "alt": "Illustrated memory scene for ただ (ただ), meaning free.",
+    "caption": "🎴 free. Say ただ while finding ただ in the scene.",
+    "kanjiNote": "The written form ただ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 143
+  },
+  "僕|ぼく": {
+    "image": "memory-scenes/119-word-068-58524b9.webp",
+    "alt": "Illustrated memory scene for 僕 (ぼく), meaning I (male).",
+    "caption": "🎴 I (male). Say ぼく while finding 僕 in the scene.",
+    "kanjiNote": "The written form 僕 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 144
+  },
+  "大丈夫|だいじょうぶ": {
+    "image": "memory-scenes/120-word-069-9cae92b.webp",
+    "alt": "Illustrated memory scene for 大丈夫 (だいじょうぶ), meaning alright, OK.",
+    "caption": "🎴 alright, OK. Say だいじょうぶ while finding 大丈夫 in the scene.",
+    "kanjiNote": "The written form 大丈夫 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 146
+  },
+  "彼|かれ": {
+    "image": "memory-scenes/121-word-070-aa5cc8f.webp",
+    "alt": "Illustrated memory scene for 彼 (かれ), meaning he, him.",
+    "caption": "🎴 he, him. Say かれ while finding 彼 in the scene.",
+    "kanjiNote": "The written form 彼 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 150
+  },
+  "君|きみ": {
+    "image": "memory-scenes/122-word-071-e3a8478.webp",
+    "alt": "Illustrated memory scene for 君 (きみ), meaning you (to someone of equal or lower status).",
+    "caption": "📏 you (to someone of equal or lower status). Say きみ while finding 君 in the scene.",
+    "kanjiNote": "The written form 君 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 153
+  },
+  "人間|にんげん": {
+    "image": "memory-scenes/123-word-072-8ec418d.webp",
+    "alt": "Illustrated memory scene for 人間 (にんげん), meaning human being, people.",
+    "caption": "👥 human being, people. Say にんげん while finding 人間 in the scene.",
+    "kanjiNote": "The written form 人間 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 158
+  },
+  "同じ|おなじ": {
+    "image": "memory-scenes/124-word-073-d049a4a.webp",
+    "alt": "Illustrated memory scene for 同じ (おなじ), meaning same, identical.",
+    "caption": "🎴 same, identical. Say おなじ while finding 同じ in the scene.",
+    "kanjiNote": "The written form 同じ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 160
+  },
+  "部屋|へや": {
+    "image": "memory-scenes/125-word-074-10c56ae.webp",
+    "alt": "Illustrated memory scene for 部屋 (へや), meaning room.",
+    "caption": "🏠 room. Say へや while finding 部屋 in the scene.",
+    "kanjiNote": "The written form 部屋 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 162
+  },
+  "悪い|わるい": {
+    "image": "memory-scenes/126-word-075-e9384cc.webp",
+    "alt": "Illustrated memory scene for 悪い (わるい), meaning bad.",
+    "caption": "🎴 bad. Say わるい while finding 悪い in the scene.",
+    "kanjiNote": "The written form 悪い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 163
+  },
+  "時間|じかん": {
+    "image": "memory-scenes/127-word-076-78e514e.webp",
+    "alt": "Illustrated memory scene for 時間 (じかん), meaning time, hour.",
+    "caption": "🕰️ time, hour. Say じかん while finding 時間 in the scene.",
+    "kanjiNote": "The written form 時間 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 164
+  },
+  "作る|つくる": {
+    "image": "memory-scenes/128-word-077-07ce688.webp",
+    "alt": "Illustrated memory scene for 作る (つくる), meaning to&nbsp;make, to&nbsp;create.",
+    "caption": "🍚 to&nbsp;make, to&nbsp;create. Say つくる while finding 作る in the scene.",
+    "kanjiNote": "The written form 作る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 166
+  },
+  "家|いえ": {
+    "image": "memory-scenes/129-word-078-abe6f3d.webp",
+    "alt": "Illustrated memory scene for 家 (いえ), meaning house, home.",
+    "caption": "🏠 house, home. Say いえ while finding 家 in the scene.",
+    "kanjiNote": "The written form 家 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 168
+  },
+  "まあ|まあ": {
+    "image": "memory-scenes/130-word-079-dc606ef.webp",
+    "alt": "Illustrated memory scene for まあ (まあ), meaning well....",
+    "caption": "🎴 well.... Say まあ while finding まあ in the scene.",
+    "kanjiNote": "The written form まあ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 171
+  },
+  "ください|ください": {
+    "image": "memory-scenes/131-word-080-a92c1b7.webp",
+    "alt": "Illustrated memory scene for ください (ください), meaning please give..., please do....",
+    "caption": "🎴 please give..., please do.... Say ください while finding ください in the scene.",
+    "kanjiNote": "The written form ください is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 172
+  },
+  "感じる|かんじる": {
+    "image": "memory-scenes/132-word-081-257b0fa.webp",
+    "alt": "Illustrated memory scene for 感じる (かんじる), meaning to&nbsp;feel, to&nbsp;sense.",
+    "caption": "🎴 to&nbsp;feel, to&nbsp;sense. Say かんじる while finding 感じる in the scene.",
+    "kanjiNote": "The written form 感じる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 175
+  },
+  "強い|つよい": {
+    "image": "memory-scenes/133-word-082-ff57823.webp",
+    "alt": "Illustrated memory scene for 強い (つよい), meaning strong.",
+    "caption": "🎴 strong. Say つよい while finding 強い in the scene.",
+    "kanjiNote": "The written form 強い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 177
+  },
+  "出す|だす": {
+    "image": "memory-scenes/134-word-083-d245e72.webp",
+    "alt": "Illustrated memory scene for 出す (だす), meaning to&nbsp;take out.",
+    "caption": "🎴 to&nbsp;take out. Say だす while finding 出す in the scene.",
+    "kanjiNote": "The written form 出す is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 178
+  },
+  "よく|よく": {
+    "image": "memory-scenes/135-word-084-885f80f.webp",
+    "alt": "Illustrated memory scene for よく (よく), meaning well.",
+    "caption": "🎴 well. Say よく while finding よく in the scene.",
+    "kanjiNote": "The written form よく is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 180
+  },
+  "笑う|わらう": {
+    "image": "memory-scenes/136-word-085-146efd7.webp",
+    "alt": "Illustrated memory scene for 笑う (わらう), meaning to laugh, to smile.",
+    "caption": "🎴 to laugh, to smile. Say わらう while finding 笑う in the scene.",
+    "kanjiNote": "The written form 笑う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 181
+  },
+  "多く|おおく": {
+    "image": "memory-scenes/137-word-086-95f876f.webp",
+    "alt": "Illustrated memory scene for 多く (おおく), meaning many, much.",
+    "caption": "🎴 many, much. Say おおく while finding 多く in the scene.",
+    "kanjiNote": "The written form 多く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 181
+  },
+  "どこ|どこ": {
+    "image": "memory-scenes/138-word-087-d7de52a.webp",
+    "alt": "Illustrated memory scene for どこ (どこ), meaning where.",
+    "caption": "🎴 where. Say どこ while finding どこ in the scene.",
+    "kanjiNote": "The written form どこ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 182
+  },
+  "くらい|くらい": {
+    "image": "memory-scenes/139-word-088-e8a5b19.webp",
+    "alt": "Illustrated memory scene for くらい (くらい), meaning approximately, about.",
+    "caption": "🎴 approximately, about. Say くらい while finding くらい in the scene.",
+    "kanjiNote": "The written form くらい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 184
+  },
+  "みんな|みんな": {
+    "image": "memory-scenes/140-word-089-8c85e37.webp",
+    "alt": "Illustrated memory scene for みんな (みんな), meaning all, everybody.",
+    "caption": "🧍 all, everybody. Say みんな while finding みんな in the scene.",
+    "kanjiNote": "The written form みんな is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 185
+  },
+  "好き|すき": {
+    "image": "memory-scenes/141-word-090-d5c8899.webp",
+    "alt": "Illustrated memory scene for 好き (すき), meaning fond of, liked.",
+    "caption": "✨ fond of, liked. Say すき while finding 好き in the scene.",
+    "kanjiNote": "The written form 好き is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 186
+  },
+  "力|ちから": {
+    "image": "memory-scenes/142-word-091-237f170.webp",
+    "alt": "Illustrated memory scene for 力 (ちから), meaning strength, power.",
+    "caption": "🎴 strength, power. Say ちから while finding 力 in the scene.",
+    "kanjiNote": "The written form 力 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 188
+  },
+  "世界|せかい": {
+    "image": "memory-scenes/143-word-092-9d78abc.webp",
+    "alt": "Illustrated memory scene for 世界 (せかい), meaning world.",
+    "caption": "🎴 world. Say せかい while finding 世界 in the scene.",
+    "kanjiNote": "The written form 世界 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 189
+  },
+  "相手|あいて": {
+    "image": "memory-scenes/144-word-093-ae24b85.webp",
+    "alt": "Illustrated memory scene for 相手 (あいて), meaning partner, opponent.",
+    "caption": "🎴 partner, opponent. Say あいて while finding 相手 in the scene.",
+    "kanjiNote": "The written form 相手 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 190
+  },
+  "姿|すがた": {
+    "image": "memory-scenes/145-word-094-2911e2f.webp",
+    "alt": "Illustrated memory scene for 姿 (すがた), meaning figure, appearance.",
+    "caption": "🎴 figure, appearance. Say すがた while finding 姿 in the scene.",
+    "kanjiNote": "The written form 姿 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 191
+  },
+  "死ぬ|しぬ": {
+    "image": "memory-scenes/146-word-095-532cb4a.webp",
+    "alt": "Illustrated memory scene for 死ぬ (しぬ), meaning to&nbsp;die.",
+    "caption": "🎴 to&nbsp;die. Say しぬ while finding 死ぬ in the scene.",
+    "kanjiNote": "The written form 死ぬ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 192
+  },
+  "置く|おく": {
+    "image": "memory-scenes/147-word-096-1938d64.webp",
+    "alt": "Illustrated memory scene for 置く (おく), meaning to put, to place.",
+    "caption": "🎴 to put, to place. Say おく while finding 置く in the scene.",
+    "kanjiNote": "The written form 置く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 194
+  },
+  "食べる|たべる": {
+    "image": "memory-scenes/148-word-097-45b8269.webp",
+    "alt": "Illustrated memory scene for 食べる (たべる), meaning to eat.",
+    "caption": "🍚 to eat. Say たべる while finding 食べる in the scene.",
+    "kanjiNote": "The written form 食べる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 195
+  },
+  "場所|ばしょ": {
+    "image": "memory-scenes/149-word-098-3770e96.webp",
+    "alt": "Illustrated memory scene for 場所 (ばしょ), meaning place, location.",
+    "caption": "🐾 place, location. Say ばしょ while finding 場所 in the scene.",
+    "kanjiNote": "The written form 場所 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 197
+  },
+  "早い|はやい": {
+    "image": "memory-scenes/150-word-099-0ffd611.webp",
+    "alt": "Illustrated memory scene for 早い (はやい), meaning early.",
+    "caption": "🎴 early. Say はやい while finding 早い in the scene.",
+    "kanjiNote": "The written form 早い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 198
+  },
+  "頭|あたま": {
+    "image": "memory-scenes/151-word-100-39a1913.webp",
+    "alt": "Illustrated memory scene for 頭 (あたま), meaning head.",
+    "caption": "🧍 head. Say あたま while finding 頭 in the scene.",
+    "kanjiNote": "The written form 頭 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 199
+  },
+  "もっと|もっと": {
+    "image": "memory-scenes/152-word-101-c4842fd.webp",
+    "alt": "Illustrated memory scene for もっと (もっと), meaning more, a bit more.",
+    "caption": "🎴 more, a bit more. Say もっと while finding もっと in the scene.",
+    "kanjiNote": "The written form もっと is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 200
+  },
+  "戻る|もどる": {
+    "image": "memory-scenes/153-word-102-50a5fbc.webp",
+    "alt": "Illustrated memory scene for 戻る (もどる), meaning to&nbsp;return, to&nbsp;go back.",
+    "caption": "🚉 to&nbsp;return, to&nbsp;go back. Say もどる while finding 戻る in the scene.",
+    "kanjiNote": "The written form 戻る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 201
+  },
+  "呼ぶ|よぶ": {
+    "image": "memory-scenes/154-word-103-8fc66af.webp",
+    "alt": "Illustrated memory scene for 呼ぶ (よぶ), meaning to call, to name.",
+    "caption": "🎴 to call, to name. Say よぶ while finding 呼ぶ in the scene.",
+    "kanjiNote": "The written form 呼ぶ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 203
+  },
+  "続ける|つづける": {
+    "image": "memory-scenes/155-word-104-ba4df65.webp",
+    "alt": "Illustrated memory scene for 続ける (つづける), meaning to continue, to keep up.",
+    "caption": "🎴 to continue, to keep up. Say つづける while finding 続ける in the scene.",
+    "kanjiNote": "The written form 続ける is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 204
+  },
+  "ずっと|ずっと": {
+    "image": "memory-scenes/156-word-105-7ac3f1f.webp",
+    "alt": "Illustrated memory scene for ずっと (ずっと), meaning continuously, the whole time.",
+    "caption": "🕰️ continuously, the whole time. Say ずっと while finding ずっと in the scene.",
+    "kanjiNote": "The written form ずっと is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 205
+  },
+  "話す|はなす": {
+    "image": "memory-scenes/157-word-106-befce21.webp",
+    "alt": "Illustrated memory scene for 話す (はなす), meaning to talk, to speak.",
+    "caption": "💬 to talk, to speak. Say はなす while finding 話す in the scene.",
+    "kanjiNote": "The written form 話す is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 206
+  },
+  "あげる|あげる": {
+    "image": "memory-scenes/158-word-107-bb2f8b6.webp",
+    "alt": "Illustrated memory scene for あげる (あげる), meaning to give (receiver is not in the speaker's group).",
+    "caption": "💬 to give (receiver is not in the speaker's group). Say あげる while finding あげる in the scene.",
+    "kanjiNote": "The written form あげる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 207
+  },
+  "上げる|あげる": {
+    "image": "memory-scenes/159-word-108-3f33d31.webp",
+    "alt": "Illustrated memory scene for 上げる (あげる), meaning to raise, to increase.",
+    "caption": "🎴 to raise, to increase. Say あげる while finding 上げる in the scene.",
+    "kanjiNote": "The written form 上げる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 207
+  },
+  "どうして|どうして": {
+    "image": "memory-scenes/160-word-109-d52f01a.webp",
+    "alt": "Illustrated memory scene for どうして (どうして), meaning why.",
+    "caption": "🎴 why. Say どうして while finding どうして in the scene.",
+    "kanjiNote": "The written form どうして is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 208
+  },
+  "いつも|いつも": {
+    "image": "memory-scenes/161-word-110-ff59617.webp",
+    "alt": "Illustrated memory scene for いつも (いつも), meaning always, usually.",
+    "caption": "🎴 always, usually. Say いつも while finding いつも in the scene.",
+    "kanjiNote": "The written form いつも is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 209
+  },
+  "会う|あう": {
+    "image": "memory-scenes/162-word-111-d595b68.webp",
+    "alt": "Illustrated memory scene for 会う (あう), meaning to meet.",
+    "caption": "🎴 to meet. Say あう while finding 会う in the scene.",
+    "kanjiNote": "The written form 会う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 210
+  },
+  "こう|こう": {
+    "image": "memory-scenes/163-word-112-b909b77.webp",
+    "alt": "Illustrated memory scene for こう (こう), meaning like this, this kind of.",
+    "caption": "✨ like this, this kind of. Say こう while finding こう in the scene.",
+    "kanjiNote": "The written form こう is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 211
+  },
+  "やっぱり|やっぱり": {
+    "image": "memory-scenes/164-word-113-8b47842.webp",
+    "alt": "Illustrated memory scene for やっぱり (やっぱり), meaning just as I thought, after all.",
+    "caption": "🎴 just as I thought, after all. Say やっぱり while finding やっぱり in the scene.",
+    "kanjiNote": "The written form やっぱり is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 213
+  },
+  "つもり|つもり": {
+    "image": "memory-scenes/165-word-114-c318077.webp",
+    "alt": "Illustrated memory scene for つもり (つもり), meaning intention, purpose.",
+    "caption": "🎴 intention, purpose. Say つもり while finding つもり in the scene.",
+    "kanjiNote": "The written form つもり is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 214
+  },
+  "必要|ひつよう": {
+    "image": "memory-scenes/166-word-115-2a5ba40.webp",
+    "alt": "Illustrated memory scene for 必要 (ひつよう), meaning necessary, needed.",
+    "caption": "🎴 necessary, needed. Say ひつよう while finding 必要 in the scene.",
+    "kanjiNote": "The written form 必要 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 215
+  },
+  "終わる|おわる": {
+    "image": "memory-scenes/167-word-116-cffd5f6.webp",
+    "alt": "Illustrated memory scene for 終わる (おわる), meaning to&nbsp;finish, to&nbsp;end.",
+    "caption": "🎴 to&nbsp;finish, to&nbsp;end. Say おわる while finding 終わる in the scene.",
+    "kanjiNote": "The written form 終わる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 216
+  },
+  "者|もの": {
+    "image": "memory-scenes/168-word-117-52a70b8.webp",
+    "alt": "Illustrated memory scene for 者 (もの), meaning person.",
+    "caption": "👥 person. Say もの while finding 者 in the scene.",
+    "kanjiNote": "The written form 者 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 217
+  },
+  "動く|うごく": {
+    "image": "memory-scenes/169-word-118-d335806.webp",
+    "alt": "Illustrated memory scene for 動く (うごく), meaning to move.",
+    "caption": "🎴 to move. Say うごく while finding 動く in the scene.",
+    "kanjiNote": "The written form 動く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 218
+  },
+  "帰る|かえる": {
+    "image": "memory-scenes/170-word-119-a847313.webp",
+    "alt": "Illustrated memory scene for 帰る (かえる), meaning to return, to go back.",
+    "caption": "🚉 to return, to go back. Say かえる while finding 帰る in the scene.",
+    "kanjiNote": "The written form 帰る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 220
+  },
+  "後|あと": {
+    "image": "memory-scenes/171-word-120-40f2568.webp",
+    "alt": "Illustrated memory scene for 後 (あと), meaning after.",
+    "caption": "🎴 after. Say あと while finding 後 in the scene.",
+    "kanjiNote": "The written form 後 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 221
+  },
+  "こちら|こちら": {
+    "image": "memory-scenes/172-word-121-af09e8b.webp",
+    "alt": "Illustrated memory scene for こちら (こちら), meaning here, this way.",
+    "caption": "🎴 here, this way. Say こちら while finding こちら in the scene.",
+    "kanjiNote": "The written form こちら is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 222
+  },
+  "向かう|むかう": {
+    "image": "memory-scenes/173-word-122-34d6063.webp",
+    "alt": "Illustrated memory scene for 向かう (むかう), meaning to&nbsp;face, to&nbsp;head toward.",
+    "caption": "🧍 to&nbsp;face, to&nbsp;head toward. Say むかう while finding 向かう in the scene.",
+    "kanjiNote": "The written form 向かう is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 223
+  },
+  "気持ち|きもち": {
+    "image": "memory-scenes/174-word-123-d114cef.webp",
+    "alt": "Illustrated memory scene for 気持ち (きもち), meaning feeling, sensation.",
+    "caption": "🎴 feeling, sensation. Say きもち while finding 気持ち in the scene.",
+    "kanjiNote": "The written form 気持ち is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 225
+  },
+  "きっと|きっと": {
+    "image": "memory-scenes/175-word-124-499942c.webp",
+    "alt": "Illustrated memory scene for きっと (きっと), meaning surely, certainly.",
+    "caption": "🎴 surely, certainly. Say きっと while finding きっと in the scene.",
+    "kanjiNote": "The written form きっと is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 228
+  },
+  "変わる|かわる": {
+    "image": "memory-scenes/176-word-125-e56a3d0.webp",
+    "alt": "Illustrated memory scene for 変わる (かわる), meaning to&nbsp;change.",
+    "caption": "🎴 to&nbsp;change. Say かわる while finding 変わる in the scene.",
+    "kanjiNote": "The written form 変わる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 229
+  },
+  "誰|だれ": {
+    "image": "memory-scenes/177-word-126-6e9eadc.webp",
+    "alt": "Illustrated memory scene for 誰 (だれ), meaning who.",
+    "caption": "🎴 who. Say だれ while finding 誰 in the scene.",
+    "kanjiNote": "The written form 誰 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 231
+  },
+  "凄い|すごい": {
+    "image": "memory-scenes/178-word-127-d6ecd0d.webp",
+    "alt": "Illustrated memory scene for 凄い (すごい), meaning wonderful, great, a lot.",
+    "caption": "🍚 wonderful, great, a lot. Say すごい while finding 凄い in the scene.",
+    "kanjiNote": "The written form 凄い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 232
+  },
+  "次|つぎ": {
+    "image": "memory-scenes/179-word-128-ccff0e6.webp",
+    "alt": "Illustrated memory scene for 次 (つぎ), meaning next, subsequent.",
+    "caption": "🎴 next, subsequent. Say つぎ while finding 次 in the scene.",
+    "kanjiNote": "The written form 次 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 234
+  },
+  "女|おんな": {
+    "image": "memory-scenes/180-word-129-748ae70.webp",
+    "alt": "Illustrated memory scene for 女 (おんな), meaning woman, girl.",
+    "caption": "🎴 woman, girl. Say おんな while finding 女 in the scene.",
+    "kanjiNote": "The written form 女 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 235
+  },
+  "仕事|しごと": {
+    "image": "memory-scenes/181-word-130-a57d466.webp",
+    "alt": "Illustrated memory scene for 仕事 (しごと), meaning work, job.",
+    "caption": "💼 work, job. Say しごと while finding 仕事 in the scene.",
+    "kanjiNote": "The written form 仕事 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 236
+  },
+  "ちゃんと|ちゃんと": {
+    "image": "memory-scenes/182-word-131-d1e11a4.webp",
+    "alt": "Illustrated memory scene for ちゃんと (ちゃんと), meaning properly.",
+    "caption": "🎴 properly. Say ちゃんと while finding ちゃんと in the scene.",
+    "kanjiNote": "The written form ちゃんと is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 237
+  },
+  "始める|はじめる": {
+    "image": "memory-scenes/183-word-132-d5d968b.webp",
+    "alt": "Illustrated memory scene for 始める (はじめる), meaning to start.",
+    "caption": "🎴 to start. Say はじめる while finding 始める in the scene.",
+    "kanjiNote": "The written form 始める is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 240
+  },
+  "音|おと": {
+    "image": "memory-scenes/184-word-133-36be3bc.webp",
+    "alt": "Illustrated memory scene for 音 (おと), meaning sound.",
+    "caption": "🎴 sound. Say おと while finding 音 in the scene.",
+    "kanjiNote": "The written form 音 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 241
+  },
+  "見せる|みせる": {
+    "image": "memory-scenes/185-word-134-7a29507.webp",
+    "alt": "Illustrated memory scene for 見せる (みせる), meaning to&nbsp;show.",
+    "caption": "👀 to&nbsp;show. Say みせる while finding 見せる in the scene.",
+    "kanjiNote": "The written form 見せる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 244
+  },
+  "体|からだ": {
+    "image": "memory-scenes/186-word-135-22cd885.webp",
+    "alt": "Illustrated memory scene for 体 (からだ), meaning body.",
+    "caption": "🧍 body. Say からだ while finding 体 in the scene.",
+    "kanjiNote": "The written form 体 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 245
+  },
+  "どんな|どんな": {
+    "image": "memory-scenes/187-word-136-fef1257.webp",
+    "alt": "Illustrated memory scene for どんな (どんな), meaning what kind of....",
+    "caption": "🎴 what kind of.... Say どんな while finding どんな in the scene.",
+    "kanjiNote": "The written form どんな is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 248
+  },
+  "うち|うち": {
+    "image": "memory-scenes/188-word-137-800ecd9.webp",
+    "alt": "Illustrated memory scene for うち (うち), meaning one's household.",
+    "caption": "🏠 one's household. Say うち while finding うち in the scene.",
+    "kanjiNote": "The written form うち is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 254
+  },
+  "大きい|おおきい": {
+    "image": "memory-scenes/189-word-138-856c880.webp",
+    "alt": "Illustrated memory scene for 大きい (おおきい), meaning big, large.",
+    "caption": "📏 big, large. Say おおきい while finding 大きい in the scene.",
+    "kanjiNote": "The written form 大きい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 255
+  },
+  "掛ける|かける": {
+    "image": "memory-scenes/190-word-139-ad70015.webp",
+    "alt": "Illustrated memory scene for 掛ける (かける), meaning to&nbsp;hang, to&nbsp;put on.",
+    "caption": "🎴 to&nbsp;hang, to&nbsp;put on. Say かける while finding 掛ける in the scene.",
+    "kanjiNote": "The written form 掛ける is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 256
+  },
+  "教える|おしえる": {
+    "image": "memory-scenes/191-word-140-b38ff7a.webp",
+    "alt": "Illustrated memory scene for 教える (おしえる), meaning to teach, to tell.",
+    "caption": "🥤 to teach, to tell. Say おしえる while finding 教える in the scene.",
+    "kanjiNote": "The written form 教える is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 257
+  },
+  "歩く|あるく": {
+    "image": "memory-scenes/192-word-141-bf1af1a.webp",
+    "alt": "Illustrated memory scene for 歩く (あるく), meaning to&nbsp;walk, to&nbsp;go on foot.",
+    "caption": "🚉 to&nbsp;walk, to&nbsp;go on foot. Say あるく while finding 歩く in the scene.",
+    "kanjiNote": "The written form 歩く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 259
+  },
+  "意味|いみ": {
+    "image": "memory-scenes/193-word-142-61b5f18.webp",
+    "alt": "Illustrated memory scene for 意味 (いみ), meaning meaning, significance.",
+    "caption": "🎴 meaning, significance. Say いみ while finding 意味 in the scene.",
+    "kanjiNote": "The written form 意味 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 261
+  },
+  "心配|しんぱい": {
+    "image": "memory-scenes/194-word-143-bc02983.webp",
+    "alt": "Illustrated memory scene for 心配 (しんぱい), meaning worry.",
+    "caption": "🎴 worry. Say しんぱい while finding 心配 in the scene.",
+    "kanjiNote": "The written form 心配 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 262
+  },
+  "様子|ようす": {
+    "image": "memory-scenes/195-word-144-688f43f.webp",
+    "alt": "Illustrated memory scene for 様子 (ようす), meaning appearance, state.",
+    "caption": "🎴 appearance, state. Say ようす while finding 様子 in the scene.",
+    "kanjiNote": "The written form 様子 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 263
+  },
+  "名前|なまえ": {
+    "image": "memory-scenes/196-word-145-f68273d.webp",
+    "alt": "Illustrated memory scene for 名前 (なまえ), meaning name.",
+    "caption": "🎴 name. Say なまえ while finding 名前 in the scene.",
+    "kanjiNote": "The written form 名前 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 264
+  },
+  "存在|そんざい": {
+    "image": "memory-scenes/197-word-146-c9cab24.webp",
+    "alt": "Illustrated memory scene for 存在 (そんざい), meaning existence, being.",
+    "caption": "🎴 existence, being. Say そんざい while finding 存在 in the scene.",
+    "kanjiNote": "The written form 存在 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 265
+  },
+  "過ぎる|すぎる": {
+    "image": "memory-scenes/198-word-147-85780ff.webp",
+    "alt": "Illustrated memory scene for 過ぎる (すぎる), meaning to&nbsp;exceed, to&nbsp;pass by.",
+    "caption": "🎴 to&nbsp;exceed, to&nbsp;pass by. Say すぎる while finding 過ぎる in the scene.",
+    "kanjiNote": "The written form 過ぎる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 266
+  },
+  "聞こえる|きこえる": {
+    "image": "memory-scenes/199-word-148-4fb5121.webp",
+    "alt": "Illustrated memory scene for 聞こえる (きこえる), meaning to be able to hear.",
+    "caption": "💬 to be able to hear. Say きこえる while finding 聞こえる in the scene.",
+    "kanjiNote": "The written form 聞こえる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 267
+  },
+  "受ける|うける": {
+    "image": "memory-scenes/200-word-149-792651d.webp",
+    "alt": "Illustrated memory scene for 受ける (うける), meaning to&nbsp;receive, to&nbsp;accept.",
+    "caption": "🎴 to&nbsp;receive, to&nbsp;accept. Say うける while finding 受ける in the scene.",
+    "kanjiNote": "The written form 受ける is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 268
+  },
+  "殺す|ころす": {
+    "image": "memory-scenes/201-word-150-5b486f5.webp",
+    "alt": "Illustrated memory scene for 殺す (ころす), meaning to&nbsp;kill.",
+    "caption": "🎴 to&nbsp;kill. Say ころす while finding 殺す in the scene.",
+    "kanjiNote": "The written form 殺す is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 269
+  },
+  "まさか|まさか": {
+    "image": "memory-scenes/202-word-151-c28a73f.webp",
+    "alt": "Illustrated memory scene for まさか (まさか), meaning by no means, never!.",
+    "caption": "🎴 by no means, never!. Say まさか while finding まさか in the scene.",
+    "kanjiNote": "The written form まさか is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 271
+  },
+  "先生|せんせい": {
+    "image": "memory-scenes/203-word-152-ca5c6a1.webp",
+    "alt": "Illustrated memory scene for 先生 (せんせい), meaning teacher.",
+    "caption": "🥤 teacher. Say せんせい while finding 先生 in the scene.",
+    "kanjiNote": "The written form 先生 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 277
+  },
+  "絶対|ぜったい": {
+    "image": "memory-scenes/204-word-153-ca55309.webp",
+    "alt": "Illustrated memory scene for 絶対 (ぜったい), meaning absolutely.",
+    "caption": "🎴 absolutely. Say ぜったい while finding 絶対 in the scene.",
+    "kanjiNote": "The written form 絶対 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 278
+  },
+  "信じる|しんじる": {
+    "image": "memory-scenes/205-word-154-a8a2834.webp",
+    "alt": "Illustrated memory scene for 信じる (しんじる), meaning to&nbsp;believe, to&nbsp;trust.",
+    "caption": "🎴 to&nbsp;believe, to&nbsp;trust. Say しんじる while finding 信じる in the scene.",
+    "kanjiNote": "The written form 信じる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 279
+  },
+  "理由|りゆう": {
+    "image": "memory-scenes/206-word-155-b593255.webp",
+    "alt": "Illustrated memory scene for 理由 (りゆう), meaning reason, cause.",
+    "caption": "🎴 reason, cause. Say りゆう while finding 理由 in the scene.",
+    "kanjiNote": "The written form 理由 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 280
+  },
+  "外|そと": {
+    "image": "memory-scenes/207-word-156-1ec4bf8.webp",
+    "alt": "Illustrated memory scene for 外 (そと), meaning outside.",
+    "caption": "🎴 outside. Say そと while finding 外 in the scene.",
+    "kanjiNote": "The written form 外 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 282
+  },
+  "逃げる|にげる": {
+    "image": "memory-scenes/208-word-157-955f10f.webp",
+    "alt": "Illustrated memory scene for 逃げる (にげる), meaning to&nbsp;escape, to&nbsp;run away.",
+    "caption": "🎴 to&nbsp;escape, to&nbsp;run away. Say にげる while finding 逃げる in the scene.",
+    "kanjiNote": "The written form 逃げる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 283
+  },
+  "忘れる|わすれる": {
+    "image": "memory-scenes/209-word-158-37f43dd.webp",
+    "alt": "Illustrated memory scene for 忘れる (わすれる), meaning to&nbsp;forget.",
+    "caption": "🎴 to&nbsp;forget. Say わすれる while finding 忘れる in the scene.",
+    "kanjiNote": "The written form 忘れる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 284
+  },
+  "誰か|だれか": {
+    "image": "memory-scenes/210-word-159-69af0d3.webp",
+    "alt": "Illustrated memory scene for 誰か (だれか), meaning someone.",
+    "caption": "🎴 someone. Say だれか while finding 誰か in the scene.",
+    "kanjiNote": "The written form 誰か is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 285
+  },
+  "まるで|まるで": {
+    "image": "memory-scenes/211-word-160-517a500.webp",
+    "alt": "Illustrated memory scene for まるで (まるで), meaning just like, completely.",
+    "caption": "✨ just like, completely. Say まるで while finding まるで in the scene.",
+    "kanjiNote": "The written form まるで is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 286
+  },
+  "他|ほか": {
+    "image": "memory-scenes/212-word-161-68023e1.webp",
+    "alt": "Illustrated memory scene for 他 (ほか), meaning another, somewhere else.",
+    "caption": "🎴 another, somewhere else. Say ほか while finding 他 in the scene.",
+    "kanjiNote": "The written form 他 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 287
+  },
+  "他|た": {
+    "image": "memory-scenes/213-word-162-6b7b438.webp",
+    "alt": "Illustrated memory scene for 他 (た), meaning other (esp. people and abstract matters).",
+    "caption": "👥 other (esp. people and abstract matters). Say た while finding 他 in the scene.",
+    "kanjiNote": "The written form 他 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 287
+  },
+  "さっき|さっき": {
+    "image": "memory-scenes/214-word-163-d30a4bb.webp",
+    "alt": "Illustrated memory scene for さっき (さっき), meaning (only) a moment ago.",
+    "caption": "🚉 (only) a moment ago. Say さっき while finding さっき in the scene.",
+    "kanjiNote": "The written form さっき is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 290
+  },
+  "問題|もんだい": {
+    "image": "memory-scenes/215-word-164-a6a5c7c.webp",
+    "alt": "Illustrated memory scene for 問題 (もんだい), meaning problem, question.",
+    "caption": "🎴 problem, question. Say もんだい while finding 問題 in the scene.",
+    "kanjiNote": "The written form 問題 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 291
+  },
+  "今度|こんど": {
+    "image": "memory-scenes/216-word-165-617eaab.webp",
+    "alt": "Illustrated memory scene for 今度 (こんど), meaning next time.",
+    "caption": "🕰️ next time. Say こんど while finding 今度 in the scene.",
+    "kanjiNote": "The written form 今度 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 292
+  },
+  "普通|ふつう": {
+    "image": "memory-scenes/217-word-166-194a372.webp",
+    "alt": "Illustrated memory scene for 普通 (ふつう), meaning normal, regular, average.",
+    "caption": "🎴 normal, regular, average. Say ふつう while finding 普通 in the scene.",
+    "kanjiNote": "The written form 普通 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 293
+  },
+  "もちろん|もちろん": {
+    "image": "memory-scenes/218-word-167-fb58961.webp",
+    "alt": "Illustrated memory scene for もちろん (もちろん), meaning of course, no doubt.",
+    "caption": "🎴 of course, no doubt. Say もちろん while finding もちろん in the scene.",
+    "kanjiNote": "The written form もちろん is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 294
+  },
+  "心|こころ": {
+    "image": "memory-scenes/219-word-168-4f35342.webp",
+    "alt": "Illustrated memory scene for 心 (こころ), meaning heart, mind.",
+    "caption": "💬 heart, mind. Say こころ while finding 心 in the scene.",
+    "kanjiNote": "The written form 心 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 295
+  },
+  "以上|いじょう": {
+    "image": "memory-scenes/220-word-169-837f3d7.webp",
+    "alt": "Illustrated memory scene for 以上 (いじょう), meaning ... or more, beyond.",
+    "caption": "🎴 ... or more, beyond. Say いじょう while finding 以上 in the scene.",
+    "kanjiNote": "The written form 以上 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 298
+  },
+  "それで|それで": {
+    "image": "memory-scenes/221-word-170-2ccdc20.webp",
+    "alt": "Illustrated memory scene for それで (それで), meaning then, so.",
+    "caption": "🎴 then, so. Say それで while finding それで in the scene.",
+    "kanjiNote": "The written form それで is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 298
+  },
+  "生きる|いきる": {
+    "image": "memory-scenes/222-word-171-1e70f1c.webp",
+    "alt": "Illustrated memory scene for 生きる (いきる), meaning to&nbsp;live, to&nbsp;exist.",
+    "caption": "🎴 to&nbsp;live, to&nbsp;exist. Say いきる while finding 生きる in the scene.",
+    "kanjiNote": "The written form 生きる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 300
+  },
+  "最初|さいしょ": {
+    "image": "memory-scenes/223-word-172-096fb55.webp",
+    "alt": "Illustrated memory scene for 最初 (さいしょ), meaning first, beginning.",
+    "caption": "🎴 first, beginning. Say さいしょ while finding 最初 in the scene.",
+    "kanjiNote": "The written form 最初 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 302
+  },
+  "最後|さいご": {
+    "image": "memory-scenes/224-word-173-0811f6d.webp",
+    "alt": "Illustrated memory scene for 最後 (さいご), meaning last, final.",
+    "caption": "🎴 last, final. Say さいご while finding 最後 in the scene.",
+    "kanjiNote": "The written form 最後 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 303
+  },
+  "守る|まもる": {
+    "image": "memory-scenes/225-word-174-d7e8b17.webp",
+    "alt": "Illustrated memory scene for 守る (まもる), meaning to&nbsp;protect, to&nbsp;observe.",
+    "caption": "🎴 to&nbsp;protect, to&nbsp;observe. Say まもる while finding 守る in the scene.",
+    "kanjiNote": "The written form 守る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 307
+  },
+  "間|ま": {
+    "image": "memory-scenes/226-word-175-3fa0caa.webp",
+    "alt": "Illustrated memory scene for 間 (ま), meaning interval, duration of time, pause.",
+    "caption": "🕰️ interval, duration of time, pause. Say ま while finding 間 in the scene.",
+    "kanjiNote": "The written form 間 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 308
+  },
+  "について|について": {
+    "image": "memory-scenes/227-word-176-62a1387.webp",
+    "alt": "Illustrated memory scene for について (について), meaning concerning, regarding.",
+    "caption": "🎴 concerning, regarding. Say について while finding について in the scene.",
+    "kanjiNote": "The written form について is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 309
+  },
+  "感じ|かんじ": {
+    "image": "memory-scenes/228-word-177-9461e66.webp",
+    "alt": "Illustrated memory scene for 感じ (かんじ), meaning feeling, impression.",
+    "caption": "🎴 feeling, impression. Say かんじ while finding 感じ in the scene.",
+    "kanjiNote": "The written form 感じ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 310
+  },
+  "胸|むね": {
+    "image": "memory-scenes/229-word-178-b398003.webp",
+    "alt": "Illustrated memory scene for 胸 (むね), meaning chest.",
+    "caption": "🎴 chest. Say むね while finding 胸 in the scene.",
+    "kanjiNote": "The written form 胸 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 311
+  },
+  "表情|ひょうじょう": {
+    "image": "memory-scenes/230-word-179-35b63c5.webp",
+    "alt": "Illustrated memory scene for 表情 (ひょうじょう), meaning expression, look.",
+    "caption": "👀 expression, look. Say ひょうじょう while finding 表情 in the scene.",
+    "kanjiNote": "The written form 表情 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 312
+  },
+  "これから|これから": {
+    "image": "memory-scenes/231-word-180-de3ad21.webp",
+    "alt": "Illustrated memory scene for これから (これから), meaning from now on, after this.",
+    "caption": "🎴 from now on, after this. Say これから while finding これから in the scene.",
+    "kanjiNote": "The written form これから is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 313
+  },
+  "多い|おおい": {
+    "image": "memory-scenes/232-word-181-ffa102e.webp",
+    "alt": "Illustrated memory scene for 多い (おおい), meaning a lot.",
+    "caption": "🎴 a lot. Say おおい while finding 多い in the scene.",
+    "kanjiNote": "The written form 多い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 314
+  },
+  "楽しい|たのしい": {
+    "image": "memory-scenes/233-word-182-9545846.webp",
+    "alt": "Illustrated memory scene for 楽しい (たのしい), meaning fun, enjoyable.",
+    "caption": "✨ fun, enjoyable. Say たのしい while finding 楽しい in the scene.",
+    "kanjiNote": "The written form 楽しい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 315
+  },
+  "初めて|はじめて": {
+    "image": "memory-scenes/234-word-183-4637f4f.webp",
+    "alt": "Illustrated memory scene for 初めて (はじめて), meaning for the first time.",
+    "caption": "🕰️ for the first time. Say はじめて while finding 初めて in the scene.",
+    "kanjiNote": "The written form 初めて is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 316
+  },
+  "無理|むり": {
+    "image": "memory-scenes/235-word-184-05272e3.webp",
+    "alt": "Illustrated memory scene for 無理 (むり), meaning unreasonable, impossible.",
+    "caption": "🎴 unreasonable, impossible. Say むり while finding 無理 in the scene.",
+    "kanjiNote": "The written form 無理 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 317
+  },
+  "一番|いちばん": {
+    "image": "memory-scenes/236-word-185-8babbd7.webp",
+    "alt": "Illustrated memory scene for 一番 (いちばん), meaning (the) most.",
+    "caption": "🎴 (the) most. Say いちばん while finding 一番 in the scene.",
+    "kanjiNote": "The written form 一番 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 318
+  },
+  "高い|たかい": {
+    "image": "memory-scenes/237-word-186-66b6e11.webp",
+    "alt": "Illustrated memory scene for 高い (たかい), meaning expensive.",
+    "caption": "🎴 expensive. Say たかい while finding 高い in the scene.",
+    "kanjiNote": "The written form 高い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 319
+  },
+  "欲しい|ほしい": {
+    "image": "memory-scenes/238-word-187-6218a49.webp",
+    "alt": "Illustrated memory scene for 欲しい (ほしい), meaning wanting, wishing for.",
+    "caption": "🎴 wanting, wishing for. Say ほしい while finding 欲しい in the scene.",
+    "kanjiNote": "The written form 欲しい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 320
+  },
+  "大きな|おおきな": {
+    "image": "memory-scenes/239-word-188-3bc51f4.webp",
+    "alt": "Illustrated memory scene for 大きな (おおきな), meaning big, large.",
+    "caption": "📏 big, large. Say おおきな while finding 大きな in the scene.",
+    "kanjiNote": "The written form 大きな is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 321
+  },
+  "ごめん|ごめん": {
+    "image": "memory-scenes/240-word-189-b67af5f.webp",
+    "alt": "Illustrated memory scene for ごめん (ごめん), meaning sorry.",
+    "caption": "🎴 sorry. Say ごめん while finding ごめん in the scene.",
+    "kanjiNote": "The written form ごめん is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 323
+  },
+  "覚える|おぼえる": {
+    "image": "memory-scenes/241-word-190-c646821.webp",
+    "alt": "Illustrated memory scene for 覚える (おぼえる), meaning to&nbsp;memorize.",
+    "caption": "🎴 to&nbsp;memorize. Say おぼえる while finding 覚える in the scene.",
+    "kanjiNote": "The written form 覚える is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 324
+  },
+  "別に|べつに": {
+    "image": "memory-scenes/242-word-191-357e983.webp",
+    "alt": "Illustrated memory scene for 別に (べつに), meaning (not) particularly.",
+    "caption": "🎴 (not) particularly. Say べつに while finding 別に in the scene.",
+    "kanjiNote": "The written form 別に is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 325
+  },
+  "思い出す|おもいだす": {
+    "image": "memory-scenes/243-word-192-c1957be.webp",
+    "alt": "Illustrated memory scene for 思い出す (おもいだす), meaning to&nbsp;recollect, to&nbsp;recall.",
+    "caption": "🎴 to&nbsp;recollect, to&nbsp;recall. Say おもいだす while finding 思い出す in the scene.",
+    "kanjiNote": "The written form 思い出す is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 328
+  },
+  "とても|とても": {
+    "image": "memory-scenes/244-word-193-cde1863.webp",
+    "alt": "Illustrated memory scene for とても (とても), meaning very.",
+    "caption": "🎴 very. Say とても while finding とても in the scene.",
+    "kanjiNote": "The written form とても is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 329
+  },
+  "立つ|たつ": {
+    "image": "memory-scenes/245-word-194-26a5a53.webp",
+    "alt": "Illustrated memory scene for 立つ (たつ), meaning to stand, to rise.",
+    "caption": "🎴 to stand, to rise. Say たつ while finding 立つ in the scene.",
+    "kanjiNote": "The written form 立つ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 330
+  },
+  "入れる|いれる": {
+    "image": "memory-scenes/246-word-195-c1357f4.webp",
+    "alt": "Illustrated memory scene for 入れる (いれる), meaning to&nbsp;put in.",
+    "caption": "🎴 to&nbsp;put in. Say いれる while finding 入れる in the scene.",
+    "kanjiNote": "The written form 入れる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 331
+  },
+  "止める|とめる": {
+    "image": "memory-scenes/247-word-196-d529542.webp",
+    "alt": "Illustrated memory scene for 止める (とめる), meaning to&nbsp;stop (at some place).",
+    "caption": "🎴 to&nbsp;stop (at some place). Say とめる while finding 止める in the scene.",
+    "kanjiNote": "The written form 止める is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 332
+  },
+  "止める|やめる": {
+    "image": "memory-scenes/248-word-197-7317336.webp",
+    "alt": "Illustrated memory scene for 止める (やめる), meaning to&nbsp;stop (doing something).",
+    "caption": "🎴 to&nbsp;stop (doing something). Say やめる while finding 止める in the scene.",
+    "kanjiNote": "The written form 止める is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 332
+  },
+  "開く|あく": {
+    "image": "memory-scenes/249-word-198-ea56845.webp",
+    "alt": "Illustrated memory scene for 開く (あく), meaning to&nbsp;open.",
+    "caption": "🎴 to&nbsp;open. Say あく while finding 開く in the scene.",
+    "kanjiNote": "The written form 開く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 333
+  },
+  "開く|ひらく": {
+    "image": "memory-scenes/250-word-199-43339c0.webp",
+    "alt": "Illustrated memory scene for 開く (ひらく), meaning to&nbsp;open.",
+    "caption": "🎴 to&nbsp;open. Say ひらく while finding 開く in the scene.",
+    "kanjiNote": "The written form 開く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 333
+  },
+  "残る|のこる": {
+    "image": "memory-scenes/251-word-200-19339da.webp",
+    "alt": "Illustrated memory scene for 残る (のこる), meaning to&nbsp;remain, to&nbsp;be left over.",
+    "caption": "🎴 to&nbsp;remain, to&nbsp;be left over. Say のこる while finding 残る in the scene.",
+    "kanjiNote": "The written form 残る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 334
+  },
+  "答える|こたえる": {
+    "image": "memory-scenes/252-word-201-4a519ea.webp",
+    "alt": "Illustrated memory scene for 答える (こたえる), meaning to&nbsp;answer.",
+    "caption": "🎴 to&nbsp;answer. Say こたえる while finding 答える in the scene.",
+    "kanjiNote": "The written form 答える is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 335
+  },
+  "怖い|こわい": {
+    "image": "memory-scenes/253-word-202-cc286c6.webp",
+    "alt": "Illustrated memory scene for 怖い (こわい), meaning fearful, being afraid, fearsome.",
+    "caption": "🎴 fearful, being afraid, fearsome. Say こわい while finding 怖い in the scene.",
+    "kanjiNote": "The written form 怖い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 337
+  },
+  "頼む|たのむ": {
+    "image": "memory-scenes/254-word-203-facf97e.webp",
+    "alt": "Illustrated memory scene for 頼む (たのむ), meaning to&nbsp;ask, to&nbsp;request.",
+    "caption": "🎴 to&nbsp;ask, to&nbsp;request. Say たのむ while finding 頼む in the scene.",
+    "kanjiNote": "The written form 頼む is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 338
+  },
+  "ゆっくり|ゆっくり": {
+    "image": "memory-scenes/255-word-204-a6c2845.webp",
+    "alt": "Illustrated memory scene for ゆっくり (ゆっくり), meaning slowly.",
+    "caption": "📏 slowly. Say ゆっくり while finding ゆっくり in the scene.",
+    "kanjiNote": "The written form ゆっくり is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 339
+  },
+  "年|ねん": {
+    "image": "memory-scenes/256-word-205-0ba70d4.webp",
+    "alt": "Illustrated memory scene for 年 (ねん), meaning counter for years.",
+    "caption": "🕰️ counter for years. Say ねん while finding 年 in the scene.",
+    "kanjiNote": "The written form 年 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 340
+  },
+  "年|とし": {
+    "image": "memory-scenes/257-word-206-9eb7805.webp",
+    "alt": "Illustrated memory scene for 年 (とし), meaning year.",
+    "caption": "🕰️ year. Say とし while finding 年 in the scene.",
+    "kanjiNote": "The written form 年 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 340
+  },
+  "取る|とる": {
+    "image": "memory-scenes/258-word-207-a52e26c.webp",
+    "alt": "Illustrated memory scene for 取る (とる), meaning to&nbsp;take, to get.",
+    "caption": "🎴 to&nbsp;take, to get. Say とる while finding 取る in the scene.",
+    "kanjiNote": "The written form 取る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 341
+  },
+  "全て|すべて": {
+    "image": "memory-scenes/259-word-208-572adeb.webp",
+    "alt": "Illustrated memory scene for 全て (すべて), meaning all, entirely.",
+    "caption": "🎴 all, entirely. Say すべて while finding 全て in the scene.",
+    "kanjiNote": "The written form 全て is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 342
+  },
+  "助ける|たすける": {
+    "image": "memory-scenes/260-word-209-712bc98.webp",
+    "alt": "Illustrated memory scene for 助ける (たすける), meaning to&nbsp;help, to&nbsp;save.",
+    "caption": "🎴 to&nbsp;help, to&nbsp;save. Say たすける while finding 助ける in the scene.",
+    "kanjiNote": "The written form 助ける is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 344
+  },
+  "状況|じょうきょう": {
+    "image": "memory-scenes/261-word-210-55a6b2d.webp",
+    "alt": "Illustrated memory scene for 状況 (じょうきょう), meaning state of affairs, conditions.",
+    "caption": "🎴 state of affairs, conditions. Say じょうきょう while finding 状況 in the scene.",
+    "kanjiNote": "The written form 状況 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 346
+  },
+  "許す|ゆるす": {
+    "image": "memory-scenes/262-word-211-7ca62d3.webp",
+    "alt": "Illustrated memory scene for 許す (ゆるす), meaning to&nbsp;forgive, to&nbsp;permit.",
+    "caption": "🎴 to&nbsp;forgive, to&nbsp;permit. Say ゆるす while finding 許す in the scene.",
+    "kanjiNote": "The written form 許す is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 349
+  },
+  "確認|かくにん": {
+    "image": "memory-scenes/263-word-212-6ba991e.webp",
+    "alt": "Illustrated memory scene for 確認 (かくにん), meaning confirmation.",
+    "caption": "🎴 confirmation. Say かくにん while finding 確認 in the scene.",
+    "kanjiNote": "The written form 確認 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 350
+  },
+  "嬉しい|うれしい": {
+    "image": "memory-scenes/264-word-213-fbb909f.webp",
+    "alt": "Illustrated memory scene for 嬉しい (うれしい), meaning happy, glad.",
+    "caption": "✨ happy, glad. Say うれしい while finding 嬉しい in the scene.",
+    "kanjiNote": "The written form 嬉しい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 355
+  },
+  "消える|きえる": {
+    "image": "memory-scenes/265-word-214-b1b1c16.webp",
+    "alt": "Illustrated memory scene for 消える (きえる), meaning to go out, to&nbsp;disappear.",
+    "caption": "🚉 to go out, to&nbsp;disappear. Say きえる while finding 消える in the scene.",
+    "kanjiNote": "The written form 消える is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 357
+  },
+  "頑張る|がんばる": {
+    "image": "memory-scenes/266-word-215-9260bf3.webp",
+    "alt": "Illustrated memory scene for 頑張る (がんばる), meaning to&nbsp;persevere, to&nbsp;do one's best.",
+    "caption": "🎴 to&nbsp;persevere, to&nbsp;do one's best. Say がんばる while finding 頑張る in the scene.",
+    "kanjiNote": "The written form 頑張る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 359
+  },
+  "なるほど|なるほど": {
+    "image": "memory-scenes/267-word-216-6f62c4a.webp",
+    "alt": "Illustrated memory scene for なるほど (なるほど), meaning I see, really.",
+    "caption": "👀 I see, really. Say なるほど while finding なるほど in the scene.",
+    "kanjiNote": "The written form なるほど is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 361
+  },
+  "長い|ながい": {
+    "image": "memory-scenes/268-word-217-65d8fe1.webp",
+    "alt": "Illustrated memory scene for 長い (ながい), meaning long.",
+    "caption": "📏 long. Say ながい while finding 長い in the scene.",
+    "kanjiNote": "The written form 長い is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 362
+  },
+  "驚く|おどろく": {
+    "image": "memory-scenes/269-word-218-c545910.webp",
+    "alt": "Illustrated memory scene for 驚く (おどろく), meaning to&nbsp;be surprised, to&nbsp;be astonished.",
+    "caption": "🎴 to&nbsp;be surprised, to&nbsp;be astonished. Say おどろく while finding 驚く in the scene.",
+    "kanjiNote": "The written form 驚く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 363
+  },
+  "腕|うで": {
+    "image": "memory-scenes/270-word-219-c050224.webp",
+    "alt": "Illustrated memory scene for 腕 (うで), meaning arm.",
+    "caption": "🎴 arm. Say うで while finding 腕 in the scene.",
+    "kanjiNote": "The written form 腕 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 366
+  },
+  "以外|いがい": {
+    "image": "memory-scenes/271-word-220-4021d15.webp",
+    "alt": "Illustrated memory scene for 以外 (いがい), meaning except for.",
+    "caption": "🎴 except for. Say いがい while finding 以外 in the scene.",
+    "kanjiNote": "The written form 以外 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 367
+  },
+  "つまり|つまり": {
+    "image": "memory-scenes/272-word-221-4af997d.webp",
+    "alt": "Illustrated memory scene for つまり (つまり), meaning in short, basically.",
+    "caption": "📏 in short, basically. Say つまり while finding つまり in the scene.",
+    "kanjiNote": "The written form つまり is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 368
+  },
+  "困る|こまる": {
+    "image": "memory-scenes/273-word-222-2c6b919.webp",
+    "alt": "Illustrated memory scene for 困る (こまる), meaning to&nbsp;be at a loss, to&nbsp;be troubled.",
+    "caption": "🎴 to&nbsp;be at a loss, to&nbsp;be troubled. Say こまる while finding 困る in the scene.",
+    "kanjiNote": "The written form 困る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 369
+  },
+  "一つ|ひとつ": {
+    "image": "memory-scenes/274-word-223-d0d563d.webp",
+    "alt": "Illustrated memory scene for 一つ (ひとつ), meaning one (thing).",
+    "caption": "🎴 one (thing). Say ひとつ while finding 一つ in the scene.",
+    "kanjiNote": "The written form 一つ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 371
+  },
+  "今回|こんかい": {
+    "image": "memory-scenes/275-word-224-af06c97.webp",
+    "alt": "Illustrated memory scene for 今回 (こんかい), meaning this time.",
+    "caption": "🕰️ this time. Say こんかい while finding 今回 in the scene.",
+    "kanjiNote": "The written form 今回 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 373
+  },
+  "離れる|はなれる": {
+    "image": "memory-scenes/276-word-225-86c2dee.webp",
+    "alt": "Illustrated memory scene for 離れる (はなれる), meaning to&nbsp;be separated, to&nbsp;be apart.",
+    "caption": "🎴 to&nbsp;be separated, to&nbsp;be apart. Say はなれる while finding 離れる in the scene.",
+    "kanjiNote": "The written form 離れる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 376
+  },
+  "気|き": {
+    "image": "memory-scenes/277-word-226-c81b862.webp",
+    "alt": "Illustrated memory scene for 気 (き), meaning spirit, temperament.",
+    "caption": "🎴 spirit, temperament. Say き while finding 気 in the scene.",
+    "kanjiNote": "The written form 気 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 377
+  },
+  "書く|かく": {
+    "image": "memory-scenes/278-word-227-0d61532.webp",
+    "alt": "Illustrated memory scene for 書く (かく), meaning to&nbsp;write.",
+    "caption": "📖 to&nbsp;write. Say かく while finding 書く in the scene.",
+    "kanjiNote": "The written form 書く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 378
+  },
+  "光|ひかり": {
+    "image": "memory-scenes/279-word-228-51c3a82.webp",
+    "alt": "Illustrated memory scene for 光 (ひかり), meaning light, flash.",
+    "caption": "🎴 light, flash. Say ひかり while finding 光 in the scene.",
+    "kanjiNote": "The written form 光 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 380
+  },
+  "走る|はしる": {
+    "image": "memory-scenes/280-word-229-96b34a1.webp",
+    "alt": "Illustrated memory scene for 走る (はしる), meaning to&nbsp;run.",
+    "caption": "🎴 to&nbsp;run. Say はしる while finding 走る in the scene.",
+    "kanjiNote": "The written form 走る is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 381
+  },
+  "優しい|やさしい": {
+    "image": "memory-scenes/281-word-230-8582322.webp",
+    "alt": "Illustrated memory scene for 優しい (やさしい), meaning gentle, kind.",
+    "caption": "🎴 gentle, kind. Say やさしい while finding 優しい in the scene.",
+    "kanjiNote": "The written form 優しい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 382
+  },
+  "嫌|いや": {
+    "image": "memory-scenes/282-word-231-1c22703.webp",
+    "alt": "Illustrated memory scene for 嫌 (いや), meaning disliking, unwilling (to do).",
+    "caption": "🎴 disliking, unwilling (to do). Say いや while finding 嫌 in the scene.",
+    "kanjiNote": "The written form 嫌 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 383
+  },
+  "そんなに|そんなに": {
+    "image": "memory-scenes/283-word-232-e0171b9.webp",
+    "alt": "Illustrated memory scene for そんなに (そんなに), meaning that much.",
+    "caption": "🎴 that much. Say そんなに while finding そんなに in the scene.",
+    "kanjiNote": "The written form そんなに is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 384
+  },
+  "戦う|たたかう": {
+    "image": "memory-scenes/284-word-233-6d7781c.webp",
+    "alt": "Illustrated memory scene for 戦う (たたかう), meaning to&nbsp;wage war, to&nbsp;fight.",
+    "caption": "🎴 to&nbsp;wage war, to&nbsp;fight. Say たたかう while finding 戦う in the scene.",
+    "kanjiNote": "The written form 戦う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 385
+  },
+  "あまり|あまり": {
+    "image": "memory-scenes/285-word-234-c4fbc65.webp",
+    "alt": "Illustrated memory scene for あまり (あまり), meaning (not) very, (not) much.",
+    "caption": "🎴 (not) very, (not) much. Say あまり while finding あまり in the scene.",
+    "kanjiNote": "The written form あまり is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 388
+  },
+  "余り|あまり": {
+    "image": "memory-scenes/286-word-235-5835a14.webp",
+    "alt": "Illustrated memory scene for 余り (あまり), meaning remainder, leftover.",
+    "caption": "🎴 remainder, leftover. Say あまり while finding 余り in the scene.",
+    "kanjiNote": "The written form 余り is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 388
+  },
+  "全部|ぜんぶ": {
+    "image": "memory-scenes/287-word-236-6fc2582.webp",
+    "alt": "Illustrated memory scene for 全部 (ぜんぶ), meaning all, everything.",
+    "caption": "🎴 all, everything. Say ぜんぶ while finding 全部 in the scene.",
+    "kanjiNote": "The written form 全部 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 390
+  },
+  "瞬間|しゅんかん": {
+    "image": "memory-scenes/288-word-237-8c4e377.webp",
+    "alt": "Illustrated memory scene for 瞬間 (しゅんかん), meaning instant, moment.",
+    "caption": "🎴 instant, moment. Say しゅんかん while finding 瞬間 in the scene.",
+    "kanjiNote": "The written form 瞬間 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 391
+  },
+  "夜|よる": {
+    "image": "memory-scenes/289-word-238-5e8d572.webp",
+    "alt": "Illustrated memory scene for 夜 (よる), meaning evening, night.",
+    "caption": "🕰️ evening, night. Say よる while finding 夜 in the scene.",
+    "kanjiNote": "The written form 夜 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 392
+  },
+  "買う|かう": {
+    "image": "memory-scenes/290-word-239-8d07ff2.webp",
+    "alt": "Illustrated memory scene for 買う (かう), meaning to&nbsp;buy.",
+    "caption": "🛍️ to&nbsp;buy. Say かう while finding 買う in the scene.",
+    "kanjiNote": "The written form 買う is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 394
+  },
+  "説明|せつめい": {
+    "image": "memory-scenes/291-word-240-0339471.webp",
+    "alt": "Illustrated memory scene for 説明 (せつめい), meaning explanation.",
+    "caption": "🎴 explanation. Say せつめい while finding 説明 in the scene.",
+    "kanjiNote": "The written form 説明 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 395
+  },
+  "飲む|のむ": {
+    "image": "memory-scenes/292-word-241-be7c961.webp",
+    "alt": "Illustrated memory scene for 飲む (のむ), meaning to drink.",
+    "caption": "🥤 to drink. Say のむ while finding 飲む in the scene.",
+    "kanjiNote": "The written form 飲む is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 397
+  },
+  "今まで|いままで": {
+    "image": "memory-scenes/293-word-242-a5c8bfd.webp",
+    "alt": "Illustrated memory scene for 今まで (いままで), meaning until now.",
+    "caption": "🎴 until now. Say いままで while finding 今まで in the scene.",
+    "kanjiNote": "The written form 今まで is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 398
+  },
+  "あいつ|あいつ": {
+    "image": "memory-scenes/294-word-243-90e28cf.webp",
+    "alt": "Illustrated memory scene for あいつ (あいつ), meaning that guy.",
+    "caption": "🎴 that guy. Say あいつ while finding あいつ in the scene.",
+    "kanjiNote": "The written form あいつ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 400
+  },
+  "奴|やつ": {
+    "image": "memory-scenes/295-word-244-1fae3db.webp",
+    "alt": "Illustrated memory scene for 奴 (やつ), meaning that guy, (s)he (usu. derogatory).",
+    "caption": "🎴 that guy, (s)he (usu. derogatory). Say やつ while finding 奴 in the scene.",
+    "kanjiNote": "The written form 奴 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 401
+  },
+  "もし|もし": {
+    "image": "memory-scenes/296-word-245-d6288e5.webp",
+    "alt": "Illustrated memory scene for もし (もし), meaning if, in the event of....",
+    "caption": "🎴 if, in the event of.... Say もし while finding もし in the scene.",
+    "kanjiNote": "The written form もし is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 402
+  },
+  "決める|きめる": {
+    "image": "memory-scenes/297-word-246-8676e97.webp",
+    "alt": "Illustrated memory scene for 決める (きめる), meaning to decide.",
+    "caption": "🎴 to decide. Say きめる while finding 決める in the scene.",
+    "kanjiNote": "The written form 決める is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 403
+  },
+  "理解|りかい": {
+    "image": "memory-scenes/298-word-247-21fc4ad.webp",
+    "alt": "Illustrated memory scene for 理解 (りかい), meaning understanding, comprehension.",
+    "caption": "💡 understanding, comprehension. Say りかい while finding 理解 in the scene.",
+    "kanjiNote": "The written form 理解 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 404
+  },
+  "女性|じょせい": {
+    "image": "memory-scenes/299-word-248-ef2f2df.webp",
+    "alt": "Illustrated memory scene for 女性 (じょせい), meaning woman, female.",
+    "caption": "🎴 woman, female. Say じょせい while finding 女性 in the scene.",
+    "kanjiNote": "The written form 女性 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 405
+  },
+  "いつ|いつ": {
+    "image": "memory-scenes/300-word-249-0ef510d.webp",
+    "alt": "Illustrated memory scene for いつ (いつ), meaning when.",
+    "caption": "🎴 when. Say いつ while finding いつ in the scene.",
+    "kanjiNote": "The written form いつ is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 407
+  },
+  "時|とき": {
+    "image": "memory-scenes/301-word-250-77638c7.webp",
+    "alt": "Illustrated memory scene for 時 (とき), meaning time, occasion.",
+    "caption": "🕰️ time, occasion. Say とき while finding 時 in the scene.",
+    "kanjiNote": "The written form 時 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 407
+  },
+  "夢|ゆめ": {
+    "image": "memory-scenes/302-word-251-389f3c5.webp",
+    "alt": "Illustrated memory scene for 夢 (ゆめ), meaning dream.",
+    "caption": "🎴 dream. Say ゆめ while finding 夢 in the scene.",
+    "kanjiNote": "The written form 夢 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 408
+  },
+  "頂く|いただく": {
+    "image": "memory-scenes/303-word-252-cd451bb.webp",
+    "alt": "Illustrated memory scene for 頂く (いただく), meaning to&nbsp;receive, to&nbsp;take (humble form).",
+    "caption": "🎴 to&nbsp;receive, to&nbsp;take (humble form). Say いただく while finding 頂く in the scene.",
+    "kanjiNote": "The written form 頂く is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 409
+  },
+  "頂きます|いただきます": {
+    "image": "memory-scenes/304-word-253-5f4813e.webp",
+    "alt": "Illustrated memory scene for 頂きます (いただきます), meaning let's eat!, thank you for the meal.",
+    "caption": "🍚 let's eat!, thank you for the meal. Say いただきます while finding 頂きます in the scene.",
+    "kanjiNote": "The written form 頂きます is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 409
+  },
+  "敵|てき": {
+    "image": "memory-scenes/305-word-254-cc815cd.webp",
+    "alt": "Illustrated memory scene for 敵 (てき), meaning enemy.",
+    "caption": "🎴 enemy. Say てき while finding 敵 in the scene.",
+    "kanjiNote": "The written form 敵 is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 410
+  },
+  "起きる|おきる": {
+    "image": "memory-scenes/306-word-255-e2d5013.webp",
+    "alt": "Illustrated memory scene for 起きる (おきる), meaning to&nbsp;occur.",
+    "caption": "🎴 to&nbsp;occur. Say おきる while finding 起きる in the scene.",
+    "kanjiNote": "The written form 起きる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 412
+  },
+  "おかしい|おかしい": {
+    "image": "memory-scenes/307-word-256-45c5e2d.webp",
+    "alt": "Illustrated memory scene for おかしい (おかしい), meaning strange, suspicious.",
+    "caption": "🎴 strange, suspicious. Say おかしい while finding おかしい in the scene.",
+    "kanjiNote": "The written form おかしい is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 414
+  },
+  "落ちる|おちる": {
+    "image": "memory-scenes/308-word-257-5610c80.webp",
+    "alt": "Illustrated memory scene for 落ちる (おちる), meaning to&nbsp;fall.",
+    "caption": "🎴 to&nbsp;fall. Say おちる while finding 落ちる in the scene.",
+    "kanjiNote": "The written form 落ちる is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 415
+  },
+  "それに|それに": {
+    "image": "memory-scenes/309-word-258-f7f31fc.webp",
+    "alt": "Illustrated memory scene for それに (それに), meaning in addition.",
+    "caption": "🎴 in addition. Say それに while finding それに in the scene.",
+    "kanjiNote": "The written form それに is built into the illustration.",
+    "source": "Kaishi 1.5k",
+    "frequency": 417
   }
 }

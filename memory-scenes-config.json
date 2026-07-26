@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 2,
+  "sceneKeyFormat": "word|reading",
+  "totalScenes": 309,
+  "imageDirectory": "memory-scenes",
+  "imageFormat": "webp",
+  "loading": "lazy",
+  "cacheStrategy": "cache-on-first-view",
+  "fallback": "text mnemonic when no scene mapping exists"
+}

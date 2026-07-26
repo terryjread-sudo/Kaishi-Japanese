@@ -1,0 +1,20 @@
+KAISHI QUEST v2.1.0 — READY-TO-UPLOAD PACKAGE
+
+1. Extract this ZIP.
+2. Open the extracted Kaishi_Quest_v2.1.0_ready folder.
+3. Upload ALL files and folders inside it to the ROOT of:
+   terryjread-sudo/Kakashi-Web
+4. Allow GitHub to replace index.html, app.js, styles.css and sw.js.
+5. Keep the memory-scenes folder structure unchanged.
+6. Commit with:
+   Release Kaishi Quest v2.1.0 with 50 Memory Scenes and auto updates
+
+IMPORTANT
+- Upload the CONTENTS of the folder, not the outer folder itself.
+- version.json should be uploaded with the other files.
+- Existing v2.0.0 installs may need one manual reopen/refresh to receive v2.1.0.
+- After v2.1.0 is active, future releases can show the automatic update prompt.
+
+ACKNOWLEDGEMENT
+Kaishi Quest uses vocabulary adapted from the Kaishi 1.5k Anki deck:
+https://ankiweb.net/shared/info/1196762551
