@@ -1,20 +1,15 @@
 {
-  "version": "3.1.0",
+  "version": "3.2.0",
   "released": "2026-07-26",
-  "title": "50-card anime Memory Scene pack",
+  "title": "Sprite-sheet Memory Scenes",
   "changes": [
-    "Added a 50-card anime-style Memory Scene pack.",
-    "Added 28 new illustrated vocabulary mappings.",
-    "Upgraded 22 existing mappings with the new card artwork.",
-    "The new cards work in lessons and all Picture Match modes.",
-    "Updated the offline cache version so the new artwork loads correctly."
+    "Replaced individual Memory Scene files with root-level sprite sheets.",
+    "One large WebP file now stores 50 illustrated vocabulary cards.",
+    "Added generic support for 30 scene packs covering up to 1,500 words.",
+    "The memory-scenes folder is no longer required.",
+    "Picture Match and lesson cards display the correct grid section automatically."
   ],
-  "scenePackCards": 50,
-  "newMappings": 28,
-  "upgradedMappings": 22,
-  "totalMappedScenes": 122,
-  "acknowledgement": {
-    "name": "Kaishi 1.5k Anki deck",
-    "url": "https://ankiweb.net/shared/info/1196762551"
-  }
+  "packsPlanned": 30,
+  "packsIncluded": 1,
+  "mappedWords": 50
 }

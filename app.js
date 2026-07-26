@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.1.0';
+const APP_VERSION='3.2.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -53,6 +53,27 @@ function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/
 function play(name){if(!name)return;new Audio(media(name)).play().catch(()=>{})}
 function visual(v){return `${v.picture?`<img class="picture" src="${media(v.picture)}" alt="Illustration">`:''}`}
 function sceneKey(v){return `${v.word}|${v.reading}`}
+function sceneSheet(scene){
+ return `scene-pack-${String(scene.pack).padStart(2,'0')}.webp`;
+}
+function sceneSpriteStyle(scene){
+ const cols=10,rows=5;
+ const gridLeft=12,gridTop=66,gridRight=1524,gridBottom=912;
+ const sheetW=1536,sheetH=1024;
+ const cellW=(gridRight-gridLeft)/cols;
+ const cellH=(gridBottom-gridTop)/rows;
+ const x=gridLeft+scene.col*cellW;
+ const y=gridTop+scene.row*cellH;
+ const bgW=sheetW/cellW*100;
+ const bgH=sheetH/cellH*100;
+ const posX=(x/(sheetW-cellW))*100;
+ const posY=(y/(sheetH-cellH))*100;
+ return `background-image:url('${sceneSheet(scene)}');background-size:${bgW}% ${bgH}%;background-position:${posX}% ${posY}%;`;
+}
+function sceneSprite(scene,extraClass=''){
+ return `<div class="scene-sprite ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}" style="${sceneSpriteStyle(scene)}"></div>`;
+}
+
 function memoryScene(v){const s=memoryScenes[sceneKey(v)]||Object.values(memoryScenes).find(x=>x.word===v.word&&x.reading===v.reading);if(!s)return'';return `<section class="memory-scene"><h3>🖼️ Memory Scene</h3><img src="${s.image}" alt="${s.alt||''}" loading="lazy" decoding="async"><p class="memory-caption">${s.caption||''}</p>${s.kanjiNote?`<p class="memory-note">${s.kanjiNote}</p>`:''}</section>`}
 function sceneEmoji(v){const m=(v.meaning||'').toLowerCase();if(/eat|food|meal/.test(m))return'🍜';if(/drink|water|tea|coffee/.test(m))return'🥤';if(/school|study|learn|teacher|student/.test(m))return'🎓';if(/go|come|walk|run|travel/.test(m))return'🚶';if(/see|look|watch|eye/.test(m))return'👀';if(/say|speak|talk|word/.test(m))return'💬';if(/person|friend|family|child/.test(m))return'👤';if(/time|day|week|year/.test(m))return'⏰';if(/money|buy|shop|price/.test(m))return'🛍️';if(/love|like|happy|fun/.test(m))return'✨';return'🎬'}
 function cleanText(t=''){return String(t).replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim()}
@@ -88,17 +109,17 @@ function renderPictureQuestion(v,mode='picture-word'){
  const choices=pictureChoices(v,count),scene=memoryScenes[sceneKey(v)],c=$('#card');
  let prompt='',answer='',buttons='';
  if(mode==='picture-word'){
-  prompt=`<img class="quiz-picture" src="${scene.image}" alt="${scene.alt||''}"><h2>Which word matches this picture?</h2>`;
+  prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which word matches this picture?</h2>`;
   answer=v.word;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.word)}">${x.word}</button>`).join('');
  }else if(mode==='picture-reading'){
-  prompt=`<img class="quiz-picture" src="${scene.image}" alt="${scene.alt||''}"><h2>Which reading matches this picture?</h2>`;
+  prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which reading matches this picture?</h2>`;
   answer=v.reading;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.reading)}">${x.reading}</button>`).join('');
  }else if(mode==='picture-meaning'){
-  prompt=`<img class="quiz-picture" src="${scene.image}" alt="${scene.alt||''}"><h2>Which meaning matches this picture?</h2>`;
+  prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which meaning matches this picture?</h2>`;
   answer=v.meaning;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.meaning)}">${x.meaning}</button>`).join('');
  }else{
   prompt=`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div><h2>Choose the matching picture</h2>`;
-  answer=scene.image;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class="choice picture-choice" data-answer="${encodeURIComponent(s.image)}"><img src="${s.image}" alt="${s.alt||''}"><span>${x.meaning}</span></button>`}).join('');
+  answer=`${scene.pack}:${scene.row}:${scene.col}`;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class=\"choice picture-choice\" data-answer=\"${encodeURIComponent(`${s.pack}:${s.row}:${s.col}`)}\">${sceneSprite(s,'choice-sprite')}<span>${x.meaning}</span></button>`}).join('');
  }
  c.innerHTML=`<div class="eyebrow">Picture Match</div>${prompt}<div class="choices picture-choices">${buttons}</div>`;
  bindChoices(answer,'picture');

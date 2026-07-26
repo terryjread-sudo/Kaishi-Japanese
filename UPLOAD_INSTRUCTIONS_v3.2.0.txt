@@ -1,0 +1,24 @@
+KAISHI QUEST v3.2.0 — SPRITE-SHEET ARCHITECTURE
+
+UPLOAD
+1. Extract this ZIP.
+2. Upload everything inside Kaishi_Quest_v3.2.0_sprite_architecture to the ROOT of GitHub.
+3. Allow replacement of existing files.
+4. Commit as:
+   Release Kaishi Quest v3.2.0 sprite sheets
+
+IMPORTANT
+- scene-pack-01.webp must be in the repository ROOT.
+- memory-scenes.json must also be in the repository ROOT.
+- After this release is working, the old memory-scenes folder can be deleted.
+- Do not delete the old folder before v3.2.0 has finished publishing.
+
+FUTURE PACKS
+Add:
+scene-pack-02.webp
+scene-pack-03.webp
+...
+scene-pack-30.webp
+
+Each pack is a 10-column × 5-row grid containing 50 scenes.
+Only memory-scenes.json needs additional pack/row/col entries.

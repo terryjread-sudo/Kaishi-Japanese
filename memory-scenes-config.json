@@ -1,23 +1,20 @@
 {
-  "schemaVersion": 3,
-  "sceneKeyFormat": "word|reading",
-  "totalScenes": 122,
-  "premiumAnimeScenes": 50,
-  "pictureMatchEnabled": true,
-  "pictureMatchModes": [
-    "picture-to-word",
-    "word-to-picture",
-    "picture-to-reading",
-    "picture-to-meaning"
-  ],
-  "activeLessonWords": {
-    "min": 2,
-    "max": 4,
-    "default": 4
+  "schemaVersion": 4,
+  "renderMode": "sprite-grid",
+  "packsPlanned": 30,
+  "packsIncluded": 1,
+  "cardsPerPack": 50,
+  "columns": 10,
+  "rows": 5,
+  "sheetFilenamePattern": "scene-pack-{pack:02d}.webp",
+  "sheetNaturalWidth": 1536,
+  "sheetNaturalHeight": 1024,
+  "grid": {
+    "left": 12,
+    "top": 66,
+    "right": 1524,
+    "bottom": 912
   },
   "fallback": "text mnemonic",
-  "v31ScenePackCards": 50,
-  "v31NewVocabularyMappings": 28,
-  "v31UpgradedMappings": 22,
-  "latestPack": "v3.1-scene-pack-01"
+  "folderRequired": false
 }

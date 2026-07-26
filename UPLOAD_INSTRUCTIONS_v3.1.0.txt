@@ -1,0 +1,25 @@
+KAISHI QUEST v3.1.0 — 50-CARD ANIME SCENE PACK
+
+UPLOAD
+1. Extract this ZIP.
+2. Open the Kaishi_Quest_v3.1.0_ready folder.
+3. Upload everything inside it to the ROOT of your GitHub repository.
+4. Keep the memory-scenes folder intact.
+5. Allow GitHub to replace files with the same names.
+6. Commit as:
+   Release Kaishi Quest v3.1.0 scene pack
+
+THIS PACKAGE CONTAINS
+- 50 individually cropped and optimised WebP card images.
+- 28 vocabulary mappings not previously illustrated.
+- 22 existing mappings upgraded with this artwork.
+- Updated memory-scenes.json.
+- Updated memory-scenes-config.json.
+- Updated app version, What's New data and service-worker cache.
+
+IMPORTANT
+The generated source artwork contains 50 cards, but 22 words overlap with
+the v3.0 set. Therefore this release increases the unique mapped vocabulary count
+by 28, while replacing 22 older images.
+
+The Picture Match game uses these images automatically through memory-scenes.json.
