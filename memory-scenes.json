@@ -5,7 +5,8 @@
     "col": 0,
     "alt": "Anime-style scene for 大きい, read おおきい, meaning big.",
     "caption": "Connect おおきい with “big”.",
-    "meaning": "big"
+    "meaning": "big",
+    "file": "scene-p01-r01-c01.webp"
   },
   "小さい|ちいさい": {
     "pack": 1,
@@ -13,7 +14,8 @@
     "col": 1,
     "alt": "Anime-style scene for 小さい, read ちいさい, meaning small.",
     "caption": "Connect ちいさい with “small”.",
-    "meaning": "small"
+    "meaning": "small",
+    "file": "scene-p01-r01-c02.webp"
   },
   "新しい|あたらしい": {
     "pack": 2,
@@ -21,7 +23,8 @@
     "col": 2,
     "alt": "Anime-style scene for 新しい, read あたらしい, meaning new.",
     "caption": "Connect あたらしい with “new”.",
-    "meaning": "new"
+    "meaning": "new",
+    "file": "scene-p02-r01-c03.webp"
   },
   "古い|ふるい": {
     "pack": 2,
@@ -29,7 +32,8 @@
     "col": 3,
     "alt": "Anime-style scene for 古い, read ふるい, meaning old.",
     "caption": "Connect ふるい with “old”.",
-    "meaning": "old"
+    "meaning": "old",
+    "file": "scene-p02-r01-c04.webp"
   },
   "長い|ながい": {
     "pack": 2,
@@ -37,7 +41,8 @@
     "col": 4,
     "alt": "Anime-style scene for 長い, read ながい, meaning long.",
     "caption": "Connect ながい with “long”.",
-    "meaning": "long"
+    "meaning": "long",
+    "file": "scene-p02-r01-c05.webp"
   },
   "短い|みじかい": {
     "pack": 2,
@@ -45,7 +50,8 @@
     "col": 5,
     "alt": "Anime-style scene for 短い, read みじかい, meaning short.",
     "caption": "Connect みじかい with “short”.",
-    "meaning": "short"
+    "meaning": "short",
+    "file": "scene-p02-r01-c06.webp"
   },
   "高い|たかい": {
     "pack": 2,
@@ -53,7 +59,8 @@
     "col": 0,
     "alt": "Anime-style scene for 高い, read たかい, meaning high; expensive.",
     "caption": "Connect たかい with “high; expensive”.",
-    "meaning": "high; expensive"
+    "meaning": "high; expensive",
+    "file": "scene-p02-r01-c01.webp"
   },
   "安い|やすい": {
     "pack": 2,
@@ -61,7 +68,8 @@
     "col": 1,
     "alt": "Anime-style scene for 安い, read やすい, meaning cheap.",
     "caption": "Connect やすい with “cheap”.",
-    "meaning": "cheap"
+    "meaning": "cheap",
+    "file": "scene-p02-r01-c02.webp"
   },
   "難しい|むずかしい": {
     "pack": 1,
@@ -69,7 +77,8 @@
     "col": 8,
     "alt": "Anime-style scene for 難しい, read むずかしい, meaning difficult.",
     "caption": "Connect むずかしい with “difficult”.",
-    "meaning": "difficult"
+    "meaning": "difficult",
+    "file": "scene-p01-r01-c09.webp"
   },
   "簡単|かんたん": {
     "pack": 1,
@@ -77,7 +86,8 @@
     "col": 9,
     "alt": "Anime-style scene for 簡単, read かんたん, meaning easy; simple.",
     "caption": "Connect かんたん with “easy; simple”.",
-    "meaning": "easy; simple"
+    "meaning": "easy; simple",
+    "file": "scene-p01-r01-c10.webp"
   },
   "早い|はやい": {
     "pack": 2,
@@ -85,7 +95,8 @@
     "col": 8,
     "alt": "Anime-style scene for 早い, read はやい, meaning early; fast.",
     "caption": "Connect はやい with “early; fast”.",
-    "meaning": "early; fast"
+    "meaning": "early; fast",
+    "file": "scene-p02-r01-c09.webp"
   },
   "遅い|おそい": {
     "pack": 2,
@@ -93,7 +104,8 @@
     "col": 9,
     "alt": "Anime-style scene for 遅い, read おそい, meaning late; slow.",
     "caption": "Connect おそい with “late; slow”.",
-    "meaning": "late; slow"
+    "meaning": "late; slow",
+    "file": "scene-p02-r01-c10.webp"
   },
   "多い|おおい": {
     "pack": 2,
@@ -101,7 +113,8 @@
     "col": 6,
     "alt": "Anime-style scene for 多い, read おおい, meaning many.",
     "caption": "Connect おおい with “many”.",
-    "meaning": "many"
+    "meaning": "many",
+    "file": "scene-p02-r01-c07.webp"
   },
   "少ない|すくない": {
     "pack": 2,
@@ -109,7 +122,8 @@
     "col": 7,
     "alt": "Anime-style scene for 少ない, read すくない, meaning few; little.",
     "caption": "Connect すくない with “few; little”.",
-    "meaning": "few; little"
+    "meaning": "few; little",
+    "file": "scene-p02-r01-c08.webp"
   },
   "良い|よい": {
     "pack": 2,
@@ -117,7 +131,8 @@
     "col": 0,
     "alt": "Anime-style scene for 良い, read よい, meaning good.",
     "caption": "Connect よい with “good”.",
-    "meaning": "good"
+    "meaning": "good",
+    "file": "scene-p02-r02-c01.webp"
   },
   "悪い|わるい": {
     "pack": 2,
@@ -125,7 +140,8 @@
     "col": 1,
     "alt": "Anime-style scene for 悪い, read わるい, meaning bad.",
     "caption": "Connect わるい with “bad”.",
-    "meaning": "bad"
+    "meaning": "bad",
+    "file": "scene-p02-r02-c02.webp"
   },
   "強い|つよい": {
     "pack": 2,
@@ -133,7 +149,8 @@
     "col": 2,
     "alt": "Anime-style scene for 強い, read つよい, meaning strong.",
     "caption": "Connect つよい with “strong”.",
-    "meaning": "strong"
+    "meaning": "strong",
+    "file": "scene-p02-r02-c03.webp"
   },
   "弱い|よわい": {
     "pack": 2,
@@ -141,7 +158,8 @@
     "col": 3,
     "alt": "Anime-style scene for 弱い, read よわい, meaning weak.",
     "caption": "Connect よわい with “weak”.",
-    "meaning": "weak"
+    "meaning": "weak",
+    "file": "scene-p02-r02-c04.webp"
   },
   "近い|ちかい": {
     "pack": 2,
@@ -149,7 +167,8 @@
     "col": 4,
     "alt": "Anime-style scene for 近い, read ちかい, meaning near.",
     "caption": "Connect ちかい with “near”.",
-    "meaning": "near"
+    "meaning": "near",
+    "file": "scene-p02-r02-c05.webp"
   },
   "遠い|とおい": {
     "pack": 2,
@@ -157,7 +176,8 @@
     "col": 5,
     "alt": "Anime-style scene for 遠い, read とおい, meaning far.",
     "caption": "Connect とおい with “far”.",
-    "meaning": "far"
+    "meaning": "far",
+    "file": "scene-p02-r02-c06.webp"
   },
   "前|まえ": {
     "pack": 2,
@@ -165,7 +185,8 @@
     "col": 2,
     "alt": "Anime-style scene for 前, read まえ, meaning front; before.",
     "caption": "Connect まえ with “front; before”.",
-    "meaning": "front; before"
+    "meaning": "front; before",
+    "file": "scene-p02-r03-c03.webp"
   },
   "後ろ|うしろ": {
     "pack": 2,
@@ -173,7 +194,8 @@
     "col": 3,
     "alt": "Anime-style scene for 後ろ, read うしろ, meaning behind; back.",
     "caption": "Connect うしろ with “behind; back”.",
-    "meaning": "behind; back"
+    "meaning": "behind; back",
+    "file": "scene-p02-r03-c04.webp"
   },
   "左|ひだり": {
     "pack": 2,
@@ -181,7 +203,8 @@
     "col": 6,
     "alt": "Anime-style scene for 左, read ひだり, meaning left.",
     "caption": "Connect ひだり with “left”.",
-    "meaning": "left"
+    "meaning": "left",
+    "file": "scene-p02-r02-c07.webp"
   },
   "右|みぎ": {
     "pack": 2,
@@ -189,7 +212,8 @@
     "col": 7,
     "alt": "Anime-style scene for 右, read みぎ, meaning right.",
     "caption": "Connect みぎ with “right”.",
-    "meaning": "right"
+    "meaning": "right",
+    "file": "scene-p02-r02-c08.webp"
   },
   "上|うえ": {
     "pack": 2,
@@ -197,7 +221,8 @@
     "col": 8,
     "alt": "Anime-style scene for 上, read うえ, meaning up; above.",
     "caption": "Connect うえ with “up; above”.",
-    "meaning": "up; above"
+    "meaning": "up; above",
+    "file": "scene-p02-r02-c09.webp"
   },
   "下|した": {
     "pack": 2,
@@ -205,7 +230,8 @@
     "col": 9,
     "alt": "Anime-style scene for 下, read した, meaning down; below.",
     "caption": "Connect した with “down; below”.",
-    "meaning": "down; below"
+    "meaning": "down; below",
+    "file": "scene-p02-r02-c10.webp"
   },
   "中|なか": {
     "pack": 2,
@@ -213,7 +239,8 @@
     "col": 0,
     "alt": "Anime-style scene for 中, read なか, meaning inside; middle.",
     "caption": "Connect なか with “inside; middle”.",
-    "meaning": "inside; middle"
+    "meaning": "inside; middle",
+    "file": "scene-p02-r03-c01.webp"
   },
   "外|そと": {
     "pack": 2,
@@ -221,7 +248,8 @@
     "col": 1,
     "alt": "Anime-style scene for 外, read そと, meaning outside.",
     "caption": "Connect そと with “outside”.",
-    "meaning": "outside"
+    "meaning": "outside",
+    "file": "scene-p02-r03-c02.webp"
   },
   "冬|ふゆ": {
     "pack": 2,
@@ -229,7 +257,8 @@
     "col": 6,
     "alt": "Anime-style scene for 冬, read ふゆ, meaning winter.",
     "caption": "Connect ふゆ with “winter”.",
-    "meaning": "winter"
+    "meaning": "winter",
+    "file": "scene-p02-r03-c07.webp"
   },
   "春|はる": {
     "pack": 2,
@@ -237,7 +266,8 @@
     "col": 7,
     "alt": "Anime-style scene for 春, read はる, meaning spring.",
     "caption": "Connect はる with “spring”.",
-    "meaning": "spring"
+    "meaning": "spring",
+    "file": "scene-p02-r03-c08.webp"
   },
   "夏|なつ": {
     "pack": 2,
@@ -245,7 +275,8 @@
     "col": 4,
     "alt": "Anime-style scene for 夏, read なつ, meaning summer.",
     "caption": "Connect なつ with “summer”.",
-    "meaning": "summer"
+    "meaning": "summer",
+    "file": "scene-p02-r03-c05.webp"
   },
   "秋|あき": {
     "pack": 2,
@@ -253,7 +284,8 @@
     "col": 5,
     "alt": "Anime-style scene for 秋, read あき, meaning autumn.",
     "caption": "Connect あき with “autumn”.",
-    "meaning": "autumn"
+    "meaning": "autumn",
+    "file": "scene-p02-r03-c06.webp"
   },
   "朝|あさ": {
     "pack": 2,
@@ -261,7 +293,8 @@
     "col": 8,
     "alt": "Anime-style scene for 朝, read あさ, meaning morning.",
     "caption": "Connect あさ with “morning”.",
-    "meaning": "morning"
+    "meaning": "morning",
+    "file": "scene-p02-r03-c09.webp"
   },
   "昼|ひる": {
     "pack": 2,
@@ -269,7 +302,8 @@
     "col": 9,
     "alt": "Anime-style scene for 昼, read ひる, meaning noon; daytime.",
     "caption": "Connect ひる with “noon; daytime”.",
-    "meaning": "noon; daytime"
+    "meaning": "noon; daytime",
+    "file": "scene-p02-r03-c10.webp"
   },
   "夜|よる": {
     "pack": 2,
@@ -277,7 +311,8 @@
     "col": 0,
     "alt": "Anime-style scene for 夜, read よる, meaning night; evening.",
     "caption": "Connect よる with “night; evening”.",
-    "meaning": "night; evening"
+    "meaning": "night; evening",
+    "file": "scene-p02-r04-c01.webp"
   },
   "友達|ともだち": {
     "pack": 2,
@@ -285,7 +320,8 @@
     "col": 1,
     "alt": "Anime-style scene for 友達, read ともだち, meaning friend.",
     "caption": "Connect ともだち with “friend”.",
-    "meaning": "friend"
+    "meaning": "friend",
+    "file": "scene-p02-r04-c02.webp"
   },
   "家族|かぞく": {
     "pack": 2,
@@ -293,7 +329,8 @@
     "col": 2,
     "alt": "Anime-style scene for 家族, read かぞく, meaning family.",
     "caption": "Connect かぞく with “family”.",
-    "meaning": "family"
+    "meaning": "family",
+    "file": "scene-p02-r04-c03.webp"
   },
   "子供|こども": {
     "pack": 2,
@@ -301,7 +338,8 @@
     "col": 3,
     "alt": "Anime-style scene for 子供, read こども, meaning child.",
     "caption": "Connect こども with “child”.",
-    "meaning": "child"
+    "meaning": "child",
+    "file": "scene-p02-r04-c04.webp"
   },
   "大人|おとな": {
     "pack": 2,
@@ -309,7 +347,8 @@
     "col": 4,
     "alt": "Anime-style scene for 大人, read おとな, meaning adult.",
     "caption": "Connect おとな with “adult”.",
-    "meaning": "adult"
+    "meaning": "adult",
+    "file": "scene-p02-r04-c05.webp"
   },
   "男|おとこ": {
     "pack": 2,
@@ -317,7 +356,8 @@
     "col": 5,
     "alt": "Anime-style scene for 男, read おとこ, meaning man; male.",
     "caption": "Connect おとこ with “man; male”.",
-    "meaning": "man; male"
+    "meaning": "man; male",
+    "file": "scene-p02-r04-c06.webp"
   },
   "女|おんな": {
     "pack": 2,
@@ -325,7 +365,8 @@
     "col": 6,
     "alt": "Anime-style scene for 女, read おんな, meaning woman; female.",
     "caption": "Connect おんな with “woman; female”.",
-    "meaning": "woman; female"
+    "meaning": "woman; female",
+    "file": "scene-p02-r04-c07.webp"
   },
   "子|こ": {
     "pack": 1,
@@ -333,7 +374,8 @@
     "col": 1,
     "alt": "Anime-style scene for 子, read こ, meaning child.",
     "caption": "Connect こ with “child”.",
-    "meaning": "child"
+    "meaning": "child",
+    "file": "scene-p01-r05-c02.webp"
   },
   "親|おや": {
     "pack": 2,
@@ -341,7 +383,8 @@
     "col": 7,
     "alt": "Anime-style scene for 親, read おや, meaning parent.",
     "caption": "Connect おや with “parent”.",
-    "meaning": "parent"
+    "meaning": "parent",
+    "file": "scene-p02-r04-c08.webp"
   },
   "学生|がくせい": {
     "pack": 2,
@@ -349,7 +392,8 @@
     "col": 8,
     "alt": "Anime-style scene for 学生, read がくせい, meaning student.",
     "caption": "Connect がくせい with “student”.",
-    "meaning": "student"
+    "meaning": "student",
+    "file": "scene-p02-r04-c09.webp"
   },
   "仕事|しごと": {
     "pack": 2,
@@ -357,7 +401,8 @@
     "col": 0,
     "alt": "Anime-style scene for 仕事, read しごと, meaning work; job.",
     "caption": "Connect しごと with “work; job”.",
-    "meaning": "work; job"
+    "meaning": "work; job",
+    "file": "scene-p02-r05-c01.webp"
   },
   "勉強|べんきょう": {
     "pack": 2,
@@ -365,7 +410,8 @@
     "col": 1,
     "alt": "Anime-style scene for 勉強, read べんきょう, meaning study.",
     "caption": "Connect べんきょう with “study”.",
-    "meaning": "study"
+    "meaning": "study",
+    "file": "scene-p02-r05-c02.webp"
   },
   "先生|せんせい": {
     "pack": 2,
@@ -373,7 +419,8 @@
     "col": 9,
     "alt": "Anime-style scene for 先生, read せんせい, meaning teacher.",
     "caption": "Connect せんせい with “teacher”.",
-    "meaning": "teacher"
+    "meaning": "teacher",
+    "file": "scene-p02-r04-c10.webp"
   },
   "病院|びょういん": {
     "pack": 2,
@@ -381,7 +428,8 @@
     "col": 2,
     "alt": "Anime-style scene for 病院, read びょういん, meaning hospital.",
     "caption": "Connect びょういん with “hospital”.",
-    "meaning": "hospital"
+    "meaning": "hospital",
+    "file": "scene-p02-r05-c03.webp"
   },
   "お金|おかね": {
     "pack": 2,
@@ -389,7 +437,8 @@
     "col": 3,
     "alt": "Anime-style scene for お金, read おかね, meaning money.",
     "caption": "Connect おかね with “money”.",
-    "meaning": "money"
+    "meaning": "money",
+    "file": "scene-p02-r05-c04.webp"
   },
   "時計|とけい": {
     "pack": 2,
@@ -397,7 +446,8 @@
     "col": 4,
     "alt": "Anime-style scene for 時計, read とけい, meaning clock; watch.",
     "caption": "Connect とけい with “clock; watch”.",
-    "meaning": "clock; watch"
+    "meaning": "clock; watch",
+    "file": "scene-p02-r05-c05.webp"
   },
   "本|ほん": {
     "pack": 2,
@@ -405,7 +455,8 @@
     "col": 5,
     "alt": "Anime-style scene for 本, read ほん, meaning book.",
     "caption": "Connect ほん with “book”.",
-    "meaning": "book"
+    "meaning": "book",
+    "file": "scene-p02-r05-c06.webp"
   },
   "車|くるま": {
     "pack": 2,
@@ -413,7 +464,8 @@
     "col": 6,
     "alt": "Anime-style scene for 車, read くるま, meaning car.",
     "caption": "Connect くるま with “car”.",
-    "meaning": "car"
+    "meaning": "car",
+    "file": "scene-p02-r05-c07.webp"
   },
   "電車|でんしゃ": {
     "pack": 2,
@@ -421,7 +473,8 @@
     "col": 7,
     "alt": "Anime-style scene for 電車, read でんしゃ, meaning train.",
     "caption": "Connect でんしゃ with “train”.",
-    "meaning": "train"
+    "meaning": "train",
+    "file": "scene-p02-r05-c08.webp"
   },
   "食べる|たべる": {
     "pack": 3,
@@ -429,7 +482,8 @@
     "col": 0,
     "alt": "Anime-style scene for 食べる, read たべる, meaning to eat.",
     "caption": "Connect たべる with “to eat”.",
-    "meaning": "to eat"
+    "meaning": "to eat",
+    "file": "scene-p03-r02-c01.webp"
   },
   "飲む|のむ": {
     "pack": 3,
@@ -437,7 +491,8 @@
     "col": 1,
     "alt": "Anime-style scene for 飲む, read のむ, meaning to drink.",
     "caption": "Connect のむ with “to drink”.",
-    "meaning": "to drink"
+    "meaning": "to drink",
+    "file": "scene-p03-r02-c02.webp"
   },
   "行く|いく": {
     "pack": 3,
@@ -445,7 +500,8 @@
     "col": 0,
     "alt": "Anime-style scene for 行く, read いく, meaning to go.",
     "caption": "Connect いく with “to go”.",
-    "meaning": "to go"
+    "meaning": "to go",
+    "file": "scene-p03-r01-c01.webp"
   },
   "来る|くる": {
     "pack": 3,
@@ -453,7 +509,8 @@
     "col": 1,
     "alt": "Anime-style scene for 来る, read くる, meaning to come.",
     "caption": "Connect くる with “to come”.",
-    "meaning": "to come"
+    "meaning": "to come",
+    "file": "scene-p03-r01-c02.webp"
   },
   "見る|みる": {
     "pack": 3,
@@ -461,7 +518,8 @@
     "col": 2,
     "alt": "Anime-style scene for 見る, read みる, meaning to see; watch.",
     "caption": "Connect みる with “to see; watch”.",
-    "meaning": "to see; watch"
+    "meaning": "to see; watch",
+    "file": "scene-p03-r01-c03.webp"
   },
   "聞く|きく": {
     "pack": 3,
@@ -469,7 +527,8 @@
     "col": 3,
     "alt": "Anime-style scene for 聞く, read きく, meaning to hear; listen.",
     "caption": "Connect きく with “to hear; listen”.",
-    "meaning": "to hear; listen"
+    "meaning": "to hear; listen",
+    "file": "scene-p03-r01-c04.webp"
   },
   "言う|いう": {
     "pack": 3,
@@ -477,7 +536,8 @@
     "col": 4,
     "alt": "Anime-style scene for 言う, read いう, meaning to say.",
     "caption": "Connect いう with “to say”.",
-    "meaning": "to say"
+    "meaning": "to say",
+    "file": "scene-p03-r01-c05.webp"
   },
   "話す|はなす": {
     "pack": 3,
@@ -485,7 +545,8 @@
     "col": 5,
     "alt": "Anime-style scene for 話す, read はなす, meaning to speak; talk.",
     "caption": "Connect はなす with “to speak; talk”.",
-    "meaning": "to speak; talk"
+    "meaning": "to speak; talk",
+    "file": "scene-p03-r01-c06.webp"
   },
   "知る|しる": {
     "pack": 3,
@@ -493,7 +554,8 @@
     "col": 6,
     "alt": "Anime-style scene for 知る, read しる, meaning to know.",
     "caption": "Connect しる with “to know”.",
-    "meaning": "to know"
+    "meaning": "to know",
+    "file": "scene-p03-r01-c07.webp"
   },
   "思う|おもう": {
     "pack": 3,
@@ -501,7 +563,8 @@
     "col": 7,
     "alt": "Anime-style scene for 思う, read おもう, meaning to think.",
     "caption": "Connect おもう with “to think”.",
-    "meaning": "to think"
+    "meaning": "to think",
+    "file": "scene-p03-r01-c08.webp"
   },
   "作る|つくる": {
     "pack": 3,
@@ -509,7 +572,8 @@
     "col": 8,
     "alt": "Anime-style scene for 作る, read つくる, meaning to make; create.",
     "caption": "Connect つくる with “to make; create”.",
-    "meaning": "to make; create"
+    "meaning": "to make; create",
+    "file": "scene-p03-r01-c09.webp"
   },
   "使う|つかう": {
     "pack": 3,
@@ -517,7 +581,8 @@
     "col": 9,
     "alt": "Anime-style scene for 使う, read つかう, meaning to use.",
     "caption": "Connect つかう with “to use”.",
-    "meaning": "to use"
+    "meaning": "to use",
+    "file": "scene-p03-r01-c10.webp"
   },
   "読む|よむ": {
     "pack": 3,
@@ -525,7 +590,8 @@
     "col": 2,
     "alt": "Anime-style scene for 読む, read よむ, meaning to read.",
     "caption": "Connect よむ with “to read”.",
-    "meaning": "to read"
+    "meaning": "to read",
+    "file": "scene-p03-r02-c03.webp"
   },
   "書く|かく": {
     "pack": 3,
@@ -533,7 +599,8 @@
     "col": 3,
     "alt": "Anime-style scene for 書く, read かく, meaning to write.",
     "caption": "Connect かく with “to write”.",
-    "meaning": "to write"
+    "meaning": "to write",
+    "file": "scene-p03-r02-c04.webp"
   },
   "持つ|もつ": {
     "pack": 3,
@@ -541,7 +608,8 @@
     "col": 4,
     "alt": "Anime-style scene for 持つ, read もつ, meaning to hold; carry.",
     "caption": "Connect もつ with “to hold; carry”.",
-    "meaning": "to hold; carry"
+    "meaning": "to hold; carry",
+    "file": "scene-p03-r02-c05.webp"
   },
   "置く|おく": {
     "pack": 3,
@@ -549,7 +617,8 @@
     "col": 5,
     "alt": "Anime-style scene for 置く, read おく, meaning to put; place.",
     "caption": "Connect おく with “to put; place”.",
-    "meaning": "to put; place"
+    "meaning": "to put; place",
+    "file": "scene-p03-r02-c06.webp"
   },
   "取る|とる": {
     "pack": 3,
@@ -557,7 +626,8 @@
     "col": 6,
     "alt": "Anime-style scene for 取る, read とる, meaning to take; get.",
     "caption": "Connect とる with “to take; get”.",
-    "meaning": "to take; get"
+    "meaning": "to take; get",
+    "file": "scene-p03-r02-c07.webp"
   },
   "持ってくる|もってくる": {
     "pack": 3,
@@ -565,7 +635,8 @@
     "col": 7,
     "alt": "Anime-style scene for 持ってくる, read もってくる, meaning to bring.",
     "caption": "Connect もってくる with “to bring”.",
-    "meaning": "to bring"
+    "meaning": "to bring",
+    "file": "scene-p03-r02-c08.webp"
   },
   "持っていく|もっていく": {
     "pack": 3,
@@ -573,7 +644,8 @@
     "col": 8,
     "alt": "Anime-style scene for 持っていく, read もっていく, meaning to take with you.",
     "caption": "Connect もっていく with “to take with you”.",
-    "meaning": "to take with you"
+    "meaning": "to take with you",
+    "file": "scene-p03-r02-c09.webp"
   },
   "探す|さがす": {
     "pack": 3,
@@ -581,7 +653,8 @@
     "col": 9,
     "alt": "Anime-style scene for 探す, read さがす, meaning to look for; search.",
     "caption": "Connect さがす with “to look for; search”.",
-    "meaning": "to look for; search"
+    "meaning": "to look for; search",
+    "file": "scene-p03-r02-c10.webp"
   },
   "見つける|みつける": {
     "pack": 3,
@@ -589,7 +662,8 @@
     "col": 0,
     "alt": "Anime-style scene for 見つける, read みつける, meaning to find.",
     "caption": "Connect みつける with “to find”.",
-    "meaning": "to find"
+    "meaning": "to find",
+    "file": "scene-p03-r03-c01.webp"
   },
   "開ける|あける": {
     "pack": 3,
@@ -597,7 +671,8 @@
     "col": 1,
     "alt": "Anime-style scene for 開ける, read あける, meaning to open.",
     "caption": "Connect あける with “to open”.",
-    "meaning": "to open"
+    "meaning": "to open",
+    "file": "scene-p03-r03-c02.webp"
   },
   "閉める|しめる": {
     "pack": 3,
@@ -605,7 +680,8 @@
     "col": 2,
     "alt": "Anime-style scene for 閉める, read しめる, meaning to close.",
     "caption": "Connect しめる with “to close”.",
-    "meaning": "to close"
+    "meaning": "to close",
+    "file": "scene-p03-r03-c03.webp"
   },
   "入る|はいる": {
     "pack": 3,
@@ -613,7 +689,8 @@
     "col": 3,
     "alt": "Anime-style scene for 入る, read はいる, meaning to enter; go in.",
     "caption": "Connect はいる with “to enter; go in”.",
-    "meaning": "to enter; go in"
+    "meaning": "to enter; go in",
+    "file": "scene-p03-r03-c04.webp"
   },
   "出る|でる": {
     "pack": 3,
@@ -621,7 +698,8 @@
     "col": 4,
     "alt": "Anime-style scene for 出る, read でる, meaning to exit; come out.",
     "caption": "Connect でる with “to exit; come out”.",
-    "meaning": "to exit; come out"
+    "meaning": "to exit; come out",
+    "file": "scene-p03-r03-c05.webp"
   },
   "起きる|おきる": {
     "pack": 3,
@@ -629,7 +707,8 @@
     "col": 5,
     "alt": "Anime-style scene for 起きる, read おきる, meaning to get up.",
     "caption": "Connect おきる with “to get up”.",
-    "meaning": "to get up"
+    "meaning": "to get up",
+    "file": "scene-p03-r03-c06.webp"
   },
   "寝る|ねる": {
     "pack": 3,
@@ -637,7 +716,8 @@
     "col": 6,
     "alt": "Anime-style scene for 寝る, read ねる, meaning to sleep; go to bed.",
     "caption": "Connect ねる with “to sleep; go to bed”.",
-    "meaning": "to sleep; go to bed"
+    "meaning": "to sleep; go to bed",
+    "file": "scene-p03-r03-c07.webp"
   },
   "座る|すわる": {
     "pack": 3,
@@ -645,7 +725,8 @@
     "col": 7,
     "alt": "Anime-style scene for 座る, read すわる, meaning to sit.",
     "caption": "Connect すわる with “to sit”.",
-    "meaning": "to sit"
+    "meaning": "to sit",
+    "file": "scene-p03-r03-c08.webp"
   },
   "立つ|たつ": {
     "pack": 3,
@@ -653,7 +734,8 @@
     "col": 8,
     "alt": "Anime-style scene for 立つ, read たつ, meaning to stand.",
     "caption": "Connect たつ with “to stand”.",
-    "meaning": "to stand"
+    "meaning": "to stand",
+    "file": "scene-p03-r03-c09.webp"
   },
   "歩く|あるく": {
     "pack": 3,
@@ -661,7 +743,8 @@
     "col": 9,
     "alt": "Anime-style scene for 歩く, read あるく, meaning to walk.",
     "caption": "Connect あるく with “to walk”.",
-    "meaning": "to walk"
+    "meaning": "to walk",
+    "file": "scene-p03-r03-c10.webp"
   },
   "走る|はしる": {
     "pack": 3,
@@ -669,7 +752,8 @@
     "col": 0,
     "alt": "Anime-style scene for 走る, read はしる, meaning to run.",
     "caption": "Connect はしる with “to run”.",
-    "meaning": "to run"
+    "meaning": "to run",
+    "file": "scene-p03-r04-c01.webp"
   },
   "泳ぐ|およぐ": {
     "pack": 3,
@@ -677,7 +761,8 @@
     "col": 1,
     "alt": "Anime-style scene for 泳ぐ, read およぐ, meaning to swim.",
     "caption": "Connect およぐ with “to swim”.",
-    "meaning": "to swim"
+    "meaning": "to swim",
+    "file": "scene-p03-r04-c02.webp"
   },
   "飛ぶ|とぶ": {
     "pack": 3,
@@ -685,7 +770,8 @@
     "col": 2,
     "alt": "Anime-style scene for 飛ぶ, read とぶ, meaning to fly.",
     "caption": "Connect とぶ with “to fly”.",
-    "meaning": "to fly"
+    "meaning": "to fly",
+    "file": "scene-p03-r04-c03.webp"
   },
   "乗る|のる": {
     "pack": 3,
@@ -693,7 +779,8 @@
     "col": 3,
     "alt": "Anime-style scene for 乗る, read のる, meaning to ride; get on.",
     "caption": "Connect のる with “to ride; get on”.",
-    "meaning": "to ride; get on"
+    "meaning": "to ride; get on",
+    "file": "scene-p03-r04-c04.webp"
   },
   "降りる|おりる": {
     "pack": 3,
@@ -701,7 +788,8 @@
     "col": 4,
     "alt": "Anime-style scene for 降りる, read おりる, meaning to get off.",
     "caption": "Connect おりる with “to get off”.",
-    "meaning": "to get off"
+    "meaning": "to get off",
+    "file": "scene-p03-r04-c05.webp"
   },
   "買う|かう": {
     "pack": 3,
@@ -709,7 +797,8 @@
     "col": 5,
     "alt": "Anime-style scene for 買う, read かう, meaning to buy.",
     "caption": "Connect かう with “to buy”.",
-    "meaning": "to buy"
+    "meaning": "to buy",
+    "file": "scene-p03-r04-c06.webp"
   },
   "売る|うる": {
     "pack": 3,
@@ -717,7 +806,8 @@
     "col": 6,
     "alt": "Anime-style scene for 売る, read うる, meaning to sell.",
     "caption": "Connect うる with “to sell”.",
-    "meaning": "to sell"
+    "meaning": "to sell",
+    "file": "scene-p03-r04-c07.webp"
   },
   "払う|はらう": {
     "pack": 3,
@@ -725,7 +815,8 @@
     "col": 7,
     "alt": "Anime-style scene for 払う, read はらう, meaning to pay.",
     "caption": "Connect はらう with “to pay”.",
-    "meaning": "to pay"
+    "meaning": "to pay",
+    "file": "scene-p03-r04-c08.webp"
   },
   "待つ|まつ": {
     "pack": 3,
@@ -733,7 +824,8 @@
     "col": 8,
     "alt": "Anime-style scene for 待つ, read まつ, meaning to wait.",
     "caption": "Connect まつ with “to wait”.",
-    "meaning": "to wait"
+    "meaning": "to wait",
+    "file": "scene-p03-r04-c09.webp"
   },
   "急ぐ|いそぐ": {
     "pack": 3,
@@ -741,7 +833,8 @@
     "col": 9,
     "alt": "Anime-style scene for 急ぐ, read いそぐ, meaning to hurry.",
     "caption": "Connect いそぐ with “to hurry”.",
-    "meaning": "to hurry"
+    "meaning": "to hurry",
+    "file": "scene-p03-r04-c10.webp"
   },
   "教える|おしえる": {
     "pack": 3,
@@ -749,7 +842,8 @@
     "col": 0,
     "alt": "Anime-style scene for 教える, read おしえる, meaning to teach; tell.",
     "caption": "Connect おしえる with “to teach; tell”.",
-    "meaning": "to teach; tell"
+    "meaning": "to teach; tell",
+    "file": "scene-p03-r05-c01.webp"
   },
   "教わる|おそわる": {
     "pack": 3,
@@ -757,7 +851,8 @@
     "col": 1,
     "alt": "Anime-style scene for 教わる, read おそわる, meaning to be taught.",
     "caption": "Connect おそわる with “to be taught”.",
-    "meaning": "to be taught"
+    "meaning": "to be taught",
+    "file": "scene-p03-r05-c02.webp"
   },
   "助ける|たすける": {
     "pack": 3,
@@ -765,7 +860,8 @@
     "col": 2,
     "alt": "Anime-style scene for 助ける, read たすける, meaning to help.",
     "caption": "Connect たすける with “to help”.",
-    "meaning": "to help"
+    "meaning": "to help",
+    "file": "scene-p03-r05-c03.webp"
   },
   "会う|あう": {
     "pack": 3,
@@ -773,7 +869,8 @@
     "col": 3,
     "alt": "Anime-style scene for 会う, read あう, meaning to meet.",
     "caption": "Connect あう with “to meet”.",
-    "meaning": "to meet"
+    "meaning": "to meet",
+    "file": "scene-p03-r05-c04.webp"
   },
   "別れる|わかれる": {
     "pack": 3,
@@ -781,7 +878,8 @@
     "col": 4,
     "alt": "Anime-style scene for 別れる, read わかれる, meaning to part; say goodbye.",
     "caption": "Connect わかれる with “to part; say goodbye”.",
-    "meaning": "to part; say goodbye"
+    "meaning": "to part; say goodbye",
+    "file": "scene-p03-r05-c05.webp"
   },
   "信じる|しんじる": {
     "pack": 3,
@@ -789,7 +887,8 @@
     "col": 5,
     "alt": "Anime-style scene for 信じる, read しんじる, meaning to believe; trust.",
     "caption": "Connect しんじる with “to believe; trust”.",
-    "meaning": "to believe; trust"
+    "meaning": "to believe; trust",
+    "file": "scene-p03-r05-c06.webp"
   },
   "好き|すき": {
     "pack": 3,
@@ -797,7 +896,8 @@
     "col": 6,
     "alt": "Anime-style scene for 好き, read すき, meaning liked; favourite.",
     "caption": "Connect すき with “liked; favourite”.",
-    "meaning": "liked; favourite"
+    "meaning": "liked; favourite",
+    "file": "scene-p03-r05-c07.webp"
   },
   "嫌い|きらい": {
     "pack": 3,
@@ -805,7 +905,8 @@
     "col": 7,
     "alt": "Anime-style scene for 嫌い, read きらい, meaning disliked.",
     "caption": "Connect きらい with “disliked”.",
-    "meaning": "disliked"
+    "meaning": "disliked",
+    "file": "scene-p03-r05-c08.webp"
   },
   "必要な|ひつような": {
     "pack": 3,
@@ -813,7 +914,8 @@
     "col": 8,
     "alt": "Anime-style scene for 必要な, read ひつような, meaning necessary.",
     "caption": "Connect ひつような with “necessary”.",
-    "meaning": "necessary"
+    "meaning": "necessary",
+    "file": "scene-p03-r05-c09.webp"
   },
   "大切な|たいせつな": {
     "pack": 3,
@@ -821,6 +923,7 @@
     "col": 9,
     "alt": "Anime-style scene for 大切な, read たいせつな, meaning important; precious.",
     "caption": "Connect たいせつな with “important; precious”.",
-    "meaning": "important; precious"
+    "meaning": "important; precious",
+    "file": "scene-p03-r05-c10.webp"
   }
 }
