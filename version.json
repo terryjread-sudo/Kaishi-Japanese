@@ -1,15 +1,15 @@
 {
-  "version": "3.5.2",
+  "version": "4.0.0",
   "released": "2026-07-26",
-  "title": "Canvas picture renderer",
+  "title": "Direct image architecture",
   "changes": [
-    "Replaced CSS and nested-image sprite cropping with canvas drawing.",
-    "Scene sheets are loaded as real images and the selected grid cell is drawn directly.",
-    "Canvas rendering runs after every Picture Match card and Memory Scene is inserted.",
-    "Starting Picture Match clears any existing normal learning session.",
-    "Exit clears the active session before returning to the correct menu."
+    "Removed CSS sprite cropping and canvas rendering.",
+    "Every illustrated word now loads a standalone validated WebP image.",
+    "Picture Match has its own clean session state.",
+    "Opening Picture Match or Study cancels the previous session.",
+    "Added an image diagnostics page."
   ],
-  "packsPlanned": 30,
-  "packsIncluded": 3,
-  "mappedWords": 103
+  "sourcePacksIncluded": 3,
+  "mappedWords": 103,
+  "standaloneImages": 103
 }

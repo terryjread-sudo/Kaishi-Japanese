@@ -1,0 +1,24 @@
+KAISHI QUEST v4.0.0 — DIRECT IMAGE ARCHITECTURE
+
+This is a full replacement release.
+
+UPLOAD
+1. Extract the ZIP.
+2. Open the Kaishi_Quest_v4.0.0_direct_images folder.
+3. Upload every file inside it to the GitHub repository root.
+4. Replace existing files.
+5. Commit the upload and wait for GitHub Pages to publish.
+
+TEST
+1. Confirm the app header says v4.0.0.
+2. Open image-diagnostics.html from your site.
+3. It should report that all mapped images loaded successfully.
+4. Return to the app.
+5. Open Picture Match and choose Picture → Word.
+6. Start a normal study session, exit it, then open Picture Match again.
+
+ARCHITECTURE
+- scene-pack-01.webp etc. remain as source artwork.
+- scene-pXX-rXX-cXX.webp are the images loaded by the app.
+- memory-scenes.json now has a direct "file" property.
+- No canvas, CSS sprite positioning, or runtime cropping is used.

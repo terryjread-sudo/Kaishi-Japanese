@@ -16,119 +16,41 @@
 .picture-choice span{font-size:.85rem}
 @media(max-width:560px){.game-mode-grid,.picture-choices{grid-template-columns:1fr 1fr}.picture-choice span{font-size:.75rem}}
 
-.scene-sprite{
-  background-repeat:no-repeat;
-  background-color:#fff;
-  overflow:hidden;
-}
-.memory-scene-image.scene-sprite{
-  width:100%;
-  max-height:none;
-  aspect-ratio:3 / 4;
-  border-radius:18px;
-  border:2px solid #ddd6fe;
-}
-.quiz-picture.scene-sprite{
-  display:block;
-  width:min(100%,390px);
-  max-height:none;
-  aspect-ratio:3 / 4;
-  margin:0 auto 16px;
-  border-radius:20px;
-  border:2px solid #ddd6fe;
-}
-.choice-sprite{
-  width:100%;
-  max-height:none;
-  aspect-ratio:3 / 4;
-  border-radius:12px;
-}
-
-/* v3.4.2 sprite repair */
-.quiz-picture,
-.quiz-picture.scene-sprite,
-.memory-scene-image.scene-sprite,
-.choice-sprite{
-  max-height:none !important;
-}
-.quiz-picture.scene-sprite{
-  width:min(100%,390px);
-  aspect-ratio:3 / 4;
-}
-.memory-scene-image.scene-sprite,
-.choice-sprite{
-  aspect-ratio:3 / 4;
-}
-
-/* v3.4.4 Picture Match repair */
-.gameMode:disabled{opacity:.55;cursor:wait}
-.scene-sprite-error{
-  display:grid;
-  place-items:center;
-  padding:18px;
-  text-align:center;
-  background:#fff1f2;
-  border:2px dashed #fb7185 !important;
-  color:#9f1239;
-  font-weight:700;
-}
-
-/* v3.5.0 reliable sprite display */
-.scene-sprite{display:block!important;min-height:220px;background-repeat:no-repeat!important;background-color:#f8fafc}
-.quiz-picture.scene-sprite{width:min(100%,390px)!important;min-height:420px;aspect-ratio:3/4!important}
-.memory-scene-image.scene-sprite{width:100%!important;min-height:360px;aspect-ratio:3/4!important}
-.choice-sprite{min-height:150px;aspect-ratio:3/4!important}
-
-/* v3.5.1 reliable <img>-based sprite engine */
-.scene-sprite{
-  position:relative !important;
-  display:block !important;
-  overflow:hidden !important;
-  background:#f8fafc;
-}
-.scene-sheet-image{
-  position:absolute;
-  display:block;
-  max-width:none !important;
-  max-height:none !important;
-  object-fit:fill;
-  pointer-events:none;
-  user-select:none;
-}
-.scene-sprite-error::after{
-  content:"Scene image failed to load";
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  padding:16px;
-  text-align:center;
-  background:#fff1f2;
-  color:#9f1239;
-  font-weight:700;
-}
-
-/* v3.5.2 canvas scene renderer */
-canvas.scene-canvas{
-  position:static !important;
+/* v4.0 direct standalone scene images */
+.scene-image{
   display:block !important;
   width:100% !important;
   height:auto !important;
-  min-height:0 !important;
   aspect-ratio:3 / 4 !important;
-  object-fit:contain;
+  object-fit:cover !important;
   background:#f8fafc;
+  border-radius:16px;
 }
-.quiz-picture.scene-canvas{
+.quiz-picture.scene-image{
   width:min(100%,390px) !important;
-  margin:0 auto 16px;
+  margin:0 auto 16px !important;
+  border:2px solid #ddd6fe;
 }
-.memory-scene-image.scene-canvas{
+.memory-scene-image.scene-image{
   width:100% !important;
+  margin:0 !important;
+  border:2px solid #ddd6fe;
 }
-.choice-sprite.scene-canvas{
+.choice-sprite.scene-image{
   width:100% !important;
+  margin:0 !important;
+  border-radius:12px;
 }
-.scene-sheet-image{
-  display:none !important;
+.scene-image-error{
+  display:grid;
+  place-items:center;
+  min-height:180px;
+  padding:18px;
+  text-align:center;
+  border:2px dashed #fb7185;
+  border-radius:16px;
+  background:#fff1f2;
+  color:#9f1239;
+  font-weight:700;
+  overflow-wrap:anywhere;
 }
