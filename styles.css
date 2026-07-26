@@ -59,3 +59,16 @@
 .choice-sprite{
   aspect-ratio:3 / 4;
 }
+
+/* v3.4.4 Picture Match repair */
+.gameMode:disabled{opacity:.55;cursor:wait}
+.scene-sprite-error{
+  display:grid;
+  place-items:center;
+  padding:18px;
+  text-align:center;
+  background:#fff1f2;
+  border:2px dashed #fb7185 !important;
+  color:#9f1239;
+  font-weight:700;
+}

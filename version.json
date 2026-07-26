@@ -1,12 +1,13 @@
 {
-  "version": "3.4.3",
+  "version": "3.4.4",
   "released": "2026-07-26",
-  "title": "Update banner and card rendering repair",
+  "title": "Picture Match and scene-pack loading repair",
   "changes": [
-    "The update banner now closes automatically when the installed app and version file match.",
-    "A waiting service worker no longer causes a false update notification.",
-    "Added a visible recovery screen when an individual study card fails to render.",
-    "Retained the sprite-sheet Memory Scene fix and scene packs 01–03."
+    "Picture Match now uses an explicit game state instead of behaving like a normal study session.",
+    "Scene packs are preloaded and verified before a Picture Match session starts.",
+    "Sprite URLs are resolved from the site root using document.baseURI.",
+    "Missing scene-pack files now display a visible error instead of a blank card.",
+    "The Exit button returns to the Picture Match menu while playing."
   ],
   "packsPlanned": 30,
   "packsIncluded": 3,

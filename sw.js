@@ -1,4 +1,4 @@
-const C='kaishi-v3-4-3';
+const C='kaishi-v3-4-4';
 const CORE=['./','index.html','styles.css','app.js','manifest.webmanifest','version.json','memory-scenes.json','scene-pack-01.webp','scene-pack-02.webp','scene-pack-03.webp','data/vocabulary.json','icons/icon-192.png','icons/icon-512.png'];
 
 self.addEventListener('install',e=>{

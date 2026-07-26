@@ -1,0 +1,18 @@
+KAISHI QUEST v3.4.4 — PICTURE MATCH REPAIR
+
+Upload this as a complete replacement build.
+
+1. Extract the ZIP.
+2. Upload everything inside the extracted folder to the repository ROOT.
+3. Replace existing files.
+4. Commit as:
+   Release Kaishi Quest v3.4.4 picture match repair
+
+CHECKS ADDED
+- The app preloads scene-pack-01.webp, scene-pack-02.webp and scene-pack-03.webp.
+- Picture Match will not start until required packs load.
+- A missing pack now shows its exact filename.
+- Picture Match uses its own session state and returns to the game menu.
+
+After deployment, open the normal website, confirm v3.4.4, then select:
+Picture Match > Picture → Word
