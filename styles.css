@@ -9,7 +9,7 @@
 
 .game-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
 .game-mode-grid button{min-height:72px;font-weight:800}
-.quiz-picture{display:block;width:min(100%,540px);max-height:430px;object-fit:contain;margin:0 auto 16px;border-radius:20px;background:#fff;border:2px solid #ddd6fe}
+.quiz-picture{display:block;width:min(100%,390px);max-height:none;object-fit:contain;margin:0 auto 16px;border-radius:20px;background:#fff;border:2px solid #ddd6fe}
 .picture-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 .picture-choice{padding:8px;display:flex;flex-direction:column;gap:6px;align-items:center}
 .picture-choice img{width:100%;aspect-ratio:1.4/1;object-fit:cover;border-radius:12px}
@@ -23,20 +23,23 @@
 }
 .memory-scene-image.scene-sprite{
   width:100%;
-  aspect-ratio:151.2/169.2;
+  max-height:none;
+  aspect-ratio:3 / 4;
   border-radius:18px;
   border:2px solid #ddd6fe;
 }
 .quiz-picture.scene-sprite{
   display:block;
-  width:min(100%,540px);
-  aspect-ratio:151.2/169.2;
+  width:min(100%,390px);
+  max-height:none;
+  aspect-ratio:3 / 4;
   margin:0 auto 16px;
   border-radius:20px;
   border:2px solid #ddd6fe;
 }
 .choice-sprite{
   width:100%;
-  aspect-ratio:151.2/169.2;
+  max-height:none;
+  aspect-ratio:3 / 4;
   border-radius:12px;
 }

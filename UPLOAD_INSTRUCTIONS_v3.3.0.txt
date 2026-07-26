@@ -1,0 +1,19 @@
+KAISHI QUEST v3.3.0
+
+UPLOAD
+1. Extract this ZIP.
+2. Upload everything inside the extracted folder to the ROOT of the GitHub repository.
+3. Replace existing files when asked.
+4. Commit as:
+   Release Kaishi Quest v3.3.0 scene pack 02
+
+THIS UPDATE ADDS
+- scene-pack-02.webp in the repository root
+- corrected 10 x 5 sprite coordinate mapping
+- corrected 3:4 image-card aspect ratio
+- removal of the max-height rule that showed neighbouring cards
+
+CACHE NOTE
+After GitHub Pages publishes, fully close and reopen the installed app.
+If v3.2.0 remains visible, clear the site's cached data once or uninstall and
+reinstall the PWA so the updated service worker takes control.

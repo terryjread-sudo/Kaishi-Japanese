@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.2.0';
+const APP_VERSION='3.3.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -58,17 +58,11 @@ function sceneSheet(scene){
 }
 function sceneSpriteStyle(scene){
  const cols=10,rows=5;
- const gridLeft=12,gridTop=66,gridRight=1524,gridBottom=912;
- const sheetW=1536,sheetH=1024;
- const cellW=(gridRight-gridLeft)/cols;
- const cellH=(gridBottom-gridTop)/rows;
- const x=gridLeft+scene.col*cellW;
- const y=gridTop+scene.row*cellH;
- const bgW=sheetW/cellW*100;
- const bgH=sheetH/cellH*100;
- const posX=(x/(sheetW-cellW))*100;
- const posY=(y/(sheetH-cellH))*100;
- return `background-image:url('${sceneSheet(scene)}');background-size:${bgW}% ${bgH}%;background-position:${posX}% ${posY}%;`;
+ const col=Math.max(0,Math.min(cols-1,Number(scene.col)||0));
+ const row=Math.max(0,Math.min(rows-1,Number(scene.row)||0));
+ const posX=cols===1?0:(col/(cols-1))*100;
+ const posY=rows===1?0:(row/(rows-1))*100;
+ return `background-image:url('${sceneSheet(scene)}');background-size:${cols*100}% ${rows*100}%;background-position:${posX}% ${posY}%;`;
 }
 function sceneSprite(scene,extraClass=''){
  return `<div class="scene-sprite ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}" style="${sceneSpriteStyle(scene)}"></div>`;

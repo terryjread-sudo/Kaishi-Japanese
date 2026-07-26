@@ -1,20 +1,16 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "renderMode": "sprite-grid",
   "packsPlanned": 30,
-  "packsIncluded": 1,
+  "packsIncluded": 2,
   "cardsPerPack": 50,
   "columns": 10,
   "rows": 5,
   "sheetFilenamePattern": "scene-pack-{pack:02d}.webp",
   "sheetNaturalWidth": 1536,
   "sheetNaturalHeight": 1024,
-  "grid": {
-    "left": 12,
-    "top": 66,
-    "right": 1524,
-    "bottom": 912
-  },
   "fallback": "text mnemonic",
-  "folderRequired": false
+  "folderRequired": false,
+  "coordinateMode": "equal-grid",
+  "cellAspectRatio": "3:4"
 }

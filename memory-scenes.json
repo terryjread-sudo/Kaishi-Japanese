@@ -16,7 +16,7 @@
     "meaning": "small"
   },
   "新しい|あたらしい": {
-    "pack": 1,
+    "pack": 2,
     "row": 0,
     "col": 2,
     "alt": "Anime-style scene for 新しい, read あたらしい, meaning new.",
@@ -24,7 +24,7 @@
     "meaning": "new"
   },
   "古い|ふるい": {
-    "pack": 1,
+    "pack": 2,
     "row": 0,
     "col": 3,
     "alt": "Anime-style scene for 古い, read ふるい, meaning old.",
@@ -32,7 +32,7 @@
     "meaning": "old"
   },
   "長い|ながい": {
-    "pack": 1,
+    "pack": 2,
     "row": 0,
     "col": 4,
     "alt": "Anime-style scene for 長い, read ながい, meaning long.",
@@ -40,7 +40,7 @@
     "meaning": "long"
   },
   "短い|みじかい": {
-    "pack": 1,
+    "pack": 2,
     "row": 0,
     "col": 5,
     "alt": "Anime-style scene for 短い, read みじかい, meaning short.",
@@ -48,17 +48,17 @@
     "meaning": "short"
   },
   "高い|たかい": {
-    "pack": 1,
+    "pack": 2,
     "row": 0,
-    "col": 6,
+    "col": 0,
     "alt": "Anime-style scene for 高い, read たかい, meaning high; expensive.",
     "caption": "Connect たかい with “high; expensive”.",
     "meaning": "high; expensive"
   },
   "安い|やすい": {
-    "pack": 1,
+    "pack": 2,
     "row": 0,
-    "col": 7,
+    "col": 1,
     "alt": "Anime-style scene for 安い, read やすい, meaning cheap.",
     "caption": "Connect やすい with “cheap”.",
     "meaning": "cheap"
@@ -80,249 +80,249 @@
     "meaning": "easy; simple"
   },
   "早い|はやい": {
-    "pack": 1,
-    "row": 1,
-    "col": 0,
+    "pack": 2,
+    "row": 0,
+    "col": 8,
     "alt": "Anime-style scene for 早い, read はやい, meaning early; fast.",
     "caption": "Connect はやい with “early; fast”.",
     "meaning": "early; fast"
   },
   "遅い|おそい": {
-    "pack": 1,
-    "row": 1,
-    "col": 1,
+    "pack": 2,
+    "row": 0,
+    "col": 9,
     "alt": "Anime-style scene for 遅い, read おそい, meaning late; slow.",
     "caption": "Connect おそい with “late; slow”.",
     "meaning": "late; slow"
   },
   "多い|おおい": {
-    "pack": 1,
-    "row": 1,
-    "col": 2,
+    "pack": 2,
+    "row": 0,
+    "col": 6,
     "alt": "Anime-style scene for 多い, read おおい, meaning many.",
     "caption": "Connect おおい with “many”.",
     "meaning": "many"
   },
   "少ない|すくない": {
-    "pack": 1,
-    "row": 1,
-    "col": 3,
+    "pack": 2,
+    "row": 0,
+    "col": 7,
     "alt": "Anime-style scene for 少ない, read すくない, meaning few; little.",
     "caption": "Connect すくない with “few; little”.",
     "meaning": "few; little"
   },
   "良い|よい": {
-    "pack": 1,
+    "pack": 2,
     "row": 1,
-    "col": 4,
+    "col": 0,
     "alt": "Anime-style scene for 良い, read よい, meaning good.",
     "caption": "Connect よい with “good”.",
     "meaning": "good"
   },
   "悪い|わるい": {
-    "pack": 1,
+    "pack": 2,
     "row": 1,
-    "col": 5,
+    "col": 1,
     "alt": "Anime-style scene for 悪い, read わるい, meaning bad.",
     "caption": "Connect わるい with “bad”.",
     "meaning": "bad"
   },
   "強い|つよい": {
-    "pack": 1,
+    "pack": 2,
     "row": 1,
-    "col": 6,
+    "col": 2,
     "alt": "Anime-style scene for 強い, read つよい, meaning strong.",
     "caption": "Connect つよい with “strong”.",
     "meaning": "strong"
   },
   "弱い|よわい": {
-    "pack": 1,
+    "pack": 2,
     "row": 1,
-    "col": 7,
+    "col": 3,
     "alt": "Anime-style scene for 弱い, read よわい, meaning weak.",
     "caption": "Connect よわい with “weak”.",
     "meaning": "weak"
   },
   "近い|ちかい": {
-    "pack": 1,
+    "pack": 2,
     "row": 1,
-    "col": 8,
+    "col": 4,
     "alt": "Anime-style scene for 近い, read ちかい, meaning near.",
     "caption": "Connect ちかい with “near”.",
     "meaning": "near"
   },
   "遠い|とおい": {
-    "pack": 1,
+    "pack": 2,
     "row": 1,
-    "col": 9,
+    "col": 5,
     "alt": "Anime-style scene for 遠い, read とおい, meaning far.",
     "caption": "Connect とおい with “far”.",
     "meaning": "far"
   },
   "前|まえ": {
-    "pack": 1,
+    "pack": 2,
     "row": 2,
-    "col": 0,
+    "col": 2,
     "alt": "Anime-style scene for 前, read まえ, meaning front; before.",
     "caption": "Connect まえ with “front; before”.",
     "meaning": "front; before"
   },
   "後ろ|うしろ": {
-    "pack": 1,
+    "pack": 2,
     "row": 2,
-    "col": 1,
+    "col": 3,
     "alt": "Anime-style scene for 後ろ, read うしろ, meaning behind; back.",
     "caption": "Connect うしろ with “behind; back”.",
     "meaning": "behind; back"
   },
   "左|ひだり": {
-    "pack": 1,
-    "row": 2,
-    "col": 2,
+    "pack": 2,
+    "row": 1,
+    "col": 6,
     "alt": "Anime-style scene for 左, read ひだり, meaning left.",
     "caption": "Connect ひだり with “left”.",
     "meaning": "left"
   },
   "右|みぎ": {
-    "pack": 1,
-    "row": 2,
-    "col": 3,
+    "pack": 2,
+    "row": 1,
+    "col": 7,
     "alt": "Anime-style scene for 右, read みぎ, meaning right.",
     "caption": "Connect みぎ with “right”.",
     "meaning": "right"
   },
   "上|うえ": {
-    "pack": 1,
-    "row": 2,
-    "col": 4,
+    "pack": 2,
+    "row": 1,
+    "col": 8,
     "alt": "Anime-style scene for 上, read うえ, meaning up; above.",
     "caption": "Connect うえ with “up; above”.",
     "meaning": "up; above"
   },
   "下|した": {
-    "pack": 1,
-    "row": 2,
-    "col": 5,
+    "pack": 2,
+    "row": 1,
+    "col": 9,
     "alt": "Anime-style scene for 下, read した, meaning down; below.",
     "caption": "Connect した with “down; below”.",
     "meaning": "down; below"
   },
   "中|なか": {
-    "pack": 1,
+    "pack": 2,
     "row": 2,
-    "col": 6,
+    "col": 0,
     "alt": "Anime-style scene for 中, read なか, meaning inside; middle.",
     "caption": "Connect なか with “inside; middle”.",
     "meaning": "inside; middle"
   },
   "外|そと": {
-    "pack": 1,
+    "pack": 2,
     "row": 2,
-    "col": 7,
+    "col": 1,
     "alt": "Anime-style scene for 外, read そと, meaning outside.",
     "caption": "Connect そと with “outside”.",
     "meaning": "outside"
   },
   "冬|ふゆ": {
-    "pack": 1,
+    "pack": 2,
     "row": 2,
-    "col": 8,
+    "col": 6,
     "alt": "Anime-style scene for 冬, read ふゆ, meaning winter.",
     "caption": "Connect ふゆ with “winter”.",
     "meaning": "winter"
   },
   "春|はる": {
-    "pack": 1,
+    "pack": 2,
     "row": 2,
-    "col": 9,
+    "col": 7,
     "alt": "Anime-style scene for 春, read はる, meaning spring.",
     "caption": "Connect はる with “spring”.",
     "meaning": "spring"
   },
   "夏|なつ": {
-    "pack": 1,
-    "row": 3,
-    "col": 0,
+    "pack": 2,
+    "row": 2,
+    "col": 4,
     "alt": "Anime-style scene for 夏, read なつ, meaning summer.",
     "caption": "Connect なつ with “summer”.",
     "meaning": "summer"
   },
   "秋|あき": {
-    "pack": 1,
-    "row": 3,
-    "col": 1,
+    "pack": 2,
+    "row": 2,
+    "col": 5,
     "alt": "Anime-style scene for 秋, read あき, meaning autumn.",
     "caption": "Connect あき with “autumn”.",
     "meaning": "autumn"
   },
   "朝|あさ": {
-    "pack": 1,
-    "row": 3,
-    "col": 2,
+    "pack": 2,
+    "row": 2,
+    "col": 8,
     "alt": "Anime-style scene for 朝, read あさ, meaning morning.",
     "caption": "Connect あさ with “morning”.",
     "meaning": "morning"
   },
   "昼|ひる": {
-    "pack": 1,
-    "row": 3,
-    "col": 3,
+    "pack": 2,
+    "row": 2,
+    "col": 9,
     "alt": "Anime-style scene for 昼, read ひる, meaning noon; daytime.",
     "caption": "Connect ひる with “noon; daytime”.",
     "meaning": "noon; daytime"
   },
   "夜|よる": {
-    "pack": 1,
+    "pack": 2,
     "row": 3,
-    "col": 4,
+    "col": 0,
     "alt": "Anime-style scene for 夜, read よる, meaning night; evening.",
     "caption": "Connect よる with “night; evening”.",
     "meaning": "night; evening"
   },
   "友達|ともだち": {
-    "pack": 1,
+    "pack": 2,
     "row": 3,
-    "col": 5,
+    "col": 1,
     "alt": "Anime-style scene for 友達, read ともだち, meaning friend.",
     "caption": "Connect ともだち with “friend”.",
     "meaning": "friend"
   },
   "家族|かぞく": {
-    "pack": 1,
+    "pack": 2,
     "row": 3,
-    "col": 6,
+    "col": 2,
     "alt": "Anime-style scene for 家族, read かぞく, meaning family.",
     "caption": "Connect かぞく with “family”.",
     "meaning": "family"
   },
   "子供|こども": {
-    "pack": 1,
+    "pack": 2,
     "row": 3,
-    "col": 7,
+    "col": 3,
     "alt": "Anime-style scene for 子供, read こども, meaning child.",
     "caption": "Connect こども with “child”.",
     "meaning": "child"
   },
   "大人|おとな": {
-    "pack": 1,
+    "pack": 2,
     "row": 3,
-    "col": 8,
+    "col": 4,
     "alt": "Anime-style scene for 大人, read おとな, meaning adult.",
     "caption": "Connect おとな with “adult”.",
     "meaning": "adult"
   },
   "男|おとこ": {
-    "pack": 1,
+    "pack": 2,
     "row": 3,
-    "col": 9,
+    "col": 5,
     "alt": "Anime-style scene for 男, read おとこ, meaning man; male.",
     "caption": "Connect おとこ with “man; male”.",
     "meaning": "man; male"
   },
   "女|おんな": {
-    "pack": 1,
-    "row": 4,
-    "col": 0,
+    "pack": 2,
+    "row": 3,
+    "col": 6,
     "alt": "Anime-style scene for 女, read おんな, meaning woman; female.",
     "caption": "Connect おんな with “woman; female”.",
     "meaning": "woman; female"
@@ -336,67 +336,107 @@
     "meaning": "child"
   },
   "親|おや": {
-    "pack": 1,
-    "row": 4,
-    "col": 2,
+    "pack": 2,
+    "row": 3,
+    "col": 7,
     "alt": "Anime-style scene for 親, read おや, meaning parent.",
     "caption": "Connect おや with “parent”.",
     "meaning": "parent"
   },
   "学生|がくせい": {
-    "pack": 1,
-    "row": 4,
-    "col": 3,
+    "pack": 2,
+    "row": 3,
+    "col": 8,
     "alt": "Anime-style scene for 学生, read がくせい, meaning student.",
     "caption": "Connect がくせい with “student”.",
     "meaning": "student"
   },
   "仕事|しごと": {
-    "pack": 1,
+    "pack": 2,
     "row": 4,
-    "col": 4,
+    "col": 0,
     "alt": "Anime-style scene for 仕事, read しごと, meaning work; job.",
     "caption": "Connect しごと with “work; job”.",
     "meaning": "work; job"
   },
   "勉強|べんきょう": {
-    "pack": 1,
+    "pack": 2,
     "row": 4,
-    "col": 5,
+    "col": 1,
     "alt": "Anime-style scene for 勉強, read べんきょう, meaning study.",
     "caption": "Connect べんきょう with “study”.",
     "meaning": "study"
   },
   "先生|せんせい": {
-    "pack": 1,
-    "row": 4,
-    "col": 6,
+    "pack": 2,
+    "row": 3,
+    "col": 9,
     "alt": "Anime-style scene for 先生, read せんせい, meaning teacher.",
     "caption": "Connect せんせい with “teacher”.",
     "meaning": "teacher"
   },
   "病院|びょういん": {
-    "pack": 1,
+    "pack": 2,
     "row": 4,
-    "col": 7,
+    "col": 2,
     "alt": "Anime-style scene for 病院, read びょういん, meaning hospital.",
     "caption": "Connect びょういん with “hospital”.",
     "meaning": "hospital"
   },
   "お金|おかね": {
-    "pack": 1,
+    "pack": 2,
     "row": 4,
-    "col": 8,
+    "col": 3,
     "alt": "Anime-style scene for お金, read おかね, meaning money.",
     "caption": "Connect おかね with “money”.",
     "meaning": "money"
   },
   "時計|とけい": {
-    "pack": 1,
+    "pack": 2,
     "row": 4,
-    "col": 9,
+    "col": 4,
     "alt": "Anime-style scene for 時計, read とけい, meaning clock; watch.",
     "caption": "Connect とけい with “clock; watch”.",
     "meaning": "clock; watch"
+  },
+  "本|ほん": {
+    "pack": 2,
+    "row": 4,
+    "col": 5,
+    "alt": "Anime-style scene for 本, read ほん, meaning book.",
+    "caption": "Connect ほん with “book”.",
+    "meaning": "book"
+  },
+  "車|くるま": {
+    "pack": 2,
+    "row": 4,
+    "col": 6,
+    "alt": "Anime-style scene for 車, read くるま, meaning car.",
+    "caption": "Connect くるま with “car”.",
+    "meaning": "car"
+  },
+  "電車|でんしゃ": {
+    "pack": 2,
+    "row": 4,
+    "col": 7,
+    "alt": "Anime-style scene for 電車, read でんしゃ, meaning train.",
+    "caption": "Connect でんしゃ with “train”.",
+    "meaning": "train"
+  },
+  "食べる|たべる": {
+    "pack": 2,
+    "row": 4,
+    "col": 8,
+    "alt": "Anime-style scene for 食べる, read たべる, meaning eat.",
+    "caption": "Connect たべる with “eat”.",
+    "meaning": "eat"
+  },
+  "飲む|のむ": {
+    "pack": 2,
+    "row": 4,
+    "col": 9,
+    "alt": "Anime-style scene for 飲む, read のむ, meaning drink.",
+    "caption": "Connect のむ with “drink”.",
+    "meaning": "drink"
   }
 }
