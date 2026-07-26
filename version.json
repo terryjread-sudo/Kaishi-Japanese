@@ -1,12 +1,13 @@
 {
-  "version": "3.5.0",
+  "version": "3.5.1",
   "released": "2026-07-26",
-  "title": "Cache reset and reliable picture loading",
+  "title": "Picture engine and session switching repair",
   "changes": [
-    "Disabled the unreliable in-app update banner.",
-    "Unregisters old service workers and clears old caches.",
-    "Cache-busts JavaScript, CSS, app data and scene-pack images.",
-    "Adds explicit visible dimensions to sprite containers."
+    "Replaced CSS background sprites with clipped real image elements.",
+    "Picture Match now completely replaces any active normal study session.",
+    "Opening Picture Match automatically exits and clears the normal study session.",
+    "Exit now clears the current session before returning home or to the game menu.",
+    "Added a visible error message if a scene-pack image cannot load."
   ],
   "packsPlanned": 30,
   "packsIncluded": 3,

@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.5.0';
+const APP_VERSION='3.5.1';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -24,7 +24,20 @@ function similarity(a='',b=''){a=String(a);b=String(b);let score=0;if(a.length==
 function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&x[key]!==v[key]);const target=v[key]||'';return shuffle(pool.map(x=>({x,score:similarity(target,x[key])+(Math.abs((x.frequency||9999)-(v.frequency||9999))<250?2:0)})).sort((a,b)=>b.score-a.score).slice(0,35)).slice(0,n).map(o=>o.x[key])}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function chooseSkill(v){const p=pFor(v.id);const usable=v.word===v.reading?SKILLS.filter(s=>s!=='kanji'):SKILLS;const weak=usable.map(s=>({s,w:(1-(p.skills[s].strength||0))*(.7+Math.random()*.6)})).sort((a,b)=>b.w-a.w);if(p.stage===0)return'intro';if(p.interval>=21&&Math.random()<.7)return Math.random()<.5?'meaning':'production';return weak[0].s}
+function abortSession(destination='home'){
+ pictureGameActive=false;
+ session=[];
+ index=0;
+ current=null;
+ revealed=false;
+ hintUsed=false;
+ const card=$('#card');
+ if(card)card.innerHTML='';
+ updateHome();
+ show(destination);
+}
 function makeSession(){
+ pictureGameActive=false;session=[];index=0;current=null;
  const due=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due);
  const unseen=vocab.filter(v=>!progress[v.id]).slice(0,settings.newLimit);
  let selected=[...due.slice(0,settings.sessionSize),...unseen];
@@ -74,21 +87,15 @@ async function verifyScenePacks(words=illustratedWords()){
  const results=await Promise.all(packs.map(pack=>preloadImage(sceneSheet({pack}))));
  return {packs,failed:packs.filter((_,i)=>!results[i])};
 }
-function sceneSpriteStyle(scene){
- const cols=10,rows=5;
- const col=Math.max(0,Math.min(cols-1,Number(scene.col)||0));
- const row=Math.max(0,Math.min(rows-1,Number(scene.row)||0));
- const posX=cols===1?0:(col/(cols-1))*100;
- const posY=rows===1?0:(row/(rows-1))*100;
- return `background-image:url('${sceneSheet(scene)}');background-size:${cols*100}% ${rows*100}%;background-position:${posX}% ${posY}%;`;
-}
 function sceneSprite(scene,extraClass=''){
  const url=sceneSheet(scene);
- const failed=spriteHealth.get(url)===false;
- if(failed){
-  return `<div class="scene-sprite scene-sprite-error ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}"><span>Image pack ${String(scene.pack).padStart(2,'0')} failed to load</span></div>`;
- }
- return `<div class="scene-sprite ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}" style="${sceneSpriteStyle(scene)}"></div>`;
+ const col=Math.max(0,Math.min(9,Number(scene.col)||0));
+ const row=Math.max(0,Math.min(4,Number(scene.row)||0));
+ return `<div class="scene-sprite ${extraClass}" role="img" aria-label="${esc(scene.alt||'Memory scene')}">
+  <img class="scene-sheet-image" src="${url}" alt="" aria-hidden="true"
+       style="width:1000%;height:500%;left:-${col*100}%;top:-${row*100}%"
+       onerror="this.parentElement.classList.add('scene-sprite-error');this.remove()">
+ </div>`;
 }
 
 function memoryScene(v){
@@ -135,7 +142,7 @@ function showHint(v){hintUsed=true;const s=memoryScenes[sceneKey(v)];alert(s?s.c
 function bindChoices(answer,skill,onReveal){document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(revealed)return;revealed=true;const val=decodeURIComponent(b.dataset.answer);const ok=val===answer;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('.choice').forEach(x=>{if(decodeURIComponent(x.dataset.answer)===answer)x.classList.add('correct');x.disabled=true});if(onReveal)onReveal(ok);setTimeout(()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),900)})}
 function grade(v,skill,rating,correct){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();next()}
 function next(){index++;renderCurrent()}
-function finishSession(){if(pictureGameActive){pictureGameActive=false;session=[];index=0;show('games');toast('Picture Match complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
+function finishSession(){if(pictureGameActive){abortSession('games');toast('Picture Match complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)])}
@@ -164,6 +171,10 @@ function renderPictureQuestion(v,mode='picture-word'){
  bindChoices(answer,'picture');
 }
 async function startPictureGame(mode){
+ pictureGameActive=false;
+ session=[];
+ index=0;
+ current=null;
  const all=illustratedWords();
  if(all.length<2){toast('More illustrated vocabulary is needed');return}
 
@@ -249,5 +260,5 @@ async function init(){
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
-$('#studyBtn').onclick=makeSession;$('#gamesBtn').onclick=()=>show('games');$('#gamesBack').onclick=()=>show('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{if(pictureGameActive){pictureGameActive=false;session=[];index=0;show('games')}else{updateHome();show('home')}};$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
+$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#gamesBtn').onclick=()=>abortSession('games');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
 init();

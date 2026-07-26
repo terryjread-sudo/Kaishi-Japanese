@@ -1,0 +1,16 @@
+KAISHI QUEST v3.5.1 — PICTURE ENGINE REPAIR
+
+Upload every file and folder inside this package to the GitHub repository root.
+Replace all existing files.
+
+Main changes:
+- Picture sprites now use a real <img> clipped to the selected grid cell.
+- Entering Picture Match clears any normal learning session.
+- Exit clears the active session.
+- Missing scene-pack files show an error message instead of a blank card.
+
+After GitHub Pages publishes:
+1. Open the normal website.
+2. Confirm v3.5.1.
+3. Tap Picture Match.
+4. Select Picture → Word.

@@ -78,3 +78,32 @@
 .quiz-picture.scene-sprite{width:min(100%,390px)!important;min-height:420px;aspect-ratio:3/4!important}
 .memory-scene-image.scene-sprite{width:100%!important;min-height:360px;aspect-ratio:3/4!important}
 .choice-sprite{min-height:150px;aspect-ratio:3/4!important}
+
+/* v3.5.1 reliable <img>-based sprite engine */
+.scene-sprite{
+  position:relative !important;
+  display:block !important;
+  overflow:hidden !important;
+  background:#f8fafc;
+}
+.scene-sheet-image{
+  position:absolute;
+  display:block;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+}
+.scene-sprite-error::after{
+  content:"Scene image failed to load";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:16px;
+  text-align:center;
+  background:#fff1f2;
+  color:#9f1239;
+  font-weight:700;
+}
