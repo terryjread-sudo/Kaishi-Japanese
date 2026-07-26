@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='3.4.2';
+const APP_VERSION='3.4.3';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -80,7 +80,7 @@ function mnemonic(v){const p=pFor(v.id);if(p.mnemonic)return p.mnemonic;const d=
 function mnemonicVisual(v){return `<div class="memory-stage" aria-hidden="true"><span class="memory-emoji">${sceneEmoji(v)}</span><span class="memory-word">${v.word}</span><span class="memory-pulse">${v.reading}</span></div>`}
 function memorySupport(v){const scene=memoryScene(v);return scene||`${mnemonicVisual(v)}<div class="mnemonic"><b>Memory link</b><p>${mnemonic(v)}</p><button id="editMnemonic">Edit mnemonic</button></div>`}
 function wireMemoryEditor(v){const b=$('#editMnemonic');if(b)b.onclick=()=>editMnemonic(v)}
-function renderCurrent(){if(index>=session.length){finishSession();return}current=session[index];revealed=false;hintUsed=false;startedAt=Date.now();const {v,skill}=current;$('#sessionCounter').textContent=`${index+1}/${session.length}`;$('#progressFill').style.width=`${index/session.length*100}%`;const c=$('#card');
+function renderCurrentUnsafe(){if(index>=session.length){finishSession();return}current=session[index];revealed=false;hintUsed=false;startedAt=Date.now();const {v,skill}=current;$('#sessionCounter').textContent=`${index+1}/${session.length}`;$('#progressFill').style.width=`${index/session.length*100}%`;const c=$('#card');
 if(skill==='intro'){c.innerHTML=`<div class="eyebrow">Meet the word</div><div class="jp">${v.word}</div><div class="reading">${v.reading}</div><div class="meaning">${v.meaning}</div>${visual(v)}${memorySupport(v)}<button id="introAudio" class="audio">🔊 Play word</button><button id="continueBtn" class="primary reveal">Got it →</button>`;if(settings.autoAudio)play(v.wordAudio);$('#introAudio').onclick=()=>play(v.wordAudio);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
 if(skill==='meaning')recallCard(v,'What does this mean?',v.word,`${v.meaning}<div class="reading">${v.reading}</div>`,skill);
 if(skill==='production')recallCard(v,'Recall the Japanese word',v.meaning,`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div>`,skill);
@@ -89,6 +89,19 @@ if(skill==='reading'){const mature=pFor(v.id).interval>=21;if(mature){recallCard
 if(skill==='kanji'){const mature=pFor(v.id).interval>=21;if(mature){recallCard(v,'Recall the written Japanese word',`${v.reading}<div class="meaning">${v.meaning}</div>`,`<div class="jp">${v.word}</div>`,skill)}else{const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Kanji recognition</div><div class="reading large-reading">${v.reading}</div><div class="meaning prompt-meaning">${v.meaning}</div><h2>Choose the correct written form</h2><div class="choices kanji-choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="hintBtn" class="hint">Show memory hint</button>`;bindChoices(v.word,skill);$('#hintBtn').onclick=()=>showHint(v)}}
 if(skill==='picture'){renderPictureQuestion(v,current.pictureMode||'picture-word');}
 if(skill==='sentence'){let sentence=v.sentence||`「${v.word}」 means ____.`;let prompt=sentence.includes(v.word)?sentence.replace(v.word,'＿＿＿'):sentence.replace(/<b>|<\/b>/g,'');const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Sentence context</div><div class="sentence">${prompt}</div><p class="meaning">${v.sentenceMeaning||v.meaning}</p><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="sentenceAudio" class="audio">🔊 Full sentence</button>`;bindChoices(v.word,skill);$('#sentenceAudio').onclick=()=>play(v.sentenceAudio)}}
+function renderCurrent(){
+ try{
+  renderCurrentUnsafe();
+ }catch(error){
+  console.error('Card rendering failed',error);
+  const c=$('#card');
+  if(c){
+   c.innerHTML=`<div class="eyebrow">Something went wrong</div><h2>This card could not be displayed.</h2><p class="muted">${esc(error?.message||'Unknown rendering error')}</p><button id="skipBrokenCard" class="primary">Skip this card</button>`;
+   const b=$('#skipBrokenCard');
+   if(b)b.onclick=()=>{index++;renderCurrent()};
+  }
+ }
+}
 function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v)};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
 function showHint(v){hintUsed=true;const s=memoryScenes[sceneKey(v)];alert(s?s.caption:mnemonic(v))}
 function bindChoices(answer,skill,onReveal){document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(revealed)return;revealed=true;const val=decodeURIComponent(b.dataset.answer);const ok=val===answer;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('.choice').forEach(x=>{if(decodeURIComponent(x.dataset.answer)===answer)x.classList.add('correct');x.disabled=true});if(onReveal)onReveal(ok);setTimeout(()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),900)})}
@@ -134,7 +147,32 @@ function exportProgress(){const blob=new Blob([JSON.stringify({version:1,progres
 function versionParts(v){return String(v||'0').split('.').map(n=>parseInt(n,10)||0)}
 function newerVersion(a,b){const x=versionParts(a),y=versionParts(b);for(let i=0;i<3;i++){if(x[i]>y[i])return true;if(x[i]<y[i])return false}return false}
 function showUpdateBanner(info){latestVersionInfo=info;$('#updateTitle').textContent=`Kaishi Quest ${info.version} is available`;$('#updateSummary').textContent=(info.changes||[]).slice(0,2).join(' • ')||'A new version is ready.';$('#updateBanner').hidden=false;$('#updateStatus').textContent=`Update available: v${info.version}`}
-async function checkForUpdates(manual=false){try{const info=await fetch(`version.json?ts=${Date.now()}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('version');return r.json()});if(newerVersion(info.version,APP_VERSION)){showUpdateBanner(info);const reg=await navigator.serviceWorker?.getRegistration();if(reg){await reg.update();if(reg.waiting)waitingWorker=reg.waiting}}else{$('#updateStatus').textContent=`You’re running the latest version (v${APP_VERSION}).`;if(manual)toast('You’re up to date')}}catch{$('#updateStatus').textContent='Could not check for updates.';if(manual)toast('Update check failed')}}
+async function checkForUpdates(manual=false){
+ try{
+  const info=await fetch(`version.json?ts=${Date.now()}`,{cache:'no-store'}).then(r=>{
+   if(!r.ok)throw Error('version');
+   return r.json();
+  });
+
+  if(newerVersion(info.version,APP_VERSION)){
+   showUpdateBanner(info);
+   const reg=await navigator.serviceWorker?.getRegistration();
+   if(reg){
+    await reg.update();
+    waitingWorker=reg.waiting||null;
+   }
+  }else{
+   $('#updateBanner').hidden=true;
+   waitingWorker=null;
+   $('#updateStatus').textContent=`You’re running the latest version (v${APP_VERSION}).`;
+   if(manual)toast('You’re up to date');
+  }
+ }catch(e){
+  $('#updateBanner').hidden=true;
+  $('#updateStatus').textContent='Could not check for updates.';
+  if(manual)toast('Update check failed');
+ }
+}
 async function applyUpdate(){
  $('#applyUpdate').disabled=true;
  $('#applyUpdate').textContent='Updating…';
@@ -160,7 +198,7 @@ async function applyUpdate(){
  location.replace(`${location.pathname}?updated=${Date.now()}`);
 }
 function showWhatsNew(){const previous=localStorage.getItem('kq-last-version');if(previous!==APP_VERSION){fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(info=>{$('#whatsNewTitle').textContent=`What’s new in ${info.version}`;$('#whatsNewContent').innerHTML=`<p>${info.title||''}</p><ul>${(info.changes||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;$('#whatsNewDialog').showModal();localStorage.setItem('kq-last-version',APP_VERSION)}).catch(()=>localStorage.setItem('kq-last-version',APP_VERSION))}}
-async function setupServiceWorker(){if(!('serviceWorker'in navigator))return;const reg=await navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`,{updateViaCache:'none'});if(reg.waiting){waitingWorker=reg.waiting;checkForUpdates()}reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){waitingWorker=w;checkForUpdates()}})});navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload())}
-async function init(){try{[vocab,memoryScenes]=await Promise.all([fetch('data/vocabulary.json').then(r=>{if(!r.ok)throw Error('data');return r.json()}),fetch('memory-scenes.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);updateHome()}catch(e){$('#summary').textContent='Could not load vocabulary. Run the app through a local web server rather than opening index.html directly.'}$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio;await setupServiceWorker();checkForUpdates();showWhatsNew()}
+async function setupServiceWorker(){if(!('serviceWorker'in navigator))return;const reg=await navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`,{updateViaCache:'none'});if(reg.waiting){waitingWorker=reg.waiting}reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){waitingWorker=w}})});navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload())}
+async function init(){$('#updateBanner').hidden=true;try{[vocab,memoryScenes]=await Promise.all([fetch('data/vocabulary.json').then(r=>{if(!r.ok)throw Error('data');return r.json()}),fetch('memory-scenes.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);updateHome()}catch(e){$('#summary').textContent='Could not load vocabulary. Run the app through a local web server rather than opening index.html directly.'}$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio;await setupServiceWorker();checkForUpdates();showWhatsNew()}
 $('#studyBtn').onclick=makeSession;$('#gamesBtn').onclick=()=>show('games');$('#gamesBack').onclick=()=>show('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{updateHome();show('home')};$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
 init();

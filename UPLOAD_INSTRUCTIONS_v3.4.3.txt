@@ -1,0 +1,24 @@
+KAISHI QUEST v3.4.3 — UPDATE BANNER REPAIR
+
+This is a complete replacement build.
+
+UPLOAD
+1. Extract this ZIP.
+2. Upload everything inside Kaishi_Quest_v3.4.3_update_banner_repair
+   to the ROOT of the GitHub repository.
+3. Replace existing files.
+4. Commit as:
+   Release Kaishi Quest v3.4.3 update banner repair
+
+FIXES
+- Hides the update banner when APP_VERSION and version.json match.
+- A waiting service worker no longer triggers a false update prompt.
+- Adds a visible error card instead of a blank white panel when rendering fails.
+- Keeps scene packs 01, 02 and 03 and all prior sprite fixes.
+
+AFTER DEPLOYMENT
+1. Open the normal website in Chrome.
+2. Reload once.
+3. Confirm the header says v3.4.3.
+4. Press Start study.
+5. If a card fails, the app will now show the exact error instead of a blank panel.

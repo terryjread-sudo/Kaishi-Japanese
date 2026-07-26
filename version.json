@@ -1,13 +1,12 @@
 {
-  "version": "3.4.2",
+  "version": "3.4.3",
   "released": "2026-07-26",
-  "title": "Full update and sprite repair",
+  "title": "Update banner and card rendering repair",
   "changes": [
-    "Fixed Memory Scenes so they render from sprite sheets instead of the removed image property.",
-    "Reworked the update button to recover from a stuck service worker.",
-    "Changed navigation and core files to refresh from the network before using cache.",
-    "Forced immediate service-worker activation and removed obsolete caches.",
-    "Retained scene packs 01, 02 and 03."
+    "The update banner now closes automatically when the installed app and version file match.",
+    "A waiting service worker no longer causes a false update notification.",
+    "Added a visible recovery screen when an individual study card fails to render.",
+    "Retained the sprite-sheet Memory Scene fix and scene packs 01–03."
   ],
   "packsPlanned": 30,
   "packsIncluded": 3,
