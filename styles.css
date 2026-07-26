@@ -6,3 +6,12 @@
 .acknowledgement p{margin:0;color:#475569;line-height:1.45}
 .acknowledgement a{color:#1d4ed8;font-weight:700;overflow-wrap:anywhere}
 .memory-scene img{aspect-ratio:4/5;object-fit:contain;background:#fff}
+
+.game-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
+.game-mode-grid button{min-height:72px;font-weight:800}
+.quiz-picture{display:block;width:min(100%,540px);max-height:430px;object-fit:contain;margin:0 auto 16px;border-radius:20px;background:#fff;border:2px solid #ddd6fe}
+.picture-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+.picture-choice{padding:8px;display:flex;flex-direction:column;gap:6px;align-items:center}
+.picture-choice img{width:100%;aspect-ratio:1.4/1;object-fit:cover;border-radius:12px}
+.picture-choice span{font-size:.85rem}
+@media(max-width:560px){.game-mode-grid,.picture-choices{grid-template-columns:1fr 1fr}.picture-choice span{font-size:.75rem}}

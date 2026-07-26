@@ -1,15 +1,15 @@
 {
-  "version": "2.2.0",
-  "released": "2026-07-25",
-  "title": "309 illustrated Memory Scenes",
+  "version": "3.0.0",
+  "released": "2026-07-26",
+  "title": "Interleaved learning and Picture Match",
   "changes": [
-    "Added 259 new individual illustrated Memory Scenes.",
-    "Kaishi Quest now supports 309 illustrated vocabulary cards in total.",
-    "Memory Scene configuration now includes source and frequency metadata.",
-    "Images continue to load and cache only when needed.",
-    "Automatic update prompts and What's New remain enabled."
+    "Lessons now mix 2–4 active words instead of completing every stage for one word at a time.",
+    "Added Picture → Word, Word → Picture, Picture → Reading and Picture → Meaning games.",
+    "Added Easy, Normal and Expert Picture Match difficulty.",
+    "Added 50 new cartoon/anime-style Memory Scene cards.",
+    "Picture questions participate in spaced repetition and progress tracking."
   ],
-  "imageSceneCount": 309,
+  "premiumAnimeScenes": 50,
   "acknowledgement": {
     "name": "Kaishi 1.5k Anki deck",
     "url": "https://ankiweb.net/shared/info/1196762551"

@@ -1,11 +1,11 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='2.2.0';
-const SKILLS=['meaning','production','listening','reading','kanji','sentence'];
-const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence'};
+const APP_VERSION='3.0.0';
+const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
+const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
 let waitingWorker=null, latestVersionInfo=null;
-const defaults={newLimit:5,sessionSize:15,mnemonicStyle:'clear',autoAudio:true};
+const defaults={newLimit:5,sessionSize:15,activeWords:4,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 let progress=loadJSON('kq-progress',{});
 let meta=loadJSON('kq-meta',{lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0});
@@ -24,7 +24,31 @@ function similarity(a='',b=''){a=String(a);b=String(b);let score=0;if(a.length==
 function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&x[key]!==v[key]);const target=v[key]||'';return shuffle(pool.map(x=>({x,score:similarity(target,x[key])+(Math.abs((x.frequency||9999)-(v.frequency||9999))<250?2:0)})).sort((a,b)=>b.score-a.score).slice(0,35)).slice(0,n).map(o=>o.x[key])}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function chooseSkill(v){const p=pFor(v.id);const usable=v.word===v.reading?SKILLS.filter(s=>s!=='kanji'):SKILLS;const weak=usable.map(s=>({s,w:(1-(p.skills[s].strength||0))*(.7+Math.random()*.6)})).sort((a,b)=>b.w-a.w);if(p.stage===0)return'intro';if(p.interval>=21&&Math.random()<.7)return Math.random()<.5?'meaning':'production';return weak[0].s}
-function makeSession(){const due=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due);const unseen=vocab.filter(v=>!progress[v.id]).slice(0,settings.newLimit);let selected=[...due.slice(0,settings.sessionSize),...unseen];if(!selected.length)selected=vocab.slice(0,settings.newLimit);session=[];selected.forEach(v=>{const p=pFor(v.id);if(p.stage===0){session.push({v,skill:'intro'});['meaning','sentence','listening','reading','kanji','production'].filter(s=>s!=='kanji'||v.word!==v.reading).forEach(s=>session.push({v,skill:s}))}else session.push({v,skill:chooseSkill(v)})});session=session.slice(0,Math.max(settings.sessionSize,settings.newLimit*6));index=0;renderCurrent();show('study')}
+function makeSession(){
+ const due=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due);
+ const unseen=vocab.filter(v=>!progress[v.id]).slice(0,settings.newLimit);
+ let selected=[...due.slice(0,settings.sessionSize),...unseen];
+ if(!selected.length)selected=vocab.slice(0,settings.newLimit);
+ const activeCount=Math.max(2,Math.min(4,+settings.activeWords||4));
+ const queue=selected.map(v=>{
+   const p=pFor(v.id);
+   let skills=p.stage===0?['intro','meaning','reading','picture','sentence','listening','kanji','production']:[chooseSkill(v)];
+   skills=skills.filter(s=>s!=='kanji'||v.word!==v.reading).filter(s=>s!=='picture'||memoryScenes[sceneKey(v)]);
+   return {v,skills};
+ });
+ session=[];
+ while(queue.some(q=>q.skills.length)&&session.length<Math.max(settings.sessionSize,settings.newLimit*7)){
+   const active=queue.filter(q=>q.skills.length).slice(0,activeCount);
+   shuffle(active).forEach(q=>{if(q.skills.length)session.push({v:q.v,skill:q.skills.shift()})});
+   queue.push(...queue.splice(0,Math.min(activeCount,queue.length)));
+ }
+ // Prevent immediate repeats where possible.
+ for(let i=1;i<session.length;i++)if(session[i].v.id===session[i-1].v.id){
+   const j=session.findIndex((x,k)=>k>i&&x.v.id!==session[i-1].v.id);
+   if(j>i)[session[i],session[j]]=[session[j],session[i]];
+ }
+ index=0;renderCurrent();show('study')
+}
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
 function play(name){if(!name)return;new Audio(media(name)).play().catch(()=>{})}
 function visual(v){return `${v.picture?`<img class="picture" src="${media(v.picture)}" alt="Illustration">`:''}`}
@@ -44,6 +68,7 @@ if(skill==='production')recallCard(v,'Recall the Japanese word',v.meaning,`<div 
 if(skill==='listening'){const choices=shuffle([v.meaning,...distractors(v,'meaning')]);c.innerHTML=`<div class="eyebrow">Listening</div><h2>Which meaning matches the audio?</h2><button id="playBtn" class="audio primary">🔊 Play audio</button><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="hintBtn" class="hint">Show memory hint</button>`;$('#playBtn').onclick=()=>play(v.wordAudio);if(settings.autoAudio)play(v.wordAudio);bindChoices(v.meaning,skill);$('#hintBtn').onclick=()=>showHint(v)}
 if(skill==='reading'){const mature=pFor(v.id).interval>=21;if(mature){recallCard(v,'Recall the Japanese reading',v.meaning,`<div class="reading">${v.reading}</div><div class="jp small-jp">${v.word}</div>`,skill)}else{const choices=shuffle([v.reading,...distractors(v,'reading')]);c.innerHTML=`<div class="eyebrow">Reading from meaning</div><div class="meaning prompt-meaning">${v.meaning}</div><h2>Which Japanese reading matches?</h2><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="playAfter" class="audio" hidden>🔊 Hear the answer</button><button id="hintBtn" class="hint">Show memory hint</button>`;bindChoices(v.reading,skill,()=>{$('#playAfter').hidden=false;$('#playAfter').onclick=()=>play(v.wordAudio)});$('#hintBtn').onclick=()=>showHint(v)}}
 if(skill==='kanji'){const mature=pFor(v.id).interval>=21;if(mature){recallCard(v,'Recall the written Japanese word',`${v.reading}<div class="meaning">${v.meaning}</div>`,`<div class="jp">${v.word}</div>`,skill)}else{const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Kanji recognition</div><div class="reading large-reading">${v.reading}</div><div class="meaning prompt-meaning">${v.meaning}</div><h2>Choose the correct written form</h2><div class="choices kanji-choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="hintBtn" class="hint">Show memory hint</button>`;bindChoices(v.word,skill);$('#hintBtn').onclick=()=>showHint(v)}}
+if(skill==='picture'){renderPictureQuestion(v,current.pictureMode||'picture-word');}
 if(skill==='sentence'){let sentence=v.sentence||`「${v.word}」 means ____.`;let prompt=sentence.includes(v.word)?sentence.replace(v.word,'＿＿＿'):sentence.replace(/<b>|<\/b>/g,'');const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Sentence context</div><div class="sentence">${prompt}</div><p class="meaning">${v.sentenceMeaning||v.meaning}</p><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="sentenceAudio" class="audio">🔊 Full sentence</button>`;bindChoices(v.word,skill);$('#sentenceAudio').onclick=()=>play(v.sentenceAudio)}}
 function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v)};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
 function showHint(v){hintUsed=true;const s=memoryScenes[sceneKey(v)];alert(s?s.caption:mnemonic(v))}
@@ -52,6 +77,39 @@ function grade(v,skill,rating,correct){const p=pFor(v.id),sp=p.skills[skill];con
 function next(){index++;renderCurrent()}
 function finishSession(){const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
+
+function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)])}
+function pictureChoices(v,n){
+ const pool=shuffle(illustratedWords().filter(x=>x.id!==v.id));
+ return shuffle([v,...pool.slice(0,Math.max(1,n-1))]);
+}
+function renderPictureQuestion(v,mode='picture-word'){
+ const count=Math.max(2,Math.min(6,+settings.pictureDifficulty||4));
+ const choices=pictureChoices(v,count),scene=memoryScenes[sceneKey(v)],c=$('#card');
+ let prompt='',answer='',buttons='';
+ if(mode==='picture-word'){
+  prompt=`<img class="quiz-picture" src="${scene.image}" alt="${scene.alt||''}"><h2>Which word matches this picture?</h2>`;
+  answer=v.word;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.word)}">${x.word}</button>`).join('');
+ }else if(mode==='picture-reading'){
+  prompt=`<img class="quiz-picture" src="${scene.image}" alt="${scene.alt||''}"><h2>Which reading matches this picture?</h2>`;
+  answer=v.reading;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.reading)}">${x.reading}</button>`).join('');
+ }else if(mode==='picture-meaning'){
+  prompt=`<img class="quiz-picture" src="${scene.image}" alt="${scene.alt||''}"><h2>Which meaning matches this picture?</h2>`;
+  answer=v.meaning;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.meaning)}">${x.meaning}</button>`).join('');
+ }else{
+  prompt=`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div><h2>Choose the matching picture</h2>`;
+  answer=scene.image;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class="choice picture-choice" data-answer="${encodeURIComponent(s.image)}"><img src="${s.image}" alt="${s.alt||''}"><span>${x.meaning}</span></button>`}).join('');
+ }
+ c.innerHTML=`<div class="eyebrow">Picture Match</div>${prompt}<div class="choices picture-choices">${buttons}</div>`;
+ bindChoices(answer,'picture');
+}
+function startPictureGame(mode){
+ const pool=shuffle(illustratedWords().filter(v=>progress[v.id]?.stage>=1));
+ const available=pool.length>=2?pool:shuffle(illustratedWords());
+ if(available.length<2){toast('More illustrated vocabulary is needed');return}
+ session=available.slice(0,Math.min(settings.sessionSize,available.length)).map(v=>({v,skill:'picture',pictureMode:mode}));
+ index=0;show('study');renderCurrent();
+}
 function makeStory(){const known=vocab.filter(v=>progress[v.id]?.stage>=2).slice(0,200);const words=shuffle(known).slice(0,6);if(words.length<3){$('#storyContent').innerHTML='<p>Start at least three words before generating a story.</p>';return}const lines=words.map((v,i)=>`${i+1}. <b>${v.word}</b>（${v.reading}）— ${v.meaning}`).join('<br>');const jp=words.map(v=>v.sentence||`${v.word}。`).join(' ');$('#storyContent').innerHTML=`<div class="eyebrow">Built only from words you have started</div><h3>Mini reading</h3><p class="sentence">${jp}</p><h3>Target vocabulary</h3><p>${lines}</p><p class="muted">This offline story mode recombines deck sentences. A future connected AI service could create fully natural custom narratives.</p>`}
 function exportProgress(){const blob=new Blob([JSON.stringify({version:1,progress,meta,settings},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kaishi-quest-progress.json';a.click();URL.revokeObjectURL(a.href)}
 function versionParts(v){return String(v||'0').split('.').map(n=>parseInt(n,10)||0)}
@@ -61,6 +119,6 @@ async function checkForUpdates(manual=false){try{const info=await fetch(`version
 function applyUpdate(){if(waitingWorker){waitingWorker.postMessage({type:'SKIP_WAITING'});return}location.reload()}
 function showWhatsNew(){const previous=localStorage.getItem('kq-last-version');if(previous!==APP_VERSION){fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(info=>{$('#whatsNewTitle').textContent=`What’s new in ${info.version}`;$('#whatsNewContent').innerHTML=`<p>${info.title||''}</p><ul>${(info.changes||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;$('#whatsNewDialog').showModal();localStorage.setItem('kq-last-version',APP_VERSION)}).catch(()=>localStorage.setItem('kq-last-version',APP_VERSION))}}
 async function setupServiceWorker(){if(!('serviceWorker'in navigator))return;const reg=await navigator.serviceWorker.register('sw.js');if(reg.waiting){waitingWorker=reg.waiting;checkForUpdates()}reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){waitingWorker=w;checkForUpdates()}})});navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload())}
-async function init(){try{[vocab,memoryScenes]=await Promise.all([fetch('data/vocabulary.json').then(r=>{if(!r.ok)throw Error('data');return r.json()}),fetch('memory-scenes.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);updateHome()}catch(e){$('#summary').textContent='Could not load vocabulary. Run the app through a local web server rather than opening index.html directly.'}$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio;await setupServiceWorker();checkForUpdates();showWhatsNew()}
-$('#studyBtn').onclick=makeSession;$('#exitBtn').onclick=()=>{updateHome();show('home')};$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
+async function init(){try{[vocab,memoryScenes]=await Promise.all([fetch('data/vocabulary.json').then(r=>{if(!r.ok)throw Error('data');return r.json()}),fetch('memory-scenes.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);updateHome()}catch(e){$('#summary').textContent='Could not load vocabulary. Run the app through a local web server rather than opening index.html directly.'}$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio;await setupServiceWorker();checkForUpdates();showWhatsNew()}
+$('#studyBtn').onclick=makeSession;$('#gamesBtn').onclick=()=>show('games');$('#gamesBack').onclick=()=>show('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{updateHome();show('home')};$('#storyBtn').onclick=()=>{makeStory();show('story')};$('#storyBack').onclick=()=>show('home');$('#newStory').onclick=makeStory;$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
 init();
