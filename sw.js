@@ -1,5 +1,5 @@
-const C='kaishi-v3-3-0';
-const CORE=['./','index.html','styles.css','app.js','manifest.webmanifest','version.json','memory-scenes.json','scene-pack-01.webp','scene-pack-02.webp','data/vocabulary.json','icons/icon-192.png','icons/icon-512.png'];
+const C='kaishi-v3-4-0';
+const CORE=['./','index.html','styles.css','app.js','manifest.webmanifest','version.json','memory-scenes.json','scene-pack-01.webp','scene-pack-02.webp','scene-pack-03.webp','data/vocabulary.json','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(C))));
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
   caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))),

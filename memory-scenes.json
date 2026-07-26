@@ -424,19 +424,403 @@
     "meaning": "train"
   },
   "食べる|たべる": {
-    "pack": 2,
-    "row": 4,
-    "col": 8,
-    "alt": "Anime-style scene for 食べる, read たべる, meaning eat.",
-    "caption": "Connect たべる with “eat”.",
-    "meaning": "eat"
+    "pack": 3,
+    "row": 1,
+    "col": 0,
+    "alt": "Anime-style scene for 食べる, read たべる, meaning to eat.",
+    "caption": "Connect たべる with “to eat”.",
+    "meaning": "to eat"
   },
   "飲む|のむ": {
-    "pack": 2,
+    "pack": 3,
+    "row": 1,
+    "col": 1,
+    "alt": "Anime-style scene for 飲む, read のむ, meaning to drink.",
+    "caption": "Connect のむ with “to drink”.",
+    "meaning": "to drink"
+  },
+  "行く|いく": {
+    "pack": 3,
+    "row": 0,
+    "col": 0,
+    "alt": "Anime-style scene for 行く, read いく, meaning to go.",
+    "caption": "Connect いく with “to go”.",
+    "meaning": "to go"
+  },
+  "来る|くる": {
+    "pack": 3,
+    "row": 0,
+    "col": 1,
+    "alt": "Anime-style scene for 来る, read くる, meaning to come.",
+    "caption": "Connect くる with “to come”.",
+    "meaning": "to come"
+  },
+  "見る|みる": {
+    "pack": 3,
+    "row": 0,
+    "col": 2,
+    "alt": "Anime-style scene for 見る, read みる, meaning to see; watch.",
+    "caption": "Connect みる with “to see; watch”.",
+    "meaning": "to see; watch"
+  },
+  "聞く|きく": {
+    "pack": 3,
+    "row": 0,
+    "col": 3,
+    "alt": "Anime-style scene for 聞く, read きく, meaning to hear; listen.",
+    "caption": "Connect きく with “to hear; listen”.",
+    "meaning": "to hear; listen"
+  },
+  "言う|いう": {
+    "pack": 3,
+    "row": 0,
+    "col": 4,
+    "alt": "Anime-style scene for 言う, read いう, meaning to say.",
+    "caption": "Connect いう with “to say”.",
+    "meaning": "to say"
+  },
+  "話す|はなす": {
+    "pack": 3,
+    "row": 0,
+    "col": 5,
+    "alt": "Anime-style scene for 話す, read はなす, meaning to speak; talk.",
+    "caption": "Connect はなす with “to speak; talk”.",
+    "meaning": "to speak; talk"
+  },
+  "知る|しる": {
+    "pack": 3,
+    "row": 0,
+    "col": 6,
+    "alt": "Anime-style scene for 知る, read しる, meaning to know.",
+    "caption": "Connect しる with “to know”.",
+    "meaning": "to know"
+  },
+  "思う|おもう": {
+    "pack": 3,
+    "row": 0,
+    "col": 7,
+    "alt": "Anime-style scene for 思う, read おもう, meaning to think.",
+    "caption": "Connect おもう with “to think”.",
+    "meaning": "to think"
+  },
+  "作る|つくる": {
+    "pack": 3,
+    "row": 0,
+    "col": 8,
+    "alt": "Anime-style scene for 作る, read つくる, meaning to make; create.",
+    "caption": "Connect つくる with “to make; create”.",
+    "meaning": "to make; create"
+  },
+  "使う|つかう": {
+    "pack": 3,
+    "row": 0,
+    "col": 9,
+    "alt": "Anime-style scene for 使う, read つかう, meaning to use.",
+    "caption": "Connect つかう with “to use”.",
+    "meaning": "to use"
+  },
+  "読む|よむ": {
+    "pack": 3,
+    "row": 1,
+    "col": 2,
+    "alt": "Anime-style scene for 読む, read よむ, meaning to read.",
+    "caption": "Connect よむ with “to read”.",
+    "meaning": "to read"
+  },
+  "書く|かく": {
+    "pack": 3,
+    "row": 1,
+    "col": 3,
+    "alt": "Anime-style scene for 書く, read かく, meaning to write.",
+    "caption": "Connect かく with “to write”.",
+    "meaning": "to write"
+  },
+  "持つ|もつ": {
+    "pack": 3,
+    "row": 1,
+    "col": 4,
+    "alt": "Anime-style scene for 持つ, read もつ, meaning to hold; carry.",
+    "caption": "Connect もつ with “to hold; carry”.",
+    "meaning": "to hold; carry"
+  },
+  "置く|おく": {
+    "pack": 3,
+    "row": 1,
+    "col": 5,
+    "alt": "Anime-style scene for 置く, read おく, meaning to put; place.",
+    "caption": "Connect おく with “to put; place”.",
+    "meaning": "to put; place"
+  },
+  "取る|とる": {
+    "pack": 3,
+    "row": 1,
+    "col": 6,
+    "alt": "Anime-style scene for 取る, read とる, meaning to take; get.",
+    "caption": "Connect とる with “to take; get”.",
+    "meaning": "to take; get"
+  },
+  "持ってくる|もってくる": {
+    "pack": 3,
+    "row": 1,
+    "col": 7,
+    "alt": "Anime-style scene for 持ってくる, read もってくる, meaning to bring.",
+    "caption": "Connect もってくる with “to bring”.",
+    "meaning": "to bring"
+  },
+  "持っていく|もっていく": {
+    "pack": 3,
+    "row": 1,
+    "col": 8,
+    "alt": "Anime-style scene for 持っていく, read もっていく, meaning to take with you.",
+    "caption": "Connect もっていく with “to take with you”.",
+    "meaning": "to take with you"
+  },
+  "探す|さがす": {
+    "pack": 3,
+    "row": 1,
+    "col": 9,
+    "alt": "Anime-style scene for 探す, read さがす, meaning to look for; search.",
+    "caption": "Connect さがす with “to look for; search”.",
+    "meaning": "to look for; search"
+  },
+  "見つける|みつける": {
+    "pack": 3,
+    "row": 2,
+    "col": 0,
+    "alt": "Anime-style scene for 見つける, read みつける, meaning to find.",
+    "caption": "Connect みつける with “to find”.",
+    "meaning": "to find"
+  },
+  "開ける|あける": {
+    "pack": 3,
+    "row": 2,
+    "col": 1,
+    "alt": "Anime-style scene for 開ける, read あける, meaning to open.",
+    "caption": "Connect あける with “to open”.",
+    "meaning": "to open"
+  },
+  "閉める|しめる": {
+    "pack": 3,
+    "row": 2,
+    "col": 2,
+    "alt": "Anime-style scene for 閉める, read しめる, meaning to close.",
+    "caption": "Connect しめる with “to close”.",
+    "meaning": "to close"
+  },
+  "入る|はいる": {
+    "pack": 3,
+    "row": 2,
+    "col": 3,
+    "alt": "Anime-style scene for 入る, read はいる, meaning to enter; go in.",
+    "caption": "Connect はいる with “to enter; go in”.",
+    "meaning": "to enter; go in"
+  },
+  "出る|でる": {
+    "pack": 3,
+    "row": 2,
+    "col": 4,
+    "alt": "Anime-style scene for 出る, read でる, meaning to exit; come out.",
+    "caption": "Connect でる with “to exit; come out”.",
+    "meaning": "to exit; come out"
+  },
+  "起きる|おきる": {
+    "pack": 3,
+    "row": 2,
+    "col": 5,
+    "alt": "Anime-style scene for 起きる, read おきる, meaning to get up.",
+    "caption": "Connect おきる with “to get up”.",
+    "meaning": "to get up"
+  },
+  "寝る|ねる": {
+    "pack": 3,
+    "row": 2,
+    "col": 6,
+    "alt": "Anime-style scene for 寝る, read ねる, meaning to sleep; go to bed.",
+    "caption": "Connect ねる with “to sleep; go to bed”.",
+    "meaning": "to sleep; go to bed"
+  },
+  "座る|すわる": {
+    "pack": 3,
+    "row": 2,
+    "col": 7,
+    "alt": "Anime-style scene for 座る, read すわる, meaning to sit.",
+    "caption": "Connect すわる with “to sit”.",
+    "meaning": "to sit"
+  },
+  "立つ|たつ": {
+    "pack": 3,
+    "row": 2,
+    "col": 8,
+    "alt": "Anime-style scene for 立つ, read たつ, meaning to stand.",
+    "caption": "Connect たつ with “to stand”.",
+    "meaning": "to stand"
+  },
+  "歩く|あるく": {
+    "pack": 3,
+    "row": 2,
+    "col": 9,
+    "alt": "Anime-style scene for 歩く, read あるく, meaning to walk.",
+    "caption": "Connect あるく with “to walk”.",
+    "meaning": "to walk"
+  },
+  "走る|はしる": {
+    "pack": 3,
+    "row": 3,
+    "col": 0,
+    "alt": "Anime-style scene for 走る, read はしる, meaning to run.",
+    "caption": "Connect はしる with “to run”.",
+    "meaning": "to run"
+  },
+  "泳ぐ|およぐ": {
+    "pack": 3,
+    "row": 3,
+    "col": 1,
+    "alt": "Anime-style scene for 泳ぐ, read およぐ, meaning to swim.",
+    "caption": "Connect およぐ with “to swim”.",
+    "meaning": "to swim"
+  },
+  "飛ぶ|とぶ": {
+    "pack": 3,
+    "row": 3,
+    "col": 2,
+    "alt": "Anime-style scene for 飛ぶ, read とぶ, meaning to fly.",
+    "caption": "Connect とぶ with “to fly”.",
+    "meaning": "to fly"
+  },
+  "乗る|のる": {
+    "pack": 3,
+    "row": 3,
+    "col": 3,
+    "alt": "Anime-style scene for 乗る, read のる, meaning to ride; get on.",
+    "caption": "Connect のる with “to ride; get on”.",
+    "meaning": "to ride; get on"
+  },
+  "降りる|おりる": {
+    "pack": 3,
+    "row": 3,
+    "col": 4,
+    "alt": "Anime-style scene for 降りる, read おりる, meaning to get off.",
+    "caption": "Connect おりる with “to get off”.",
+    "meaning": "to get off"
+  },
+  "買う|かう": {
+    "pack": 3,
+    "row": 3,
+    "col": 5,
+    "alt": "Anime-style scene for 買う, read かう, meaning to buy.",
+    "caption": "Connect かう with “to buy”.",
+    "meaning": "to buy"
+  },
+  "売る|うる": {
+    "pack": 3,
+    "row": 3,
+    "col": 6,
+    "alt": "Anime-style scene for 売る, read うる, meaning to sell.",
+    "caption": "Connect うる with “to sell”.",
+    "meaning": "to sell"
+  },
+  "払う|はらう": {
+    "pack": 3,
+    "row": 3,
+    "col": 7,
+    "alt": "Anime-style scene for 払う, read はらう, meaning to pay.",
+    "caption": "Connect はらう with “to pay”.",
+    "meaning": "to pay"
+  },
+  "待つ|まつ": {
+    "pack": 3,
+    "row": 3,
+    "col": 8,
+    "alt": "Anime-style scene for 待つ, read まつ, meaning to wait.",
+    "caption": "Connect まつ with “to wait”.",
+    "meaning": "to wait"
+  },
+  "急ぐ|いそぐ": {
+    "pack": 3,
+    "row": 3,
+    "col": 9,
+    "alt": "Anime-style scene for 急ぐ, read いそぐ, meaning to hurry.",
+    "caption": "Connect いそぐ with “to hurry”.",
+    "meaning": "to hurry"
+  },
+  "教える|おしえる": {
+    "pack": 3,
+    "row": 4,
+    "col": 0,
+    "alt": "Anime-style scene for 教える, read おしえる, meaning to teach; tell.",
+    "caption": "Connect おしえる with “to teach; tell”.",
+    "meaning": "to teach; tell"
+  },
+  "教わる|おそわる": {
+    "pack": 3,
+    "row": 4,
+    "col": 1,
+    "alt": "Anime-style scene for 教わる, read おそわる, meaning to be taught.",
+    "caption": "Connect おそわる with “to be taught”.",
+    "meaning": "to be taught"
+  },
+  "助ける|たすける": {
+    "pack": 3,
+    "row": 4,
+    "col": 2,
+    "alt": "Anime-style scene for 助ける, read たすける, meaning to help.",
+    "caption": "Connect たすける with “to help”.",
+    "meaning": "to help"
+  },
+  "会う|あう": {
+    "pack": 3,
+    "row": 4,
+    "col": 3,
+    "alt": "Anime-style scene for 会う, read あう, meaning to meet.",
+    "caption": "Connect あう with “to meet”.",
+    "meaning": "to meet"
+  },
+  "別れる|わかれる": {
+    "pack": 3,
+    "row": 4,
+    "col": 4,
+    "alt": "Anime-style scene for 別れる, read わかれる, meaning to part; say goodbye.",
+    "caption": "Connect わかれる with “to part; say goodbye”.",
+    "meaning": "to part; say goodbye"
+  },
+  "信じる|しんじる": {
+    "pack": 3,
+    "row": 4,
+    "col": 5,
+    "alt": "Anime-style scene for 信じる, read しんじる, meaning to believe; trust.",
+    "caption": "Connect しんじる with “to believe; trust”.",
+    "meaning": "to believe; trust"
+  },
+  "好き|すき": {
+    "pack": 3,
+    "row": 4,
+    "col": 6,
+    "alt": "Anime-style scene for 好き, read すき, meaning liked; favourite.",
+    "caption": "Connect すき with “liked; favourite”.",
+    "meaning": "liked; favourite"
+  },
+  "嫌い|きらい": {
+    "pack": 3,
+    "row": 4,
+    "col": 7,
+    "alt": "Anime-style scene for 嫌い, read きらい, meaning disliked.",
+    "caption": "Connect きらい with “disliked”.",
+    "meaning": "disliked"
+  },
+  "必要な|ひつような": {
+    "pack": 3,
+    "row": 4,
+    "col": 8,
+    "alt": "Anime-style scene for 必要な, read ひつような, meaning necessary.",
+    "caption": "Connect ひつような with “necessary”.",
+    "meaning": "necessary"
+  },
+  "大切な|たいせつな": {
+    "pack": 3,
     "row": 4,
     "col": 9,
-    "alt": "Anime-style scene for 飲む, read のむ, meaning drink.",
-    "caption": "Connect のむ with “drink”.",
-    "meaning": "drink"
+    "alt": "Anime-style scene for 大切な, read たいせつな, meaning important; precious.",
+    "caption": "Connect たいせつな with “important; precious”.",
+    "meaning": "important; precious"
   }
 }

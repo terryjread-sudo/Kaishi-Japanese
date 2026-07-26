@@ -1,15 +1,16 @@
 {
-  "version": "3.3.0",
+  "version": "3.4.0",
   "released": "2026-07-26",
-  "title": "Scene Pack 02 and corrected sprite cropping",
+  "title": "Scene Pack 03",
   "changes": [
-    "Added root-level scene-pack-02.webp.",
-    "Changed sprite positioning to an exact 10 by 5 equal grid.",
-    "Corrected scene containers to the 3:4 portrait aspect ratio.",
-    "Removed the quiz image max-height restriction that exposed neighbouring cards.",
-    "Updated lessons and all Picture Match modes to use the corrected crop."
+    "Added root-level scene-pack-03.webp.",
+    "Added 50 action and everyday vocabulary scene mappings.",
+    "Rebuilt the generated artwork into a precise 10 by 5 grid.",
+    "Each sprite cell is now exactly 3:4, preventing neighbouring-image bleed.",
+    "Updated the offline service-worker cache."
   ],
   "packsPlanned": 30,
-  "packsIncluded": 2,
-  "mappedWords": 55
+  "packsIncluded": 3,
+  "mappedWords": 103,
+  "newUniqueMappings": 48
 }

@@ -1,0 +1,20 @@
+KAISHI QUEST v3.4.0 — SCENE PACK 03
+
+UPLOAD
+1. Extract this ZIP.
+2. Upload everything inside the extracted folder to the ROOT of your GitHub repository.
+3. Replace existing files when prompted.
+4. Commit as:
+   Release Kaishi Quest v3.4.0 scene pack 03
+
+INCLUDED
+- scene-pack-03.webp
+- 50 mapped scenes in a precise 10 x 5 grid
+- 48 newly illustrated vocabulary mappings
+- updated memory-scenes.json
+- updated service-worker cache
+- updated app/version labels
+
+AFTER PUBLISHING
+Fully close and reopen the PWA. If the previous version remains cached,
+clear the site's stored data once or reinstall the PWA.
