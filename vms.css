@@ -8,3 +8,8 @@
 .vms-reading-panel div{background:#eef2ff;border-radius:14px;padding:10px;text-align:center}.vms-reading-panel span,.vms-memory span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800}.vms-reading-panel strong{font-size:1.12rem}
 .vms-memory{padding:0 16px;max-height:0;opacity:0;overflow:hidden;transition:.4s ease}.vms-memory.show{max-height:320px;opacity:1;padding:4px 16px 18px}.vms-memory p{margin:10px 0}.vms-sound strong{font-size:1.15rem}.vms-story{line-height:1.55}
 @media(max-width:520px){.vms-reveal-controls{grid-template-columns:1fr}.vms-reading-panel{grid-template-columns:1fr}.vms-reading-panel.show{max-height:300px}.vms-scene{aspect-ratio:4/3}}
+.vms-scene{position:relative;overflow:hidden}
+.vms-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:4%;white-space:nowrap;overflow:hidden;text-overflow:clip;font-size:clamp(1.25rem,calc(var(--overlay-size,0.62)*12vw),6.5rem);line-height:1;color:var(--overlay-colour,#fff);opacity:0;text-shadow:0 2px 8px rgba(0,0,0,.82);transition:opacity .35s ease;pointer-events:none;font-weight:900}
+.vms-overlay.show{opacity:var(--overlay-opacity,.34)}
+.vms-stage-label{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+.vms-study-preview{max-width:720px;margin:auto}
