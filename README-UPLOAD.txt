@@ -1,13 +1,12 @@
-# Kaishi Quest VMS v4.4 patch
+# Kaishi Quest VMS v4.5 — Best Matched Images
 
-This patch:
-- sets overlay size to maximum by default for every card;
-- sets overlay opacity to maximum by default for every card;
-- preserves the Studio controls so both values can still be reduced;
-- keeps the overlay restricted to one line;
-- fixes light-panel text contrast in Studio and Study View.
+This build reviewed the generated six-panel artwork as a shared image library and selected 29 strong or defensible matches for the Gold-50 vocabulary.
 
-Important:
-The artwork in this patch is unchanged from v4.3. The attempted image regeneration produced another
-composite sheet rather than genuine separate high-resolution assets, so it has not been included or
-misrepresented as regenerated artwork.
+Rules used:
+- Images were matched by what the scene actually depicts, not by generation order.
+- Weak or unrelated scenes were not forced onto a vocabulary card.
+- Selected replacements are marked `pending-review`.
+- Unmatched cards remain `needs-regeneration` and retain a safe fallback.
+- Overlay size and opacity default to maximum and remain adjustable.
+
+See `v4.5-best-match-audit.csv` for the complete selected-image audit.

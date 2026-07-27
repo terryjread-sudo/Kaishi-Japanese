@@ -14,7 +14,7 @@
 .vms-stage-label{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
 .vms-study-preview{max-width:720px;margin:auto}
 
-/* v4.4 preview/readability fixes */
+/* v4.5 Best Match preview/readability fixes */
 .vms-reading-panel,
 .vms-memory {
   background: #ffffff !important;

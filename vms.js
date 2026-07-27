@@ -7,7 +7,7 @@
  function save(){localStorage.setItem(KEY,JSON.stringify(cfg))}
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  async function load(){
-  try{cards=await fetch('visual-mnemonics.json?v=4.4.0',{cache:'no-store'}).then(r=>r.ok?r.json():{});}
+  try{cards=await fetch('visual-mnemonics.json?v=v4.5 Best Match',{cache:'no-store'}).then(r=>r.ok?r.json():{});}
   catch(e){console.warn('VMS data unavailable',e)}
   bindSettings(); observe(); enhance(document);
  }

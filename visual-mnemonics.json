@@ -16,8 +16,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): giant key makes the scale unmistakably big. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "小さい|ちいさい": {
     "word": "小さい",
@@ -36,8 +36,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): tiny piece of cheese under a magnifying glass. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "新しい|あたらしい": {
     "word": "新しい",
@@ -56,8 +56,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): newly opened glowing treasure chest. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "古い|ふるい": {
     "word": "古い",
@@ -76,8 +76,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): very old clock held by an elderly guide. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "長い|ながい": {
     "word": "長い",
@@ -96,8 +96,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): extremely long ribbon. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "短い|みじかい": {
     "word": "短い",
@@ -116,8 +116,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): short measured object/distance. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "高い|たかい": {
     "word": "高い",
@@ -136,8 +136,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): towering high-rise beside a small house. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "安い|やすい": {
     "word": "安い",
@@ -154,10 +154,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "難しい|むずかしい": {
     "word": "難しい",
@@ -174,10 +174,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "簡単|かんたん": {
     "word": "簡単",
@@ -194,10 +194,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "早い|はやい": {
     "word": "早い",
@@ -216,8 +216,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): children sprinting at speed. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "遅い|おそい": {
     "word": "遅い",
@@ -234,10 +234,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "多い|おおい": {
     "word": "多い",
@@ -254,10 +254,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "少ない|すくない": {
     "word": "少ない",
@@ -274,10 +274,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "良い|よい": {
     "word": "良い",
@@ -294,10 +294,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "悪い|わるい": {
     "word": "悪い",
@@ -314,10 +314,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "強い|つよい": {
     "word": "強い",
@@ -336,8 +336,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): powerful pulling action. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "弱い|よわい": {
     "word": "弱い",
@@ -356,8 +356,8 @@
     "pack": "gold-01",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): unable to move a heavy boulder. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "近い|ちかい": {
     "word": "近い",
@@ -374,10 +374,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "遠い|とおい": {
     "word": "遠い",
@@ -394,10 +394,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-01",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "星|ほし": {
     "word": "星",
@@ -416,8 +416,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (medium confidence): gift box covered with prominent stars. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "怒る|おこる": {
     "word": "怒る",
@@ -434,10 +434,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "辛い|からい": {
     "word": "辛い",
@@ -454,10 +454,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "寒い|さむい": {
     "word": "寒い",
@@ -476,8 +476,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): children visibly freezing in snow. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "暑い|あつい": {
     "word": "暑い",
@@ -496,8 +496,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): children visibly overheating in the sun. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "夜|よる": {
     "word": "夜",
@@ -516,8 +516,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): clear night scene beneath moon and stars. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "走る|はしる": {
     "word": "走る",
@@ -536,8 +536,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): running race. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "亀|かめ": {
     "word": "亀",
@@ -556,8 +556,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): large sea turtle. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "山|やま": {
     "word": "山",
@@ -576,8 +576,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): mountain landscape. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "川|かわ": {
     "word": "川",
@@ -596,8 +596,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): river and waterfall landscape. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "ここ|ここ": {
     "word": "ここ",
@@ -614,10 +614,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "あそこ|あそこ": {
     "word": "あそこ",
@@ -634,10 +634,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "鶏|にわとり": {
     "word": "鶏",
@@ -654,10 +654,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "城|しろ": {
     "word": "城",
@@ -676,8 +676,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (medium confidence): large white crane dominates the scene. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "象|ぞう": {
     "word": "象",
@@ -694,10 +694,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "鼠|ねずみ": {
     "word": "鼠",
@@ -714,10 +714,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "考える|かんがえる": {
     "word": "考える",
@@ -736,8 +736,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (medium confidence): careful investigation and thought around a fossil. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "書く|かく": {
     "word": "書く",
@@ -756,8 +756,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): children writing in open notebooks. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "分かる|わかる": {
     "word": "分かる",
@@ -774,10 +774,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "知らない|しらない": {
     "word": "知らない",
@@ -794,10 +794,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "甘い|あまい": {
     "word": "甘い",
@@ -814,10 +814,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "作る|つくる": {
     "word": "作る",
@@ -836,8 +836,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): children making food from ingredients. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "力|ちから": {
     "word": "力",
@@ -856,8 +856,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): visible physical force pushing a huge rock. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "疲れる|つかれる": {
     "word": "疲れる",
@@ -874,10 +874,10 @@
     "overlayAnimation": "fade",
     "overlayColour": "#ffffff",
     "pack": "gold-02",
-    "status": "pending-review",
-    "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "status": "needs-regeneration",
+    "imageStatus": "needs-regeneration",
+    "reviewNote": "No sufficiently strong match was found in the 72 generated panels.",
+    "imageVersion": "v4.5-best-match"
   },
   "歩く|あるく": {
     "word": "歩く",
@@ -896,8 +896,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (medium confidence): person walking out through the doorway. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "手|て": {
     "word": "手",
@@ -916,8 +916,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (medium confidence): hands gripping and pulling a rope. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "元気|げんき": {
     "word": "元気",
@@ -936,8 +936,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): energetic children jumping joyfully. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "あげる|あげる": {
     "word": "あげる",
@@ -956,8 +956,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): one child giving an apple to another. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "花|はな": {
     "word": "花",
@@ -976,8 +976,8 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): large bouquet of flowers. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   },
   "道|みち": {
     "word": "道",
@@ -996,7 +996,7 @@
     "pack": "gold-02",
     "status": "pending-review",
     "imageStatus": "pending-review",
-    "reviewNote": "Review the artwork and overlay placement in Study View before approving.",
-    "imageVersion": 1
+    "reviewNote": "Best-match v4.5 image (high confidence): a long, unmistakable route/path. Review in true Study View before approval.",
+    "imageVersion": "v4.5-best-match"
   }
 }
