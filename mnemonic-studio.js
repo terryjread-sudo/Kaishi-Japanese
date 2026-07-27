@@ -1,10 +1,72 @@
 'use strict';
 let cards={},selected='';
+const DRAFT_KEY='kq-vms-drafts-v2';
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function init(){cards=await fetch('visual-mnemonics.json?v=4.1.0').then(r=>r.json());const drafts=JSON.parse(localStorage.getItem('kq-vms-drafts')||'{}');cards={...cards,...drafts};renderList();select(Object.keys(cards)[0])}
-function renderList(q=''){const x=q.toLowerCase();$('#list').innerHTML=Object.entries(cards).filter(([k,v])=>`${k} ${v.meaning}`.toLowerCase().includes(x)).map(([k,v])=>`<button data-key="${esc(k)}"><b>${esc(v.word)}</b> ${esc(v.reading)} — ${esc(v.meaning)}</button>`).join('');document.querySelectorAll('[data-key]').forEach(b=>b.onclick=()=>select(b.dataset.key))}
-function select(k){selected=k;const v=cards[k];if(!v)return;$('#word').value=v.word;$('#reading').value=v.reading;$('#meaning').value=v.meaning;$('#sound').value=v.soundMnemonic;$('#story').value=v.story;$('#opacity').value=v.overlayOpacity||.32;preview()}
-function preview(){const v={...cards[selected],meaning:$('#meaning').value,soundMnemonic:$('#sound').value,story:$('#story').value,overlayOpacity:+$('#opacity').value};$('#preview').innerHTML=`<section class="vms-card"><div class="vms-scene"><img src="${esc(v.scene)}"><div class="vms-overlay show" style="--overlay-opacity:${v.overlayOpacity}">${esc(v.overlay)}</div></div><div class="vms-reading-panel show"><div><span>Hiragana</span><strong>${esc(v.reading)}</strong></div><div><span>Katakana</span><strong>${esc(v.katakana)}</strong></div><div><span>Romaji</span><strong>${esc(v.romaji)}</strong></div></div><div class="vms-memory show"><p><span>Sounds like</span><strong>${esc(v.soundMnemonic)}</strong></p><p><span>Story</span>${esc(v.story)}</p></div></section>`}
-function save(){cards[selected]={...cards[selected],meaning:$('#meaning').value,soundMnemonic:$('#sound').value,story:$('#story').value,overlayOpacity:+$('#opacity').value};localStorage.setItem('kq-vms-drafts',JSON.stringify(cards));preview()}
-function exp(){save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(cards,null,2)],{type:'application/json'}));a.download='visual-mnemonics.json';a.click();URL.revokeObjectURL(a.href)}
-$('#search').oninput=e=>renderList(e.target.value);['meaning','sound','story','opacity'].forEach(id=>$('#'+id).oninput=preview);$('#save').onclick=save;$('#export').onclick=exp;init();
+async function init(){
+ const source=await fetch('visual-mnemonics.json?v=4.2.0',{cache:'no-store'}).then(r=>r.json());
+ const drafts=JSON.parse(localStorage.getItem(DRAFT_KEY)||'{}');
+ cards={...source,...drafts};
+ renderList(); updateSummary(); select(Object.keys(cards)[0]);
+}
+function statusOf(v){return v.imageStatus||'pending-review'}
+function updateSummary(){
+ const counts={approved:0,'needs-regeneration':0,'pending-review':0};
+ Object.values(cards).forEach(v=>counts[statusOf(v)]=(counts[statusOf(v)]||0)+1);
+ $('#summary').innerHTML=`<span>✓ ${counts.approved||0} approved</span><span>↻ ${counts['needs-regeneration']||0} need regeneration</span><span>⏳ ${counts['pending-review']||0} pending</span>`;
+}
+function renderList(){
+ const q=$('#search').value.toLowerCase(), filter=$('#filter').value;
+ $('#list').innerHTML=Object.entries(cards)
+  .filter(([k,v])=>`${k} ${v.meaning}`.toLowerCase().includes(q))
+  .filter(([,v])=>filter==='all'||statusOf(v)===filter)
+  .map(([k,v])=>`<button data-key="${esc(k)}"><b>${esc(v.word)}</b> ${esc(v.reading)} — ${esc(v.meaning)}<span class="studio-item-status">${statusOf(v)==='approved'?'✓ Approved':statusOf(v)==='needs-regeneration'?'↻ Needs regeneration':'⏳ Pending review'}</span></button>`).join('');
+ document.querySelectorAll('[data-key]').forEach(b=>b.onclick=()=>select(b.dataset.key));
+}
+function select(k){
+ selected=k;const v=cards[k];if(!v)return;
+ $('#word').value=v.word;$('#reading').value=v.reading;$('#meaning').value=v.meaning;$('#sound').value=v.soundMnemonic;$('#story').value=v.story;$('#note').value=v.reviewNote||'';$('#opacity').value=v.overlayOpacity||.32;
+ showStatus();preview();
+}
+function formData(){
+ const v=cards[selected];
+ return {...v,meaning:$('#meaning').value,soundMnemonic:$('#sound').value,story:$('#story').value,reviewNote:$('#note').value,overlayOpacity:+$('#opacity').value};
+}
+function showStatus(){
+ const s=statusOf(cards[selected]), box=$('#status');
+ box.className=`status status-${s}`;
+ box.textContent=s==='approved'?'✓ Approved: this image is available in the main app':s==='needs-regeneration'?'↻ Flagged: the main app will not use this image':'⏳ Pending review: the main app will not use this image';
+}
+function preview(){
+ if(!selected)return;const v=formData();
+ $('#preview').innerHTML=`<section class="vms-card"><div class="vms-scene"><img src="${esc(v.scene)}?v=${Number(v.imageVersion)||1}" alt="Preview"><div class="vms-overlay show" style="--overlay-opacity:${v.overlayOpacity}">${esc(v.overlay)}</div></div><div class="vms-reading-panel show"><div><span>Hiragana</span><strong>${esc(v.reading)}</strong></div><div><span>Katakana</span><strong>${esc(v.katakana)}</strong></div><div><span>Romaji</span><strong>${esc(v.romaji)}</strong></div></div><div class="vms-memory show"><p><span>Sounds like</span><strong>${esc(v.soundMnemonic)}</strong></p><p><span>Story</span>${esc(v.story)}</p></div></section>`;
+}
+function persist(){
+ if(!selected)return;
+ cards[selected]=formData();
+ localStorage.setItem(DRAFT_KEY,JSON.stringify(cards));
+ updateSummary();renderList();showStatus();preview();
+}
+function setStatus(status){
+ cards[selected]=formData();
+ cards[selected].imageStatus=status;
+ if(status==='approved'){
+  cards[selected].approvedAt=new Date().toISOString().slice(0,10);
+  cards[selected].reviewNote=$('#note').value||'Approved in Mnemonic Studio.';
+ }else{
+  delete cards[selected].approvedAt;
+  cards[selected].reviewNote=$('#note').value||'Regenerate this image.';
+ }
+ localStorage.setItem(DRAFT_KEY,JSON.stringify(cards));
+ updateSummary();renderList();showStatus();preview();
+}
+function download(name,data){
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download=name;a.click();URL.revokeObjectURL(a.href);
+}
+$('#search').oninput=renderList;$('#filter').onchange=renderList;
+['meaning','sound','story','note','opacity'].forEach(id=>$('#'+id).oninput=preview);
+$('#save').onclick=persist;
+$('#approve').onclick=()=>setStatus('approved');
+$('#regenerate').onclick=()=>setStatus('needs-regeneration');
+$('#export').onclick=()=>{persist();download('visual-mnemonics.json',cards)};
+$('#exportQueue').onclick=()=>{persist();const queue=Object.fromEntries(Object.entries(cards).filter(([,v])=>statusOf(v)==='needs-regeneration'));download('mnemonic-regeneration-queue.json',queue)};
+init();

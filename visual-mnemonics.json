@@ -7,12 +7,16 @@
     "meaning": "big",
     "soundMnemonic": "Oh! Oh! Key!",
     "story": "A giant golden key crashes into the city while everyone shouts “OH! OH!” It is unbelievably BIG.",
-    "scene": "scene-p01-r01-c01.webp",
+    "scene": "vms-01-ookii.webp",
     "overlay": "大きい",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "小さい|ちいさい": {
     "word": "小さい",
@@ -22,12 +26,16 @@
     "meaning": "small",
     "soundMnemonic": "Cheese • Eye • Size",
     "story": "A tiny mouse holds a piece of cheese no bigger than its eye. Everything is a very SMALL size.",
-    "scene": "scene-p01-r01-c02.webp",
+    "scene": "vms-02-chiisai.webp",
     "overlay": "小さい",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "新しい|あたらしい": {
     "word": "新しい",
@@ -37,12 +45,16 @@
     "meaning": "new",
     "soundMnemonic": "Ah! Tar! She!",
     "story": "“AH!” Fresh tar has just been laid. She rides the first brand-new bicycle over the NEW road.",
-    "scene": "scene-p02-r01-c03.webp",
+    "scene": "vms-03-atarashii.webp",
     "overlay": "新しい",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "古い|ふるい": {
     "word": "古い",
@@ -52,12 +64,16 @@
     "meaning": "old",
     "soundMnemonic": "Fu • Rule",
     "story": "Master Fu has one ancient rule: everything OLD must be carefully looked after.",
-    "scene": "scene-p02-r01-c04.webp",
+    "scene": "vms-04-furui.webp",
     "overlay": "古い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "長い|ながい": {
     "word": "長い",
@@ -67,12 +83,16 @@
     "meaning": "long",
     "soundMnemonic": "Nag • Guy",
     "story": "Mia nags a guy because his scarf is ridiculously LONG and trails through the whole scene.",
-    "scene": "scene-p02-r01-c05.webp",
+    "scene": "vms-05-nagai.webp",
     "overlay": "長い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "短い|みじかい": {
     "word": "短い",
@@ -82,12 +102,16 @@
     "meaning": "short",
     "soundMnemonic": "Me • Jeep • Kai",
     "story": "Mia and Kai arrive in a Jeep, but Kai is too SHORT to go on the ride.",
-    "scene": "scene-p02-r01-c06.webp",
+    "scene": "vms-06-mijikai.webp",
     "overlay": "短い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "高い|たかい": {
     "word": "高い",
@@ -97,12 +121,16 @@
     "meaning": "high; expensive",
     "soundMnemonic": "Taco • Kai",
     "story": "Kai finds a giant taco HIGH on a skyscraper. Its £500 price makes it very EXPENSIVE too.",
-    "scene": "scene-p02-r01-c01.webp",
+    "scene": "vms-07-takai.webp",
     "overlay": "高い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "安い|やすい": {
     "word": "安い",
@@ -112,12 +140,16 @@
     "meaning": "cheap",
     "soundMnemonic": "Yass! Sweet!",
     "story": "The shopkeeper shouts “YASS! SWEET!” because everything is only £1 and incredibly CHEAP.",
-    "scene": "scene-p02-r01-c02.webp",
+    "scene": "vms-08-yasui.webp",
     "overlay": "安い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "難しい|むずかしい": {
     "word": "難しい",
@@ -127,12 +159,16 @@
     "meaning": "difficult",
     "soundMnemonic": "Moo • Zoo • Cash • She",
     "story": "At the zoo, the cows moo and steal the cash she must collect. The task is extremely DIFFICULT.",
-    "scene": "scene-p01-r01-c09.webp",
+    "scene": "vms-09-muzukashii.webp",
     "overlay": "難しい",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "簡単|かんたん": {
     "word": "簡単",
@@ -142,12 +178,16 @@
     "meaning": "easy; simple",
     "soundMnemonic": "Can • Tan",
     "story": "Kai opens a can of tan paint and finishes the whole wall with one stroke. It was EASY.",
-    "scene": "scene-p01-r01-c10.webp",
+    "scene": "vms-10-kantan.webp",
     "overlay": "簡単",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "早い|はやい": {
     "word": "早い",
@@ -157,12 +197,16 @@
     "meaning": "early; fast",
     "soundMnemonic": "Hi! Hurry!",
     "story": "Everyone shouts “HI! HURRY!” as the rabbit runs FAST and reaches the finish EARLY.",
-    "scene": "scene-p02-r01-c09.webp",
+    "scene": "vms-11-hayai.webp",
     "overlay": "早い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "遅い|おそい": {
     "word": "遅い",
@@ -172,12 +216,16 @@
     "meaning": "late; slow",
     "soundMnemonic": "Oh… So…",
     "story": "Toby the tortoise says “Oh… so…” before every step. He is SLOW and arrives LATE.",
-    "scene": "scene-p02-r01-c10.webp",
+    "scene": "vms-12-osoi.webp",
     "overlay": "遅い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "多い|おおい": {
     "word": "多い",
@@ -187,12 +235,16 @@
     "meaning": "many",
     "soundMnemonic": "Oh! Oh!",
     "story": "Kai opens a treasure chest and shouts “OH! OH!” as MANY coins spill everywhere.",
-    "scene": "scene-p02-r01-c07.webp",
+    "scene": "vms-13-ooi.webp",
     "overlay": "多い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "少ない|すくない": {
     "word": "少ない",
@@ -202,12 +254,16 @@
     "meaning": "few; little",
     "soundMnemonic": "Scoop • Knife",
     "story": "A pirate finds only a FEW biscuits, scoops them up and cuts the final one with a knife.",
-    "scene": "scene-p02-r01-c08.webp",
+    "scene": "vms-14-sukunai.webp",
     "overlay": "少ない",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "良い|よい": {
     "word": "良い",
@@ -217,12 +273,16 @@
     "meaning": "good",
     "soundMnemonic": "Yo!",
     "story": "The chef serves a perfect meal. Everyone gives a thumbs-up and shouts “YO!” It is GOOD.",
-    "scene": "scene-p02-r02-c01.webp",
+    "scene": "vms-15-yoi.webp",
     "overlay": "良い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "悪い|わるい": {
     "word": "悪い",
@@ -232,12 +292,16 @@
     "meaning": "bad",
     "soundMnemonic": "War • Oi!",
     "story": "A pirate starts a food war. Everyone shouts “OI!” as the situation becomes very BAD.",
-    "scene": "scene-p02-r02-c02.webp",
+    "scene": "vms-16-warui.webp",
     "overlay": "悪い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "強い|つよい": {
     "word": "強い",
@@ -247,12 +311,16 @@
     "meaning": "strong",
     "soundMnemonic": "Two • Yoyos",
     "story": "Kai lifts two enormous steel yoyos above his head. He is incredibly STRONG.",
-    "scene": "scene-p02-r02-c03.webp",
+    "scene": "vms-17-tsuyoi.webp",
     "overlay": "強い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "弱い|よわい": {
     "word": "弱い",
@@ -262,12 +330,16 @@
     "meaning": "weak",
     "soundMnemonic": "Yo… Why?",
     "story": "A tiny superhero cannot lift a feather and asks, “Yo… why?” He feels very WEAK.",
-    "scene": "scene-p02-r02-c04.webp",
+    "scene": "vms-18-yowai.webp",
     "overlay": "弱い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "近い|ちかい": {
     "word": "近い",
@@ -277,12 +349,16 @@
     "meaning": "near",
     "soundMnemonic": "Chicken • Kai",
     "story": "A chicken keeps running right up to Kai. It is always very NEAR.",
-    "scene": "scene-p02-r02-c05.webp",
+    "scene": "vms-19-chikai.webp",
     "overlay": "近い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   },
   "遠い|とおい": {
     "word": "遠い",
@@ -292,11 +368,15 @@
     "meaning": "far",
     "soundMnemonic": "Toe • Away",
     "story": "Kai kicks a ball with his toe and watches it fly FAR AWAY over the mountains.",
-    "scene": "scene-p02-r02-c06.webp",
+    "scene": "vms-20-tooi.webp",
     "overlay": "遠い",
     "overlayOpacity": 0.32,
     "overlayAnimation": "fade",
     "pack": "gold-01",
-    "status": "approved"
+    "status": "approved",
+    "imageStatus": "approved",
+    "approvedAt": "2026-07-27",
+    "reviewNote": "Approved from the original 20-card concept sheet.",
+    "imageVersion": 1
   }
 }
