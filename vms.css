@@ -13,3 +13,27 @@
 .vms-overlay.show{opacity:var(--overlay-opacity,.34)}
 .vms-stage-label{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
 .vms-study-preview{max-width:720px;margin:auto}
+
+/* v4.4 preview/readability fixes */
+.vms-reading-panel,
+.vms-memory {
+  background: #ffffff !important;
+  color: #172033 !important;
+}
+.vms-reading-panel span,
+.vms-memory span {
+  color: #526078 !important;
+}
+.vms-reading-panel strong,
+.vms-memory strong,
+.vms-story,
+.vms-sound {
+  color: #172033 !important;
+}
+.vms-overlay {
+  max-width: 100%;
+  max-height: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
