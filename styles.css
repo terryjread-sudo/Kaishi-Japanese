@@ -100,3 +100,10 @@
   text-align:center;
   text-decoration:none;
 }
+
+/* Responsive full-width title artwork. The source is a shallow 16:1 banner,
+   so it scales with the header without cropping the character ensemble. */
+header{
+  background-position:center,center;
+  background-size:cover,100% 100%;
+}
