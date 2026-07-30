@@ -15,6 +15,17 @@
 .picture-choice img{width:100%;aspect-ratio:1.4/1;object-fit:cover;border-radius:12px}
 .picture-choice span{font-size:.85rem}
 @media(max-width:560px){.game-mode-grid,.picture-choices{grid-template-columns:1fr 1fr}.picture-choice span{font-size:.75rem}}
+.listen-prompt{text-align:center;margin:28px 0 8px}
+.listen-prompt h2{margin:8px 0}
+.listen-icon{font-size:4rem;line-height:1}
+.game-feedback{margin-top:24px;padding:18px;border:2px solid #bfdbfe;border-radius:18px;background:#eff6ff;text-align:center}
+.game-feedback[hidden]{display:none}
+.game-result{margin:0;font-size:1.1rem;font-weight:900}
+.game-result-correct{color:#166534}
+.game-result-wrong{color:#991b1b}
+.game-answer .jp{font-size:2.5rem;margin:18px 0 4px}
+.game-answer .meaning{margin-top:10px}
+.game-feedback .reveal{margin-top:14px}
 
 /* v4.0 direct standalone scene images */
 .scene-image{

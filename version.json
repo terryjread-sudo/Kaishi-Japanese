@@ -1,12 +1,12 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "released": "2026-07-30",
-  "title": "Phonetic visual mnemonic library",
+  "title": "Reviewable picture and listening games",
   "changes": [
-    "Recreated all 128 mnemonic images in a consistent comic style.",
-    "Each memory scene now combines a pronunciation cue with the word meaning.",
-    "Approved the complete Gold-50 visual mnemonic set for learner use.",
-    "Removed the standalone known-word story mode."
+    "Added a Listen to Meaning game with illustrated English choices.",
+    "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
+    "Learners choose when to move to the next question instead of being advanced automatically.",
+    "Removed the Picture to Meaning game."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,

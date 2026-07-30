@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='5.0.0';
+const APP_VERSION='5.1.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
@@ -117,7 +117,7 @@ function renderCurrentUnsafe(){
  current=session[index];
  const game=current.skill==='picture'&&pictureGameActive;
  $('#exitBtn').textContent=game?'← Game menu':'← Exit';
- $('#sessionCounter').setAttribute('aria-label',game?'Picture Match progress':'Study progress');revealed=false;hintUsed=false;startedAt=Date.now();const {v,skill}=current;$('#sessionCounter').textContent=`${index+1}/${session.length}`;$('#progressFill').style.width=`${index/session.length*100}%`;const c=$('#card');
+ $('#sessionCounter').setAttribute('aria-label',game?'Game progress':'Study progress');revealed=false;hintUsed=false;startedAt=Date.now();const {v,skill}=current;$('#sessionCounter').textContent=`${index+1}/${session.length}`;$('#progressFill').style.width=`${index/session.length*100}%`;const c=$('#card');
 if(skill==='intro'){c.innerHTML=`<div class="eyebrow">Meet the word</div><div class="jp">${v.word}</div><div class="reading">${v.reading}</div><div class="meaning">${v.meaning}</div>${visual(v)}${memorySupport(v)}<button id="introAudio" class="audio">🔊 Play word</button><button id="continueBtn" class="primary reveal">Got it →</button>`;if(settings.autoAudio)play(v.wordAudio);$('#introAudio').onclick=()=>play(v.wordAudio);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
 if(skill==='meaning')recallCard(v,'What does this mean?',v.word,`${v.meaning}<div class="reading">${v.reading}</div>`,skill);
 if(skill==='production')recallCard(v,'Recall the Japanese word',v.meaning,`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div>`,skill);
@@ -143,12 +143,33 @@ function renderCurrent(){
 function recallCard(v,title,front,answer,skill){$('#card').innerHTML=`<div class="eyebrow">Active recall</div><h2>${title}</h2><div class="jp">${front}</div><button id="hintBtn" class="hint">Show memory hint</button><div id="answer" hidden><hr>${answer}${visual(v)}${memorySupport(v)}<button class="audio" id="answerAudio">🔊 Play audio</button></div><button id="revealBtn" class="primary reveal">Reveal answer</button><div id="ratingsWrap" hidden><p class="rating-title">How easily did you remember this <em>before</em> revealing the answer?</p><div id="ratings" class="ratings"><button class="again" data-rating="1">Again</button><button class="hard" data-rating="2">Hard</button><button class="good" data-rating="3">Good</button><button class="easy" data-rating="4">Easy</button></div></div>`;$('#hintBtn').onclick=()=>showHint(v);$('#revealBtn').onclick=()=>{$('#answer').hidden=false;$('#ratingsWrap').hidden=false;$('#revealBtn').hidden=true;$('#answerAudio').onclick=()=>play(v.wordAudio);wireMemoryEditor(v);wireSceneImages($('#answer'))};document.querySelectorAll('[data-rating]').forEach(b=>b.onclick=()=>grade(v,skill,+b.dataset.rating,+b.dataset.rating>=3))}
 function showHint(v){hintUsed=true;const s=memoryScenes[sceneKey(v)];alert(s?s.caption:mnemonic(v))}
 function bindChoices(answer,skill,onReveal){document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(revealed)return;revealed=true;const val=decodeURIComponent(b.dataset.answer);const ok=val===answer;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('.choice').forEach(x=>{if(decodeURIComponent(x.dataset.answer)===answer)x.classList.add('correct');x.disabled=true});if(onReveal)onReveal(ok);setTimeout(()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),900)})}
-function grade(v,skill,rating,correct){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();next()}
+function bindGameChoices(answer,v){
+ document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+  if(revealed)return;
+  revealed=true;
+  const val=decodeURIComponent(b.dataset.answer),ok=val===answer;
+  b.classList.add(ok?'correct':'wrong');
+  document.querySelectorAll('.choice').forEach(x=>{
+   if(decodeURIComponent(x.dataset.answer)===answer)x.classList.add('correct');
+   x.disabled=true;
+  });
+  grade(v,'picture',ok?3:1,ok,false);
+  const feedback=$('#gameFeedback');
+  feedback.innerHTML=`<p class="game-result ${ok?'game-result-correct':'game-result-wrong'}">${ok?'Correct!':'Not quite — here is the answer.'}</p><div class="game-answer"><div class="jp">${esc(v.word)}</div><div class="reading">${esc(v.reading)}</div><div class="meaning">${esc(v.meaning)}</div></div>${v.wordAudio?'<button id="gameAnswerAudio" class="audio">🔊 Play Japanese audio</button>':'<p class="muted">Audio is not available for this word.</p>'}<button id="gameNext" class="primary reveal">${index===session.length-1?'Finish game':'Next question →'}</button>`;
+  feedback.hidden=false;
+  const audio=$('#gameAnswerAudio');
+  if(audio)audio.onclick=()=>play(v.wordAudio);
+  $('#gameNext').onclick=next;
+  feedback.scrollIntoView({behavior:'smooth',block:'nearest'});
+  $('#gameNext').focus({preventScroll:true});
+ });
+}
+function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();if(advance)next()}
 function next(){index++;renderCurrent()}
-function finishSession(){if(pictureGameActive){abortSession('games');toast('Picture Match complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
+function finishSession(){if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
-function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)])}
+function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
 function pictureChoices(v,n){
  const pool=shuffle(illustratedWords().filter(x=>x.id!==v.id));
  return shuffle([v,...pool.slice(0,Math.max(1,n-1))]);
@@ -159,24 +180,29 @@ function renderPictureQuestion(v,mode='picture-word'){
  let prompt='',answer='',buttons='';
  if(mode==='picture-word'){
   prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which word matches this picture?</h2>`;
-  answer=v.word;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.word)}">${x.word}</button>`).join('');
+  answer=v.id;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.id)}">${esc(x.word)}</button>`).join('');
  }else if(mode==='picture-reading'){
   prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which reading matches this picture?</h2>`;
-  answer=v.reading;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.reading)}">${x.reading}</button>`).join('');
- }else if(mode==='picture-meaning'){
-  prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which meaning matches this picture?</h2>`;
-  answer=v.meaning;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.meaning)}">${x.meaning}</button>`).join('');
+  answer=v.id;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.id)}">${esc(x.reading)}</button>`).join('');
+ }else if(mode==='listen-meaning'){
+  prompt=`<div class="listen-prompt"><div class="listen-icon" aria-hidden="true">🔊</div><h2>Listen and choose the English meaning</h2><button id="gameReplayAudio" class="audio primary">Play Japanese word</button></div>`;
+  answer=v.id;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class="choice picture-choice" data-answer="${encodeURIComponent(x.id)}">${sceneSprite(s,'choice-sprite')}<span>${esc(x.meaning)}</span></button>`}).join('');
  }else{
-  prompt=`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div><h2>Choose the matching picture</h2>`;
-  answer=`${scene.pack}:${scene.row}:${scene.col}`;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class=\"choice picture-choice\" data-answer=\"${encodeURIComponent(`${s.pack}:${s.row}:${s.col}`)}\">${sceneSprite(s,'choice-sprite')}<span>${x.meaning}</span></button>`}).join('');
+  prompt=`<div class="jp">${esc(v.word)}</div><div class="reading">${esc(v.reading)}</div><h2>Choose the matching picture</h2>`;
+  answer=v.id;buttons=choices.map(x=>{const s=memoryScenes[sceneKey(x)];return `<button class="choice picture-choice" data-answer="${encodeURIComponent(x.id)}">${sceneSprite(s,'choice-sprite')}<span>${esc(x.meaning)}</span></button>`}).join('');
  }
- c.innerHTML=`<div class="eyebrow">Picture Match</div>${prompt}<div class="choices picture-choices">${buttons}</div>`;
+ c.innerHTML=`<div class="eyebrow">Vocabulary game</div>${prompt}<div class="choices picture-choices">${buttons}</div><section id="gameFeedback" class="game-feedback" aria-live="polite" hidden></section>`;
  wireSceneImages(c);
- bindChoices(answer,'picture');
+ bindGameChoices(answer,v);
+ const replay=$('#gameReplayAudio');
+ if(replay){
+  replay.onclick=()=>play(v.wordAudio);
+  play(v.wordAudio);
+ }
 }
 async function startPictureGame(mode){
  abortSession('games');
- const all=illustratedWords().filter(v=>memoryScenes[sceneKey(v)]?.file);
+ const all=illustratedWords().filter(v=>mode!=='listen-meaning'||v.wordAudio);
  if(all.length<2){toast('More illustrated vocabulary is needed');return}
 
  const pool=shuffle(all.filter(v=>progress[v.id]?.stage>=1));
