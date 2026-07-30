@@ -13,7 +13,10 @@
       "story": "A giant golden key is so BIG that Kai and Mia can barely see its top.",
       "target": "gold-01-ookii.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p01-r01-c01.webp"
+      ]
     },
     {
       "number": 2,
@@ -26,7 +29,10 @@
       "story": "A tiny cheese wheel with one little eye is so SMALL that it fits in Kai's hand.",
       "target": "gold-02-chiisai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p01-r01-c02.webp"
+      ]
     },
     {
       "number": 3,
@@ -39,7 +45,10 @@
       "story": "Mia opens a shiny NEW box and shouts, 'Ah! Tar! She found it!'",
       "target": "gold-03-atarashii.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c03.webp"
+      ]
     },
     {
       "number": 4,
@@ -52,7 +61,10 @@
       "story": "Master Fu points at an OLD clock and explains the ancient Foo Rule.",
       "target": "gold-04-furui.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c04.webp"
+      ]
     },
     {
       "number": 5,
@@ -65,7 +77,10 @@
       "story": "A nagging guy stretches a ribbon so LONG that it crosses the whole valley.",
       "target": "gold-05-nagai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c05.webp"
+      ]
     },
     {
       "number": 6,
@@ -78,7 +93,10 @@
       "story": "Kai is too SHORT to see over the jeep, so Mia lifts him up.",
       "target": "gold-06-mijikai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c06.webp"
+      ]
     },
     {
       "number": 7,
@@ -91,7 +109,10 @@
       "story": "Captain Taco holds a taco HIGH above Kai's head.",
       "target": "gold-07-takai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c01.webp"
+      ]
     },
     {
       "number": 8,
@@ -104,7 +125,10 @@
       "story": "Mia spots a huge sale and shouts 'YASS!' because everything is CHEAP.",
       "target": "gold-08-yasui.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c02.webp"
+      ]
     },
     {
       "number": 9,
@@ -117,7 +141,10 @@
       "story": "At the zoo, Mia must count cow cash; it is very DIFFICULT.",
       "target": "gold-09-muzukashii.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p01-r01-c09.webp"
+      ]
     },
     {
       "number": 10,
@@ -130,7 +157,10 @@
       "story": "Can Tan paints the whole wall instantly because the job is EASY.",
       "target": "gold-10-kantan.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p01-r01-c10.webp"
+      ]
     },
     {
       "number": 11,
@@ -143,7 +173,10 @@
       "story": "A rabbit shouts 'HI-YA!' and races away FAST.",
       "target": "gold-11-hayai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c09.webp"
+      ]
     },
     {
       "number": 12,
@@ -156,7 +189,10 @@
       "story": "Kai says, 'Oh, so slow,' while waiting for the tortoise.",
       "target": "gold-12-osoi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c10.webp"
+      ]
     },
     {
       "number": 13,
@@ -169,7 +205,10 @@
       "story": "Treasure spills everywhere because there is SO MUCH of it.",
       "target": "gold-13-ooi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c07.webp"
+      ]
     },
     {
       "number": 14,
@@ -182,7 +221,10 @@
       "story": "Only a FEW chicks remain, so Captain Taco tells them to scoot together.",
       "target": "gold-14-sukunai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r01-c08.webp"
+      ]
     },
     {
       "number": 15,
@@ -195,7 +237,10 @@
       "story": "Kai tastes the perfect meal and says, 'Yo! This is GOOD!'",
       "target": "gold-15-yoi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r02-c01.webp"
+      ]
     },
     {
       "number": 16,
@@ -208,7 +253,10 @@
       "story": "A wild food fight turns the dining room BAD.",
       "target": "gold-16-warui.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r02-c02.webp"
+      ]
     },
     {
       "number": 17,
@@ -221,7 +269,10 @@
       "story": "Kai lifts two giant toy weights because he is STRONG.",
       "target": "gold-17-tsuyoi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r02-c03.webp"
+      ]
     },
     {
       "number": 18,
@@ -234,7 +285,10 @@
       "story": "A superhero whispers, 'Yo, why am I so WEAK today?'",
       "target": "gold-18-yowai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r02-c04.webp"
+      ]
     },
     {
       "number": 19,
@@ -247,7 +301,10 @@
       "story": "A chicken stands very NEAR Kai and pecks his shoe.",
       "target": "gold-19-chikai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r02-c05.webp"
+      ]
     },
     {
       "number": 20,
@@ -260,7 +317,10 @@
       "story": "Kai kicks the ball so FAR AWAY that it vanishes over the hill.",
       "target": "gold-20-tooi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r02-c06.webp"
+      ]
     },
     {
       "number": 21,
@@ -455,7 +515,10 @@
       "story": "At NIGHT, Mia lights a tiny lantern outside the tent.",
       "target": "gold-26-yoru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p02-r04-c01.webp"
+      ]
     },
     {
       "number": 36,
@@ -832,7 +895,10 @@
       "story": "Two crew members MAKE a little machine together.",
       "target": "gold-42-tsukuru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p03-r01-c09.webp"
+      ]
     },
     {
       "number": 65,
@@ -871,7 +937,10 @@
       "story": "Master Fu uses a giant brush to WRITE a message.",
       "target": "gold-38-kaku.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p03-r02-c04.webp"
+      ]
     },
     {
       "number": 68,
@@ -1079,7 +1148,10 @@
       "story": "Kai WALKS down the path carrying a chess rook.",
       "target": "gold-45-aruku.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p03-r03-c10.webp"
+      ]
     },
     {
       "number": 84,
@@ -1092,7 +1164,10 @@
       "story": "Kai shouts 'Hash, run!' and sprints down the track.",
       "target": "gold-27-hashiru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "installed"
+      "status": "installed",
+      "aliases": [
+        "scene-p03-r04-c01.webp"
+      ]
     },
     {
       "number": 85,
