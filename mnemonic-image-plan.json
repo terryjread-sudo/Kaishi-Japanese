@@ -1144,7 +1144,7 @@
       "story": "OLLIE GETS OFF a train and steps onto the platform.",
       "target": "scene-p03-r04-c05.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 89,
@@ -1157,7 +1157,7 @@
       "story": "A clever COW BUYS a basket of apples at a market.",
       "target": "scene-p03-r04-c06.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 90,
@@ -1170,7 +1170,7 @@
       "story": "A shopkeeper OWL SELLS colourful lanterns.",
       "target": "scene-p03-r04-c07.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 91,
@@ -1183,7 +1183,7 @@
       "story": "HARU PAYS the cashier with a fan of coins and notes.",
       "target": "scene-p03-r04-c08.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 92,
@@ -1196,7 +1196,7 @@
       "story": "Kai WAITS patiently on a welcome MAT beside a giant clock.",
       "target": "scene-p03-r04-c09.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 93,
@@ -1209,7 +1209,7 @@
       "story": "Mia shouts “E—SO GO!” as Kai HURRIES to catch a departing train.",
       "target": "scene-p03-r04-c10.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 94,
@@ -1222,7 +1222,7 @@
       "story": "“OH, SHE YELLS!” says Kai as Mia TEACHES a lively class.",
       "target": "scene-p03-r05-c01.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 95,
@@ -1235,7 +1235,7 @@
       "story": "“OH, SO WE LEARN!” says Kai while being TAUGHT by a patient teacher.",
       "target": "scene-p03-r05-c02.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 96,
@@ -1248,7 +1248,7 @@
       "story": "A TASK HERO rushes in to HELP Kai lift a fallen tree.",
       "target": "scene-p03-r05-c03.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 97,
@@ -1261,7 +1261,7 @@
       "story": "Kai and Mia accidentally bump heads—“OW!”—when they MEET.",
       "target": "scene-p03-r05-c04.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 98,
@@ -1274,7 +1274,7 @@
       "story": "Two friends say goodbye and WALK AWAY in opposite directions to SEPARATE.",
       "target": "scene-p03-r05-c05.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 99,
@@ -1287,7 +1287,7 @@
       "story": "A glowing GENIE emerges from Kai’s SHIN guard, and Kai BELIEVES the impossible.",
       "target": "scene-p03-r05-c06.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 100,
@@ -1300,7 +1300,7 @@
       "story": "Kai LOVES his bright red SKIS and hugs them happily.",
       "target": "scene-p03-r05-c07.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 101,
@@ -1313,7 +1313,7 @@
       "story": "Mia DISLIKES a crooked KEY that keeps LYING about which lock it opens.",
       "target": "scene-p03-r05-c08.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 102,
@@ -1326,7 +1326,7 @@
       "story": "A falling acorn HITS YOU, proving a safety helmet is NECESSARY.",
       "target": "scene-p03-r05-c09.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 103,
@@ -1339,7 +1339,7 @@
       "story": "Kai protects a treasured TIE SET in a glass case because it is IMPORTANT.",
       "target": "scene-p03-r05-c10.webp",
       "sourceSystem": "memory-scenes",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 104,
@@ -1352,7 +1352,7 @@
       "story": "Mia points up and cries, 'Ho! She shines!' as a bright STAR appears.",
       "target": "gold-21-hoshi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 105,
@@ -1365,7 +1365,7 @@
       "story": "Kai gets ANGRY when someone steals his warm soup.",
       "target": "gold-22-okoru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 106,
@@ -1378,7 +1378,7 @@
       "story": "Captain Taco tastes SPICY noodles and starts to cry.",
       "target": "gold-23-karai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 107,
@@ -1391,7 +1391,7 @@
       "story": "Sam slides through the snow shouting 'Whee!' because it is COLD.",
       "target": "gold-24-samui.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 108,
@@ -1404,7 +1404,7 @@
       "story": "Kai fans himself and says, 'Ah! Too sunny!' because it is HOT.",
       "target": "gold-25-atsui.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 109,
@@ -1417,7 +1417,7 @@
       "story": "A TURTLE slowly comes when Kai calls, 'Come!'",
       "target": "gold-28-kame.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 110,
@@ -1430,7 +1430,7 @@
       "story": "A giant MOUNTAIN echoes everyone's yammering voices.",
       "target": "gold-29-yama.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 111,
@@ -1443,7 +1443,7 @@
       "story": "A surprised cow stands beside the flowing RIVER.",
       "target": "gold-30-kawa.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 112,
@@ -1456,7 +1456,7 @@
       "story": "Kai points HERE to the cocoa cup.",
       "target": "gold-31-koko.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 113,
@@ -1469,7 +1469,7 @@
       "story": "Mia points OVER THERE at a giant lost sock.",
       "target": "gold-32-asoko.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 114,
@@ -1482,7 +1482,7 @@
       "story": "A CHICKEN balances near water and a tree beside Kai's knee.",
       "target": "gold-33-niwatori.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 115,
@@ -1495,7 +1495,7 @@
       "story": "Mia rows toward a huge CASTLE.",
       "target": "gold-34-shiro.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 116,
@@ -1508,7 +1508,7 @@
       "story": "A friendly ELEPHANT waves at Kai in the zoo.",
       "target": "gold-35-zou.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 117,
@@ -1521,7 +1521,7 @@
       "story": "A tiny MOUSE zooms past with its nose in the air.",
       "target": "gold-36-nezumi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 118,
@@ -1534,7 +1534,7 @@
       "story": "Kai asks, 'Can that guy THINK of a solution?'",
       "target": "gold-37-kangaeru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 119,
@@ -1547,7 +1547,7 @@
       "story": "Kai suddenly UNDERSTANDS while walking along the path.",
       "target": "gold-39-wakaru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 120,
@@ -1560,7 +1560,7 @@
       "story": "Mia asks where she went; Kai says, 'I DON'T KNOW.'",
       "target": "gold-40-shiranai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 121,
@@ -1573,7 +1573,7 @@
       "story": "Mia tastes a giant lollipop and says, 'Ah, my! So SWEET!'",
       "target": "gold-41-amai.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 122,
@@ -1586,7 +1586,7 @@
       "story": "Kai flexes with incredible STRENGTH beside a cheering chicken.",
       "target": "gold-43-chikara.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 123,
@@ -1599,7 +1599,7 @@
       "story": "Kai collapses because he is TIRED after carrying too much.",
       "target": "gold-44-tsukareru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 124,
@@ -1612,7 +1612,7 @@
       "story": "Mia holds a cup of tea in her HAND.",
       "target": "gold-46-te.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 125,
@@ -1625,7 +1625,7 @@
       "story": "Kai jumps up full of ENERGY after finding the key again.",
       "target": "gold-47-genki.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 126,
@@ -1638,7 +1638,7 @@
       "story": "Mia GIVES Kai a present.",
       "target": "gold-48-ageru.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 127,
@@ -1651,7 +1651,7 @@
       "story": "Hannah proudly holds a beautiful FLOWER.",
       "target": "gold-49-hana.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     },
     {
       "number": 128,
@@ -1664,7 +1664,7 @@
       "story": "Kai and Mia meet on a winding ROAD.",
       "target": "gold-50-michi.webp",
       "sourceSystem": "visual-mnemonics",
-      "status": "needs-new-art"
+      "status": "installed"
     }
   ]
 }

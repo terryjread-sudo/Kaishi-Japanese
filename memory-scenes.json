@@ -3,927 +3,1030 @@
     "pack": 1,
     "row": 0,
     "col": 0,
-    "alt": "Anime-style scene for 大きい, read おおきい, meaning big.",
-    "caption": "Connect おおきい with “big”.",
+    "alt": "Mnemonic scene for 大きい, read おおきい, meaning big.",
+    "caption": "A giant golden key is so BIG that Kai and Mia can barely see its top.",
     "meaning": "big",
-    "file": "scene-p01-r01-c01.webp"
+    "file": "scene-p01-r01-c01.webp",
+    "soundMnemonic": "Oh! Oh! Key!"
   },
   "小さい|ちいさい": {
     "pack": 1,
     "row": 0,
     "col": 1,
-    "alt": "Anime-style scene for 小さい, read ちいさい, meaning small.",
-    "caption": "Connect ちいさい with “small”.",
+    "alt": "Mnemonic scene for 小さい, read ちいさい, meaning small.",
+    "caption": "A tiny cheese wheel with one little eye is so SMALL that it fits in Kai's hand.",
     "meaning": "small",
-    "file": "scene-p01-r01-c02.webp"
+    "file": "scene-p01-r01-c02.webp",
+    "soundMnemonic": "Cheese eye"
   },
   "新しい|あたらしい": {
     "pack": 2,
     "row": 0,
     "col": 2,
-    "alt": "Anime-style scene for 新しい, read あたらしい, meaning new.",
-    "caption": "Connect あたらしい with “new”.",
+    "alt": "Mnemonic scene for 新しい, read あたらしい, meaning new.",
+    "caption": "Mia opens a shiny NEW box and shouts, 'Ah! Tar! She found it!'",
     "meaning": "new",
-    "file": "scene-p02-r01-c03.webp"
+    "file": "scene-p02-r01-c03.webp",
+    "soundMnemonic": "Ah! Tar! She!"
   },
   "古い|ふるい": {
     "pack": 2,
     "row": 0,
     "col": 3,
-    "alt": "Anime-style scene for 古い, read ふるい, meaning old.",
-    "caption": "Connect ふるい with “old”.",
+    "alt": "Mnemonic scene for 古い, read ふるい, meaning old.",
+    "caption": "Master Fu points at an OLD clock and explains the ancient Foo Rule.",
     "meaning": "old",
-    "file": "scene-p02-r01-c04.webp"
+    "file": "scene-p02-r01-c04.webp",
+    "soundMnemonic": "Foo rule"
   },
   "長い|ながい": {
     "pack": 2,
     "row": 0,
     "col": 4,
-    "alt": "Anime-style scene for 長い, read ながい, meaning long.",
-    "caption": "Connect ながい with “long”.",
+    "alt": "Mnemonic scene for 長い, read ながい, meaning long.",
+    "caption": "A nagging guy stretches a ribbon so LONG that it crosses the whole valley.",
     "meaning": "long",
-    "file": "scene-p02-r01-c05.webp"
+    "file": "scene-p02-r01-c05.webp",
+    "soundMnemonic": "Nag guy"
   },
   "短い|みじかい": {
     "pack": 2,
     "row": 0,
     "col": 5,
-    "alt": "Anime-style scene for 短い, read みじかい, meaning short.",
-    "caption": "Connect みじかい with “short”.",
+    "alt": "Mnemonic scene for 短い, read みじかい, meaning short.",
+    "caption": "Kai is too SHORT to see over the jeep, so Mia lifts him up.",
     "meaning": "short",
-    "file": "scene-p02-r01-c06.webp"
+    "file": "scene-p02-r01-c06.webp",
+    "soundMnemonic": "Me, jeep, Kai"
   },
   "高い|たかい": {
     "pack": 2,
     "row": 0,
     "col": 0,
-    "alt": "Anime-style scene for 高い, read たかい, meaning high; expensive.",
-    "caption": "Connect たかい with “high; expensive”.",
+    "alt": "Mnemonic scene for 高い, read たかい, meaning high, expensive.",
+    "caption": "Captain Taco holds a taco HIGH above Kai's head.",
     "meaning": "high; expensive",
-    "file": "scene-p02-r01-c01.webp"
+    "file": "scene-p02-r01-c01.webp",
+    "soundMnemonic": "Taco Kai"
   },
   "安い|やすい": {
     "pack": 2,
     "row": 0,
     "col": 1,
-    "alt": "Anime-style scene for 安い, read やすい, meaning cheap.",
-    "caption": "Connect やすい with “cheap”.",
+    "alt": "Mnemonic scene for 安い, read やすい, meaning cheap.",
+    "caption": "Mia spots a huge sale and shouts 'YASS!' because everything is CHEAP.",
     "meaning": "cheap",
-    "file": "scene-p02-r01-c02.webp"
+    "file": "scene-p02-r01-c02.webp",
+    "soundMnemonic": "YASS!"
   },
   "難しい|むずかしい": {
     "pack": 1,
     "row": 0,
     "col": 8,
-    "alt": "Anime-style scene for 難しい, read むずかしい, meaning difficult.",
-    "caption": "Connect むずかしい with “difficult”.",
+    "alt": "Mnemonic scene for 難しい, read むずかしい, meaning difficult.",
+    "caption": "At the zoo, Mia must count cow cash; it is very DIFFICULT.",
     "meaning": "difficult",
-    "file": "scene-p01-r01-c09.webp"
+    "file": "scene-p01-r01-c09.webp",
+    "soundMnemonic": "Moo zoo cash she"
   },
   "簡単|かんたん": {
     "pack": 1,
     "row": 0,
     "col": 9,
-    "alt": "Anime-style scene for 簡単, read かんたん, meaning easy; simple.",
-    "caption": "Connect かんたん with “easy; simple”.",
+    "alt": "Mnemonic scene for 簡単, read かんたん, meaning easy, simple.",
+    "caption": "Can Tan paints the whole wall instantly because the job is EASY.",
     "meaning": "easy; simple",
-    "file": "scene-p01-r01-c10.webp"
+    "file": "scene-p01-r01-c10.webp",
+    "soundMnemonic": "Can tan"
   },
   "早い|はやい": {
     "pack": 2,
     "row": 0,
     "col": 8,
-    "alt": "Anime-style scene for 早い, read はやい, meaning early; fast.",
-    "caption": "Connect はやい with “early; fast”.",
+    "alt": "Mnemonic scene for 早い, read はやい, meaning early, fast.",
+    "caption": "A rabbit shouts 'HI-YA!' and races away FAST.",
     "meaning": "early; fast",
-    "file": "scene-p02-r01-c09.webp"
+    "file": "scene-p02-r01-c09.webp",
+    "soundMnemonic": "Hi-ya!"
   },
   "遅い|おそい": {
     "pack": 2,
     "row": 0,
     "col": 9,
-    "alt": "Anime-style scene for 遅い, read おそい, meaning late; slow.",
-    "caption": "Connect おそい with “late; slow”.",
+    "alt": "Mnemonic scene for 遅い, read おそい, meaning late, slow.",
+    "caption": "Kai says, 'Oh, so slow,' while waiting for the tortoise.",
     "meaning": "late; slow",
-    "file": "scene-p02-r01-c10.webp"
+    "file": "scene-p02-r01-c10.webp",
+    "soundMnemonic": "Oh, so slow"
   },
   "多い|おおい": {
     "pack": 2,
     "row": 0,
     "col": 6,
-    "alt": "Anime-style scene for 多い, read おおい, meaning many.",
-    "caption": "Connect おおい with “many”.",
+    "alt": "Mnemonic scene for 多い, read おおい, meaning many.",
+    "caption": "Treasure spills everywhere because there is SO MUCH of it.",
     "meaning": "many",
-    "file": "scene-p02-r01-c07.webp"
+    "file": "scene-p02-r01-c07.webp",
+    "soundMnemonic": "Oh! Overflowing!"
   },
   "少ない|すくない": {
     "pack": 2,
     "row": 0,
     "col": 7,
-    "alt": "Anime-style scene for 少ない, read すくない, meaning few; little.",
-    "caption": "Connect すくない with “few; little”.",
+    "alt": "Mnemonic scene for 少ない, read すくない, meaning few.",
+    "caption": "Only a FEW chicks remain, so Captain Taco tells them to scoot together.",
     "meaning": "few; little",
-    "file": "scene-p02-r01-c08.webp"
+    "file": "scene-p02-r01-c08.webp",
+    "soundMnemonic": "Scoot, no eye"
   },
   "良い|よい": {
     "pack": 2,
     "row": 1,
     "col": 0,
-    "alt": "Anime-style scene for 良い, read よい, meaning good.",
-    "caption": "Connect よい with “good”.",
+    "alt": "Mnemonic scene for 良い, read よい, meaning good.",
+    "caption": "Kai tastes the perfect meal and says, 'Yo! This is GOOD!'",
     "meaning": "good",
-    "file": "scene-p02-r02-c01.webp"
+    "file": "scene-p02-r02-c01.webp",
+    "soundMnemonic": "Yo! Excellent!"
   },
   "悪い|わるい": {
     "pack": 2,
     "row": 1,
     "col": 1,
-    "alt": "Anime-style scene for 悪い, read わるい, meaning bad.",
-    "caption": "Connect わるい with “bad”.",
+    "alt": "Mnemonic scene for 悪い, read わるい, meaning bad.",
+    "caption": "A wild food fight turns the dining room BAD.",
     "meaning": "bad",
-    "file": "scene-p02-r02-c02.webp"
+    "file": "scene-p02-r02-c02.webp",
+    "soundMnemonic": "War food"
   },
   "強い|つよい": {
     "pack": 2,
     "row": 1,
     "col": 2,
-    "alt": "Anime-style scene for 強い, read つよい, meaning strong.",
-    "caption": "Connect つよい with “strong”.",
+    "alt": "Mnemonic scene for 強い, read つよい, meaning strong.",
+    "caption": "Kai lifts two giant toy weights because he is STRONG.",
     "meaning": "strong",
-    "file": "scene-p02-r02-c03.webp"
+    "file": "scene-p02-r02-c03.webp",
+    "soundMnemonic": "Two strong toys"
   },
   "弱い|よわい": {
     "pack": 2,
     "row": 1,
     "col": 3,
-    "alt": "Anime-style scene for 弱い, read よわい, meaning weak.",
-    "caption": "Connect よわい with “weak”.",
+    "alt": "Mnemonic scene for 弱い, read よわい, meaning weak.",
+    "caption": "A superhero whispers, 'Yo, why am I so WEAK today?'",
     "meaning": "weak",
-    "file": "scene-p02-r02-c04.webp"
+    "file": "scene-p02-r02-c04.webp",
+    "soundMnemonic": "Yo, why weak?"
   },
   "近い|ちかい": {
     "pack": 2,
     "row": 1,
     "col": 4,
-    "alt": "Anime-style scene for 近い, read ちかい, meaning near.",
-    "caption": "Connect ちかい with “near”.",
+    "alt": "Mnemonic scene for 近い, read ちかい, meaning near.",
+    "caption": "A chicken stands very NEAR Kai and pecks his shoe.",
     "meaning": "near",
-    "file": "scene-p02-r02-c05.webp"
+    "file": "scene-p02-r02-c05.webp",
+    "soundMnemonic": "Chicken Kai"
   },
   "遠い|とおい": {
     "pack": 2,
     "row": 1,
     "col": 5,
-    "alt": "Anime-style scene for 遠い, read とおい, meaning far.",
-    "caption": "Connect とおい with “far”.",
+    "alt": "Mnemonic scene for 遠い, read とおい, meaning far.",
+    "caption": "Kai kicks the ball so FAR AWAY that it vanishes over the hill.",
     "meaning": "far",
-    "file": "scene-p02-r02-c06.webp"
+    "file": "scene-p02-r02-c06.webp",
+    "soundMnemonic": "Toe away"
   },
   "前|まえ": {
     "pack": 2,
     "row": 2,
     "col": 2,
-    "alt": "Anime-style scene for 前, read まえ, meaning front; before.",
-    "caption": "Connect まえ with “front; before”.",
+    "alt": "Mnemonic scene for 前, read まえ, meaning front; before.",
+    "caption": "Kai stands in FRONT of MY house, pointing proudly to himself and the front door.",
     "meaning": "front; before",
-    "file": "scene-p02-r03-c03.webp"
+    "file": "scene-p02-r03-c03.webp",
+    "soundMnemonic": "My"
   },
   "後ろ|うしろ": {
     "pack": 2,
     "row": 2,
     "col": 3,
-    "alt": "Anime-style scene for 後ろ, read うしろ, meaning behind; back.",
-    "caption": "Connect うしろ with “behind; back”.",
+    "alt": "Mnemonic scene for 後ろ, read うしろ, meaning behind; back.",
+    "caption": "Mia rows a tiny boat BEHIND Kai while he looks the other way and cries, “Ooh, she rows!”",
     "meaning": "behind; back",
-    "file": "scene-p02-r03-c04.webp"
+    "file": "scene-p02-r03-c04.webp",
+    "soundMnemonic": "Ooh, she rows"
   },
   "左|ひだり": {
     "pack": 2,
     "row": 1,
     "col": 6,
-    "alt": "Anime-style scene for 左, read ひだり, meaning left.",
-    "caption": "Connect ひだり with “left”.",
+    "alt": "Mnemonic scene for 左, read ひだり, meaning left.",
+    "caption": "Kai turns LEFT down a spooky path because HE DARED to take the scarier direction.",
     "meaning": "left",
-    "file": "scene-p02-r02-c07.webp"
+    "file": "scene-p02-r02-c07.webp",
+    "soundMnemonic": "He dared"
   },
   "右|みぎ": {
     "pack": 2,
     "row": 1,
     "col": 7,
-    "alt": "Anime-style scene for 右, read みぎ, meaning right.",
-    "caption": "Connect みぎ with “right”.",
+    "alt": "Mnemonic scene for 右, read みぎ, meaning right.",
+    "caption": "MIA GIVES Kai a present with her RIGHT hand while a bright arrow points right.",
     "meaning": "right",
-    "file": "scene-p02-r02-c08.webp"
+    "file": "scene-p02-r02-c08.webp",
+    "soundMnemonic": "Mia gives"
   },
   "上|うえ": {
     "pack": 2,
     "row": 1,
     "col": 8,
-    "alt": "Anime-style scene for 上, read うえ, meaning up; above.",
-    "caption": "Connect うえ with “up; above”.",
+    "alt": "Mnemonic scene for 上, read うえ, meaning up; above.",
+    "caption": "Kai looks WAY UP at Mia floating ABOVE him in a balloon.",
     "meaning": "up; above",
-    "file": "scene-p02-r02-c09.webp"
+    "file": "scene-p02-r02-c09.webp",
+    "soundMnemonic": "Way up"
   },
   "下|した": {
     "pack": 2,
     "row": 1,
     "col": 9,
-    "alt": "Anime-style scene for 下, read した, meaning down; below.",
-    "caption": "Connect した with “down; below”.",
+    "alt": "Mnemonic scene for 下, read した, meaning down; below.",
+    "caption": "A striped SHEET is tucked UNDER a table while Kai points DOWN to it.",
     "meaning": "down; below",
-    "file": "scene-p02-r02-c10.webp"
+    "file": "scene-p02-r02-c10.webp",
+    "soundMnemonic": "Sheet under"
   },
   "中|なか": {
     "pack": 2,
     "row": 2,
     "col": 0,
-    "alt": "Anime-style scene for 中, read なか, meaning inside; middle.",
-    "caption": "Connect なか with “inside; middle”.",
+    "alt": "Mnemonic scene for 中, read なか, meaning inside; middle.",
+    "caption": "Kai finds a giant door KNOCKER in the exact MIDDLE of a room INSIDE a castle.",
     "meaning": "inside; middle",
-    "file": "scene-p02-r03-c01.webp"
+    "file": "scene-p02-r03-c01.webp",
+    "soundMnemonic": "Knocker"
   },
   "外|そと": {
     "pack": 2,
     "row": 2,
     "col": 1,
-    "alt": "Anime-style scene for 外, read そと, meaning outside.",
-    "caption": "Connect そと with “outside”.",
+    "alt": "Mnemonic scene for 外, read そと, meaning outside.",
+    "caption": "Kai steps OUTSIDE a boundary line with one giant TOE and shouts, “SO, TOE outside!”",
     "meaning": "outside",
-    "file": "scene-p02-r03-c02.webp"
+    "file": "scene-p02-r03-c02.webp",
+    "soundMnemonic": "So toe"
   },
   "冬|ふゆ": {
     "pack": 2,
     "row": 2,
     "col": 6,
-    "alt": "Anime-style scene for 冬, read ふゆ, meaning winter.",
-    "caption": "Connect ふゆ with “winter”.",
+    "alt": "Mnemonic scene for 冬, read ふゆ, meaning winter.",
+    "caption": "In WINTER snow only a FEW people remain, and Kai points: “FEW—you!”",
     "meaning": "winter",
-    "file": "scene-p02-r03-c07.webp"
+    "file": "scene-p02-r03-c07.webp",
+    "soundMnemonic": "Few you"
   },
   "春|はる": {
     "pack": 2,
     "row": 2,
     "col": 7,
-    "alt": "Anime-style scene for 春, read はる, meaning spring.",
-    "caption": "Connect はる with “spring”.",
+    "alt": "Mnemonic scene for 春, read はる, meaning spring.",
+    "caption": "A cheerful HARE leaps through flowers as SPRING begins.",
     "meaning": "spring",
-    "file": "scene-p02-r03-c08.webp"
+    "file": "scene-p02-r03-c08.webp",
+    "soundMnemonic": "Hare"
   },
   "夏|なつ": {
     "pack": 2,
     "row": 2,
     "col": 4,
-    "alt": "Anime-style scene for 夏, read なつ, meaning summer.",
-    "caption": "Connect なつ with “summer”.",
+    "alt": "Mnemonic scene for 夏, read なつ, meaning summer.",
+    "caption": "Kai swats buzzing GNATS at a bright, hot SUMMER picnic.",
     "meaning": "summer",
-    "file": "scene-p02-r03-c05.webp"
+    "file": "scene-p02-r03-c05.webp",
+    "soundMnemonic": "Gnats"
   },
   "秋|あき": {
     "pack": 2,
     "row": 2,
     "col": 5,
-    "alt": "Anime-style scene for 秋, read あき, meaning autumn.",
-    "caption": "Connect あき with “autumn”.",
+    "alt": "Mnemonic scene for 秋, read あき, meaning autumn.",
+    "caption": "A golden KEY tumbles through red and orange AUTUMN leaves.",
     "meaning": "autumn",
-    "file": "scene-p02-r03-c06.webp"
+    "file": "scene-p02-r03-c06.webp",
+    "soundMnemonic": "A key"
   },
   "朝|あさ": {
     "pack": 2,
     "row": 2,
     "col": 8,
-    "alt": "Anime-style scene for 朝, read あさ, meaning morning.",
-    "caption": "Connect あさ with “morning”.",
+    "alt": "Mnemonic scene for 朝, read あさ, meaning morning.",
+    "caption": "At MORNING sunrise Mia points outside and says, “I SAW the sun come up!”",
     "meaning": "morning",
-    "file": "scene-p02-r03-c09.webp"
+    "file": "scene-p02-r03-c09.webp",
+    "soundMnemonic": "I saw"
   },
   "昼|ひる": {
     "pack": 2,
     "row": 2,
     "col": 9,
-    "alt": "Anime-style scene for 昼, read ひる, meaning noon; daytime.",
-    "caption": "Connect ひる with “noon; daytime”.",
+    "alt": "Mnemonic scene for 昼, read ひる, meaning noon; daytime.",
+    "caption": "At NOON a caped HERO stands directly beneath the high midday sun.",
     "meaning": "noon; daytime",
-    "file": "scene-p02-r03-c10.webp"
+    "file": "scene-p02-r03-c10.webp",
+    "soundMnemonic": "Hero"
   },
   "夜|よる": {
     "pack": 2,
     "row": 3,
     "col": 0,
-    "alt": "Anime-style scene for 夜, read よる, meaning night; evening.",
-    "caption": "Connect よる with “night; evening”.",
+    "alt": "Mnemonic scene for 夜, read よる, meaning night.",
+    "caption": "At NIGHT, Mia lights a tiny lantern outside the tent.",
     "meaning": "night; evening",
-    "file": "scene-p02-r04-c01.webp"
+    "file": "scene-p02-r04-c01.webp",
+    "soundMnemonic": "You're in the dark"
   },
   "友達|ともだち": {
     "pack": 2,
     "row": 3,
     "col": 1,
-    "alt": "Anime-style scene for 友達, read ともだち, meaning friend.",
-    "caption": "Connect ともだち with “friend”.",
+    "alt": "Mnemonic scene for 友達, read ともだち, meaning friend.",
+    "caption": "Kai’s FRIEND TOM arrives with a friendly DACHSHUND, and everyone hugs.",
     "meaning": "friend",
-    "file": "scene-p02-r04-c02.webp"
+    "file": "scene-p02-r04-c02.webp",
+    "soundMnemonic": "Tom and a dachshund"
   },
   "家族|かぞく": {
     "pack": 2,
     "row": 3,
     "col": 2,
-    "alt": "Anime-style scene for 家族, read かぞく, meaning family.",
-    "caption": "Connect かぞく with “family”.",
+    "alt": "Mnemonic scene for 家族, read かぞく, meaning family.",
+    "caption": "A whole FAMILY poses beside their CAR under a huge OAK tree.",
     "meaning": "family",
-    "file": "scene-p02-r04-c03.webp"
+    "file": "scene-p02-r04-c03.webp",
+    "soundMnemonic": "Cars and oak"
   },
   "子供|こども": {
     "pack": 2,
     "row": 3,
     "col": 3,
-    "alt": "Anime-style scene for 子供, read こども, meaning child.",
-    "caption": "Connect こども with “child”.",
+    "alt": "Mnemonic scene for 子供, read こども, meaning child.",
+    "caption": "A CHILD builds a giant COCOA-coloured DOME in a playground.",
     "meaning": "child",
-    "file": "scene-p02-r04-c04.webp"
+    "file": "scene-p02-r04-c04.webp",
+    "soundMnemonic": "Cocoa dome"
   },
   "大人|おとな": {
     "pack": 2,
     "row": 3,
     "col": 4,
-    "alt": "Anime-style scene for 大人, read おとな, meaning adult.",
-    "caption": "Connect おとな with “adult”.",
+    "alt": "Mnemonic scene for 大人, read おとな, meaning adult.",
+    "caption": "A responsible ADULT drives an AUTO while the children sit safely in back.",
     "meaning": "adult",
-    "file": "scene-p02-r04-c05.webp"
+    "file": "scene-p02-r04-c05.webp",
+    "soundMnemonic": "Auto adult"
   },
   "男|おとこ": {
     "pack": 2,
     "row": 3,
     "col": 5,
-    "alt": "Anime-style scene for 男, read おとこ, meaning man; male.",
-    "caption": "Connect おとこ with “man; male”.",
+    "alt": "Mnemonic scene for 男, read おとこ, meaning man; male.",
+    "caption": "A MAN named OTTO carries an absurd stack of traffic CONES.",
     "meaning": "man; male",
-    "file": "scene-p02-r04-c06.webp"
+    "file": "scene-p02-r04-c06.webp",
+    "soundMnemonic": "Otto’s cones"
   },
   "女|おんな": {
     "pack": 2,
     "row": 3,
     "col": 6,
-    "alt": "Anime-style scene for 女, read おんな, meaning woman; female.",
-    "caption": "Connect おんな with “woman; female”.",
+    "alt": "Mnemonic scene for 女, read おんな, meaning woman; female.",
+    "caption": "A WOMAN receives a shining medal of HONOUR on stage.",
     "meaning": "woman; female",
-    "file": "scene-p02-r04-c07.webp"
+    "file": "scene-p02-r04-c07.webp",
+    "soundMnemonic": "Honour"
   },
   "子|こ": {
     "pack": 1,
     "row": 4,
     "col": 1,
-    "alt": "Anime-style scene for 子, read こ, meaning child.",
-    "caption": "Connect こ with “child”.",
+    "alt": "Mnemonic scene for 子, read こ, meaning child.",
+    "caption": "A happy KID holds an enormous mug of COCOA.",
     "meaning": "child",
-    "file": "scene-p01-r05-c02.webp"
+    "file": "scene-p01-r05-c02.webp",
+    "soundMnemonic": "Cocoa kid"
   },
   "親|おや": {
     "pack": 2,
     "row": 3,
     "col": 7,
-    "alt": "Anime-style scene for 親, read おや, meaning parent.",
-    "caption": "Connect おや with “parent”.",
+    "alt": "Mnemonic scene for 親, read おや, meaning parent.",
+    "caption": "A proud PARENT cheers “OH YEAH!” as their child succeeds.",
     "meaning": "parent",
-    "file": "scene-p02-r04-c08.webp"
+    "file": "scene-p02-r04-c08.webp",
+    "soundMnemonic": "Oh yeah!"
   },
   "学生|がくせい": {
     "pack": 2,
     "row": 3,
     "col": 8,
-    "alt": "Anime-style scene for 学生, read がくせい, meaning student.",
-    "caption": "Connect がくせい with “student”.",
+    "alt": "Mnemonic scene for 学生, read がくせい, meaning student.",
+    "caption": "A STUDENT named GAK raises his hand and SAYS the answer in class.",
     "meaning": "student",
-    "file": "scene-p02-r04-c09.webp"
+    "file": "scene-p02-r04-c09.webp",
+    "soundMnemonic": "Gak says"
   },
   "仕事|しごと": {
     "pack": 2,
     "row": 4,
     "col": 0,
-    "alt": "Anime-style scene for 仕事, read しごと, meaning work; job.",
-    "caption": "Connect しごと with “work; job”.",
+    "alt": "Mnemonic scene for 仕事, read しごと, meaning work; job.",
+    "caption": "Mia celebrates because SHE GOT a new JOB at a busy workshop.",
     "meaning": "work; job",
-    "file": "scene-p02-r05-c01.webp"
+    "file": "scene-p02-r05-c01.webp",
+    "soundMnemonic": "She got a job"
   },
   "勉強|べんきょう": {
     "pack": 2,
     "row": 4,
     "col": 1,
-    "alt": "Anime-style scene for 勉強, read べんきょう, meaning study.",
-    "caption": "Connect べんきょう with “study”.",
+    "alt": "Mnemonic scene for 勉強, read べんきょう, meaning study.",
+    "caption": "BEN uses a giant KEY to unlock a mountain of books and STUDY hard.",
     "meaning": "study",
-    "file": "scene-p02-r05-c02.webp"
+    "file": "scene-p02-r05-c02.webp",
+    "soundMnemonic": "Ben’s key"
   },
   "先生|せんせい": {
     "pack": 2,
     "row": 3,
     "col": 9,
-    "alt": "Anime-style scene for 先生, read せんせい, meaning teacher.",
-    "caption": "Connect せんせい with “teacher”.",
+    "alt": "Mnemonic scene for 先生, read せんせい, meaning teacher.",
+    "caption": "A friendly TEACHER—SENSEI—SAYS the lesson while pointing at a board.",
     "meaning": "teacher",
-    "file": "scene-p02-r04-c10.webp"
+    "file": "scene-p02-r04-c10.webp",
+    "soundMnemonic": "Sensei says"
   },
   "病院|びょういん": {
     "pack": 2,
     "row": 4,
     "col": 2,
-    "alt": "Anime-style scene for 病院, read びょういん, meaning hospital.",
-    "caption": "Connect びょういん with “hospital”.",
+    "alt": "Mnemonic scene for 病院, read びょういん, meaning hospital.",
+    "caption": "An ill Kai is wheeled IN through the doors of a HOSPITAL so he can BE IN care.",
     "meaning": "hospital",
-    "file": "scene-p02-r05-c03.webp"
+    "file": "scene-p02-r05-c03.webp",
+    "soundMnemonic": "Be in"
   },
   "お金|おかね": {
     "pack": 2,
     "row": 4,
     "col": 3,
-    "alt": "Anime-style scene for お金, read おかね, meaning money.",
-    "caption": "Connect おかね with “money”.",
+    "alt": "Mnemonic scene for お金, read おかね, meaning money.",
+    "caption": "Mia cries “OH, CANE!” when coins and MONEY spill from a walking cane.",
     "meaning": "money",
-    "file": "scene-p02-r05-c04.webp"
+    "file": "scene-p02-r05-c04.webp",
+    "soundMnemonic": "Oh, cane!"
   },
   "時計|とけい": {
     "pack": 2,
     "row": 4,
     "col": 4,
-    "alt": "Anime-style scene for 時計, read とけい, meaning clock; watch.",
-    "caption": "Connect とけい with “clock; watch”.",
+    "alt": "Mnemonic scene for 時計, read とけい, meaning clock; watch.",
+    "caption": "Kai uses a TOE-shaped KEY to wind a giant CLOCK.",
     "meaning": "clock; watch",
-    "file": "scene-p02-r05-c05.webp"
+    "file": "scene-p02-r05-c05.webp",
+    "soundMnemonic": "Toe key"
   },
   "本|ほん": {
     "pack": 2,
     "row": 4,
     "col": 5,
-    "alt": "Anime-style scene for 本, read ほん, meaning book.",
-    "caption": "Connect ほん with “book”.",
+    "alt": "Mnemonic scene for 本, read ほん, meaning book.",
+    "caption": "Mia calls “HON!” while handing Kai a huge BOOK.",
     "meaning": "book",
-    "file": "scene-p02-r05-c06.webp"
+    "file": "scene-p02-r05-c06.webp",
+    "soundMnemonic": "Hon!"
   },
   "車|くるま": {
     "pack": 2,
     "row": 4,
     "col": 6,
-    "alt": "Anime-style scene for 車, read くるま, meaning car.",
-    "caption": "Connect くるま with “car”.",
+    "alt": "Mnemonic scene for 車, read くるま, meaning car.",
+    "caption": "Kai rides in a CAR that looks like a COOL little ROOM on wheels.",
     "meaning": "car",
-    "file": "scene-p02-r05-c07.webp"
+    "file": "scene-p02-r05-c07.webp",
+    "soundMnemonic": "Cool room"
   },
   "電車|でんしゃ": {
     "pack": 2,
     "row": 4,
     "col": 7,
-    "alt": "Anime-style scene for 電車, read でんしゃ, meaning train.",
-    "caption": "Connect でんしゃ with “train”.",
+    "alt": "Mnemonic scene for 電車, read でんしゃ, meaning train.",
+    "caption": "A DENTIST rides a fast rail SHUTTLE—a bright electric TRAIN.",
     "meaning": "train",
-    "file": "scene-p02-r05-c08.webp"
+    "file": "scene-p02-r05-c08.webp",
+    "soundMnemonic": "Dentist shuttle"
   },
   "食べる|たべる": {
     "pack": 3,
     "row": 1,
     "col": 0,
-    "alt": "Anime-style scene for 食べる, read たべる, meaning to eat.",
-    "caption": "Connect たべる with “to eat”.",
+    "alt": "Mnemonic scene for 食べる, read たべる, meaning to eat.",
+    "caption": "A hungry TABBY cat sits with Kai and EATS an enormous bowl of noodles.",
     "meaning": "to eat",
-    "file": "scene-p03-r02-c01.webp"
+    "file": "scene-p03-r02-c01.webp",
+    "soundMnemonic": "Tabby"
   },
   "飲む|のむ": {
     "pack": 3,
     "row": 1,
     "col": 1,
-    "alt": "Anime-style scene for 飲む, read のむ, meaning to drink.",
-    "caption": "Connect のむ with “to drink”.",
+    "alt": "Mnemonic scene for 飲む, read のむ, meaning to drink.",
+    "caption": "A cow quietly DRINKS water while Kai holds a sign asking for “NO MOO.”",
     "meaning": "to drink",
-    "file": "scene-p03-r02-c02.webp"
+    "file": "scene-p03-r02-c02.webp",
+    "soundMnemonic": "No moo"
   },
   "行く|いく": {
     "pack": 3,
     "row": 0,
     "col": 0,
-    "alt": "Anime-style scene for 行く, read いく, meaning to go.",
-    "caption": "Connect いく with “to go”.",
+    "alt": "Mnemonic scene for 行く, read いく, meaning to go.",
+    "caption": "Kai shouts “EEK—YOU GO!” as Mia GOES through the departure gate.",
     "meaning": "to go",
-    "file": "scene-p03-r01-c01.webp"
+    "file": "scene-p03-r01-c01.webp",
+    "soundMnemonic": "Eek, you go!"
   },
   "来る|くる": {
     "pack": 3,
     "row": 0,
     "col": 1,
-    "alt": "Anime-style scene for 来る, read くる, meaning to come.",
-    "caption": "Connect くる with “to come”.",
+    "alt": "Mnemonic scene for 来る, read くる, meaning to come.",
+    "caption": "A colourful CREW COMES running toward Kai to join him.",
     "meaning": "to come",
-    "file": "scene-p03-r01-c02.webp"
+    "file": "scene-p03-r01-c02.webp",
+    "soundMnemonic": "Crew"
   },
   "見る|みる": {
     "pack": 3,
     "row": 0,
     "col": 2,
-    "alt": "Anime-style scene for 見る, read みる, meaning to see; watch.",
-    "caption": "Connect みる with “to see; watch”.",
+    "alt": "Mnemonic scene for 見る, read みる, meaning to see; watch.",
+    "caption": "A curious MEERKAT uses binoculars to SEE a distant castle.",
     "meaning": "to see; watch",
-    "file": "scene-p03-r01-c03.webp"
+    "file": "scene-p03-r01-c03.webp",
+    "soundMnemonic": "Meerkat"
   },
   "聞く|きく": {
     "pack": 3,
     "row": 0,
     "col": 3,
-    "alt": "Anime-style scene for 聞く, read きく, meaning to hear; listen.",
-    "caption": "Connect きく with “to hear; listen”.",
+    "alt": "Mnemonic scene for 聞く, read きく, meaning to hear; listen.",
+    "caption": "A ringing KEY gives the CUE; Kai cups his ear to HEAR and then ASK a question.",
     "meaning": "to hear; listen",
-    "file": "scene-p03-r01-c04.webp"
+    "file": "scene-p03-r01-c04.webp",
+    "soundMnemonic": "Key cue"
   },
   "言う|いう": {
     "pack": 3,
     "row": 0,
     "col": 4,
-    "alt": "Anime-style scene for 言う, read いう, meaning to say.",
-    "caption": "Connect いう with “to say”.",
+    "alt": "Mnemonic scene for 言う, read いう, meaning to say.",
+    "caption": "EEYORE leans toward Kai to SAY something clearly.",
     "meaning": "to say",
-    "file": "scene-p03-r01-c05.webp"
+    "file": "scene-p03-r01-c05.webp",
+    "soundMnemonic": "Eeyore"
   },
   "話す|はなす": {
     "pack": 3,
     "row": 0,
     "col": 5,
-    "alt": "Anime-style scene for 話す, read はなす, meaning to speak; talk.",
-    "caption": "Connect はなす with “to speak; talk”.",
+    "alt": "Mnemonic scene for 話す, read はなす, meaning to speak; talk.",
+    "caption": "HANNAH SPEAKS animatedly into a microphone while Kai listens.",
     "meaning": "to speak; talk",
-    "file": "scene-p03-r01-c06.webp"
+    "file": "scene-p03-r01-c06.webp",
+    "soundMnemonic": "Hannah speaks"
   },
   "知る|しる": {
     "pack": 3,
     "row": 0,
     "col": 6,
-    "alt": "Anime-style scene for 知る, read しる, meaning to know.",
-    "caption": "Connect しる with “to know”.",
+    "alt": "Mnemonic scene for 知る, read しる, meaning to know.",
+    "caption": "Mia points to the answer with confidence because SHE KNOWS it.",
     "meaning": "to know",
-    "file": "scene-p03-r01-c07.webp"
+    "file": "scene-p03-r01-c07.webp",
+    "soundMnemonic": "She knows"
   },
   "思う|おもう": {
     "pack": 3,
     "row": 0,
     "col": 7,
-    "alt": "Anime-style scene for 思う, read おもう, meaning to think.",
-    "caption": "Connect おもう with “to think”.",
+    "alt": "Mnemonic scene for 思う, read おもう, meaning to think.",
+    "caption": "MOE sits beneath a thought cloud while Kai says, “OH, MOE is THINKING!”",
     "meaning": "to think",
-    "file": "scene-p03-r01-c08.webp"
+    "file": "scene-p03-r01-c08.webp",
+    "soundMnemonic": "Oh, Moe!"
   },
   "作る|つくる": {
     "pack": 3,
     "row": 0,
     "col": 8,
-    "alt": "Anime-style scene for 作る, read つくる, meaning to make; create.",
-    "caption": "Connect つくる with “to make; create”.",
+    "alt": "Mnemonic scene for 作る, read つくる, meaning to make.",
+    "caption": "Two crew members MAKE a little machine together.",
     "meaning": "to make; create",
-    "file": "scene-p03-r01-c09.webp"
+    "file": "scene-p03-r01-c09.webp",
+    "soundMnemonic": "Two crew make"
   },
   "使う|つかう": {
     "pack": 3,
     "row": 0,
     "col": 9,
-    "alt": "Anime-style scene for 使う, read つかう, meaning to use.",
-    "caption": "Connect つかう with “to use”.",
+    "alt": "Mnemonic scene for 使う, read つかう, meaning to use.",
+    "caption": "SUE’S COW learns to USE a computer keyboard.",
     "meaning": "to use",
-    "file": "scene-p03-r01-c10.webp"
+    "file": "scene-p03-r01-c10.webp",
+    "soundMnemonic": "Sue’s cow"
   },
   "読む|よむ": {
     "pack": 3,
     "row": 1,
     "col": 2,
-    "alt": "Anime-style scene for 読む, read よむ, meaning to read.",
-    "caption": "Connect よむ with “to read”.",
+    "alt": "Mnemonic scene for 読む, read よむ, meaning to read.",
+    "caption": "Kai says “YO, MOO!” while a cow READS a book aloud.",
     "meaning": "to read",
-    "file": "scene-p03-r02-c03.webp"
+    "file": "scene-p03-r02-c03.webp",
+    "soundMnemonic": "Yo, moo!"
   },
   "書く|かく": {
     "pack": 3,
     "row": 1,
     "col": 3,
-    "alt": "Anime-style scene for 書く, read かく, meaning to write.",
-    "caption": "Connect かく with “to write”.",
+    "alt": "Mnemonic scene for 書く, read かく, meaning to write.",
+    "caption": "Master Fu uses a giant brush to WRITE a message.",
     "meaning": "to write",
-    "file": "scene-p03-r02-c04.webp"
+    "file": "scene-p03-r02-c04.webp",
+    "soundMnemonic": "Car crew writes"
   },
   "持つ|もつ": {
     "pack": 3,
     "row": 1,
     "col": 4,
-    "alt": "Anime-style scene for 持つ, read もつ, meaning to hold; carry.",
-    "caption": "Connect もつ with “to hold; carry”.",
+    "alt": "Mnemonic scene for 持つ, read もつ, meaning to hold; carry.",
+    "caption": "Kai in a wet MOAT SUIT HOLDS a heavy treasure chest above the water.",
     "meaning": "to hold; carry",
-    "file": "scene-p03-r02-c05.webp"
+    "file": "scene-p03-r02-c05.webp",
+    "soundMnemonic": "Moat suit"
   },
   "置く|おく": {
     "pack": 3,
     "row": 1,
     "col": 5,
-    "alt": "Anime-style scene for 置く, read おく, meaning to put; place.",
-    "caption": "Connect おく with “to put; place”.",
+    "alt": "Mnemonic scene for 置く, read おく, meaning to put; place.",
+    "caption": "Mia PUTS a golden key carefully on the stump of a huge OAK tree.",
     "meaning": "to put; place",
-    "file": "scene-p03-r02-c06.webp"
+    "file": "scene-p03-r02-c06.webp",
+    "soundMnemonic": "Oak"
   },
   "取る|とる": {
     "pack": 3,
     "row": 1,
     "col": 6,
-    "alt": "Anime-style scene for 取る, read とる, meaning to take; get.",
-    "caption": "Connect とる with “to take; get”.",
+    "alt": "Mnemonic scene for 取る, read とる, meaning to take; get.",
+    "caption": "Kai TAKES a ticket after he TORE it from a roll.",
     "meaning": "to take; get",
-    "file": "scene-p03-r02-c07.webp"
+    "file": "scene-p03-r02-c07.webp",
+    "soundMnemonic": "Tore"
   },
   "持ってくる|もってくる": {
     "pack": 3,
     "row": 1,
     "col": 7,
-    "alt": "Anime-style scene for 持ってくる, read もってくる, meaning to bring.",
-    "caption": "Connect もってくる with “to bring”.",
+    "alt": "Mnemonic scene for 持ってくる, read もってくる, meaning to bring.",
+    "caption": "A CREW of giant MOTHS BRINGS a package toward Kai.",
     "meaning": "to bring",
-    "file": "scene-p03-r02-c08.webp"
+    "file": "scene-p03-r02-c08.webp",
+    "soundMnemonic": "Moth crew"
   },
   "持っていく|もっていく": {
     "pack": 3,
     "row": 1,
     "col": 8,
-    "alt": "Anime-style scene for 持っていく, read もっていく, meaning to take with you.",
-    "caption": "Connect もっていく with “to take with you”.",
+    "alt": "Mnemonic scene for 持っていく, read もっていく, meaning to take with you.",
+    "caption": "A giant MOTH TAKES Kai’s package AWAY into the sky.",
     "meaning": "to take with you",
-    "file": "scene-p03-r02-c09.webp"
+    "file": "scene-p03-r02-c09.webp",
+    "soundMnemonic": "Moth take"
   },
   "探す|さがす": {
     "pack": 3,
     "row": 1,
     "col": 9,
-    "alt": "Anime-style scene for 探す, read さがす, meaning to look for; search.",
-    "caption": "Connect さがす with “to look for; search”.",
+    "alt": "Mnemonic scene for 探す, read さがす, meaning to look for; search.",
+    "caption": "A detective GOOSE from a SAGA SEARCHES everywhere with a magnifying glass.",
     "meaning": "to look for; search",
-    "file": "scene-p03-r02-c10.webp"
+    "file": "scene-p03-r02-c10.webp",
+    "soundMnemonic": "Saga goose"
   },
   "見つける|みつける": {
     "pack": 3,
     "row": 2,
     "col": 0,
-    "alt": "Anime-style scene for 見つける, read みつける, meaning to find.",
-    "caption": "Connect みつける with “to find”.",
+    "alt": "Mnemonic scene for 見つける, read みつける, meaning to find.",
+    "caption": "MIA follows a CLUE and FINDS the missing golden key.",
     "meaning": "to find",
-    "file": "scene-p03-r03-c01.webp"
+    "file": "scene-p03-r03-c01.webp",
+    "soundMnemonic": "Mia’s clue"
   },
   "開ける|あける": {
     "pack": 3,
     "row": 2,
     "col": 1,
-    "alt": "Anime-style scene for 開ける, read あける, meaning to open.",
-    "caption": "Connect あける with “to open”.",
+    "alt": "Mnemonic scene for 開ける, read あける, meaning to open.",
+    "caption": "Kai uses A KEY to OPEN a huge locked door.",
     "meaning": "to open",
-    "file": "scene-p03-r03-c02.webp"
+    "file": "scene-p03-r03-c02.webp",
+    "soundMnemonic": "A key"
   },
   "閉める|しめる": {
     "pack": 3,
     "row": 2,
     "col": 2,
-    "alt": "Anime-style scene for 閉める, read しめる, meaning to close.",
-    "caption": "Connect しめる with “to close”.",
+    "alt": "Mnemonic scene for 閉める, read しめる, meaning to close.",
+    "caption": "Mia CLOSES a mailbox after SHE MAILED a letter.",
     "meaning": "to close",
-    "file": "scene-p03-r03-c03.webp"
+    "file": "scene-p03-r03-c03.webp",
+    "soundMnemonic": "She mailed"
   },
   "入る|はいる": {
     "pack": 3,
     "row": 2,
     "col": 3,
-    "alt": "Anime-style scene for 入る, read はいる, meaning to enter; go in.",
-    "caption": "Connect はいる with “to enter; go in”.",
+    "alt": "Mnemonic scene for 入る, read はいる, meaning to enter; go in.",
+    "caption": "A giant HIGH HEEL ENTERS through a tiny doorway.",
     "meaning": "to enter; go in",
-    "file": "scene-p03-r03-c04.webp"
+    "file": "scene-p03-r03-c04.webp",
+    "soundMnemonic": "High heel"
   },
   "出る|でる": {
     "pack": 3,
     "row": 2,
     "col": 4,
-    "alt": "Anime-style scene for 出る, read でる, meaning to exit; come out.",
-    "caption": "Connect でる with “to exit; come out”.",
+    "alt": "Mnemonic scene for 出る, read でる, meaning to exit; come out.",
+    "caption": "DARYL LEAVES the house through the open front door.",
     "meaning": "to exit; come out",
-    "file": "scene-p03-r03-c05.webp"
+    "file": "scene-p03-r03-c05.webp",
+    "soundMnemonic": "Daryl"
   },
   "起きる|おきる": {
     "pack": 3,
     "row": 2,
     "col": 5,
-    "alt": "Anime-style scene for 起きる, read おきる, meaning to get up.",
-    "caption": "Connect おきる with “to get up”.",
+    "alt": "Mnemonic scene for 起きる, read おきる, meaning to get up.",
+    "caption": "An OAK-shaped KEY rings like an alarm and Kai WAKES UP.",
     "meaning": "to get up",
-    "file": "scene-p03-r03-c06.webp"
+    "file": "scene-p03-r03-c06.webp",
+    "soundMnemonic": "Oak key"
   },
   "寝る|ねる": {
     "pack": 3,
     "row": 2,
     "col": 6,
-    "alt": "Anime-style scene for 寝る, read ねる, meaning to sleep; go to bed.",
-    "caption": "Connect ねる with “to sleep; go to bed”.",
+    "alt": "Mnemonic scene for 寝る, read ねる, meaning to sleep; go to bed.",
+    "caption": "NERO the sleepy dog curls up in bed and SLEEPS.",
     "meaning": "to sleep; go to bed",
-    "file": "scene-p03-r03-c07.webp"
+    "file": "scene-p03-r03-c07.webp",
+    "soundMnemonic": "Nero"
   },
   "座る|すわる": {
     "pack": 3,
     "row": 2,
     "col": 7,
-    "alt": "Anime-style scene for 座る, read すわる, meaning to sit.",
-    "caption": "Connect すわる with “to sit”.",
+    "alt": "Mnemonic scene for 座る, read すわる, meaning to sit.",
+    "caption": "SUE WOBBLES, then SITS safely on a chair.",
     "meaning": "to sit",
-    "file": "scene-p03-r03-c08.webp"
+    "file": "scene-p03-r03-c08.webp",
+    "soundMnemonic": "Sue wobbles"
   },
   "立つ|たつ": {
     "pack": 3,
     "row": 2,
     "col": 8,
-    "alt": "Anime-style scene for 立つ, read たつ, meaning to stand.",
-    "caption": "Connect たつ with “to stand”.",
+    "alt": "Mnemonic scene for 立つ, read たつ, meaning to stand.",
+    "caption": "Kai with a temporary dragon TATTOO STANDS tall at attention.",
     "meaning": "to stand",
-    "file": "scene-p03-r03-c09.webp"
+    "file": "scene-p03-r03-c09.webp",
+    "soundMnemonic": "Tattoo"
   },
   "歩く|あるく": {
     "pack": 3,
     "row": 2,
     "col": 9,
-    "alt": "Anime-style scene for 歩く, read あるく, meaning to walk.",
-    "caption": "Connect あるく with “to walk”.",
+    "alt": "Mnemonic scene for 歩く, read あるく, meaning to walk.",
+    "caption": "Kai WALKS down the path carrying a chess rook.",
     "meaning": "to walk",
-    "file": "scene-p03-r03-c10.webp"
+    "file": "scene-p03-r03-c10.webp",
+    "soundMnemonic": "A rook walks"
   },
   "走る|はしる": {
     "pack": 3,
     "row": 3,
     "col": 0,
-    "alt": "Anime-style scene for 走る, read はしる, meaning to run.",
-    "caption": "Connect はしる with “to run”.",
+    "alt": "Mnemonic scene for 走る, read はしる, meaning to run.",
+    "caption": "Kai shouts 'Hash, run!' and sprints down the track.",
     "meaning": "to run",
-    "file": "scene-p03-r04-c01.webp"
+    "file": "scene-p03-r04-c01.webp",
+    "soundMnemonic": "Hash, run!"
   },
   "泳ぐ|およぐ": {
     "pack": 3,
     "row": 3,
     "col": 1,
-    "alt": "Anime-style scene for 泳ぐ, read およぐ, meaning to swim.",
-    "caption": "Connect およぐ with “to swim”.",
+    "alt": "Mnemonic scene for 泳ぐ, read およぐ, meaning to swim.",
+    "caption": "Kai cries “OH, YOGA!” as a yoga teacher SWIMS past him.",
     "meaning": "to swim",
-    "file": "scene-p03-r04-c02.webp"
+    "file": "scene-p03-r04-c02.webp",
+    "soundMnemonic": "Oh, yoga!"
   },
   "飛ぶ|とぶ": {
     "pack": 3,
     "row": 3,
     "col": 2,
-    "alt": "Anime-style scene for 飛ぶ, read とぶ, meaning to fly.",
-    "caption": "Connect とぶ with “to fly”.",
+    "alt": "Mnemonic scene for 飛ぶ, read とぶ, meaning to fly.",
+    "caption": "Magic BOOTS on Kai’s TOES make him FLY through the sky.",
     "meaning": "to fly",
-    "file": "scene-p03-r04-c03.webp"
+    "file": "scene-p03-r04-c03.webp",
+    "soundMnemonic": "Toe boots"
   },
   "乗る|のる": {
     "pack": 3,
     "row": 3,
     "col": 3,
-    "alt": "Anime-style scene for 乗る, read のる, meaning to ride; get on.",
-    "caption": "Connect のる with “to ride; get on”.",
+    "alt": "Mnemonic scene for 乗る, read のる, meaning to ride; get on.",
+    "caption": "NORA happily RIDES a bright red bicycle.",
     "meaning": "to ride; get on",
-    "file": "scene-p03-r04-c04.webp"
+    "file": "scene-p03-r04-c04.webp",
+    "soundMnemonic": "Nora"
   },
   "降りる|おりる": {
     "pack": 3,
     "row": 3,
     "col": 4,
-    "alt": "Anime-style scene for 降りる, read おりる, meaning to get off.",
-    "caption": "Connect おりる with “to get off”.",
+    "alt": "Mnemonic scene for 降りる, read おりる, meaning to get off.",
+    "caption": "OLLIE GETS OFF a train and steps onto the platform.",
     "meaning": "to get off",
-    "file": "scene-p03-r04-c05.webp"
+    "file": "scene-p03-r04-c05.webp",
+    "soundMnemonic": "Ollie"
   },
   "買う|かう": {
     "pack": 3,
     "row": 3,
     "col": 5,
-    "alt": "Anime-style scene for 買う, read かう, meaning to buy.",
-    "caption": "Connect かう with “to buy”.",
+    "alt": "Mnemonic scene for 買う, read かう, meaning to buy.",
+    "caption": "A clever COW BUYS a basket of apples at a market.",
     "meaning": "to buy",
-    "file": "scene-p03-r04-c06.webp"
+    "file": "scene-p03-r04-c06.webp",
+    "soundMnemonic": "Cow"
   },
   "売る|うる": {
     "pack": 3,
     "row": 3,
     "col": 6,
-    "alt": "Anime-style scene for 売る, read うる, meaning to sell.",
-    "caption": "Connect うる with “to sell”.",
+    "alt": "Mnemonic scene for 売る, read うる, meaning to sell.",
+    "caption": "A shopkeeper OWL SELLS colourful lanterns.",
     "meaning": "to sell",
-    "file": "scene-p03-r04-c07.webp"
+    "file": "scene-p03-r04-c07.webp",
+    "soundMnemonic": "Owl"
   },
   "払う|はらう": {
     "pack": 3,
     "row": 3,
     "col": 7,
-    "alt": "Anime-style scene for 払う, read はらう, meaning to pay.",
-    "caption": "Connect はらう with “to pay”.",
+    "alt": "Mnemonic scene for 払う, read はらう, meaning to pay.",
+    "caption": "HARU PAYS the cashier with a fan of coins and notes.",
     "meaning": "to pay",
-    "file": "scene-p03-r04-c08.webp"
+    "file": "scene-p03-r04-c08.webp",
+    "soundMnemonic": "Haru"
   },
   "待つ|まつ": {
     "pack": 3,
     "row": 3,
     "col": 8,
-    "alt": "Anime-style scene for 待つ, read まつ, meaning to wait.",
-    "caption": "Connect まつ with “to wait”.",
+    "alt": "Mnemonic scene for 待つ, read まつ, meaning to wait.",
+    "caption": "Kai WAITS patiently on a welcome MAT beside a giant clock.",
     "meaning": "to wait",
-    "file": "scene-p03-r04-c09.webp"
+    "file": "scene-p03-r04-c09.webp",
+    "soundMnemonic": "Mat"
   },
   "急ぐ|いそぐ": {
     "pack": 3,
     "row": 3,
     "col": 9,
-    "alt": "Anime-style scene for 急ぐ, read いそぐ, meaning to hurry.",
-    "caption": "Connect いそぐ with “to hurry”.",
+    "alt": "Mnemonic scene for 急ぐ, read いそぐ, meaning to hurry.",
+    "caption": "Mia shouts “E—SO GO!” as Kai HURRIES to catch a departing train.",
     "meaning": "to hurry",
-    "file": "scene-p03-r04-c10.webp"
+    "file": "scene-p03-r04-c10.webp",
+    "soundMnemonic": "E, so go!"
   },
   "教える|おしえる": {
     "pack": 3,
     "row": 4,
     "col": 0,
-    "alt": "Anime-style scene for 教える, read おしえる, meaning to teach; tell.",
-    "caption": "Connect おしえる with “to teach; tell”.",
+    "alt": "Mnemonic scene for 教える, read おしえる, meaning to teach; tell.",
+    "caption": "“OH, SHE YELLS!” says Kai as Mia TEACHES a lively class.",
     "meaning": "to teach; tell",
-    "file": "scene-p03-r05-c01.webp"
+    "file": "scene-p03-r05-c01.webp",
+    "soundMnemonic": "Oh, she yells"
   },
   "教わる|おそわる": {
     "pack": 3,
     "row": 4,
     "col": 1,
-    "alt": "Anime-style scene for 教わる, read おそわる, meaning to be taught.",
-    "caption": "Connect おそわる with “to be taught”.",
+    "alt": "Mnemonic scene for 教わる, read おそわる, meaning to be taught.",
+    "caption": "“OH, SO WE LEARN!” says Kai while being TAUGHT by a patient teacher.",
     "meaning": "to be taught",
-    "file": "scene-p03-r05-c02.webp"
+    "file": "scene-p03-r05-c02.webp",
+    "soundMnemonic": "Oh, so we learn"
   },
   "助ける|たすける": {
     "pack": 3,
     "row": 4,
     "col": 2,
-    "alt": "Anime-style scene for 助ける, read たすける, meaning to help.",
-    "caption": "Connect たすける with “to help”.",
+    "alt": "Mnemonic scene for 助ける, read たすける, meaning to help.",
+    "caption": "A TASK HERO rushes in to HELP Kai lift a fallen tree.",
     "meaning": "to help",
-    "file": "scene-p03-r05-c03.webp"
+    "file": "scene-p03-r05-c03.webp",
+    "soundMnemonic": "Task hero"
   },
   "会う|あう": {
     "pack": 3,
     "row": 4,
     "col": 3,
-    "alt": "Anime-style scene for 会う, read あう, meaning to meet.",
-    "caption": "Connect あう with “to meet”.",
+    "alt": "Mnemonic scene for 会う, read あう, meaning to meet.",
+    "caption": "Kai and Mia accidentally bump heads—“OW!”—when they MEET.",
     "meaning": "to meet",
-    "file": "scene-p03-r05-c04.webp"
+    "file": "scene-p03-r05-c04.webp",
+    "soundMnemonic": "Ow!"
   },
   "別れる|わかれる": {
     "pack": 3,
     "row": 4,
     "col": 4,
-    "alt": "Anime-style scene for 別れる, read わかれる, meaning to part; say goodbye.",
-    "caption": "Connect わかれる with “to part; say goodbye”.",
+    "alt": "Mnemonic scene for 別れる, read わかれる, meaning to part; say goodbye.",
+    "caption": "Two friends say goodbye and WALK AWAY in opposite directions to SEPARATE.",
     "meaning": "to part; say goodbye",
-    "file": "scene-p03-r05-c05.webp"
+    "file": "scene-p03-r05-c05.webp",
+    "soundMnemonic": "Walk away"
   },
   "信じる|しんじる": {
     "pack": 3,
     "row": 4,
     "col": 5,
-    "alt": "Anime-style scene for 信じる, read しんじる, meaning to believe; trust.",
-    "caption": "Connect しんじる with “to believe; trust”.",
+    "alt": "Mnemonic scene for 信じる, read しんじる, meaning to believe; trust.",
+    "caption": "A glowing GENIE emerges from Kai’s SHIN guard, and Kai BELIEVES the impossible.",
     "meaning": "to believe; trust",
-    "file": "scene-p03-r05-c06.webp"
+    "file": "scene-p03-r05-c06.webp",
+    "soundMnemonic": "Shin genie"
   },
   "好き|すき": {
     "pack": 3,
     "row": 4,
     "col": 6,
-    "alt": "Anime-style scene for 好き, read すき, meaning liked; favourite.",
-    "caption": "Connect すき with “liked; favourite”.",
+    "alt": "Mnemonic scene for 好き, read すき, meaning liked; favourite.",
+    "caption": "Kai LOVES his bright red SKIS and hugs them happily.",
     "meaning": "liked; favourite",
-    "file": "scene-p03-r05-c07.webp"
+    "file": "scene-p03-r05-c07.webp",
+    "soundMnemonic": "Ski"
   },
   "嫌い|きらい": {
     "pack": 3,
     "row": 4,
     "col": 7,
-    "alt": "Anime-style scene for 嫌い, read きらい, meaning disliked.",
-    "caption": "Connect きらい with “disliked”.",
+    "alt": "Mnemonic scene for 嫌い, read きらい, meaning disliked.",
+    "caption": "Mia DISLIKES a crooked KEY that keeps LYING about which lock it opens.",
     "meaning": "disliked",
-    "file": "scene-p03-r05-c08.webp"
+    "file": "scene-p03-r05-c08.webp",
+    "soundMnemonic": "Key lie"
   },
   "必要な|ひつような": {
     "pack": 3,
     "row": 4,
     "col": 8,
-    "alt": "Anime-style scene for 必要な, read ひつような, meaning necessary.",
-    "caption": "Connect ひつような with “necessary”.",
+    "alt": "Mnemonic scene for 必要な, read ひつような, meaning necessary.",
+    "caption": "A falling acorn HITS YOU, proving a safety helmet is NECESSARY.",
     "meaning": "necessary",
-    "file": "scene-p03-r05-c09.webp"
+    "file": "scene-p03-r05-c09.webp",
+    "soundMnemonic": "Hits you"
   },
   "大切な|たいせつな": {
     "pack": 3,
     "row": 4,
     "col": 9,
-    "alt": "Anime-style scene for 大切な, read たいせつな, meaning important; precious.",
-    "caption": "Connect たいせつな with “important; precious”.",
+    "alt": "Mnemonic scene for 大切な, read たいせつな, meaning important; precious.",
+    "caption": "Kai protects a treasured TIE SET in a glass case because it is IMPORTANT.",
     "meaning": "important; precious",
-    "file": "scene-p03-r05-c10.webp"
+    "file": "scene-p03-r05-c10.webp",
+    "soundMnemonic": "Tie set"
   }
 }

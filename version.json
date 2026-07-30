@@ -1,12 +1,12 @@
 {
-  "version": "4.0.1",
-  "released": "2026-07-26",
-  "title": "Image runtime repair",
+  "version": "5.0.0",
+  "released": "2026-07-30",
+  "title": "Phonetic visual mnemonic library",
   "changes": [
-    "Fixed the missing HTML escaping helper that stopped game image cards from rendering.",
-    "Added reliable image load/error handlers without inline JavaScript.",
-    "Added an Image Diagnostics link to Settings.",
-    "Added visible filename fallbacks when an image cannot load."
+    "Recreated all 128 mnemonic images in a consistent comic style.",
+    "Each memory scene now combines a pronunciation cue with the word meaning.",
+    "Approved the complete Gold-50 visual mnemonic set for learner use.",
+    "Removed the standalone known-word story mode."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,
