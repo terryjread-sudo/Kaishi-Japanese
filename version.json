@@ -6,7 +6,8 @@
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
     "Learners choose when to move to the next question instead of being advanced automatically.",
-    "Removed the Picture to Meaning game."
+    "Removed the Picture to Meaning game.",
+    "Added a Kaishi Quest character banner behind the main title bar."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,
