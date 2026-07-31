@@ -151,3 +151,13 @@ header{
 .picture-kanji-prompt .quiz-picture.scene-image{margin-bottom:0!important;border-radius:16px 16px 0 0}
 .picture-kanji-word{padding:10px 14px;border-radius:0 0 16px 16px;background:#172554;color:#fff;font-size:2rem;font-weight:900;line-height:1.15;text-align:center}
 @media(max-width:480px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Dashboard score explanations and daily-review guidance. */
+.skills-intro{margin:-6px 0 12px;color:#64748b;font-size:.86rem}
+.skill-row{position:relative;cursor:help;outline:none}
+.skill-row:focus-visible{box-shadow:0 0 0 3px #60a5fa}
+.skill-info{display:inline-grid;place-items:center;width:18px;height:18px;margin-left:3px;border-radius:50%;background:#dbeafe;color:#1d4ed8;font-size:.72rem}
+.skill-help{position:absolute;z-index:5;left:10px;right:10px;bottom:calc(100% + 7px);margin:0;padding:11px 13px;border-radius:12px;background:#172554;color:#fff;box-shadow:0 8px 24px #17255444;font-size:.8rem;line-height:1.4;opacity:0;pointer-events:none;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.skill-help::after{content:'';position:absolute;left:24px;top:100%;border:7px solid transparent;border-top-color:#172554}
+.skill-row:hover .skill-help,.skill-row:focus .skill-help{opacity:1;transform:translateY(0)}
+.setting-help{color:#64748b;font-weight:500;line-height:1.4}

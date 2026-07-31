@@ -1,0 +1,14 @@
+const fs=require('fs');
+const vocab=JSON.parse(fs.readFileSync('data/vocabulary.json','utf8'));
+const scenes=JSON.parse(fs.readFileSync('memory-scenes.json','utf8'));
+const visuals=JSON.parse(fs.readFileSync('visual-mnemonics.json','utf8'));
+const used=new Set([...Object.keys(scenes),...Object.keys(visuals)]),chosen=[];
+for(const v of vocab){const key=`${v.word}|${v.reading}`;if(used.has(key)||chosen.some(x=>x.key===key))continue;chosen.push({...v,key});if(chosen.length===297)break}
+const cue={あ:'apple',い:'eel',う:'ooze',え:'egg',お:'oak',か:'car',き:'key',く:'cuckoo',け:'keg',こ:'coat',が:'garden',ぎ:'guitar',ぐ:'goose',げ:'gate',ご:'goat',さ:'sun',し:'sheep',す:'soup',せ:'sail',そ:'soap',ざ:'zebra',じ:'jeans',ず:'zoo',ぜ:'zeppelin',ぞ:'zone',た:'taco',ち:'cheese',つ:'tsunami',て:'tea',と:'toe',だ:'dart',ぢ:'jeep',づ:'zoo',で:'desk',ど:'dough',な:'nachos',に:'knee',ぬ:'noodle',ね:'net',の:'nose',は:'hat',ひ:'heel',ふ:'food',へ:'hay',ほ:'hoe',ば:'bat',び:'bee',ぶ:'boot',べ:'bell',ぼ:'boat',ぱ:'pan',ぴ:'pea',ぷ:'pool',ぺ:'pen',ぽ:'pole',ま:'map',み:'meat',む:'moon',め:'melon',も:'mower',や:'yak',ゆ:'unicorn',よ:'yo-yo',ら:'ram',り:'reef',る:'ruby',れ:'rain',ろ:'rope',わ:'wand',を:'wall',ん:'hen'};
+const combos={'きゃ':'cat','きゅ':'cube','きょ':'cure','しゃ':'shark','しゅ':'shoe','しょ':'show','ちゃ':'chair','ちゅ':'chew','ちょ':'chocolate','にゃ':'nylon','にゅ':'newspaper','にょ':'gnome','ひゃ':'hyena','ひゅ':'human','ひょ':'yo-yo','みゃ':'meow','みゅ':'music','みょ':'mule','りゃ':'ram','りゅ':'ruler','りょ':'yoyo','ぎゃ':'gadget','ぎゅ':'guitar','ぎょ':'goldfish','じゃ':'jar','じゅ':'juice','じょ':'jogger','びゃ':'beaker','びゅ':'beauty','びょ':'bicycle','ぴゃ':'piano','ぴゅ':'pewter','ぴょ':'penguin'};
+function morae(s){s=String(s).split(/[・／/]/)[0].replace(/[ーっ]/g,'');const a=[];for(let i=0;i<s.length;i++){const pair=s.slice(i,i+2);if(combos[pair]){a.push(pair);i++}else if(cue[s[i]])a.push(s[i])}return a}
+function sound(s){const m=morae(s).slice(0,3),words=m.map(x=>combos[x]||cue[x]).filter(Boolean);return words.length?words:['memory bell']}
+const manifest=chosen.map((v,i)=>{const n=i+151,cues=sound(v.reading),file=`gold-${String(n).padStart(3,'0')}-word-${String(v.order||n).padStart(4,'0')}.webp`;return {number:n,key:v.key,word:v.word,reading:v.reading,meaning:v.meaning,order:v.order,file,soundMnemonic:cues.join(' + '),story:`Kai and Mia use ${cues.join(' and ')} in an exaggerated scene that clearly shows “${v.meaning}”.`,prompt:`Japanese vocabulary mnemonic for ${v.word}, read ${v.reading}, meaning “${v.meaning}”. Build the pronunciation cue from these concrete sound-alike props: ${cues.join(', ')}. Make those props essential to one memorable action that unmistakably communicates the English meaning.`}});
+if(manifest.length!==297)throw Error(`Expected 297, got ${manifest.length}`);
+fs.writeFileSync('tmp/batch297-manifest.json',JSON.stringify(manifest,null,2)+'\n');
+console.log({count:manifest.length,first:manifest[0],last:manifest.at(-1)});

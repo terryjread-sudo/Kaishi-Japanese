@@ -4,6 +4,15 @@ const APP_VERSION='5.5.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
+const SKILL_HELP={
+ meaning:'How often you correctly recognise the English meaning of a Japanese word.',
+ production:'How often you correctly recall the Japanese word from its English meaning.',
+ listening:'How often you identify the correct meaning after hearing the Japanese word.',
+ reading:'How often you recall or select the correct Japanese reading.',
+ kanji:'How often you recognise the correct written Japanese form.',
+ sentence:'How often you choose the correct word from the context of a sentence.',
+ picture:'How often you connect a mnemonic picture with the correct word and meaning.'
+};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
 let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, battleActive=false, battle=null;
 const defaults={newLimit:5,sessionSize:15,activeWords:4,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
@@ -14,15 +23,25 @@ function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{r
 function save(){localStorage.setItem('kq-progress',JSON.stringify(progress));localStorage.setItem('kq-settings',JSON.stringify(settings));localStorage.setItem('kq-meta',JSON.stringify(meta))}
 function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0)}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
-function day(){return new Date().toISOString().slice(0,10)}
+function day(date=new Date()){const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');return `${y}-${m}-${d}`}
 function esc(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function pFor(id){const p=progress[id]||(progress[id]={stage:0,due:0,interval:0,ease:2.5,reps:0,lapses:0,mnemonic:'',skills:{}});p.skills=p.skills||{};SKILLS.forEach(s=>p.skills[s]||(p.skills[s]={attempts:0,correct:0,strength:0}));return p}
 function dueWords(){const now=Date.now();return vocab.filter(v=>{const p=progress[v.id];return p&&p.due<=now})}
+function dailyDueWords(){
+ const today=day(),limit=Math.max(5,Math.min(50,+settings.sessionSize||15));
+ if(!meta.dailyReviewPlan||meta.dailyReviewPlan.date!==today||!Array.isArray(meta.dailyReviewPlan.ids)){
+  const ids=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due).slice(0,limit).map(v=>v.id);
+  meta.dailyReviewPlan={date:today,ids,limit};
+  save();
+ }
+ const byId=new Map(vocab.map(v=>[v.id,v])),now=Date.now();
+ return meta.dailyReviewPlan.ids.map(id=>byId.get(id)).filter(v=>v&&progress[v.id]?.due<=now);
+}
 function started(){return Object.keys(progress).length}
 function accuracy(){return meta.totalAnswers?Math.round(meta.totalCorrect/meta.totalAnswers*100):0}
 function mastery(p){return p&&p.interval>=21&&SKILLS.every(s=>p.skills[s].strength>=.65)}
 function recentMonsterVictories(){const cutoff=Date.now()-86400000;meta.monsterVictories=(Array.isArray(meta.monsterVictories)?meta.monsterVictories:[]).filter(t=>Number(t)>cutoff);return meta.monsterVictories.length}
-function updateHome(){const due=dueWords().length;$('#dueCount').textContent=due;$('#learnedCount').textContent=started();$('#accuracy').textContent=accuracy()+'%';$('#mastered').textContent=Object.values(progress).filter(mastery).length;$('#totalWords').textContent=vocab.length;$('#monsters24h').textContent=recentMonsterVictories();$('#streak').textContent=`🔥 ${meta.streak} day${meta.streak===1?'':'s'} streak`;$('#summary').textContent=due?`${due} reviews are ready.`:`Add new words or practise weak skills.`;$('#skills').innerHTML=SKILLS.map(s=>{let a=0,c=0;Object.values(progress).forEach(p=>{a+=p.skills[s]?.attempts||0;c+=p.skills[s]?.correct||0});const pct=a?Math.round(c/a*100):0;return `<div class="skill-row"><b>${LABELS[s]}</b><div class="bar"><i style="width:${pct}%"></i></div><span>${pct}%</span></div>`}).join('')}
+function updateHome(){const due=dailyDueWords().length,dailyLimit=meta.dailyReviewPlan?.limit||settings.sessionSize;$('#dueCount').textContent=due;$('#dueCount').parentElement.setAttribute('aria-label',`${due} reviews remaining today; daily limit ${dailyLimit}`);$('#dueCount').parentElement.title=`Reviews remaining today (maximum ${dailyLimit}). Missed days do not add extra reviews.`;$('#learnedCount').textContent=started();$('#accuracy').textContent=accuracy()+'%';$('#mastered').textContent=Object.values(progress).filter(mastery).length;$('#totalWords').textContent=vocab.length;$('#monsters24h').textContent=recentMonsterVictories();$('#streak').textContent=`🔥 ${meta.streak} day${meta.streak===1?'':'s'} streak`;$('#summary').textContent=due?`${due} of today's reviews are ready.`:`Today's reviews are complete. Add new words or practise weak skills.`;$('#skills').innerHTML=SKILLS.map(s=>{let a=0,c=0;Object.values(progress).forEach(p=>{a+=p.skills[s]?.attempts||0;c+=p.skills[s]?.correct||0});const pct=a?Math.round(c/a*100):0,detail=a?`${pct}% correct across ${a} attempt${a===1?'':'s'}.`:'No attempts yet.';return `<div class="skill-row" tabindex="0" role="group" aria-label="${esc(LABELS[s])}: ${detail} ${esc(SKILL_HELP[s])}"><b>${LABELS[s]} <span class="skill-info" aria-hidden="true">?</span></b><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><span>${pct}%</span><p class="skill-help"><strong>${detail}</strong> ${SKILL_HELP[s]}</p></div>`}).join('')}
 function similarity(a='',b=''){a=String(a);b=String(b);let score=0;if(a.length===b.length)score+=3;if(a.slice(-1)===b.slice(-1))score+=2;if(a.slice(-2)===b.slice(-2))score+=3;for(const ch of new Set(a))if(b.includes(ch))score+=1;return score}
 function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&x[key]!==v[key]);const target=v[key]||'';return shuffle(pool.map(x=>({x,score:similarity(target,x[key])+(Math.abs((x.frequency||9999)-(v.frequency||9999))<250?2:0)})).sort((a,b)=>b.score-a.score).slice(0,35)).slice(0,n).map(o=>o.x[key])}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
@@ -41,7 +60,7 @@ function abortSession(destination='home'){
 }
 function makeSession(){
  pictureGameActive=false;session=[];index=0;current=null;
- const due=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due);
+ const due=dailyDueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due);
  const unseen=vocab.filter(v=>!progress[v.id]).slice(0,settings.newLimit);
  let selected=[...due.slice(0,settings.sessionSize),...unseen];
  if(!selected.length)selected=vocab.slice(0,settings.newLimit);
@@ -169,7 +188,7 @@ function bindGameChoices(answer,v){
 }
 function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();if(advance)next()}
 function next(){index++;renderCurrent()}
-function finishSession(){if(battleActive){showBattleSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
+function finishSession(){if(battleActive){showBattleSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=day(new Date(Date.now()-86400000));meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
@@ -317,7 +336,7 @@ async function init(){
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
-$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#gamesBtn').onclick=()=>abortSession('games');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
+$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#gamesBtn').onclick=()=>abortSession('games');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;delete meta.dailyReviewPlan;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,monsterVictories:[]};save();updateHome();toast('Progress reset')}};
 $('#decayBattleMode').onclick=startDecayBattle;
 $('#exitBtn').onclick=()=>abortSession(pictureGameActive||battleActive?'games':'home');
 init();
