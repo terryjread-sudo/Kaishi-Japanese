@@ -15,7 +15,7 @@
   function safeImage(value){try{const url=new URL(value);return url.protocol==='https:'&&['avatars.githubusercontent.com','github.com'].includes(url.hostname)?nameFor(url.href):'icons/icon-192.png'}catch{return'icons/icon-192.png'}}
   function avatarKey(value){return AVATARS.includes(value)?value:'boy'}
   function avatarState(streak=0){streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'}
-  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=5.8.0`}
+  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=5.8.1`}
   function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
   function renderDashboardAvatar(){const streak=Number(adapter()?.stats?.().streak||0),image=$('#dashboardAvatar');if(image)image.src=avatarImage(selectedAvatar,streak);if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`${selectedAvatar[0].toUpperCase()+selectedAvatar.slice(1)} · ${streak} day streak`:'Sign in to choose your character';if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=streak>=60?'Superhero form unlocked!':`Next pose unlocks at ${[3,7,14,30,60].find(days=>days>streak)||60} streak days.`}
   function profile(){
@@ -153,7 +153,7 @@
     if(error){leaderboard.innerHTML='';setLeaderboardMessage(describeError(error));return}
     if(!data?.length){leaderboard.innerHTML='';setLeaderboardMessage('No learners have joined yet. Be the first!');return}
     setLeaderboardMessage('Friendly community ranking · progress is self-reported by the app.');
-    leaderboard.innerHTML=data.map((row,index)=>`<article class="leaderboard-row ${row.user_id===user?.id?'is-you':''}"><span class="leaderboard-rank">${index+1}</span><img src="${avatarImage(row.avatar_key,row.streak)}" alt="${nameFor(row.display_name)}'s Kaishi character"><div><strong>${nameFor(row.display_name)}</strong><small>@${nameFor(row.github_login)}${row.user_id===user?.id?' · You':''}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.streak||0} day streak</small></article>`).join('');
+    leaderboard.innerHTML=data.map((row,index)=>{const isYou=row.user_id===user?.id;return `<article class="leaderboard-row ${isYou?'is-you':''}"><span class="leaderboard-rank">${index+1}</span><img src="${avatarImage(row.avatar_key,row.streak)}" alt="${nameFor(row.display_name)}'s Kaishi character"><div><strong>${nameFor(row.display_name)}${isYou?'<span class="you-badge">Your profile</span>':''}</strong><small>@${nameFor(row.github_login)}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.streak||0} day streak</small></article>`}).join('');
   }
 
   async function changeAvatar(event){

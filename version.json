@@ -1,8 +1,11 @@
 {
-  "version": "5.8.0",
+  "version": "5.8.1",
   "released": "2026-07-31",
-  "title": "Streak characters and one-chance rescue battles",
+  "title": "A dedicated community challenge page",
   "changes": [
+    "Moved the optional community leaderboard from the dashboard to its own page.",
+    "Added a Community challenge button directly below Games.",
+    "Made the signed-in learner's leaderboard row clearly identifiable with a profile badge and stronger highlight.",
     "Added five optional Kaishi profile characters for signed-in learners.",
     "Characters unlock thumbs-up, double-thumbs, flexing and superhero portraits at streak milestones.",
     "Displayed the selected streak character on the dashboard and public leaderboard.",
