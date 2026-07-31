@@ -23,8 +23,8 @@
     const login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';
     return {github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null};
   }
-  function setupMissing(error){return error?.code==='42P01'||/relation .* does not exist/i.test(error?.message||'')}
-  function describeError(error){return setupMissing(error)?'Cloud tables are not installed yet. Run the supplied Supabase SQL migration.':(error?.message||'Cloud service is unavailable.')}
+  function setupMissing(error){return ['42P01','42703'].includes(error?.code)||/(relation|column) .* does not exist/i.test(error?.message||'')}
+  function describeError(error){return setupMissing(error)?'Cloud setup is incomplete. Run the supplied Supabase SQL migrations in order.':(error?.message||'Cloud service is unavailable.')}
 
   function renderSignedOut(message='Sign in with GitHub to sync progress between devices.'){
     user=null;initialisedUserId='';selectedAvatar='boy';
@@ -160,6 +160,7 @@
     const button=event.target.closest('[data-avatar]');
     if(!button||!user)return;
     selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();
+    const accountAvatar=account?.querySelector('img');if(accountAvatar)accountAvatar.src=avatarImage(selectedAvatar,adapter()?.stats?.().streak);
     const {error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);
     if(error){setStatus(describeError(error),'error');return}
     setStatus('Kaishi character saved.','ok');await loadLeaderboard();

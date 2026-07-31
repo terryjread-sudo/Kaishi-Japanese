@@ -1,8 +1,14 @@
 {
-  "version": "5.7.0",
+  "version": "5.8.0",
   "released": "2026-07-31",
-  "title": "Optional accounts, cloud progress and leaderboard",
+  "title": "Streak characters and one-chance rescue battles",
   "changes": [
+    "Added five optional Kaishi profile characters for signed-in learners.",
+    "Characters unlock thumbs-up, double-thumbs, flexing and superhero portraits at streak milestones.",
+    "Displayed the selected streak character on the dashboard and public leaderboard.",
+    "Added a seven-day, one-attempt streak rescue after a streak is lost.",
+    "The rescue battle requires 10 correct answers with no mistakes and no audio hints.",
+    "Added an original friendly Kaidōra kaiju with approach, hurt and defeated battle sprites.",
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
     "Learners choose when to move to the next question instead of being advanced automatically.",
