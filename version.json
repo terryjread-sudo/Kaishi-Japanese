@@ -1,5 +1,5 @@
 {
-  "version": "5.1.1",
+  "version": "5.1.2",
   "released": "2026-07-30",
   "title": "Reviewable picture and listening games",
   "changes": [
@@ -8,7 +8,9 @@
     "Learners choose when to move to the next question instead of being advanced automatically.",
     "Removed the Picture to Meaning game.",
     "Added a Kaishi Quest character banner behind the main title bar.",
-    "Updated mnemonic image frames to show complete landscape artwork without cropping."
+    "Updated mnemonic image frames to show complete landscape artwork without cropping.",
+    "Replaced the rectangular title-bar artwork with a responsive transparent character group.",
+    "Updated image diagnostics to display complete landscape mnemonic scenes without cropping."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,
