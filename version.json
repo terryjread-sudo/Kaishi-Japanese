@@ -1,7 +1,7 @@
 {
-  "version": "5.5.0",
+  "version": "5.6.0",
   "released": "2026-07-31",
-  "title": "Animated yōkai decay battles",
+  "title": "500 mapped mnemonic images",
   "changes": [
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
@@ -25,9 +25,12 @@
     "Added responsive monster movement, recoil, defeat animations, and reduced-motion support.",
     "Added optional Japanese audio hints with stronger no-hint critical attacks.",
     "Added a battle summary with accuracy, hints, critical hits, weak words, and dojo health.",
-    "Added a rolling dashboard count of yōkai defeated during the last 24 hours."
+    "Added a rolling dashboard count of yōkai defeated during the last 24 hours.",
+    "Added 297 reference-guided mnemonic scenes to reach 500 mapped vocabulary images.",
+    "Each new scene combines visible pronunciation props with a memorable meaning action.",
+    "Marked every new mnemonic image approved by default for immediate study and game use."
   ],
-  "sourcePacksIncluded": 4,
-  "mappedWords": 203,
-  "standaloneImages": 203
+  "sourcePacksIncluded": 5,
+  "mappedWords": 500,
+  "standaloneImages": 500
 }

@@ -2028,5 +2028,2975 @@
     "meaning": "to face, to head toward",
     "file": "gold-150-mukau.webp",
     "soundMnemonic": "Moo cow"
+  },
+  "気持ち|きもち": {
+    "pack": 5,
+    "row": 0,
+    "col": 0,
+    "alt": "Mnemonic scene for 気持ち, read きもち, meaning feeling, sensation.",
+    "caption": "Kai and Mia use key and mower and cheese in an exaggerated scene that clearly shows “feeling, sensation”.",
+    "meaning": "feeling, sensation",
+    "file": "gold-151-word-0137.webp",
+    "soundMnemonic": "key + mower + cheese"
+  },
+  "きっと|きっと": {
+    "pack": 5,
+    "row": 0,
+    "col": 1,
+    "alt": "Mnemonic scene for きっと, read きっと, meaning surely, certainly.",
+    "caption": "Kai and Mia use key and toe in an exaggerated scene that clearly shows “surely, certainly”.",
+    "meaning": "surely, certainly",
+    "file": "gold-152-word-0138.webp",
+    "soundMnemonic": "key + toe"
+  },
+  "変わる|かわる": {
+    "pack": 5,
+    "row": 0,
+    "col": 2,
+    "alt": "Mnemonic scene for 変わる, read かわる, meaning to change.",
+    "caption": "Kai and Mia use car and wand and ruby in an exaggerated scene that clearly shows “to change”.",
+    "meaning": "to change",
+    "file": "gold-153-word-0139.webp",
+    "soundMnemonic": "car + wand + ruby"
+  },
+  "誰|だれ": {
+    "pack": 5,
+    "row": 0,
+    "col": 3,
+    "alt": "Mnemonic scene for 誰, read だれ, meaning who.",
+    "caption": "Kai and Mia use dart and rain in an exaggerated scene that clearly shows “who”.",
+    "meaning": "who",
+    "file": "gold-154-word-0140.webp",
+    "soundMnemonic": "dart + rain"
+  },
+  "凄い|すごい": {
+    "pack": 5,
+    "row": 0,
+    "col": 4,
+    "alt": "Mnemonic scene for 凄い, read すごい, meaning wonderful, great, a lot.",
+    "caption": "Kai and Mia use soup and goat and eel in an exaggerated scene that clearly shows “wonderful, great, a lot”.",
+    "meaning": "wonderful, great, a lot",
+    "file": "gold-155-word-0141.webp",
+    "soundMnemonic": "soup + goat + eel"
+  },
+  "次|つぎ": {
+    "pack": 5,
+    "row": 0,
+    "col": 5,
+    "alt": "Mnemonic scene for 次, read つぎ, meaning next, subsequent.",
+    "caption": "Kai and Mia use tsunami and guitar in an exaggerated scene that clearly shows “next, subsequent”.",
+    "meaning": "next, subsequent",
+    "file": "gold-156-word-0142.webp",
+    "soundMnemonic": "tsunami + guitar"
+  },
+  "ちゃんと|ちゃんと": {
+    "pack": 5,
+    "row": 0,
+    "col": 6,
+    "alt": "Mnemonic scene for ちゃんと, read ちゃんと, meaning properly.",
+    "caption": "Kai and Mia use chair and hen and toe in an exaggerated scene that clearly shows “properly”.",
+    "meaning": "properly",
+    "file": "gold-157-word-0145.webp",
+    "soundMnemonic": "chair + hen + toe"
+  },
+  "始める|はじめる": {
+    "pack": 5,
+    "row": 0,
+    "col": 7,
+    "alt": "Mnemonic scene for 始める, read はじめる, meaning to start.",
+    "caption": "Kai and Mia use hat and jeans and melon in an exaggerated scene that clearly shows “to start”.",
+    "meaning": "to start",
+    "file": "gold-158-word-0146.webp",
+    "soundMnemonic": "hat + jeans + melon"
+  },
+  "音|おと": {
+    "pack": 5,
+    "row": 0,
+    "col": 8,
+    "alt": "Mnemonic scene for 音, read おと, meaning sound.",
+    "caption": "Kai and Mia use oak and toe in an exaggerated scene that clearly shows “sound”.",
+    "meaning": "sound",
+    "file": "gold-159-word-0147.webp",
+    "soundMnemonic": "oak + toe"
+  },
+  "見せる|みせる": {
+    "pack": 5,
+    "row": 0,
+    "col": 9,
+    "alt": "Mnemonic scene for 見せる, read みせる, meaning to show.",
+    "caption": "Kai and Mia use meat and sail and ruby in an exaggerated scene that clearly shows “to show”.",
+    "meaning": "to show",
+    "file": "gold-160-word-0148.webp",
+    "soundMnemonic": "meat + sail + ruby"
+  },
+  "体|からだ": {
+    "pack": 5,
+    "row": 1,
+    "col": 0,
+    "alt": "Mnemonic scene for 体, read からだ, meaning body.",
+    "caption": "Kai and Mia use car and ram and dart in an exaggerated scene that clearly shows “body”.",
+    "meaning": "body",
+    "file": "gold-161-word-0149.webp",
+    "soundMnemonic": "car + ram + dart"
+  },
+  "どんな|どんな": {
+    "pack": 5,
+    "row": 1,
+    "col": 1,
+    "alt": "Mnemonic scene for どんな, read どんな, meaning what kind of....",
+    "caption": "Kai and Mia use dough and hen and nachos in an exaggerated scene that clearly shows “what kind of...”.",
+    "meaning": "what kind of...",
+    "file": "gold-162-word-0151.webp",
+    "soundMnemonic": "dough + hen + nachos"
+  },
+  "うち|うち": {
+    "pack": 5,
+    "row": 1,
+    "col": 2,
+    "alt": "Mnemonic scene for うち, read うち, meaning one's household.",
+    "caption": "Kai and Mia use ooze and cheese in an exaggerated scene that clearly shows “one's household”.",
+    "meaning": "one's household",
+    "file": "gold-163-word-0152.webp",
+    "soundMnemonic": "ooze + cheese"
+  },
+  "掛ける|かける": {
+    "pack": 5,
+    "row": 1,
+    "col": 3,
+    "alt": "Mnemonic scene for 掛ける, read かける, meaning to hang, to put on.",
+    "caption": "Kai and Mia use car and keg and ruby in an exaggerated scene that clearly shows “to hang, to put on”.",
+    "meaning": "to hang, to put on",
+    "file": "gold-164-word-0154.webp",
+    "soundMnemonic": "car + keg + ruby"
+  },
+  "意味|いみ": {
+    "pack": 5,
+    "row": 1,
+    "col": 4,
+    "alt": "Mnemonic scene for 意味, read いみ, meaning meaning, significance.",
+    "caption": "Kai and Mia use eel and meat in an exaggerated scene that clearly shows “meaning, significance”.",
+    "meaning": "meaning, significance",
+    "file": "gold-165-word-0157.webp",
+    "soundMnemonic": "eel + meat"
+  },
+  "心配|しんぱい": {
+    "pack": 5,
+    "row": 1,
+    "col": 5,
+    "alt": "Mnemonic scene for 心配, read しんぱい, meaning worry.",
+    "caption": "Kai and Mia use sheep and hen and pan in an exaggerated scene that clearly shows “worry”.",
+    "meaning": "worry",
+    "file": "gold-166-word-0158.webp",
+    "soundMnemonic": "sheep + hen + pan"
+  },
+  "様子|ようす": {
+    "pack": 5,
+    "row": 1,
+    "col": 6,
+    "alt": "Mnemonic scene for 様子, read ようす, meaning appearance, state.",
+    "caption": "Kai and Mia use yo-yo and ooze and soup in an exaggerated scene that clearly shows “appearance, state”.",
+    "meaning": "appearance, state",
+    "file": "gold-167-word-0159.webp",
+    "soundMnemonic": "yo-yo + ooze + soup"
+  },
+  "名前|なまえ": {
+    "pack": 5,
+    "row": 1,
+    "col": 7,
+    "alt": "Mnemonic scene for 名前, read なまえ, meaning name.",
+    "caption": "Kai and Mia use nachos and map and egg in an exaggerated scene that clearly shows “name”.",
+    "meaning": "name",
+    "file": "gold-168-word-0160.webp",
+    "soundMnemonic": "nachos + map + egg"
+  },
+  "存在|そんざい": {
+    "pack": 5,
+    "row": 1,
+    "col": 8,
+    "alt": "Mnemonic scene for 存在, read そんざい, meaning existence, being.",
+    "caption": "Kai and Mia use soap and hen and zebra in an exaggerated scene that clearly shows “existence, being”.",
+    "meaning": "existence, being",
+    "file": "gold-169-word-0161.webp",
+    "soundMnemonic": "soap + hen + zebra"
+  },
+  "過ぎる|すぎる": {
+    "pack": 5,
+    "row": 1,
+    "col": 9,
+    "alt": "Mnemonic scene for 過ぎる, read すぎる, meaning to exceed, to pass by.",
+    "caption": "Kai and Mia use soup and guitar and ruby in an exaggerated scene that clearly shows “to exceed, to pass by”.",
+    "meaning": "to exceed, to pass by",
+    "file": "gold-170-word-0162.webp",
+    "soundMnemonic": "soup + guitar + ruby"
+  },
+  "聞こえる|きこえる": {
+    "pack": 5,
+    "row": 2,
+    "col": 0,
+    "alt": "Mnemonic scene for 聞こえる, read きこえる, meaning to be able to hear.",
+    "caption": "Kai and Mia use key and coat and egg in an exaggerated scene that clearly shows “to be able to hear”.",
+    "meaning": "to be able to hear",
+    "file": "gold-171-word-0163.webp",
+    "soundMnemonic": "key + coat + egg"
+  },
+  "受ける|うける": {
+    "pack": 5,
+    "row": 2,
+    "col": 1,
+    "alt": "Mnemonic scene for 受ける, read うける, meaning to receive, to accept.",
+    "caption": "Kai and Mia use ooze and keg and ruby in an exaggerated scene that clearly shows “to receive, to accept”.",
+    "meaning": "to receive, to accept",
+    "file": "gold-172-word-0164.webp",
+    "soundMnemonic": "ooze + keg + ruby"
+  },
+  "殺す|ころす": {
+    "pack": 5,
+    "row": 2,
+    "col": 2,
+    "alt": "Mnemonic scene for 殺す, read ころす, meaning to kill.",
+    "caption": "Kai and Mia use coat and rope and soup in an exaggerated scene that clearly shows “to kill”.",
+    "meaning": "to kill",
+    "file": "gold-173-word-0165.webp",
+    "soundMnemonic": "coat + rope + soup"
+  },
+  "まさか|まさか": {
+    "pack": 5,
+    "row": 2,
+    "col": 3,
+    "alt": "Mnemonic scene for まさか, read まさか, meaning by no means, never!.",
+    "caption": "Kai and Mia use map and sun and car in an exaggerated scene that clearly shows “by no means, never!”.",
+    "meaning": "by no means, never!",
+    "file": "gold-174-word-0166.webp",
+    "soundMnemonic": "map + sun + car"
+  },
+  "絶対|ぜったい": {
+    "pack": 5,
+    "row": 2,
+    "col": 4,
+    "alt": "Mnemonic scene for 絶対, read ぜったい, meaning absolutely.",
+    "caption": "Kai and Mia use zeppelin and taco and eel in an exaggerated scene that clearly shows “absolutely”.",
+    "meaning": "absolutely",
+    "file": "gold-175-word-0168.webp",
+    "soundMnemonic": "zeppelin + taco + eel"
+  },
+  "理由|りゆう": {
+    "pack": 5,
+    "row": 2,
+    "col": 5,
+    "alt": "Mnemonic scene for 理由, read りゆう, meaning reason, cause.",
+    "caption": "Kai and Mia use reef and unicorn and ooze in an exaggerated scene that clearly shows “reason, cause”.",
+    "meaning": "reason, cause",
+    "file": "gold-176-word-0170.webp",
+    "soundMnemonic": "reef + unicorn + ooze"
+  },
+  "口|くち": {
+    "pack": 5,
+    "row": 2,
+    "col": 6,
+    "alt": "Mnemonic scene for 口, read くち, meaning mouth.",
+    "caption": "Kai and Mia use cuckoo and cheese in an exaggerated scene that clearly shows “mouth”.",
+    "meaning": "mouth",
+    "file": "gold-177-word-0171.webp",
+    "soundMnemonic": "cuckoo + cheese"
+  },
+  "逃げる|にげる": {
+    "pack": 5,
+    "row": 2,
+    "col": 7,
+    "alt": "Mnemonic scene for 逃げる, read にげる, meaning to escape, to run away.",
+    "caption": "Kai and Mia use knee and gate and ruby in an exaggerated scene that clearly shows “to escape, to run away”.",
+    "meaning": "to escape, to run away",
+    "file": "gold-178-word-0173.webp",
+    "soundMnemonic": "knee + gate + ruby"
+  },
+  "忘れる|わすれる": {
+    "pack": 5,
+    "row": 2,
+    "col": 8,
+    "alt": "Mnemonic scene for 忘れる, read わすれる, meaning to forget.",
+    "caption": "Kai and Mia use wand and soup and rain in an exaggerated scene that clearly shows “to forget”.",
+    "meaning": "to forget",
+    "file": "gold-179-word-0174.webp",
+    "soundMnemonic": "wand + soup + rain"
+  },
+  "誰か|だれか": {
+    "pack": 5,
+    "row": 2,
+    "col": 9,
+    "alt": "Mnemonic scene for 誰か, read だれか, meaning someone.",
+    "caption": "Kai and Mia use dart and rain and car in an exaggerated scene that clearly shows “someone”.",
+    "meaning": "someone",
+    "file": "gold-180-word-0175.webp",
+    "soundMnemonic": "dart + rain + car"
+  },
+  "まるで|まるで": {
+    "pack": 5,
+    "row": 3,
+    "col": 0,
+    "alt": "Mnemonic scene for まるで, read まるで, meaning just like, completely.",
+    "caption": "Kai and Mia use map and ruby and desk in an exaggerated scene that clearly shows “just like, completely”.",
+    "meaning": "just like, completely",
+    "file": "gold-181-word-0176.webp",
+    "soundMnemonic": "map + ruby + desk"
+  },
+  "他|ほか": {
+    "pack": 5,
+    "row": 3,
+    "col": 1,
+    "alt": "Mnemonic scene for 他, read ほか, meaning another, somewhere else.",
+    "caption": "Kai and Mia use hoe and car in an exaggerated scene that clearly shows “another, somewhere else”.",
+    "meaning": "another, somewhere else",
+    "file": "gold-182-word-0177.webp",
+    "soundMnemonic": "hoe + car"
+  },
+  "他|た": {
+    "pack": 5,
+    "row": 3,
+    "col": 2,
+    "alt": "Mnemonic scene for 他, read た, meaning other (esp. people and abstract matters).",
+    "caption": "Kai and Mia use taco in an exaggerated scene that clearly shows “other (esp. people and abstract matters)”.",
+    "meaning": "other (esp. people and abstract matters)",
+    "file": "gold-183-word-0178.webp",
+    "soundMnemonic": "taco"
+  },
+  "さっき|さっき": {
+    "pack": 5,
+    "row": 3,
+    "col": 3,
+    "alt": "Mnemonic scene for さっき, read さっき, meaning (only) a moment ago.",
+    "caption": "Kai and Mia use sun and key in an exaggerated scene that clearly shows “(only) a moment ago”.",
+    "meaning": "(only) a moment ago",
+    "file": "gold-184-word-0179.webp",
+    "soundMnemonic": "sun + key"
+  },
+  "問題|もんだい": {
+    "pack": 5,
+    "row": 3,
+    "col": 4,
+    "alt": "Mnemonic scene for 問題, read もんだい, meaning problem, question.",
+    "caption": "Kai and Mia use mower and hen and dart in an exaggerated scene that clearly shows “problem, question”.",
+    "meaning": "problem, question",
+    "file": "gold-185-word-0180.webp",
+    "soundMnemonic": "mower + hen + dart"
+  },
+  "今度|こんど": {
+    "pack": 5,
+    "row": 3,
+    "col": 5,
+    "alt": "Mnemonic scene for 今度, read こんど, meaning next time.",
+    "caption": "Kai and Mia use coat and hen and dough in an exaggerated scene that clearly shows “next time”.",
+    "meaning": "next time",
+    "file": "gold-186-word-0181.webp",
+    "soundMnemonic": "coat + hen + dough"
+  },
+  "普通|ふつう": {
+    "pack": 5,
+    "row": 3,
+    "col": 6,
+    "alt": "Mnemonic scene for 普通, read ふつう, meaning normal, regular, average.",
+    "caption": "Kai and Mia use food and tsunami and ooze in an exaggerated scene that clearly shows “normal, regular, average”.",
+    "meaning": "normal, regular, average",
+    "file": "gold-187-word-0183.webp",
+    "soundMnemonic": "food + tsunami + ooze"
+  },
+  "もちろん|もちろん": {
+    "pack": 5,
+    "row": 3,
+    "col": 7,
+    "alt": "Mnemonic scene for もちろん, read もちろん, meaning of course, no doubt.",
+    "caption": "Kai and Mia use mower and cheese and rope in an exaggerated scene that clearly shows “of course, no doubt”.",
+    "meaning": "of course, no doubt",
+    "file": "gold-188-word-0184.webp",
+    "soundMnemonic": "mower + cheese + rope"
+  },
+  "心|こころ": {
+    "pack": 5,
+    "row": 3,
+    "col": 8,
+    "alt": "Mnemonic scene for 心, read こころ, meaning heart, mind.",
+    "caption": "Kai and Mia use coat and coat and rope in an exaggerated scene that clearly shows “heart, mind”.",
+    "meaning": "heart, mind",
+    "file": "gold-189-word-0185.webp",
+    "soundMnemonic": "coat + coat + rope"
+  },
+  "以上|いじょう": {
+    "pack": 5,
+    "row": 3,
+    "col": 9,
+    "alt": "Mnemonic scene for 以上, read いじょう, meaning ... or more, beyond.",
+    "caption": "Kai and Mia use eel and jogger and ooze in an exaggerated scene that clearly shows “... or more, beyond”.",
+    "meaning": "... or more, beyond",
+    "file": "gold-190-word-0186.webp",
+    "soundMnemonic": "eel + jogger + ooze"
+  },
+  "それで|それで": {
+    "pack": 5,
+    "row": 4,
+    "col": 0,
+    "alt": "Mnemonic scene for それで, read それで, meaning then, so.",
+    "caption": "Kai and Mia use soap and rain and desk in an exaggerated scene that clearly shows “then, so”.",
+    "meaning": "then, so",
+    "file": "gold-191-word-0187.webp",
+    "soundMnemonic": "soap + rain + desk"
+  },
+  "生きる|いきる": {
+    "pack": 5,
+    "row": 4,
+    "col": 1,
+    "alt": "Mnemonic scene for 生きる, read いきる, meaning to live, to exist.",
+    "caption": "Kai and Mia use eel and key and ruby in an exaggerated scene that clearly shows “to live, to exist”.",
+    "meaning": "to live, to exist",
+    "file": "gold-192-word-0188.webp",
+    "soundMnemonic": "eel + key + ruby"
+  },
+  "最初|さいしょ": {
+    "pack": 5,
+    "row": 4,
+    "col": 2,
+    "alt": "Mnemonic scene for 最初, read さいしょ, meaning first, beginning.",
+    "caption": "Kai and Mia use sun and eel and show in an exaggerated scene that clearly shows “first, beginning”.",
+    "meaning": "first, beginning",
+    "file": "gold-193-word-0189.webp",
+    "soundMnemonic": "sun + eel + show"
+  },
+  "最後|さいご": {
+    "pack": 5,
+    "row": 4,
+    "col": 3,
+    "alt": "Mnemonic scene for 最後, read さいご, meaning last, final.",
+    "caption": "Kai and Mia use sun and eel and goat in an exaggerated scene that clearly shows “last, final”.",
+    "meaning": "last, final",
+    "file": "gold-194-word-0190.webp",
+    "soundMnemonic": "sun + eel + goat"
+  },
+  "日|ひ": {
+    "pack": 5,
+    "row": 4,
+    "col": 4,
+    "alt": "Mnemonic scene for 日, read ひ, meaning day.",
+    "caption": "Kai and Mia use heel in an exaggerated scene that clearly shows “day”.",
+    "meaning": "day",
+    "file": "gold-195-word-0191.webp",
+    "soundMnemonic": "heel"
+  },
+  "守る|まもる": {
+    "pack": 5,
+    "row": 4,
+    "col": 5,
+    "alt": "Mnemonic scene for 守る, read まもる, meaning to protect, to observe.",
+    "caption": "Kai and Mia use map and mower and ruby in an exaggerated scene that clearly shows “to protect, to observe”.",
+    "meaning": "to protect, to observe",
+    "file": "gold-196-word-0192.webp",
+    "soundMnemonic": "map + mower + ruby"
+  },
+  "間|あいだ": {
+    "pack": 5,
+    "row": 4,
+    "col": 6,
+    "alt": "Mnemonic scene for 間, read あいだ, meaning interval (of time, space, etc.).",
+    "caption": "Kai and Mia use apple and eel and dart in an exaggerated scene that clearly shows “interval (of time, space, etc.)”.",
+    "meaning": "interval (of time, space, etc.)",
+    "file": "gold-197-word-0193.webp",
+    "soundMnemonic": "apple + eel + dart"
+  },
+  "間|ま": {
+    "pack": 5,
+    "row": 4,
+    "col": 7,
+    "alt": "Mnemonic scene for 間, read ま, meaning interval, duration of time, pause.",
+    "caption": "Kai and Mia use map in an exaggerated scene that clearly shows “interval, duration of time, pause”.",
+    "meaning": "interval, duration of time, pause",
+    "file": "gold-198-word-0194.webp",
+    "soundMnemonic": "map"
+  },
+  "について|について": {
+    "pack": 5,
+    "row": 4,
+    "col": 8,
+    "alt": "Mnemonic scene for について, read について, meaning concerning, regarding.",
+    "caption": "Kai and Mia use knee and tsunami and eel in an exaggerated scene that clearly shows “concerning, regarding”.",
+    "meaning": "concerning, regarding",
+    "file": "gold-199-word-0195.webp",
+    "soundMnemonic": "knee + tsunami + eel"
+  },
+  "感じ|かんじ": {
+    "pack": 5,
+    "row": 4,
+    "col": 9,
+    "alt": "Mnemonic scene for 感じ, read かんじ, meaning feeling, impression.",
+    "caption": "Kai and Mia use car and hen and jeans in an exaggerated scene that clearly shows “feeling, impression”.",
+    "meaning": "feeling, impression",
+    "file": "gold-200-word-0196.webp",
+    "soundMnemonic": "car + hen + jeans"
+  },
+  "胸|むね": {
+    "pack": 5,
+    "row": 5,
+    "col": 0,
+    "alt": "Mnemonic scene for 胸, read むね, meaning chest.",
+    "caption": "Kai and Mia use moon and net in an exaggerated scene that clearly shows “chest”.",
+    "meaning": "chest",
+    "file": "gold-201-word-0197.webp",
+    "soundMnemonic": "moon + net"
+  },
+  "表情|ひょうじょう": {
+    "pack": 5,
+    "row": 5,
+    "col": 1,
+    "alt": "Mnemonic scene for 表情, read ひょうじょう, meaning expression, look.",
+    "caption": "Kai and Mia use yo-yo and ooze and jogger in an exaggerated scene that clearly shows “expression, look”.",
+    "meaning": "expression, look",
+    "file": "gold-202-word-0198.webp",
+    "soundMnemonic": "yo-yo + ooze + jogger"
+  },
+  "これから|これから": {
+    "pack": 5,
+    "row": 5,
+    "col": 2,
+    "alt": "Mnemonic scene for これから, read これから, meaning from now on, after this.",
+    "caption": "Kai and Mia use coat and rain and car in an exaggerated scene that clearly shows “from now on, after this”.",
+    "meaning": "from now on, after this",
+    "file": "gold-203-word-0199.webp",
+    "soundMnemonic": "coat + rain + car"
+  },
+  "楽しい|たのしい": {
+    "pack": 5,
+    "row": 5,
+    "col": 3,
+    "alt": "Mnemonic scene for 楽しい, read たのしい, meaning fun, enjoyable.",
+    "caption": "Kai and Mia use taco and nose and sheep in an exaggerated scene that clearly shows “fun, enjoyable”.",
+    "meaning": "fun, enjoyable",
+    "file": "gold-204-word-0201.webp",
+    "soundMnemonic": "taco + nose + sheep"
+  },
+  "初めて|はじめて": {
+    "pack": 5,
+    "row": 5,
+    "col": 4,
+    "alt": "Mnemonic scene for 初めて, read はじめて, meaning for the first time.",
+    "caption": "Kai and Mia use hat and jeans and melon in an exaggerated scene that clearly shows “for the first time”.",
+    "meaning": "for the first time",
+    "file": "gold-205-word-0202.webp",
+    "soundMnemonic": "hat + jeans + melon"
+  },
+  "無理|むり": {
+    "pack": 5,
+    "row": 5,
+    "col": 5,
+    "alt": "Mnemonic scene for 無理, read むり, meaning unreasonable, impossible.",
+    "caption": "Kai and Mia use moon and reef in an exaggerated scene that clearly shows “unreasonable, impossible”.",
+    "meaning": "unreasonable, impossible",
+    "file": "gold-206-word-0203.webp",
+    "soundMnemonic": "moon + reef"
+  },
+  "一番|いちばん": {
+    "pack": 5,
+    "row": 5,
+    "col": 6,
+    "alt": "Mnemonic scene for 一番, read いちばん, meaning (the) most.",
+    "caption": "Kai and Mia use eel and cheese and bat in an exaggerated scene that clearly shows “(the) most”.",
+    "meaning": "(the) most",
+    "file": "gold-207-word-0204.webp",
+    "soundMnemonic": "eel + cheese + bat"
+  },
+  "欲しい|ほしい": {
+    "pack": 5,
+    "row": 5,
+    "col": 7,
+    "alt": "Mnemonic scene for 欲しい, read ほしい, meaning wanting, wishing for.",
+    "caption": "Kai and Mia use hoe and sheep and eel in an exaggerated scene that clearly shows “wanting, wishing for”.",
+    "meaning": "wanting, wishing for",
+    "file": "gold-208-word-0207.webp",
+    "soundMnemonic": "hoe + sheep + eel"
+  },
+  "大きな|おおきな": {
+    "pack": 5,
+    "row": 5,
+    "col": 8,
+    "alt": "Mnemonic scene for 大きな, read おおきな, meaning big, large.",
+    "caption": "Kai and Mia use oak and oak and key in an exaggerated scene that clearly shows “big, large”.",
+    "meaning": "big, large",
+    "file": "gold-209-word-0208.webp",
+    "soundMnemonic": "oak + oak + key"
+  },
+  "ごめん|ごめん": {
+    "pack": 5,
+    "row": 5,
+    "col": 9,
+    "alt": "Mnemonic scene for ごめん, read ごめん, meaning sorry.",
+    "caption": "Kai and Mia use goat and melon and hen in an exaggerated scene that clearly shows “sorry”.",
+    "meaning": "sorry",
+    "file": "gold-210-word-0209.webp",
+    "soundMnemonic": "goat + melon + hen"
+  },
+  "覚える|おぼえる": {
+    "pack": 5,
+    "row": 6,
+    "col": 0,
+    "alt": "Mnemonic scene for 覚える, read おぼえる, meaning to memorize.",
+    "caption": "Kai and Mia use oak and boat and egg in an exaggerated scene that clearly shows “to memorize”.",
+    "meaning": "to memorize",
+    "file": "gold-211-word-0210.webp",
+    "soundMnemonic": "oak + boat + egg"
+  },
+  "別に|べつに": {
+    "pack": 5,
+    "row": 6,
+    "col": 1,
+    "alt": "Mnemonic scene for 別に, read べつに, meaning (not) particularly.",
+    "caption": "Kai and Mia use bell and tsunami and knee in an exaggerated scene that clearly shows “(not) particularly”.",
+    "meaning": "(not) particularly",
+    "file": "gold-212-word-0211.webp",
+    "soundMnemonic": "bell + tsunami + knee"
+  },
+  "思い出す|おもいだす": {
+    "pack": 5,
+    "row": 6,
+    "col": 2,
+    "alt": "Mnemonic scene for 思い出す, read おもいだす, meaning to recollect, to recall.",
+    "caption": "Kai and Mia use oak and mower and eel in an exaggerated scene that clearly shows “to recollect, to recall”.",
+    "meaning": "to recollect, to recall",
+    "file": "gold-213-word-0212.webp",
+    "soundMnemonic": "oak + mower + eel"
+  },
+  "とても|とても": {
+    "pack": 5,
+    "row": 6,
+    "col": 3,
+    "alt": "Mnemonic scene for とても, read とても, meaning very.",
+    "caption": "Kai and Mia use toe and tea and mower in an exaggerated scene that clearly shows “very”.",
+    "meaning": "very",
+    "file": "gold-214-word-0213.webp",
+    "soundMnemonic": "toe + tea + mower"
+  },
+  "入れる|いれる": {
+    "pack": 5,
+    "row": 6,
+    "col": 4,
+    "alt": "Mnemonic scene for 入れる, read いれる, meaning to put in.",
+    "caption": "Kai and Mia use eel and rain and ruby in an exaggerated scene that clearly shows “to put in”.",
+    "meaning": "to put in",
+    "file": "gold-215-word-0215.webp",
+    "soundMnemonic": "eel + rain + ruby"
+  },
+  "止める|とめる": {
+    "pack": 5,
+    "row": 6,
+    "col": 5,
+    "alt": "Mnemonic scene for 止める, read とめる, meaning to stop (at some place).",
+    "caption": "Kai and Mia use toe and melon and ruby in an exaggerated scene that clearly shows “to stop (at some place)”.",
+    "meaning": "to stop (at some place)",
+    "file": "gold-216-word-0216.webp",
+    "soundMnemonic": "toe + melon + ruby"
+  },
+  "止める|やめる": {
+    "pack": 5,
+    "row": 6,
+    "col": 6,
+    "alt": "Mnemonic scene for 止める, read やめる, meaning to stop (doing something).",
+    "caption": "Kai and Mia use yak and melon and ruby in an exaggerated scene that clearly shows “to stop (doing something)”.",
+    "meaning": "to stop (doing something)",
+    "file": "gold-217-word-0217.webp",
+    "soundMnemonic": "yak + melon + ruby"
+  },
+  "開く|あく": {
+    "pack": 5,
+    "row": 6,
+    "col": 7,
+    "alt": "Mnemonic scene for 開く, read あく, meaning to open.",
+    "caption": "Kai and Mia use apple and cuckoo in an exaggerated scene that clearly shows “to open”.",
+    "meaning": "to open",
+    "file": "gold-218-word-0218.webp",
+    "soundMnemonic": "apple + cuckoo"
+  },
+  "開く|ひらく": {
+    "pack": 5,
+    "row": 6,
+    "col": 8,
+    "alt": "Mnemonic scene for 開く, read ひらく, meaning to open.",
+    "caption": "Kai and Mia use heel and ram and cuckoo in an exaggerated scene that clearly shows “to open”.",
+    "meaning": "to open",
+    "file": "gold-219-word-0219.webp",
+    "soundMnemonic": "heel + ram + cuckoo"
+  },
+  "残る|のこる": {
+    "pack": 5,
+    "row": 6,
+    "col": 9,
+    "alt": "Mnemonic scene for 残る, read のこる, meaning to remain, to be left over.",
+    "caption": "Kai and Mia use nose and coat and ruby in an exaggerated scene that clearly shows “to remain, to be left over”.",
+    "meaning": "to remain, to be left over",
+    "file": "gold-220-word-0220.webp",
+    "soundMnemonic": "nose + coat + ruby"
+  },
+  "答える|こたえる": {
+    "pack": 5,
+    "row": 7,
+    "col": 0,
+    "alt": "Mnemonic scene for 答える, read こたえる, meaning to answer.",
+    "caption": "Kai and Mia use coat and taco and egg in an exaggerated scene that clearly shows “to answer”.",
+    "meaning": "to answer",
+    "file": "gold-221-word-0221.webp",
+    "soundMnemonic": "coat + taco + egg"
+  },
+  "怖い|こわい": {
+    "pack": 5,
+    "row": 7,
+    "col": 1,
+    "alt": "Mnemonic scene for 怖い, read こわい, meaning fearful, being afraid, fearsome.",
+    "caption": "Kai and Mia use coat and wand and eel in an exaggerated scene that clearly shows “fearful, being afraid, fearsome”.",
+    "meaning": "fearful, being afraid, fearsome",
+    "file": "gold-222-word-0222.webp",
+    "soundMnemonic": "coat + wand + eel"
+  },
+  "頼む|たのむ": {
+    "pack": 5,
+    "row": 7,
+    "col": 2,
+    "alt": "Mnemonic scene for 頼む, read たのむ, meaning to ask, to request.",
+    "caption": "Kai and Mia use taco and nose and moon in an exaggerated scene that clearly shows “to ask, to request”.",
+    "meaning": "to ask, to request",
+    "file": "gold-223-word-0223.webp",
+    "soundMnemonic": "taco + nose + moon"
+  },
+  "ゆっくり|ゆっくり": {
+    "pack": 5,
+    "row": 7,
+    "col": 3,
+    "alt": "Mnemonic scene for ゆっくり, read ゆっくり, meaning slowly.",
+    "caption": "Kai and Mia use unicorn and cuckoo and reef in an exaggerated scene that clearly shows “slowly”.",
+    "meaning": "slowly",
+    "file": "gold-224-word-0224.webp",
+    "soundMnemonic": "unicorn + cuckoo + reef"
+  },
+  "年|ねん": {
+    "pack": 5,
+    "row": 7,
+    "col": 4,
+    "alt": "Mnemonic scene for 年, read ねん, meaning counter for years.",
+    "caption": "Kai and Mia use net and hen in an exaggerated scene that clearly shows “counter for years”.",
+    "meaning": "counter for years",
+    "file": "gold-225-word-0225.webp",
+    "soundMnemonic": "net + hen"
+  },
+  "年|とし": {
+    "pack": 5,
+    "row": 7,
+    "col": 5,
+    "alt": "Mnemonic scene for 年, read とし, meaning year.",
+    "caption": "Kai and Mia use toe and sheep in an exaggerated scene that clearly shows “year”.",
+    "meaning": "year",
+    "file": "gold-226-word-0226.webp",
+    "soundMnemonic": "toe + sheep"
+  },
+  "全て|すべて": {
+    "pack": 5,
+    "row": 7,
+    "col": 6,
+    "alt": "Mnemonic scene for 全て, read すべて, meaning all, entirely.",
+    "caption": "Kai and Mia use soup and bell and tea in an exaggerated scene that clearly shows “all, entirely”.",
+    "meaning": "all, entirely",
+    "file": "gold-227-word-0228.webp",
+    "soundMnemonic": "soup + bell + tea"
+  },
+  "状況|じょうきょう": {
+    "pack": 5,
+    "row": 7,
+    "col": 7,
+    "alt": "Mnemonic scene for 状況, read じょうきょう, meaning state of affairs, conditions.",
+    "caption": "Kai and Mia use jogger and ooze and cure in an exaggerated scene that clearly shows “state of affairs, conditions”.",
+    "meaning": "state of affairs, conditions",
+    "file": "gold-228-word-0230.webp",
+    "soundMnemonic": "jogger + ooze + cure"
+  },
+  "許す|ゆるす": {
+    "pack": 5,
+    "row": 7,
+    "col": 8,
+    "alt": "Mnemonic scene for 許す, read ゆるす, meaning to forgive, to permit.",
+    "caption": "Kai and Mia use unicorn and ruby and soup in an exaggerated scene that clearly shows “to forgive, to permit”.",
+    "meaning": "to forgive, to permit",
+    "file": "gold-229-word-0231.webp",
+    "soundMnemonic": "unicorn + ruby + soup"
+  },
+  "確認|かくにん": {
+    "pack": 5,
+    "row": 7,
+    "col": 9,
+    "alt": "Mnemonic scene for 確認, read かくにん, meaning confirmation.",
+    "caption": "Kai and Mia use car and cuckoo and knee in an exaggerated scene that clearly shows “confirmation”.",
+    "meaning": "confirmation",
+    "file": "gold-230-word-0232.webp",
+    "soundMnemonic": "car + cuckoo + knee"
+  },
+  "嬉しい|うれしい": {
+    "pack": 5,
+    "row": 8,
+    "col": 0,
+    "alt": "Mnemonic scene for 嬉しい, read うれしい, meaning happy, glad.",
+    "caption": "Kai and Mia use ooze and rain and sheep in an exaggerated scene that clearly shows “happy, glad”.",
+    "meaning": "happy, glad",
+    "file": "gold-231-word-0233.webp",
+    "soundMnemonic": "ooze + rain + sheep"
+  },
+  "消える|きえる": {
+    "pack": 5,
+    "row": 8,
+    "col": 1,
+    "alt": "Mnemonic scene for 消える, read きえる, meaning to go out, to disappear.",
+    "caption": "Kai and Mia use key and egg and ruby in an exaggerated scene that clearly shows “to go out, to disappear”.",
+    "meaning": "to go out, to disappear",
+    "file": "gold-232-word-0234.webp",
+    "soundMnemonic": "key + egg + ruby"
+  },
+  "頑張る|がんばる": {
+    "pack": 5,
+    "row": 8,
+    "col": 2,
+    "alt": "Mnemonic scene for 頑張る, read がんばる, meaning to persevere, to do one's best.",
+    "caption": "Kai and Mia use garden and hen and bat in an exaggerated scene that clearly shows “to persevere, to do one's best”.",
+    "meaning": "to persevere, to do one's best",
+    "file": "gold-233-word-0235.webp",
+    "soundMnemonic": "garden + hen + bat"
+  },
+  "なるほど|なるほど": {
+    "pack": 5,
+    "row": 8,
+    "col": 3,
+    "alt": "Mnemonic scene for なるほど, read なるほど, meaning I see, really.",
+    "caption": "Kai and Mia use nachos and ruby and hoe in an exaggerated scene that clearly shows “I see, really”.",
+    "meaning": "I see, really",
+    "file": "gold-234-word-0236.webp",
+    "soundMnemonic": "nachos + ruby + hoe"
+  },
+  "驚く|おどろく": {
+    "pack": 5,
+    "row": 8,
+    "col": 4,
+    "alt": "Mnemonic scene for 驚く, read おどろく, meaning to be surprised, to be astonished.",
+    "caption": "Kai and Mia use oak and dough and rope in an exaggerated scene that clearly shows “to be surprised, to be astonished”.",
+    "meaning": "to be surprised, to be astonished",
+    "file": "gold-235-word-0238.webp",
+    "soundMnemonic": "oak + dough + rope"
+  },
+  "腕|うで": {
+    "pack": 5,
+    "row": 8,
+    "col": 5,
+    "alt": "Mnemonic scene for 腕, read うで, meaning arm.",
+    "caption": "Kai and Mia use ooze and desk in an exaggerated scene that clearly shows “arm”.",
+    "meaning": "arm",
+    "file": "gold-236-word-0239.webp",
+    "soundMnemonic": "ooze + desk"
+  },
+  "以外|いがい": {
+    "pack": 5,
+    "row": 8,
+    "col": 6,
+    "alt": "Mnemonic scene for 以外, read いがい, meaning except for.",
+    "caption": "Kai and Mia use eel and garden and eel in an exaggerated scene that clearly shows “except for”.",
+    "meaning": "except for",
+    "file": "gold-237-word-0240.webp",
+    "soundMnemonic": "eel + garden + eel"
+  },
+  "つまり|つまり": {
+    "pack": 5,
+    "row": 8,
+    "col": 7,
+    "alt": "Mnemonic scene for つまり, read つまり, meaning in short, basically.",
+    "caption": "Kai and Mia use tsunami and map and reef in an exaggerated scene that clearly shows “in short, basically”.",
+    "meaning": "in short, basically",
+    "file": "gold-238-word-0241.webp",
+    "soundMnemonic": "tsunami + map + reef"
+  },
+  "困る|こまる": {
+    "pack": 5,
+    "row": 8,
+    "col": 8,
+    "alt": "Mnemonic scene for 困る, read こまる, meaning to be at a loss, to be troubled.",
+    "caption": "Kai and Mia use coat and map and ruby in an exaggerated scene that clearly shows “to be at a loss, to be troubled”.",
+    "meaning": "to be at a loss, to be troubled",
+    "file": "gold-239-word-0242.webp",
+    "soundMnemonic": "coat + map + ruby"
+  },
+  "一つ|ひとつ": {
+    "pack": 5,
+    "row": 8,
+    "col": 9,
+    "alt": "Mnemonic scene for 一つ, read ひとつ, meaning one (thing).",
+    "caption": "Kai and Mia use heel and toe and tsunami in an exaggerated scene that clearly shows “one (thing)”.",
+    "meaning": "one (thing)",
+    "file": "gold-240-word-0243.webp",
+    "soundMnemonic": "heel + toe + tsunami"
+  },
+  "今回|こんかい": {
+    "pack": 5,
+    "row": 9,
+    "col": 0,
+    "alt": "Mnemonic scene for 今回, read こんかい, meaning this time.",
+    "caption": "Kai and Mia use coat and hen and car in an exaggerated scene that clearly shows “this time”.",
+    "meaning": "this time",
+    "file": "gold-241-word-0244.webp",
+    "soundMnemonic": "coat + hen + car"
+  },
+  "国|くに": {
+    "pack": 5,
+    "row": 9,
+    "col": 1,
+    "alt": "Mnemonic scene for 国, read くに, meaning country.",
+    "caption": "Kai and Mia use cuckoo and knee in an exaggerated scene that clearly shows “country”.",
+    "meaning": "country",
+    "file": "gold-242-word-0245.webp",
+    "soundMnemonic": "cuckoo + knee"
+  },
+  "離れる|はなれる": {
+    "pack": 5,
+    "row": 9,
+    "col": 2,
+    "alt": "Mnemonic scene for 離れる, read はなれる, meaning to be separated, to be apart.",
+    "caption": "Kai and Mia use hat and nachos and rain in an exaggerated scene that clearly shows “to be separated, to be apart”.",
+    "meaning": "to be separated, to be apart",
+    "file": "gold-243-word-0246.webp",
+    "soundMnemonic": "hat + nachos + rain"
+  },
+  "気|き": {
+    "pack": 5,
+    "row": 9,
+    "col": 3,
+    "alt": "Mnemonic scene for 気, read き, meaning spirit, temperament.",
+    "caption": "Kai and Mia use key in an exaggerated scene that clearly shows “spirit, temperament”.",
+    "meaning": "spirit, temperament",
+    "file": "gold-244-word-0247.webp",
+    "soundMnemonic": "key"
+  },
+  "光|ひかり": {
+    "pack": 5,
+    "row": 9,
+    "col": 4,
+    "alt": "Mnemonic scene for 光, read ひかり, meaning light, flash.",
+    "caption": "Kai and Mia use heel and car and reef in an exaggerated scene that clearly shows “light, flash”.",
+    "meaning": "light, flash",
+    "file": "gold-245-word-0249.webp",
+    "soundMnemonic": "heel + car + reef"
+  },
+  "優しい|やさしい": {
+    "pack": 5,
+    "row": 9,
+    "col": 5,
+    "alt": "Mnemonic scene for 優しい, read やさしい, meaning gentle, kind.",
+    "caption": "Kai and Mia use yak and sun and sheep in an exaggerated scene that clearly shows “gentle, kind”.",
+    "meaning": "gentle, kind",
+    "file": "gold-246-word-0251.webp",
+    "soundMnemonic": "yak + sun + sheep"
+  },
+  "嫌|いや": {
+    "pack": 5,
+    "row": 9,
+    "col": 6,
+    "alt": "Mnemonic scene for 嫌, read いや, meaning disliking, unwilling (to do).",
+    "caption": "Kai and Mia use eel and yak in an exaggerated scene that clearly shows “disliking, unwilling (to do)”.",
+    "meaning": "disliking, unwilling (to do)",
+    "file": "gold-247-word-0252.webp",
+    "soundMnemonic": "eel + yak"
+  },
+  "そんなに|そんなに": {
+    "pack": 5,
+    "row": 9,
+    "col": 7,
+    "alt": "Mnemonic scene for そんなに, read そんなに, meaning that much.",
+    "caption": "Kai and Mia use soap and hen and nachos in an exaggerated scene that clearly shows “that much”.",
+    "meaning": "that much",
+    "file": "gold-248-word-0253.webp",
+    "soundMnemonic": "soap + hen + nachos"
+  },
+  "戦う|たたかう": {
+    "pack": 5,
+    "row": 9,
+    "col": 8,
+    "alt": "Mnemonic scene for 戦う, read たたかう, meaning to wage war, to fight.",
+    "caption": "Kai and Mia use taco and taco and car in an exaggerated scene that clearly shows “to wage war, to fight”.",
+    "meaning": "to wage war, to fight",
+    "file": "gold-249-word-0254.webp",
+    "soundMnemonic": "taco + taco + car"
+  },
+  "あまり|あまり": {
+    "pack": 5,
+    "row": 9,
+    "col": 9,
+    "alt": "Mnemonic scene for あまり, read あまり, meaning (not) very, (not) much.",
+    "caption": "Kai and Mia use apple and map and reef in an exaggerated scene that clearly shows “(not) very, (not) much”.",
+    "meaning": "(not) very, (not) much",
+    "file": "gold-250-word-0255.webp",
+    "soundMnemonic": "apple + map + reef"
+  },
+  "余り|あまり": {
+    "pack": 5,
+    "row": 10,
+    "col": 0,
+    "alt": "Mnemonic scene for 余り, read あまり, meaning remainder, leftover.",
+    "caption": "Kai and Mia use apple and map and reef in an exaggerated scene that clearly shows “remainder, leftover”.",
+    "meaning": "remainder, leftover",
+    "file": "gold-251-word-0256.webp",
+    "soundMnemonic": "apple + map + reef"
+  },
+  "全部|ぜんぶ": {
+    "pack": 5,
+    "row": 10,
+    "col": 1,
+    "alt": "Mnemonic scene for 全部, read ぜんぶ, meaning all, everything.",
+    "caption": "Kai and Mia use zeppelin and hen and boot in an exaggerated scene that clearly shows “all, everything”.",
+    "meaning": "all, everything",
+    "file": "gold-252-word-0257.webp",
+    "soundMnemonic": "zeppelin + hen + boot"
+  },
+  "瞬間|しゅんかん": {
+    "pack": 5,
+    "row": 10,
+    "col": 2,
+    "alt": "Mnemonic scene for 瞬間, read しゅんかん, meaning instant, moment.",
+    "caption": "Kai and Mia use shoe and hen and car in an exaggerated scene that clearly shows “instant, moment”.",
+    "meaning": "instant, moment",
+    "file": "gold-253-word-0258.webp",
+    "soundMnemonic": "shoe + hen + car"
+  },
+  "説明|せつめい": {
+    "pack": 5,
+    "row": 10,
+    "col": 3,
+    "alt": "Mnemonic scene for 説明, read せつめい, meaning explanation.",
+    "caption": "Kai and Mia use sail and tsunami and melon in an exaggerated scene that clearly shows “explanation”.",
+    "meaning": "explanation",
+    "file": "gold-254-word-0261.webp",
+    "soundMnemonic": "sail + tsunami + melon"
+  },
+  "今まで|いままで": {
+    "pack": 5,
+    "row": 10,
+    "col": 4,
+    "alt": "Mnemonic scene for 今まで, read いままで, meaning until now.",
+    "caption": "Kai and Mia use eel and map and map in an exaggerated scene that clearly shows “until now”.",
+    "meaning": "until now",
+    "file": "gold-255-word-0263.webp",
+    "soundMnemonic": "eel + map + map"
+  },
+  "あいつ|あいつ": {
+    "pack": 5,
+    "row": 10,
+    "col": 5,
+    "alt": "Mnemonic scene for あいつ, read あいつ, meaning that guy.",
+    "caption": "Kai and Mia use apple and eel and tsunami in an exaggerated scene that clearly shows “that guy”.",
+    "meaning": "that guy",
+    "file": "gold-256-word-0264.webp",
+    "soundMnemonic": "apple + eel + tsunami"
+  },
+  "奴|やつ": {
+    "pack": 5,
+    "row": 10,
+    "col": 6,
+    "alt": "Mnemonic scene for 奴, read やつ, meaning that guy, (s)he (usu. derogatory).",
+    "caption": "Kai and Mia use yak and tsunami in an exaggerated scene that clearly shows “that guy, (s)he (usu. derogatory)”.",
+    "meaning": "that guy, (s)he (usu. derogatory)",
+    "file": "gold-257-word-0265.webp",
+    "soundMnemonic": "yak + tsunami"
+  },
+  "もし|もし": {
+    "pack": 5,
+    "row": 10,
+    "col": 7,
+    "alt": "Mnemonic scene for もし, read もし, meaning if, in the event of....",
+    "caption": "Kai and Mia use mower and sheep in an exaggerated scene that clearly shows “if, in the event of...”.",
+    "meaning": "if, in the event of...",
+    "file": "gold-258-word-0266.webp",
+    "soundMnemonic": "mower + sheep"
+  },
+  "決める|きめる": {
+    "pack": 5,
+    "row": 10,
+    "col": 8,
+    "alt": "Mnemonic scene for 決める, read きめる, meaning to decide.",
+    "caption": "Kai and Mia use key and melon and ruby in an exaggerated scene that clearly shows “to decide”.",
+    "meaning": "to decide",
+    "file": "gold-259-word-0267.webp",
+    "soundMnemonic": "key + melon + ruby"
+  },
+  "理解|りかい": {
+    "pack": 5,
+    "row": 10,
+    "col": 9,
+    "alt": "Mnemonic scene for 理解, read りかい, meaning understanding, comprehension.",
+    "caption": "Kai and Mia use reef and car and eel in an exaggerated scene that clearly shows “understanding, comprehension”.",
+    "meaning": "understanding, comprehension",
+    "file": "gold-260-word-0268.webp",
+    "soundMnemonic": "reef + car + eel"
+  },
+  "女性|じょせい": {
+    "pack": 5,
+    "row": 11,
+    "col": 0,
+    "alt": "Mnemonic scene for 女性, read じょせい, meaning woman, female.",
+    "caption": "Kai and Mia use jogger and sail and eel in an exaggerated scene that clearly shows “woman, female”.",
+    "meaning": "woman, female",
+    "file": "gold-261-word-0269.webp",
+    "soundMnemonic": "jogger + sail + eel"
+  },
+  "いつ|いつ": {
+    "pack": 5,
+    "row": 11,
+    "col": 1,
+    "alt": "Mnemonic scene for いつ, read いつ, meaning when.",
+    "caption": "Kai and Mia use eel and tsunami in an exaggerated scene that clearly shows “when”.",
+    "meaning": "when",
+    "file": "gold-262-word-0270.webp",
+    "soundMnemonic": "eel + tsunami"
+  },
+  "時|とき": {
+    "pack": 5,
+    "row": 11,
+    "col": 2,
+    "alt": "Mnemonic scene for 時, read とき, meaning time, occasion.",
+    "caption": "Kai and Mia use toe and key in an exaggerated scene that clearly shows “time, occasion”.",
+    "meaning": "time, occasion",
+    "file": "gold-263-word-0271.webp",
+    "soundMnemonic": "toe + key"
+  },
+  "時|じ": {
+    "pack": 5,
+    "row": 11,
+    "col": 3,
+    "alt": "Mnemonic scene for 時, read じ, meaning hour, o'clock.",
+    "caption": "Kai and Mia use jeans in an exaggerated scene that clearly shows “hour, o'clock”.",
+    "meaning": "hour, o'clock",
+    "file": "gold-264-word-0272.webp",
+    "soundMnemonic": "jeans"
+  },
+  "夢|ゆめ": {
+    "pack": 5,
+    "row": 11,
+    "col": 4,
+    "alt": "Mnemonic scene for 夢, read ゆめ, meaning dream.",
+    "caption": "Kai and Mia use unicorn and melon in an exaggerated scene that clearly shows “dream”.",
+    "meaning": "dream",
+    "file": "gold-265-word-0273.webp",
+    "soundMnemonic": "unicorn + melon"
+  },
+  "頂く|いただく": {
+    "pack": 5,
+    "row": 11,
+    "col": 5,
+    "alt": "Mnemonic scene for 頂く, read いただく, meaning to receive, to take (humble form).",
+    "caption": "Kai and Mia use eel and taco and dart in an exaggerated scene that clearly shows “to receive, to take (humble form)”.",
+    "meaning": "to receive, to take (humble form)",
+    "file": "gold-266-word-0274.webp",
+    "soundMnemonic": "eel + taco + dart"
+  },
+  "頂きます|いただきます": {
+    "pack": 5,
+    "row": 11,
+    "col": 6,
+    "alt": "Mnemonic scene for 頂きます, read いただきます, meaning let's eat!, thank you for the meal.",
+    "caption": "Kai and Mia use eel and taco and dart in an exaggerated scene that clearly shows “let's eat!, thank you for the meal”.",
+    "meaning": "let's eat!, thank you for the meal",
+    "file": "gold-267-word-0275.webp",
+    "soundMnemonic": "eel + taco + dart"
+  },
+  "敵|てき": {
+    "pack": 5,
+    "row": 11,
+    "col": 7,
+    "alt": "Mnemonic scene for 敵, read てき, meaning enemy.",
+    "caption": "Kai and Mia use tea and key in an exaggerated scene that clearly shows “enemy”.",
+    "meaning": "enemy",
+    "file": "gold-268-word-0276.webp",
+    "soundMnemonic": "tea + key"
+  },
+  "おかしい|おかしい": {
+    "pack": 5,
+    "row": 11,
+    "col": 8,
+    "alt": "Mnemonic scene for おかしい, read おかしい, meaning strange, suspicious.",
+    "caption": "Kai and Mia use oak and car and sheep in an exaggerated scene that clearly shows “strange, suspicious”.",
+    "meaning": "strange, suspicious",
+    "file": "gold-269-word-0279.webp",
+    "soundMnemonic": "oak + car + sheep"
+  },
+  "落ちる|おちる": {
+    "pack": 5,
+    "row": 11,
+    "col": 9,
+    "alt": "Mnemonic scene for 落ちる, read おちる, meaning to fall.",
+    "caption": "Kai and Mia use oak and cheese and ruby in an exaggerated scene that clearly shows “to fall”.",
+    "meaning": "to fall",
+    "file": "gold-270-word-0280.webp",
+    "soundMnemonic": "oak + cheese + ruby"
+  },
+  "足|あし": {
+    "pack": 5,
+    "row": 12,
+    "col": 0,
+    "alt": "Mnemonic scene for 足, read あし, meaning leg, foot.",
+    "caption": "Kai and Mia use apple and sheep in an exaggerated scene that clearly shows “leg, foot”.",
+    "meaning": "leg, foot",
+    "file": "gold-271-word-0281.webp",
+    "soundMnemonic": "apple + sheep"
+  },
+  "それに|それに": {
+    "pack": 5,
+    "row": 12,
+    "col": 1,
+    "alt": "Mnemonic scene for それに, read それに, meaning in addition.",
+    "caption": "Kai and Mia use soap and rain and knee in an exaggerated scene that clearly shows “in addition”.",
+    "meaning": "in addition",
+    "file": "gold-272-word-0282.webp",
+    "soundMnemonic": "soap + rain + knee"
+  },
+  "先に|さきに": {
+    "pack": 5,
+    "row": 12,
+    "col": 2,
+    "alt": "Mnemonic scene for 先に, read さきに, meaning before, ahead.",
+    "caption": "Kai and Mia use sun and key and knee in an exaggerated scene that clearly shows “before, ahead”.",
+    "meaning": "before, ahead",
+    "file": "gold-273-word-0283.webp",
+    "soundMnemonic": "sun + key + knee"
+  },
+  "魔法|まほう": {
+    "pack": 5,
+    "row": 12,
+    "col": 3,
+    "alt": "Mnemonic scene for 魔法, read まほう, meaning magic.",
+    "caption": "Kai and Mia use map and hoe and ooze in an exaggerated scene that clearly shows “magic”.",
+    "meaning": "magic",
+    "file": "gold-274-word-0284.webp",
+    "soundMnemonic": "map + hoe + ooze"
+  },
+  "女の子|おんなのこ": {
+    "pack": 5,
+    "row": 12,
+    "col": 4,
+    "alt": "Mnemonic scene for 女の子, read おんなのこ, meaning girl.",
+    "caption": "Kai and Mia use oak and hen and nachos in an exaggerated scene that clearly shows “girl”.",
+    "meaning": "girl",
+    "file": "gold-275-word-0285.webp",
+    "soundMnemonic": "oak + hen + nachos"
+  },
+  "明日|あした": {
+    "pack": 5,
+    "row": 12,
+    "col": 5,
+    "alt": "Mnemonic scene for 明日, read あした, meaning tomorrow.",
+    "caption": "Kai and Mia use apple and sheep and taco in an exaggerated scene that clearly shows “tomorrow”.",
+    "meaning": "tomorrow",
+    "file": "gold-276-word-0288.webp",
+    "soundMnemonic": "apple + sheep + taco"
+  },
+  "昨日|きのう": {
+    "pack": 5,
+    "row": 12,
+    "col": 6,
+    "alt": "Mnemonic scene for 昨日, read きのう, meaning yesterday.",
+    "caption": "Kai and Mia use key and nose and ooze in an exaggerated scene that clearly shows “yesterday”.",
+    "meaning": "yesterday",
+    "file": "gold-277-word-0290.webp",
+    "soundMnemonic": "key + nose + ooze"
+  },
+  "伝える|つたえる": {
+    "pack": 5,
+    "row": 12,
+    "col": 7,
+    "alt": "Mnemonic scene for 伝える, read つたえる, meaning to convey, to transmit.",
+    "caption": "Kai and Mia use tsunami and taco and egg in an exaggerated scene that clearly shows “to convey, to transmit”.",
+    "meaning": "to convey, to transmit",
+    "file": "gold-278-word-0292.webp",
+    "soundMnemonic": "tsunami + taco + egg"
+  },
+  "笑顔|えがお": {
+    "pack": 5,
+    "row": 12,
+    "col": 8,
+    "alt": "Mnemonic scene for 笑顔, read えがお, meaning smile.",
+    "caption": "Kai and Mia use egg and garden and oak in an exaggerated scene that clearly shows “smile”.",
+    "meaning": "smile",
+    "file": "gold-279-word-0293.webp",
+    "soundMnemonic": "egg + garden + oak"
+  },
+  "選ぶ|えらぶ": {
+    "pack": 5,
+    "row": 12,
+    "col": 9,
+    "alt": "Mnemonic scene for 選ぶ, read えらぶ, meaning to choose, to elect.",
+    "caption": "Kai and Mia use egg and ram and boot in an exaggerated scene that clearly shows “to choose, to elect”.",
+    "meaning": "to choose, to elect",
+    "file": "gold-280-word-0295.webp",
+    "soundMnemonic": "egg + ram + boot"
+  },
+  "先輩|せんぱい": {
+    "pack": 5,
+    "row": 13,
+    "col": 0,
+    "alt": "Mnemonic scene for 先輩, read せんぱい, meaning senior (at work, school, etc.).",
+    "caption": "Kai and Mia use sail and hen and pan in an exaggerated scene that clearly shows “senior (at work, school, etc.)”.",
+    "meaning": "senior (at work, school, etc.)",
+    "file": "gold-281-word-0296.webp",
+    "soundMnemonic": "sail + hen + pan"
+  },
+  "続く|つづく": {
+    "pack": 5,
+    "row": 13,
+    "col": 1,
+    "alt": "Mnemonic scene for 続く, read つづく, meaning to continue, to keep up.",
+    "caption": "Kai and Mia use tsunami and zoo and cuckoo in an exaggerated scene that clearly shows “to continue, to keep up”.",
+    "meaning": "to continue, to keep up",
+    "file": "gold-282-word-0297.webp",
+    "soundMnemonic": "tsunami + zoo + cuckoo"
+  },
+  "こんなに|こんなに": {
+    "pack": 5,
+    "row": 13,
+    "col": 2,
+    "alt": "Mnemonic scene for こんなに, read こんなに, meaning this much, such.",
+    "caption": "Kai and Mia use coat and hen and nachos in an exaggerated scene that clearly shows “this much, such”.",
+    "meaning": "this much, such",
+    "file": "gold-283-word-0298.webp",
+    "soundMnemonic": "coat + hen + nachos"
+  },
+  "変|へん": {
+    "pack": 5,
+    "row": 13,
+    "col": 3,
+    "alt": "Mnemonic scene for 変, read へん, meaning strange, funny.",
+    "caption": "Kai and Mia use hay and hen in an exaggerated scene that clearly shows “strange, funny”.",
+    "meaning": "strange, funny",
+    "file": "gold-284-word-0299.webp",
+    "soundMnemonic": "hay + hen"
+  },
+  "当然|とうぜん": {
+    "pack": 5,
+    "row": 13,
+    "col": 4,
+    "alt": "Mnemonic scene for 当然, read とうぜん, meaning natural, as a matter of course.",
+    "caption": "Kai and Mia use toe and ooze and zeppelin in an exaggerated scene that clearly shows “natural, as a matter of course”.",
+    "meaning": "natural, as a matter of course",
+    "file": "gold-285-word-0301.webp",
+    "soundMnemonic": "toe + ooze + zeppelin"
+  },
+  "情報|じょうほう": {
+    "pack": 5,
+    "row": 13,
+    "col": 5,
+    "alt": "Mnemonic scene for 情報, read じょうほう, meaning information.",
+    "caption": "Kai and Mia use jogger and ooze and hoe in an exaggerated scene that clearly shows “information”.",
+    "meaning": "information",
+    "file": "gold-286-word-0302.webp",
+    "soundMnemonic": "jogger + ooze + hoe"
+  },
+  "少女|しょうじょ": {
+    "pack": 5,
+    "row": 13,
+    "col": 6,
+    "alt": "Mnemonic scene for 少女, read しょうじょ, meaning girl.",
+    "caption": "Kai and Mia use show and ooze and jogger in an exaggerated scene that clearly shows “girl”.",
+    "meaning": "girl",
+    "file": "gold-287-word-0306.webp",
+    "soundMnemonic": "show + ooze + jogger"
+  },
+  "大変|たいへん": {
+    "pack": 5,
+    "row": 13,
+    "col": 7,
+    "alt": "Mnemonic scene for 大変, read たいへん, meaning terrible, serious, grave.",
+    "caption": "Kai and Mia use taco and eel and hay in an exaggerated scene that clearly shows “terrible, serious, grave”.",
+    "meaning": "terrible, serious, grave",
+    "file": "gold-288-word-0307.webp",
+    "soundMnemonic": "taco + eel + hay"
+  },
+  "かなり|かなり": {
+    "pack": 5,
+    "row": 13,
+    "col": 8,
+    "alt": "Mnemonic scene for かなり, read かなり, meaning fairly, rather.",
+    "caption": "Kai and Mia use car and nachos and reef in an exaggerated scene that clearly shows “fairly, rather”.",
+    "meaning": "fairly, rather",
+    "file": "gold-289-word-0308.webp",
+    "soundMnemonic": "car + nachos + reef"
+  },
+  "お願い|おねがい": {
+    "pack": 5,
+    "row": 13,
+    "col": 9,
+    "alt": "Mnemonic scene for お願い, read おねがい, meaning favor.",
+    "caption": "Kai and Mia use oak and net and garden in an exaggerated scene that clearly shows “favor”.",
+    "meaning": "favor",
+    "file": "gold-290-word-0309.webp",
+    "soundMnemonic": "oak + net + garden"
+  },
+  "下|もと": {
+    "pack": 5,
+    "row": 14,
+    "col": 0,
+    "alt": "Mnemonic scene for 下, read もと, meaning under (the supervision of).",
+    "caption": "Kai and Mia use mower and toe in an exaggerated scene that clearly shows “under (the supervision of)”.",
+    "meaning": "under (the supervision of)",
+    "file": "gold-291-word-0311.webp",
+    "soundMnemonic": "mower + toe"
+  },
+  "かかる|かかる": {
+    "pack": 5,
+    "row": 14,
+    "col": 1,
+    "alt": "Mnemonic scene for かかる, read かかる, meaning to take (e.g. time or money).",
+    "caption": "Kai and Mia use car and car and ruby in an exaggerated scene that clearly shows “to take (e.g. time or money)”.",
+    "meaning": "to take (e.g. time or money)",
+    "file": "gold-292-word-0312.webp",
+    "soundMnemonic": "car + car + ruby"
+  },
+  "掛かる|かかる": {
+    "pack": 5,
+    "row": 14,
+    "col": 2,
+    "alt": "Mnemonic scene for 掛かる, read かかる, meaning to hang, to be hung.",
+    "caption": "Kai and Mia use car and car and ruby in an exaggerated scene that clearly shows “to hang, to be hung”.",
+    "meaning": "to hang, to be hung",
+    "file": "gold-293-word-0313.webp",
+    "soundMnemonic": "car + car + ruby"
+  },
+  "一度|いちど": {
+    "pack": 5,
+    "row": 14,
+    "col": 3,
+    "alt": "Mnemonic scene for 一度, read いちど, meaning once.",
+    "caption": "Kai and Mia use eel and cheese and dough in an exaggerated scene that clearly shows “once”.",
+    "meaning": "once",
+    "file": "gold-294-word-0314.webp",
+    "soundMnemonic": "eel + cheese + dough"
+  },
+  "完全|かんぜん": {
+    "pack": 5,
+    "row": 14,
+    "col": 4,
+    "alt": "Mnemonic scene for 完全, read かんぜん, meaning perfect, complete.",
+    "caption": "Kai and Mia use car and hen and zeppelin in an exaggerated scene that clearly shows “perfect, complete”.",
+    "meaning": "perfect, complete",
+    "file": "gold-295-word-0315.webp",
+    "soundMnemonic": "car + hen + zeppelin"
+  },
+  "泣く|なく": {
+    "pack": 5,
+    "row": 14,
+    "col": 5,
+    "alt": "Mnemonic scene for 泣く, read なく, meaning to cry.",
+    "caption": "Kai and Mia use nachos and cuckoo in an exaggerated scene that clearly shows “to cry”.",
+    "meaning": "to cry",
+    "file": "gold-296-word-0317.webp",
+    "soundMnemonic": "nachos + cuckoo"
+  },
+  "状態|じょうたい": {
+    "pack": 5,
+    "row": 14,
+    "col": 6,
+    "alt": "Mnemonic scene for 状態, read じょうたい, meaning state, condition.",
+    "caption": "Kai and Mia use jogger and ooze and taco in an exaggerated scene that clearly shows “state, condition”.",
+    "meaning": "state, condition",
+    "file": "gold-297-word-0318.webp",
+    "soundMnemonic": "jogger + ooze + taco"
+  },
+  "娘|むすめ": {
+    "pack": 5,
+    "row": 14,
+    "col": 7,
+    "alt": "Mnemonic scene for 娘, read むすめ, meaning daughter.",
+    "caption": "Kai and Mia use moon and soup and melon in an exaggerated scene that clearly shows “daughter”.",
+    "meaning": "daughter",
+    "file": "gold-298-word-0319.webp",
+    "soundMnemonic": "moon + soup + melon"
+  },
+  "進む|すすむ": {
+    "pack": 5,
+    "row": 14,
+    "col": 8,
+    "alt": "Mnemonic scene for 進む, read すすむ, meaning to move forward.",
+    "caption": "Kai and Mia use soup and soup and moon in an exaggerated scene that clearly shows “to move forward”.",
+    "meaning": "to move forward",
+    "file": "gold-299-word-0320.webp",
+    "soundMnemonic": "soup + soup + moon"
+  },
+  "関係|かんけい": {
+    "pack": 5,
+    "row": 14,
+    "col": 9,
+    "alt": "Mnemonic scene for 関係, read かんけい, meaning relation(ship).",
+    "caption": "Kai and Mia use car and hen and keg in an exaggerated scene that clearly shows “relation(ship)”.",
+    "meaning": "relation(ship)",
+    "file": "gold-300-word-0321.webp",
+    "soundMnemonic": "car + hen + keg"
+  },
+  "向ける|むける": {
+    "pack": 5,
+    "row": 15,
+    "col": 0,
+    "alt": "Mnemonic scene for 向ける, read むける, meaning to turn toward, to point at.",
+    "caption": "Kai and Mia use moon and keg and ruby in an exaggerated scene that clearly shows “to turn toward, to point at”.",
+    "meaning": "to turn toward, to point at",
+    "file": "gold-301-word-0322.webp",
+    "soundMnemonic": "moon + keg + ruby"
+  },
+  "奥|おく": {
+    "pack": 5,
+    "row": 15,
+    "col": 1,
+    "alt": "Mnemonic scene for 奥, read おく, meaning inner part, back (of...).",
+    "caption": "Kai and Mia use oak and cuckoo in an exaggerated scene that clearly shows “inner part, back (of...)”.",
+    "meaning": "inner part, back (of...)",
+    "file": "gold-302-word-0323.webp",
+    "soundMnemonic": "oak + cuckoo"
+  },
+  "軽い|かるい": {
+    "pack": 5,
+    "row": 15,
+    "col": 2,
+    "alt": "Mnemonic scene for 軽い, read かるい, meaning light.",
+    "caption": "Kai and Mia use car and ruby and eel in an exaggerated scene that clearly shows “light”.",
+    "meaning": "light",
+    "file": "gold-303-word-0324.webp",
+    "soundMnemonic": "car + ruby + eel"
+  },
+  "返す|かえす": {
+    "pack": 5,
+    "row": 15,
+    "col": 3,
+    "alt": "Mnemonic scene for 返す, read かえす, meaning to return, to repay.",
+    "caption": "Kai and Mia use car and egg and soup in an exaggerated scene that clearly shows “to return, to repay”.",
+    "meaning": "to return, to repay",
+    "file": "gold-304-word-0325.webp",
+    "soundMnemonic": "car + egg + soup"
+  },
+  "現れる|あらわれる": {
+    "pack": 5,
+    "row": 15,
+    "col": 4,
+    "alt": "Mnemonic scene for 現れる, read あらわれる, meaning to appear, to emerge.",
+    "caption": "Kai and Mia use apple and ram and wand in an exaggerated scene that clearly shows “to appear, to emerge”.",
+    "meaning": "to appear, to emerge",
+    "file": "gold-305-word-0326.webp",
+    "soundMnemonic": "apple + ram + wand"
+  },
+  "痛い|いたい": {
+    "pack": 5,
+    "row": 15,
+    "col": 5,
+    "alt": "Mnemonic scene for 痛い, read いたい, meaning hurt, ouch.",
+    "caption": "Kai and Mia use eel and taco and eel in an exaggerated scene that clearly shows “hurt, ouch”.",
+    "meaning": "hurt, ouch",
+    "file": "gold-306-word-0327.webp",
+    "soundMnemonic": "eel + taco + eel"
+  },
+  "どうやら|どうやら": {
+    "pack": 5,
+    "row": 15,
+    "col": 6,
+    "alt": "Mnemonic scene for どうやら, read どうやら, meaning (seems) likely, seems like.",
+    "caption": "Kai and Mia use dough and ooze and yak in an exaggerated scene that clearly shows “(seems) likely, seems like”.",
+    "meaning": "(seems) likely, seems like",
+    "file": "gold-307-word-0328.webp",
+    "soundMnemonic": "dough + ooze + yak"
+  },
+  "全く|まったく": {
+    "pack": 5,
+    "row": 15,
+    "col": 7,
+    "alt": "Mnemonic scene for 全く, read まったく, meaning entirely, truly.",
+    "caption": "Kai and Mia use map and taco and cuckoo in an exaggerated scene that clearly shows “entirely, truly”.",
+    "meaning": "entirely, truly",
+    "file": "gold-308-word-0329.webp",
+    "soundMnemonic": "map + taco + cuckoo"
+  },
+  "点ける|つける": {
+    "pack": 5,
+    "row": 15,
+    "col": 8,
+    "alt": "Mnemonic scene for 点ける, read つける, meaning to switch on.",
+    "caption": "Kai and Mia use tsunami and keg and ruby in an exaggerated scene that clearly shows “to switch on”.",
+    "meaning": "to switch on",
+    "file": "gold-309-word-0330.webp",
+    "soundMnemonic": "tsunami + keg + ruby"
+  },
+  "付ける|つける": {
+    "pack": 5,
+    "row": 15,
+    "col": 9,
+    "alt": "Mnemonic scene for 付ける, read つける, meaning to attach, to set, to add.",
+    "caption": "Kai and Mia use tsunami and keg and ruby in an exaggerated scene that clearly shows “to attach, to set, to add”.",
+    "meaning": "to attach, to set, to add",
+    "file": "gold-310-word-0331.webp",
+    "soundMnemonic": "tsunami + keg + ruby"
+  },
+  "一瞬|いっしゅん": {
+    "pack": 5,
+    "row": 16,
+    "col": 0,
+    "alt": "Mnemonic scene for 一瞬, read いっしゅん, meaning instant, for a moment.",
+    "caption": "Kai and Mia use eel and shoe and hen in an exaggerated scene that clearly shows “instant, for a moment”.",
+    "meaning": "instant, for a moment",
+    "file": "gold-311-word-0332.webp",
+    "soundMnemonic": "eel + shoe + hen"
+  },
+  "なぜ|なぜ": {
+    "pack": 5,
+    "row": 16,
+    "col": 1,
+    "alt": "Mnemonic scene for なぜ, read なぜ, meaning why.",
+    "caption": "Kai and Mia use nachos and zeppelin in an exaggerated scene that clearly shows “why”.",
+    "meaning": "why",
+    "file": "gold-312-word-0333.webp",
+    "soundMnemonic": "nachos + zeppelin"
+  },
+  "隠す|かくす": {
+    "pack": 5,
+    "row": 16,
+    "col": 2,
+    "alt": "Mnemonic scene for 隠す, read かくす, meaning to hide.",
+    "caption": "Kai and Mia use car and cuckoo and soup in an exaggerated scene that clearly shows “to hide”.",
+    "meaning": "to hide",
+    "file": "gold-313-word-0334.webp",
+    "soundMnemonic": "car + cuckoo + soup"
+  },
+  "準備|じゅんび": {
+    "pack": 5,
+    "row": 16,
+    "col": 3,
+    "alt": "Mnemonic scene for 準備, read じゅんび, meaning preparation, arrangements.",
+    "caption": "Kai and Mia use juice and hen and bee in an exaggerated scene that clearly shows “preparation, arrangements”.",
+    "meaning": "preparation, arrangements",
+    "file": "gold-314-word-0335.webp",
+    "soundMnemonic": "juice + hen + bee"
+  },
+  "そろそろ|そろそろ": {
+    "pack": 5,
+    "row": 16,
+    "col": 4,
+    "alt": "Mnemonic scene for そろそろ, read そろそろ, meaning soon, about time.",
+    "caption": "Kai and Mia use soap and rope and soap in an exaggerated scene that clearly shows “soon, about time”.",
+    "meaning": "soon, about time",
+    "file": "gold-315-word-0336.webp",
+    "soundMnemonic": "soap + rope + soap"
+  },
+  "水|みず": {
+    "pack": 5,
+    "row": 16,
+    "col": 5,
+    "alt": "Mnemonic scene for 水, read みず, meaning water.",
+    "caption": "Kai and Mia use meat and zoo in an exaggerated scene that clearly shows “water”.",
+    "meaning": "water",
+    "file": "gold-316-word-0337.webp",
+    "soundMnemonic": "meat + zoo"
+  },
+  "落ち着く|おちつく": {
+    "pack": 5,
+    "row": 16,
+    "col": 6,
+    "alt": "Mnemonic scene for 落ち着く, read おちつく, meaning to calm down, to settle in.",
+    "caption": "Kai and Mia use oak and cheese and tsunami in an exaggerated scene that clearly shows “to calm down, to settle in”.",
+    "meaning": "to calm down, to settle in",
+    "file": "gold-317-word-0338.webp",
+    "soundMnemonic": "oak + cheese + tsunami"
+  },
+  "恥ずかしい|はずかしい": {
+    "pack": 5,
+    "row": 16,
+    "col": 7,
+    "alt": "Mnemonic scene for 恥ずかしい, read はずかしい, meaning embarrassing, shy.",
+    "caption": "Kai and Mia use hat and zoo and car in an exaggerated scene that clearly shows “embarrassing, shy”.",
+    "meaning": "embarrassing, shy",
+    "file": "gold-318-word-0339.webp",
+    "soundMnemonic": "hat + zoo + car"
+  },
+  "場合|ばあい": {
+    "pack": 5,
+    "row": 16,
+    "col": 8,
+    "alt": "Mnemonic scene for 場合, read ばあい, meaning situation, case.",
+    "caption": "Kai and Mia use bat and apple and eel in an exaggerated scene that clearly shows “situation, case”.",
+    "meaning": "situation, case",
+    "file": "gold-319-word-0340.webp",
+    "soundMnemonic": "bat + apple + eel"
+  },
+  "しっかり|しっかり": {
+    "pack": 5,
+    "row": 16,
+    "col": 9,
+    "alt": "Mnemonic scene for しっかり, read しっかり, meaning tightly, firmly.",
+    "caption": "Kai and Mia use sheep and car and reef in an exaggerated scene that clearly shows “tightly, firmly”.",
+    "meaning": "tightly, firmly",
+    "file": "gold-320-word-0341.webp",
+    "soundMnemonic": "sheep + car + reef"
+  },
+  "髪|かみ": {
+    "pack": 5,
+    "row": 17,
+    "col": 0,
+    "alt": "Mnemonic scene for 髪, read かみ, meaning hair(style).",
+    "caption": "Kai and Mia use car and meat in an exaggerated scene that clearly shows “hair(style)”.",
+    "meaning": "hair(style)",
+    "file": "gold-321-word-0343.webp",
+    "soundMnemonic": "car + meat"
+  },
+  "元|もと": {
+    "pack": 5,
+    "row": 17,
+    "col": 1,
+    "alt": "Mnemonic scene for 元, read もと, meaning former, ex-.",
+    "caption": "Kai and Mia use mower and toe in an exaggerated scene that clearly shows “former, ex-”.",
+    "meaning": "former, ex-",
+    "file": "gold-322-word-0345.webp",
+    "soundMnemonic": "mower + toe"
+  },
+  "得る|える": {
+    "pack": 5,
+    "row": 17,
+    "col": 2,
+    "alt": "Mnemonic scene for 得る, read える, meaning to obtain, to gain.",
+    "caption": "Kai and Mia use egg and ruby in an exaggerated scene that clearly shows “to obtain, to gain”.",
+    "meaning": "to obtain, to gain",
+    "file": "gold-323-word-0346.webp",
+    "soundMnemonic": "egg + ruby"
+  },
+  "すぐ|すぐ": {
+    "pack": 5,
+    "row": 17,
+    "col": 3,
+    "alt": "Mnemonic scene for すぐ, read すぐ, meaning at once, right away.",
+    "caption": "Kai and Mia use soup and goose in an exaggerated scene that clearly shows “at once, right away”.",
+    "meaning": "at once, right away",
+    "file": "gold-324-word-0347.webp",
+    "soundMnemonic": "soup + goose"
+  },
+  "昔|むかし": {
+    "pack": 5,
+    "row": 17,
+    "col": 4,
+    "alt": "Mnemonic scene for 昔, read むかし, meaning a long time ago, the old days.",
+    "caption": "Kai and Mia use moon and car and sheep in an exaggerated scene that clearly shows “a long time ago, the old days”.",
+    "meaning": "a long time ago, the old days",
+    "file": "gold-325-word-0348.webp",
+    "soundMnemonic": "moon + car + sheep"
+  },
+  "変える|かえる": {
+    "pack": 5,
+    "row": 17,
+    "col": 5,
+    "alt": "Mnemonic scene for 変える, read かえる, meaning to change, to alter.",
+    "caption": "Kai and Mia use car and egg and ruby in an exaggerated scene that clearly shows “to change, to alter”.",
+    "meaning": "to change, to alter",
+    "file": "gold-326-word-0349.webp",
+    "soundMnemonic": "car + egg + ruby"
+  },
+  "動き|うごき": {
+    "pack": 5,
+    "row": 17,
+    "col": 6,
+    "alt": "Mnemonic scene for 動き, read うごき, meaning movement, motion.",
+    "caption": "Kai and Mia use ooze and goat and key in an exaggerated scene that clearly shows “movement, motion”.",
+    "meaning": "movement, motion",
+    "file": "gold-327-word-0350.webp",
+    "soundMnemonic": "ooze + goat + key"
+  },
+  "見つめる|みつめる": {
+    "pack": 5,
+    "row": 17,
+    "col": 7,
+    "alt": "Mnemonic scene for 見つめる, read みつめる, meaning to stare.",
+    "caption": "Kai and Mia use meat and tsunami and melon in an exaggerated scene that clearly shows “to stare”.",
+    "meaning": "to stare",
+    "file": "gold-328-word-0351.webp",
+    "soundMnemonic": "meat + tsunami + melon"
+  },
+  "幸せ|しあわせ": {
+    "pack": 5,
+    "row": 17,
+    "col": 8,
+    "alt": "Mnemonic scene for 幸せ, read しあわせ, meaning happiness, good fortune.",
+    "caption": "Kai and Mia use sheep and apple and wand in an exaggerated scene that clearly shows “happiness, good fortune”.",
+    "meaning": "happiness, good fortune",
+    "file": "gold-329-word-0352.webp",
+    "soundMnemonic": "sheep + apple + wand"
+  },
+  "記憶|きおく": {
+    "pack": 5,
+    "row": 17,
+    "col": 9,
+    "alt": "Mnemonic scene for 記憶, read きおく, meaning memory.",
+    "caption": "Kai and Mia use key and oak and cuckoo in an exaggerated scene that clearly shows “memory”.",
+    "meaning": "memory",
+    "file": "gold-330-word-0353.webp",
+    "soundMnemonic": "key + oak + cuckoo"
+  },
+  "反応|はんのう": {
+    "pack": 5,
+    "row": 18,
+    "col": 0,
+    "alt": "Mnemonic scene for 反応, read はんのう, meaning reaction, response.",
+    "caption": "Kai and Mia use hat and hen and nose in an exaggerated scene that clearly shows “reaction, response”.",
+    "meaning": "reaction, response",
+    "file": "gold-331-word-0354.webp",
+    "soundMnemonic": "hat + hen + nose"
+  },
+  "私たち|わたしたち": {
+    "pack": 5,
+    "row": 18,
+    "col": 1,
+    "alt": "Mnemonic scene for 私たち, read わたしたち, meaning we.",
+    "caption": "Kai and Mia use wand and taco and sheep in an exaggerated scene that clearly shows “we”.",
+    "meaning": "we",
+    "file": "gold-332-word-0355.webp",
+    "soundMnemonic": "wand + taco + sheep"
+  },
+  "とにかく|とにかく": {
+    "pack": 5,
+    "row": 18,
+    "col": 2,
+    "alt": "Mnemonic scene for とにかく, read とにかく, meaning in any case, anyway.",
+    "caption": "Kai and Mia use toe and knee and car in an exaggerated scene that clearly shows “in any case, anyway”.",
+    "meaning": "in any case, anyway",
+    "file": "gold-333-word-0356.webp",
+    "soundMnemonic": "toe + knee + car"
+  },
+  "勝手|かって": {
+    "pack": 5,
+    "row": 18,
+    "col": 3,
+    "alt": "Mnemonic scene for 勝手, read かって, meaning selfish, self-centered.",
+    "caption": "Kai and Mia use car and tea in an exaggerated scene that clearly shows “selfish, self-centered”.",
+    "meaning": "selfish, self-centered",
+    "file": "gold-334-word-0357.webp",
+    "soundMnemonic": "car + tea"
+  },
+  "攻撃|こうげき": {
+    "pack": 5,
+    "row": 18,
+    "col": 4,
+    "alt": "Mnemonic scene for 攻撃, read こうげき, meaning attack, assault, criticism.",
+    "caption": "Kai and Mia use coat and ooze and gate in an exaggerated scene that clearly shows “attack, assault, criticism”.",
+    "meaning": "attack, assault, criticism",
+    "file": "gold-335-word-0358.webp",
+    "soundMnemonic": "coat + ooze + gate"
+  },
+  "黙る|だまる": {
+    "pack": 5,
+    "row": 18,
+    "col": 5,
+    "alt": "Mnemonic scene for 黙る, read だまる, meaning to become silent, to shut one's mouth.",
+    "caption": "Kai and Mia use dart and map and ruby in an exaggerated scene that clearly shows “to become silent, to shut one's mouth”.",
+    "meaning": "to become silent, to shut one's mouth",
+    "file": "gold-336-word-0360.webp",
+    "soundMnemonic": "dart + map + ruby"
+  },
+  "最近|さいきん": {
+    "pack": 5,
+    "row": 18,
+    "col": 6,
+    "alt": "Mnemonic scene for 最近, read さいきん, meaning recently.",
+    "caption": "Kai and Mia use sun and eel and key in an exaggerated scene that clearly shows “recently”.",
+    "meaning": "recently",
+    "file": "gold-337-word-0361.webp",
+    "soundMnemonic": "sun + eel + key"
+  },
+  "全員|ぜんいん": {
+    "pack": 5,
+    "row": 18,
+    "col": 7,
+    "alt": "Mnemonic scene for 全員, read ぜんいん, meaning all members, (the) entire staff.",
+    "caption": "Kai and Mia use zeppelin and hen and eel in an exaggerated scene that clearly shows “all members, (the) entire staff”.",
+    "meaning": "all members, (the) entire staff",
+    "file": "gold-338-word-0362.webp",
+    "soundMnemonic": "zeppelin + hen + eel"
+  },
+  "せい|せい": {
+    "pack": 5,
+    "row": 18,
+    "col": 8,
+    "alt": "Mnemonic scene for せい, read せい, meaning cause, fault.",
+    "caption": "Kai and Mia use sail and eel in an exaggerated scene that clearly shows “cause, fault”.",
+    "meaning": "cause, fault",
+    "file": "gold-339-word-0363.webp",
+    "soundMnemonic": "sail + eel"
+  },
+  "深い|ふかい": {
+    "pack": 5,
+    "row": 18,
+    "col": 9,
+    "alt": "Mnemonic scene for 深い, read ふかい, meaning deep, profound.",
+    "caption": "Kai and Mia use food and car and eel in an exaggerated scene that clearly shows “deep, profound”.",
+    "meaning": "deep, profound",
+    "file": "gold-340-word-0364.webp",
+    "soundMnemonic": "food + car + eel"
+  },
+  "別|べつ": {
+    "pack": 5,
+    "row": 19,
+    "col": 0,
+    "alt": "Mnemonic scene for 別, read べつ, meaning another, different.",
+    "caption": "Kai and Mia use bell and tsunami in an exaggerated scene that clearly shows “another, different”.",
+    "meaning": "another, different",
+    "file": "gold-341-word-0365.webp",
+    "soundMnemonic": "bell + tsunami"
+  },
+  "決まる|きまる": {
+    "pack": 5,
+    "row": 19,
+    "col": 1,
+    "alt": "Mnemonic scene for 決まる, read きまる, meaning to be decided, to be set.",
+    "caption": "Kai and Mia use key and map and ruby in an exaggerated scene that clearly shows “to be decided, to be set”.",
+    "meaning": "to be decided, to be set",
+    "file": "gold-342-word-0366.webp",
+    "soundMnemonic": "key + map + ruby"
+  },
+  "しばらく|しばらく": {
+    "pack": 5,
+    "row": 19,
+    "col": 2,
+    "alt": "Mnemonic scene for しばらく, read しばらく, meaning for a while, for the time being.",
+    "caption": "Kai and Mia use sheep and bat and ram in an exaggerated scene that clearly shows “for a while, for the time being”.",
+    "meaning": "for a while, for the time being",
+    "file": "gold-343-word-0367.webp",
+    "soundMnemonic": "sheep + bat + ram"
+  },
+  "行う|おこなう": {
+    "pack": 5,
+    "row": 19,
+    "col": 3,
+    "alt": "Mnemonic scene for 行う, read おこなう, meaning to perform, to do.",
+    "caption": "Kai and Mia use oak and coat and nachos in an exaggerated scene that clearly shows “to perform, to do”.",
+    "meaning": "to perform, to do",
+    "file": "gold-344-word-0368.webp",
+    "soundMnemonic": "oak + coat + nachos"
+  },
+  "上がる|あがる": {
+    "pack": 5,
+    "row": 19,
+    "col": 4,
+    "alt": "Mnemonic scene for 上がる, read あがる, meaning to go up, to rise.",
+    "caption": "Kai and Mia use apple and garden and ruby in an exaggerated scene that clearly shows “to go up, to rise”.",
+    "meaning": "to go up, to rise",
+    "file": "gold-345-word-0369.webp",
+    "soundMnemonic": "apple + garden + ruby"
+  },
+  "隣|となり": {
+    "pack": 5,
+    "row": 19,
+    "col": 5,
+    "alt": "Mnemonic scene for 隣, read となり, meaning next to, adjacent.",
+    "caption": "Kai and Mia use toe and nachos and reef in an exaggerated scene that clearly shows “next to, adjacent”.",
+    "meaning": "next to, adjacent",
+    "file": "gold-346-word-0370.webp",
+    "soundMnemonic": "toe + nachos + reef"
+  },
+  "扉|とびら": {
+    "pack": 5,
+    "row": 19,
+    "col": 6,
+    "alt": "Mnemonic scene for 扉, read とびら, meaning door.",
+    "caption": "Kai and Mia use toe and bee and ram in an exaggerated scene that clearly shows “door”.",
+    "meaning": "door",
+    "file": "gold-347-word-0371.webp",
+    "soundMnemonic": "toe + bee + ram"
+  },
+  "指|ゆび": {
+    "pack": 5,
+    "row": 19,
+    "col": 7,
+    "alt": "Mnemonic scene for 指, read ゆび, meaning finger, toe.",
+    "caption": "Kai and Mia use unicorn and bee in an exaggerated scene that clearly shows “finger, toe”.",
+    "meaning": "finger, toe",
+    "file": "gold-348-word-0372.webp",
+    "soundMnemonic": "unicorn + bee"
+  },
+  "結果|けっか": {
+    "pack": 5,
+    "row": 19,
+    "col": 8,
+    "alt": "Mnemonic scene for 結果, read けっか, meaning result, outcome.",
+    "caption": "Kai and Mia use keg and car in an exaggerated scene that clearly shows “result, outcome”.",
+    "meaning": "result, outcome",
+    "file": "gold-349-word-0373.webp",
+    "soundMnemonic": "keg + car"
+  },
+  "与える|あたえる": {
+    "pack": 5,
+    "row": 19,
+    "col": 9,
+    "alt": "Mnemonic scene for 与える, read あたえる, meaning to give.",
+    "caption": "Kai and Mia use apple and taco and egg in an exaggerated scene that clearly shows “to give”.",
+    "meaning": "to give",
+    "file": "gold-350-word-0374.webp",
+    "soundMnemonic": "apple + taco + egg"
+  },
+  "特に|とくに": {
+    "pack": 5,
+    "row": 20,
+    "col": 0,
+    "alt": "Mnemonic scene for 特に, read とくに, meaning specially, particularly.",
+    "caption": "Kai and Mia use toe and cuckoo and knee in an exaggerated scene that clearly shows “specially, particularly”.",
+    "meaning": "specially, particularly",
+    "file": "gold-351-word-0377.webp",
+    "soundMnemonic": "toe + cuckoo + knee"
+  },
+  "二|に": {
+    "pack": 5,
+    "row": 20,
+    "col": 1,
+    "alt": "Mnemonic scene for 二, read に, meaning two.",
+    "caption": "Kai and Mia use knee in an exaggerated scene that clearly shows “two”.",
+    "meaning": "two",
+    "file": "gold-352-word-0378.webp",
+    "soundMnemonic": "knee"
+  },
+  "形|かたち": {
+    "pack": 5,
+    "row": 20,
+    "col": 2,
+    "alt": "Mnemonic scene for 形, read かたち, meaning shape.",
+    "caption": "Kai and Mia use car and taco and cheese in an exaggerated scene that clearly shows “shape”.",
+    "meaning": "shape",
+    "file": "gold-353-word-0379.webp",
+    "soundMnemonic": "car + taco + cheese"
+  },
+  "さあ|さあ": {
+    "pack": 5,
+    "row": 20,
+    "col": 3,
+    "alt": "Mnemonic scene for さあ, read さあ, meaning I'm not sure, Hmm....",
+    "caption": "Kai and Mia use sun and apple in an exaggerated scene that clearly shows “I'm not sure, Hmm...”.",
+    "meaning": "I'm not sure, Hmm...",
+    "file": "gold-354-word-0380.webp",
+    "soundMnemonic": "sun + apple"
+  },
+  "全然|ぜんぜん": {
+    "pack": 5,
+    "row": 20,
+    "col": 4,
+    "alt": "Mnemonic scene for 全然, read ぜんぜん, meaning (not) at all.",
+    "caption": "Kai and Mia use zeppelin and hen and zeppelin in an exaggerated scene that clearly shows “(not) at all”.",
+    "meaning": "(not) at all",
+    "file": "gold-355-word-0381.webp",
+    "soundMnemonic": "zeppelin + hen + zeppelin"
+  },
+  "血|ち": {
+    "pack": 5,
+    "row": 20,
+    "col": 5,
+    "alt": "Mnemonic scene for 血, read ち, meaning blood.",
+    "caption": "Kai and Mia use cheese in an exaggerated scene that clearly shows “blood”.",
+    "meaning": "blood",
+    "file": "gold-356-word-0382.webp",
+    "soundMnemonic": "cheese"
+  },
+  "更に|さらに": {
+    "pack": 5,
+    "row": 20,
+    "col": 6,
+    "alt": "Mnemonic scene for 更に, read さらに, meaning furthermore, even more.",
+    "caption": "Kai and Mia use sun and ram and knee in an exaggerated scene that clearly shows “furthermore, even more”.",
+    "meaning": "furthermore, even more",
+    "file": "gold-357-word-0383.webp",
+    "soundMnemonic": "sun + ram + knee"
+  },
+  "用意|ようい": {
+    "pack": 5,
+    "row": 20,
+    "col": 7,
+    "alt": "Mnemonic scene for 用意, read ようい, meaning preparation, getting ready.",
+    "caption": "Kai and Mia use yo-yo and ooze and eel in an exaggerated scene that clearly shows “preparation, getting ready”.",
+    "meaning": "preparation, getting ready",
+    "file": "gold-358-word-0384.webp",
+    "soundMnemonic": "yo-yo + ooze + eel"
+  },
+  "負ける|まける": {
+    "pack": 5,
+    "row": 20,
+    "col": 8,
+    "alt": "Mnemonic scene for 負ける, read まける, meaning to lose.",
+    "caption": "Kai and Mia use map and keg and ruby in an exaggerated scene that clearly shows “to lose”.",
+    "meaning": "to lose",
+    "file": "gold-359-word-0385.webp",
+    "soundMnemonic": "map + keg + ruby"
+  },
+  "神|かみ": {
+    "pack": 5,
+    "row": 20,
+    "col": 9,
+    "alt": "Mnemonic scene for 神, read かみ, meaning god, spirit.",
+    "caption": "Kai and Mia use car and meat in an exaggerated scene that clearly shows “god, spirit”.",
+    "meaning": "god, spirit",
+    "file": "gold-360-word-0386.webp",
+    "soundMnemonic": "car + meat"
+  },
+  "実は|じつは": {
+    "pack": 5,
+    "row": 21,
+    "col": 0,
+    "alt": "Mnemonic scene for 実は, read じつは, meaning actually, the truth is.",
+    "caption": "Kai and Mia use jeans and tsunami and hat in an exaggerated scene that clearly shows “actually, the truth is”.",
+    "meaning": "actually, the truth is",
+    "file": "gold-361-word-0387.webp",
+    "soundMnemonic": "jeans + tsunami + hat"
+  },
+  "服|ふく": {
+    "pack": 5,
+    "row": 21,
+    "col": 1,
+    "alt": "Mnemonic scene for 服, read ふく, meaning clothes.",
+    "caption": "Kai and Mia use food and cuckoo in an exaggerated scene that clearly shows “clothes”.",
+    "meaning": "clothes",
+    "file": "gold-362-word-0388.webp",
+    "soundMnemonic": "food + cuckoo"
+  },
+  "不思議|ふしぎ": {
+    "pack": 5,
+    "row": 21,
+    "col": 2,
+    "alt": "Mnemonic scene for 不思議, read ふしぎ, meaning strange, wonderful.",
+    "caption": "Kai and Mia use food and sheep and guitar in an exaggerated scene that clearly shows “strange, wonderful”.",
+    "meaning": "strange, wonderful",
+    "file": "gold-363-word-0389.webp",
+    "soundMnemonic": "food + sheep + guitar"
+  },
+  "学校|がっこう": {
+    "pack": 5,
+    "row": 21,
+    "col": 3,
+    "alt": "Mnemonic scene for 学校, read がっこう, meaning school.",
+    "caption": "Kai and Mia use garden and coat and ooze in an exaggerated scene that clearly shows “school”.",
+    "meaning": "school",
+    "file": "gold-364-word-0390.webp",
+    "soundMnemonic": "garden + coat + ooze"
+  },
+  "意識|いしき": {
+    "pack": 5,
+    "row": 21,
+    "col": 4,
+    "alt": "Mnemonic scene for 意識, read いしき, meaning consciousness, awareness.",
+    "caption": "Kai and Mia use eel and sheep and key in an exaggerated scene that clearly shows “consciousness, awareness”.",
+    "meaning": "consciousness, awareness",
+    "file": "gold-365-word-0391.webp",
+    "soundMnemonic": "eel + sheep + key"
+  },
+  "一体|いったい": {
+    "pack": 5,
+    "row": 21,
+    "col": 5,
+    "alt": "Mnemonic scene for 一体, read いったい, meaning what on earth, what the….",
+    "caption": "Kai and Mia use eel and taco and eel in an exaggerated scene that clearly shows “what on earth, what the…”.",
+    "meaning": "what on earth, what the…",
+    "file": "gold-366-word-0392.webp",
+    "soundMnemonic": "eel + taco + eel"
+  },
+  "とりあえず|とりあえず": {
+    "pack": 5,
+    "row": 21,
+    "col": 6,
+    "alt": "Mnemonic scene for とりあえず, read とりあえず, meaning for now, first of all.",
+    "caption": "Kai and Mia use toe and reef and apple in an exaggerated scene that clearly shows “for now, first of all”.",
+    "meaning": "for now, first of all",
+    "file": "gold-367-word-0393.webp",
+    "soundMnemonic": "toe + reef + apple"
+  },
+  "送る|おくる": {
+    "pack": 5,
+    "row": 21,
+    "col": 7,
+    "alt": "Mnemonic scene for 送る, read おくる, meaning to send.",
+    "caption": "Kai and Mia use oak and cuckoo and ruby in an exaggerated scene that clearly shows “to send”.",
+    "meaning": "to send",
+    "file": "gold-368-word-0394.webp",
+    "soundMnemonic": "oak + cuckoo + ruby"
+  },
+  "では|では": {
+    "pack": 5,
+    "row": 21,
+    "col": 8,
+    "alt": "Mnemonic scene for では, read では, meaning then.",
+    "caption": "Kai and Mia use desk and hat in an exaggerated scene that clearly shows “then”.",
+    "meaning": "then",
+    "file": "gold-369-word-0395.webp",
+    "soundMnemonic": "desk + hat"
+  },
+  "安心|あんしん": {
+    "pack": 5,
+    "row": 21,
+    "col": 9,
+    "alt": "Mnemonic scene for 安心, read あんしん, meaning peace of mind, relief.",
+    "caption": "Kai and Mia use apple and hen and sheep in an exaggerated scene that clearly shows “peace of mind, relief”.",
+    "meaning": "peace of mind, relief",
+    "file": "gold-370-word-0396.webp",
+    "soundMnemonic": "apple + hen + sheep"
+  },
+  "失う|うしなう": {
+    "pack": 5,
+    "row": 22,
+    "col": 0,
+    "alt": "Mnemonic scene for 失う, read うしなう, meaning to lose, to miss.",
+    "caption": "Kai and Mia use ooze and sheep and nachos in an exaggerated scene that clearly shows “to lose, to miss”.",
+    "meaning": "to lose, to miss",
+    "file": "gold-371-word-0397.webp",
+    "soundMnemonic": "ooze + sheep + nachos"
+  },
+  "行動|こうどう": {
+    "pack": 5,
+    "row": 22,
+    "col": 1,
+    "alt": "Mnemonic scene for 行動, read こうどう, meaning action, conduct.",
+    "caption": "Kai and Mia use coat and ooze and dough in an exaggerated scene that clearly shows “action, conduct”.",
+    "meaning": "action, conduct",
+    "file": "gold-372-word-0399.webp",
+    "soundMnemonic": "coat + ooze + dough"
+  },
+  "触れる|ふれる": {
+    "pack": 5,
+    "row": 22,
+    "col": 2,
+    "alt": "Mnemonic scene for 触れる, read ふれる, meaning to touch, to come in contact with.",
+    "caption": "Kai and Mia use food and rain and ruby in an exaggerated scene that clearly shows “to touch, to come in contact with”.",
+    "meaning": "to touch, to come in contact with",
+    "file": "gold-373-word-0400.webp",
+    "soundMnemonic": "food + rain + ruby"
+  },
+  "失礼します|しつれいします": {
+    "pack": 5,
+    "row": 22,
+    "col": 3,
+    "alt": "Mnemonic scene for 失礼します, read しつれいします, meaning pardon me, excuse me (e.g. when leaving).",
+    "caption": "Kai and Mia use sheep and tsunami and rain in an exaggerated scene that clearly shows “pardon me, excuse me (e.g. when leaving)”.",
+    "meaning": "pardon me, excuse me (e.g. when leaving)",
+    "file": "gold-374-word-0401.webp",
+    "soundMnemonic": "sheep + tsunami + rain"
+  },
+  "そもそも|そもそも": {
+    "pack": 5,
+    "row": 22,
+    "col": 4,
+    "alt": "Mnemonic scene for そもそも, read そもそも, meaning in the first place.",
+    "caption": "Kai and Mia use soap and mower and soap in an exaggerated scene that clearly shows “in the first place”.",
+    "meaning": "in the first place",
+    "file": "gold-375-word-0402.webp",
+    "soundMnemonic": "soap + mower + soap"
+  },
+  "結局|けっきょく": {
+    "pack": 5,
+    "row": 22,
+    "col": 5,
+    "alt": "Mnemonic scene for 結局, read けっきょく, meaning after all, finally.",
+    "caption": "Kai and Mia use keg and cure and cuckoo in an exaggerated scene that clearly shows “after all, finally”.",
+    "meaning": "after all, finally",
+    "file": "gold-376-word-0404.webp",
+    "soundMnemonic": "keg + cure + cuckoo"
+  },
+  "空|そら": {
+    "pack": 5,
+    "row": 22,
+    "col": 6,
+    "alt": "Mnemonic scene for 空, read そら, meaning sky, weather.",
+    "caption": "Kai and Mia use soap and ram in an exaggerated scene that clearly shows “sky, weather”.",
+    "meaning": "sky, weather",
+    "file": "gold-377-word-0405.webp",
+    "soundMnemonic": "soap + ram"
+  },
+  "済む|すむ": {
+    "pack": 5,
+    "row": 22,
+    "col": 7,
+    "alt": "Mnemonic scene for 済む, read すむ, meaning to be settled, to complete.",
+    "caption": "Kai and Mia use soup and moon in an exaggerated scene that clearly shows “to be settled, to complete”.",
+    "meaning": "to be settled, to complete",
+    "file": "gold-378-word-0406.webp",
+    "soundMnemonic": "soup + moon"
+  },
+  "任せる|まかせる": {
+    "pack": 5,
+    "row": 22,
+    "col": 8,
+    "alt": "Mnemonic scene for 任せる, read まかせる, meaning to entrust to, to leave it to.",
+    "caption": "Kai and Mia use map and car and sail in an exaggerated scene that clearly shows “to entrust to, to leave it to”.",
+    "meaning": "to entrust to, to leave it to",
+    "file": "gold-379-word-0407.webp",
+    "soundMnemonic": "map + car + sail"
+  },
+  "赤い|あかい": {
+    "pack": 5,
+    "row": 22,
+    "col": 9,
+    "alt": "Mnemonic scene for 赤い, read あかい, meaning red.",
+    "caption": "Kai and Mia use apple and car and eel in an exaggerated scene that clearly shows “red”.",
+    "meaning": "red",
+    "file": "gold-380-word-0408.webp",
+    "soundMnemonic": "apple + car + eel"
+  },
+  "大事|だいじ": {
+    "pack": 5,
+    "row": 23,
+    "col": 0,
+    "alt": "Mnemonic scene for 大事, read だいじ, meaning important, precious.",
+    "caption": "Kai and Mia use dart and eel and jeans in an exaggerated scene that clearly shows “important, precious”.",
+    "meaning": "important, precious",
+    "file": "gold-381-word-0409.webp",
+    "soundMnemonic": "dart + eel + jeans"
+  },
+  "残す|のこす": {
+    "pack": 5,
+    "row": 23,
+    "col": 1,
+    "alt": "Mnemonic scene for 残す, read のこす, meaning to leave, to reserve.",
+    "caption": "Kai and Mia use nose and coat and soup in an exaggerated scene that clearly shows “to leave, to reserve”.",
+    "meaning": "to leave, to reserve",
+    "file": "gold-382-word-0410.webp",
+    "soundMnemonic": "nose + coat + soup"
+  },
+  "止まる|とまる": {
+    "pack": 5,
+    "row": 23,
+    "col": 2,
+    "alt": "Mnemonic scene for 止まる, read とまる, meaning to stop, to come to a stop.",
+    "caption": "Kai and Mia use toe and map and ruby in an exaggerated scene that clearly shows “to stop, to come to a stop”.",
+    "meaning": "to stop, to come to a stop",
+    "file": "gold-383-word-0411.webp",
+    "soundMnemonic": "toe + map + ruby"
+  },
+  "命|いのち": {
+    "pack": 5,
+    "row": 23,
+    "col": 3,
+    "alt": "Mnemonic scene for 命, read いのち, meaning life.",
+    "caption": "Kai and Mia use eel and nose and cheese in an exaggerated scene that clearly shows “life”.",
+    "meaning": "life",
+    "file": "gold-384-word-0413.webp",
+    "soundMnemonic": "eel + nose + cheese"
+  },
+  "不安|ふあん": {
+    "pack": 5,
+    "row": 23,
+    "col": 4,
+    "alt": "Mnemonic scene for 不安, read ふあん, meaning uneasiness, anxiety.",
+    "caption": "Kai and Mia use food and apple and hen in an exaggerated scene that clearly shows “uneasiness, anxiety”.",
+    "meaning": "uneasiness, anxiety",
+    "file": "gold-385-word-0414.webp",
+    "soundMnemonic": "food + apple + hen"
+  },
+  "結構|けっこう": {
+    "pack": 5,
+    "row": 23,
+    "col": 5,
+    "alt": "Mnemonic scene for 結構, read けっこう, meaning all right, no thank you.",
+    "caption": "Kai and Mia use keg and coat and ooze in an exaggerated scene that clearly shows “all right, no thank you”.",
+    "meaning": "all right, no thank you",
+    "file": "gold-386-word-0415.webp",
+    "soundMnemonic": "keg + coat + ooze"
+  },
+  "程度|ていど": {
+    "pack": 5,
+    "row": 23,
+    "col": 6,
+    "alt": "Mnemonic scene for 程度, read ていど, meaning degree, extent.",
+    "caption": "Kai and Mia use tea and eel and dough in an exaggerated scene that clearly shows “degree, extent”.",
+    "meaning": "degree, extent",
+    "file": "gold-387-word-0418.webp",
+    "soundMnemonic": "tea + eel + dough"
+  },
+  "壁|かべ": {
+    "pack": 5,
+    "row": 23,
+    "col": 7,
+    "alt": "Mnemonic scene for 壁, read かべ, meaning wall, partition.",
+    "caption": "Kai and Mia use car and bell in an exaggerated scene that clearly shows “wall, partition”.",
+    "meaning": "wall, partition",
+    "file": "gold-388-word-0420.webp",
+    "soundMnemonic": "car + bell"
+  },
+  "約束|やくそく": {
+    "pack": 5,
+    "row": 23,
+    "col": 8,
+    "alt": "Mnemonic scene for 約束, read やくそく, meaning promise, appointment.",
+    "caption": "Kai and Mia use yak and cuckoo and soap in an exaggerated scene that clearly shows “promise, appointment”.",
+    "meaning": "promise, appointment",
+    "file": "gold-389-word-0421.webp",
+    "soundMnemonic": "yak + cuckoo + soap"
+  },
+  "面白い|おもしろい": {
+    "pack": 5,
+    "row": 23,
+    "col": 9,
+    "alt": "Mnemonic scene for 面白い, read おもしろい, meaning interesting, amusing.",
+    "caption": "Kai and Mia use oak and mower and sheep in an exaggerated scene that clearly shows “interesting, amusing”.",
+    "meaning": "interesting, amusing",
+    "file": "gold-390-word-0422.webp",
+    "soundMnemonic": "oak + mower + sheep"
+  },
+  "用|よう": {
+    "pack": 5,
+    "row": 24,
+    "col": 0,
+    "alt": "Mnemonic scene for 用, read よう, meaning things to do, (as a suffix) to do..., made for....",
+    "caption": "Kai and Mia use yo-yo and ooze in an exaggerated scene that clearly shows “things to do, (as a suffix) to do..., made for...”.",
+    "meaning": "things to do, (as a suffix) to do..., made for...",
+    "file": "gold-391-word-0423.webp",
+    "soundMnemonic": "yo-yo + ooze"
+  },
+  "背中|せなか": {
+    "pack": 5,
+    "row": 24,
+    "col": 1,
+    "alt": "Mnemonic scene for 背中, read せなか, meaning back.",
+    "caption": "Kai and Mia use sail and nachos and car in an exaggerated scene that clearly shows “back”.",
+    "meaning": "back",
+    "file": "gold-392-word-0424.webp",
+    "soundMnemonic": "sail + nachos + car"
+  },
+  "気付く|きづく": {
+    "pack": 5,
+    "row": 24,
+    "col": 2,
+    "alt": "Mnemonic scene for 気付く, read きづく, meaning to realize, to notice.",
+    "caption": "Kai and Mia use key and zoo and cuckoo in an exaggerated scene that clearly shows “to realize, to notice”.",
+    "meaning": "to realize, to notice",
+    "file": "gold-393-word-0425.webp",
+    "soundMnemonic": "key + zoo + cuckoo"
+  },
+  "いきなり|いきなり": {
+    "pack": 5,
+    "row": 24,
+    "col": 3,
+    "alt": "Mnemonic scene for いきなり, read いきなり, meaning all of a sudden, without warning.",
+    "caption": "Kai and Mia use eel and key and nachos in an exaggerated scene that clearly shows “all of a sudden, without warning”.",
+    "meaning": "all of a sudden, without warning",
+    "file": "gold-394-word-0426.webp",
+    "soundMnemonic": "eel + key + nachos"
+  },
+  "渡す|わたす": {
+    "pack": 5,
+    "row": 24,
+    "col": 4,
+    "alt": "Mnemonic scene for 渡す, read わたす, meaning to carry across, to hand over.",
+    "caption": "Kai and Mia use wand and taco and soup in an exaggerated scene that clearly shows “to carry across, to hand over”.",
+    "meaning": "to carry across, to hand over",
+    "file": "gold-395-word-0427.webp",
+    "soundMnemonic": "wand + taco + soup"
+  },
+  "喜ぶ|よろこぶ": {
+    "pack": 5,
+    "row": 24,
+    "col": 5,
+    "alt": "Mnemonic scene for 喜ぶ, read よろこぶ, meaning to be happy, to be delighted.",
+    "caption": "Kai and Mia use yo-yo and rope and coat in an exaggerated scene that clearly shows “to be happy, to be delighted”.",
+    "meaning": "to be happy, to be delighted",
+    "file": "gold-396-word-0428.webp",
+    "soundMnemonic": "yo-yo + rope + coat"
+  },
+  "可愛い|かわいい": {
+    "pack": 5,
+    "row": 24,
+    "col": 6,
+    "alt": "Mnemonic scene for 可愛い, read かわいい, meaning cute.",
+    "caption": "Kai and Mia use car and wand and eel in an exaggerated scene that clearly shows “cute”.",
+    "meaning": "cute",
+    "file": "gold-397-word-0429.webp",
+    "soundMnemonic": "car + wand + eel"
+  },
+  "始まる|はじまる": {
+    "pack": 5,
+    "row": 24,
+    "col": 7,
+    "alt": "Mnemonic scene for 始まる, read はじまる, meaning to begin.",
+    "caption": "Kai and Mia use hat and jeans and map in an exaggerated scene that clearly shows “to begin”.",
+    "meaning": "to begin",
+    "file": "gold-398-word-0431.webp",
+    "soundMnemonic": "hat + jeans + map"
+  },
+  "色|いろ": {
+    "pack": 5,
+    "row": 24,
+    "col": 8,
+    "alt": "Mnemonic scene for 色, read いろ, meaning color.",
+    "caption": "Kai and Mia use eel and rope in an exaggerated scene that clearly shows “color”.",
+    "meaning": "color",
+    "file": "gold-399-word-0433.webp",
+    "soundMnemonic": "eel + rope"
+  },
+  "認める|みとめる": {
+    "pack": 5,
+    "row": 24,
+    "col": 9,
+    "alt": "Mnemonic scene for 認める, read みとめる, meaning to recognize, to approve, to accept.",
+    "caption": "Kai and Mia use meat and toe and melon in an exaggerated scene that clearly shows “to recognize, to approve, to accept”.",
+    "meaning": "to recognize, to approve, to accept",
+    "file": "gold-400-word-0434.webp",
+    "soundMnemonic": "meat + toe + melon"
+  },
+  "急|きゅう": {
+    "pack": 5,
+    "row": 25,
+    "col": 0,
+    "alt": "Mnemonic scene for 急, read きゅう, meaning suddenly.",
+    "caption": "Kai and Mia use cube and ooze in an exaggerated scene that clearly shows “suddenly”.",
+    "meaning": "suddenly",
+    "file": "gold-401-word-0435.webp",
+    "soundMnemonic": "cube + ooze"
+  },
+  "向こう|むこう": {
+    "pack": 5,
+    "row": 25,
+    "col": 1,
+    "alt": "Mnemonic scene for 向こう, read むこう, meaning the other side, the other party, opponent.",
+    "caption": "Kai and Mia use moon and coat and ooze in an exaggerated scene that clearly shows “the other side, the other party, opponent”.",
+    "meaning": "the other side, the other party, opponent",
+    "file": "gold-402-word-0436.webp",
+    "soundMnemonic": "moon + coat + ooze"
+  },
+  "求める|もとめる": {
+    "pack": 5,
+    "row": 25,
+    "col": 2,
+    "alt": "Mnemonic scene for 求める, read もとめる, meaning to seek, to wish for.",
+    "caption": "Kai and Mia use mower and toe and melon in an exaggerated scene that clearly shows “to seek, to wish for”.",
+    "meaning": "to seek, to wish for",
+    "file": "gold-403-word-0437.webp",
+    "soundMnemonic": "mower + toe + melon"
+  },
+  "肩|かた": {
+    "pack": 5,
+    "row": 25,
+    "col": 3,
+    "alt": "Mnemonic scene for 肩, read かた, meaning shoulder.",
+    "caption": "Kai and Mia use car and taco in an exaggerated scene that clearly shows “shoulder”.",
+    "meaning": "shoulder",
+    "file": "gold-404-word-0438.webp",
+    "soundMnemonic": "car + taco"
+  },
+  "仲間|なかま": {
+    "pack": 5,
+    "row": 25,
+    "col": 4,
+    "alt": "Mnemonic scene for 仲間, read なかま, meaning comrade, peer.",
+    "caption": "Kai and Mia use nachos and car and map in an exaggerated scene that clearly shows “comrade, peer”.",
+    "meaning": "comrade, peer",
+    "file": "gold-405-word-0439.webp",
+    "soundMnemonic": "nachos + car + map"
+  },
+  "ようやく|ようやく": {
+    "pack": 5,
+    "row": 25,
+    "col": 5,
+    "alt": "Mnemonic scene for ようやく, read ようやく, meaning at last.",
+    "caption": "Kai and Mia use yo-yo and ooze and yak in an exaggerated scene that clearly shows “at last”.",
+    "meaning": "at last",
+    "file": "gold-406-word-0440.webp",
+    "soundMnemonic": "yo-yo + ooze + yak"
+  },
+  "思わず|おもわず": {
+    "pack": 5,
+    "row": 25,
+    "col": 6,
+    "alt": "Mnemonic scene for 思わず, read おもわず, meaning unintentionally, involuntarily.",
+    "caption": "Kai and Mia use oak and mower and wand in an exaggerated scene that clearly shows “unintentionally, involuntarily”.",
+    "meaning": "unintentionally, involuntarily",
+    "file": "gold-407-word-0441.webp",
+    "soundMnemonic": "oak + mower + wand"
+  },
+  "ほとんど|ほとんど": {
+    "pack": 5,
+    "row": 25,
+    "col": 7,
+    "alt": "Mnemonic scene for ほとんど, read ほとんど, meaning almost, hardly.",
+    "caption": "Kai and Mia use hoe and toe and hen in an exaggerated scene that clearly shows “almost, hardly”.",
+    "meaning": "almost, hardly",
+    "file": "gold-408-word-0442.webp",
+    "soundMnemonic": "hoe + toe + hen"
+  },
+  "ありがとうございます|ありがとうございます": {
+    "pack": 5,
+    "row": 25,
+    "col": 8,
+    "alt": "Mnemonic scene for ありがとうございます, read ありがとうございます, meaning thank you (formal).",
+    "caption": "Kai and Mia use apple and reef and garden in an exaggerated scene that clearly shows “thank you (formal)”.",
+    "meaning": "thank you (formal)",
+    "file": "gold-409-word-0443.webp",
+    "soundMnemonic": "apple + reef + garden"
+  },
+  "突然|とつぜん": {
+    "pack": 5,
+    "row": 25,
+    "col": 9,
+    "alt": "Mnemonic scene for 突然, read とつぜん, meaning abruptly, suddenly.",
+    "caption": "Kai and Mia use toe and tsunami and zeppelin in an exaggerated scene that clearly shows “abruptly, suddenly”.",
+    "meaning": "abruptly, suddenly",
+    "file": "gold-410-word-0445.webp",
+    "soundMnemonic": "toe + tsunami + zeppelin"
+  },
+  "自身|じしん": {
+    "pack": 5,
+    "row": 26,
+    "col": 0,
+    "alt": "Mnemonic scene for 自身, read じしん, meaning self.",
+    "caption": "Kai and Mia use jeans and sheep and hen in an exaggerated scene that clearly shows “self”.",
+    "meaning": "self",
+    "file": "gold-411-word-0446.webp",
+    "soundMnemonic": "jeans + sheep + hen"
+  },
+  "再び|ふたたび": {
+    "pack": 5,
+    "row": 26,
+    "col": 1,
+    "alt": "Mnemonic scene for 再び, read ふたたび, meaning again, a second time.",
+    "caption": "Kai and Mia use food and taco and taco in an exaggerated scene that clearly shows “again, a second time”.",
+    "meaning": "again, a second time",
+    "file": "gold-412-word-0447.webp",
+    "soundMnemonic": "food + taco + taco"
+  },
+  "静か|しずか": {
+    "pack": 5,
+    "row": 26,
+    "col": 2,
+    "alt": "Mnemonic scene for 静か, read しずか, meaning quiet.",
+    "caption": "Kai and Mia use sheep and zoo and car in an exaggerated scene that clearly shows “quiet”.",
+    "meaning": "quiet",
+    "file": "gold-413-word-0448.webp",
+    "soundMnemonic": "sheep + zoo + car"
+  },
+  "白い|しろい": {
+    "pack": 5,
+    "row": 26,
+    "col": 3,
+    "alt": "Mnemonic scene for 白い, read しろい, meaning white, blank.",
+    "caption": "Kai and Mia use sheep and rope and eel in an exaggerated scene that clearly shows “white, blank”.",
+    "meaning": "white, blank",
+    "file": "gold-414-word-0450.webp",
+    "soundMnemonic": "sheep + rope + eel"
+  },
+  "届く|とどく": {
+    "pack": 5,
+    "row": 26,
+    "col": 4,
+    "alt": "Mnemonic scene for 届く, read とどく, meaning to reach, to be received.",
+    "caption": "Kai and Mia use toe and dough and cuckoo in an exaggerated scene that clearly shows “to reach, to be received”.",
+    "meaning": "to reach, to be received",
+    "file": "gold-415-word-0451.webp",
+    "soundMnemonic": "toe + dough + cuckoo"
+  },
+  "生む|うむ": {
+    "pack": 5,
+    "row": 26,
+    "col": 5,
+    "alt": "Mnemonic scene for 生む, read うむ, meaning to have children.",
+    "caption": "Kai and Mia use ooze and moon in an exaggerated scene that clearly shows “to have children”.",
+    "meaning": "to have children",
+    "file": "gold-416-word-0452.webp",
+    "soundMnemonic": "ooze + moon"
+  },
+  "倒す|たおす": {
+    "pack": 5,
+    "row": 26,
+    "col": 6,
+    "alt": "Mnemonic scene for 倒す, read たおす, meaning to bring down, to overthrow.",
+    "caption": "Kai and Mia use taco and oak and soup in an exaggerated scene that clearly shows “to bring down, to overthrow”.",
+    "meaning": "to bring down, to overthrow",
+    "file": "gold-417-word-0453.webp",
+    "soundMnemonic": "taco + oak + soup"
+  },
+  "似る|にる": {
+    "pack": 5,
+    "row": 26,
+    "col": 7,
+    "alt": "Mnemonic scene for 似る, read にる, meaning to look similar to, to resemble.",
+    "caption": "Kai and Mia use knee and ruby in an exaggerated scene that clearly shows “to look similar to, to resemble”.",
+    "meaning": "to look similar to, to resemble",
+    "file": "gold-418-word-0454.webp",
+    "soundMnemonic": "knee + ruby"
+  },
+  "空気|くうき": {
+    "pack": 5,
+    "row": 26,
+    "col": 8,
+    "alt": "Mnemonic scene for 空気, read くうき, meaning atmosphere, air.",
+    "caption": "Kai and Mia use cuckoo and ooze and key in an exaggerated scene that clearly shows “atmosphere, air”.",
+    "meaning": "atmosphere, air",
+    "file": "gold-419-word-0455.webp",
+    "soundMnemonic": "cuckoo + ooze + key"
+  },
+  "腰|こし": {
+    "pack": 5,
+    "row": 26,
+    "col": 9,
+    "alt": "Mnemonic scene for 腰, read こし, meaning hip, lower back.",
+    "caption": "Kai and Mia use coat and sheep in an exaggerated scene that clearly shows “hip, lower back”.",
+    "meaning": "hip, lower back",
+    "file": "gold-420-word-0456.webp",
+    "soundMnemonic": "coat + sheep"
+  },
+  "名|な": {
+    "pack": 5,
+    "row": 27,
+    "col": 0,
+    "alt": "Mnemonic scene for 名, read な, meaning name, reputation.",
+    "caption": "Kai and Mia use nachos in an exaggerated scene that clearly shows “name, reputation”.",
+    "meaning": "name, reputation",
+    "file": "gold-421-word-0457.webp",
+    "soundMnemonic": "nachos"
+  },
+  "危険|きけん": {
+    "pack": 5,
+    "row": 27,
+    "col": 1,
+    "alt": "Mnemonic scene for 危険, read きけん, meaning danger, dangerous.",
+    "caption": "Kai and Mia use key and keg and hen in an exaggerated scene that clearly shows “danger, dangerous”.",
+    "meaning": "danger, dangerous",
+    "file": "gold-422-word-0458.webp",
+    "soundMnemonic": "key + keg + hen"
+  },
+  "付く|つく": {
+    "pack": 5,
+    "row": 27,
+    "col": 2,
+    "alt": "Mnemonic scene for 付く, read つく, meaning to attach itself to, to be connected with, to come in contact with.",
+    "caption": "Kai and Mia use tsunami and cuckoo in an exaggerated scene that clearly shows “to attach itself to, to be connected with, to come in contact with”.",
+    "meaning": "to attach itself to, to be connected with, to come in contact with",
+    "file": "gold-423-word-0459.webp",
+    "soundMnemonic": "tsunami + cuckoo"
+  },
+  "つく|つく": {
+    "pack": 5,
+    "row": 27,
+    "col": 3,
+    "alt": "Mnemonic scene for つく, read つく, meaning to be on, to be switched on.",
+    "caption": "Kai and Mia use tsunami and cuckoo in an exaggerated scene that clearly shows “to be on, to be switched on”.",
+    "meaning": "to be on, to be switched on",
+    "file": "gold-424-word-0460.webp",
+    "soundMnemonic": "tsunami + cuckoo"
+  },
+  "熱い|あつい": {
+    "pack": 5,
+    "row": 27,
+    "col": 4,
+    "alt": "Mnemonic scene for 熱い, read あつい, meaning hot (things, touch).",
+    "caption": "Kai and Mia use apple and tsunami and eel in an exaggerated scene that clearly shows “hot (things, touch)”.",
+    "meaning": "hot (things, touch)",
+    "file": "gold-425-word-0461.webp",
+    "soundMnemonic": "apple + tsunami + eel"
+  },
+  "慌てる|あわてる": {
+    "pack": 5,
+    "row": 27,
+    "col": 5,
+    "alt": "Mnemonic scene for 慌てる, read あわてる, meaning to be flustered, to hurry.",
+    "caption": "Kai and Mia use apple and wand and tea in an exaggerated scene that clearly shows “to be flustered, to hurry”.",
+    "meaning": "to be flustered, to hurry",
+    "file": "gold-426-word-0462.webp",
+    "soundMnemonic": "apple + wand + tea"
+  },
+  "周囲|しゅうい": {
+    "pack": 5,
+    "row": 27,
+    "col": 6,
+    "alt": "Mnemonic scene for 周囲, read しゅうい, meaning circumference, surroundings.",
+    "caption": "Kai and Mia use shoe and ooze and eel in an exaggerated scene that clearly shows “circumference, surroundings”.",
+    "meaning": "circumference, surroundings",
+    "file": "gold-427-word-0463.webp",
+    "soundMnemonic": "shoe + ooze + eel"
+  },
+  "気分|きぶん": {
+    "pack": 5,
+    "row": 27,
+    "col": 7,
+    "alt": "Mnemonic scene for 気分, read きぶん, meaning mood, feeling.",
+    "caption": "Kai and Mia use key and boot and hen in an exaggerated scene that clearly shows “mood, feeling”.",
+    "meaning": "mood, feeling",
+    "file": "gold-428-word-0464.webp",
+    "soundMnemonic": "key + boot + hen"
+  },
+  "事実|じじつ": {
+    "pack": 5,
+    "row": 27,
+    "col": 8,
+    "alt": "Mnemonic scene for 事実, read じじつ, meaning fact, truth.",
+    "caption": "Kai and Mia use jeans and jeans and tsunami in an exaggerated scene that clearly shows “fact, truth”.",
+    "meaning": "fact, truth",
+    "file": "gold-429-word-0465.webp",
+    "soundMnemonic": "jeans + jeans + tsunami"
+  },
+  "まず|まず": {
+    "pack": 5,
+    "row": 27,
+    "col": 9,
+    "alt": "Mnemonic scene for まず, read まず, meaning first (of all), to begin with.",
+    "caption": "Kai and Mia use map and zoo in an exaggerated scene that clearly shows “first (of all), to begin with”.",
+    "meaning": "first (of all), to begin with",
+    "file": "gold-430-word-0466.webp",
+    "soundMnemonic": "map + zoo"
+  },
+  "本気|ほんき": {
+    "pack": 5,
+    "row": 28,
+    "col": 0,
+    "alt": "Mnemonic scene for 本気, read ほんき, meaning seriousness.",
+    "caption": "Kai and Mia use hoe and hen and key in an exaggerated scene that clearly shows “seriousness”.",
+    "meaning": "seriousness",
+    "file": "gold-431-word-0467.webp",
+    "soundMnemonic": "hoe + hen + key"
+  },
+  "頷く|うなずく": {
+    "pack": 5,
+    "row": 28,
+    "col": 1,
+    "alt": "Mnemonic scene for 頷く, read うなずく, meaning to nod.",
+    "caption": "Kai and Mia use ooze and nachos and zoo in an exaggerated scene that clearly shows “to nod”.",
+    "meaning": "to nod",
+    "file": "gold-432-word-0468.webp",
+    "soundMnemonic": "ooze + nachos + zoo"
+  },
+  "通り|とおり": {
+    "pack": 5,
+    "row": 28,
+    "col": 2,
+    "alt": "Mnemonic scene for 通り, read とおり, meaning street.",
+    "caption": "Kai and Mia use toe and oak and reef in an exaggerated scene that clearly shows “street”.",
+    "meaning": "street",
+    "file": "gold-433-word-0469.webp",
+    "soundMnemonic": "toe + oak + reef"
+  },
+  "想像|そうぞう": {
+    "pack": 5,
+    "row": 28,
+    "col": 3,
+    "alt": "Mnemonic scene for 想像, read そうぞう, meaning imagination.",
+    "caption": "Kai and Mia use soap and ooze and zone in an exaggerated scene that clearly shows “imagination”.",
+    "meaning": "imagination",
+    "file": "gold-434-word-0470.webp",
+    "soundMnemonic": "soap + ooze + zone"
+  },
+  "沢山|たくさん": {
+    "pack": 5,
+    "row": 28,
+    "col": 4,
+    "alt": "Mnemonic scene for 沢山, read たくさん, meaning a lot, plenty.",
+    "caption": "Kai and Mia use taco and cuckoo and sun in an exaggerated scene that clearly shows “a lot, plenty”.",
+    "meaning": "a lot, plenty",
+    "file": "gold-435-word-0471.webp",
+    "soundMnemonic": "taco + cuckoo + sun"
+  },
+  "店|みせ": {
+    "pack": 5,
+    "row": 28,
+    "col": 5,
+    "alt": "Mnemonic scene for 店, read みせ, meaning shop, store.",
+    "caption": "Kai and Mia use meat and sail in an exaggerated scene that clearly shows “shop, store”.",
+    "meaning": "shop, store",
+    "file": "gold-436-word-0472.webp",
+    "soundMnemonic": "meat + sail"
+  },
+  "何だか|なんだか": {
+    "pack": 5,
+    "row": 28,
+    "col": 6,
+    "alt": "Mnemonic scene for 何だか, read なんだか, meaning somehow, for some reason.",
+    "caption": "Kai and Mia use nachos and hen and dart in an exaggerated scene that clearly shows “somehow, for some reason”.",
+    "meaning": "somehow, for some reason",
+    "file": "gold-437-word-0473.webp",
+    "soundMnemonic": "nachos + hen + dart"
+  },
+  "目的|もくてき": {
+    "pack": 5,
+    "row": 28,
+    "col": 7,
+    "alt": "Mnemonic scene for 目的, read もくてき, meaning purpose, aim, object.",
+    "caption": "Kai and Mia use mower and cuckoo and tea in an exaggerated scene that clearly shows “purpose, aim, object”.",
+    "meaning": "purpose, aim, object",
+    "file": "gold-438-word-0474.webp",
+    "soundMnemonic": "mower + cuckoo + tea"
+  },
+  "眠る|ねむる": {
+    "pack": 5,
+    "row": 28,
+    "col": 8,
+    "alt": "Mnemonic scene for 眠る, read ねむる, meaning to sleep.",
+    "caption": "Kai and Mia use net and moon and ruby in an exaggerated scene that clearly shows “to sleep”.",
+    "meaning": "to sleep",
+    "file": "gold-439-word-0475.webp",
+    "soundMnemonic": "net + moon + ruby"
+  },
+  "確か|たしか": {
+    "pack": 5,
+    "row": 28,
+    "col": 9,
+    "alt": "Mnemonic scene for 確か, read たしか, meaning certainly, surely, if I'm not mistaken....",
+    "caption": "Kai and Mia use taco and sheep and car in an exaggerated scene that clearly shows “certainly, surely, if I'm not mistaken...”.",
+    "meaning": "certainly, surely, if I'm not mistaken...",
+    "file": "gold-440-word-0476.webp",
+    "soundMnemonic": "taco + sheep + car"
+  },
+  "十分|じゅうぶん": {
+    "pack": 5,
+    "row": 29,
+    "col": 0,
+    "alt": "Mnemonic scene for 十分, read じゅうぶん, meaning plenty.",
+    "caption": "Kai and Mia use juice and ooze and boot in an exaggerated scene that clearly shows “plenty”.",
+    "meaning": "plenty",
+    "file": "gold-441-word-0477.webp",
+    "soundMnemonic": "juice + ooze + boot"
+  },
+  "料理|りょうり": {
+    "pack": 5,
+    "row": 29,
+    "col": 1,
+    "alt": "Mnemonic scene for 料理, read りょうり, meaning cooking, cuisine.",
+    "caption": "Kai and Mia use yoyo and ooze and reef in an exaggerated scene that clearly shows “cooking, cuisine”.",
+    "meaning": "cooking, cuisine",
+    "file": "gold-442-word-0478.webp",
+    "soundMnemonic": "yoyo + ooze + reef"
+  },
+  "頃|ころ": {
+    "pack": 5,
+    "row": 29,
+    "col": 2,
+    "alt": "Mnemonic scene for 頃, read ころ, meaning approximate time.",
+    "caption": "Kai and Mia use coat and rope in an exaggerated scene that clearly shows “approximate time”.",
+    "meaning": "approximate time",
+    "file": "gold-443-word-0479.webp",
+    "soundMnemonic": "coat + rope"
+  },
+  "妹|いもうと": {
+    "pack": 5,
+    "row": 29,
+    "col": 3,
+    "alt": "Mnemonic scene for 妹, read いもうと, meaning younger sister.",
+    "caption": "Kai and Mia use eel and mower and ooze in an exaggerated scene that clearly shows “younger sister”.",
+    "meaning": "younger sister",
+    "file": "gold-444-word-0480.webp",
+    "soundMnemonic": "eel + mower + ooze"
+  },
+  "なかなか|なかなか": {
+    "pack": 5,
+    "row": 29,
+    "col": 4,
+    "alt": "Mnemonic scene for なかなか, read なかなか, meaning rather, fairly.",
+    "caption": "Kai and Mia use nachos and car and nachos in an exaggerated scene that clearly shows “rather, fairly”.",
+    "meaning": "rather, fairly",
+    "file": "gold-445-word-0481.webp",
+    "soundMnemonic": "nachos + car + nachos"
+  },
+  "正直|しょうじき": {
+    "pack": 5,
+    "row": 29,
+    "col": 5,
+    "alt": "Mnemonic scene for 正直, read しょうじき, meaning honest, upright.",
+    "caption": "Kai and Mia use show and ooze and jeans in an exaggerated scene that clearly shows “honest, upright”.",
+    "meaning": "honest, upright",
+    "file": "gold-446-word-0482.webp",
+    "soundMnemonic": "show + ooze + jeans"
+  },
+  "父|ちち": {
+    "pack": 5,
+    "row": 29,
+    "col": 6,
+    "alt": "Mnemonic scene for 父, read ちち, meaning (speaker's) father.",
+    "caption": "Kai and Mia use cheese and cheese in an exaggerated scene that clearly shows “(speaker's) father”.",
+    "meaning": "(speaker's) father",
+    "file": "gold-447-word-0483.webp",
+    "soundMnemonic": "cheese + cheese"
   }
 }
