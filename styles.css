@@ -161,3 +161,37 @@ header{
 .skill-help::after{content:'';position:absolute;left:24px;top:100%;border:7px solid transparent;border-top-color:#172554}
 .skill-row:hover .skill-help,.skill-row:focus .skill-help{opacity:1;transform:translateY(0)}
 .setting-help{color:#64748b;font-weight:500;line-height:1.4}
+
+/* Optional cloud account and community leaderboard. */
+.leaderboard-card{margin-top:22px;padding:20px;border-radius:22px;background:linear-gradient(145deg,#fff,#eef2ff);border:1px solid #c7d2fe;box-shadow:0 8px 24px #17255412}
+.leaderboard-heading{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.leaderboard-heading h3{margin:4px 0 0}
+.leaderboard-heading button{padding:10px 13px;background:#172554;color:#fff}
+.leaderboard-list{display:grid;gap:8px;margin-top:13px}
+.leaderboard-row{display:grid;grid-template-columns:32px 38px minmax(100px,1fr) auto;grid-template-areas:'rank avatar person score' 'rank avatar person details';align-items:center;column-gap:10px;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid #e2e8f0}
+.leaderboard-row.is-you{border-color:#60a5fa;background:#eff6ff}
+.leaderboard-rank{grid-area:rank;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-weight:900}
+.leaderboard-row>img{grid-area:avatar;width:38px;height:38px;border-radius:50%;background:#e2e8f0}
+.leaderboard-row>div{grid-area:person;display:grid;min-width:0}
+.leaderboard-row>div strong,.leaderboard-row>div small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.leaderboard-row>div small,.leaderboard-row>small{color:#64748b}
+.leaderboard-row>b{grid-area:score;color:#1d4ed8;text-align:right}
+.leaderboard-row>small{grid-area:details;text-align:right;font-size:.72rem}
+.cloud-settings{display:grid;gap:13px;padding:18px;border-radius:18px;background:linear-gradient(145deg,#eff6ff,#f5f3ff);border:1px solid #bfdbfe}
+.cloud-settings h3{margin:-5px 0 0}
+.cloud-account{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#fff}
+.cloud-account>div{min-width:0;flex:1}
+.cloud-account p{margin:3px 0 0;color:#64748b;font-size:.78rem;overflow-wrap:anywhere}
+.cloud-avatar{width:46px;height:46px;border-radius:50%;background:#e2e8f0}
+.github-button{background:#24292f;color:#fff}
+.cloud-status{margin:0;color:#475569;font-size:.82rem}
+.cloud-status[data-state=ok]{color:#166534}.cloud-status[data-state=error]{color:#991b1b}.cloud-status[data-state=working]{color:#1d4ed8}
+.leaderboard-toggle{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:10px!important;padding:13px;border-radius:14px;background:#fff}
+.leaderboard-toggle input{flex:0 0 auto;margin:1px 0 0}
+.leaderboard-toggle span{display:grid;gap:4px}
+.leaderboard-toggle small{color:#64748b;font-weight:500;line-height:1.4}
+.cloud-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cloud-privacy{margin:0;color:#64748b;font-size:.76rem;line-height:1.45}
+.cloud-conflict{display:grid;gap:12px;padding:22px}
+.cloud-conflict h2,.cloud-conflict p{margin:0}.cloud-conflict p{color:#475569;line-height:1.5}
+@media(max-width:520px){.leaderboard-row{grid-template-columns:28px 34px minmax(80px,1fr);grid-template-areas:'rank avatar person' 'rank avatar score' 'rank avatar details'}.leaderboard-row>b,.leaderboard-row>small{text-align:left}.leaderboard-heading{align-items:flex-start}.cloud-account{align-items:stretch;flex-wrap:wrap}.cloud-account button{width:100%}.cloud-actions{grid-template-columns:1fr}}

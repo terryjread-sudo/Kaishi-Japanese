@@ -1,7 +1,7 @@
 {
-  "version": "5.6.0",
+  "version": "5.7.0",
   "released": "2026-07-31",
-  "title": "500 mapped mnemonic images",
+  "title": "Optional accounts, cloud progress and leaderboard",
   "changes": [
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
@@ -28,7 +28,11 @@
     "Added a rolling dashboard count of yōkai defeated during the last 24 hours.",
     "Added 297 reference-guided mnemonic scenes to reach 500 mapped vocabulary images.",
     "Each new scene combines visible pronunciation props with a memorable meaning action.",
-    "Marked every new mnemonic image approved by default for immediate study and game use."
+    "Marked every new mnemonic image approved by default for immediate study and game use.",
+    "Added optional GitHub sign-in through Supabase while keeping guest play available.",
+    "Added private cloud progress backup with cross-device restore and conflict choices.",
+    "Added an opt-in community leaderboard that never exposes individual word progress.",
+    "Kept manual progress export and local-only play available without an account."
   ],
   "sourcePacksIncluded": 5,
   "mappedWords": 500,
