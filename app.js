@@ -1,10 +1,10 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='5.2.0';
+const APP_VERSION='5.4.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
 let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
-let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false;
+let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, battleActive=false, battle=null;
 const defaults={newLimit:5,sessionSize:15,activeWords:4,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 let progress=loadJSON('kq-progress',{});
@@ -26,7 +26,7 @@ function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function chooseSkill(v){const p=pFor(v.id);const usable=v.word===v.reading?SKILLS.filter(s=>s!=='kanji'):SKILLS;const weak=usable.map(s=>({s,w:(1-(p.skills[s].strength||0))*(.7+Math.random()*.6)})).sort((a,b)=>b.w-a.w);if(p.stage===0)return'intro';if(p.interval>=21&&Math.random()<.7)return Math.random()<.5?'meaning':'production';return weak[0].s}
 function abortSession(destination='home'){
- pictureGameActive=false;
+ pictureGameActive=false;battleActive=false;battle=null;
  session=[];
  index=0;
  current=null;
@@ -115,9 +115,10 @@ function wireMemoryEditor(v){const b=$('#editMnemonic');if(b)b.onclick=()=>editM
 function renderCurrentUnsafe(){
  if(index>=session.length){finishSession();return}
  current=session[index];
- const game=current.skill==='picture'&&pictureGameActive;
+ const game=(current.skill==='picture'&&pictureGameActive)||battleActive;
  $('#exitBtn').textContent=game?'← Game menu':'← Exit';
  $('#sessionCounter').setAttribute('aria-label',game?'Game progress':'Study progress');revealed=false;hintUsed=false;startedAt=Date.now();const {v,skill}=current;$('#sessionCounter').textContent=`${index+1}/${session.length}`;$('#progressFill').style.width=`${index/session.length*100}%`;const c=$('#card');
+if(current.battle){renderBattleQuestion(v);return}
 if(skill==='intro'){c.innerHTML=`<div class="eyebrow">Meet the word</div><div class="jp">${v.word}</div><div class="reading">${v.reading}</div><div class="meaning">${v.meaning}</div>${visual(v)}${memorySupport(v)}<button id="introAudio" class="audio">🔊 Play word</button><button id="continueBtn" class="primary reveal">Got it →</button>`;if(settings.autoAudio)play(v.wordAudio);$('#introAudio').onclick=()=>play(v.wordAudio);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
 if(skill==='meaning')recallCard(v,'What does this mean?',v.word,`${v.meaning}<div class="reading">${v.reading}</div>`,skill);
 if(skill==='production')recallCard(v,'Recall the Japanese word',v.meaning,`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div>`,skill);
@@ -166,7 +167,7 @@ function bindGameChoices(answer,v){
 }
 function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();if(advance)next()}
 function next(){index++;renderCurrent()}
-function finishSession(){if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
+function finishSession(){if(pictureGameActive||battleActive){const won=battleActive&&battle?.castle>0;abortSession('games');toast(won?'Tower defended! ⚔️':'Game complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
@@ -216,6 +217,43 @@ async function startPictureGame(mode){
  current=null;
  show('study');
  renderCurrent();
+}
+
+function decayCandidates(){
+ const now=Date.now(),dayMs=86400000;
+ const started=vocab.filter(v=>progress[v.id]?.stage>=1).map(v=>{
+  const p=pFor(v.id),window=Math.max(6*3600000,Math.min(3*dayMs,(p.interval||1)*dayMs*.2));
+  return {v,risk:(now-(p.due-window))/window,due:p.due};
+ }).sort((a,b)=>b.risk-a.risk||a.due-b.due);
+ const near=started.filter(x=>x.risk>=0);
+ const chosen=[...near,...started.filter(x=>!near.includes(x))];
+ return chosen.map(x=>x.v);
+}
+function startDecayBattle(){
+ abortSession('games');
+ const pool=decayCandidates();
+ if(!pool.length){toast('Study some words first to unlock decay battles');return}
+ session=pool.slice(0,Math.min(settings.sessionSize,pool.length)).map(v=>({v,skill:'meaning',battle:true}));
+ battleActive=true;battle={castle:3,enemyHp:2,enemyMax:2,position:4,defeated:0};index=0;current=null;show('study');renderCurrent();
+}
+function battleLane(){
+ const cells=[0,1,2,3,4].map(n=>`<span class="battle-cell">${n===0?'🏯':n===battle.position?'👾':''}</span>`).join('');
+ return `<section class="battle-board" aria-label="Monster battle"><div class="battle-hud"><b>Castle ${'❤️'.repeat(battle.castle)}</b><b>Monster ${'⚡'.repeat(battle.enemyHp)}</b><b>Defeated ${battle.defeated}</b></div><div class="battle-lane">${cells}</div><p>Correct reviews damage and push back the monster. A mistake lets it advance.</p></section>`;
+}
+function renderBattleQuestion(v){
+ const choices=shuffle([v.meaning,...distractors(v,'meaning')]),c=$('#card');
+ c.innerHTML=`<div class="eyebrow">SRS Decay Battle</div>${battleLane()}<div class="jp battle-word">${esc(v.word)}</div><div class="reading">${esc(v.reading)}</div><h2>Defend the tower: choose the meaning</h2><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${esc(x)}</button>`).join('')}</div><section id="battleFeedback" class="game-feedback" aria-live="polite" hidden></section>`;
+ document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>resolveBattleAnswer(b,v));
+}
+function resolveBattleAnswer(button,v){
+ if(revealed)return;revealed=true;const answer=decodeURIComponent(button.dataset.answer),ok=answer===v.meaning;
+ button.classList.add(ok?'correct':'wrong');document.querySelectorAll('.choice').forEach(x=>{if(decodeURIComponent(x.dataset.answer)===v.meaning)x.classList.add('correct');x.disabled=true});
+ grade(v,'meaning',ok?3:1,ok,false);
+ let result='';
+ if(ok){battle.enemyHp--;battle.position=Math.min(4,battle.position+1);result='Direct hit! The monster is pushed back.';if(battle.enemyHp<=0){battle.defeated++;battle.enemyHp=battle.enemyMax;battle.position=4;result='Monster defeated! Another wave approaches.'}}
+ else{battle.position--;result='The monster advances!';if(battle.position<=0){battle.castle--;battle.position=4;result=battle.castle?'The castle was hit! The monster returns to the edge.':'The castle has fallen—but the reviewed word is now reinforced.'}}
+ const feedback=$('#battleFeedback');feedback.hidden=false;feedback.innerHTML=`<p class="game-result ${ok?'game-result-correct':'game-result-wrong'}">${result}</p><div class="game-answer"><div class="jp">${esc(v.word)}</div><div class="reading">${esc(v.reading)}</div><div class="meaning">${esc(v.meaning)}</div></div>${v.wordAudio?'<button id="battleAudio" class="audio">🔊 Play Japanese audio</button>':''}<button id="battleNext" class="primary reveal">${battle.castle<=0||index===session.length-1?'Battle results':'Next wave →'}</button>`;
+ $('#battleAudio')?.addEventListener('click',()=>play(v.wordAudio));$('#battleNext').onclick=()=>{if(battle.castle<=0){index=session.length;finishSession()}else next()};
 }
 function exportProgress(){const blob=new Blob([JSON.stringify({version:1,progress,meta,settings},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kaishi-quest-progress.json';a.click();URL.revokeObjectURL(a.href)}
 function versionParts(v){return String(v||'0').split('.').map(n=>parseInt(n,10)||0)}
@@ -269,4 +307,6 @@ async function init(){
  $('#updateBanner').hidden=true;
 }
 $('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#gamesBtn').onclick=()=>abortSession('games');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta=d.meta||meta;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0};save();updateHome();toast('Progress reset')}};
+$('#decayBattleMode').onclick=startDecayBattle;
+$('#exitBtn').onclick=()=>abortSession(pictureGameActive||battleActive?'games':'home');
 init();

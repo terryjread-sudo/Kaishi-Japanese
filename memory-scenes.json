@@ -1028,5 +1028,1005 @@
     "meaning": "important; precious",
     "file": "scene-p03-r05-c10.webp",
     "soundMnemonic": "Tie set"
+  },
+  "する|する": {
+    "pack": 4,
+    "row": 0,
+    "col": 0,
+    "alt": "Mnemonic scene for する, read する, meaning to do, to make.",
+    "caption": "A sewer crew does and makes a model city.",
+    "meaning": "to do, to make",
+    "file": "gold-51-suru.webp",
+    "soundMnemonic": "Sewer"
+  },
+  "事|こと": {
+    "pack": 4,
+    "row": 0,
+    "col": 1,
+    "alt": "Mnemonic scene for 事, read こと, meaning thing, incident.",
+    "caption": "A mysterious coat is the one thing in an incident.",
+    "meaning": "thing, incident",
+    "file": "gold-52-koto.webp",
+    "soundMnemonic": "Coat-oh"
+  },
+  "なる|なる": {
+    "pack": 4,
+    "row": 0,
+    "col": 2,
+    "alt": "Mnemonic scene for なる, read なる, meaning to become, to result in, to come (to do).",
+    "caption": "Kai becomes a hero while squeezing through a narrow arch.",
+    "meaning": "to become, to result in, to come (to do)",
+    "file": "gold-53-naru.webp",
+    "soundMnemonic": "Narrow"
+  },
+  "ある|ある": {
+    "pack": 4,
+    "row": 0,
+    "col": 3,
+    "alt": "Mnemonic scene for ある, read ある, meaning to have, to exist (inanimate).",
+    "caption": "An arrow points to the treasure that exists.",
+    "meaning": "to have, to exist (inanimate)",
+    "file": "gold-54-aru.webp",
+    "soundMnemonic": "Arrow"
+  },
+  "それ|それ": {
+    "pack": 4,
+    "row": 0,
+    "col": 4,
+    "alt": "Mnemonic scene for それ, read それ, meaning that.",
+    "caption": "Mia points to that sore thumb.",
+    "meaning": "that",
+    "file": "gold-55-sore.webp",
+    "soundMnemonic": "Sore"
+  },
+  "私|わたし": {
+    "pack": 4,
+    "row": 0,
+    "col": 5,
+    "alt": "Mnemonic scene for 私, read わたし, meaning I (polite, general).",
+    "caption": "Water-she politely points to herself.",
+    "meaning": "I (polite, general)",
+    "file": "gold-56-watashi.webp",
+    "soundMnemonic": "Water-she"
+  },
+  "いる|いる": {
+    "pack": 4,
+    "row": 0,
+    "col": 6,
+    "alt": "Mnemonic scene for いる, read いる, meaning to have, to exist (animate).",
+    "caption": "A lively eel clearly exists beside Kai.",
+    "meaning": "to have, to exist (animate)",
+    "file": "gold-57-iru.webp",
+    "soundMnemonic": "Eel"
+  },
+  "その|その": {
+    "pack": 4,
+    "row": 0,
+    "col": 7,
+    "alt": "Mnemonic scene for その, read その, meaning that one.",
+    "caption": "Sonar singles out that one distant lantern.",
+    "meaning": "that one",
+    "file": "gold-58-sono.webp",
+    "soundMnemonic": "Sonar"
+  },
+  "この|この": {
+    "pack": 4,
+    "row": 0,
+    "col": 8,
+    "alt": "Mnemonic scene for この, read この, meaning this one.",
+    "caption": "Kai holds this one enormous cone close.",
+    "meaning": "this one",
+    "file": "gold-59-kono.webp",
+    "soundMnemonic": "Cone-oh"
+  },
+  "そう|そう": {
+    "pack": 4,
+    "row": 0,
+    "col": 9,
+    "alt": "Mnemonic scene for そう, read そう, meaning in such manner, that way.",
+    "caption": "Mia sews a copy exactly that way.",
+    "meaning": "in such manner, that way",
+    "file": "gold-60-sou.webp",
+    "soundMnemonic": "Sew"
+  },
+  "無い|ない": {
+    "pack": 4,
+    "row": 1,
+    "col": 0,
+    "alt": "Mnemonic scene for 無い, read ない, meaning nonexistent, not being.",
+    "caption": "At night the empty chest contains nothing.",
+    "meaning": "nonexistent, not being",
+    "file": "gold-61-nai.webp",
+    "soundMnemonic": "Night"
+  },
+  "さん|さん": {
+    "pack": 4,
+    "row": 1,
+    "col": 1,
+    "alt": "Mnemonic scene for さん, read さん, meaning san.",
+    "caption": "Kai respectfully bows beneath a bright sun.",
+    "meaning": "san",
+    "file": "gold-62-san.webp",
+    "soundMnemonic": "Sun"
+  },
+  "いい|いい": {
+    "pack": 4,
+    "row": 1,
+    "col": 2,
+    "alt": "Mnemonic scene for いい, read いい, meaning good.",
+    "caption": "Mia celebrates a genuinely good result.",
+    "meaning": "good",
+    "file": "gold-63-ii.webp",
+    "soundMnemonic": "Eee!"
+  },
+  "くれる|くれる": {
+    "pack": 4,
+    "row": 1,
+    "col": 3,
+    "alt": "Mnemonic scene for くれる, read くれる, meaning to give (receiver is in the speaker's group).",
+    "caption": "A crew relays a gift into Kai’s hands.",
+    "meaning": "to give (receiver is in the speaker's group)",
+    "file": "gold-64-kureru.webp",
+    "soundMnemonic": "Crew relay"
+  },
+  "これ|これ": {
+    "pack": 4,
+    "row": 1,
+    "col": 4,
+    "alt": "Mnemonic scene for これ, read これ, meaning this.",
+    "caption": "Kai points to this glowing apple core.",
+    "meaning": "this",
+    "file": "gold-65-kore.webp",
+    "soundMnemonic": "Core"
+  },
+  "俺|おれ": {
+    "pack": 4,
+    "row": 1,
+    "col": 5,
+    "alt": "Mnemonic scene for 俺, read おれ, meaning I (male).",
+    "caption": "The male miner points to himself and his ore.",
+    "meaning": "I (male)",
+    "file": "gold-66-ore.webp",
+    "soundMnemonic": "Ore"
+  },
+  "やる|やる": {
+    "pack": 4,
+    "row": 1,
+    "col": 6,
+    "alt": "Mnemonic scene for やる, read やる, meaning to do.",
+    "caption": "Kai does every job in the yard.",
+    "meaning": "to do",
+    "file": "gold-67-yaru.webp",
+    "soundMnemonic": "Yard"
+  },
+  "物|もの": {
+    "pack": 4,
+    "row": 1,
+    "col": 7,
+    "alt": "Mnemonic scene for 物, read もの, meaning thing, object.",
+    "caption": "The master examines one object through a monocle.",
+    "meaning": "thing, object",
+    "file": "gold-68-mono.webp",
+    "soundMnemonic": "Monocle"
+  },
+  "あの|あの": {
+    "pack": 4,
+    "row": 1,
+    "col": 8,
+    "alt": "Mnemonic scene for あの, read あの, meaning that one there.",
+    "caption": "Mia points to that one far over there.",
+    "meaning": "that one there",
+    "file": "gold-69-ano.webp",
+    "soundMnemonic": "Ah—over there"
+  },
+  "もう|もう": {
+    "pack": 4,
+    "row": 1,
+    "col": 9,
+    "alt": "Mnemonic scene for もう, read もう, meaning already, yet.",
+    "caption": "The field is already finished by the mower.",
+    "meaning": "already, yet",
+    "file": "gold-70-mou.webp",
+    "soundMnemonic": "Mower"
+  },
+  "何|なに・なん": {
+    "pack": 4,
+    "row": 2,
+    "col": 0,
+    "alt": "Mnemonic scene for 何, read なに・なん, meaning what.",
+    "caption": "A puzzled nanny asks what is inside.",
+    "meaning": "what",
+    "file": "gold-71-nani.webp",
+    "soundMnemonic": "Nanny"
+  },
+  "今|いま": {
+    "pack": 4,
+    "row": 2,
+    "col": 1,
+    "alt": "Mnemonic scene for 今, read いま, meaning now.",
+    "caption": "A clock insists the moment is now.",
+    "meaning": "now",
+    "file": "gold-72-ima.webp",
+    "soundMnemonic": "I’m-a"
+  },
+  "自分|じぶん": {
+    "pack": 4,
+    "row": 2,
+    "col": 2,
+    "alt": "Mnemonic scene for 自分, read じぶん, meaning self, oneself.",
+    "caption": "Kai recognises himself with a gym bun.",
+    "meaning": "self, oneself",
+    "file": "gold-73-jibun.webp",
+    "soundMnemonic": "Gym bun"
+  },
+  "人|ひと": {
+    "pack": 4,
+    "row": 2,
+    "col": 3,
+    "alt": "Mnemonic scene for 人, read ひと, meaning person.",
+    "caption": "One person wears heater-and-toe props.",
+    "meaning": "person",
+    "file": "gold-74-hito.webp",
+    "soundMnemonic": "Heat-toe"
+  },
+  "人|じん": {
+    "pack": 4,
+    "row": 2,
+    "col": 4,
+    "alt": "Mnemonic scene for 人, read じん, meaning person from (nationality).",
+    "caption": "A genie represents a person from another nation.",
+    "meaning": "person from (nationality)",
+    "file": "gold-75-jin.webp",
+    "soundMnemonic": "Genie"
+  },
+  "顔|かお": {
+    "pack": 4,
+    "row": 2,
+    "col": 5,
+    "alt": "Mnemonic scene for 顔, read かお, meaning face.",
+    "caption": "A cow brings two faces cheek to cheek.",
+    "meaning": "face",
+    "file": "gold-76-kao.webp",
+    "soundMnemonic": "Cow"
+  },
+  "今朝|けさ": {
+    "pack": 4,
+    "row": 2,
+    "col": 6,
+    "alt": "Mnemonic scene for 今朝, read けさ, meaning this morning.",
+    "caption": "Queso appears at sunrise this morning.",
+    "meaning": "this morning",
+    "file": "gold-77-kesa.webp",
+    "soundMnemonic": "Queso"
+  },
+  "そして|そして": {
+    "pack": 4,
+    "row": 2,
+    "col": 7,
+    "alt": "Mnemonic scene for そして, read そして, meaning and, and then.",
+    "caption": "Mia sews a sheet and then hangs it.",
+    "meaning": "and, and then",
+    "file": "gold-78-soshite.webp",
+    "soundMnemonic": "Sew sheet"
+  },
+  "どう|どう": {
+    "pack": 4,
+    "row": 2,
+    "col": 8,
+    "alt": "Mnemonic scene for どう, read どう, meaning how, what.",
+    "caption": "Kai wonders how to shape the dough.",
+    "meaning": "how, what",
+    "file": "gold-79-dou.webp",
+    "soundMnemonic": "Dough"
+  },
+  "はい|はい": {
+    "pack": 4,
+    "row": 2,
+    "col": 9,
+    "alt": "Mnemonic scene for はい, read はい, meaning yes (polite).",
+    "caption": "A polite yes ends in a high-five.",
+    "meaning": "yes (polite)",
+    "file": "gold-80-hai.webp",
+    "soundMnemonic": "High-five"
+  },
+  "ちょっと|ちょっと": {
+    "pack": 4,
+    "row": 3,
+    "col": 0,
+    "alt": "Mnemonic scene for ちょっと, read ちょっと, meaning a little.",
+    "caption": "The master pours only a little shot.",
+    "meaning": "a little",
+    "file": "gold-81-chotto.webp",
+    "soundMnemonic": "Shot"
+  },
+  "まだ|まだ": {
+    "pack": 4,
+    "row": 3,
+    "col": 1,
+    "alt": "Mnemonic scene for まだ, read まだ, meaning yet, more.",
+    "caption": "An unfinished bowl still needs more.",
+    "meaning": "yet, more",
+    "file": "gold-82-mada.webp",
+    "soundMnemonic": "Mad hatter"
+  },
+  "じゃ|じゃ": {
+    "pack": 4,
+    "row": 3,
+    "col": 2,
+    "alt": "Mnemonic scene for じゃ, read じゃ, meaning then, well.",
+    "caption": "The master pauses then opens a jar.",
+    "meaning": "then, well",
+    "file": "gold-83-ja.webp",
+    "soundMnemonic": "Jar"
+  },
+  "また|また": {
+    "pack": 4,
+    "row": 3,
+    "col": 3,
+    "alt": "Mnemonic scene for また, read また, meaning again, also.",
+    "caption": "Kai rolls out the mat again.",
+    "meaning": "again, also",
+    "file": "gold-84-mata.webp",
+    "soundMnemonic": "Mat again"
+  },
+  "彼女|かのじょ": {
+    "pack": 4,
+    "row": 3,
+    "col": 4,
+    "alt": "Mnemonic scene for 彼女, read かのじょ, meaning she, her, girlfriend.",
+    "caption": "She paddles a canoe with Joe.",
+    "meaning": "she, her, girlfriend",
+    "file": "gold-85-kanojo.webp",
+    "soundMnemonic": "Canoe Joe"
+  },
+  "話|はなし": {
+    "pack": 4,
+    "row": 3,
+    "col": 5,
+    "alt": "Mnemonic scene for 話, read はなし, meaning talk, story.",
+    "caption": "Hannah-she tells a lively story.",
+    "meaning": "talk, story",
+    "file": "gold-86-hanashi.webp",
+    "soundMnemonic": "Hannah-she"
+  },
+  "出来る|できる": {
+    "pack": 4,
+    "row": 3,
+    "col": 6,
+    "alt": "Mnemonic scene for 出来る, read できる, meaning to be able to do, to be good at.",
+    "caption": "The deck hero proves he is able.",
+    "meaning": "to be able to do, to be good at",
+    "file": "gold-87-dekiru.webp",
+    "soundMnemonic": "Deck hero"
+  },
+  "本当|ほんとう": {
+    "pack": 4,
+    "row": 3,
+    "col": 7,
+    "alt": "Mnemonic scene for 本当, read ほんとう, meaning truth, reality.",
+    "caption": "A horn points to the revealing truth mirror.",
+    "meaning": "truth, reality",
+    "file": "gold-88-hontou.webp",
+    "soundMnemonic": "Horn-true"
+  },
+  "ため|ため": {
+    "pack": 4,
+    "row": 3,
+    "col": 8,
+    "alt": "Mnemonic scene for ため, read ため, meaning sake, purpose.",
+    "caption": "Mia tames a lion for a clear purpose.",
+    "meaning": "sake, purpose",
+    "file": "gold-89-tame.webp",
+    "soundMnemonic": "Tame"
+  },
+  "そこ|そこ": {
+    "pack": 4,
+    "row": 3,
+    "col": 9,
+    "alt": "Mnemonic scene for そこ, read そこ, meaning there.",
+    "caption": "Kai points there at a striped sock.",
+    "meaning": "there",
+    "file": "gold-90-soko.webp",
+    "soundMnemonic": "Sock"
+  },
+  "もらう|もらう": {
+    "pack": 4,
+    "row": 4,
+    "col": 0,
+    "alt": "Mnemonic scene for もらう, read もらう, meaning to receive.",
+    "caption": "Mia receives more parcels from an owl.",
+    "meaning": "to receive",
+    "file": "gold-91-morau.webp",
+    "soundMnemonic": "More owl"
+  },
+  "言葉|ことば": {
+    "pack": 4,
+    "row": 4,
+    "col": 1,
+    "alt": "Mnemonic scene for 言葉, read ことば, meaning word, language.",
+    "caption": "Coat and bar shapes carry spoken words.",
+    "meaning": "word, language",
+    "file": "gold-92-kotoba.webp",
+    "soundMnemonic": "Coat-o-bar"
+  },
+  "ちゃん|ちゃん": {
+    "pack": 4,
+    "row": 4,
+    "col": 2,
+    "alt": "Mnemonic scene for ちゃん, read ちゃん, meaning chan.",
+    "caption": "A chain charm marks an affectionate younger friend.",
+    "meaning": "chan",
+    "file": "gold-93-chan.webp",
+    "soundMnemonic": "Chain"
+  },
+  "ところ|ところ": {
+    "pack": 4,
+    "row": 4,
+    "col": 3,
+    "alt": "Mnemonic scene for ところ, read ところ, meaning place.",
+    "caption": "A taco row marks the memorable place.",
+    "meaning": "place",
+    "file": "gold-94-tokoro.webp",
+    "soundMnemonic": "Taco row"
+  },
+  "今日|きょう": {
+    "pack": 4,
+    "row": 4,
+    "col": 4,
+    "alt": "Mnemonic scene for 今日, read きょう, meaning today.",
+    "caption": "The cue starts today’s action.",
+    "meaning": "today",
+    "file": "gold-95-kyou.webp",
+    "soundMnemonic": "Cue"
+  },
+  "声|こえ": {
+    "pack": 4,
+    "row": 4,
+    "col": 5,
+    "alt": "Mnemonic scene for 声, read こえ, meaning voice, sound.",
+    "caption": "A singing cow projects a powerful voice.",
+    "meaning": "voice, sound",
+    "file": "gold-96-koe.webp",
+    "soundMnemonic": "Cow voice"
+  },
+  "あれ|あれ": {
+    "pack": 4,
+    "row": 4,
+    "col": 6,
+    "alt": "Mnemonic scene for あれ, read あれ, meaning that over there.",
+    "caption": "An arrow marks that object over there.",
+    "meaning": "that over there",
+    "file": "gold-97-are.webp",
+    "soundMnemonic": "Arrow"
+  },
+  "目|め": {
+    "pack": 4,
+    "row": 4,
+    "col": 7,
+    "alt": "Mnemonic scene for 目, read め, meaning eye.",
+    "caption": "A huge eye looks back at me.",
+    "meaning": "eye",
+    "file": "gold-98-me.webp",
+    "soundMnemonic": "Me"
+  },
+  "少し|すこし": {
+    "pack": 4,
+    "row": 4,
+    "col": 8,
+    "alt": "Mnemonic scene for 少し, read すこし, meaning a bit, a little while.",
+    "caption": "Only a little scoop of sushi is taken.",
+    "meaning": "a bit, a little while",
+    "file": "gold-99-sukoshi.webp",
+    "soundMnemonic": "Scoop sushi"
+  },
+  "見える|みえる": {
+    "pack": 4,
+    "row": 4,
+    "col": 9,
+    "alt": "Mnemonic scene for 見える, read みえる, meaning be visible.",
+    "caption": "The hidden object becomes visible in a mirror.",
+    "meaning": "be visible",
+    "file": "gold-100-mieru.webp",
+    "soundMnemonic": "Mirror"
+  },
+  "違う|ちがう": {
+    "pack": 4,
+    "row": 5,
+    "col": 0,
+    "alt": "Mnemonic scene for 違う, read ちがう, meaning to differ, to be wrong.",
+    "caption": "Two cheeky cows differ and one is wrong.",
+    "meaning": "to differ, to be wrong",
+    "file": "gold-101-chigau.webp",
+    "soundMnemonic": "Cheeky cow"
+  },
+  "方|ほう": {
+    "pack": 4,
+    "row": 5,
+    "col": 1,
+    "alt": "Mnemonic scene for 方, read ほう, meaning direction, side.",
+    "caption": "A hoe points in one direction.",
+    "meaning": "direction, side",
+    "file": "gold-102-hou.webp",
+    "soundMnemonic": "Hoe"
+  },
+  "方|かた": {
+    "pack": 4,
+    "row": 5,
+    "col": 2,
+    "alt": "Mnemonic scene for 方, read かた, meaning person (polite form).",
+    "caption": "A polite person arrives with a cat.",
+    "meaning": "person (polite form)",
+    "file": "gold-103-kata.webp",
+    "soundMnemonic": "Cat-a"
+  },
+  "あなた|あなた": {
+    "pack": 4,
+    "row": 5,
+    "col": 3,
+    "alt": "Mnemonic scene for あなた, read あなた, meaning you (usually when one doesn't know the person).",
+    "caption": "Mia points directly to you with another tart.",
+    "meaning": "you (usually when one doesn't know the person)",
+    "file": "gold-104-anata.webp",
+    "soundMnemonic": "Another"
+  },
+  "くん|くん": {
+    "pack": 4,
+    "row": 5,
+    "col": 4,
+    "alt": "Mnemonic scene for くん, read くん, meaning kun (usu. used with men younger or of the same age).",
+    "caption": "The younger boy wears raccoon ears.",
+    "meaning": "kun (usu. used with men younger or of the same age)",
+    "file": "gold-105-kun.webp",
+    "soundMnemonic": "Raccoon"
+  },
+  "ただ|ただ": {
+    "pack": 4,
+    "row": 5,
+    "col": 5,
+    "alt": "Mnemonic scene for ただ, read ただ, meaning free.",
+    "caption": "A free prize earns a ta-da.",
+    "meaning": "free",
+    "file": "gold-106-tada.webp",
+    "soundMnemonic": "Ta-da"
+  },
+  "僕|ぼく": {
+    "pack": 4,
+    "row": 5,
+    "col": 6,
+    "alt": "Mnemonic scene for 僕, read ぼく, meaning I (male).",
+    "caption": "The boy points to himself with a book.",
+    "meaning": "I (male)",
+    "file": "gold-107-boku.webp",
+    "soundMnemonic": "Book"
+  },
+  "大丈夫|だいじょうぶ": {
+    "pack": 4,
+    "row": 5,
+    "col": 7,
+    "alt": "Mnemonic scene for 大丈夫, read だいじょうぶ, meaning alright, OK.",
+    "caption": "After a dye job Kai is completely OK.",
+    "meaning": "alright, OK",
+    "file": "gold-108-daijoubu.webp",
+    "soundMnemonic": "Dye job"
+  },
+  "彼|かれ": {
+    "pack": 4,
+    "row": 5,
+    "col": 8,
+    "alt": "Mnemonic scene for 彼, read かれ, meaning he, him.",
+    "caption": "Mia points to him holding curry.",
+    "meaning": "he, him",
+    "file": "gold-109-kare.webp",
+    "soundMnemonic": "Curry"
+  },
+  "君|きみ": {
+    "pack": 4,
+    "row": 5,
+    "col": 9,
+    "alt": "Mnemonic scene for 君, read きみ, meaning you (to someone of equal or lower status).",
+    "caption": "Kai points to you with a kiwi.",
+    "meaning": "you (to someone of equal or lower status)",
+    "file": "gold-110-kimi.webp",
+    "soundMnemonic": "Kiwi-me"
+  },
+  "人間|にんげん": {
+    "pack": 4,
+    "row": 6,
+    "col": 0,
+    "alt": "Mnemonic scene for 人間, read にんげん, meaning human being, people.",
+    "caption": "Human people surround a ninja engine.",
+    "meaning": "human being, people",
+    "file": "gold-111-ningen.webp",
+    "soundMnemonic": "Ninja engine"
+  },
+  "同じ|おなじ": {
+    "pack": 4,
+    "row": 6,
+    "col": 1,
+    "alt": "Mnemonic scene for 同じ, read おなじ, meaning same, identical.",
+    "caption": "Two orange outfits are identical.",
+    "meaning": "same, identical",
+    "file": "gold-112-onaji.webp",
+    "soundMnemonic": "Orange"
+  },
+  "部屋|へや": {
+    "pack": 4,
+    "row": 6,
+    "col": 2,
+    "alt": "Mnemonic scene for 部屋, read へや, meaning room.",
+    "caption": "A loud hey-ya echoes around the room.",
+    "meaning": "room",
+    "file": "gold-113-heya.webp",
+    "soundMnemonic": "Hey-ya"
+  },
+  "時間|じかん": {
+    "pack": 4,
+    "row": 6,
+    "col": 3,
+    "alt": "Mnemonic scene for 時間, read じかん, meaning time, hour.",
+    "caption": "A giant can becomes a clock for time.",
+    "meaning": "time, hour",
+    "file": "gold-114-jikan.webp",
+    "soundMnemonic": "Giant can"
+  },
+  "家|いえ": {
+    "pack": 4,
+    "row": 6,
+    "col": 4,
+    "alt": "Mnemonic scene for 家, read いえ, meaning house, home.",
+    "caption": "They shout yay on reaching home.",
+    "meaning": "house, home",
+    "file": "gold-115-ie.webp",
+    "soundMnemonic": "Yay"
+  },
+  "まあ|まあ": {
+    "pack": 4,
+    "row": 6,
+    "col": 5,
+    "alt": "Mnemonic scene for まあ, read まあ, meaning well....",
+    "caption": "Ma pauses with a thoughtful well expression.",
+    "meaning": "well...",
+    "file": "gold-116-maa.webp",
+    "soundMnemonic": "Ma"
+  },
+  "ください|ください": {
+    "pack": 4,
+    "row": 6,
+    "col": 6,
+    "alt": "Mnemonic scene for ください, read ください, meaning please give..., please do....",
+    "caption": "Could I politely receive that tool.",
+    "meaning": "please give..., please do...",
+    "file": "gold-117-kudasai.webp",
+    "soundMnemonic": "Could I"
+  },
+  "感じる|かんじる": {
+    "pack": 4,
+    "row": 6,
+    "col": 7,
+    "alt": "Mnemonic scene for 感じる, read かんじる, meaning to feel, to sense.",
+    "caption": "Kai senses everything while holding can ginger.",
+    "meaning": "to feel, to sense",
+    "file": "gold-118-kanjiru.webp",
+    "soundMnemonic": "Can ginger"
+  },
+  "出す|だす": {
+    "pack": 4,
+    "row": 6,
+    "col": 8,
+    "alt": "Mnemonic scene for 出す, read だす, meaning to take out.",
+    "caption": "Mia takes the dusty object out.",
+    "meaning": "to take out",
+    "file": "gold-119-dasu.webp",
+    "soundMnemonic": "Dust"
+  },
+  "よく|よく": {
+    "pack": 4,
+    "row": 6,
+    "col": 9,
+    "alt": "Mnemonic scene for よく, read よく, meaning well.",
+    "caption": "Kai performs the task well under a yoke.",
+    "meaning": "well",
+    "file": "gold-120-yoku.webp",
+    "soundMnemonic": "Yoke"
+  },
+  "笑う|わらう": {
+    "pack": 4,
+    "row": 7,
+    "col": 0,
+    "alt": "Mnemonic scene for 笑う, read わらう, meaning to laugh, to smile.",
+    "caption": "A walrus makes everyone laugh and smile.",
+    "meaning": "to laugh, to smile",
+    "file": "gold-121-warau.webp",
+    "soundMnemonic": "Walrus"
+  },
+  "多く|おおく": {
+    "pack": 4,
+    "row": 7,
+    "col": 1,
+    "alt": "Mnemonic scene for 多く, read おおく, meaning many, much.",
+    "caption": "Many cuckoo birds crowd the scene.",
+    "meaning": "many, much",
+    "file": "gold-122-ooku.webp",
+    "soundMnemonic": "Ooh-cuckoo"
+  },
+  "どこ|どこ": {
+    "pack": 4,
+    "row": 7,
+    "col": 2,
+    "alt": "Mnemonic scene for どこ, read どこ, meaning where.",
+    "caption": "At the dock Mia asks where.",
+    "meaning": "where",
+    "file": "gold-123-doko.webp",
+    "soundMnemonic": "Dock"
+  },
+  "くらい|くらい": {
+    "pack": 4,
+    "row": 7,
+    "col": 3,
+    "alt": "Mnemonic scene for くらい, read くらい, meaning approximately, about.",
+    "caption": "A curved ruler gives an approximate measure.",
+    "meaning": "approximately, about",
+    "file": "gold-124-kurai.webp",
+    "soundMnemonic": "Curved ruler"
+  },
+  "みんな|みんな": {
+    "pack": 4,
+    "row": 7,
+    "col": 4,
+    "alt": "Mnemonic scene for みんな, read みんな, meaning all, everybody.",
+    "caption": "Everybody carries a mini object.",
+    "meaning": "all, everybody",
+    "file": "gold-125-minna.webp",
+    "soundMnemonic": "Mini"
+  },
+  "世界|せかい": {
+    "pack": 4,
+    "row": 7,
+    "col": 5,
+    "alt": "Mnemonic scene for 世界, read せかい, meaning world.",
+    "caption": "The whole world glows beneath the sky.",
+    "meaning": "world",
+    "file": "gold-126-sekai.webp",
+    "soundMnemonic": "Sky"
+  },
+  "相手|あいて": {
+    "pack": 4,
+    "row": 7,
+    "col": 6,
+    "alt": "Mnemonic scene for 相手, read あいて, meaning partner, opponent.",
+    "caption": "Eye-team partners become friendly opponents.",
+    "meaning": "partner, opponent",
+    "file": "gold-127-aite.webp",
+    "soundMnemonic": "Eye-team"
+  },
+  "姿|すがた": {
+    "pack": 4,
+    "row": 7,
+    "col": 7,
+    "alt": "Mnemonic scene for 姿, read すがた, meaning figure, appearance.",
+    "caption": "Sugar sparkles around her appearance.",
+    "meaning": "figure, appearance",
+    "file": "gold-128-sugata.webp",
+    "soundMnemonic": "Sugar"
+  },
+  "死ぬ|しぬ": {
+    "pack": 4,
+    "row": 7,
+    "col": 8,
+    "alt": "Mnemonic scene for 死ぬ, read しぬ, meaning to die.",
+    "caption": "A flower peacefully reaches its end beside a shoe.",
+    "meaning": "to die",
+    "file": "gold-129-shinu.webp",
+    "soundMnemonic": "Shoe"
+  },
+  "場所|ばしょ": {
+    "pack": 4,
+    "row": 7,
+    "col": 9,
+    "alt": "Mnemonic scene for 場所, read ばしょ, meaning place, location.",
+    "caption": "A bus shows the exact location.",
+    "meaning": "place, location",
+    "file": "gold-130-basho.webp",
+    "soundMnemonic": "Bus show"
+  },
+  "頭|あたま": {
+    "pack": 4,
+    "row": 8,
+    "col": 0,
+    "alt": "Mnemonic scene for 頭, read あたま, meaning head.",
+    "caption": "A tamale balances on Kai’s head.",
+    "meaning": "head",
+    "file": "gold-131-atama.webp",
+    "soundMnemonic": "A tamale"
+  },
+  "もっと|もっと": {
+    "pack": 4,
+    "row": 8,
+    "col": 1,
+    "alt": "Mnemonic scene for もっと, read もっと, meaning more, a bit more.",
+    "caption": "Mia asks for more beside a motto scroll.",
+    "meaning": "more, a bit more",
+    "file": "gold-132-motto.webp",
+    "soundMnemonic": "Motto"
+  },
+  "戻る|もどる": {
+    "pack": 4,
+    "row": 8,
+    "col": 2,
+    "alt": "Mnemonic scene for 戻る, read もどる, meaning to return, to go back.",
+    "caption": "A motor turns around and returns.",
+    "meaning": "to return, to go back",
+    "file": "gold-133-modoru.webp",
+    "soundMnemonic": "Motor"
+  },
+  "呼ぶ|よぶ": {
+    "pack": 4,
+    "row": 8,
+    "col": 3,
+    "alt": "Mnemonic scene for 呼ぶ, read よぶ, meaning to call, to name.",
+    "caption": "Kai calls yo to a friendly boo.",
+    "meaning": "to call, to name",
+    "file": "gold-134-yobu.webp",
+    "soundMnemonic": "Yo-boo"
+  },
+  "続ける|つづける": {
+    "pack": 4,
+    "row": 8,
+    "col": 4,
+    "alt": "Mnemonic scene for 続ける, read つづける, meaning to continue, to keep up.",
+    "caption": "Magic shoes help them continue.",
+    "meaning": "to continue, to keep up",
+    "file": "gold-135-tsuzukeru.webp",
+    "soundMnemonic": "Shoes keep going"
+  },
+  "ずっと|ずっと": {
+    "pack": 4,
+    "row": 8,
+    "col": 5,
+    "alt": "Mnemonic scene for ずっと, read ずっと, meaning continuously, the whole time.",
+    "caption": "The zoo train runs continuously.",
+    "meaning": "continuously, the whole time",
+    "file": "gold-136-zutto.webp",
+    "soundMnemonic": "Zoo"
+  },
+  "上げる|あげる": {
+    "pack": 4,
+    "row": 8,
+    "col": 6,
+    "alt": "Mnemonic scene for 上げる, read あげる, meaning to raise, to increase.",
+    "caption": "A gear raises the platform higher.",
+    "meaning": "to raise, to increase",
+    "file": "gold-137-ageru.webp",
+    "soundMnemonic": "A gear"
+  },
+  "どうして|どうして": {
+    "pack": 4,
+    "row": 8,
+    "col": 7,
+    "alt": "Mnemonic scene for どうして, read どうして, meaning why.",
+    "caption": "A dough sheet leaves Kai asking why.",
+    "meaning": "why",
+    "file": "gold-138-doushite.webp",
+    "soundMnemonic": "Dough sheet"
+  },
+  "いつも|いつも": {
+    "pack": 4,
+    "row": 8,
+    "col": 8,
+    "alt": "Mnemonic scene for いつも, read いつも, meaning always, usually.",
+    "caption": "Mia eats some at the usual sunrise.",
+    "meaning": "always, usually",
+    "file": "gold-139-itsumo.webp",
+    "soundMnemonic": "Eat some"
+  },
+  "こう|こう": {
+    "pack": 4,
+    "row": 8,
+    "col": 9,
+    "alt": "Mnemonic scene for こう, read こう, meaning like this, this kind of.",
+    "caption": "The master demonstrates like this with a cone.",
+    "meaning": "like this, this kind of",
+    "file": "gold-140-kou.webp",
+    "soundMnemonic": "Cone"
+  },
+  "やっぱり|やっぱり": {
+    "pack": 4,
+    "row": 9,
+    "col": 0,
+    "alt": "Mnemonic scene for やっぱり, read やっぱり, meaning just as I thought, after all.",
+    "caption": "A yap parrot confirms what Kai thought.",
+    "meaning": "just as I thought, after all",
+    "file": "gold-141-yappari.webp",
+    "soundMnemonic": "Yap parrot"
+  },
+  "つもり|つもり": {
+    "pack": 4,
+    "row": 9,
+    "col": 1,
+    "alt": "Mnemonic scene for つもり, read つもり, meaning intention, purpose.",
+    "caption": "Mia intends to carry two more boxes.",
+    "meaning": "intention, purpose",
+    "file": "gold-142-tsumori.webp",
+    "soundMnemonic": "Two more"
+  },
+  "必要|ひつよう": {
+    "pack": 4,
+    "row": 9,
+    "col": 2,
+    "alt": "Mnemonic scene for 必要, read ひつよう, meaning necessary, needed.",
+    "caption": "A hit shoe makes a helmet necessary.",
+    "meaning": "necessary, needed",
+    "file": "gold-143-hitsuyou.webp",
+    "soundMnemonic": "Hit shoe"
+  },
+  "終わる|おわる": {
+    "pack": 4,
+    "row": 9,
+    "col": 3,
+    "alt": "Mnemonic scene for 終わる, read おわる, meaning to finish, to end.",
+    "caption": "They finish at the oh-wall line.",
+    "meaning": "to finish, to end",
+    "file": "gold-144-owaru.webp",
+    "soundMnemonic": "Oh wall"
+  },
+  "者|もの": {
+    "pack": 4,
+    "row": 9,
+    "col": 4,
+    "alt": "Mnemonic scene for 者, read もの, meaning person.",
+    "caption": "A monocled human is clearly the person.",
+    "meaning": "person",
+    "file": "gold-145-mono-person.webp",
+    "soundMnemonic": "Monocle"
+  },
+  "動く|うごく": {
+    "pack": 4,
+    "row": 9,
+    "col": 5,
+    "alt": "Mnemonic scene for 動く, read うごく, meaning to move.",
+    "caption": "You-go encouragement makes the cart move.",
+    "meaning": "to move",
+    "file": "gold-146-ugoku.webp",
+    "soundMnemonic": "You go"
+  },
+  "帰る|かえる": {
+    "pack": 4,
+    "row": 9,
+    "col": 6,
+    "alt": "Mnemonic scene for 帰る, read かえる, meaning to return, to go back.",
+    "caption": "A frog turns around and returns home.",
+    "meaning": "to return, to go back",
+    "file": "gold-147-kaeru.webp",
+    "soundMnemonic": "Frog"
+  },
+  "後|あと": {
+    "pack": 4,
+    "row": 9,
+    "col": 7,
+    "alt": "Mnemonic scene for 後, read あと, meaning after.",
+    "caption": "One runner follows after the arrow-to marker.",
+    "meaning": "after",
+    "file": "gold-148-ato.webp",
+    "soundMnemonic": "Arrow-to"
+  },
+  "こちら|こちら": {
+    "pack": 4,
+    "row": 9,
+    "col": 8,
+    "alt": "Mnemonic scene for こちら, read こちら, meaning here, this way.",
+    "caption": "A coach waves everyone this way.",
+    "meaning": "here, this way",
+    "file": "gold-149-kochira.webp",
+    "soundMnemonic": "Coach"
+  },
+  "向かう|むかう": {
+    "pack": 4,
+    "row": 9,
+    "col": 9,
+    "alt": "Mnemonic scene for 向かう, read むかう, meaning to face, to head toward.",
+    "caption": "A moo cow faces and heads toward home.",
+    "meaning": "to face, to head toward",
+    "file": "gold-150-mukau.webp",
+    "soundMnemonic": "Moo cow"
   }
 }
