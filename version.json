@@ -1,7 +1,7 @@
 {
-  "version": "5.3.0",
+  "version": "5.4.0",
   "released": "2026-07-31",
-  "title": "100 new approved mnemonic scenes",
+  "title": "SRS Decay Battles",
   "changes": [
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
@@ -17,7 +17,10 @@
     "Added the total vocabulary count beside the Mastered statistic.",
     "Added memory links and reference-guided scene images for 100 more high-frequency words.",
     "Made approved the default image status while preserving explicit regeneration flags.",
-    "Made image diagnostics load every mapped scene directly from the scene catalogue."
+    "Made image diagnostics load every mapped scene directly from the scene catalogue.",
+    "Added SRS Decay Battles, a tower-defence review mode driven by words near their forgetting threshold.",
+    "Correct battle reviews damage and push back monsters; mistakes let them advance toward the castle.",
+    "Battle answers still reveal the Japanese word, reading, English meaning, and playable audio."
   ],
   "sourcePacksIncluded": 4,
   "mappedWords": 203,

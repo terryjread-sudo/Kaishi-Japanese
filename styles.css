@@ -26,6 +26,8 @@
 .game-answer .jp{font-size:2.5rem;margin:18px 0 4px}
 .game-answer .meaning{margin-top:10px}
 .game-feedback .reveal{margin-top:14px}
+.battle-mode{grid-column:1/-1;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;box-shadow:0 8px 20px #4338ca35}
+.battle-board{margin:14px 0 22px;padding:14px;border-radius:18px;background:linear-gradient(180deg,#dbeafe,#f8fafc);border:2px solid #93c5fd}.battle-hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.78rem}.battle-lane{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;margin:14px 0 8px;border-bottom:5px solid #64748b}.battle-cell{display:grid;place-items:center;min-height:54px;font-size:2rem;border-right:1px dashed #94a3b8}.battle-cell:last-child{border-right:0}.battle-board p{margin:8px 0 0;text-align:center;color:#475569;font-size:.82rem}.battle-word{margin-top:18px}
 
 /* v4.0 direct standalone scene images */
 .scene-image{
