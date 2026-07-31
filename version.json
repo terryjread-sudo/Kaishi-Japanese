@@ -1,7 +1,7 @@
 {
-  "version": "5.1.3",
-  "released": "2026-07-30",
-  "title": "Reviewable picture and listening games",
+  "version": "5.2.0",
+  "released": "2026-07-31",
+  "title": "Distinct picture games and deck totals",
   "changes": [
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
@@ -12,7 +12,9 @@
     "Replaced the rectangular title-bar artwork with a responsive transparent character group.",
     "Updated image diagnostics to display complete landscape mnemonic scenes without cropping.",
     "Updated the title artwork to feature only the main boy, girl, and elderly calligraphy master.",
-    "Improved auxiliary-page navigation with high-contrast Back to app badges."
+    "Improved auxiliary-page navigation with high-contrast Back to app badges.",
+    "Replaced Picture to Reading with Picture plus Kanji to Meaning.",
+    "Added the total vocabulary count beside the Mastered statistic."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,

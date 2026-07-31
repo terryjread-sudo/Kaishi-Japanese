@@ -138,3 +138,10 @@ header{
     background-size:cover,auto 82%,cover,cover;
   }
 }
+
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.picture-kanji-prompt{width:min(100%,390px);margin:0 auto 16px}
+.picture-kanji-prompt .quiz-picture-wrap{margin-bottom:0}
+.picture-kanji-prompt .quiz-picture.scene-image{margin-bottom:0!important;border-radius:16px 16px 0 0}
+.picture-kanji-word{padding:10px 14px;border-radius:0 0 16px 16px;background:#172554;color:#fff;font-size:2rem;font-weight:900;line-height:1.15;text-align:center}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
