@@ -13,12 +13,14 @@ create table if not exists public.leaderboard_entries (
   github_login text not null,
   display_name text not null,
   avatar_url text,
+  avatar_key text not null default 'boy' check (avatar_key in ('boy','girl','master','man','woman')),
   opted_in boolean not null default false,
   xp bigint not null default 0 check (xp >= 0),
   mastered integer not null default 0 check (mastered >= 0),
   accuracy integer not null default 0 check (accuracy between 0 and 100),
   reviews integer not null default 0 check (reviews >= 0),
   monsters_defeated integer not null default 0 check (monsters_defeated >= 0),
+  streak integer not null default 0 check (streak >= 0),
   updated_at timestamptz not null default now()
 );
 

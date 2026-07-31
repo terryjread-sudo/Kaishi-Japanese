@@ -5,13 +5,19 @@
   const sdk=window.supabase;
   const account=$('#cloudAccount'),status=$('#cloudStatus'),join=$('#leaderboardOptIn');
   const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
-  let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false;
+  const AVATARS=['boy','girl','master','man','woman'];
+  let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy';
 
   function adapter(){return window.KaishiQuestCloudAdapter}
   function setStatus(message,state=''){if(status){status.textContent=message;status.dataset.state=state}}
   function setLeaderboardMessage(message){if(leaderboardMessage)leaderboardMessage.textContent=message}
   function nameFor(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
   function safeImage(value){try{const url=new URL(value);return url.protocol==='https:'&&['avatars.githubusercontent.com','github.com'].includes(url.hostname)?nameFor(url.href):'icons/icon-192.png'}catch{return'icons/icon-192.png'}}
+  function avatarKey(value){return AVATARS.includes(value)?value:'boy'}
+  function avatarState(streak=0){streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'}
+  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=5.8.0`}
+  function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
+  function renderDashboardAvatar(){const streak=Number(adapter()?.stats?.().streak||0),image=$('#dashboardAvatar');if(image)image.src=avatarImage(selectedAvatar,streak);if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`${selectedAvatar[0].toUpperCase()+selectedAvatar.slice(1)} · ${streak} day streak`:'Sign in to choose your character';if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=streak>=60?'Superhero form unlocked!':`Next pose unlocks at ${[3,7,14,30,60].find(days=>days>streak)||60} streak days.`}
   function profile(){
     const m=user?.user_metadata||{};
     const login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';
@@ -21,18 +27,19 @@
   function describeError(error){return setupMissing(error)?'Cloud tables are not installed yet. Run the supplied Supabase SQL migration.':(error?.message||'Cloud service is unavailable.')}
 
   function renderSignedOut(message='Sign in with GitHub to sync progress between devices.'){
-    user=null;initialisedUserId='';
+    user=null;initialisedUserId='';selectedAvatar='boy';
     if(account)account.innerHTML=`<div><strong>Play as a guest or save to the cloud</strong><p>${nameFor(message)}</p></div><button id="cloudSignIn" class="github-button">Continue with GitHub</button>`;
     $('#cloudSignIn')?.addEventListener('click',signIn);
     if(join){join.checked=false;join.disabled=true}
-    setStatus('Guest progress is saved only on this device.');
+    setStatus('Guest progress is saved only on this device.');renderAvatarPicker();renderDashboardAvatar();
   }
 
   function renderSignedIn(entry){
     const p=profile();
-    if(account)account.innerHTML=`<img class="cloud-avatar" src="${safeImage(p.avatar_url)}" alt=""><div><strong>${nameFor(p.display_name)}</strong><p>@${nameFor(p.github_login)} · GitHub account connected</p></div><button id="cloudSignOut">Sign out</button>`;
+    selectedAvatar=avatarKey(entry?.avatar_key);
+    if(account)account.innerHTML=`<img class="cloud-avatar" src="${avatarImage(selectedAvatar,entry?.streak)}" alt=""><div><strong>${nameFor(p.display_name)}</strong><p>@${nameFor(p.github_login)} · GitHub account connected</p></div><button id="cloudSignOut">Sign out</button>`;
     $('#cloudSignOut')?.addEventListener('click',signOut);
-    if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}
+    if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}renderAvatarPicker();renderDashboardAvatar();
   }
 
   async function signIn(){
@@ -53,9 +60,10 @@
   async function ensureLeaderboardEntry(){
     if(!user)return null;
     const p=profile(),stats=adapter()?.stats?.()||{};
-    const values={user_id:user.id,...p,...stats};
-    const {data:existing,error:readError}=await client.from('leaderboard_entries').select('user_id').eq('user_id',user.id).maybeSingle();
+    const {data:existing,error:readError}=await client.from('leaderboard_entries').select('user_id,avatar_key').eq('user_id',user.id).maybeSingle();
     if(readError)throw readError;
+    selectedAvatar=avatarKey(existing?.avatar_key||selectedAvatar);
+    const values={user_id:user.id,...p,...stats,avatar_key:selectedAvatar};
     const write=existing
       ?await client.from('leaderboard_entries').update(values).eq('user_id',user.id)
       :await client.from('leaderboard_entries').insert({...values,opted_in:false});
@@ -141,11 +149,20 @@
   async function loadLeaderboard(){
     if(!client||!leaderboard)return;
     setLeaderboardMessage('Loading leaderboard…');
-    const {data,error}=await client.from('leaderboard_entries').select('user_id,github_login,display_name,avatar_url,xp,mastered,accuracy,monsters_defeated').eq('opted_in',true).order('xp',{ascending:false}).order('mastered',{ascending:false}).limit(20);
+    const {data,error}=await client.from('leaderboard_entries').select('user_id,github_login,display_name,avatar_key,streak,xp,mastered,accuracy,monsters_defeated').eq('opted_in',true).order('xp',{ascending:false}).order('mastered',{ascending:false}).limit(20);
     if(error){leaderboard.innerHTML='';setLeaderboardMessage(describeError(error));return}
     if(!data?.length){leaderboard.innerHTML='';setLeaderboardMessage('No learners have joined yet. Be the first!');return}
     setLeaderboardMessage('Friendly community ranking · progress is self-reported by the app.');
-    leaderboard.innerHTML=data.map((row,index)=>`<article class="leaderboard-row ${row.user_id===user?.id?'is-you':''}"><span class="leaderboard-rank">${index+1}</span><img src="${safeImage(row.avatar_url)}" alt=""><div><strong>${nameFor(row.display_name)}</strong><small>@${nameFor(row.github_login)}${row.user_id===user?.id?' · You':''}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.monsters_defeated} yōkai</small></article>`).join('');
+    leaderboard.innerHTML=data.map((row,index)=>`<article class="leaderboard-row ${row.user_id===user?.id?'is-you':''}"><span class="leaderboard-rank">${index+1}</span><img src="${avatarImage(row.avatar_key,row.streak)}" alt="${nameFor(row.display_name)}'s Kaishi character"><div><strong>${nameFor(row.display_name)}</strong><small>@${nameFor(row.github_login)}${row.user_id===user?.id?' · You':''}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.streak||0} day streak</small></article>`).join('');
+  }
+
+  async function changeAvatar(event){
+    const button=event.target.closest('[data-avatar]');
+    if(!button||!user)return;
+    selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();
+    const {error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);
+    if(error){setStatus(describeError(error),'error');return}
+    setStatus('Kaishi character saved.','ok');await loadLeaderboard();
   }
 
   async function changeOptIn(){
@@ -180,6 +197,7 @@
   }
 
   async function init(){
+    $('#avatarPicker')?.addEventListener('click',changeAvatar);
     join?.addEventListener('change',changeOptIn);
     $('#cloudSyncNow')?.addEventListener('click',syncNow);
     $('#cloudDelete')?.addEventListener('click',deleteCloudData);
@@ -195,6 +213,6 @@
     addEventListener('online',()=>user&&scheduleSync());
   }
 
-  window.KaishiCloud={scheduleSync,loadLeaderboard,flush};
+  window.KaishiCloud={scheduleSync,loadLeaderboard,flush,avatarImage,renderDashboardAvatar};
   init();
 })();

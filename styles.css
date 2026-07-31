@@ -195,3 +195,20 @@ header{
 .cloud-conflict{display:grid;gap:12px;padding:22px}
 .cloud-conflict h2,.cloud-conflict p{margin:0}.cloud-conflict p{color:#475569;line-height:1.5}
 @media(max-width:520px){.leaderboard-row{grid-template-columns:28px 34px minmax(80px,1fr);grid-template-areas:'rank avatar person' 'rank avatar score' 'rank avatar details'}.leaderboard-row>b,.leaderboard-row>small{text-align:left}.leaderboard-heading{align-items:flex-start}.cloud-account{align-items:stretch;flex-wrap:wrap}.cloud-account button{width:100%}.cloud-actions{grid-template-columns:1fr}}
+
+/* Optional streak character and one-chance streak rescue. */
+.dashboard-profile{display:flex;align-items:center;gap:14px;margin:14px 0;padding:12px 16px;border:1px solid #bfdbfe;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#f5f3ff)}
+.dashboard-profile img{width:74px;height:74px;flex:0 0 auto;border-radius:18px;object-fit:cover;box-shadow:0 5px 14px #17255425}
+.dashboard-profile div{display:grid;gap:3px}.dashboard-profile strong{font-size:1rem}.dashboard-profile small{color:#64748b}
+.avatar-picker{display:grid!important;gap:10px!important;padding:14px!important;border:1px solid #c7d2fe!important;border-radius:16px!important;background:#fff!important}
+.avatar-picker>p{margin:0;color:#64748b;font-size:.78rem;line-height:1.4}
+.avatar-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.avatar-grid button{display:grid;gap:5px;padding:5px;border:2px solid transparent;background:#eef2ff;color:#172554;font-size:.72rem}
+.avatar-grid button.selected{border-color:#2563eb;background:#dbeafe;box-shadow:0 0 0 2px #93c5fd55}
+.avatar-grid img{width:100%;aspect-ratio:1;border-radius:10px;object-fit:cover}.avatar-grid span{overflow:hidden;text-overflow:ellipsis}
+.avatar-picker:disabled{opacity:.62}.avatar-picker:disabled button{cursor:not-allowed}
+.rescue-mode{width:100%;margin-top:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;box-shadow:0 8px 20px #ea580c35}
+.rescue-message{margin:10px 0;padding:12px;border:1px solid #fdba74;border-radius:13px;background:#fff7ed;color:#9a3412;font-size:.82rem;font-weight:700;line-height:1.45}
+.rescue-board{border-color:#f59e0b;background:linear-gradient(180deg,#fef3c7,#fff7ed)}
+.rescue-result-monster{display:block;width:min(260px,70%);height:230px;margin:0 auto;object-fit:contain}
+@media(max-width:560px){.avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dashboard-profile img{width:62px;height:62px}}

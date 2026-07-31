@@ -16,6 +16,9 @@ password, or a Supabase secret/service-role key.
    OAuth client ID and secret in Supabase only.
 4. Open **SQL Editor**, paste the complete contents of
    `migrations/20260731_cloud_progress.sql`, and run it once.
+5. Then run `migrations/20260731_profile_streak_rescue.sql` to add profile
+   character choices and streak display. If this is a fresh installation, it is
+   still safe to run the second migration after the first.
 
 The migration creates private progress storage, public opt-in leaderboard
 entries, Row Level Security policies, and the learner-controlled cloud-account
