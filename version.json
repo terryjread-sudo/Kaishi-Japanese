@@ -1,8 +1,11 @@
 {
-  "version": "5.8.1",
+  "version": "5.8.2",
   "released": "2026-07-31",
-  "title": "A dedicated community challenge page",
+  "title": "Faster access to your character profile",
   "changes": [
+    "Replaced the dashboard character-type label with the signed-in learner's username.",
+    "Made the dashboard profile picture open and highlight the character picker in Settings.",
+    "Removed the redundant Your streak character heading from the dashboard.",
     "Moved the optional community leaderboard from the dashboard to its own page.",
     "Added a Community challenge button directly below Games.",
     "Made the signed-in learner's leaderboard row clearly identifiable with a profile badge and stronger highlight.",
