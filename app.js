@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='5.8.2';
+const APP_VERSION='5.8.3';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};

@@ -5,7 +5,7 @@
   const sdk=window.supabase;
   const account=$('#cloudAccount'),status=$('#cloudStatus'),join=$('#leaderboardOptIn');
   const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
-  const AVATARS=['boy','girl','master','man','woman'];
+  const AVATARS=['boy','girl','master','man','woman'],OWNER_LOGIN='terryjread-sudo';
   let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy';
 
   function adapter(){return window.KaishiQuestCloudAdapter}
@@ -15,7 +15,7 @@
   function safeImage(value){try{const url=new URL(value);return url.protocol==='https:'&&['avatars.githubusercontent.com','github.com'].includes(url.hostname)?nameFor(url.href):'icons/icon-192.png'}catch{return'icons/icon-192.png'}}
   function avatarKey(value){return AVATARS.includes(value)?value:'boy'}
   function avatarState(streak=0){streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'}
-  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=5.8.2`}
+  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=5.8.3`}
   function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
   function renderDashboardAvatar(){const streak=Number(adapter()?.stats?.().streak||0),image=$('#dashboardAvatar');if(image)image.src=avatarImage(selectedAvatar,streak);if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Sign in to choose your character';if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=streak>=60?'Superhero form unlocked!':`${streak} day${streak===1?'':'s'} streak · Next pose at ${[3,7,14,30,60].find(days=>days>streak)||60} days.`}
   function profile(){
@@ -23,6 +23,7 @@
     const login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';
     return {github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null};
   }
+  function renderStudioAccess(){const link=$('#mnemonicStudioLink');if(link)link.hidden=!(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
   function setupMissing(error){return ['42P01','42703'].includes(error?.code)||/(relation|column) .* does not exist/i.test(error?.message||'')}
   function describeError(error){return setupMissing(error)?'Cloud setup is incomplete. Run the supplied Supabase SQL migrations in order.':(error?.message||'Cloud service is unavailable.')}
 
@@ -31,7 +32,7 @@
     if(account)account.innerHTML=`<div><strong>Play as a guest or save to the cloud</strong><p>${nameFor(message)}</p></div><button id="cloudSignIn" class="github-button">Continue with GitHub</button>`;
     $('#cloudSignIn')?.addEventListener('click',signIn);
     if(join){join.checked=false;join.disabled=true}
-    setStatus('Guest progress is saved only on this device.');renderAvatarPicker();renderDashboardAvatar();
+    setStatus('Guest progress is saved only on this device.');renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
   }
 
   function renderSignedIn(entry){
@@ -39,7 +40,7 @@
     selectedAvatar=avatarKey(entry?.avatar_key);
     if(account)account.innerHTML=`<img class="cloud-avatar" src="${avatarImage(selectedAvatar,entry?.streak)}" alt=""><div><strong>${nameFor(p.display_name)}</strong><p>@${nameFor(p.github_login)} · GitHub account connected</p></div><button id="cloudSignOut">Sign out</button>`;
     $('#cloudSignOut')?.addEventListener('click',signOut);
-    if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}renderAvatarPicker();renderDashboardAvatar();
+    if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
   }
 
   async function signIn(){
