@@ -11,6 +11,7 @@
   function setStatus(message,state=''){if(status){status.textContent=message;status.dataset.state=state}}
   function setLeaderboardMessage(message){if(leaderboardMessage)leaderboardMessage.textContent=message}
   function nameFor(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+  function safeImage(value){try{const url=new URL(value);return url.protocol==='https:'&&['avatars.githubusercontent.com','github.com'].includes(url.hostname)?nameFor(url.href):'icons/icon-192.png'}catch{return'icons/icon-192.png'}}
   function profile(){
     const m=user?.user_metadata||{};
     const login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';
@@ -29,7 +30,7 @@
 
   function renderSignedIn(entry){
     const p=profile();
-    if(account)account.innerHTML=`<img class="cloud-avatar" src="${nameFor(p.avatar_url||'')}" alt=""><div><strong>${nameFor(p.display_name)}</strong><p>@${nameFor(p.github_login)} · GitHub account connected</p></div><button id="cloudSignOut">Sign out</button>`;
+    if(account)account.innerHTML=`<img class="cloud-avatar" src="${safeImage(p.avatar_url)}" alt=""><div><strong>${nameFor(p.display_name)}</strong><p>@${nameFor(p.github_login)} · GitHub account connected</p></div><button id="cloudSignOut">Sign out</button>`;
     $('#cloudSignOut')?.addEventListener('click',signOut);
     if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}
   }
@@ -144,7 +145,7 @@
     if(error){leaderboard.innerHTML='';setLeaderboardMessage(describeError(error));return}
     if(!data?.length){leaderboard.innerHTML='';setLeaderboardMessage('No learners have joined yet. Be the first!');return}
     setLeaderboardMessage('Friendly community ranking · progress is self-reported by the app.');
-    leaderboard.innerHTML=data.map((row,index)=>`<article class="leaderboard-row ${row.user_id===user?.id?'is-you':''}"><span class="leaderboard-rank">${index+1}</span><img src="${nameFor(row.avatar_url||'')}" alt=""><div><strong>${nameFor(row.display_name)}</strong><small>@${nameFor(row.github_login)}${row.user_id===user?.id?' · You':''}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.monsters_defeated} yōkai</small></article>`).join('');
+    leaderboard.innerHTML=data.map((row,index)=>`<article class="leaderboard-row ${row.user_id===user?.id?'is-you':''}"><span class="leaderboard-rank">${index+1}</span><img src="${safeImage(row.avatar_url)}" alt=""><div><strong>${nameFor(row.display_name)}</strong><small>@${nameFor(row.github_login)}${row.user_id===user?.id?' · You':''}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.monsters_defeated} yōkai</small></article>`).join('');
   }
 
   async function changeOptIn(){
@@ -163,12 +164,11 @@
   }
 
   async function deleteCloudData(){
-    if(!user||!confirm('Delete your cloud progress and leaderboard entry? Local progress on this device will remain.'))return;
-    const progressDelete=await client.from('user_progress').delete().eq('user_id',user.id);
-    const leaderboardDelete=await client.from('leaderboard_entries').delete().eq('user_id',user.id);
-    const error=progressDelete.error||leaderboardDelete.error;
+    if(!user||!confirm('Delete your Kaishi Quest cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;
+    const {error}=await client.rpc('delete_my_kaishi_account');
     if(error){setStatus(describeError(error),'error');return}
-    renderSignedIn(null);setStatus('Cloud data deleted. Local progress was kept.','ok');await loadLeaderboard();
+    await client.auth.signOut({scope:'local'});
+    renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard();
   }
 
   async function handleSession(session){

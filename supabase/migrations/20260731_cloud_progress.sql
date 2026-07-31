@@ -104,3 +104,24 @@ revoke all on public.user_progress from anon;
 grant select, insert, update, delete on public.user_progress to authenticated;
 grant select on public.leaderboard_entries to anon;
 grant select, insert, update, delete on public.leaderboard_entries to authenticated;
+
+-- Allows a signed-in learner to remove their complete Kaishi Quest account.
+-- auth.uid() ensures the function can only delete the caller's own user row.
+create or replace function public.delete_my_kaishi_account()
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  caller uuid := auth.uid();
+begin
+  if caller is null then
+    raise exception 'Authentication required';
+  end if;
+  delete from auth.users where id = caller;
+end;
+$$;
+
+revoke all on function public.delete_my_kaishi_account() from public, anon;
+grant execute on function public.delete_my_kaishi_account() to authenticated;
