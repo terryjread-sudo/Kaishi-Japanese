@@ -1,8 +1,11 @@
 {
-  "version": "5.8.2",
+  "version": "5.8.3",
   "released": "2026-07-31",
-  "title": "Faster access to your character profile",
+  "title": "Owner-only access to Mnemonic Studio",
   "changes": [
+    "Hidden the Mnemonic Studio link unless the authenticated GitHub username is @terryjread-sudo.",
+    "Added the same authenticated-owner check to direct Mnemonic Studio page visits.",
+    "Kept the Studio interface locked until Supabase confirms the owner account.",
     "Replaced the dashboard character-type label with the signed-in learner's username.",
     "Made the dashboard profile picture open and highlight the character picker in Settings.",
     "Removed the redundant Your streak character heading from the dashboard.",

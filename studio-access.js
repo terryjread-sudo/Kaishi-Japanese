@@ -23,7 +23,7 @@
     document.documentElement.classList.remove('studio-locked');
     gate.hidden=true;
     const script=document.createElement('script');script.src='mnemonic-studio.js?v=5.8.3';
-    script.onerror=()=>showDenied('Studio could not start','The editor script could not be loaded. Please return to the app and try again.');
+    script.onerror=()=>{document.documentElement.classList.add('studio-locked');gate.hidden=false;showDenied('Studio could not start','The editor script could not be loaded. Please return to the app and try again.')};
     document.body.append(script);
   }
 

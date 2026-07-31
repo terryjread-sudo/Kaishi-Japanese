@@ -106,6 +106,7 @@
   text-align:center;
   text-decoration:none;
 }
+#mnemonicStudioLink[hidden]{display:none}
 .back-to-app{
   display:inline-flex;
   align-items:center;

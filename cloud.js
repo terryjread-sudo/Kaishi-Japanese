@@ -193,6 +193,7 @@
   async function handleSession(session){
     user=session?.user||null;
     if(!user){renderSignedOut();await loadLeaderboard();return}
+    renderStudioAccess();
     if(initialisedUserId===user.id)return;
     initialisedUserId=user.id;
     await initialiseAccount();
