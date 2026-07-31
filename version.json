@@ -1,7 +1,7 @@
 {
-  "version": "5.4.0",
+  "version": "5.5.0",
   "released": "2026-07-31",
-  "title": "SRS Decay Battles",
+  "title": "Animated yōkai decay battles",
   "changes": [
     "Added a Listen to Meaning game with illustrated English choices.",
     "Games now reveal the Japanese word, reading, English meaning, and replayable audio after every answer.",
@@ -20,7 +20,12 @@
     "Made image diagnostics load every mapped scene directly from the scene catalogue.",
     "Added SRS Decay Battles, a tower-defence review mode driven by words near their forgetting threshold.",
     "Correct battle reviews damage and push back monsters; mistakes let them advance toward the castle.",
-    "Battle answers still reveal the Japanese word, reading, English meaning, and playable audio."
+    "Battle answers still reveal the Japanese word, reading, English meaning, and playable audio.",
+    "Added four friendly Japanese yōkai with approaching, hurt, and defeated visual states.",
+    "Added responsive monster movement, recoil, defeat animations, and reduced-motion support.",
+    "Added optional Japanese audio hints with stronger no-hint critical attacks.",
+    "Added a battle summary with accuracy, hints, critical hits, weak words, and dojo health.",
+    "Added a rolling dashboard count of yōkai defeated during the last 24 hours."
   ],
   "sourcePacksIncluded": 4,
   "mappedWords": 203,
