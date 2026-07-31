@@ -11,7 +11,8 @@
     "Updated mnemonic image frames to show complete landscape artwork without cropping.",
     "Replaced the rectangular title-bar artwork with a responsive transparent character group.",
     "Updated image diagnostics to display complete landscape mnemonic scenes without cropping.",
-    "Updated the title artwork to feature only the main boy, girl, and elderly calligraphy master."
+    "Updated the title artwork to feature only the main boy, girl, and elderly calligraphy master.",
+    "Improved auxiliary-page navigation with high-contrast Back to app badges."
   ],
   "sourcePacksIncluded": 3,
   "mappedWords": 103,

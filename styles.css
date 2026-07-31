@@ -100,6 +100,23 @@
   text-align:center;
   text-decoration:none;
 }
+.back-to-app{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:9px 14px;
+  border:2px solid #bfdbfe;
+  border-radius:999px;
+  background:#2563eb;
+  color:#fff;
+  box-shadow:0 4px 12px #0f172a35;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.back-to-app:hover{background:#1d4ed8}
+.back-to-app:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
 
 /* A transparent character group sits over one continuous header treatment,
    avoiding the visible rectangular edge of a conventional banner image. */

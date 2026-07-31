@@ -7,16 +7,19 @@
 <style>
 body{font-family:system-ui,sans-serif;margin:0;background:#eef2ff;color:#172033}
 main{max-width:1100px;margin:auto;padding:20px}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 article{background:white;padding:10px;border-radius:14px;box-shadow:0 4px 16px #17255418}
 img{display:block;width:100%;aspect-ratio:9/5;object-fit:contain;border-radius:10px;background:#f8fafc}
 code{display:block;font-size:.68rem;overflow-wrap:anywhere;margin-top:5px}
 .ok{color:#166534} .bad{color:#991b1b}
+.back-to-app{display:inline-flex;align-items:center;justify-content:center;padding:9px 14px;border:2px solid #bfdbfe;border-radius:999px;background:#2563eb;color:#fff;box-shadow:0 4px 12px #0f172a35;font-weight:800;line-height:1;text-decoration:none;white-space:nowrap}
+.back-to-app:hover{background:#1d4ed8}
+.back-to-app:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
 </style>
 </head>
 <body><main>
-<header><div><h1>Image diagnostics</h1><p>103 mappings · 103 unique standalone images</p></div><a href="./">Back to app</a></header>
+<header><div><h1>Image diagnostics</h1><p>103 mappings · 103 unique standalone images</p></div><a class="back-to-app" href="./">← Back to app</a></header>
 <p id="status">Checking images…</p>
 <div class="grid"><article>
 <img src="scene-p01-r01-c01.webp" alt="Anime-style scene for 大きい, read おおきい, meaning big.">
