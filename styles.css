@@ -241,3 +241,28 @@ header{
 .rescue-board{border-color:#f59e0b;background:linear-gradient(180deg,#fef3c7,#fff7ed)}
 .rescue-result-monster{display:block;width:min(260px,70%);height:230px;margin:0 auto;object-fit:contain}
 @media(max-width:560px){.avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dashboard-profile img{width:62px;height:62px}}
+
+/* Manga Stories */
+.manga-button{background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;box-shadow:0 8px 20px #7c3aed26}
+.manga-section{max-width:920px;margin:auto}
+#manga.screen{max-width:960px}
+.manga-library-stats,.manga-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
+.manga-library-stats article,.manga-summary-grid article{display:grid;gap:3px;padding:14px;border-radius:16px;background:#f5f3ff;border:1px solid #ddd6fe}
+.manga-library-stats strong,.manga-summary-grid strong{font-size:1.35rem;color:#5b21b6}
+.manga-library-stats span,.manga-summary-grid span{font-size:.78rem;color:#64748b}
+.manga-story-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.manga-story-card{display:grid;align-content:start;gap:6px;padding:10px;text-align:left;background:#fff;border:1px solid #e2e8f0;box-shadow:0 8px 22px #17255412;overflow:hidden}
+.manga-story-card:hover,.manga-story-card:focus-visible{border-color:#a78bfa;box-shadow:0 12px 28px #7c3aed22;transform:translateY(-2px)}
+.manga-story-card img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:10px;background:#f1f5f9}
+.manga-story-card strong{font-size:1.2rem;margin-top:3px}.manga-story-card small{font-weight:800;color:#7c3aed}.manga-story-card p{font-size:.83rem;line-height:1.45;color:#475569;margin:3px 0}.manga-story-card b{font-size:.75rem;color:#166534}
+.manga-story-level{justify-self:start;padding:4px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:.68rem;font-weight:850}
+.manga-reader-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.manga-reader-top span{font-size:.82rem;font-weight:850;color:#5b21b6}
+.manga-story-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;background:none;color:inherit;padding:0;margin:0 0 12px}
+.manga-story-heading h2{margin:4px 0 0}.manga-story-heading p{margin:2px 0;color:#64748b}.manga-story-heading>span{font-weight:900;color:#7c3aed;letter-spacing:.08em}
+.manga-page{margin:0}.manga-page img{display:block;width:100%;aspect-ratio:3/2;object-fit:contain;border-radius:16px;background:#0f172a;box-shadow:0 10px 28px #0f172a24}.manga-page figcaption{text-align:center;font-size:.7rem;color:#94a3b8;margin-top:7px}
+.manga-panel-dots{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:14px 0}.manga-panel-dots i{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#e2e8f0;color:#64748b;font-style:normal;font-size:.72rem;font-weight:850}.manga-panel-dots i.active{background:#7c3aed;color:#fff;box-shadow:0 0 0 4px #ede9fe}.manga-panel-dots i.done{background:#dcfce7;color:#166534}
+.manga-reading-card{padding:18px;border:1px solid #ddd6fe;border-radius:18px;background:linear-gradient(180deg,#faf5ff,#fff)}
+.manga-japanese{font-size:1.45rem;line-height:1.7;margin:8px 0}.manga-japanese mark{background:#fef08a;color:#713f12;border-radius:5px;padding:1px 4px}.manga-reading{color:#64748b;line-height:1.55}.manga-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}.manga-tools .audio{display:inline-block;margin:0}.manga-reading-card h3{font-size:1rem;margin-top:20px}
+.manga-reveal{display:grid;gap:4px;margin-top:12px;padding:14px;border-radius:14px;background:#eff6ff}.manga-reveal strong{font-size:1.3rem}.manga-reveal span{color:#1d4ed8;font-weight:750}.manga-reveal p{margin:4px 0 0;color:#475569;line-height:1.5}
+.manga-question{font-size:1.65rem;line-height:1.55}.manga-comprehension-answer{padding:14px;border-radius:12px;background:#dcfce7;color:#166534;font-weight:850}.manga-summary-title{font-size:2rem}.manga-glossary{margin-top:18px}.manga-glossary>div{display:grid}.manga-glossary button{width:100%;display:grid;grid-template-columns:minmax(70px,.7fr) minmax(90px,1fr) 2fr;align-items:center;gap:10px;margin-bottom:7px;text-align:left;background:#f8fafc;border:1px solid #e2e8f0}.manga-glossary button:before{content:'🔊';grid-column:1;grid-row:1;color:#2563eb}.manga-glossary button strong{grid-column:1;margin-left:28px}.manga-glossary button span{color:#475569}.manga-glossary button small{color:#64748b}
+@media(max-width:620px){.manga-story-grid{grid-template-columns:1fr}.manga-section{padding:16px}.manga-japanese{font-size:1.25rem}.manga-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.manga-glossary button{grid-template-columns:1fr 1fr}.manga-glossary button:before{display:none}.manga-glossary button strong{grid-column:auto;margin-left:0}.manga-glossary button small{grid-column:1/-1}.manga-story-heading{align-items:center}}

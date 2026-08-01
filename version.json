@@ -1,8 +1,16 @@
 {
-  "version": "6.0.0",
+  "version": "6.1.0",
   "released": "2026-08-01",
-  "title": "Learning paths, meaningful streaks and Kanji progress",
+  "title": "Original graded Manga Stories",
   "changes": [
+    "Completed the 100-scene mnemonic expansion to reach 600 approved, app-visible vocabulary images.",
+    "Added a Manga Stories library with 10 original, graded Japanese reading exercises.",
+    "Included 57 manga panels across four difficulty levels, from four-panel beginner stories to an eight-panel challenge.",
+    "Placed app vocabulary inside complete Japanese sentences with natural conjugated forms.",
+    "Added optional reading reveals, target-word audio and English translations after each attempt.",
+    "Added contextual meaning questions and a final comprehension check to every story.",
+    "Connected Manga Story answers to vocabulary SRS, meaningful daily streaks and optional cloud progress.",
+    "Added per-story completion counts, personal-best scores and an audio story glossary.",
     "Daily streaks now require five tested answers from Vocabulary, Kana, Karuta, picture games or SRS battles.",
     "Added a visible daily streak-progress meter so browsing alone cannot protect a streak.",
     "Resequenced new vocabulary into introduction, meaning, listening, reading and optional picture stages.",
