@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='6.5.1';
+const APP_VERSION='6.5.2';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
@@ -805,7 +805,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v6.5.1';versionCard.querySelector('span').textContent='Character Voices & Talking';versionCard.querySelector('small').textContent='Kai, Mia and Master now use distinct Japanese voice profiles and clearer character-specific speaking animation.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v6.5.2';versionCard.querySelector('span').textContent='Clear Theatre Subtitles';versionCard.querySelector('small').textContent='Theatre subtitles now sit above the character portraits on desktop and mobile so the active speakers stay visible.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
