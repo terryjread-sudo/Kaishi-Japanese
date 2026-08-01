@@ -1,8 +1,11 @@
 {
-  "version": "6.5.0",
+  "version": "6.5.1",
   "released": "2026-08-01",
-  "title": "Kaishi Theatre",
+  "title": "Character Voices & Talking",
   "changes": [
+    "Gave Kai, Mia and Master distinct Japanese voice profiles, with gender-aware voice selection where the browser provides suitable voices.",
+    "Added pitch and speaking-rate fallbacks so the three characters remain clearly distinguishable across Windows, mobile and other browsers.",
+    "Replaced the Theatre bobbing effect with stable character poses, subtle face-and-shoulder speaking movement and animated voice waves around the active speaker.",
     "Added Kaishi Theatre with eight lightweight animated Japanese scenes featuring Kai, Mia and Master.",
     "Each 13–16 second scene uses Japanese speech, character movement and visual action while keeping first-play subtitles hidden.",
     "Every performance selects two questions at random from five credible comprehension choices.",
