@@ -13,13 +13,15 @@ const SKILL_HELP={
  sentence:'How often you choose the correct word from the context of a sentence.',
  picture:'How often you connect a mnemonic picture with the correct word and meaning.'
 };
-let vocab=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
+let vocab=[], kanaData=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
+let kanaSession=[], kanaIndex=0, kanaScript='', kanaAnswered=false;
 let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, karutaActive=false, karuta=null, battleActive=false, battle=null;
 const defaults={newLimit:5,sessionSize:15,activeWords:4,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 let progress=loadJSON('kq-progress',{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,monsterVictories:[],totalMonsterVictories:0,streakRescue:null,updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,kanaProgress:{},monsterVictories:[],totalMonsterVictories:0,streakRescue:null,updatedAt:0};
 let meta={...META_DEFAULTS,...loadJSON('kq-meta',{})};
+meta.kanaProgress=meta.kanaProgress||{};
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
 function save(sync=true){if(sync)meta.updatedAt=Date.now();localStorage.setItem('kq-progress',JSON.stringify(progress));localStorage.setItem('kq-settings',JSON.stringify(settings));localStorage.setItem('kq-meta',JSON.stringify(meta));if(sync)window.KaishiCloud?.scheduleSync?.()}
 function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0)}
@@ -59,10 +61,10 @@ function updateStreakRescue(){
 }
 window.KaishiQuestCloudAdapter={
  snapshot:()=>({version:2,progress,meta,settings}),
- restore:data=>{progress=data?.progress||{};meta={...META_DEFAULTS,...(data?.meta||{})};delete meta.dailyReviewPlan;settings={...defaults,...(data?.settings||{})};save(false);if($('#newLimit')){$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio}updateHome();toast('Cloud progress restored')},
+ restore:data=>{progress=data?.progress||{};meta={...META_DEFAULTS,...(data?.meta||{})};meta.kanaProgress=meta.kanaProgress||{};delete meta.dailyReviewPlan;settings={...defaults,...(data?.settings||{})};save(false);if($('#newLimit')){$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio}updateHome();toast('Cloud progress restored')},
  stats:()=>{const mastered=Object.values(progress).filter(mastery).length,reviews=Number(meta.totalAnswers||0),correct=Number(meta.totalCorrect||0),monsters=Number(meta.totalMonsterVictories||meta.monsterVictories?.length||0),streak=Number(meta.streak||0);return{xp:Math.max(0,correct*10+mastered*50+monsters*100+streak*20),mastered,accuracy:reviews?Math.round(correct/reviews*100):0,reviews,monsters_defeated:monsters,streak}}
 };
-function updateHome(){detectLostStreak();const due=dailyDueWords().length,dailyLimit=meta.dailyReviewPlan?.limit||settings.sessionSize;$('#dueCount').textContent=due;$('#dueCount').parentElement.setAttribute('aria-label',`${due} reviews remaining today; daily limit ${dailyLimit}`);$('#dueCount').parentElement.title=`Reviews remaining today (maximum ${dailyLimit}). Missed days do not add extra reviews.`;$('#learnedCount').textContent=started();$('#accuracy').textContent=accuracy()+'%';$('#mastered').textContent=Object.values(progress).filter(mastery).length;$('#totalWords').textContent=vocab.length;$('#monsters24h').textContent=recentMonsterVictories();$('#streak').textContent=`🔥 ${meta.streak} day${meta.streak===1?'':'s'} streak`;$('#summary').textContent=due?`${due} of today's reviews are ready.`:`Today's reviews are complete. Add new words or practise weak skills.`;$('#skills').innerHTML=SKILLS.map(s=>{let a=0,c=0;Object.values(progress).forEach(p=>{a+=p.skills[s]?.attempts||0;c+=p.skills[s]?.correct||0});const pct=a?Math.round(c/a*100):0,detail=a?`${pct}% correct across ${a} attempt${a===1?'':'s'}.`:'No attempts yet.';return `<div class="skill-row" tabindex="0" role="group" aria-label="${esc(LABELS[s])}: ${detail} ${esc(SKILL_HELP[s])}"><b>${LABELS[s]} <span class="skill-info" aria-hidden="true">?</span></b><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><span>${pct}%</span><p class="skill-help"><strong>${detail}</strong> ${SKILL_HELP[s]}</p></div>`}).join('');updateStreakRescue();window.KaishiCloud?.renderDashboardAvatar?.()}
+function updateHome(){detectLostStreak();const due=dailyDueWords().length,dailyLimit=meta.dailyReviewPlan?.limit||settings.sessionSize;$('#dueCount').textContent=due;$('#dueCount').parentElement.setAttribute('aria-label',`${due} reviews remaining today; daily limit ${dailyLimit}`);$('#dueCount').parentElement.title=`Reviews remaining today (maximum ${dailyLimit}). Missed days do not add extra reviews.`;$('#learnedCount').textContent=started();$('#accuracy').textContent=accuracy()+'%';$('#mastered').textContent=Object.values(progress).filter(mastery).length;$('#totalWords').textContent=vocab.length;$('#monsters24h').textContent=recentMonsterVictories();$('#streak').textContent=`🔥 ${meta.streak} day${meta.streak===1?'':'s'} streak`;$('#summary').textContent=due?`${due} of today's reviews are ready.`:`Today's reviews are complete. Add new words or practise weak skills.`;$('#skills').innerHTML=SKILLS.map(s=>{let a=0,c=0;Object.values(progress).forEach(p=>{a+=p.skills[s]?.attempts||0;c+=p.skills[s]?.correct||0});const pct=a?Math.round(c/a*100):0,detail=a?`${pct}% correct across ${a} attempt${a===1?'':'s'}.`:'No attempts yet.';return `<div class="skill-row" tabindex="0" role="group" aria-label="${esc(LABELS[s])}: ${detail} ${esc(SKILL_HELP[s])}"><b>${LABELS[s]} <span class="skill-info" aria-hidden="true">?</span></b><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><span>${pct}%</span><p class="skill-help"><strong>${detail}</strong> ${SKILL_HELP[s]}</p></div>`}).join('');updateKanaOverview();updateStreakRescue();window.KaishiCloud?.renderDashboardAvatar?.()}
 function similarity(a='',b=''){a=String(a);b=String(b);let score=0;if(a.length===b.length)score+=3;if(a.slice(-1)===b.slice(-1))score+=2;if(a.slice(-2)===b.slice(-2))score+=3;for(const ch of new Set(a))if(b.includes(ch))score+=1;return score}
 function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&x[key]!==v[key]);const target=v[key]||'';return shuffle(pool.map(x=>({x,score:similarity(target,x[key])+(Math.abs((x.frequency||9999)-(v.frequency||9999))<250?2:0)})).sort((a,b)=>b.score-a.score).slice(0,35)).slice(0,n).map(o=>o.x[key])}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
@@ -107,6 +109,59 @@ function makeSession(){
 }
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
 function play(name){if(!name)return;new Audio(media(name)).play().catch(()=>{})}
+function kanaState(id){return meta.kanaProgress[id]||(meta.kanaProgress[id]={stage:0,attempts:0,correct:0,due:0})}
+function kanaMastered(script){return kanaData.filter(x=>x.script===script&&kanaState(x.id).stage>=4).length}
+function updateKanaOverview(){
+ if(!kanaData.length)return;
+ const h=kanaData.filter(x=>x.script==='hiragana').length,k=kanaData.filter(x=>x.script==='katakana').length;
+ if($('#hiraganaProgress'))$('#hiraganaProgress').textContent=`${kanaMastered('hiragana')} / ${h} mastered`;
+ if($('#katakanaProgress'))$('#katakanaProgress').textContent=`${kanaMastered('katakana')} / ${k} mastered`;
+}
+function openKanaPath(){updateKanaOverview();$('#kanaOverview').hidden=false;$('#kanaLesson').hidden=true;show('kana')}
+function playKana(entry){if(entry?.audio)play(entry.audio)}
+function kanaChoices(entry,key){
+ const pool=kanaData.filter(x=>x.script===entry.script&&x.id!==entry.id&&x[key]!==entry[key]);
+ const choices=[entry[key]];
+ for(const item of shuffle(pool)){if(!choices.includes(item[key]))choices.push(item[key]);if(choices.length===4)break}
+ return shuffle(choices);
+}
+function startKanaStudy(script){
+ kanaScript=script;const pool=kanaData.filter(x=>x.script===script),now=Date.now();
+ const due=pool.filter(x=>kanaState(x.id).stage>0&&kanaState(x.id).due<=now).sort((a,b)=>kanaState(a.id).due-kanaState(b.id).due);
+ const unseen=pool.filter(x=>kanaState(x.id).stage===0).slice(0,5);
+ let chosen=[...due.slice(0,5),...unseen].slice(0,10);
+ if(!chosen.length)chosen=[...pool].sort((a,b)=>kanaState(a.id).stage-kanaState(b.id).stage||kanaState(a.id).due-kanaState(b.id).due).slice(0,10);
+ kanaSession=[];
+ chosen.forEach(entry=>{const state=kanaState(entry.id);if(state.stage===0)kanaSession.push({entry,mode:'intro'});kanaSession.push({entry,mode:state.stage%2?'listen':'recognise'})});
+ kanaIndex=0;$('#kanaOverview').hidden=true;$('#kanaLesson').hidden=false;renderKanaCard();
+}
+function renderKanaCard(){
+ if(kanaIndex>=kanaSession.length){finishKanaStudy();return}
+ const item=kanaSession[kanaIndex],entry=item.entry,c=$('#kanaCard');kanaAnswered=false;
+ $('#kanaCounter').textContent=`${kanaIndex+1}/${kanaSession.length}`;$('#kanaProgressFill').style.width=`${kanaIndex/kanaSession.length*100}%`;
+ if(item.mode==='intro'){
+  c.innerHTML=`<span class="eyebrow">Meet a ${esc(entry.script)} sound</span><div class="kana-glyph" lang="ja">${esc(entry.kana)}</div><div class="kana-romaji">${esc(entry.romaji)}</div><button id="kanaAudio" class="audio primary">🔊 Play pronunciation</button><button id="kanaContinue" class="primary reveal">I’m ready →</button>`;
+  $('#kanaAudio').onclick=()=>playKana(entry);$('#kanaContinue').onclick=()=>{const state=kanaState(entry.id);state.stage=Math.max(1,state.stage);state.due=Date.now();save();kanaIndex++;renderKanaCard()};if(settings.autoAudio)playKana(entry);return;
+ }
+ const listening=item.mode==='listen',answer=listening?entry.kana:entry.romaji,choices=kanaChoices(entry,listening?'kana':'romaji');
+ c.innerHTML=`<span class="eyebrow">${listening?'Listen and recognise':'Read the character'}</span>${listening?'<h2>Which character matches the sound?</h2><button id="kanaPromptAudio" class="audio primary">🔊 Play sound</button>':`<div class="kana-glyph kana-question" lang="ja">${esc(entry.kana)}</div><h2>Which sound does it make?</h2>`}<div class="choices kana-choices">${choices.map(choice=>`<button class="choice" data-kana-answer="${encodeURIComponent(choice)}">${esc(choice)}</button>`).join('')}</div><section id="kanaFeedback" class="game-feedback" hidden aria-live="polite"></section>`;
+ if(listening){$('#kanaPromptAudio').onclick=()=>playKana(entry);playKana(entry)}
+ document.querySelectorAll('[data-kana-answer]').forEach(button=>button.onclick=()=>resolveKanaAnswer(button,entry,answer));
+}
+function resolveKanaAnswer(button,entry,answer){
+ if(kanaAnswered)return;kanaAnswered=true;const selected=decodeURIComponent(button.dataset.kanaAnswer),ok=selected===answer,state=kanaState(entry.id);
+ button.classList.add(ok?'correct':'wrong');document.querySelectorAll('[data-kana-answer]').forEach(choice=>{if(decodeURIComponent(choice.dataset.kanaAnswer)===answer)choice.classList.add('correct');choice.disabled=true});
+ state.attempts++;meta.kanaAnswers=Number(meta.kanaAnswers||0)+1;if(ok){state.correct++;meta.kanaCorrect=Number(meta.kanaCorrect||0)+1;state.stage=Math.min(5,state.stage+1)}else state.stage=Math.max(1,state.stage-1);
+ const intervals=[0,10/1440,1,3,7,21];state.due=Date.now()+intervals[state.stage]*86400000;save();
+ const feedback=$('#kanaFeedback');feedback.hidden=false;feedback.innerHTML=`<p class="game-result ${ok?'game-result-correct':'game-result-wrong'}">${ok?'Correct!':'Not quite — here is the right answer.'}</p><div class="kana-answer"><span lang="ja">${esc(entry.kana)}</span><strong>${esc(entry.romaji)}</strong></div><button id="kanaAnswerAudio" class="audio">🔊 Hear ${esc(entry.romaji)}</button><button id="kanaNext" class="primary reveal">${kanaIndex===kanaSession.length-1?'Path summary':'Next →'}</button>`;
+ $('#kanaAnswerAudio').onclick=()=>playKana(entry);$('#kanaNext').onclick=()=>{kanaIndex++;renderKanaCard()};
+}
+function finishKanaStudy(){
+ const today=day();if(meta.lastStudy!==today){const yesterday=day(new Date(Date.now()-86400000));meta.streak=meta.lastStudy===yesterday?meta.streak+1:1;meta.lastStudy=today}save();updateHome();
+ const total=kanaData.filter(x=>x.script===kanaScript).length,mastered=kanaMastered(kanaScript),label=kanaScript[0].toUpperCase()+kanaScript.slice(1);$('#kanaProgressFill').style.width='100%';$('#kanaCounter').textContent='Complete';
+ $('#kanaCard').innerHTML=`<span class="eyebrow">${esc(label)} session complete</span><h2>Foundation strengthened</h2><div class="kana-summary"><strong>${mastered}</strong><span>of ${total} ${esc(label)} sounds mastered</span></div><p>Characters reach mastery through repeated reading and listening checks over time.</p><button id="kanaAgain" class="primary reveal">Continue ${esc(label)}</button><button id="kanaPaths" class="reveal">Back to Kana paths</button>`;
+ $('#kanaAgain').onclick=()=>startKanaStudy(kanaScript);$('#kanaPaths').onclick=openKanaPath;
+}
 function visual(v){return `${v.picture?`<img class="picture" src="${media(v.picture)}" alt="Illustration">`:''}`}
 function sceneKey(v){return `${v.word}|${v.reading}`}
 function sceneImageUrl(scene){
@@ -417,8 +472,9 @@ async function init(){
  $('#updateBanner').hidden=true;
  $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
  try{
-  [vocab,memoryScenes]=await Promise.all([
+  [vocab,kanaData,memoryScenes]=await Promise.all([
    fetch(`data/vocabulary.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data');return r.json()}),
+   fetch(`data/kana.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('kana data');return r.json()}).then(data=>data.entries||[]),
    fetch(`memory-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))
   ]);
   updateHome();
@@ -436,7 +492,7 @@ async function init(){
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
-$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};delete meta.dailyReviewPlan;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={...META_DEFAULTS};save();updateHome();toast('Progress reset')}};
+$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').onclick=openKanaPath;$('#kanaBack').onclick=()=>show('home');$('#kanaLessonExit').onclick=openKanaPath;document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};delete meta.dailyReviewPlan;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={...META_DEFAULTS,kanaProgress:{}};save();updateHome();toast('Progress reset')}};
 $('#dashboardAvatarButton').onclick=openCharacterSettings;
 $('#karutaMode').onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startKarutaGame()};
 $('#decayBattleMode').onclick=startDecayBattle;
