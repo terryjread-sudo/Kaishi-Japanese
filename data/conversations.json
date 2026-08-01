@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "conversations": [
+    {
+      "id": "morning-greeting",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "The Morning Greeting",
+      "japaneseTitle": "朝のあいさつ",
+      "level": 1,
+      "setting": "Getting ready for school",
+      "summary": "Greet Kai, talk about breakfast and arrange to walk to school.",
+      "turns": [
+        {"line":"おはようございます。よく眠れましたか。","reading":"おはようございます。よく ねむれましたか。","meaning":"Good morning. Did you sleep well?","response":"はい、よく眠れました。","responseReading":"はい、よく ねむれました。","responseMeaning":"Yes, I slept well.","reaction":"それはよかったです。","reactionReading":"それは よかったです。","reactionMeaning":"That is good to hear.","explanation":"よく眠れました directly answers a question about sleeping well.","targetWord":"眠る"},
+        {"line":"朝ご飯はもう食べましたか。","reading":"あさごはんは もう たべましたか。","meaning":"Have you eaten breakfast already?","response":"まだです。今から食べます。","responseReading":"まだです。いまから たべます。","responseMeaning":"Not yet. I will eat now.","reaction":"では、急がなくても大丈夫ですね。","reactionReading":"では、いそがなくても だいじょうぶですね。","reactionMeaning":"Then there is no need to rush.","explanation":"まだです is the natural answer when something has not happened yet.","targetWord":"朝ご飯"},
+        {"line":"今日は何時に学校へ行きますか。","reading":"きょうは なんじに がっこうへ いきますか。","meaning":"What time are you going to school today?","response":"八時に行きます。","responseReading":"はちじに いきます。","responseMeaning":"I will go at eight o'clock.","reaction":"私も同じ時間です。","reactionReading":"わたしも おなじ じかんです。","reactionMeaning":"I am going at the same time.","explanation":"The particle に marks the specific time of departure.","targetWord":"学校"},
+        {"line":"それなら、一緒に行きませんか。","reading":"それなら、いっしょに いきませんか。","meaning":"In that case, shall we go together?","response":"はい、一緒に行きましょう。","responseReading":"はい、いっしょに いきましょう。","responseMeaning":"Yes, let's go together.","reaction":"玄関で待っています！","reactionReading":"げんかんで まっています！","reactionMeaning":"I will wait at the entrance!","explanation":"行きましょう accepts the invitation and suggests doing it together.","targetWord":"一緒に"}
+      ]
+    },
+    {
+      "id": "school-lunch",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "Lunch at School",
+      "japaneseTitle": "学校の昼ご飯",
+      "level": 1,
+      "setting": "Choosing lunch in the cafeteria",
+      "summary": "Choose food and a drink with Mia, then find somewhere to sit.",
+      "turns": [
+        {"line":"おなかがすきましたか。","reading":"おなかが すきましたか。","meaning":"Are you hungry?","response":"はい、とてもすきました。","responseReading":"はい、とても すきました。","responseMeaning":"Yes, I am very hungry.","reaction":"私もです。昼ご飯にしましょう。","reactionReading":"わたしもです。ひるごはんに しましょう。","reactionMeaning":"Me too. Let's have lunch.","explanation":"おなかがすきました is the standard expression for becoming hungry.","targetWord":"お腹"},
+        {"line":"今日の昼ご飯は何にしますか。","reading":"きょうの ひるごはんは なにに しますか。","meaning":"What will you choose for lunch today?","response":"カレーにします。","responseReading":"カレーに します。","responseMeaning":"I will have curry.","reaction":"いいですね。私もカレーが好きです。","reactionReading":"いいですね。わたしも カレーが すきです。","reactionMeaning":"Good choice. I like curry too.","explanation":"X にします means deciding on or choosing X.","targetWord":"昼ご飯"},
+        {"line":"飲み物も買いますか。","reading":"のみものも かいますか。","meaning":"Will you buy a drink too?","response":"はい、お茶を買います。","responseReading":"はい、おちゃを かいます。","responseMeaning":"Yes, I will buy tea.","reaction":"冷たいお茶がありますよ。","reactionReading":"つめたい おちゃが ありますよ。","reactionMeaning":"They have cold tea.","explanation":"お茶を買います directly answers what you will buy.","targetWord":"飲み物"},
+        {"line":"窓の近くに座りませんか。","reading":"まどの ちかくに すわりませんか。","meaning":"Shall we sit near the window?","response":"いいですね。そこに座りましょう。","responseReading":"いいですね。そこに すわりましょう。","responseMeaning":"That sounds good. Let's sit there.","reaction":"外がよく見えますね。","reactionReading":"そとが よく みえますね。","reactionMeaning":"We can see outside well.","explanation":"いいですね warmly agrees before 座りましょう accepts the suggestion.","targetWord":"窓"}
+      ]
+    },
+    {
+      "id": "tea-with-master",
+      "character": "master",
+      "characterName": "Master",
+      "title": "Tea with Master",
+      "japaneseTitle": "先生とお茶",
+      "level": 1,
+      "setting": "Visiting Master's quiet room",
+      "summary": "Accept Master's hospitality and talk about tea and sweets.",
+      "turns": [
+        {"line":"いらっしゃい。どうぞ座ってください。","reading":"いらっしゃい。どうぞ すわってください。","meaning":"Welcome. Please sit down.","response":"ありがとうございます。","responseReading":"ありがとうございます。","responseMeaning":"Thank you very much.","reaction":"楽にしてください。","reactionReading":"らくに してください。","reactionMeaning":"Please make yourself comfortable.","explanation":"ありがとうございます is a polite response to being welcomed and offered a seat.","targetWord":"座る"},
+        {"line":"お茶と水、どちらがいいですか。","reading":"おちゃと みず、どちらが いいですか。","meaning":"Which would you prefer, tea or water?","response":"お茶をお願いします。","responseReading":"おちゃを おねがいします。","responseMeaning":"Tea, please.","reaction":"はい、温かいお茶です。","reactionReading":"はい、あたたかい おちゃです。","reactionMeaning":"Here is some warm tea.","explanation":"お願いします politely requests the option you have chosen.","targetWord":"お茶"},
+        {"line":"このお菓子を食べてみますか。","reading":"この おかしを たべてみますか。","meaning":"Would you like to try this sweet?","response":"はい、いただきます。","responseReading":"はい、いただきます。","responseMeaning":"Yes, thank you; I will have some.","reaction":"小豆で作ったお菓子です。","reactionReading":"あずきで つくった おかしです。","reactionMeaning":"It is a sweet made with red beans.","explanation":"いただきます politely accepts food and expresses gratitude before eating.","targetWord":"お菓子"},
+        {"line":"味はどうですか。","reading":"あじは どうですか。","meaning":"How does it taste?","response":"とてもおいしいです。","responseReading":"とても おいしいです。","responseMeaning":"It is very delicious.","reaction":"気に入ってよかったです。","reactionReading":"きにいって よかったです。","reactionMeaning":"I am glad you like it.","explanation":"おいしいです is the direct, natural description of good-tasting food.","targetWord":"味"}
+      ]
+    },
+    {
+      "id": "weekend-movie",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "Weekend Plans",
+      "japaneseTitle": "週末の予定",
+      "level": 1,
+      "setting": "Planning a trip to the cinema",
+      "summary": "Choose an activity, day, time and meeting place with Kai.",
+      "turns": [
+        {"line":"週末は何をしたいですか。","reading":"しゅうまつは なにを したいですか。","meaning":"What would you like to do at the weekend?","response":"映画を見たいです。","responseReading":"えいがを みたいです。","responseMeaning":"I would like to see a film.","reaction":"新しい映画がありますよ。","reactionReading":"あたらしい えいがが ありますよ。","reactionMeaning":"There is a new film showing.","explanation":"The たい form expresses something the speaker wants to do.","targetWord":"映画"},
+        {"line":"何曜日がいいですか。","reading":"なんようびが いいですか。","meaning":"Which day would be good?","response":"土曜日がいいです。","responseReading":"どようびが いいです。","responseMeaning":"Saturday would be good.","reaction":"私も土曜日は暇です。","reactionReading":"わたしも どようびは ひまです。","reactionMeaning":"I am free on Saturday too.","explanation":"X がいいです states that X is your preferred option.","targetWord":"土曜日"},
+        {"line":"何時に会いましょうか。","reading":"なんじに あいましょうか。","meaning":"What time shall we meet?","response":"二時に会いましょう。","responseReading":"にじに あいましょう。","responseMeaning":"Let's meet at two o'clock.","reaction":"映画は二時半からです。","reactionReading":"えいがは にじはんからです。","reactionMeaning":"The film starts at half past two.","explanation":"会いましょう makes a shared plan, with に marking the meeting time.","targetWord":"会う"},
+        {"line":"駅の前でいいですか。","reading":"えきの まえで いいですか。","meaning":"Is in front of the station okay?","response":"はい、そこで待ちます。","responseReading":"はい、そこで まちます。","responseMeaning":"Yes, I will wait there.","reaction":"では、土曜日に！","reactionReading":"では、どようびに！","reactionMeaning":"See you on Saturday, then!","explanation":"そこで refers naturally to the place that Kai just suggested.","targetWord":"駅"}
+      ]
+    },
+    {
+      "id": "at-the-station",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "At the Station",
+      "japaneseTitle": "駅で",
+      "level": 1,
+      "setting": "Catching a train with Mia",
+      "summary": "Check the train time, tickets, platform and where to sit.",
+      "turns": [
+        {"line":"次の電車は何時ですか。","reading":"つぎの でんしゃは なんじですか。","meaning":"What time is the next train?","response":"十時十五分です。","responseReading":"じゅうじ じゅうごふんです。","responseMeaning":"It is at 10:15.","reaction":"あと十分ありますね。","reactionReading":"あと じゅっぷん ありますね。","reactionMeaning":"We have ten minutes left.","explanation":"A time followed by です directly answers 何時ですか.","targetWord":"電車"},
+        {"line":"切符はもう買いましたか。","reading":"きっぷは もう かいましたか。","meaning":"Have you already bought your ticket?","response":"はい、もう買いました。","responseReading":"はい、もう かいました。","responseMeaning":"Yes, I already bought it.","reaction":"準備が早いですね。","reactionReading":"じゅんびが はやいですね。","reactionMeaning":"You prepared quickly.","explanation":"もう買いました confirms that the action has already been completed.","targetWord":"切符"},
+        {"line":"どのホームへ行きますか。","reading":"どの ホームへ いきますか。","meaning":"Which platform are we going to?","response":"三番ホームです。","responseReading":"さんばん ホームです。","responseMeaning":"It is platform three.","reaction":"階段の向こうですね。","reactionReading":"かいだんの むこうですね。","reactionMeaning":"It is beyond the stairs.","explanation":"三番ホーム identifies the requested platform.","targetWord":"三"},
+        {"line":"電車の中でどこに座りますか。","reading":"でんしゃの なかで どこに すわりますか。","meaning":"Where shall we sit on the train?","response":"窓の近くに座りたいです。","responseReading":"まどの ちかくに すわりたいです。","responseMeaning":"I would like to sit near the window.","reaction":"景色が楽しみですね。","reactionReading":"けしきが たのしみですね。","reactionMeaning":"We can look forward to the scenery.","explanation":"座りたいです expresses your preferred place to sit.","targetWord":"中"}
+      ]
+    },
+    {
+      "id": "polite-visit",
+      "character": "master",
+      "characterName": "Master",
+      "title": "A Polite Visit",
+      "japaneseTitle": "丁寧な訪問",
+      "level": 2,
+      "setting": "Arriving at Master's home",
+      "summary": "Practise polite responses while visiting someone's home.",
+      "turns": [
+        {"line":"よくいらっしゃいました。","reading":"よく いらっしゃいました。","meaning":"I am very pleased you came.","response":"お招きありがとうございます。","responseReading":"おまねき ありがとうございます。","responseMeaning":"Thank you for inviting me.","reaction":"こちらこそ、来てくれてありがとう。","reactionReading":"こちらこそ、きてくれて ありがとう。","reactionMeaning":"Thank you for coming.","explanation":"お招きありがとうございます politely thanks the host for the invitation.","targetWord":"招く"},
+        {"line":"靴はこちらで脱いでください。","reading":"くつは こちらで ぬいでください。","meaning":"Please remove your shoes here.","response":"はい、分かりました。","responseReading":"はい、わかりました。","responseMeaning":"Yes, understood.","reaction":"スリッパを使ってください。","reactionReading":"スリッパを つかってください。","reactionMeaning":"Please use the slippers.","explanation":"分かりました acknowledges and accepts an instruction politely.","targetWord":"靴"},
+        {"line":"お荷物をお持ちしましょうか。","reading":"おにもつを おもちしましょうか。","meaning":"Shall I carry your luggage?","response":"ありがとうございます。お願いします。","responseReading":"ありがとうございます。おねがいします。","responseMeaning":"Thank you. Yes, please.","reaction":"客間に置いておきます。","reactionReading":"きゃくまに おいておきます。","reactionMeaning":"I will put it in the guest room.","explanation":"お願いします accepts the offered help in a polite way.","targetWord":"荷物"},
+        {"line":"どうぞゆっくりしてください。","reading":"どうぞ ゆっくり してください。","meaning":"Please relax and take your time.","response":"お言葉に甘えます。","responseReading":"おことばに あまえます。","responseMeaning":"Thank you; I will accept your kind offer.","reaction":"今、お茶を入れますね。","reactionReading":"いま、おちゃを いれますね。","reactionMeaning":"I will make tea now.","explanation":"お言葉に甘えます is a polite set phrase for accepting someone's kindness.","targetWord":"言葉"}
+      ]
+    },
+    {
+      "id": "shopping-for-lunch",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "Shopping for Lunch",
+      "japaneseTitle": "昼ご飯の買い物",
+      "level": 2,
+      "setting": "Buying ingredients at a shop",
+      "summary": "Plan lunch with Kai and buy the ingredients you need.",
+      "turns": [
+        {"line":"お昼に何を作りますか。","reading":"おひるに なにを つくりますか。","meaning":"What shall we make for lunch?","response":"おにぎりを作ります。","responseReading":"おにぎりを つくります。","responseMeaning":"We will make rice balls.","reaction":"外で食べるのにいいですね。","reactionReading":"そとで たべるのに いいですね。","reactionMeaning":"They will be good to eat outside.","explanation":"The object marker を connects おにぎり with 作ります.","targetWord":"作る"},
+        {"line":"何を買う必要がありますか。","reading":"なにを かう ひつようが ありますか。","meaning":"What do we need to buy?","response":"米と魚が必要です。","responseReading":"こめと さかなが ひつようです。","responseMeaning":"We need rice and fish.","reaction":"海苔は家にあります。","reactionReading":"のりは いえに あります。","reactionMeaning":"We have seaweed at home.","explanation":"必要です identifies the ingredients that are necessary.","targetWord":"必要"},
+        {"line":"魚はどれがいいですか。","reading":"さかなは どれが いいですか。","meaning":"Which fish would be good?","response":"この新鮮な魚がいいです。","responseReading":"この しんせんな さかなが いいです。","responseMeaning":"This fresh fish would be good.","reaction":"色もきれいですね。","reactionReading":"いろも きれいですね。","reactionMeaning":"Its colour looks good too.","explanation":"この identifies a nearby item, and がいい expresses preference.","targetWord":"魚"},
+        {"line":"全部でいくらですか。","reading":"ぜんぶで いくらですか。","meaning":"How much is it altogether?","response":"千円です。","responseReading":"せんえんです。","responseMeaning":"It is 1,000 yen.","reaction":"二人で半分ずつ払いましょう。","reactionReading":"ふたりで はんぶんずつ はらいましょう。","reactionMeaning":"Let's each pay half.","explanation":"A price followed by です directly answers いくらですか.","targetWord":"全部"}
+      ]
+    },
+    {
+      "id": "rainy-afternoon",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "A Rainy Afternoon",
+      "japaneseTitle": "雨の午後",
+      "level": 2,
+      "setting": "Waiting for heavy rain to pass",
+      "summary": "Talk about the weather, borrow an umbrella and decide when to leave.",
+      "turns": [
+        {"line":"外は雨が降っていますか。","reading":"そとは あめが ふっていますか。","meaning":"Is it raining outside?","response":"はい、強く降っています。","responseReading":"はい、つよく ふっています。","responseMeaning":"Yes, it is raining heavily.","reaction":"空がとても暗いですね。","reactionReading":"そらが とても くらいですね。","reactionMeaning":"The sky is very dark.","explanation":"強く降っています describes rain currently falling heavily.","targetWord":"雨"},
+        {"line":"傘を持っていますか。","reading":"かさを もっていますか。","meaning":"Do you have an umbrella?","response":"いいえ、家に忘れました。","responseReading":"いいえ、いえに わすれました。","responseMeaning":"No, I forgot it at home.","reaction":"それは困りましたね。","reactionReading":"それは こまりましたね。","reactionMeaning":"That is a problem.","explanation":"忘れました explains naturally why you do not have the umbrella.","targetWord":"傘"},
+        {"line":"私の傘を使いますか。","reading":"わたしの かさを つかいますか。","meaning":"Would you like to use my umbrella?","response":"ありがとうございます。借ります。","responseReading":"ありがとうございます。かります。","responseMeaning":"Thank you. I will borrow it.","reaction":"二人でも入れる大きさです。","reactionReading":"ふたりでも はいれる おおきさです。","reactionMeaning":"It is large enough for two people.","explanation":"借ります accepts an offer to borrow something.","targetWord":"借りる"},
+        {"line":"雨が弱くなるまで待ちますか。","reading":"あめが よわくなるまで まちますか。","meaning":"Shall we wait until the rain becomes lighter?","response":"はい、少し待ちましょう。","responseReading":"はい、すこし まちましょう。","responseMeaning":"Yes, let's wait a little.","reaction":"温かい飲み物を買いましょう。","reactionReading":"あたたかい のみものを かいましょう。","reactionMeaning":"Let's buy a warm drink.","explanation":"待ちましょう agrees to wait together.","targetWord":"待つ"}
+      ]
+    },
+    {
+      "id": "at-the-shrine",
+      "character": "master",
+      "characterName": "Master",
+      "title": "At the Shrine",
+      "japaneseTitle": "神社で",
+      "level": 2,
+      "setting": "Exploring a quiet shrine",
+      "summary": "Visit a shrine with Master and discuss wishes, photographs and charms.",
+      "turns": [
+        {"line":"この神社は初めてですか。","reading":"この じんじゃは はじめてですか。","meaning":"Is this your first time at this shrine?","response":"はい、初めてです。","responseReading":"はい、はじめてです。","responseMeaning":"Yes, it is my first time.","reaction":"古いですが、とても美しい所です。","reactionReading":"ふるいですが、とても うつくしい ところです。","reactionMeaning":"It is old, but a very beautiful place.","explanation":"初めてです directly confirms that this is your first visit.","targetWord":"初めて"},
+        {"line":"何をお願いしたいですか。","reading":"なにを おねがいしたいですか。","meaning":"What would you like to wish for?","response":"日本語が上手になりたいです。","responseReading":"にほんごが じょうずに なりたいです。","responseMeaning":"I want to become good at Japanese.","reaction":"毎日の練習が願いを助けます。","reactionReading":"まいにちの れんしゅうが ねがいを たすけます。","reactionMeaning":"Daily practice will help that wish.","explanation":"なりたい expresses the state you want to become.","targetWord":"日本語"},
+        {"line":"ここで写真を撮ってもいいですか。","reading":"ここで しゃしんを とっても いいですか。","meaning":"May we take photographs here?","response":"はい、ここでは大丈夫です。","responseReading":"はい、ここでは だいじょうぶです。","responseMeaning":"Yes, it is okay here.","reaction":"鳥居も写真に入れましょう。","reactionReading":"とりいも しゃしんに いれましょう。","reactionMeaning":"Let's include the torii gate in the photograph.","explanation":"大丈夫です gives permission and reassures the questioner.","targetWord":"写真"},
+        {"line":"帰る前にお守りを見ますか。","reading":"かえる まえに おまもりを みますか。","meaning":"Shall we look at the charms before leaving?","response":"はい、見てみたいです。","responseReading":"はい、みてみたいです。","responseMeaning":"Yes, I would like to have a look.","reaction":"勉強のお守りもありますよ。","reactionReading":"べんきょうの おまもりも ありますよ。","reactionMeaning":"They have study charms too.","explanation":"見てみたい expresses wanting to try looking at something.","targetWord":"前"}
+      ]
+    },
+    {
+      "id": "after-school-sport",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "After-School Sport",
+      "japaneseTitle": "放課後のスポーツ",
+      "level": 2,
+      "setting": "Arranging football practice",
+      "summary": "Make an after-school plan with Kai and prepare for football practice.",
+      "turns": [
+        {"line":"放課後、時間がありますか。","reading":"ほうかご、じかんが ありますか。","meaning":"Do you have time after school?","response":"はい、三時からあります。","responseReading":"はい、さんじから あります。","responseMeaning":"Yes, I am free from three o'clock.","reaction":"ちょうどいいですね。","reactionReading":"ちょうど いいですね。","reactionMeaning":"That is perfect.","explanation":"三時から specifies when your available time begins.","targetWord":"時間"},
+        {"line":"一緒にサッカーをしませんか。","reading":"いっしょに サッカーを しませんか。","meaning":"Would you like to play football together?","response":"いいですね。やりましょう。","responseReading":"いいですね。やりましょう。","responseMeaning":"That sounds good. Let's do it.","reaction":"友達も二人来ます。","reactionReading":"ともだちも ふたり きます。","reactionMeaning":"Two friends are coming too.","explanation":"やりましょう enthusiastically accepts a suggestion to do an activity.","targetWord":"友達"},
+        {"line":"どこで練習しますか。","reading":"どこで れんしゅうしますか。","meaning":"Where shall we practise?","response":"校庭で練習しましょう。","responseReading":"こうていで れんしゅうしましょう。","responseMeaning":"Let's practise in the schoolyard.","reaction":"広い場所が使えますね。","reactionReading":"ひろい ばしょが つかえますね。","reactionMeaning":"We can use the wide area.","explanation":"The particle で marks the location where an activity happens.","targetWord":"練習"},
+        {"line":"水を持ってきましたか。","reading":"みずを もってきましたか。","meaning":"Did you bring water?","response":"はい、二本持っています。","responseReading":"はい、にほん もっています。","responseMeaning":"Yes, I have two bottles.","reaction":"暑いので、たくさん飲みましょう。","reactionReading":"あついので、たくさん のみましょう。","reactionMeaning":"It is hot, so let's drink plenty.","explanation":"二本 uses the counter 本 for two bottle-shaped objects.","targetWord":"水"}
+      ]
+    },
+    {
+      "id": "birthday-present",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "A Birthday Present",
+      "japaneseTitle": "誕生日のプレゼント",
+      "level": 2,
+      "setting": "Choosing a present for a teacher",
+      "summary": "Help Mia choose flowers and write a birthday card.",
+      "turns": [
+        {"line":"来週は先生の誕生日ですね。","reading":"らいしゅうは せんせいの たんじょうびですね。","meaning":"Next week is our teacher's birthday, isn't it?","response":"はい、プレゼントを買いたいです。","responseReading":"はい、プレゼントを かいたいです。","responseMeaning":"Yes, I want to buy a present.","reaction":"一緒に選びましょう。","reactionReading":"いっしょに えらびましょう。","reactionMeaning":"Let's choose one together.","explanation":"買いたいです expresses your intention to buy a present.","targetWord":"誕生日"},
+        {"line":"何がいいと思いますか。","reading":"なにが いいと おもいますか。","meaning":"What do you think would be good?","response":"花がいいと思います。","responseReading":"はなが いいと おもいます。","responseMeaning":"I think flowers would be good.","reaction":"先生は花が好きですね。","reactionReading":"せんせいは はなが すきですね。","reactionMeaning":"Our teacher likes flowers.","explanation":"と思います gives your considered opinion.","targetWord":"思う"},
+        {"line":"何色の花にしますか。","reading":"なにいろの はなに しますか。","meaning":"What colour flowers shall we choose?","response":"赤と白にします。","responseReading":"あかと しろに します。","responseMeaning":"We will choose red and white.","reaction":"明るくてきれいですね。","reactionReading":"あかるくて きれいですね。","reactionMeaning":"That will look bright and beautiful.","explanation":"X にします states the final choice between alternatives.","targetWord":"色"},
+        {"line":"カードも書きませんか。","reading":"カードも かきませんか。","meaning":"Shall we write a card too?","response":"はい、一緒に書きましょう。","responseReading":"はい、いっしょに かきましょう。","responseMeaning":"Yes, let's write it together.","reaction":"みんなの名前も入れましょう。","reactionReading":"みんなの なまえも いれましょう。","reactionMeaning":"Let's include everyone's names too.","explanation":"書きましょう accepts the invitation to write together.","targetWord":"書く"}
+      ]
+    },
+    {
+      "id": "restaurant-manners",
+      "character": "master",
+      "characterName": "Master",
+      "title": "Restaurant Manners",
+      "japaneseTitle": "食事のマナー",
+      "level": 3,
+      "setting": "Eating at a traditional restaurant",
+      "summary": "Order politely and practise useful Japanese dining customs.",
+      "turns": [
+        {"line":"ご注文は決まりましたか。","reading":"ごちゅうもんは きまりましたか。","meaning":"Have you decided on your order?","response":"はい、そばをお願いします。","responseReading":"はい、そばを おねがいします。","responseMeaning":"Yes, soba please.","reaction":"私は天ぷらにします。","reactionReading":"わたしは てんぷらに します。","reactionMeaning":"I will have tempura.","explanation":"お願いします is a polite and natural way to place an order.","targetWord":"注文"},
+        {"line":"辛い物は大丈夫ですか。","reading":"からい ものは だいじょうぶですか。","meaning":"Are you okay with spicy food?","response":"少しなら大丈夫です。","responseReading":"すこしなら だいじょうぶです。","responseMeaning":"A little is okay.","reaction":"では、辛くない物も頼みましょう。","reactionReading":"では、からくない ものも たのみましょう。","reactionMeaning":"Then let's order something that is not spicy too.","explanation":"少しなら sets a clear condition: it is okay if it is only a little.","targetWord":"辛い"},
+        {"line":"箸の使い方は分かりますか。","reading":"はしの つかいかたは わかりますか。","meaning":"Do you know how to use chopsticks?","response":"はい、だいたい分かります。","responseReading":"はい、だいたい わかります。","responseMeaning":"Yes, I mostly understand.","reaction":"上手に使えていますよ。","reactionReading":"じょうずに つかえていますよ。","reactionMeaning":"You are using them well.","explanation":"だいたい softens the claim to mean mostly or generally.","targetWord":"箸"},
+        {"line":"食事が終わったら何と言いますか。","reading":"しょくじが おわったら なんと いいますか。","meaning":"What do you say when the meal is finished?","response":"「ごちそうさまでした」と言います。","responseReading":"「ごちそうさまでした」と いいます。","responseMeaning":"You say, “Thank you for the meal.”","reaction":"感謝を伝える大切な言葉です。","reactionReading":"かんしゃを つたえる たいせつな ことばです。","reactionMeaning":"It is an important phrase for expressing gratitude.","explanation":"ごちそうさまでした is the customary phrase used after a meal.","targetWord":"終わる"}
+      ]
+    },
+    {
+      "id": "summer-travel",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "A Summer Journey",
+      "japaneseTitle": "夏の旅行",
+      "level": 3,
+      "setting": "Planning a holiday in Kyoto",
+      "summary": "Discuss where to travel, transport, accommodation and sightseeing.",
+      "turns": [
+        {"line":"夏休みにどこへ行きたいですか。","reading":"なつやすみに どこへ いきたいですか。","meaning":"Where would you like to go during the summer holiday?","response":"京都へ行きたいです。","responseReading":"きょうとへ いきたいです。","responseMeaning":"I would like to go to Kyoto.","reaction":"歴史がたくさんある町ですね。","reactionReading":"れきしが たくさん ある まちですね。","reactionMeaning":"It is a city with a lot of history.","explanation":"へ marks the destination, while 行きたい expresses the desire to go.","targetWord":"夏休み"},
+        {"line":"どうやって行きますか。","reading":"どうやって いきますか。","meaning":"How will you get there?","response":"新幹線で行きます。","responseReading":"しんかんせんで いきます。","responseMeaning":"I will go by bullet train.","reaction":"速くて便利ですね。","reactionReading":"はやくて べんりですね。","reactionMeaning":"It is fast and convenient.","explanation":"The particle で marks the means of transportation.","targetWord":"新幹線"},
+        {"line":"何日ぐらい泊まりますか。","reading":"なんにちぐらい とまりますか。","meaning":"About how many days will you stay?","response":"三日泊まります。","responseReading":"みっか とまります。","responseMeaning":"I will stay for three days.","reaction":"いろいろな場所へ行けますね。","reactionReading":"いろいろな ばしょへ いけますね。","reactionMeaning":"You will be able to visit various places.","explanation":"三日 can mean a duration of three days before 泊まります.","targetWord":"泊まる"},
+        {"line":"何を一番楽しみにしていますか。","reading":"なにを いちばん たのしみに していますか。","meaning":"What are you looking forward to most?","response":"お寺を見るのが楽しみです。","responseReading":"おてらを みるのが たのしみです。","responseMeaning":"I am looking forward to seeing the temples.","reaction":"写真をたくさん撮りましょう。","reactionReading":"しゃしんを たくさん とりましょう。","reactionMeaning":"Let's take lots of photographs.","explanation":"X のが楽しみ describes looking forward to doing X.","targetWord":"楽しみ"}
+      ]
+    },
+    {
+      "id": "helping-a-visitor",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "Helping a Visitor",
+      "japaneseTitle": "道案内",
+      "level": 3,
+      "setting": "Giving directions near the station",
+      "summary": "Help Mia guide a visitor who cannot find the station.",
+      "turns": [
+        {"line":"あの人は駅を探しています。手伝いませんか。","reading":"あの ひとは えきを さがしています。てつだいませんか。","meaning":"That person is looking for the station. Shall we help?","response":"はい、手伝いましょう。","responseReading":"はい、てつだいましょう。","responseMeaning":"Yes, let's help.","reaction":"声をかけてみますね。","reactionReading":"こえを かけてみますね。","reactionMeaning":"I will try speaking to them.","explanation":"手伝いましょう accepts the suggestion to help together.","targetWord":"手伝う"},
+        {"line":"駅までの道を知っていますか。","reading":"えきまでの みちを しっていますか。","meaning":"Do you know the way to the station?","response":"はい、この道をまっすぐです。","responseReading":"はい、この みちを まっすぐです。","responseMeaning":"Yes, it is straight along this road.","reaction":"分かりやすい道ですね。","reactionReading":"わかりやすい みちですね。","reactionMeaning":"It is an easy route to explain.","explanation":"この道をまっすぐ gives a concise direction to continue straight.","targetWord":"道"},
+        {"line":"どの角で曲がりますか。","reading":"どの かどで まがりますか。","meaning":"At which corner do they turn?","response":"二つ目の角を右に曲がります。","responseReading":"ふたつめの かどを みぎに まがります。","responseMeaning":"Turn right at the second corner.","reaction":"そこから駅が見えます。","reactionReading":"そこから えきが みえます。","reactionMeaning":"From there, the station is visible.","explanation":"二つ目 identifies the second corner, and 右に gives the direction of the turn.","targetWord":"右"},
+        {"line":"地図も見せたほうがいいですか。","reading":"ちずも みせたほうが いいですか。","meaning":"Would it be better to show them the map too?","response":"はい、ここを見せてください。","responseReading":"はい、ここを みせてください。","responseMeaning":"Yes, please show them this spot.","reaction":"これなら安心できますね。","reactionReading":"これなら あんしん できますね。","reactionMeaning":"This should reassure them.","explanation":"見せてください politely asks Mia to show a specific place.","targetWord":"地図"}
+      ]
+    },
+    {
+      "id": "study-advice",
+      "character": "master",
+      "characterName": "Master",
+      "title": "Master's Study Advice",
+      "japaneseTitle": "勉強の助言",
+      "level": 3,
+      "setting": "Reflecting on Japanese study",
+      "summary": "Tell Master about your study habits, difficulties and next goal.",
+      "turns": [
+        {"line":"最近、日本語の勉強はどうですか。","reading":"さいきん、にほんごの べんきょうは どうですか。","meaning":"How has your Japanese study been recently?","response":"毎日少しずつ勉強しています。","responseReading":"まいにち すこしずつ べんきょうしています。","responseMeaning":"I study a little every day.","reaction":"続けることが大切です。","reactionReading":"つづける ことが たいせつです。","reactionMeaning":"Continuing consistently is important.","explanation":"少しずつ describes steady progress in small amounts.","targetWord":"毎日"},
+        {"line":"何が一番難しいですか。","reading":"なにが いちばん むずかしいですか。","meaning":"What is the most difficult?","response":"漢字を覚えるのが難しいです。","responseReading":"かんじを おぼえるのが むずかしいです。","responseMeaning":"Memorising kanji is difficult.","reaction":"形と意味を一緒に覚えましょう。","reactionReading":"かたちと いみを いっしょに おぼえましょう。","reactionMeaning":"Let's remember the shape and meaning together.","explanation":"Verb + のが難しい describes an activity that is difficult.","targetWord":"難しい"},
+        {"line":"言葉を忘れた時はどうしますか。","reading":"ことばを わすれた ときは どうしますか。","meaning":"What do you do when you forget a word?","response":"もう一度復習します。","responseReading":"もういちど ふくしゅうします。","responseMeaning":"I review it once more.","reaction":"思い出す練習になりますね。","reactionReading":"おもいだす れんしゅうに なりますね。","reactionMeaning":"That becomes good recall practice.","explanation":"もう一度 means once again and naturally describes repeating a review.","targetWord":"忘れる"},
+        {"line":"来月の目標は何ですか。","reading":"らいげつの もくひょうは なんですか。","meaning":"What is your goal for next month?","response":"短い会話ができるようになりたいです。","responseReading":"みじかい かいわが できるように なりたいです。","responseMeaning":"I want to become able to have short conversations.","reaction":"今日の会話が最初の一歩です。","reactionReading":"きょうの かいわが さいしょの いっぽです。","reactionMeaning":"Today's conversation is the first step.","explanation":"できるようになりたい expresses wanting to become able to do something.","targetWord":"目標"}
+      ]
+    }
+  ]
+}
