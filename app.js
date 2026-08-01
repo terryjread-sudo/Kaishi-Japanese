@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='5.9.0';
+const APP_VERSION='6.0.0';
 const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
@@ -19,7 +19,7 @@ let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, karutaA
 const defaults={newLimit:5,sessionSize:15,activeWords:4,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 let progress=loadJSON('kq-progress',{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,kanaProgress:{},monsterVictories:[],totalMonsterVictories:0,streakRescue:null,updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,kanaProgress:{},dailyActivity:null,karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,updatedAt:0};
 let meta={...META_DEFAULTS,...loadJSON('kq-meta',{})};
 meta.kanaProgress=meta.kanaProgress||{};
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
@@ -35,16 +35,20 @@ function dailyDueWords(){
  const today=day(),limit=Math.max(5,Math.min(50,+settings.sessionSize||15));
  if(!meta.dailyReviewPlan||meta.dailyReviewPlan.date!==today||!Array.isArray(meta.dailyReviewPlan.ids)){
   const ids=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due).slice(0,limit).map(v=>v.id);
-  meta.dailyReviewPlan={date:today,ids,limit};
+  meta.dailyReviewPlan={date:today,ids,limit,initialTotal:ids.length};
   save(false);
  }
+ if(!Number.isFinite(meta.dailyReviewPlan.initialTotal))meta.dailyReviewPlan.initialTotal=meta.dailyReviewPlan.ids.length;
  const byId=new Map(vocab.map(v=>[v.id,v])),now=Date.now();
  return meta.dailyReviewPlan.ids.map(id=>byId.get(id)).filter(v=>v&&progress[v.id]?.due<=now);
 }
 function started(){return Object.keys(progress).length}
 function accuracy(){return meta.totalAnswers?Math.round(meta.totalCorrect/meta.totalAnswers*100):0}
-function mastery(p){return p&&p.interval>=21&&SKILLS.every(s=>(p.skills?.[s]?.strength||0)>=.65)}
-function recentMonsterVictories(){const cutoff=Date.now()-86400000;meta.monsterVictories=(Array.isArray(meta.monsterVictories)?meta.monsterVictories:[]).filter(t=>Number(t)>cutoff);return meta.monsterVictories.length}
+function mastery(p){return p&&p.interval>=21&&['meaning','listening','reading'].every(skill=>(p.skills?.[skill]?.strength||0)>=.65)}
+function todayActivity(){const today=day();if(!meta.dailyActivity||meta.dailyActivity.date!==today)meta.dailyActivity={date:today,tested:0,qualified:false,sources:{}};return meta.dailyActivity}
+function recordMeaningfulActivity(source,amount=1){const activity=todayActivity();activity.tested+=Math.max(0,Number(amount)||0);activity.sources[source]=Number(activity.sources[source]||0)+Math.max(0,Number(amount)||0);if(!activity.qualified&&activity.tested>=5){activity.qualified=true;const today=day();if(meta.lastStudy!==today){const yesterday=day(new Date(Date.now()-86400000));meta.streak=meta.lastStudy===yesterday?Number(meta.streak||0)+1:1;meta.lastStudy=today}toast('Daily streak protected! 🔥')}return activity}
+function recentMonsterVictories(){const cutoff=Date.now()-72*3600000;meta.monsterVictories=(Array.isArray(meta.monsterVictories)?meta.monsterVictories:[]).filter(t=>Number(t)>cutoff);return meta.monsterVictories.length}
+function recentKarutaBestAverage(){const cutoff=Date.now()-72*3600000;meta.karutaSessions=(Array.isArray(meta.karutaSessions)?meta.karutaSessions:[]).filter(item=>Number(item.at)>cutoff);return meta.karutaSessions.length?Math.max(...meta.karutaSessions.map(item=>Number(item.averageScore)||0)):null}
 function detectLostStreak(){
  if(!meta.lastStudy||Number(meta.streak)<=0)return;
  const last=new Date(`${meta.lastStudy}T00:00:00`),today=new Date(`${day()}T00:00:00`),gap=Math.floor((today-last)/86400000);
@@ -64,11 +68,34 @@ window.KaishiQuestCloudAdapter={
  restore:data=>{progress=data?.progress||{};meta={...META_DEFAULTS,...(data?.meta||{})};meta.kanaProgress=meta.kanaProgress||{};delete meta.dailyReviewPlan;settings={...defaults,...(data?.settings||{})};save(false);if($('#newLimit')){$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio}updateHome();toast('Cloud progress restored')},
  stats:()=>{const mastered=Object.values(progress).filter(mastery).length,reviews=Number(meta.totalAnswers||0),correct=Number(meta.totalCorrect||0),monsters=Number(meta.totalMonsterVictories||meta.monsterVictories?.length||0),streak=Number(meta.streak||0);return{xp:Math.max(0,correct*10+mastered*50+monsters*100+streak*20),mastered,accuracy:reviews?Math.round(correct/reviews*100):0,reviews,monsters_defeated:monsters,streak}}
 };
-function updateHome(){detectLostStreak();const due=dailyDueWords().length,dailyLimit=meta.dailyReviewPlan?.limit||settings.sessionSize;$('#dueCount').textContent=due;$('#dueCount').parentElement.setAttribute('aria-label',`${due} reviews remaining today; daily limit ${dailyLimit}`);$('#dueCount').parentElement.title=`Reviews remaining today (maximum ${dailyLimit}). Missed days do not add extra reviews.`;$('#learnedCount').textContent=started();$('#accuracy').textContent=accuracy()+'%';$('#mastered').textContent=Object.values(progress).filter(mastery).length;$('#totalWords').textContent=vocab.length;$('#monsters24h').textContent=recentMonsterVictories();$('#streak').textContent=`🔥 ${meta.streak} day${meta.streak===1?'':'s'} streak`;$('#summary').textContent=due?`${due} of today's reviews are ready.`:`Today's reviews are complete. Add new words or practise weak skills.`;$('#skills').innerHTML=SKILLS.map(s=>{let a=0,c=0;Object.values(progress).forEach(p=>{a+=p.skills[s]?.attempts||0;c+=p.skills[s]?.correct||0});const pct=a?Math.round(c/a*100):0,detail=a?`${pct}% correct across ${a} attempt${a===1?'':'s'}.`:'No attempts yet.';return `<div class="skill-row" tabindex="0" role="group" aria-label="${esc(LABELS[s])}: ${detail} ${esc(SKILL_HELP[s])}"><b>${LABELS[s]} <span class="skill-info" aria-hidden="true">?</span></b><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><span>${pct}%</span><p class="skill-help"><strong>${detail}</strong> ${SKILL_HELP[s]}</p></div>`}).join('');updateKanaOverview();updateStreakRescue();window.KaishiCloud?.renderDashboardAvatar?.()}
+function wordPracticeCount(p){return p?SKILLS.reduce((sum,skill)=>sum+Number(p.skills?.[skill]?.attempts||0),0):0}
+function wordLearningStatus(v){const p=progress[v.id];if(!p)return'locked';if(Number(p.interval||0)>=21&&Number(p.skills?.kanji?.strength||0)>=.65)return'mastered';if(Number(p.skills?.kanji?.attempts||0)>=2||Number(p.reps||0)>=2||wordPracticeCount(p)>=2)return'practised';return'introduced'}
+function kanjiCharacters(v){return [...new Set([...String(v.kanji||v.word||'')].filter(character=>/\p{Script=Han}/u.test(character)))]}
+function kanjiCatalogue(){const map=new Map();vocab.forEach(v=>kanjiCharacters(v).forEach(character=>{if(!map.has(character))map.set(character,[]);map.get(character).push(v)}));return [...map].map(([character,words])=>{const statuses=words.map(wordLearningStatus);const status=statuses.includes('mastered')?'mastered':statuses.includes('practised')?'practised':statuses.includes('introduced')?'introduced':'locked';return{character,words,status}})}
+function kanjiMasteredCount(){return kanjiCatalogue().filter(item=>item.status==='mastered').length}
+function renderKanjiWords(item){const panel=$('#kanjiWords');if(!panel||item.status==='locked')return;panel.hidden=false;panel.innerHTML=`<div class="kanji-detail-heading"><span lang="ja">${esc(item.character)}</span><div><h3>Words using this Kanji</h3><p>${item.words.filter(v=>wordLearningStatus(v)!=='locked').length} introduced</p></div></div><div class="kanji-word-list">${item.words.map(v=>{const status=wordLearningStatus(v);return `<article class="${status}"><div><strong lang="ja">${status==='locked'?'•••':esc(v.word)}</strong><span>${status==='locked'?'Not introduced':esc(v.reading)}</span></div><b>${status==='locked'?'Hidden':esc(v.meaning)}</b><small>${status==='practised'?'Practised':status[0].toUpperCase()+status.slice(1)}</small></article>`}).join('')}</div>`;panel.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function renderKanjiOverview(){const catalogue=kanjiCatalogue(),counts={locked:0,introduced:0,practised:0,mastered:0};catalogue.forEach(item=>counts[item.status]++);$('#kanjiOverviewStats').innerHTML=`<article><strong>${counts.introduced}</strong><span>Introduced</span></article><article><strong>${counts.practised}</strong><span>Practised</span></article><article><strong>${counts.mastered}</strong><span>Mastered</span></article><article><strong>${catalogue.length}</strong><span>Total Kanji</span></article>`;$('#kanjiGrid').innerHTML=catalogue.map((item,index)=>`<button class="kanji-tile ${item.status}" data-kanji-index="${index}" aria-label="${item.status==='locked'?'Kanji not introduced':`${item.character}, ${item.status}`}"><span lang="ja">${item.status==='locked'?'?':esc(item.character)}</span><small>${item.status}</small></button>`).join('');$('#kanjiWords').hidden=true;document.querySelectorAll('[data-kanji-index]').forEach(button=>button.onclick=()=>{const item=catalogue[+button.dataset.kanjiIndex];if(item.status==='locked'){toast('Study a word containing this Kanji to reveal it');return}renderKanjiWords(item)})}
+function updateHome(){
+ detectLostStreak();const due=dailyDueWords().length,dailyLimit=meta.dailyReviewPlan?.limit||settings.sessionSize,initialDue=Math.max(0,Number(meta.dailyReviewPlan?.initialTotal||0)),dueRatio=initialDue?Math.min(1,due/initialDue):0,activity=todayActivity(),karutaAverage=recentKarutaBestAverage();
+ const ring=$('#dueCount').parentElement;$('#dueCount').textContent=due;ring.style.setProperty('--due-progress',dueRatio);ring.setAttribute('aria-label',`${due} of ${initialDue} planned reviews remaining today`);ring.title=`${due} of ${initialDue} planned reviews remain. The ring drains as you complete them.`;$('#dueProgressLabel').textContent=initialDue?`of ${initialDue} due`:'due';
+ $('#streakActivity').textContent=activity.qualified?'Streak protected today':`${Math.min(activity.tested,5)} / 5 tested answers`;$('#streakActivityFill').style.width=`${Math.min(100,activity.tested/5*100)}%`;
+ $('#learnedCount').textContent=started();$('#accuracy').textContent=accuracy()+'%';$('#mastered').textContent=Object.values(progress).filter(mastery).length;$('#kanjiMastered').textContent=kanjiMasteredCount();$('#kanaMastered').textContent=kanaData.length?kanaMastered('hiragana')+kanaMastered('katakana'):0;$('#totalWords').textContent=vocab.length;$('#monsters72h').textContent=recentMonsterVictories();$('#karutaAverage72h').textContent=karutaAverage===null?'—':`${Math.round(karutaAverage).toLocaleString()} pts`;
+ $('#streak').textContent=`🔥 ${meta.streak} day${meta.streak===1?'':'s'} streak`;$('#summary').textContent=due?`${due} of today's reviews are ready.`:activity.qualified?'Today’s streak is protected. Keep learning or enjoy a game.':'Reviews complete. Answer five tested questions to protect today’s streak.';
+ $('#skills').innerHTML=SKILLS.map(s=>{let a=0,c=0;Object.values(progress).forEach(p=>{a+=p.skills[s]?.attempts||0;c+=p.skills[s]?.correct||0});const pct=a?Math.round(c/a*100):0,detail=a?`${pct}% correct across ${a} attempt${a===1?'':'s'}.`:'No attempts yet.';return `<div class="skill-row" tabindex="0" role="group" aria-label="${esc(LABELS[s])}: ${detail} ${esc(SKILL_HELP[s])}"><b>${LABELS[s]} <span class="skill-info" aria-hidden="true">?</span></b><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><span>${pct}%</span><p class="skill-help"><strong>${detail}</strong> ${SKILL_HELP[s]}</p></div>`}).join('');updateKanaOverview();updateStreakRescue();window.KaishiCloud?.renderDashboardAvatar?.()
+}
 function similarity(a='',b=''){a=String(a);b=String(b);let score=0;if(a.length===b.length)score+=3;if(a.slice(-1)===b.slice(-1))score+=2;if(a.slice(-2)===b.slice(-2))score+=3;for(const ch of new Set(a))if(b.includes(ch))score+=1;return score}
 function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&x[key]!==v[key]);const target=v[key]||'';return shuffle(pool.map(x=>({x,score:similarity(target,x[key])+(Math.abs((x.frequency||9999)-(v.frequency||9999))<250?2:0)})).sort((a,b)=>b.score-a.score).slice(0,35)).slice(0,n).map(o=>o.x[key])}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function chooseSkill(v){const p=pFor(v.id);const usable=v.word===v.reading?SKILLS.filter(s=>s!=='kanji'):SKILLS;const weak=usable.map(s=>({s,w:(1-(p.skills[s].strength||0))*(.7+Math.random()*.6)})).sort((a,b)=>b.w-a.w);if(p.stage===0)return'intro';if(p.interval>=21&&Math.random()<.7)return Math.random()<.5?'meaning':'production';return weak[0].s}
+function chooseSkill(v){
+ const p=pFor(v.id),allowed=skills=>skills.filter(skill=>skill!=='kanji'||v.word!==v.reading).filter(skill=>skill!=='picture'||memoryScenes[sceneKey(v)]);
+ if(p.stage===0)return'intro';
+ const early=allowed(['meaning','listening','reading','picture']);
+ if(Number(p.reps||0)<4||Number(p.interval||0)<3)return early.sort((a,b)=>(p.skills[a]?.attempts||0)-(p.skills[b]?.attempts||0)||Math.random()-.5)[0];
+ const developing=allowed(['meaning','listening','reading','sentence','kanji','production','picture']);
+ if(Number(p.interval||0)<21)return developing.map(skill=>({skill,priority:(1-(p.skills[skill]?.strength||0))*(skill==='meaning'||skill==='listening'?1.2:1)*(.85+Math.random()*.3)})).sort((a,b)=>b.priority-a.priority)[0].skill;
+ const independent=allowed(['meaning','listening','reading','sentence','kanji','production']);
+ return independent.map(skill=>({skill,priority:(1-(p.skills[skill]?.strength||0))*(.85+Math.random()*.3)})).sort((a,b)=>b.priority-a.priority)[0].skill;
+}
 function abortSession(destination='home'){
  pictureGameActive=false;karutaActive=false;karuta=null;battleActive=false;battle=null;
  session=[];
@@ -90,7 +117,7 @@ function makeSession(){
  const activeCount=Math.max(2,Math.min(4,+settings.activeWords||4));
  const queue=selected.map(v=>{
    const p=pFor(v.id);
-   let skills=p.stage===0?['intro','meaning','reading','picture','sentence','listening','kanji','production']:[chooseSkill(v)];
+   let skills=p.stage===0?['intro','meaning','listening','reading','picture']:[chooseSkill(v)];
    skills=skills.filter(s=>s!=='kanji'||v.word!==v.reading).filter(s=>s!=='picture'||memoryScenes[sceneKey(v)]);
    return {v,skills};
  });
@@ -110,7 +137,7 @@ function makeSession(){
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
 function play(name){if(!name)return;new Audio(media(name)).play().catch(()=>{})}
 function kanaState(id){return meta.kanaProgress[id]||(meta.kanaProgress[id]={stage:0,attempts:0,correct:0,due:0})}
-function kanaMastered(script){return kanaData.filter(x=>x.script===script&&kanaState(x.id).stage>=4).length}
+function kanaMastered(script){return kanaData.filter(x=>x.script===script&&Number(meta.kanaProgress?.[x.id]?.stage||0)>=4).length}
 function updateKanaOverview(){
  if(!kanaData.length)return;
  const h=kanaData.filter(x=>x.script==='hiragana').length,k=kanaData.filter(x=>x.script==='katakana').length;
@@ -151,13 +178,13 @@ function renderKanaCard(){
 function resolveKanaAnswer(button,entry,answer){
  if(kanaAnswered)return;kanaAnswered=true;const selected=decodeURIComponent(button.dataset.kanaAnswer),ok=selected===answer,state=kanaState(entry.id);
  button.classList.add(ok?'correct':'wrong');document.querySelectorAll('[data-kana-answer]').forEach(choice=>{if(decodeURIComponent(choice.dataset.kanaAnswer)===answer)choice.classList.add('correct');choice.disabled=true});
- state.attempts++;meta.kanaAnswers=Number(meta.kanaAnswers||0)+1;if(ok){state.correct++;meta.kanaCorrect=Number(meta.kanaCorrect||0)+1;state.stage=Math.min(5,state.stage+1)}else state.stage=Math.max(1,state.stage-1);
+ state.attempts++;meta.kanaAnswers=Number(meta.kanaAnswers||0)+1;if(ok){state.correct++;meta.kanaCorrect=Number(meta.kanaCorrect||0)+1;state.stage=Math.min(5,state.stage+1)}else state.stage=Math.max(1,state.stage-1);recordMeaningfulActivity('kana');
  const intervals=[0,10/1440,1,3,7,21];state.due=Date.now()+intervals[state.stage]*86400000;save();
  const feedback=$('#kanaFeedback');feedback.hidden=false;feedback.innerHTML=`<p class="game-result ${ok?'game-result-correct':'game-result-wrong'}">${ok?'Correct!':'Not quite — here is the right answer.'}</p><div class="kana-answer"><span lang="ja">${esc(entry.kana)}</span><strong>${esc(entry.romaji)}</strong></div><button id="kanaAnswerAudio" class="audio">🔊 Hear ${esc(entry.romaji)}</button><button id="kanaNext" class="primary reveal">${kanaIndex===kanaSession.length-1?'Path summary':'Next →'}</button>`;
  $('#kanaAnswerAudio').onclick=()=>playKana(entry);$('#kanaNext').onclick=()=>{kanaIndex++;renderKanaCard()};
 }
 function finishKanaStudy(){
- const today=day();if(meta.lastStudy!==today){const yesterday=day(new Date(Date.now()-86400000));meta.streak=meta.lastStudy===yesterday?meta.streak+1:1;meta.lastStudy=today}save();updateHome();
+ save();updateHome();
  const total=kanaData.filter(x=>x.script===kanaScript).length,mastered=kanaMastered(kanaScript),label=kanaScript[0].toUpperCase()+kanaScript.slice(1);$('#kanaProgressFill').style.width='100%';$('#kanaCounter').textContent='Complete';
  $('#kanaCard').innerHTML=`<span class="eyebrow">${esc(label)} session complete</span><h2>Foundation strengthened</h2><div class="kana-summary"><strong>${mastered}</strong><span>of ${total} ${esc(label)} sounds mastered</span></div><p>Characters reach mastery through repeated reading and listening checks over time.</p><button id="kanaAgain" class="primary reveal">Continue ${esc(label)}</button><button id="kanaPaths" class="reveal">Back to Kana paths</button>`;
  $('#kanaAgain').onclick=()=>startKanaStudy(kanaScript);$('#kanaPaths').onclick=openKanaPath;
@@ -207,7 +234,7 @@ function cleanText(t=''){return String(t).replace(/<[^>]+>/g,'').replace(/\s+/g,
 function generatedMnemonic(v){const emoji=sceneEmoji(v),meaning=cleanText(v.meaning),context=cleanText(v.sentenceMeaning||v.sentence||'');const written=v.word===v.reading?`The kana ${v.reading} flashes across the scene like a subtitle.`:`The written form ${v.word} appears as a huge sign in the middle of the action.`;const base=`${emoji} Picture this exaggerated scene: ${context||`something unmistakably showing “${meaning}”`}. ${written} A character points at it and clearly calls out “${v.reading}!” three times. Freeze the picture, the sound ${v.reading}, and the meaning “${meaning}” together.`;const additions={clear:'',funny:' Make one detail absurdly oversized or embarrassingly funny.',gamer:' Turn it into a game level: collecting the glowing word unlocks the meaning.',ghibli:' Imagine it as a warm hand-drawn fantasy moment with wind, movement and a striking visual reveal.',pokemon:' Imagine a friendly creature using the word as a named move that produces the meaning.'};return base+(additions[settings.mnemonicStyle]||'')}
 function mnemonic(v){const p=pFor(v.id);if(p.mnemonic)return p.mnemonic;const d=cleanText(v.defaultMnemonic);const generic=/Say .* aloud|Picture the written shape|written in kana|strong visual label|connect the sound directly/i.test(d);return generic?generatedMnemonic(v):d}
 function mnemonicVisual(v){return `<div class="memory-stage" aria-hidden="true"><span class="memory-emoji">${sceneEmoji(v)}</span><span class="memory-word">${v.word}</span><span class="memory-pulse">${v.reading}</span></div>`}
-function memorySupport(v){const scene=memoryScene(v);return scene||`${mnemonicVisual(v)}<div class="mnemonic"><b>Memory link</b><p>${mnemonic(v)}</p><button id="editMnemonic">Edit mnemonic</button></div>`}
+function memorySupport(v,force=false){const p=progress[v.id],faded=!force&&p&&Number(p.reps||0)>=4&&Number(p.interval||0)>=7;if(faded)return'<p class="memory-faded">Memory image faded — recall this word directly. Use “Show memory hint” if you need the scaffold again.</p>';const scene=memoryScene(v);return scene||`${mnemonicVisual(v)}<div class="mnemonic"><b>Memory link</b><p>${mnemonic(v)}</p><button id="editMnemonic">Edit mnemonic</button></div>`}
 function wireMemoryEditor(v){const b=$('#editMnemonic');if(b)b.onclick=()=>editMnemonic(v)}
 function renderCurrentUnsafe(){
  if(index>=session.length){finishSession();return}
@@ -217,7 +244,7 @@ function renderCurrentUnsafe(){
  $('#sessionCounter').setAttribute('aria-label',game?'Game progress':'Study progress');revealed=false;hintUsed=false;startedAt=Date.now();const {v,skill}=current;$('#sessionCounter').textContent=`${index+1}/${session.length}`;$('#progressFill').style.width=`${index/session.length*100}%`;const c=$('#card');
 if(current.battle){renderBattleQuestion(v);return}
 if(current.karuta){renderKarutaQuestion(v);return}
-if(skill==='intro'){c.innerHTML=`<div class="eyebrow">Meet the word</div><div class="jp">${v.word}</div><div class="reading">${v.reading}</div><div class="meaning">${v.meaning}</div>${visual(v)}${memorySupport(v)}<button id="introAudio" class="audio">🔊 Play word</button><button id="continueBtn" class="primary reveal">Got it →</button>`;if(settings.autoAudio)play(v.wordAudio);$('#introAudio').onclick=()=>play(v.wordAudio);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
+if(skill==='intro'){c.innerHTML=`<div class="eyebrow">Meet the word</div><div class="jp">${v.word}</div><div class="reading">${v.reading}</div><div class="meaning">${v.meaning}</div>${visual(v)}${memorySupport(v,true)}<button id="introAudio" class="audio">🔊 Play word</button><button id="continueBtn" class="primary reveal">Got it →</button>`;if(settings.autoAudio)play(v.wordAudio);$('#introAudio').onclick=()=>play(v.wordAudio);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
 if(skill==='meaning')recallCard(v,'What does this mean?',v.word,`${v.meaning}<div class="reading">${v.reading}</div>`,skill);
 if(skill==='production')recallCard(v,'Recall the Japanese word',v.meaning,`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div>`,skill);
 if(skill==='listening'){const choices=shuffle([v.meaning,...distractors(v,'meaning')]);c.innerHTML=`<div class="eyebrow">Listening</div><h2>Which meaning matches the audio?</h2><button id="playBtn" class="audio primary">🔊 Play audio</button><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="hintBtn" class="hint">Show memory hint</button>`;$('#playBtn').onclick=()=>play(v.wordAudio);if(settings.autoAudio)play(v.wordAudio);bindChoices(v.meaning,skill);$('#hintBtn').onclick=()=>showHint(v)}
@@ -263,9 +290,9 @@ function bindGameChoices(answer,v){
   $('#gameNext').focus({preventScroll:true});
  });
 }
-function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}save();if(advance)next()}
+function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}recordMeaningfulActivity(battleActive?'battle':karutaActive?'karuta':pictureGameActive?'game':'vocabulary');save();if(advance)next()}
 function next(){index++;renderCurrent()}
-function finishSession(){if(battleActive){showBattleSummary();return}if(karutaActive){showKarutaSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}const today=day();if(meta.lastStudy!==today){const y=day(new Date(Date.now()-86400000));meta.streak=meta.lastStudy===y?meta.streak+1:1;meta.lastStudy=today}save();updateHome();show('home');toast('Session complete 🎉')}
+function finishSession(){if(battleActive){showBattleSummary();return}if(karutaActive){showKarutaSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}save();updateHome();show('home');toast(todayActivity().qualified?'Session complete — streak protected 🎉':'Session complete — keep going to protect your streak')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
@@ -355,7 +382,7 @@ function resolveKarutaAnswer(button,v){
 }
 function showKarutaSummary(){
  const average=karuta.times.length?karuta.times.reduce((sum,time)=>sum+time,0)/karuta.times.length:0,fastest=karuta.times.length?Math.min(...karuta.times):0;
- meta.karutaBest=Math.max(Number(meta.karutaBest||0),karuta.score);save();$('#sessionCounter').textContent='Complete';$('#progressFill').style.width='100%';
+ const total=karuta.correct+karuta.wrong,averageScore=total?karuta.score/total:0;meta.karutaBest=Math.max(Number(meta.karutaBest||0),karuta.score);meta.karutaSessions=Array.isArray(meta.karutaSessions)?meta.karutaSessions:[];meta.karutaSessions.push({at:Date.now(),averageScore,score:karuta.score,total,correct:karuta.correct});recentKarutaBestAverage();save();$('#sessionCounter').textContent='Complete';$('#progressFill').style.width='100%';
  $('#card').innerHTML=`<div class="eyebrow">Karuta summary · かるた</div><h2 class="battle-summary-title">Reflex round complete</h2><div class="battle-summary-grid karuta-summary-grid"><article><strong>${karuta.score.toLocaleString()}</strong><span>Points</span></article><article><strong>${karuta.correct}/${karuta.correct+karuta.wrong}</strong><span>Correct cards</span></article><article><strong>${average.toFixed(2)}s</strong><span>Average reaction</span></article><article><strong>${fastest.toFixed(2)}s</strong><span>Fastest tap</span></article><article><strong>${karuta.bestCombo}</strong><span>Best speed combo</span></article><article><strong>${Number(meta.karutaBest||0).toLocaleString()}</strong><span>Personal best</span></article></div><p class="battle-summary-note">Fast, correct taps within three seconds build the combo. Replaying the audio or taking longer gives you time to learn, but resets the speed chain.</p><button id="karutaAgain" class="primary reveal">Play Karuta again</button><button id="karutaDone" class="reveal">Return to games</button>`;
  $('#karutaAgain').onclick=startKarutaGame;$('#karutaDone').onclick=()=>abortSession('games');
 }
@@ -489,11 +516,14 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v6.0';versionCard.querySelector('span').textContent='Learning paths and progress overview';versionCard.querySelector('small').textContent='Meaningful daily streaks, staged vocabulary recall, Kanji tracking and 72-hour activity summaries.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
 $('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').onclick=openKanaPath;$('#kanaBack').onclick=()=>show('home');$('#kanaLessonExit').onclick=openKanaPath;document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};delete meta.dailyReviewPlan;settings={...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={...META_DEFAULTS,kanaProgress:{}};save();updateHome();toast('Progress reset')}};
 $('#dashboardAvatarButton').onclick=openCharacterSettings;
+$('#kanjiOverviewBtn').onclick=()=>{renderKanjiOverview();show('kanjiOverview')};
+$('#kanjiOverviewBack').onclick=()=>show('home');
 $('#karutaMode').onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startKarutaGame()};
 $('#decayBattleMode').onclick=startDecayBattle;
 $('#streakRescueMode').onclick=startStreakRescue;
