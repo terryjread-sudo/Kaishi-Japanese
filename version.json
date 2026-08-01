@@ -3,6 +3,9 @@
   "released": "2026-08-01",
   "title": "Original graded Manga Stories",
   "changes": [
+    "Replaying Karuta audio now keeps the original reaction timer running.",
+    "Manga Stories now unlock one at a time after the preceding story is completed.",
+    "Manga Story runs now rotate vocabulary, full-sentence meaning, Japanese sentence matching and story-comprehension questions.",
     "Completed the 100-scene mnemonic expansion to reach 600 approved, app-visible vocabulary images.",
     "Added a Manga Stories library with 10 original, graded Japanese reading exercises.",
     "Included 57 manga panels across four difficulty levels, from four-panel beginner stories to an eight-panel challenge.",
