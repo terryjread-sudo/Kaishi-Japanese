@@ -14,6 +14,7 @@
     "Made the Kanji mastered dashboard tile open the complete Kanji progress overview.",
     "Added Japanese labels to the main dashboard navigation buttons.",
     "Moved skill scores to a dedicated page with current strength, accuracy, attempts and tested-word counts.",
+    "Replaced the SRS Decay Battle gradient with a responsive illustrated Japanese garden arena.",
     "Daily streaks now require five tested answers from Vocabulary, Kana, Karuta, picture games or SRS battles.",
     "Added a visible daily streak-progress meter so browsing alone cannot protect a streak.",
     "Resequenced new vocabulary into introduction, meaning, listening, reading and optional picture stages.",
