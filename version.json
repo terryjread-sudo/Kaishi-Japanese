@@ -1,8 +1,15 @@
 {
-  "version": "6.1.1",
+  "version": "6.2.0",
   "released": "2026-08-01",
-  "title": "Conversation Quest",
+  "title": "Guided Kaishi Journey",
   "changes": [
+    "Made Guided Journey the default home experience, with the learner's selected character moving along a responsive activity road.",
+    "Added nine permanent learning milestones that unlock from demonstrated vocabulary, listening, Kanji and review progress.",
+    "Added a Practice Hub where every unlocked activity can be repeated at any time.",
+    "Added a Settings option to restore the complete Classic dashboard without losing journey progress.",
+    "Added owner-only @terryjread-sudo controls to unlock through any milestone or reset testing overrides.",
+    "Existing learner statistics automatically grant every journey unlock already earned.",
+    "Updated asset versions to v6.2.0 so cached browsers receive the new default experience.",
     "Added Conversation Quest with 15 scripted Japanese conversations and 60 contextual response decisions.",
     "Conversation prompts, learner replies and character reactions can be spoken with a Japanese browser voice.",
     "Every response reveals its English meaning, reading, best answer and a brief usage explanation.",

@@ -15,15 +15,16 @@
   function safeImage(value){try{const url=new URL(value);return url.protocol==='https:'&&['avatars.githubusercontent.com','github.com'].includes(url.hostname)?nameFor(url.href):'icons/icon-192.png'}catch{return'icons/icon-192.png'}}
   function avatarKey(value){return AVATARS.includes(value)?value:'boy'}
   function avatarState(streak=0){streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'}
-  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=5.8.3`}
+  function avatarImage(key=selectedAvatar,streak=0){return `media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=6.2.0`}
   function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
-  function renderDashboardAvatar(){const streak=Number(adapter()?.stats?.().streak||0),image=$('#dashboardAvatar');if(image)image.src=avatarImage(selectedAvatar,streak);if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Sign in to choose your character';if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=streak>=60?'Superhero form unlocked!':`${streak} day${streak===1?'':'s'} streak · Next pose at ${[3,7,14,30,60].find(days=>days>streak)||60} days.`}
+  function renderDashboardAvatar(){const streak=Number(adapter()?.stats?.().streak||0),src=avatarImage(selectedAvatar,streak),image=$('#dashboardAvatar');if(image)image.src=src;if($('#journeyHomeAvatar'))$('#journeyHomeAvatar').src=src;if($('#journeyAvatar'))$('#journeyAvatar').src=src;if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Sign in to choose your character';if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=streak>=60?'Superhero form unlocked!':`${streak} day${streak===1?'':'s'} streak · Next pose at ${[3,7,14,30,60].find(days=>days>streak)||60} days.`}
   function profile(){
     const m=user?.user_metadata||{};
     const login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';
     return {github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null};
   }
-  function renderStudioAccess(){const link=$('#mnemonicStudioLink');if(link)link.hidden=!(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
+  function isOwner(){return Boolean(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
+  function renderStudioAccess(){const owner=isOwner(),link=$('#mnemonicStudioLink');if(link)link.hidden=!owner;window.KaishiQuestPath?.renderOwnerPathControls?.(owner)}
   function setupMissing(error){return ['42P01','42703'].includes(error?.code)||/(relation|column) .* does not exist/i.test(error?.message||'')}
   function describeError(error){return setupMissing(error)?'Cloud setup is incomplete. Run the supplied Supabase SQL migrations in order.':(error?.message||'Cloud service is unavailable.')}
 
@@ -216,6 +217,6 @@
     addEventListener('online',()=>user&&scheduleSync());
   }
 
-  window.KaishiCloud={scheduleSync,loadLeaderboard,flush,avatarImage,renderDashboardAvatar};
+  window.KaishiCloud={scheduleSync,loadLeaderboard,flush,avatarImage,renderDashboardAvatar,isOwner};
   init();
 })();
