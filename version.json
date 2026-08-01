@@ -1,8 +1,16 @@
 {
-  "version": "6.2.0",
+  "version": "6.3.0",
   "released": "2026-08-01",
-  "title": "Guided Kaishi Journey",
+  "title": "1,500-Word Expedition",
   "changes": [
+    "Added a complete 30-chapter vocabulary expedition covering all 1,500 words in groups of 50.",
+    "Each chapter opens after 40 words are introduced and 25 different words receive tested review practice, without requiring perfect mastery.",
+    "Journey vocabulary sessions now draw new words and reviews from the selected chapter.",
+    "Separated early activity landmarks from the long-term vocabulary route while keeping unlocked activities freely repeatable.",
+    "Added owner-only controls for unlocking through any vocabulary chapter during testing.",
+    "Continue Journey now opens the visual learning road at the learner's current landmark before starting an activity.",
+    "Activities launched from Journey return to the road instead of sometimes returning to the Games page.",
+    "Journey progress now distinguishes early activity unlocks from the longer 1,500-word expedition, shown as 30 vocabulary chapters.",
     "Made Guided Journey the default home experience, with the learner's selected character moving along a responsive activity road.",
     "Added nine permanent learning milestones that unlock from demonstrated vocabulary, listening, Kanji and review progress.",
     "Added a Practice Hub where every unlocked activity can be repeated at any time.",
