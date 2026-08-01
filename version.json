@@ -1,8 +1,12 @@
 {
-  "version": "6.4.0",
+  "version": "6.4.1",
   "released": "2026-08-01",
-  "title": "Daily Journey Missions",
+  "title": "Complete Sentence Guides",
   "changes": [
+    "Manga Meaning-to-Japanese questions now hide the source sentence until after the learner answers.",
+    "Manga sentence choices now prioritise close, believable distractors instead of unrelated story events.",
+    "Every Manga panel answer now reveals the complete Japanese sentence as vocabulary chunks, particles, grammar and natural English.",
+    "Conversation answers now break down the character prompt, best response and follow-up reply regardless of whether the answer was correct.",
     "Added an adaptive three-step daily Journey route combining review, the current vocabulary chapter and another learning activity.",
     "Journey missions only complete after a tested answer, then show a useful session summary and the next recommended step.",
     "Newly unlocked activities are introduced by the Journey before appearing in the repeatable Practice Hub.",
