@@ -1,8 +1,12 @@
 {
-  "version": "5.8.3",
-  "released": "2026-07-31",
-  "title": "Owner-only access to Mnemonic Studio",
+  "version": "5.9.0",
+  "released": "2026-08-01",
+  "title": "Karuta audio reflex matching",
   "changes": [
+    "Added Karuta, a timed audio-reflex game using learned words with Japanese audio and mnemonic images.",
+    "Karuta cards combine the complete mnemonic scene with a clear Japanese word overlay.",
+    "Added reaction-time scoring, fast-answer combo multipliers, personal bests and a detailed round summary.",
+    "Karuta pauses after every tap to reveal the reading, English meaning and replayable Japanese audio.",
     "Hidden the Mnemonic Studio link unless the authenticated GitHub username is @terryjread-sudo.",
     "Added the same authenticated-owner check to direct Mnemonic Studio page visits.",
     "Kept the Studio interface locked until Supabase confirms the owner account.",
