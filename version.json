@@ -1,8 +1,16 @@
 {
-  "version": "6.3.0",
+  "version": "6.4.0",
   "released": "2026-08-01",
-  "title": "1,500-Word Expedition",
+  "title": "Daily Journey Missions",
   "changes": [
+    "Added an adaptive three-step daily Journey route combining review, the current vocabulary chapter and another learning activity.",
+    "Journey missions only complete after a tested answer, then show a useful session summary and the next recommended step.",
+    "Newly unlocked activities are introduced by the Journey before appearing in the repeatable Practice Hub.",
+    "Added friend invitations through the device share menu, WhatsApp and a copyable link.",
+    "Added downloadable square achievement cards for sharing progress through Instagram and other apps.",
+    "Removed the Classic dashboard fallback so every learner now follows the Journey experience.",
+    "Moved the learner's clickable Kaishi character, username and streak milestone into the Ready to learn hero.",
+    "Removed the separate dashboard profile block for a more compact home screen.",
     "Added a complete 30-chapter vocabulary expedition covering all 1,500 words in groups of 50.",
     "Each chapter opens after 40 words are introduced and 25 different words receive tested review practice, without requiring perfect mastery.",
     "Journey vocabulary sessions now draw new words and reviews from the selected chapter.",
