@@ -1,23 +1,25 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='6.5.2';
-const SKILLS=['meaning','production','listening','reading','kanji','sentence','picture'];
+const APP_VERSION='6.6.0';
+const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
-const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',sentence:'Sentence',picture:'Picture match'};
+const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
 const SKILL_HELP={
  meaning:'How often you correctly recognise the English meaning of a Japanese word.',
  production:'How often you correctly recall the Japanese word from its English meaning.',
  listening:'How often you identify the correct meaning after hearing the Japanese word.',
  reading:'How often you recall or select the correct Japanese reading.',
  kanji:'How often you recognise the correct written Japanese form.',
+ components:'How accurately you rebuild Kanji from their visual components.',
  sentence:'How often you choose the correct word from the context of a sentence.',
  picture:'How often you connect a mnemonic picture with the correct word and meaning.'
 };
-let vocab=[], kanaData=[], mangaStories=[], conversations=[], theatreScenes=[], session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
+let vocab=[], kanaData=[], mangaStories=[], conversations=[], theatreScenes=[], componentData={components:{},kanji:[]}, session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
 let kanaSession=[], kanaIndex=0, kanaScript='', kanaAnswered=false;
 let mangaStory=null, mangaPanelIndex=0, mangaAnswered=false, mangaQuestionAnswered=false, mangaRun=null;
 let conversation=null, conversationTurn=0, conversationAnswered=false, conversationRun=null, japaneseSpeech=null;
 let theatreScene=null, theatreRun=null, theatreTimers=[], theatrePlaybackStarted=0;
+let kanjiBuilder=null,kanjiBuilderReturn='games';
 let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, karutaActive=false, karuta=null, battleActive=false, battle=null;
 let activityReturnScreen='home';
 let activeVocabularyChapter=null;
@@ -87,7 +89,14 @@ function wordLearningStatus(v){const p=progress[v.id];if(!p)return'locked';if(Nu
 function kanjiCharacters(v){return [...new Set([...String(v.kanji||v.word||'')].filter(character=>/\p{Script=Han}/u.test(character)))]}
 function kanjiCatalogue(){const map=new Map();vocab.forEach(v=>kanjiCharacters(v).forEach(character=>{if(!map.has(character))map.set(character,[]);map.get(character).push(v)}));return [...map].map(([character,words])=>{const statuses=words.map(wordLearningStatus);const status=statuses.includes('mastered')?'mastered':statuses.includes('practised')?'practised':statuses.includes('introduced')?'introduced':'locked';return{character,words,status}})}
 function kanjiMasteredCount(){return kanjiCatalogue().filter(item=>item.status==='mastered').length}
-function renderKanjiWords(item){const panel=$('#kanjiWords');if(!panel||item.status==='locked')return;panel.hidden=false;panel.innerHTML=`<div class="kanji-detail-heading"><span lang="ja">${esc(item.character)}</span><div><h3>Words using this Kanji</h3><p>${item.words.filter(v=>wordLearningStatus(v)!=='locked').length} introduced</p></div></div><div class="kanji-word-list">${item.words.map(v=>{const status=wordLearningStatus(v);return `<article class="${status}"><div><strong lang="ja">${status==='locked'?'•••':esc(v.word)}</strong><span>${status==='locked'?'Not introduced':esc(v.reading)}</span></div><b>${status==='locked'?'Hidden':esc(v.meaning)}</b><small>${status==='practised'?'Practised':status[0].toUpperCase()+status.slice(1)}</small></article>`}).join('')}</div>`;panel.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function componentRecord(character){return (componentData.kanji||[]).find(item=>item.kanji===character)}
+function componentInfo(part){return componentData.components?.[part]||{name:'visual component'}}
+function componentBreakdownHTML(record,{compact=false}={}){
+ if(!record)return`<p class="kanji-component-pending">A curated component lesson has not been added for this Kanji yet.</p>`;
+ const parts=record.parts.map((part,itemIndex)=>{const info=componentInfo(part),source=info.source?` · form of ${esc(info.source)}`:'';return `<article class="kanji-component-piece" style="--piece-delay:${itemIndex*90}ms"><span lang="ja">${esc(part)}</span><div><b>${esc(info.name)}</b><small>${source}</small></div></article>`}).join('<i class="component-plus">+</i>');
+ return `<section class="kanji-breakdown ${compact?'compact':''}"><div class="kanji-breakdown-equation"><strong lang="ja">${esc(record.kanji)}</strong><i>→</i><div class="kanji-component-pieces">${parts}</div></div><p class="kanji-component-story">${esc(record.story)}</p>${compact?'':'<small class="kanji-component-disclaimer">Visual memory breakdown · not a claim about historical etymology</small>'}</section>`;
+}
+function renderKanjiWords(item){const panel=$('#kanjiWords');if(!panel||item.status==='locked')return;const record=componentRecord(item.character);panel.hidden=false;panel.innerHTML=`<div class="kanji-detail-heading"><span lang="ja">${esc(item.character)}</span><div><h3>${record?'Interactive breakdown':'Words using this Kanji'}</h3><p>${item.words.filter(v=>wordLearningStatus(v)!=='locked').length} introduced</p></div></div>${componentBreakdownHTML(record)}<div class="kanji-word-list">${item.words.map(v=>{const status=wordLearningStatus(v);return `<article class="${status}"><div><strong lang="ja">${status==='locked'?'•••':esc(v.word)}</strong><span>${status==='locked'?'Not introduced':esc(v.reading)}</span></div><b>${status==='locked'?'Hidden':esc(v.meaning)}</b><small>${status==='practised'?'Practised':status[0].toUpperCase()+status.slice(1)}</small></article>`}).join('')}</div>`;panel.scrollIntoView({behavior:'smooth',block:'nearest'})}
 function renderKanjiOverview(){const catalogue=kanjiCatalogue(),counts={locked:0,introduced:0,practised:0,mastered:0};catalogue.forEach(item=>counts[item.status]++);$('#kanjiOverviewStats').innerHTML=`<article><strong>${counts.introduced}</strong><span>Introduced</span></article><article><strong>${counts.practised}</strong><span>Practised</span></article><article><strong>${counts.mastered}</strong><span>Mastered</span></article><article><strong>${catalogue.length}</strong><span>Total Kanji</span></article>`;$('#kanjiGrid').innerHTML=catalogue.map((item,index)=>`<button class="kanji-tile ${item.status}" data-kanji-index="${index}" aria-label="${item.status==='locked'?'Kanji not introduced':`${item.character}, ${item.status}`}"><span lang="ja">${item.status==='locked'?'?':esc(item.character)}</span><small>${item.status}</small></button>`).join('');$('#kanjiWords').hidden=true;document.querySelectorAll('[data-kanji-index]').forEach(button=>button.onclick=()=>{const item=catalogue[+button.dataset.kanjiIndex];if(item.status==='locked'){toast('Study a word containing this Kanji to reveal it');return}renderKanjiWords(item)})}
 function renderSkillScores(){
  const list=$('#skills');if(!list)return;
@@ -102,6 +111,7 @@ const PATH_MILESTONES=[
  {id:'conversation',icon:'💬',title:'Conversation Town',activity:'Conversation Quest',japanese:'会話クエスト',description:'Choose natural replies while Kai, Mia and Master speak with you.',requirement:'Start 12 words and answer 5 listening checks correctly.'},
  {id:'theatre',icon:'🎬',title:'Kaishi Theatre',activity:'Animated Listening Scenes',japanese:'会話劇場',description:'Watch Kai, Mia and Master act out short Japanese scenes, then prove what you understood.',requirement:'Complete one Conversation Quest.'},
  {id:'kanji',icon:'漢',title:'Kanji Gate',activity:'Kanji Recognition',japanese:'漢字学習',description:'See how the written characters connect the words you already know.',requirement:'Introduce 10 different Kanji.'},
+ {id:'builder',icon:'🧩',title:'Kanji Workshop',activity:'Kanji Builder',japanese:'漢字組立',description:'Split familiar Kanji into visual components, then rebuild them from meaning and sound.',requirement:'Introduce 10 Kanji with component lessons.'},
  {id:'manga',icon:'📖',title:'Manga Library',activity:'Manga Stories',japanese:'漫画物語',description:'Read complete Japanese sentences in original illustrated stories.',requirement:'Start 25 words and complete 30 tested answers.'},
  {id:'battle',icon:'⚔️',title:'Memory Dojo',activity:'SRS Decay Battles',japanese:'復習バトル',description:'Defend the dojo by reviewing memories as they approach their forgetting threshold.',requirement:'Start 20 words and complete 40 tested answers.'}
 ];
@@ -109,6 +119,7 @@ function pathListeningWords(){return vocab.filter(item=>Number(progress[item.id]
 function pathListeningCorrect(){return vocab.reduce((sum,item)=>sum+Number(progress[item.id]?.skills?.listening?.correct||0),0)}
 function pathIllustratedWords(){return illustratedWords().filter(item=>item.wordAudio&&progress[item.id]?.stage>=1).length}
 function pathIntroducedKanji(){return kanjiCatalogue().filter(item=>item.status!=='locked').length}
+function introducedComponentKanji(){return kanjiCatalogue().filter(item=>item.status!=='locked'&&componentRecord(item.character)).length}
 function pathCondition(id){
  if(id==='vocabulary'||id==='kana')return true;
  if(id==='picture')return started()>=5;
@@ -117,6 +128,7 @@ function pathCondition(id){
  if(id==='conversation')return started()>=12&&pathListeningCorrect()>=5;
  if(id==='theatre')return conversationCompletedCount()>=1;
  if(id==='kanji')return pathIntroducedKanji()>=10;
+ if(id==='builder')return introducedComponentKanji()>=10;
  if(id==='manga')return started()>=25&&Number(meta.totalAnswers||0)>=30;
  if(id==='battle')return started()>=20&&Number(meta.totalAnswers||0)>=40;
  return false;
@@ -129,6 +141,7 @@ function pathProgress(id){
  if(id==='conversation')return`${Math.min(12,started())}/12 words · ${Math.min(5,pathListeningCorrect())}/5 listening answers`;
  if(id==='theatre')return`${Math.min(1,conversationCompletedCount())}/1 conversation completed`;
  if(id==='kanji')return`${Math.min(10,pathIntroducedKanji())}/10 Kanji introduced`;
+ if(id==='builder')return`${Math.min(10,introducedComponentKanji())}/10 component Kanji introduced`;
  if(id==='manga')return`${Math.min(25,started())}/25 words · ${Math.min(30,Number(meta.totalAnswers||0))}/30 answers`;
  if(id==='battle')return`${Math.min(20,started())}/20 words · ${Math.min(40,Number(meta.totalAnswers||0))}/40 answers`;
  return'';
@@ -147,7 +160,7 @@ function chapterNaturallyUnlocked(itemIndex){if(itemIndex===0)return true;for(le
 function chapterUnlocked(itemIndex){return chapterNaturallyUnlocked(itemIndex)||meta.chapterOverrides.includes(itemIndex)}
 function currentWordChapterIndex(){let lastUnlocked=0;for(let itemIndex=0;itemIndex<wordChapterCount();itemIndex++){if(!chapterUnlocked(itemIndex))break;lastUnlocked=itemIndex;if(!chapterStats(itemIndex).complete)return itemIndex}return lastUnlocked}
 function wordJourneyPosition(){const total=wordChapterCount(),explored=vocab.filter(wordIntroduced).length,chapter=currentWordChapterIndex()+1,completed=Array.from({length:total},(_,itemIndex)=>chapterStats(itemIndex).complete).filter(Boolean).length;return{explored,chapter,total,completed}}
-function missionActivityId(){const available=['kana','picture','listening','karuta','conversation','theatre','manga','battle'].filter(id=>pathUnlocked(id)),newActivity=available.find(id=>!meta.pathVisits[id]);if(newActivity)return newActivity;const seed=day().split('-').reduce((sum,value)=>sum+Number(value||0),0);return available[seed%Math.max(1,available.length)]||'kana'}
+function missionActivityId(){const available=['kana','picture','listening','karuta','conversation','theatre','builder','manga','battle'].filter(id=>pathUnlocked(id)),newActivity=available.find(id=>!meta.pathVisits[id]);if(newActivity)return newActivity;const seed=day().split('-').reduce((sum,value)=>sum+Number(value||0),0);return available[seed%Math.max(1,available.length)]||'kana'}
 function ensureDailyJourneyRoute(){refreshPathUnlocks();if(meta.dailyJourneyRoute?.date===day()&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;const due=dailyDueWords().length,chapter=currentWordChapterIndex(),activityId=missionActivityId(),activity=PATH_MILESTONES.find(item=>item.id===activityId);meta.dailyJourneyRoute={date:day(),completed:[],steps:[{id:'warmup',kind:'review',icon:'🧠',title:due?`Review ${Math.min(due,settings.sessionSize)} due words`:'Memory warm-up',detail:due?'Strengthen memories that are approaching their review time.':'Build recall strength with a short mixed vocabulary session.'},{id:'chapter',kind:'chapter',chapter,icon:'🗺️',title:`Continue Chapter ${chapter+1}`,detail:`Travel through ${WORD_CHAPTER_NAMES[chapter]||`Chapter ${chapter+1}`} with new words and tested recall.`},{id:'activity',kind:'activity',activityId,icon:activity?.icon||'✨',title:meta.pathVisits[activityId]?`${activity?.activity||'Skill'} practice`:`Discover ${activity?.activity||'a new activity'}`,detail:meta.pathVisits[activityId]?`Keep your ${activity?.activity||'Japanese'} skill active.`:`A guided first mission introduces ${activity?.title||'the next landmark'}.`} ]};save();return meta.dailyJourneyRoute}
 function journeyRouteProgress(){const route=ensureDailyJourneyRoute(),completed=route.completed||[];return{route,completed,next:route.steps.find(step=>!completed.includes(step.id))}}
 function renderDailyRoute(){const container=$('#dailyRoute');if(!container)return;const {route,completed,next}=journeyRouteProgress();container.innerHTML=route.steps.map((step,itemIndex)=>{const done=completed.includes(step.id),current=next?.id===step.id;return `<article class="daily-mission ${done?'complete':''} ${current?'current':''}"><span class="mission-step">${done?'✓':itemIndex+1}</span><div><b>${esc(step.icon)} ${esc(step.title)}</b><p>${esc(step.detail)}</p></div><button data-journey-mission="${esc(step.id)}"${current?'':' disabled'}>${done?'Complete':current?'Start mission':'Up next'}</button></article>`}).join('');document.querySelectorAll('[data-journey-mission]').forEach(button=>button.onclick=()=>startJourneyMission(button.dataset.journeyMission));const start=$('#startNextMission');if(start){start.hidden=!next;start.textContent=next?`Start next: ${next.title}`:'Today’s route complete ✓';start.disabled=!next;start.onclick=()=>next&&startJourneyMission(next.id)}}
@@ -176,7 +189,7 @@ function openJourney(section='missions'){renderJourney();show('journey');if(sect
 function startJourneyChapter(itemIndex){if(!chapterUnlocked(itemIndex)){toast('Complete the previous vocabulary chapter first');return}activityReturnScreen='journey';activeVocabularyChapter=itemIndex;makeSession(itemIndex)}
 function launchPathMilestone(id){
  if(!pathUnlocked(id)){toast('Keep following the journey to unlock this activity');return}activityReturnScreen='journey';if(activeJourneyMission?.activityId!==id)meta.pathVisits[id]=Date.now();save();renderJourneyHome();
- if(id==='vocabulary'){startJourneyChapter(currentWordChapterIndex());return}if(id==='kana'){openKanaPath();return}if(id==='picture'){startPictureGame('picture-word');return}if(id==='listening'){startPictureGame('listen-meaning');return}if(id==='karuta'){startKarutaGame();return}if(id==='conversation'){openConversationLibrary();return}if(id==='theatre'){openTheatreLibrary();return}if(id==='kanji'){renderKanjiOverview();show('kanjiOverview');return}if(id==='manga'){openMangaLibrary();return}if(id==='battle')startDecayBattle();
+ if(id==='vocabulary'){startJourneyChapter(currentWordChapterIndex());return}if(id==='kana'){openKanaPath();return}if(id==='picture'){startPictureGame('picture-word');return}if(id==='listening'){startPictureGame('listen-meaning');return}if(id==='karuta'){startKarutaGame();return}if(id==='conversation'){openConversationLibrary();return}if(id==='theatre'){openTheatreLibrary();return}if(id==='kanji'){renderKanjiOverview();show('kanjiOverview');return}if(id==='builder'){openKanjiBuilder();return}if(id==='manga'){openMangaLibrary();return}if(id==='battle')startDecayBattle();
 }
 function continueJourney(){openJourney('missions')}
 function returnToActivitySource(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';activeVocabularyChapter=null;if(destination==='journey'){finishActiveJourneyMission();openJourney()}else show(destination)}
@@ -581,6 +594,45 @@ function next(){index++;renderCurrent()}
 function finishSession(){if(battleActive){showBattleSummary();return}if(karutaActive){showKarutaSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}save();updateHome();returnToActivitySource('home');toast(todayActivity().qualified?'Session complete — streak protected 🎉':'Session complete — keep going to protect your streak')}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
+function componentWords(record,introducedOnly=true){return vocab.filter(word=>kanjiCharacters(word).includes(record.kanji)&&(!introducedOnly||wordIntroduced(word)))}
+function availableComponentRecords(introducedOnly=true){return (componentData.kanji||[]).map(record=>({...record,words:componentWords(record,introducedOnly)})).filter(record=>record.words.length)}
+function renderKanjiBuilderHome(){
+ const available=availableComponentRecords(true),all=availableComponentRecords(false),tested=all.filter(record=>record.words.some(word=>Number(progress[word.id]?.skills?.components?.attempts||0)>0)).length;
+ $('#kanjiBuilderHome').hidden=false;$('#kanjiBuilderPlay').hidden=true;
+ $('#kanjiBuilderStats').innerHTML=`<article><strong>${available.length}</strong><span>Introduced lessons</span></article><article><strong>${tested}</strong><span>Kanji tested</span></article><article><strong>${all.length}</strong><span>Curated lessons</span></article><article><strong>${kanjiCatalogue().length}</strong><span>Deck Kanji</span></article>`;
+ const start=$('#startKanjiBuilder');start.disabled=available.length<2;start.textContent=available.length<2?'Introduce 2 supported Kanji first':'Start Kanji Builder';
+ const library=$('#kanjiComponentLibrary');library.hidden=true;library.innerHTML=available.map((record,itemIndex)=>`<article class="kanji-library-item"><button data-component-lesson="${itemIndex}" aria-expanded="false"><span lang="ja">${esc(record.kanji)}</span><div><strong>${esc(record.words[0]?.meaning||'Kanji lesson')}</strong><small>${record.parts.length} visual components · ${record.words.length} introduced word${record.words.length===1?'':'s'}</small></div><i>Break apart ↓</i></button><div class="kanji-library-breakdown" hidden>${componentBreakdownHTML(record,{compact:true})}<div class="kanji-library-words">${record.words.slice(0,5).map(word=>`<span lang="ja">${esc(word.word)} <small>${esc(word.reading)} · ${esc(word.meaning)}</small></span>`).join('')}</div></div></article>`).join('');
+ library.querySelectorAll('[data-component-lesson]').forEach(button=>button.onclick=()=>{const detail=button.nextElementSibling,open=detail.hidden;detail.hidden=!open;button.setAttribute('aria-expanded',String(open));button.querySelector('i').textContent=open?'Put together ↑':'Break apart ↓';if(open)detail.scrollIntoView({behavior:'smooth',block:'nearest'})});
+}
+function openKanjiBuilder(){kanjiBuilderReturn=$('.screen.active')?.id==='kanjiOverview'?'kanjiOverview':'games';kanjiBuilder=null;renderKanjiBuilderHome();show('kanjiBuilder')}
+function closeKanjiBuilder(){kanjiBuilder=null;if(kanjiBuilderReturn==='kanjiOverview'){renderKanjiOverview();show('kanjiOverview');return}returnToActivitySource('games')}
+function builderTargetWord(record){return [...record.words].sort((a,b)=>(progress[a.id]?.skills?.components?.strength||0)-(progress[b.id]?.skills?.components?.strength||0)||wordPracticeCount(progress[a.id])-wordPracticeCount(progress[b.id]))[0]}
+function startKanjiBuilder(){
+ const records=shuffle(availableComponentRecords(true));if(records.length<2){toast('Introduce at least two Kanji with component lessons first');return}
+ const rounds=records.slice(0,Math.min(10,records.length)).map(record=>({record,word:builderTargetWord(record)}));
+ kanjiBuilder={rounds,index:0,correct:0,selected:[],answered:false};$('#kanjiBuilderHome').hidden=true;$('#kanjiBuilderPlay').hidden=false;renderKanjiBuilderRound();
+}
+function builderOptionParts(record){const required=[...new Set(record.parts)],pool=shuffle(Object.keys(componentData.components||{}).filter(part=>!required.includes(part)));return shuffle([...required,...pool.slice(0,Math.max(0,5-required.length))]).slice(0,Math.max(5,required.length))}
+function builderStageHTML(record){const selected=kanjiBuilder.selected,slots=Array.from({length:record.parts.length},(_,itemIndex)=>selected[itemIndex]?`<button data-builder-remove="${itemIndex}" class="filled" lang="ja" aria-label="Remove ${esc(selected[itemIndex])}">${esc(selected[itemIndex])}</button>`:`<span aria-label="Empty component slot">?</span>`).join('<i>+</i>');return `<div class="kanji-assembly layout-${esc(record.layout)}">${slots}</div>`}
+function updateBuilderSelection(){
+ const target=kanjiBuilder.rounds[kanjiBuilder.index],record=target.record,stage=$('#kanjiAssemblyStage');if(!stage)return;stage.innerHTML=builderStageHTML(record);stage.querySelectorAll('[data-builder-remove]').forEach(button=>button.onclick=()=>{if(kanjiBuilder.answered)return;kanjiBuilder.selected.splice(+button.dataset.builderRemove,1);updateBuilderSelection()});
+ const counts=kanjiBuilder.selected.reduce((map,part)=>(map[part]=(map[part]||0)+1,map),{});document.querySelectorAll('[data-builder-part]').forEach(button=>{const used=counts[decodeURIComponent(button.dataset.builderPart)]||0;button.querySelector('small').textContent=used?`selected ×${used}`:'tap to add'});$('#lockKanji').disabled=kanjiBuilder.selected.length!==record.parts.length;
+}
+function renderKanjiBuilderRound(){
+ const target=kanjiBuilder.rounds[kanjiBuilder.index],record=target.record,word=target.word,options=builderOptionParts(record),wordKanji=kanjiCharacters(word),position=wordKanji.indexOf(record.kanji),positionNames=['first','second','third','fourth'],focus=wordKanji.length>1?`Build the ${positionNames[position]||`${position+1}th`} Kanji used in this word`:'Build the Kanji used in this word';kanjiBuilder.selected=[];kanjiBuilder.answered=false;startedAt=Date.now();hintUsed=false;
+ $('#kanjiBuilderCounter').textContent=`${kanjiBuilder.index+1} / ${kanjiBuilder.rounds.length}`;$('#kanjiBuilderFill').style.width=`${kanjiBuilder.index/kanjiBuilder.rounds.length*100}%`;$('#kanjiBuilderScore').textContent=`${kanjiBuilder.correct} correct`;
+ $('#kanjiBuilderCard').innerHTML=`<section class="kanji-builder-question"><span class="eyebrow">${esc(focus)}</span><h2>${esc(word.meaning)}</h2><p class="kanji-builder-reading">Reading: <strong>${esc(word.reading)}</strong></p>${word.wordAudio?'<button id="builderAudio" class="audio primary">🔊 Hear the Japanese word</button>':''}<p>Select ${record.parts.length} component${record.parts.length===1?'':'s'} in the lesson’s visual order.</p><div id="kanjiAssemblyStage">${builderStageHTML(record)}</div><div class="kanji-component-options">${options.map(part=>`<button data-builder-part="${encodeURIComponent(part)}"><span lang="ja">${esc(part)}</span><b>${esc(componentInfo(part).name)}</b><small>tap to add</small></button>`).join('')}</div><button id="lockKanji" class="primary kanji-lock" disabled>Lock in Kanji</button><section id="kanjiBuilderFeedback" class="game-feedback" hidden aria-live="polite"></section></section>`;
+ if($('#builderAudio')){$('#builderAudio').onclick=()=>play(word.wordAudio);play(word.wordAudio)}
+ document.querySelectorAll('[data-builder-part]').forEach(button=>button.onclick=()=>{if(kanjiBuilder.answered||kanjiBuilder.selected.length>=record.parts.length)return;kanjiBuilder.selected.push(decodeURIComponent(button.dataset.builderPart));updateBuilderSelection()});$('#lockKanji').onclick=resolveKanjiBuilder;updateBuilderSelection();
+}
+function resolveKanjiBuilder(){
+ if(!kanjiBuilder||kanjiBuilder.answered)return;const target=kanjiBuilder.rounds[kanjiBuilder.index],record=target.record,word=target.word,ok=record.parts.every((part,itemIndex)=>kanjiBuilder.selected[itemIndex]===part);kanjiBuilder.answered=true;if(ok)kanjiBuilder.correct++;grade(word,'components',ok?3:1,ok,false);
+ document.querySelectorAll('[data-builder-part], [data-builder-remove]').forEach(button=>button.disabled=true);$('#lockKanji').disabled=true;const feedback=$('#kanjiBuilderFeedback'),parts=record.parts.map(part=>{const info=componentInfo(part);return `<li><b lang="ja">${esc(part)}</b><span>${esc(info.name)}${info.source?` — component form of ${esc(info.source)}`:''}</span></li>`}).join('');
+ feedback.innerHTML=`<p class="game-result ${ok?'game-result-correct':'game-result-wrong'}">${ok?'Correct — the components fit!':'Not quite — compare the correct writing order.'}</p><div class="kanji-builder-reveal"><div class="kanji-final" lang="ja">${esc(record.kanji)}</div><div><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.reading)} · ${esc(word.meaning)}</span></div></div><ol class="kanji-explanation-list">${parts}</ol><p class="kanji-component-story">${esc(record.story)}</p>${word.wordAudio?'<button id="builderAnswerAudio" class="audio">🔊 Play Japanese audio</button>':''}<button id="builderNext" class="primary reveal">${kanjiBuilder.index===kanjiBuilder.rounds.length-1?'See workshop summary':'Next Kanji →'}</button>`;feedback.hidden=false;if($('#builderAnswerAudio'))$('#builderAnswerAudio').onclick=()=>play(word.wordAudio);$('#builderNext').onclick=nextKanjiBuilder;feedback.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextKanjiBuilder(){kanjiBuilder.index++;if(kanjiBuilder.index<kanjiBuilder.rounds.length){renderKanjiBuilderRound();return}showKanjiBuilderSummary()}
+function showKanjiBuilderSummary(){const total=kanjiBuilder.rounds.length,correct=kanjiBuilder.correct,percent=Math.round(correct/Math.max(1,total)*100);$('#kanjiBuilderFill').style.width='100%';$('#kanjiBuilderCard').innerHTML=`<section class="kanji-builder-summary"><span class="eyebrow">Workshop complete</span><div class="kanji-summary-medal">${percent>=80?'🏆':percent>=50?'🧩':'🌱'}</div><h2>${correct} of ${total} Kanji built correctly</h2><p>${percent>=80?'Excellent component recognition.':percent>=50?'A strong start—another build will strengthen the shapes.':'Review the interactive breakdowns, then try again.'}</p><div class="kanji-builder-actions"><button id="builderAgain" class="primary">Build another set</button><button id="builderFinish">Finish</button></div></section>`;$('#builderAgain').onclick=startKanjiBuilder;$('#builderFinish').onclick=closeKanjiBuilder}
+
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
 function pictureChoices(v,n){
  const pool=shuffle(illustratedWords().filter(x=>x.id!==v.id));
@@ -785,12 +837,13 @@ async function init(){
  $('#updateBanner').hidden=true;
  $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
  try{
-  [vocab,kanaData,mangaStories,conversations,theatreScenes,memoryScenes]=await Promise.all([
+  [vocab,kanaData,mangaStories,conversations,theatreScenes,componentData,memoryScenes]=await Promise.all([
    fetch(`data/vocabulary.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data');return r.json()}),
    fetch(`data/kana.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('kana data');return r.json()}).then(data=>data.entries||[]),
    fetch(`data/manga-stories.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('manga data');return r.json()}).then(data=>data.stories||[]),
    fetch(`data/conversations.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('conversation data');return r.json()}).then(data=>data.conversations||[]),
    fetch(`data/theatre-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('theatre data');return r.json()}).then(data=>data.scenes||[]),
+   fetch(`data/kanji-components.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Kanji component data');return r.json()}),
    fetch(`memory-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))
   ]);
   updateHome();
@@ -805,7 +858,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v6.5.2';versionCard.querySelector('span').textContent='Clear Theatre Subtitles';versionCard.querySelector('small').textContent='Theatre subtitles now sit above the character portraits on desktop and mobile so the active speakers stay visible.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v6.6.0';versionCard.querySelector('span').textContent='Interactive Kanji Builder';versionCard.querySelector('small').textContent='Break familiar Kanji into checked visual components, rebuild them from meaning and sound, then review every piece before moving on.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
@@ -844,6 +897,7 @@ document.querySelectorAll('.gameMode').forEach(button=>button.onclick=()=>{activ
 $('#conversationMode').onclick=()=>{activityReturnScreen='games';openConversationLibrary()};
 $('#theatreMode').onclick=()=>{activityReturnScreen='games';openTheatreLibrary()};
 $('#karutaMode').onclick=()=>{activityReturnScreen='games';settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startKarutaGame()};
+$('#kanjiBuilderMode').onclick=()=>{activityReturnScreen='games';openKanjiBuilder()};
 $('#decayBattleMode').onclick=()=>{activityReturnScreen='games';startDecayBattle()};
 $('#streakRescueMode').onclick=()=>{activityReturnScreen='games';startStreakRescue()};
 $('#conversationContinue').onclick=()=>{activityReturnScreen='home';const item=conversations.find(candidate=>candidate.id===$('#conversationContinue').dataset.conversationId);if(item)startConversation(item);else openConversationLibrary()};
@@ -855,6 +909,10 @@ $('#mangaBack').onclick=()=>returnToActivitySource('home');
 $('#theatreBack').onclick=()=>{clearTheatrePlayback();returnToActivitySource('games')};
 $('#communityBack').onclick=()=>returnToActivitySource('home');
 $('#kanjiOverviewBack').onclick=()=>returnToActivitySource('home');
+$('#kanjiBuilderFromOverview').onclick=()=>openKanjiBuilder();
+$('#kanjiBuilderBack').onclick=closeKanjiBuilder;
+$('#startKanjiBuilder').onclick=startKanjiBuilder;
+$('#browseKanjiComponents').onclick=()=>{const library=$('#kanjiComponentLibrary'),open=library.hidden;library.hidden=!open;$('#browseKanjiComponents').textContent=open?'Hide breakdowns':'Browse breakdowns';if(open)library.scrollIntoView({behavior:'smooth',block:'start'})};
 $('#skillsBack').onclick=()=>returnToActivitySource('home');
 $('#conversationBack').onclick=()=>returnToActivitySource('games');
 $('#exitBtn').onclick=()=>exitActivitySession(pictureGameActive||karutaActive||battleActive?'games':'home');

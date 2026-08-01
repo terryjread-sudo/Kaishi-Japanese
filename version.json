@@ -1,8 +1,16 @@
 {
-  "version": "6.5.2",
+  "version": "6.6.0",
   "released": "2026-08-01",
-  "title": "Clear Theatre Subtitles",
+  "title": "Interactive Kanji Builder",
   "changes": [
+    "Added the Kanji Workshop Journey landmark and a repeatable Kanji Builder game.",
+    "Added 105 curated, learner-facing visual component lessons linked automatically to every matching vocabulary word.",
+    "Kanji Builder asks learners to assemble components in order from an English meaning and spoken Japanese clue.",
+    "Selected components animate into the central construction stage and can be removed before locking in an answer.",
+    "Every answer now pauses for the completed Kanji, reading, English meaning, audio, component definitions and memory explanation.",
+    "Added interactive component breakdowns to the existing Kanji progress overview and a browsable lesson library.",
+    "Added a separate Kanji-components skill score and meaningful-activity credit for completed builder answers.",
+    "Clearly distinguishes visual components from official dictionary radicals and historical etymology.",
     "Moved replay subtitles to the upper part of the Theatre stage so they no longer cover the speaking character portraits.",
     "Added responsive subtitle spacing and height limits for narrow mobile screens.",
     "Gave Kai, Mia and Master distinct Japanese voice profiles, with gender-aware voice selection where the browser provides suitable voices.",
