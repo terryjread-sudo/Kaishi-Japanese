@@ -1,8 +1,14 @@
 {
-  "version": "6.4.1",
+  "version": "6.5.0",
   "released": "2026-08-01",
-  "title": "Complete Sentence Guides",
+  "title": "Kaishi Theatre",
   "changes": [
+    "Added Kaishi Theatre with eight lightweight animated Japanese scenes featuring Kai, Mia and Master.",
+    "Each 13–16 second scene uses Japanese speech, character movement and visual action while keeping first-play subtitles hidden.",
+    "Every performance selects two questions at random from five credible comprehension choices.",
+    "Completed scenes unlock sequentially and track attempts, completion and personal-best scores.",
+    "After the questions, learners can replay with Japanese subtitles and explore every line through readings, natural English, vocabulary chunks, particles and grammar.",
+    "Kaishi Theatre joins the guided Journey after one Conversation Quest and remains repeatable in the Practice Hub and Games.",
     "Manga Meaning-to-Japanese questions now hide the source sentence until after the learner answers.",
     "Manga sentence choices now prioritise close, believable distractors instead of unrelated story events.",
     "Every Manga panel answer now reveals the complete Japanese sentence as vocabulary chunks, particles, grammar and natural English.",

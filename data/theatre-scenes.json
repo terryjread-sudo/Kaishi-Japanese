@@ -1,0 +1,221 @@
+{
+  "scenes": [
+    {
+      "id": "morning-gate",
+      "title": "Morning at the Gate",
+      "japaneseTitle": "朝の門",
+      "level": 1,
+      "setting": "School gate",
+      "background": "media/manga/morning-race.webp",
+      "prop": "🏫",
+      "summary": "Kai and Mia greet each other before school.",
+      "duration": 13,
+      "characters": [
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"left"},
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"kai","line":"ミアさん、おはよう。","reading":"ミアさん、おはよう。","meaning":"Good morning, Mia.","action":"wave"},
+        {"at":5,"speaker":"mia","line":"おはよう、カイくん。今日は早いね。","reading":"おはよう、カイくん。きょうは はやいね。","meaning":"Good morning, Kai. You are early today.","action":"talk"},
+        {"at":9,"speaker":"kai","line":"うん、一緒に教室へ行こう。","reading":"うん、いっしょに きょうしつへ いこう。","meaning":"Yes, let's go to the classroom together.","action":"point"}
+      ],
+      "questions": [
+        {"prompt":"Where are Kai and Mia going?","choices":["To the classroom","To the station","To a restaurant","To the park"],"answer":"To the classroom","explanation":"Kai suggests that they go to the classroom together."},
+        {"prompt":"What does Mia notice about Kai?","choices":["He is early","He is tired","He has an umbrella","He is hungry"],"answer":"He is early","explanation":"今日は早いね means ‘You are early today.’"},
+        {"prompt":"Who speaks first?","choices":["Kai","Mia","Master","A teacher"],"answer":"Kai","explanation":"Kai begins by saying good morning to Mia."},
+        {"prompt":"What does 一緒に mean here?","choices":["Together","Quickly","Tomorrow","Quietly"],"answer":"Together","explanation":"一緒に教室へ行こう means ‘Let’s go to the classroom together.’"},
+        {"prompt":"Which best describes the scene?","choices":["Friends meeting before school","Friends leaving a restaurant","A teacher starting a lesson","Someone missing a train"],"answer":"Friends meeting before school","explanation":"They greet one another at the school gate and head to class."}
+      ]
+    },
+    {
+      "id": "rainy-umbrella",
+      "title": "The Forgotten Umbrella",
+      "japaneseTitle": "忘れた傘",
+      "level": 1,
+      "setting": "A rainy street",
+      "background": "media/manga/rainy-mistake.webp",
+      "prop": "☂️",
+      "summary": "Mia helps Kai when rain starts to fall.",
+      "duration": 14,
+      "characters": [
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"left"},
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"kai","line":"あっ、雨だ。傘を忘れた。","reading":"あっ、あめだ。かさを わすれた。","meaning":"Oh, it's raining. I forgot my umbrella.","action":"look"},
+        {"at":6,"speaker":"mia","line":"私の傘に入って。","reading":"わたしの かさに はいって。","meaning":"Come under my umbrella.","action":"offer"},
+        {"at":10,"speaker":"kai","line":"ありがとう。助かったよ。","reading":"ありがとう。たすかったよ。","meaning":"Thank you. You saved me.","action":"talk"}
+      ],
+      "questions": [
+        {"prompt":"What did Kai forget?","choices":["His umbrella","His bag","His lunch","His phone"],"answer":"His umbrella","explanation":"傘を忘れた means ‘I forgot my umbrella.’"},
+        {"prompt":"How does Mia help?","choices":["She shares her umbrella","She calls a taxi","She lends him a coat","She takes him inside"],"answer":"She shares her umbrella","explanation":"Mia invites Kai to come under her umbrella."},
+        {"prompt":"What is the weather like?","choices":["Rainy","Snowy","Sunny","Windy"],"answer":"Rainy","explanation":"Kai says 雨だ, meaning ‘It’s raining.’"},
+        {"prompt":"What does 助かった express?","choices":["That was a big help","I became tired","I found it","Please wait"],"answer":"That was a big help","explanation":"助かった is a natural way to say someone’s help saved you from trouble."},
+        {"prompt":"How does Kai feel at the end?","choices":["Grateful","Angry","Confused","Bored"],"answer":"Grateful","explanation":"He thanks Mia for helping him."}
+      ]
+    },
+    {
+      "id": "garden-tea",
+      "title": "Tea in the Garden",
+      "japaneseTitle": "庭のお茶",
+      "level": 1,
+      "setting": "Japanese garden",
+      "background": "media/battle/japanese-garden.webp",
+      "prop": "🍵",
+      "summary": "Master offers Kai a cup of hot tea.",
+      "duration": 14,
+      "characters": [
+        {"id":"master","name":"Master","image":"media/profiles/master-base.webp","side":"left"},
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"master","line":"カイ、お茶を飲むか。","reading":"カイ、おちゃを のむか。","meaning":"Kai, would you like some tea?","action":"offer"},
+        {"at":6,"speaker":"kai","line":"はい、お願いします。","reading":"はい、おねがいします。","meaning":"Yes, please.","action":"talk"},
+        {"at":10,"speaker":"master","line":"熱いから、ゆっくり飲みなさい。","reading":"あついから、ゆっくり のみなさい。","meaning":"It is hot, so drink it slowly.","action":"point"}
+      ],
+      "questions": [
+        {"prompt":"What does Master offer Kai?","choices":["Tea","Coffee","Soup","Water"],"answer":"Tea","explanation":"お茶 means tea."},
+        {"prompt":"Why should Kai drink slowly?","choices":["The tea is hot","The cup is heavy","He is late","There is very little tea"],"answer":"The tea is hot","explanation":"熱いから means ‘because it is hot.’"},
+        {"prompt":"How does Kai accept politely?","choices":["はい、お願いします","もう帰ります","大丈夫ですか","いただきました"],"answer":"はい、お願いします","explanation":"はい、お願いします is a polite ‘Yes, please.’"},
+        {"prompt":"Who gives advice?","choices":["Master","Kai","Mia","Nobody"],"answer":"Master","explanation":"Master tells Kai to drink slowly."},
+        {"prompt":"What does ゆっくり mean?","choices":["Slowly","Together","Immediately","Carefully written"],"answer":"Slowly","explanation":"ゆっくり飲みなさい means ‘drink slowly.’"}
+      ]
+    },
+    {
+      "id": "lunch-choice",
+      "title": "Choosing Lunch",
+      "japaneseTitle": "昼ご飯を選ぶ",
+      "level": 2,
+      "setting": "School courtyard",
+      "background": "media/manga/cooking-challenge.webp",
+      "prop": "🍙",
+      "summary": "Kai and Mia decide what to eat for lunch.",
+      "duration": 15,
+      "characters": [
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"left"},
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"kai","line":"お腹が空いたね。何を食べたい。","reading":"おなかが すいたね。なにを たべたい。","meaning":"I'm hungry. What do you want to eat?","action":"talk"},
+        {"at":6,"speaker":"mia","line":"私はおにぎりが食べたい。","reading":"わたしは おにぎりが たべたい。","meaning":"I want to eat a rice ball.","action":"point"},
+        {"at":11,"speaker":"kai","line":"いいね。二つ買おう。","reading":"いいね。ふたつ かおう。","meaning":"Sounds good. Let's buy two.","action":"talk"}
+      ],
+      "questions": [
+        {"prompt":"What does Mia want to eat?","choices":["A rice ball","Noodles","Cake","Curry"],"answer":"A rice ball","explanation":"Mia says おにぎりが食べたい."},
+        {"prompt":"How many will they buy?","choices":["Two","One","Three","Four"],"answer":"Two","explanation":"二つ買おう means ‘Let’s buy two.’"},
+        {"prompt":"Why does Kai ask about food?","choices":["He is hungry","He is cooking for Master","The shop is closing","Mia forgot her lunch"],"answer":"He is hungry","explanation":"お腹が空いた means ‘I’m hungry.’"},
+        {"prompt":"What does 食べたい mean?","choices":["Want to eat","Ate already","Cannot eat","Please cook"],"answer":"Want to eat","explanation":"The verb stem plus たい expresses wanting to do something."},
+        {"prompt":"What do they agree to do?","choices":["Buy lunch","Make tea","Go home","Share an umbrella"],"answer":"Buy lunch","explanation":"Kai agrees and suggests buying two rice balls."}
+      ]
+    },
+    {
+      "id": "station-platform",
+      "title": "At the Station",
+      "japaneseTitle": "駅のホーム",
+      "level": 2,
+      "setting": "Train platform",
+      "background": "media/manga/late-meeting.webp",
+      "prop": "🚉",
+      "summary": "Mia checks whether they have time for the train.",
+      "duration": 14,
+      "characters": [
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"left"},
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"mia","line":"電車は何時に来るの。","reading":"でんしゃは なんじに くるの。","meaning":"What time does the train come?","action":"look"},
+        {"at":6,"speaker":"kai","line":"十時半だよ。あと五分ある。","reading":"じゅうじはんだよ。あと ごふん ある。","meaning":"At ten thirty. We have five minutes left.","action":"point"},
+        {"at":10,"speaker":"mia","line":"よかった。間に合うね。","reading":"よかった。まにあうね。","meaning":"That's good. We'll make it in time.","action":"talk"}
+      ],
+      "questions": [
+        {"prompt":"What time does the train arrive?","choices":["10:30","10:05","11:30","9:30"],"answer":"10:30","explanation":"十時半 means half past ten."},
+        {"prompt":"How much time do they have?","choices":["Five minutes","Ten minutes","Half an hour","One minute"],"answer":"Five minutes","explanation":"あと五分ある means ‘There are five minutes left.’"},
+        {"prompt":"Is Mia worried at the end?","choices":["No, they will make it","Yes, the train has left","Yes, she lost her ticket","No, the train is cancelled"],"answer":"No, they will make it","explanation":"よかった and 間に合うね show relief that they will be on time."},
+        {"prompt":"What does 何時 ask for?","choices":["What time","Which train","How many people","What place"],"answer":"What time","explanation":"何時 means ‘what time.’"},
+        {"prompt":"Where does the conversation happen?","choices":["At a station","At school","In a garden","At a shop"],"answer":"At a station","explanation":"They are waiting for a train on the platform."}
+      ]
+    },
+    {
+      "id": "lost-cat",
+      "title": "The Lost Cat",
+      "japaneseTitle": "迷子の猫",
+      "level": 2,
+      "setting": "Neighbourhood lane",
+      "background": "media/manga/lost-cat.webp",
+      "prop": "🐈",
+      "summary": "Kai and Mia hear a cat and decide to help it.",
+      "duration": 15,
+      "characters": [
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"left"},
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"kai","line":"どこかで猫が鳴いている。","reading":"どこかで ねこが ないている。","meaning":"A cat is crying somewhere.","action":"look"},
+        {"at":6,"speaker":"mia","line":"あの箱の後ろを見て。","reading":"あの はこの うしろを みて。","meaning":"Look behind that box.","action":"point"},
+        {"at":10,"speaker":"kai","line":"いた。飼い主を探してあげよう。","reading":"いた。かいぬしを さがして あげよう。","meaning":"There it is. Let's find its owner for it.","action":"talk"}
+      ],
+      "questions": [
+        {"prompt":"Where is the cat?","choices":["Behind a box","Under a tree","Inside a house","On a roof"],"answer":"Behind a box","explanation":"Mia tells Kai to look behind the box."},
+        {"prompt":"What will they look for?","choices":["The cat's owner","A bigger box","Some food","A veterinarian"],"answer":"The cat's owner","explanation":"飼い主を探してあげよう means ‘Let’s find its owner for it.’"},
+        {"prompt":"How do they first notice the cat?","choices":["They hear it crying","They see it running","It jumps on Kai","Master points to it"],"answer":"They hear it crying","explanation":"Kai says that a cat is crying somewhere."},
+        {"prompt":"What does 後ろ mean?","choices":["Behind","Inside","Above","Next week"],"answer":"Behind","explanation":"箱の後ろ means ‘behind the box.’"},
+        {"prompt":"What is the pair's goal?","choices":["Help the lost cat","Catch a train","Buy lunch","Study at school"],"answer":"Help the lost cat","explanation":"They find the cat and volunteer to locate its owner."}
+      ]
+    },
+    {
+      "id": "after-school-practice",
+      "title": "After-School Practice",
+      "japaneseTitle": "放課後の練習",
+      "level": 3,
+      "setting": "School field",
+      "background": "media/manga/mountain-path.webp",
+      "prop": "⚽",
+      "summary": "Mia encourages Kai to keep practising.",
+      "duration": 15,
+      "characters": [
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"left"},
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"kai","line":"今日は何度も失敗した。","reading":"きょうは なんども しっぱいした。","meaning":"I failed many times today.","action":"look"},
+        {"at":6,"speaker":"mia","line":"でも、昨日より上手になったよ。","reading":"でも、きのうより じょうずに なったよ。","meaning":"But you got better than yesterday.","action":"talk"},
+        {"at":11,"speaker":"kai","line":"そうだね。もう一回やってみる。","reading":"そうだね。もう いっかい やってみる。","meaning":"You're right. I'll try one more time.","action":"talk"}
+      ],
+      "questions": [
+        {"prompt":"How does Kai feel at first?","choices":["Discouraged by mistakes","Excited about lunch","Worried about rain","Late for a train"],"answer":"Discouraged by mistakes","explanation":"Kai focuses on having failed many times."},
+        {"prompt":"What improvement does Mia mention?","choices":["Kai is better than yesterday","Kai arrived earlier","Kai learned to cook","Kai found the ball"],"answer":"Kai is better than yesterday","explanation":"昨日より上手になった means ‘You got better than yesterday.’"},
+        {"prompt":"What will Kai do next?","choices":["Try one more time","Go home immediately","Ask Master to do it","Stop practising"],"answer":"Try one more time","explanation":"もう一回やってみる means ‘I’ll try one more time.’"},
+        {"prompt":"What does より mark in this sentence?","choices":["The basis of comparison","A destination","A direct object","A reason"],"answer":"The basis of comparison","explanation":"昨日より means ‘than yesterday.’"},
+        {"prompt":"What is the main message?","choices":["Encouragement helps persistence","Always avoid mistakes","Practice only in the morning","Winning is easy"],"answer":"Encouragement helps persistence","explanation":"Mia reframes the mistakes as progress, and Kai decides to continue."}
+      ]
+    },
+    {
+      "id": "festival-photo",
+      "title": "The Festival Photograph",
+      "japaneseTitle": "祭りの写真",
+      "level": 3,
+      "setting": "Summer festival",
+      "background": "media/manga/night-photograph.webp",
+      "prop": "📷",
+      "summary": "Master gathers Kai and Mia for a festival photo.",
+      "duration": 16,
+      "characters": [
+        {"id":"master","name":"Master","image":"media/profiles/master-base.webp","side":"left"},
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"centre"},
+        {"id":"mia","name":"Mia","image":"media/profiles/girl-base.webp","side":"right"}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"master","line":"二人とも、こちらを向いて。","reading":"ふたりとも、こちらを むいて。","meaning":"Both of you, look this way.","action":"point"},
+        {"at":6,"speaker":"mia","line":"カイ、もう少し近くに来て。","reading":"カイ、もう すこし ちかくに きて。","meaning":"Kai, come a little closer.","action":"wave"},
+        {"at":11,"speaker":"kai","line":"分かった。みんなで笑おう。","reading":"わかった。みんなで わらおう。","meaning":"Okay. Let's all smile together.","action":"talk"}
+      ],
+      "questions": [
+        {"prompt":"What is Master trying to do?","choices":["Take a photograph","Serve tea","Find a cat","Buy festival food"],"answer":"Take a photograph","explanation":"He asks both children to look toward him for the photograph."},
+        {"prompt":"What does Mia ask Kai to do?","choices":["Come a little closer","Speak more loudly","Hold the camera","Go home"],"answer":"Come a little closer","explanation":"もう少し近くに来て means ‘Come a little closer.’"},
+        {"prompt":"What does Kai suggest?","choices":["Everyone should smile","They should take two photos","Master should move","They should leave the festival"],"answer":"Everyone should smile","explanation":"みんなで笑おう means ‘Let’s all smile together.’"},
+        {"prompt":"Who operates the camera?","choices":["Master","Kai","Mia","A stranger"],"answer":"Master","explanation":"Master directs the children while preparing the photograph."},
+        {"prompt":"What does 二人とも refer to?","choices":["Both of you","The two cameras","Two more minutes","Everyone at the festival"],"answer":"Both of you","explanation":"二人とも addresses Kai and Mia together."}
+      ]
+    }
+  ]
+}
