@@ -1,8 +1,12 @@
 {
-  "version": "6.6.0",
-  "released": "2026-08-01",
-  "title": "Interactive Kanji Builder",
+  "version": "6.7.0",
+  "released": "2026-08-02",
+  "title": "Grammar Path and Mnemonic Expansion",
   "changes": [
+    "Added the Particle Shrine Grammar & Particles learning path with sequential particle lessons, spoken examples and in-context questions.",
+    "Grammar unlocks on the Journey after 15 started words and 15 tested answers, and remains repeatable from the Practice Hub and Games.",
+    "Added 46 new approved mnemonic scenes to reach 646 mapped vocabulary images.",
+    "Updated asset versions to v6.7.0 so cached browsers receive the grammar path and new mnemonic images.",
     "Added the Kanji Workshop Journey landmark and a repeatable Kanji Builder game.",
     "Added 105 curated, learner-facing visual component lessons linked automatically to every matching vocabulary word.",
     "Kanji Builder asks learners to assemble components in order from an English meaning and spoken Japanese clue.",
@@ -132,6 +136,6 @@
     "Kept manual progress export and local-only play available without an account."
   ],
   "sourcePacksIncluded": 5,
-  "mappedWords": 600,
-  "standaloneImages": 600
+  "mappedWords": 646,
+  "standaloneImages": 646
 }
