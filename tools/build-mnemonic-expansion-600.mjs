@@ -3,7 +3,8 @@ import fs from 'node:fs';
 const ROOT=new URL('../',import.meta.url);
 const read=name=>JSON.parse(fs.readFileSync(new URL(name,ROOT),'utf8'));
 const write=(name,value)=>fs.writeFileSync(new URL(name,ROOT),JSON.stringify(value,null,2)+'\n');
-const manifestFile='data/mnemonic-expansion-600.json';
+const targetTotal=Number(process.argv.find(value=>value.startsWith('--target='))?.split('=')[1]||600);
+const manifestFile=`data/mnemonic-expansion-${targetTotal}.json`;
 
 const cue={
  あ:'apple',い:'eel',う:'ooze',え:'egg',お:'oak',か:'car',き:'key',く:'cuckoo',け:'keg',こ:'coat',
@@ -30,17 +31,18 @@ function clean(value=''){return String(value).replace(/<[^>]+>/g,'').replace(/\s
 
 function build(){
  const vocab=read('data/vocabulary.json'),scenes=read('memory-scenes.json'),visuals=read('visual-mnemonics.json');
+ const startingTotal=Object.keys(scenes).length,requested=targetTotal-startingTotal;if(requested<=0)throw Error(`Target ${targetTotal} must be greater than the current ${startingTotal} scenes`);
  const used=new Set([...Object.keys(scenes),...Object.keys(visuals)]),selected=new Set(),chosen=[];
- for(const entry of vocab){const key=`${entry.word}|${entry.reading}`;if(used.has(key)||selected.has(key))continue;selected.add(key);chosen.push({...entry,key});if(chosen.length===100)break}
- if(chosen.length!==100)throw Error(`Expected 100 unmapped words, found ${chosen.length}`);
+ for(const entry of vocab){const key=`${entry.word}|${entry.reading}`;if(used.has(key)||selected.has(key))continue;selected.add(key);chosen.push({...entry,key});if(chosen.length===requested)break}
+ if(chosen.length!==requested)throw Error(`Expected ${requested} unmapped words, found ${chosen.length}`);
  const cards=chosen.map((entry,index)=>{
-  const number=501+index,props=phoneticProps(entry.reading),meaning=clean(entry.meaning),context=clean(entry.sentenceMeaning||entry.sentence);
+  const number=startingTotal+1+index,props=phoneticProps(entry.reading),meaning=clean(entry.meaning),context=clean(entry.sentenceMeaning||entry.sentence);
   const file=`gold-${number}-word-${String(entry.order||number).padStart(4,'0')}.webp`;
   const soundMnemonic=props.join(' + ');
   const story=`Kai and Mia use ${props.join(' and ')} while acting out “${meaning}”${context?`: ${context}`:''}.`;
   return {number,key:entry.key,word:entry.word,reading:entry.reading,meaning,order:entry.order,file,soundMnemonic,story,status:'pending',prompt:`Japanese vocabulary mnemonic for ${entry.word}, read ${entry.reading}, meaning “${meaning}”. Use these visible sound-alike pronunciation props: ${props.join(', ')}. Make every prop essential to one clear, memorable action that unmistakably communicates “${meaning}”. ${context?`Meaning context to dramatize: ${context}.`:''}`};
  });
- write(manifestFile,{schemaVersion:1,targetTotal:600,styleVersion:'kaishi-phonetic-comic-v2',cards});
+ write(manifestFile,{schemaVersion:1,targetTotal,styleVersion:'kaishi-phonetic-comic-v2',cards});
  console.log(JSON.stringify({count:cards.length,first:cards[0],last:cards.at(-1)},null,2));
 }
 
@@ -53,7 +55,7 @@ function apply(){
   visuals[card.key]={word:card.word,reading:card.reading,katakana:'',romaji:'',meaning:card.meaning,soundMnemonic:card.soundMnemonic,story:card.story,scene:card.file,overlay:card.word,overlayOpacity:1,overlaySize:1,overlayAnimation:'fade',overlayColour:'#ffffff',pack:'gold-04',status:'approved',imageStatus:'approved',reviewNote:'Reference-guided phonetic comic: pronunciation cue and meaning combined in one scene.',imageVersion:1,approvedAt:'2026-08-01'};
   card.status='installed';
  }
- if(Object.keys(scenes).length!==600)throw Error(`Expected 600 memory scenes after apply, got ${Object.keys(scenes).length}`);
+ if(Object.keys(scenes).length!==manifest.targetTotal)throw Error(`Expected ${manifest.targetTotal} memory scenes after apply, got ${Object.keys(scenes).length}`);
  write('memory-scenes.json',scenes);write('visual-mnemonics.json',visuals);write(manifestFile,manifest);
  console.log(JSON.stringify({memoryScenes:Object.keys(scenes).length,visualMnemonics:Object.keys(visuals).length,installed:manifest.cards.length},null,2));
 }

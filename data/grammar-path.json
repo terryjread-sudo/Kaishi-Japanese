@@ -1,0 +1,112 @@
+{
+  "lessons": [
+    {
+      "id": "topic-wa", "title": "The topic marker は", "japanese": "は · Topic", "summary": "は tells the listener what the sentence is about. As a particle it is pronounced わ.",
+      "examples": [{"japanese":"私は学生です。","reading":"わたし は がくせい です。","english":"I am a student.","chunks":["私 = I","は = as for…","学生 = student","です = am/is"]}],
+      "questions": [
+        {"prompt":"Which particle marks ‘I’ as the topic?","sentence":"私＿学生です。","choices":["は","を","で","と"],"answer":"は","explanation":"は marks 私 as the topic: ‘As for me, I am a student.’"},
+        {"prompt":"What does は do here?","sentence":"今日は暑いです。","choices":["Marks today as the topic","Marks a direct object","Marks a destination","Joins two nouns"],"answer":"Marks today as the topic","explanation":"今日は means ‘as for today’. Remember that particle は is pronounced わ."},
+        {"prompt":"Which sentence means ‘As for this book, it is interesting’?","sentence":"Choose the natural Japanese sentence.","choices":["この本は面白いです。","この本を面白いです。","この本で面白いです。","この本に面白いです。"],"answer":"この本は面白いです。","explanation":"この本 is the topic, so は follows it."}
+      ]
+    },
+    {
+      "id": "subject-ga", "title": "The subject marker が", "japanese": "が · Subject", "summary": "が identifies the grammatical subject, often introducing new information or answering ‘who?’ and ‘what?’. ",
+      "examples": [{"japanese":"猫がいます。","reading":"ねこ が います。","english":"There is a cat.","chunks":["猫 = cat","が = subject","います = exists"]}],
+      "questions": [
+        {"prompt":"Which particle identifies the thing that exists?","sentence":"猫＿います。","choices":["が","を","へ","と"],"answer":"が","explanation":"猫 is the subject of います, so it takes が."},
+        {"prompt":"Which answer naturally responds to ‘Who came?’","sentence":"だれが来ましたか。","choices":["田中さんが来ました。","田中さんを来ました。","田中さんで来ました。","田中さんの来ました。"],"answer":"田中さんが来ました。","explanation":"が highlights 田中さん as the answer to ‘who?’"},
+        {"prompt":"What is が marking?","sentence":"雨が降っています。","choices":["The subject: rain","The destination","The direct object","The location of an action"],"answer":"The subject: rain","explanation":"Rain is what is falling, so 雨 is marked by が."}
+      ]
+    },
+    {
+      "id": "object-o", "title": "The object marker を", "japanese": "を · Object", "summary": "を marks the direct object affected by an action. As a particle it is pronounced お.",
+      "examples": [{"japanese":"水を飲みます。","reading":"みず を のみます。","english":"I drink water.","chunks":["水 = water","を = direct object","飲みます = drink"]}],
+      "questions": [
+        {"prompt":"Which particle marks what is being eaten?","sentence":"パン＿食べます。","choices":["を","が","に","の"],"answer":"を","explanation":"パン receives the action of eating, so it is the direct object."},
+        {"prompt":"What does を mark here?","sentence":"音楽を聞きます。","choices":["What is listened to","Who is listening","Where listening happens","Who owns the music"],"answer":"What is listened to","explanation":"音楽 is the object of 聞きます."},
+        {"prompt":"Choose ‘I read a book’. ","sentence":"Which sentence is correct?","choices":["本を読みます。","本が読みます。","本で読みます。","本へ読みます。"],"answer":"本を読みます。","explanation":"The book is what you read, so use を."}
+      ]
+    },
+    {
+      "id": "destination-ni", "title": "Destination and time に", "japanese": "に · Destination", "summary": "に marks a destination, a point in time, or the target of an action.",
+      "examples": [{"japanese":"七時に学校に行きます。","reading":"しちじ に がっこう に いきます。","english":"I go to school at seven.","chunks":["七時に = at seven","学校に = to school","行きます = go"]}],
+      "questions": [
+        {"prompt":"Which particle marks the destination?","sentence":"学校＿行きます。","choices":["に","を","で","の"],"answer":"に","explanation":"学校 is the destination of 行きます."},
+        {"prompt":"Which particle marks a specific time?","sentence":"六時＿起きます。","choices":["に","が","と","を"],"answer":"に","explanation":"A precise time normally takes に."},
+        {"prompt":"What does the first に mark?","sentence":"友達に本をあげます。","choices":["The recipient","The book","The speaker","The location"],"answer":"The recipient","explanation":"友達 is the target or recipient of giving."}
+      ]
+    },
+    {
+      "id": "location-de", "title": "Action location and means で", "japanese": "で · Action place", "summary": "で marks where an action happens or the means used to perform it.",
+      "examples": [{"japanese":"電車で東京へ行きます。","reading":"でんしゃ で とうきょう へ いきます。","english":"I go to Tokyo by train.","chunks":["電車で = by train","東京へ = toward Tokyo","行きます = go"]}],
+      "questions": [
+        {"prompt":"Which particle marks where studying happens?","sentence":"図書館＿勉強します。","choices":["で","に","を","の"],"answer":"で","explanation":"Studying is an action performed at the library, so use で."},
+        {"prompt":"What does で mean here?","sentence":"箸で食べます。","choices":["Using chopsticks","To the chopsticks","The chopsticks’ possession","Together with chopsticks"],"answer":"Using chopsticks","explanation":"で can mark the tool or means used for an action."},
+        {"prompt":"Choose ‘I play in the park’. ","sentence":"Which sentence is correct?","choices":["公園で遊びます。","公園を遊びます。","公園が遊びます。","公園の遊びます。"],"answer":"公園で遊びます。","explanation":"The action 遊びます occurs in the park, so use で."}
+      ]
+    },
+    {
+      "id": "possession-no", "title": "Connection and possession の", "japanese": "の · Connection", "summary": "の connects nouns. It often corresponds to possession or ‘of’ in English.",
+      "examples": [{"japanese":"これは先生の本です。","reading":"これ は せんせい の ほん です。","english":"This is the teacher’s book.","chunks":["先生の = teacher’s","本 = book","です = is"]}],
+      "questions": [
+        {"prompt":"Which particle shows that the bag belongs to Mika?","sentence":"ミカ＿かばん","choices":["の","を","が","で"],"answer":"の","explanation":"ミカのかばん means ‘Mika’s bag’."},
+        {"prompt":"What relationship does の express?","sentence":"日本の映画","choices":["A Japanese film / film of Japan","Watching a film","Going to Japan","A film’s direct object"],"answer":"A Japanese film / film of Japan","explanation":"の connects Japan with the film and describes its origin/type."},
+        {"prompt":"Choose ‘my friend’. ","sentence":"Which phrase is correct?","choices":["私の友達","私を友達","私で友達","私に友達"],"answer":"私の友達","explanation":"の connects 私 and 友達: ‘my friend’."}
+      ]
+    },
+    {
+      "id": "also-mo", "title": "Adding with も", "japanese": "も · Also", "summary": "も replaces は, が or を to mean ‘also’, ‘too’ or sometimes ‘even’.",
+      "examples": [{"japanese":"私も行きます。","reading":"わたし も いきます。","english":"I will go too.","chunks":["私も = I too","行きます = will go"]}],
+      "questions": [
+        {"prompt":"Which particle means ‘too’?","sentence":"妹＿学生です。","choices":["も","を","で","へ"],"answer":"も","explanation":"妹も means ‘my younger sister too’."},
+        {"prompt":"What does も add?","sentence":"これも好きです。","choices":["This as well","Only this","This destination","This possession"],"answer":"This as well","explanation":"も adds this item to something already mentioned."},
+        {"prompt":"Choose ‘Ken also came’. ","sentence":"Which sentence is natural?","choices":["ケンも来ました。","ケンを来ました。","ケンで来ました。","ケンの来ました。"],"answer":"ケンも来ました。","explanation":"も replaces the subject/topic marker to mean ‘Ken too’."}
+      ]
+    },
+    {
+      "id": "and-with-to", "title": "And, with and quotations と", "japanese": "と · And / with", "summary": "と joins nouns, marks a companion, and marks quoted speech or thought.",
+      "examples": [{"japanese":"友達と話します。","reading":"ともだち と はなします。","english":"I talk with a friend.","chunks":["友達と = with a friend","話します = talk"]}],
+      "questions": [
+        {"prompt":"Which particle marks a companion?","sentence":"母＿買い物に行きます。","choices":["と","を","が","の"],"answer":"と","explanation":"母と means ‘with my mother’."},
+        {"prompt":"What does と do here?","sentence":"パンと牛乳を買います。","choices":["Joins bread and milk","Marks a destination","Marks where buying occurs","Marks possession"],"answer":"Joins bread and milk","explanation":"と gives a complete list: bread and milk."},
+        {"prompt":"Which particle follows a quotation?","sentence":"「ありがとう」＿言いました。","choices":["と","に","で","へ"],"answer":"と","explanation":"と marks the exact words that were said."}
+      ]
+    },
+    {
+      "id": "direction-e", "title": "Direction with へ", "japanese": "へ · Toward", "summary": "へ emphasises movement toward a direction or destination. As a particle it is pronounced え.",
+      "examples": [{"japanese":"日本へ行きます。","reading":"にほん へ いきます。","english":"I am going to Japan.","chunks":["日本へ = toward Japan","行きます = go"]}],
+      "questions": [
+        {"prompt":"Which particle emphasises direction toward Tokyo?","sentence":"東京＿向かいます。","choices":["へ","を","が","の"],"answer":"へ","explanation":"へ points the movement toward Tokyo."},
+        {"prompt":"How is particle へ pronounced?","sentence":"学校へ行きます。","choices":["え","へ","は","を"],"answer":"え","explanation":"The character is written へ but the particle is pronounced え."},
+        {"prompt":"Choose ‘I return toward home’. ","sentence":"Which is natural?","choices":["家へ帰ります。","家を帰ります。","家が帰ります。","家の帰ります。"],"answer":"家へ帰ります。","explanation":"へ marks the direction of returning."}
+      ]
+    },
+    {
+      "id": "range-kara-made", "title": "From から to まで", "japanese": "から · まで", "summary": "から marks a starting point and まで marks an ending point in time or space.",
+      "examples": [{"japanese":"九時から五時まで働きます。","reading":"くじ から ごじ まで はたらきます。","english":"I work from nine until five.","chunks":["九時から = from nine","五時まで = until five","働きます = work"]}],
+      "questions": [
+        {"prompt":"Which particle means ‘from’?","sentence":"月曜日＿始まります。","choices":["から","まで","を","と"],"answer":"から","explanation":"から marks Monday as the starting point."},
+        {"prompt":"Which particle means ‘until/to’?","sentence":"駅＿歩きます。","choices":["まで","から","の","が"],"answer":"まで","explanation":"まで marks the station as the end point."},
+        {"prompt":"Choose ‘from Osaka to Kyoto’. ","sentence":"Which phrase is correct?","choices":["大阪から京都まで","大阪まで京都から","大阪を京都に","大阪で京都の"],"answer":"大阪から京都まで","explanation":"The start takes から and the end takes まで."}
+      ]
+    },
+    {
+      "id": "existence-ni-de", "title": "Choosing に or で", "japanese": "に vs で", "summary": "Use に for where something exists; use で for where an action happens.",
+      "examples": [{"japanese":"公園に猫がいます。公園で子供が遊びます。","reading":"こうえん に ねこ が います。こうえん で こども が あそびます。","english":"There is a cat in the park. Children play in the park.","chunks":["公園に = exists in the park","公園で = acts in the park"]}],
+      "questions": [
+        {"prompt":"A teacher exists at school. Which particle fits?","sentence":"学校＿先生がいます。","choices":["に","で","を","と"],"answer":"に","explanation":"います describes existence, so the location takes に."},
+        {"prompt":"A teacher teaches at school. Which particle fits?","sentence":"学校＿先生が教えます。","choices":["で","に","の","へ"],"answer":"で","explanation":"Teaching is an action happening at school, so use で."},
+        {"prompt":"Why does the particle change?","sentence":"机に本があります。机で勉強します。","choices":["に marks existence; で marks action","に marks action; で marks existence","Both always mean the same thing","で marks possession"],"answer":"に marks existence; で marks action","explanation":"Choose the particle by the role of the place, not by translating English ‘at’."}
+      ]
+    },
+    {
+      "id": "wa-ga-focus", "title": "Choosing は or が", "japanese": "は vs が", "summary": "は establishes or contrasts a topic. が identifies or focuses the subject, especially new information.",
+      "examples": [{"japanese":"だれが先生ですか。田中さんが先生です。田中さんは親切です。","reading":"だれ が せんせい です か。たなかさん が せんせい です。たなかさん は しんせつ です。","english":"Who is the teacher? Mr Tanaka is the teacher. As for Mr Tanaka, he is kind.","chunks":["だれが = who (focused subject)","田中さんは = as for Mr Tanaka"]}],
+      "questions": [
+        {"prompt":"Which particle answers the focused question ‘Who did it?’","sentence":"ミア＿しました。","choices":["が","は","を","で"],"answer":"が","explanation":"が identifies Mia as the specific answer to ‘who?’"},
+        {"prompt":"Which particle introduces dogs as the continuing topic?","sentence":"犬＿かわいいです。犬は頭もいいです。","choices":["は","を","に","で"],"answer":"は","explanation":"は establishes dogs as what the following comments are about."},
+        {"prompt":"What contrast is natural?","sentence":"コーヒー＿飲みますが、お茶は飲みません。","choices":["は","を","が","へ"],"answer":"は","explanation":"は can contrast coffee with tea: coffee I drink, but tea I do not."}
+      ]
+    }
+  ]
+}
