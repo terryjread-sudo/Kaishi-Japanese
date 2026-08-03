@@ -425,16 +425,11 @@ header{
 #answer hr{margin:12px 0 14px}
 
 
-/* v6.9.1 answer feedback overlay */
-.answer-result-overlay{position:sticky;z-index:9;bottom:max(0px,env(safe-area-inset-bottom));display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;margin:18px -18px -18px;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #cbd5e1;background:#fff;box-shadow:0 -10px 28px #17255422}
-.answer-result-overlay.correct{background:#ecfdf5;border-top-color:#86efac}
-.answer-result-overlay.wrong{background:#fff7ed;border-top-color:#fdba74}
-.answer-result-icon{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;font-weight:900;background:#fff}
-.answer-result-overlay.correct .answer-result-icon{color:#15803d;border:2px solid #22c55e}
-.answer-result-overlay.wrong .answer-result-icon{color:#b91c1c;border:2px solid #ef4444}
-.answer-result-copy{display:grid;gap:2px;min-width:0}
-.answer-result-copy strong{font-size:1rem}
-.answer-result-copy span{font-size:.76rem;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.answer-result-audio{width:42px;height:42px;min-width:42px;margin:0!important;padding:0!important;border-radius:50%;display:grid!important;place-items:center}
-.answer-result-continue{grid-column:1/-1;width:100%;padding:10px 12px}
-@media(min-width:560px){.answer-result-overlay{grid-template-columns:auto minmax(0,1fr) auto auto}.answer-result-continue{grid-column:auto;width:auto}}
+/* v7.2 integrated Journey */
+.sensei-guide{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;margin:-4px 0 14px;padding:10px 12px;border-radius:16px;background:linear-gradient(135deg,#fff7ed,#fef3c7);border:1px solid #fed7aa;text-align:left}
+.sensei-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:#fff;display:grid;place-items:center;font-size:2rem;border:2px solid #fdba74}
+.sensei-avatar img{width:100%;height:100%;object-fit:cover}.sensei-guide strong{display:block;color:#9a3412;font-size:.78rem}.sensei-guide p{margin:2px 0 0;color:#475569;font-size:.82rem;line-height:1.35}
+.kana-unlock-glyph{font-size:clamp(6rem,34vw,10rem);font-weight:800;text-align:center;line-height:1.05;margin:18px 0 4px}.kana-unlock-sound{text-align:center;font-size:1.4rem;font-weight:850;color:#475569;margin-bottom:18px}
+.first-encounter-word{font-size:clamp(4rem,22vw,8rem);font-weight:900;text-align:center;margin:28px 0 8px;line-height:1.05}.first-encounter-summary{text-align:center;font-size:1.15rem;color:#475569;margin-bottom:20px}
+.example-sentence{font-size:clamp(1.7rem,7vw,2.5rem);line-height:1.65;text-align:center;margin:22px 0 8px}.example-sentence mark{background:#fef08a;border-radius:7px;padding:1px 4px;color:inherit}.example-romaji{text-align:center;color:#64748b;font-size:.9rem;line-height:1.5}.example-meaning{text-align:center;font-weight:800;font-size:1.15rem;margin:14px 0 20px}
+@media(max-width:480px){.sensei-guide{grid-template-columns:44px 1fr}.sensei-avatar{width:42px;height:42px}.sensei-guide p{font-size:.76rem}}

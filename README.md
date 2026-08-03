@@ -1,52 +1,22 @@
-# Kaishi Quest
+# Kaishi Quest v7.2.0
 
-Kaishi Quest is a browser-based Japanese learning app built around vocabulary, visual mnemonics, listening, reading, Kanji, grammar, games and an adaptive guided journey.
+This package combines Sprint 1 and Sprint 2 of the integrated Journey.
 
-## Current release
+## Included
 
-**v6.9.1 — Active Recall Declutter**
+- Character Unlock before words requiring unknown kana
+- First Encounter before mnemonic teaching
+- Sensei guidance using the old-man companion
+- Existing Meet the Word mnemonic flow
+- Example Sentence after the mnemonic lesson
+- Topic-aware new-word ordering
+- 2,143 imported Anki content records
+- Existing vocabulary IDs, games, SRS, mnemonics and progress preserved
 
-### v6.9.1 highlights
+## Audio note
 
-- Active Recall hides the ordinary built-in picture when an approved mnemonic picture is available.
-- The memory-hint button is removed after the answer is revealed.
-- Audio becomes a compact speaker icon beside the revealed Japanese word or Kanji.
-- The revealed-answer area uses less space and contains fewer competing controls.
-- Choice-based recall now shows a correct/incorrect feedback panel with the correct answer, replayable audio and a deliberate Continue action.
-- All previous v6.9 mobile and Journey improvements remain included.
+The Anki deck contains 4,205 media mappings. This mobile-sized package includes text, sentence content and audio filenames, but not the thousands of audio binaries. Existing app audio continues to work. Imported sentence audio can be added later under `media/anki/`.
 
-## Main features
+## Upload
 
-- Adaptive daily Journey missions
-- 1,500-word vocabulary route
-- Spaced repetition and per-word mastery stages
-- Visual mnemonic images, overlays and stories
-- Hiragana and Katakana learning paths
-- Listening, reading and production practice
-- Kanji recognition and Kanji Builder
-- Particle Shrine grammar lessons
-- Conversation Quest and Kaishi Theatre
-- Manga reading activities
-- Picture matching, Karuta and review battles
-- Progress tracking, streaks and optional cloud sync
-
-## Important root files
-
-- `index.html` — application page and asset version references
-- `app.js` — main app logic and `APP_VERSION`
-- `styles.css` — main interface styles
-- `vms.js` — enhanced mnemonic-card behaviour
-- `vms.css` — mnemonic-card styles
-- `visual-mnemonics.json` — mnemonic data and image mappings
-- `version.json` — current release information and change history
-
-## Deployment
-
-The app is published using GitHub Pages.
-
-After replacing files in the repository:
-
-1. Commit the uploaded files to the default branch.
-2. Wait for GitHub Pages deployment to complete.
-3. Refresh the website.
-4. For an installed PWA, fully close and reopen it if the previous cached version remains visible.
+This ZIP preserves folders. Merge the root files and the new `data/` folder into the repository. The `reports/` folder is optional.

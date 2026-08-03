@@ -10,7 +10,7 @@
 
  async function load(){
   try{
-   cards=await fetch('visual-mnemonics.json?v=6.9.1',{cache:'no-store'}).then(r=>r.ok?r.json():{});
+   cards=await fetch('visual-mnemonics.json?v=7.2.0',{cache:'no-store'}).then(r=>r.ok?r.json():{});
   }catch(e){
    console.warn('VMS data unavailable',e);
   }
