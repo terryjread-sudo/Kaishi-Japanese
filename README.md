@@ -1,18 +1,33 @@
-# Kaishi Quest v8.1.0
+# Kaishi Quest v8.2.0 — Curated Learning Graph
 
-## Teacher Guidance and Character Unlock Flow
+This release makes one learning graph the source of truth for topic progression and reusable foundation skills.
 
-This release separates the selectable Master Sensei avatar from the app’s everyday teacher.
+## Coverage
 
-### Changes
+- 2,143 imported source records
+- 2,139 unique Japanese written forms mapped
+- 28 practical topics
+- 6 regions
+- 12 reusable foundations
 
-- Added a dedicated Japanese school teacher for guidance notifications.
-- The teacher is used for recommendations, learning guidance, topic bosses, story moments and milestones.
-- Master Sensei remains available as a separate selectable learner character.
-- Removed the duplicate old-man emoji fallback.
-- Fixed the mobile teacher recommendation layout.
-- Character Unlock now previews the exact next vocabulary word that uses the kana.
-- The action says “Learn [kana] now”.
-- Completing the required kana immediately opens the First Encounter card for that word.
+## Reusable foundations
 
-The ZIP preserves folders. Upload the root files and the new `media/guides/teacher-guide.webp` asset while retaining the folder structure.
+Numbers, counters, colours, days, dates, time, question words, directions, people, common verbs, descriptions, particles and polite expressions are introduced where useful and then reused across later topics.
+
+## App integration
+
+The same graph now drives:
+
+- Topic Adventure
+- Home recommendations
+- adaptive topic sessions
+- Collection
+- relevant foundation review
+- Topic Bosses
+- word ordering and grouping
+
+## Review reports
+
+The optional `reports/` directory contains mapping totals, foundation coverage and entries that remain suitable for human review.
+
+This taxonomy is curated. Individual mappings are generated with explicit ordered semantic rules and exposed in reports rather than being represented as manually reviewed one by one.

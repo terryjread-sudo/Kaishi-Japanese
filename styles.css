@@ -573,3 +573,9 @@ header{
  .kana-word-preview{padding:12px 14px}
  .kana-word-preview>strong{font-size:1.6rem}
 }
+
+/* v8.2 curated learning graph */
+.collection-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+.foundation-item{grid-column:1/-1}
+.foundation-item p{grid-column:2;margin:3px 0 0;color:#475569;font-size:.72rem;line-height:1.4}
+@media(max-width:520px){.collection-tabs{grid-template-columns:repeat(3,1fr)}}
