@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "topics": [
+    {
+      "id": "core-japanese",
+      "title": "Core Japanese",
+      "icon": "🗾",
+      "order": 0
+    },
+    {
+      "id": "order-food",
+      "title": "Order food",
+      "icon": "🍜",
+      "order": 1
+    },
+    {
+      "id": "describe-people",
+      "title": "Describe people",
+      "icon": "🙂",
+      "order": 2
+    },
+    {
+      "id": "introduce-yourself",
+      "title": "Introduce yourself",
+      "icon": "👋",
+      "order": 3
+    },
+    {
+      "id": "order-food-and-drink",
+      "title": "Order food and drink",
+      "icon": "🥤",
+      "order": 4
+    },
+    {
+      "id": "talk-about-countries",
+      "title": "Talk about countries",
+      "icon": "🌏",
+      "order": 5
+    },
+    {
+      "id": "ask-for-directions",
+      "title": "Ask for directions",
+      "icon": "🧭",
+      "order": 6
+    },
+    {
+      "id": "describe-belongings",
+      "title": "Describe belongings",
+      "icon": "🎒",
+      "order": 7
+    },
+    {
+      "id": "talk-about-neighbours",
+      "title": "Talk about neighbours",
+      "icon": "🏘️",
+      "order": 8
+    },
+    {
+      "id": "tell-time",
+      "title": "Tell time",
+      "icon": "🕒",
+      "order": 9
+    },
+    {
+      "id": "travel-help",
+      "title": "Travel help",
+      "icon": "🧳",
+      "order": 10
+    },
+    {
+      "id": "get-to-know-people",
+      "title": "Get to know people",
+      "icon": "🤝",
+      "order": 11
+    },
+    {
+      "id": "describe-your-family",
+      "title": "Describe your family",
+      "icon": "👨‍👩‍👧",
+      "order": 12
+    },
+    {
+      "id": "talk-about-hobbies",
+      "title": "Talk about hobbies",
+      "icon": "🎨",
+      "order": 13
+    },
+    {
+      "id": "describe-eating-habits",
+      "title": "Describe eating habits",
+      "icon": "🍱",
+      "order": 14
+    },
+    {
+      "id": "shop-for-clothes",
+      "title": "Shop for clothes",
+      "icon": "👕",
+      "order": 15
+    },
+    {
+      "id": "use-present-tense-verbs",
+      "title": "Use present tense verbs",
+      "icon": "▶️",
+      "order": 16
+    },
+    {
+      "id": "get-around-a-station",
+      "title": "Get around a station",
+      "icon": "🚉",
+      "order": 17
+    },
+    {
+      "id": "describe-your-routine",
+      "title": "Describe your routine",
+      "icon": "📅",
+      "order": 18
+    },
+    {
+      "id": "talk-about-interests",
+      "title": "Talk about interests",
+      "icon": "⭐",
+      "order": 19
+    },
+    {
+      "id": "describe-your-home",
+      "title": "Describe your home",
+      "icon": "🏠",
+      "order": 20
+    },
+    {
+      "id": "take-public-transit",
+      "title": "Take public transit",
+      "icon": "🚆",
+      "order": 21
+    },
+    {
+      "id": "use-na-adjectives",
+      "title": "Use na-adjectives",
+      "icon": "✨",
+      "order": 22
+    },
+    {
+      "id": "get-emergency-help",
+      "title": "Get emergency help",
+      "icon": "🚑",
+      "order": 23
+    },
+    {
+      "id": "talk-about-weather",
+      "title": "Talk about weather",
+      "icon": "☀️",
+      "order": 24
+    },
+    {
+      "id": "discuss-chores",
+      "title": "Discuss chores",
+      "icon": "🧹",
+      "order": 25
+    },
+    {
+      "id": "say-what-you-want-to-do",
+      "title": "Say what you want to do",
+      "icon": "💭",
+      "order": 26
+    },
+    {
+      "id": "discuss-a-family-visit",
+      "title": "Discuss a family visit",
+      "icon": "🏡",
+      "order": 27
+    },
+    {
+      "id": "order-pastries",
+      "title": "Order pastries",
+      "icon": "🥐",
+      "order": 28
+    },
+    {
+      "id": "use-negative-verbs",
+      "title": "Use negative verbs",
+      "icon": "🚫",
+      "order": 29
+    },
+    {
+      "id": "discuss-classes",
+      "title": "Discuss classes",
+      "icon": "🏫",
+      "order": 30
+    },
+    {
+      "id": "talk-about-jobs",
+      "title": "Talk about jobs",
+      "icon": "💼",
+      "order": 31
+    },
+    {
+      "id": "get-around-a-theme-park",
+      "title": "Get around a theme park",
+      "icon": "🎡",
+      "order": 32
+    },
+    {
+      "id": "discuss-media",
+      "title": "Discuss media",
+      "icon": "📺",
+      "order": 33
+    },
+    {
+      "id": "communicate-at-work",
+      "title": "Communicate at work",
+      "icon": "🏢",
+      "order": 34
+    },
+    {
+      "id": "discuss-seasonal-events",
+      "title": "Discuss seasonal events",
+      "icon": "🎐",
+      "order": 35
+    },
+    {
+      "id": "talk-about-date-plans",
+      "title": "Talk about date plans",
+      "icon": "💌",
+      "order": 36
+    },
+    {
+      "id": "discuss-college-life",
+      "title": "Discuss college life",
+      "icon": "🎓",
+      "order": 37
+    },
+    {
+      "id": "count-animals",
+      "title": "Count animals",
+      "icon": "🐾",
+      "order": 38
+    },
+    {
+      "id": "discuss-outdoor-activities",
+      "title": "Discuss outdoor activities",
+      "icon": "🥾",
+      "order": 39
+    },
+    {
+      "id": "eat-in-a-restaurant",
+      "title": "Eat in a restaurant",
+      "icon": "🍽️",
+      "order": 40
+    },
+    {
+      "id": "communicate-at-a-hotel",
+      "title": "Communicate at a hotel",
+      "icon": "🏨",
+      "order": 41
+    },
+    {
+      "id": "use-past-tense-verbs",
+      "title": "Use past tense verbs",
+      "icon": "⏪",
+      "order": 42
+    },
+    {
+      "id": "make-transit-plans",
+      "title": "Make transit plans",
+      "icon": "🗺️",
+      "order": 43
+    },
+    {
+      "id": "shop-for-electronics",
+      "title": "Shop for electronics",
+      "icon": "💻",
+      "order": 44
+    },
+    {
+      "id": "make-plans-for-a-party",
+      "title": "Make plans for a party",
+      "icon": "🎉",
+      "order": 45
+    },
+    {
+      "id": "arrange-to-meet-up",
+      "title": "Arrange to meet up",
+      "icon": "📍",
+      "order": 46
+    },
+    {
+      "id": "talk-about-gifts",
+      "title": "Talk about gifts",
+      "icon": "🎁",
+      "order": 47
+    },
+    {
+      "id": "share-travel-experiences",
+      "title": "Share travel experiences",
+      "icon": "✈️",
+      "order": 48
+    },
+    {
+      "id": "describe-health-issues",
+      "title": "Describe health issues",
+      "icon": "🩺",
+      "order": 49
+    },
+    {
+      "id": "talk-about-childhood",
+      "title": "Talk about childhood",
+      "icon": "🧸",
+      "order": 50
+    },
+    {
+      "id": "describe-nature",
+      "title": "Describe nature",
+      "icon": "🌿",
+      "order": 51
+    },
+    {
+      "id": "talk-about-school",
+      "title": "Talk about school",
+      "icon": "📚",
+      "order": 52
+    },
+    {
+      "id": "shop-for-groceries",
+      "title": "Shop for groceries",
+      "icon": "🛒",
+      "order": 53
+    },
+    {
+      "id": "express-how-you-feel",
+      "title": "Express how you feel",
+      "icon": "💚",
+      "order": 54
+    }
+  ]
+}
