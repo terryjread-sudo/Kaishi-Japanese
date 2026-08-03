@@ -10,7 +10,7 @@
 
  async function load(){
   try{
-   cards=await fetch('visual-mnemonics.json?v=6.9.0',{cache:'no-store'}).then(r=>r.ok?r.json():{});
+   cards=await fetch('visual-mnemonics.json?v=6.9.1',{cache:'no-store'}).then(r=>r.ok?r.json():{});
   }catch(e){
    console.warn('VMS data unavailable',e);
   }
@@ -96,14 +96,16 @@
   return card.querySelector('.eyebrow')?.textContent?.trim()==='Meet the word';
  }
 
- function enhanceMeetWord(card,v){
-  if(!isMeetWord(card))return;
+ function removeDuplicateBuiltInPictures(card){
   const vmsCard=card.querySelector('.vms-card');
-  if(vmsCard){
-   card.querySelectorAll(':scope > img.picture, :scope > .picture').forEach(element=>{
-    if(!element.closest('.vms-card'))element.remove();
-   });
-  }
+  if(!vmsCard)return;
+  card.querySelectorAll('img.picture, .picture').forEach(element=>{
+   if(!element.closest('.vms-card'))element.remove();
+  });
+ }
+
+ function enhanceMeetWord(card,v){
+  removeDuplicateBuiltInPictures(card);
  }
  function enhance(scope,refresh=false){
   if(!cfg.enabled)return;
@@ -128,6 +130,7 @@
    key=keyFromCard(card);
    v=cards[key]||v;
    enhanceMeetWord(card,v);
+   removeDuplicateBuiltInPictures(card);
   });
  }
 

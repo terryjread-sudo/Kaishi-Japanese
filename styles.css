@@ -414,3 +414,27 @@ header{
  .word-expedition-grid{grid-template-columns:1fr}
  .word-chapter.current{grid-column:auto}
 }
+
+
+/* v6.9.1 Active Recall declutter */
+.recall-word-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0}
+.recall-word-row .jp{margin:0!important}
+.recall-inline-audio{width:44px;height:44px;min-width:44px;margin:0!important;padding:0!important;border-radius:50%;display:grid!important;place-items:center;font-size:1.15rem}
+.recall-answer-content>.picture{display:none}
+#answer .vms-card{margin-top:12px}
+#answer hr{margin:12px 0 14px}
+
+
+/* v6.9.1 answer feedback overlay */
+.answer-result-overlay{position:sticky;z-index:9;bottom:max(0px,env(safe-area-inset-bottom));display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;margin:18px -18px -18px;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #cbd5e1;background:#fff;box-shadow:0 -10px 28px #17255422}
+.answer-result-overlay.correct{background:#ecfdf5;border-top-color:#86efac}
+.answer-result-overlay.wrong{background:#fff7ed;border-top-color:#fdba74}
+.answer-result-icon{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;font-weight:900;background:#fff}
+.answer-result-overlay.correct .answer-result-icon{color:#15803d;border:2px solid #22c55e}
+.answer-result-overlay.wrong .answer-result-icon{color:#b91c1c;border:2px solid #ef4444}
+.answer-result-copy{display:grid;gap:2px;min-width:0}
+.answer-result-copy strong{font-size:1rem}
+.answer-result-copy span{font-size:.76rem;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.answer-result-audio{width:42px;height:42px;min-width:42px;margin:0!important;padding:0!important;border-radius:50%;display:grid!important;place-items:center}
+.answer-result-continue{grid-column:1/-1;width:100%;padding:10px 12px}
+@media(min-width:560px){.answer-result-overlay{grid-template-columns:auto minmax(0,1fr) auto auto}.answer-result-continue{grid-column:auto;width:auto}}

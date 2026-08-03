@@ -4,17 +4,16 @@ Kaishi Quest is a browser-based Japanese learning app built around vocabulary, v
 
 ## Current release
 
-**v6.9.0 — Mobile Learning and Journey Polish**
+**v6.9.1 — Active Recall Declutter**
 
-### v6.9.0 highlights
+### v6.9.1 highlights
 
-- Meet the Word uses a compact reading-and-meaning row.
-- The learning instructions are fully shown only for the first two introduction cards in a session and then collapse.
-- Duplicate learning guidance has been removed.
-- The Continue action remains reachable at the bottom of the viewport.
-- Journey mission cards, the per-word Journey badge and Share control use less vertical space.
-- Why these missions starts collapsed and expands when requested.
-- Only the current vocabulary expedition chapter shows full progress details; other chapters use compact summaries.
+- Active Recall hides the ordinary built-in picture when an approved mnemonic picture is available.
+- The memory-hint button is removed after the answer is revealed.
+- Audio becomes a compact speaker icon beside the revealed Japanese word or Kanji.
+- The revealed-answer area uses less space and contains fewer competing controls.
+- Choice-based recall now shows a correct/incorrect feedback panel with the correct answer, replayable audio and a deliberate Continue action.
+- All previous v6.9 mobile and Journey improvements remain included.
 
 ## Main features
 
