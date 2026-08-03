@@ -1,22 +1,18 @@
-# Kaishi Quest v8.0.0 — Topic Adventure
+# Kaishi Quest v8.1.0
 
-Kaishi Quest is a guided Japanese memory adventure built around approved mnemonic images, varied games and adaptive practice.
+## Teacher Guidance and Character Unlock Flow
 
-## Major changes
+This release separates the selectable Master Sensei avatar from the app’s everyday teacher.
 
-- Topic-first regions replace learner-facing numbered chapters.
-- Home now centres on Continue Adventure, Today’s Reviews, Practice Grounds and Collection.
-- Sensei uses the existing old-man companion to explain the next useful step.
-- Practice Grounds keeps every unlocked game available for free practice.
-- Collection shows discovered words, topics, mnemonics and achievements.
-- The adaptive Journey chooses the weakest skill and the most useful game within the current topic.
-- Topic bosses combine vocabulary, listening, reading, images, sentences and active recall.
-- Passing a boss completes the topic and unlocks the next region.
+### Changes
 
-## Topic grouping
+- Added a dedicated Japanese school teacher for guidance notifications.
+- The teacher is used for recommendations, learning guidance, topic bosses, story moments and milestones.
+- Master Sensei remains available as a separate selectable learner character.
+- Removed the duplicate old-man emoji fallback.
+- Fixed the mobile teacher recommendation layout.
+- Character Unlock now previews the exact next vocabulary word that uses the kana.
+- The action says “Learn [kana] now”.
+- Completing the required kana immediately opens the First Encounter card for that word.
 
-Imported Anki content remains a source for words and example sentences. Kaishi Quest owns the learning order and topic grouping. Words shown together are drawn from the same assigned topic wherever possible.
-
-## Upload
-
-This ZIP preserves folders. Merge all root files and the `data/` directory into the repository. The `reports/` directory remains optional.
+The ZIP preserves folders. Upload the root files and the new `media/guides/teacher-guide.webp` asset while retaining the folder structure.

@@ -1,8 +1,16 @@
 {
-  "version": "8.0.0",
+  "version": "8.1.0",
   "released": "2026-08-03",
-  "title": "Topic Adventure",
+  "title": "Teacher Guidance and Character Unlock Flow",
   "changes": [
+    "Added a dedicated Japanese school teacher for all mentor, recommendation, boss, story and milestone guidance.",
+    "Kept the old Master Sensei character separate as a selectable learner avatar.",
+    "Removed the duplicate old-man emoji fallback from guidance notifications.",
+    "Fixed the mobile recommendation card so text uses the available horizontal width instead of collapsing into a narrow column.",
+    "Character Unlock now clearly previews the exact upcoming vocabulary word that uses the new kana.",
+    "The primary Character Unlock action is now Learn [kana] now rather than the misleading Use it in [word] wording.",
+    "After the final required kana is learned, the app immediately opens First Encounter for that exact word.",
+    "Updated application and asset versions to v8.1.0.",
     "Replaced learner-facing numbered chapters with topic-first Japanese regions.",
     "Added a simplified Home focused on Continue Adventure, reviews, Practice Grounds and Collection.",
     "Added Sensei recommendations to the Home and topic Journey using the existing old-man companion.",
