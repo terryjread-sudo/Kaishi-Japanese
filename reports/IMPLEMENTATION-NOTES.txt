@@ -1,0 +1,5 @@
+Imported notes: 2143
+Media mappings found: 4205
+Audio binaries included: No
+
+The reference course was used to define the topic sequence. Individual word-to-topic assignment is automatic and conservative. Uncertain words remain in Core Japanese rather than being falsely tied to an exact external unit.
