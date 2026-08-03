@@ -1,39 +1,35 @@
 .vms-settings{border:1px solid #dbe3f0;border-radius:16px;padding:12px;display:grid;gap:10px}.vms-settings legend{font-weight:800;padding:0 6px}
 .vms-card{margin-top:18px;border:1px solid #dbe3f0;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.12)}
 .vms-scene{position:relative;aspect-ratio:16/10;background:#eef2ff;overflow:hidden}.vms-scene img{width:100%;height:100%;object-fit:cover;display:block}
-.vms-overlay{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(7rem,33vw,15rem);font-weight:900;color:white;opacity:0;text-shadow:0 5px 20px rgba(0,0,0,.7);transition:opacity .45s ease,transform .45s ease;transform:scale(.94);pointer-events:none}
-.vms-overlay.show{opacity:var(--overlay-opacity,.32);transform:scale(1)}
-.vms-reveal-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#f8fafc}.vms-reveal-controls button{font-size:.85rem;padding:10px 6px}
-.vms-reading-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px;max-height:0;opacity:0;overflow:hidden;transition:.35s ease}.vms-reading-panel.show{max-height:120px;opacity:1;padding:14px}
-.vms-reading-panel div{background:#eef2ff;border-radius:14px;padding:10px;text-align:center}.vms-reading-panel span,.vms-memory span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800}.vms-reading-panel strong{font-size:1.12rem}
-.vms-memory{padding:0 16px;max-height:0;opacity:0;overflow:hidden;transition:.4s ease}.vms-memory.show{max-height:320px;opacity:1;padding:4px 16px 18px}.vms-memory p{margin:10px 0}.vms-sound strong{font-size:1.15rem}.vms-story{line-height:1.55}
-@media(max-width:520px){.vms-reveal-controls{grid-template-columns:1fr}.vms-reading-panel{grid-template-columns:1fr}.vms-reading-panel.show{max-height:300px}.vms-scene{aspect-ratio:4/3}}
-.vms-scene{position:relative;overflow:hidden}
-.vms-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:4%;white-space:nowrap;overflow:hidden;text-overflow:clip;font-size:clamp(1.25rem,calc(var(--overlay-size,0.62)*12vw),6.5rem);line-height:1;color:var(--overlay-colour,#fff);opacity:0;text-shadow:0 2px 8px rgba(0,0,0,.82);transition:opacity .35s ease;pointer-events:none;font-weight:900}
+.vms-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:4%;white-space:nowrap;overflow:hidden;text-overflow:clip;font-size:clamp(1.25rem,calc(var(--overlay-size,0.62)*12vw),6.5rem);line-height:1;color:var(--overlay-colour,#fff);opacity:0;text-shadow:0 2px 8px rgba(0,0,0,.82);transition:opacity .35s ease;pointer-events:none;font-weight:900;max-width:100%;max-height:100%;text-align:center}
 .vms-overlay.show{opacity:var(--overlay-opacity,.34)}
-.vms-stage-label{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+.vms-reveal-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#f8fafc}.vms-reveal-controls button{font-size:.85rem;padding:10px 6px}
+.vms-reading-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px;max-height:0;opacity:0;overflow:hidden;transition:.35s ease;background:#fff!important;color:#172033!important}.vms-reading-panel.show{max-height:160px;opacity:1;padding:14px}
+.vms-reading-panel div{background:#eef2ff;border-radius:14px;padding:10px;text-align:center}.vms-reading-panel span,.vms-memory span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#526078!important;font-weight:800}.vms-reading-panel strong{font-size:1.12rem;color:#172033!important}
+.vms-memory{padding:0 16px;max-height:0;opacity:0;overflow:hidden;transition:.4s ease;background:#fff!important;color:#172033!important}.vms-memory.show{max-height:360px;opacity:1;padding:4px 16px 18px}.vms-memory p{margin:10px 0}.vms-sound strong{font-size:1.15rem}.vms-story{line-height:1.55}.vms-memory strong,.vms-story,.vms-sound{color:#172033!important}
+.vms-stage-label{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin:0;padding:10px 14px;background:#f8fafc}
 .vms-study-preview{max-width:720px;margin:auto}
 
-/* v4.6 preview/readability fixes */
-.vms-reading-panel,
-.vms-memory {
-  background: #ffffff !important;
-  color: #172033 !important;
-}
-.vms-reading-panel span,
-.vms-memory span {
-  color: #526078 !important;
-}
-.vms-reading-panel strong,
-.vms-memory strong,
-.vms-story,
-.vms-sound {
-  color: #172033 !important;
-}
-.vms-overlay {
-  max-width: 100%;
-  max-height: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: center;
+/* v6.8 Meet-the-word teaching layout */
+.meet-word-identity{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px;margin:14px 0}
+.meet-word-written,.meet-word-reading,.meet-word-meaning{position:relative;border:1px solid #dbe3f0;border-radius:16px;padding:10px 12px;background:#f8fafc;min-width:0}
+.meet-word-written{grid-column:1 / -1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px}
+.meet-word-written>span,.meet-word-reading>span,.meet-word-meaning>span{display:block;grid-column:1 / -1;font-size:.7rem;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:#64748b;margin-bottom:6px}
+.meet-word-written .jp,.meet-word-reading .reading,.meet-word-meaning .meaning{margin:0!important;text-align:left!important}
+.meet-word-written .jp{font-size:clamp(2.7rem,12vw,5.5rem)}
+.meet-word-speaker{width:48px;height:48px;min-width:48px;padding:0!important;border-radius:50%;display:grid;place-items:center;font-size:1.25rem}
+.meet-word-guidance{margin:16px 0;border-left:5px solid #6366f1;border-radius:14px;background:#eef2ff;color:#172033;padding:14px 16px;text-align:left}
+.meet-word-guidance strong{display:block;margin-bottom:7px}
+.meet-word-guidance p{margin:0;line-height:1.5}
+.meet-word-guidance ol{margin:0;padding-left:1.25rem;display:grid;gap:5px;line-height:1.45}
+#card[data-meet-word-enhanced="true"]>#continueBtn{margin-top:14px}
+#card[data-meet-word-enhanced="true"]>.picture{display:none!important}
+
+@media(max-width:520px){
+ .vms-reveal-controls{grid-template-columns:1fr}
+ .vms-reading-panel{grid-template-columns:1fr}
+ .vms-reading-panel.show{max-height:320px}
+ .vms-scene{aspect-ratio:4/3}
+ .meet-word-identity{grid-template-columns:1fr}
+ .meet-word-written{grid-column:auto}
 }

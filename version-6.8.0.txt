@@ -1,0 +1,3 @@
+Kaishi Quest release: 6.8.0
+Meet-the-word mnemonic teaching update.
+The runtime version badge and stylesheet cache version are applied by vms.js.
