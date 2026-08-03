@@ -4,17 +4,17 @@ Kaishi Quest is a browser-based Japanese learning app built around vocabulary, v
 
 ## Current release
 
-**v6.8.0 — Improved Meet the Word Learning**
+**v6.9.0 — Mobile Learning and Journey Polish**
 
-### v6.8.0 highlights
+### v6.9.0 highlights
 
-- Approved mnemonic artwork replaces the duplicate ordinary picture on Meet the Word cards.
-- Written Japanese, reading and English meaning are clearly labelled.
-- The Japanese audio speaker is positioned beside the written word.
-- Introduction cards explain how to use the mnemonic picture, sound clue and story.
-- Mnemonic stories are displayed automatically by default for new users.
-- Existing users retain their saved mnemonic display preferences.
-- Page, app and asset versions use the existing v6.8.0 release mechanism.
+- Meet the Word uses a compact reading-and-meaning row.
+- The learning instructions are fully shown only for the first two introduction cards in a session and then collapse.
+- Duplicate learning guidance has been removed.
+- The Continue action remains reachable at the bottom of the viewport.
+- Journey mission cards, the per-word Journey badge and Share control use less vertical space.
+- Why these missions starts collapsed and expands when requested.
+- Only the current vocabulary expedition chapter shows full progress details; other chapters use compact summaries.
 
 ## Main features
 

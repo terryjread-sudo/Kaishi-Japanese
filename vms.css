@@ -33,3 +33,14 @@
  .meet-word-identity{grid-template-columns:1fr}
  .meet-word-written{grid-column:auto}
 }
+
+
+/* v6.9.0 compact mnemonic presentation */
+.vms-card{margin-top:12px}
+.vms-stage-label{padding:7px 12px}
+.vms-reveal-controls{padding:8px}
+.vms-reveal-controls button{padding:8px 5px;font-size:.75rem}
+@media(max-width:520px){
+ .vms-reveal-controls{grid-template-columns:repeat(3,1fr)}
+ .vms-reading-panel.show{max-height:260px}
+}

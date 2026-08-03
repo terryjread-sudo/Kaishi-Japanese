@@ -10,7 +10,7 @@
 
  async function load(){
   try{
-   cards=await fetch('visual-mnemonics.json?v=6.8.0',{cache:'no-store'}).then(r=>r.ok?r.json():{});
+   cards=await fetch('visual-mnemonics.json?v=6.9.0',{cache:'no-store'}).then(r=>r.ok?r.json():{});
   }catch(e){
    console.warn('VMS data unavailable',e);
   }
@@ -97,88 +97,14 @@
  }
 
  function enhanceMeetWord(card,v){
-  if(!isMeetWord(card)||card.dataset.meetWordEnhanced==='true')return;
-
+  if(!isMeetWord(card))return;
   const vmsCard=card.querySelector('.vms-card');
-  const jp=card.querySelector(':scope > .jp');
-  const reading=card.querySelector(':scope > .reading');
-  const meaning=card.querySelector(':scope > .meaning');
-  const oldAudio=card.querySelector('#introAudio');
-
-  // A dedicated mnemonic picture supersedes the ordinary built-in vocabulary picture.
   if(vmsCard){
    card.querySelectorAll(':scope > img.picture, :scope > .picture').forEach(element=>{
     if(!element.closest('.vms-card'))element.remove();
    });
   }
-
-  if(jp){
-   const hasKanji=/\p{Script=Han}/u.test(jp.textContent||'');
-   const identity=document.createElement('section');
-   identity.className='meet-word-identity';
-
-   const wordBlock=document.createElement('div');
-   wordBlock.className='meet-word-written';
-   wordBlock.innerHTML=`<span>${hasKanji?'Kanji / written word':'Japanese word'}</span>`;
-   wordBlock.appendChild(jp);
-
-   const speaker=document.createElement('button');
-   speaker.type='button';
-   speaker.className='audio meet-word-speaker';
-   speaker.setAttribute('aria-label','Play Japanese word');
-   speaker.title='Play Japanese word';
-   speaker.textContent='🔊';
-   speaker.onclick=()=>typeof play==='function'&&current?.v?.wordAudio&&play(current.v.wordAudio);
-   wordBlock.appendChild(speaker);
-
-   identity.appendChild(wordBlock);
-
-   if(reading){
-    const readingBlock=document.createElement('div');
-    readingBlock.className='meet-word-reading';
-    readingBlock.innerHTML='<span>Reading</span>';
-    readingBlock.appendChild(reading);
-    identity.appendChild(readingBlock);
-   }
-
-   if(meaning){
-    const meaningBlock=document.createElement('div');
-    meaningBlock.className='meet-word-meaning';
-    meaningBlock.innerHTML='<span>Meaning</span>';
-    meaningBlock.appendChild(meaning);
-    identity.appendChild(meaningBlock);
-   }
-
-   const eyebrow=card.querySelector('.eyebrow');
-   eyebrow?.insertAdjacentElement('afterend',identity);
-  }
-
-  oldAudio?.remove();
-
-  const guidance=document.createElement('aside');
-  guidance.className='meet-word-guidance';
-  guidance.innerHTML=vmsCard
-   ? `<strong>How to learn this word</strong>
-      <ol>
-       <li>Say the Japanese word aloud using the speaker.</li>
-       <li>Connect the mnemonic picture and sound clue to the meaning.</li>
-       <li>Picture the short story, then try to recall the word before continuing.</li>
-      </ol>`
-   : `<strong>How to learn this word</strong>
-      <p>Say the Japanese word aloud, look at its meaning and picture, then pause and try to recall it once before continuing.</p>`;
-
-  if(vmsCard)vmsCard.insertAdjacentElement('beforebegin',guidance);
-  else{
-   const continueButton=card.querySelector('#continueBtn');
-   continueButton?.insertAdjacentElement('beforebegin',guidance);
-  }
-
-  const continueButton=card.querySelector('#continueBtn');
-  if(continueButton)continueButton.textContent='I have linked the word and meaning →';
-
-  card.dataset.meetWordEnhanced='true';
  }
-
  function enhance(scope,refresh=false){
   if(!cfg.enabled)return;
   scope.querySelectorAll?.('#card').forEach(card=>{
