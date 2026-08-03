@@ -1,4 +1,4 @@
-# Kaishi Quest v8.2.0 — Curated Learning Graph
+# Kaishi Quest v8.2.1 — Curated Learning Graph
 
 This release makes one learning graph the source of truth for topic progression and reusable foundation skills.
 
@@ -31,3 +31,8 @@ The same graph now drives:
 The optional `reports/` directory contains mapping totals, foundation coverage and entries that remain suitable for human review.
 
 This taxonomy is curated. Individual mappings are generated with explicit ordered semantic rules and exposed in reports rather than being represented as manually reviewed one by one.
+
+
+## v8.2.1 reading feedback
+
+The reading exercise no longer reveals audio before a guess. After an incorrect selection, the teacher displays the correct reading, plays it once automatically and provides a compact replay speaker.

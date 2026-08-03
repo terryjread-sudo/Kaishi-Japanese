@@ -1,8 +1,14 @@
 {
-  "version": "8.2.0",
+  "version": "8.2.1",
   "released": "2026-08-03",
-  "title": "Curated Learning Graph",
+  "title": "Reading Answer Feedback",
   "changes": [
+    "Removed the Hear the answer control before a learner selects a reading.",
+    "Incorrect reading choices now show a compact teacher correction with the correct Japanese answer.",
+    "The correct pronunciation plays automatically once after an incorrect answer.",
+    "A speaker control remains in the correction panel so the learner can replay the answer.",
+    "The memory hint is removed after an answer is selected.",
+    "Updated application and asset versions to v8.2.1.",
     "Added one curated learning graph used by the Journey, Topic Adventure, adaptive sessions, Collection and topic bosses.",
     "Mapped 2,139 unique imported Japanese words across 28 practical topics and 6 regions.",
     "Added reusable foundations for numbers, counters, colours, days and dates, time, question words, directions, people, verbs, descriptions, particles and polite expressions.",
