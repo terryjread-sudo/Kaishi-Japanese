@@ -433,3 +433,25 @@ header{
 .first-encounter-word{font-size:clamp(4rem,22vw,8rem);font-weight:900;text-align:center;margin:28px 0 8px;line-height:1.05}.first-encounter-summary{text-align:center;font-size:1.15rem;color:#475569;margin-bottom:20px}
 .example-sentence{font-size:clamp(1.7rem,7vw,2.5rem);line-height:1.65;text-align:center;margin:22px 0 8px}.example-sentence mark{background:#fef08a;border-radius:7px;padding:1px 4px;color:inherit}.example-romaji{text-align:center;color:#64748b;font-size:.9rem;line-height:1.5}.example-meaning{text-align:center;font-weight:800;font-size:1.15rem;margin:14px 0 20px}
 @media(max-width:480px){.sensei-guide{grid-template-columns:44px 1fr}.sensei-avatar{width:42px;height:42px}.sensei-guide p{font-size:.76rem}}
+
+
+/* v8.0 Topic Adventure, Practice Grounds and Collection */
+.adventure-home{display:grid;gap:12px}
+.home-sensei{display:grid;grid-template-columns:58px 1fr;gap:12px;align-items:center;padding:14px;border-radius:20px;background:linear-gradient(135deg,#fff7ed,#fef3c7);border:1px solid #fdba74}
+.home-sensei>img,.home-sensei>span{width:56px;height:56px;border-radius:50%;object-fit:cover;background:white;display:grid;place-items:center;font-size:2.4rem}
+.home-sensei small,.home-sensei strong,.home-sensei p{display:block}.home-sensei small{color:#9a3412;font-weight:800}.home-sensei p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.35}
+.adventure-continue{min-height:58px;font-size:1.05rem}
+.adventure-home-links{display:grid;grid-template-columns:1fr 1fr;gap:10px}.adventure-home-links button{min-height:66px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:1.2rem}.adventure-home-links span{font-size:.82rem}
+.topic-adventure-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.topic-region{background:#fff;border:1px solid #dbe3f0;border-radius:18px;overflow:hidden}
+.topic-region.compact button{width:100%;display:grid;grid-template-columns:36px 1fr;gap:8px;text-align:left;padding:12px}.topic-region.compact button>span{font-size:1.5rem}.topic-region.compact strong,.topic-region.compact small{display:block}.topic-region.compact small{margin-top:3px;color:#64748b;font-size:.66rem}
+.topic-region.current{grid-column:1/-1;padding:16px;border:2px solid #60a5fa;background:linear-gradient(135deg,#eff6ff,#fff)}
+.topic-region-heading{display:grid;grid-template-columns:52px 1fr;gap:10px}.topic-region-heading>span{font-size:2.4rem}.topic-region-heading small,.topic-region-heading strong{display:block}.topic-region-heading strong{font-size:1.25rem}.topic-region-heading p{margin:5px 0;color:#475569;font-size:.78rem}
+.topic-region-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}.topic-region-stats span{background:white;border-radius:12px;padding:8px;text-align:center;font-size:.65rem}.topic-region-stats b{display:block;font-size:1rem}
+.topic-progress{display:block;height:9px;background:#dbeafe;border-radius:99px;overflow:hidden}.topic-progress b{display:block;height:100%;background:#2563eb}
+.topic-region-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}.topic-region-actions button{padding:10px}
+.collection-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.collection-stats article{background:#f8fafc;border-radius:14px;padding:10px;text-align:center}.collection-stats strong,.collection-stats span{display:block}.collection-stats span{font-size:.65rem;color:#64748b}
+.collection-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0}.collection-tabs button{padding:9px 4px;font-size:.7rem}.collection-tabs button.active{background:#2563eb;color:white}
+.collection-content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:60vh;overflow:auto}
+.collection-item,.collection-word,.achievement{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:10px;display:grid;gap:3px}.collection-item{grid-template-columns:34px 1fr}.collection-item>span{font-size:1.5rem}.collection-item strong,.collection-item small,.collection-word strong,.collection-word span,.collection-word small{display:block}.collection-item small,.collection-word small{color:#64748b;font-size:.65rem}.collection-word strong{font-size:1.25rem}.collection-word span{font-size:.75rem}.achievement{grid-template-columns:34px 1fr;align-items:center}.achievement span{font-size:1.5rem}
+@media(max-width:480px){.topic-adventure-grid,.collection-content{grid-template-columns:1fr 1fr}.topic-region.current{grid-column:1/-1}.collection-stats{grid-template-columns:repeat(2,1fr)}.home-sensei{grid-template-columns:48px 1fr}.home-sensei>img,.home-sensei>span{width:46px;height:46px}.journey-home-actions{grid-template-columns:1fr}.topic-region-actions{grid-template-columns:1fr}}

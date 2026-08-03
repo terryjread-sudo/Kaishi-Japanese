@@ -1,22 +1,22 @@
-# Kaishi Quest v7.2.0
+# Kaishi Quest v8.0.0 — Topic Adventure
 
-This package combines Sprint 1 and Sprint 2 of the integrated Journey.
+Kaishi Quest is a guided Japanese memory adventure built around approved mnemonic images, varied games and adaptive practice.
 
-## Included
+## Major changes
 
-- Character Unlock before words requiring unknown kana
-- First Encounter before mnemonic teaching
-- Sensei guidance using the old-man companion
-- Existing Meet the Word mnemonic flow
-- Example Sentence after the mnemonic lesson
-- Topic-aware new-word ordering
-- 2,143 imported Anki content records
-- Existing vocabulary IDs, games, SRS, mnemonics and progress preserved
+- Topic-first regions replace learner-facing numbered chapters.
+- Home now centres on Continue Adventure, Today’s Reviews, Practice Grounds and Collection.
+- Sensei uses the existing old-man companion to explain the next useful step.
+- Practice Grounds keeps every unlocked game available for free practice.
+- Collection shows discovered words, topics, mnemonics and achievements.
+- The adaptive Journey chooses the weakest skill and the most useful game within the current topic.
+- Topic bosses combine vocabulary, listening, reading, images, sentences and active recall.
+- Passing a boss completes the topic and unlocks the next region.
 
-## Audio note
+## Topic grouping
 
-The Anki deck contains 4,205 media mappings. This mobile-sized package includes text, sentence content and audio filenames, but not the thousands of audio binaries. Existing app audio continues to work. Imported sentence audio can be added later under `media/anki/`.
+Imported Anki content remains a source for words and example sentences. Kaishi Quest owns the learning order and topic grouping. Words shown together are drawn from the same assigned topic wherever possible.
 
 ## Upload
 
-This ZIP preserves folders. Merge the root files and the new `data/` folder into the repository. The `reports/` folder is optional.
+This ZIP preserves folders. Merge all root files and the `data/` directory into the repository. The `reports/` directory remains optional.
