@@ -3,25 +3,12 @@
  const KEY='kq-vms-settings-v43';
  const defaults={enabled:true,autoOverlay:true,autoStory:true,hideRomaji:false};
  let cfg={...defaults,...read(KEY,{})}, cards={};
- const RELEASE_VERSION='6.8.0';
-
- function syncDisplayedVersion(){
-  document.title=`Kaishi Quest • v${RELEASE_VERSION}`;
-  document.querySelectorAll('.version-badge').forEach(el=>el.textContent=`v${RELEASE_VERSION}`);
-  document.querySelectorAll('link[href*="styles.css"],link[href*="vms.css"]').forEach(link=>{
-   const url=new URL(link.getAttribute('href'),location.href);
-   url.searchParams.set('v',RELEASE_VERSION);
-   link.setAttribute('href',url.pathname.split('/').pop()+url.search);
-  });
-  document.documentElement.dataset.kaishiVersion=RELEASE_VERSION;
- }
 
  function read(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
  function save(){localStorage.setItem(KEY,JSON.stringify(cfg))}
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
  async function load(){
-  syncDisplayedVersion();
   try{
    cards=await fetch('visual-mnemonics.json?v=6.8.0',{cache:'no-store'}).then(r=>r.ok?r.json():{});
   }catch(e){

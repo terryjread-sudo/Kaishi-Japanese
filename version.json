@@ -1,8 +1,14 @@
 {
-  "version": "6.7.0",
-  "released": "2026-08-02",
-  "title": "Grammar Path and Mnemonic Expansion",
+  "version": "6.8.0",
+  "released": "2026-08-03",
+  "title": "Improved Meet the Word Learning",
   "changes": [
+    "Meet the Word cards now use an approved mnemonic image instead of also showing the ordinary built-in vocabulary picture.",
+    "Added clear labels for the Kanji or written Japanese word, its reading and its English meaning.",
+    "Moved the Japanese word audio control beside the written word and reduced it to a clear speaker icon.",
+    "Added learner guidance explaining how to connect the mnemonic picture, sound clue, story and meaning.",
+    "Mnemonic stories are now shown automatically by default for new users while preserving existing saved preferences.",
+    "Updated application, page and asset versions to v6.8.0 so cached browsers receive the new learning card layout.",
     "Added the Particle Shrine Grammar & Particles learning path with sequential particle lessons, spoken examples and in-context questions.",
     "Grammar unlocks on the Journey after 15 started words and 15 tested answers, and remains repeatable from the Practice Hub and Games.",
     "Added 46 new approved mnemonic scenes to reach 646 mapped vocabulary images.",
