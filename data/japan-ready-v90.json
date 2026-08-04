@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "release": "9.0.0",
+  "release": "9.0.1",
   "campaign": {
     "id": "japan-ready",
     "title": "Japan Ready",
@@ -41,6 +41,10 @@
             "こんにちは",
             "ありがとう",
             "すみません"
+          ],
+          "npcEnglish": "Hello!",
+          "acceptedEnglish": [
+            "Hello."
           ]
         },
         {
@@ -59,6 +63,11 @@
             "どういたしまして",
             "ありがとう",
             "すみません"
+          ],
+          "npcEnglish": "Thank you very much.",
+          "acceptedEnglish": [
+            "You’re welcome.",
+            "Thank you."
           ]
         }
       ]
@@ -98,6 +107,10 @@
           "suggestions": [
             "はい、お願いします",
             "いいえ、けっこうです"
+          ],
+          "npcEnglish": "Do you need a bag?",
+          "acceptedEnglish": [
+            "Yes, please."
           ]
         },
         {
@@ -113,6 +126,10 @@
           "suggestions": [
             "カードでお願いします",
             "現金でお願いします"
+          ],
+          "npcEnglish": "Are you paying by card?",
+          "acceptedEnglish": [
+            "By card, please."
           ]
         }
       ]
@@ -152,6 +169,10 @@
             "コーヒー",
             "二つ",
             "お願いします"
+          ],
+          "npcEnglish": "What would you like to order?",
+          "acceptedEnglish": [
+            "Two coffees, please."
           ]
         },
         {
@@ -169,6 +190,11 @@
           "suggestions": [
             "はい",
             "わかりました"
+          ],
+          "npcEnglish": "That will be 1,200 yen.",
+          "acceptedEnglish": [
+            "Yes.",
+            "I understand."
           ]
         }
       ]
@@ -208,6 +234,10 @@
           "suggestions": [
             "二人です",
             "一人です"
+          ],
+          "npcEnglish": "How many people are in your party?",
+          "acceptedEnglish": [
+            "There are two of us."
           ]
         },
         {
@@ -224,6 +254,10 @@
             "ラーメン",
             "一つ",
             "お願いします"
+          ],
+          "npcEnglish": "What would you like to order?",
+          "acceptedEnglish": [
+            "One ramen, please."
           ]
         }
       ]
@@ -263,6 +297,10 @@
             "駅",
             "どこ",
             "ですか"
+          ],
+          "npcEnglish": "How can I help?",
+          "acceptedEnglish": [
+            "Where is the station?"
           ]
         },
         {
@@ -280,6 +318,11 @@
           "suggestions": [
             "わかりました",
             "ありがとうございます"
+          ],
+          "npcEnglish": "Go straight, then it is on the right.",
+          "acceptedEnglish": [
+            "I understand.",
+            "Thank you very much."
           ]
         }
       ]
@@ -317,6 +360,10 @@
           "suggestions": [
             "リードです",
             "予約があります"
+          ],
+          "npcEnglish": "What name is the reservation under?",
+          "acceptedEnglish": [
+            "It is under Read."
           ]
         },
         {
@@ -332,6 +379,10 @@
           "suggestions": [
             "はい、どうぞ",
             "わかりました"
+          ],
+          "npcEnglish": "May I see your passport, please?",
+          "acceptedEnglish": [
+            "Yes, here you are."
           ]
         }
       ]
@@ -371,6 +422,10 @@
           "suggestions": [
             "これ",
             "探しています"
+          ],
+          "npcEnglish": "What are you looking for?",
+          "acceptedEnglish": [
+            "I’m looking for this."
           ]
         },
         {
@@ -386,6 +441,10 @@
           "suggestions": [
             "カード",
             "払えますか"
+          ],
+          "npcEnglish": "This one is 3,000 yen.",
+          "acceptedEnglish": [
+            "Can I pay by card?"
           ]
         }
       ]
@@ -425,6 +484,10 @@
             "一番近い",
             "駅",
             "どこですか"
+          ],
+          "npcEnglish": "Where would you like to go?",
+          "acceptedEnglish": [
+            "Where is the nearest station?"
           ]
         },
         {
@@ -440,6 +503,10 @@
           "suggestions": [
             "ありがとうございます",
             "わかりました"
+          ],
+          "npcEnglish": "Please turn left.",
+          "acceptedEnglish": [
+            "Thank you very much."
           ]
         }
       ]
@@ -479,6 +546,10 @@
           "suggestions": [
             "二枚",
             "お願いします"
+          ],
+          "npcEnglish": "How many tickets would you like?",
+          "acceptedEnglish": [
+            "Two tickets, please."
           ]
         },
         {
@@ -494,6 +565,10 @@
           "suggestions": [
             "ありがとうございます",
             "わかりました"
+          ],
+          "npcEnglish": "Photography is allowed.",
+          "acceptedEnglish": [
+            "Thank you very much."
           ]
         }
       ]
@@ -533,6 +608,10 @@
             "助けてください",
             "病院",
             "警察"
+          ],
+          "npcEnglish": "Are you all right?",
+          "acceptedEnglish": [
+            "Please help me."
           ]
         },
         {
@@ -549,6 +628,10 @@
             "お腹",
             "痛いです",
             "薬"
+          ],
+          "npcEnglish": "Where does it hurt?",
+          "acceptedEnglish": [
+            "My stomach hurts."
           ]
         }
       ]
