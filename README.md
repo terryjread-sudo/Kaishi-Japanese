@@ -1,38 +1,33 @@
-# Kaishi Quest v8.2.1 — Curated Learning Graph
+# Kaishi Quest v8.3.0 patch
 
-This release makes one learning graph the source of truth for topic progression and reusable foundation skills.
+This is a small changed-files patch for learning-card reports and the owner Admin area.
 
-## Coverage
+## Upload these files
 
-- 2,143 imported source records
-- 2,139 unique Japanese written forms mapped
-- 28 practical topics
-- 6 regions
-- 12 reusable foundations
+Upload or replace the files in the repository root:
 
-## Reusable foundations
+- `app.js`
+- `index.html`
+- `styles.css`
+- `version.json`
+- `reporting.js`
 
-Numbers, counters, colours, days, dates, time, question words, directions, people, common verbs, descriptions, particles and polite expressions are introduced where useful and then reused across later topics.
+Keep `supabase-learning-reports.sql` for the one-time Supabase setup. It does not need to be hosted by the website.
 
-## App integration
+## Supabase setup
 
-The same graph now drives:
+1. Sign in to Kaishi Quest once using the GitHub account `terryjread-sudo`.
+2. Open the Supabase project.
+3. Open **SQL Editor**.
+4. Create a new query.
+5. Paste the complete contents of `supabase-learning-reports.sql`.
+6. Run the query.
+7. Confirm the final diagnostic query shows your GitHub login with `is_admin = true`.
 
-- Topic Adventure
-- Home recommendations
-- adaptive topic sessions
-- Collection
-- relevant foundation review
-- Topic Bosses
-- word ordering and grouping
+## Behaviour
 
-## Review reports
-
-The optional `reports/` directory contains mapping totals, foundation coverage and entries that remain suitable for human review.
-
-This taxonomy is curated. Individual mappings are generated with explicit ordered semantic rules and exposed in reports rather than being represented as manually reviewed one by one.
-
-
-## v8.2.1 reading feedback
-
-The reading exercise no longer reveals audio before a guess. After an incorrect selection, the teacher displays the correct reading, plays it once automatically and provides a compact replay speaker.
+- The Report issue button appears only for signed-in users.
+- A user can submit at most three reports per UTC day.
+- Only the registered administrator can read, update, export or delete reports.
+- The Admin button appears in Settings only after Supabase confirms administrator access.
+- CSV export can mark only the exported report IDs as reviewed, preventing them from appearing in the default unreviewed export again.

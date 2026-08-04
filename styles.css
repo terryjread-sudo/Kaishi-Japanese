@@ -581,10 +581,85 @@ header{
 @media(max-width:520px){.collection-tabs{grid-template-columns:repeat(3,1fr)}}
 
 
-/* v8.2.1 answer feedback */
+/* v8.3.0 answer feedback */
 .teacher-answer-feedback{margin-top:14px}
 .teacher-answer-feedback .teacher-guide{margin:0 0 8px}
 .teacher-correct-answer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;align-items:center;padding:11px 13px;border:1px solid #86efac;border-radius:15px;background:#f0fdf4}
 .teacher-correct-answer strong{font-size:1.45rem;color:#166534}
 .teacher-correct-answer span{grid-column:1;color:#475569;font-size:.76rem}
 .teacher-correct-answer .audio{grid-column:2;grid-row:1/3;width:48px;height:48px;min-height:48px;padding:0;border-radius:50%}
+
+
+/* v8.3 learning-card reports and owner Admin area */
+.learning-card-flag{
+ margin:16px auto 2px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:6px;
+ width:max-content;
+ max-width:100%;
+ padding:7px 11px;
+ border:1px solid #cbd5e1;
+ background:#fff;
+ color:#64748b;
+ font-size:.72rem;
+ border-radius:999px;
+}
+.learning-card-flag:hover{color:#b91c1c;border-color:#fca5a5;background:#fff7f7}
+
+#learningReportDialog{
+ width:min(92vw,520px);
+ border:0;
+ border-radius:22px;
+ padding:0;
+ box-shadow:0 24px 80px #0f172a55;
+}
+#learningReportDialog::backdrop{background:#0f172a99}
+.learning-report-form{display:grid;gap:14px;padding:20px}
+.report-dialog-heading{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.report-dialog-heading h2{margin:2px 0 0}
+.report-dialog-heading>button{width:38px;height:38px;border-radius:50%;padding:0;font-size:1.35rem}
+.learning-report-form label{display:grid;gap:6px;font-weight:750}
+.learning-report-form select,.learning-report-form textarea{width:100%}
+.learning-report-form textarea{resize:vertical;min-height:100px}
+.learning-report-form label small{text-align:right;color:#64748b;font-weight:500}
+.report-card-summary{display:grid;gap:2px;margin:0;padding:12px;border-radius:14px;background:#f8fafc}
+.report-card-summary strong{font-size:1.4rem}
+.report-card-summary span,.report-card-summary small{color:#475569}
+.report-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.admin-settings-link{width:100%;margin-top:10px}
+.admin-page{display:grid;gap:18px}
+.admin-tool-section{border:1px solid #dbe3f0;border-radius:18px;padding:14px;background:#fff}
+.admin-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.admin-section-heading h3{margin:2px 0 0}
+.admin-report-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.admin-report-controls label{display:grid;gap:5px;font-size:.75rem;font-weight:750}
+.admin-report-controls .admin-search{grid-column:1/-1}
+.admin-export-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.admin-export-row label{display:flex;align-items:center;gap:6px;font-size:.75rem}
+.admin-report-list{display:grid;gap:10px}
+.admin-report-card{border:1px solid #dbe3f0;border-radius:16px;padding:12px;display:grid;gap:9px}
+.admin-report-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.admin-report-title>div{display:grid;gap:2px}
+.admin-report-title strong{font-size:1.25rem}
+.admin-report-title span{color:#475569}
+.report-status{padding:4px 8px;border-radius:999px;background:#e2e8f0;font-size:.65rem;text-transform:uppercase;font-weight:850}
+.report-status.new{background:#fee2e2;color:#991b1b}
+.report-status.reviewed{background:#dbeafe;color:#1e40af}
+.report-status.fixed{background:#dcfce7;color:#166534}
+.admin-report-meta{display:flex;flex-wrap:wrap;gap:5px}
+.admin-report-meta span{padding:4px 7px;border-radius:999px;background:#f1f5f9;font-size:.65rem;color:#475569}
+.admin-report-card p{margin:0;line-height:1.45}
+.admin-report-card details pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:.7rem;background:#f8fafc;padding:9px;border-radius:10px}
+.admin-report-actions{display:flex;flex-wrap:wrap;gap:7px}
+.admin-report-actions button{padding:7px 10px;font-size:.7rem}
+.admin-tools-slot{display:grid;gap:12px}
+.admin-tools-slot .owner-path-controls{margin:0}
+.admin-tools-slot .settings-link{display:block}
+@media(max-width:560px){
+ .admin-report-controls{grid-template-columns:1fr}
+ .admin-report-controls .admin-search{grid-column:auto}
+ .report-dialog-actions{grid-template-columns:1fr}
+}
