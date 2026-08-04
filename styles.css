@@ -581,7 +581,7 @@ header{
 @media(max-width:520px){.collection-tabs{grid-template-columns:repeat(3,1fr)}}
 
 
-/* v8.3.0 answer feedback */
+/* v8.3.2 answer feedback */
 .teacher-answer-feedback{margin-top:14px}
 .teacher-answer-feedback .teacher-guide{margin:0 0 8px}
 .teacher-correct-answer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;align-items:center;padding:11px 13px;border:1px solid #86efac;border-radius:15px;background:#f0fdf4}
@@ -663,3 +663,10 @@ header{
  .admin-report-controls .admin-search{grid-column:auto}
  .report-dialog-actions{grid-template-columns:1fr}
 }
+
+/* v8.3.2 short missions, save points and quick settings */
+.adaptive-settings-note{padding:12px 14px;border-radius:16px;background:#eff6ff;border:1px solid #bfdbfe}.adaptive-settings-note strong{display:block;color:#1d4ed8}.adaptive-settings-note p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.4}
+#missionCheckpointDialog,#quickSettingsDialog{width:min(92vw,480px);border:0;border-radius:22px;padding:0;box-shadow:0 24px 80px #0f172a55}#missionCheckpointDialog::backdrop,#quickSettingsDialog::backdrop{background:#0f172a99}
+.mission-checkpoint,.quick-settings{display:grid;gap:14px;padding:22px}.mission-checkpoint h2,.quick-settings h2{margin:0}.mission-checkpoint p,.quick-settings p{margin:0;color:#475569}
+.mission-checkpoint-actions,.quick-settings-actions,.mission-complete-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick-settings label{display:grid;gap:7px;font-weight:750}.quick-settings label:has(input){display:flex;align-items:center;gap:8px}.quick-full-settings{font-size:.75rem}.mission-complete-actions{margin-top:18px}
+@media(max-width:520px){.mission-checkpoint-actions,.quick-settings-actions,.mission-complete-actions{grid-template-columns:1fr}}

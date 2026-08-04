@@ -1,18 +1,21 @@
-# Kaishi Quest v8.3.1 patch
-
-This small patch fixes daily reviews reappearing after a page refresh.
+# Kaishi Quest v8.3.2 patch
 
 ## Upload these files to the repository root
 
-- `app.js`
-- `index.html`
-- `version.json`
+- app.js
+- index.html
+- styles.css
+- version.json
 
-## Fixes
+## Changes
 
-- Preserves today's daily review plan when Supabase progress is restored.
-- Immediately sends completed answer state to cloud sync.
-- Does not create another daily allocation after today's assigned reviews are complete.
-- A new plan is created only after the local calendar date changes.
+- Normal missions are capped at 15 cards.
+- Up to three new words and six scheduled reviews are selected automatically.
+- Save points appear every five cards.
+- Finish for now preserves the unfinished mission for Continue Adventure.
+- Completing the required mission offers another optional short mission.
+- Removed the three technical session-construction settings.
+- Settings opens as Quick Settings during an active lesson.
+- Full Settings saves the active mission before opening.
 
-No Supabase SQL changes are required for v8.3.1.
+No Supabase SQL changes are required.
