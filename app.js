@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='8.3.2';
+const APP_VERSION='8.3.3';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -611,6 +611,31 @@ function sceneSprite(scene,extraClass=''){
    <figcaption class="scene-image-fallback" hidden>Image failed to load: ${filename}</figcaption>
  </figure>`;
 }
+function preloadImageUrl(url){
+ if(!url)return;
+ const image=new Image();
+ image.decoding='async';
+ image.src=url;
+}
+function preloadUpcomingCardImages(count=3){
+ const urls=[];
+ for(let offset=1;offset<=count;offset++){
+  const item=session[index+offset];
+  if(!item?.v)continue;
+  const scene=memoryScenes[sceneKey(item.v)];
+  const sceneUrl=sceneImageUrl(scene);
+  if(sceneUrl)urls.push(sceneUrl);
+  if(item.v.picture)urls.push(new URL(media(item.v.picture),document.baseURI).href);
+ }
+ [...new Set(urls)].slice(0,6).forEach(preloadImageUrl);
+}
+function registerKaishiServiceWorker(){
+ if(!('serviceWorker' in navigator)||location.protocol==='file:')return;
+ addEventListener('load',()=>navigator.serviceWorker
+  .register(`service-worker.js?v=${APP_VERSION}`,{scope:'./'})
+  .catch(error=>console.warn('Image cache unavailable',error)),{once:true});
+}
+registerKaishiServiceWorker();
 function wireSceneImages(root=document){
  root.querySelectorAll('img.scene-image').forEach(img=>{
   const fallback=img.parentElement?.querySelector('.scene-image-fallback');
@@ -677,6 +702,7 @@ function renderCurrent(){
   renderCurrentUnsafe();
   if(current?.v&&!pictureGameActive&&!karutaActive&&!battleActive){const step=masteryStepFor(current.v),banner=document.createElement('aside');banner.className='word-mastery-next';banner.innerHTML=`<span>Journey</span><b>Next: ${esc(step.label)}</b><small>${esc(step.reason)}</small>`;$('#card')?.prepend(banner)}
   wireSceneImages($('#card')||document);
+  preloadUpcomingCardImages(3);
   window.KaishiReports?.attachToLearningCard?.(currentLearningReportContext());
  }catch(error){
   console.error('Card rendering failed',error);
@@ -986,7 +1012,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v8.3.2';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v8.3.3';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
