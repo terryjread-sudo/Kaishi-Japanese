@@ -1,9 +1,7 @@
-# Kaishi Quest v9.0.0 — Japan Ready
+# Kaishi Quest v9.0.1 patch
 
-Upload all files while preserving the `data/` and `media/guides/` folders.
+Upload the changed files while preserving the data folder.
 
-Japan Ready adds ten practical travel scenarios, Aiko the tourist guide, focused study using existing activities, and typed Live Conversation with romaji suggestions.
-
-Vocabulary mastery and normal learning progress remain shared with Journey. Scenario confidence and conversation completion are campaign-specific within the same cloud payload.
+Includes WhatsApp-style Live Conversation, Aiko and learner icons, English translations, clearer correction wording, avatar-suited Japanese playback, and corrected Journey/Japan Ready button highlighting.
 
 No Supabase SQL changes are required.

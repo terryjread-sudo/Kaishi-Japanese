@@ -1,8 +1,16 @@
 {
-  "version": "9.0.0",
+  "version": "9.0.1",
   "released": "2026-08-04",
-  "title": "Japan Ready",
+  "title": "Live Conversation polish",
   "changes": [
+    "Redesigned Live Conversation as a WhatsApp-style chat with Aiko on the left and the learner avatar on the right.",
+    "Added English translations beneath Japanese NPC and learner messages.",
+    "Changed correction wording to A suitable response would be and shows its English meaning.",
+    "Plays a correct learner response aloud using a Japanese voice selected to suit the learner avatar.",
+    "Journey remains on the dashboard when selected.",
+    "Japan Ready highlights only while the Japan Ready screen is active.",
+    "Returning from Japan Ready restores Journey as the highlighted dashboard choice.",
+    "Updated application and asset versions to v9.0.1.",
     "Added Japan Ready, a focused scenario-based travel campaign.",
     "Added Aiko as the dedicated tourist-guide companion.",
     "Added ten practical travel scenarios.",

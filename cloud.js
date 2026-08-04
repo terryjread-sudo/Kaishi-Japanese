@@ -13,7 +13,7 @@
  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const avatarKey=value=>AVATARS.includes(value)?value:'boy';
  const avatarState=(streak=0)=>{streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'};
- const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.0`;
+ const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.1`;
 
  function profile(){const m=user?.user_metadata||{},login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';return{github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null}}
  function isOwner(){return Boolean(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
@@ -141,6 +141,6 @@
   addEventListener('online',()=>user&&scheduleSync());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
  }
- window.KaishiCloud={scheduleSync,loadLeaderboard,flush,avatarImage,renderDashboardAvatar,isOwner};
+ window.KaishiCloud={scheduleSync,loadLeaderboard,flush,avatarImage,renderDashboardAvatar,isOwner,currentAvatar:()=>selectedAvatar};
  init();
 })();
