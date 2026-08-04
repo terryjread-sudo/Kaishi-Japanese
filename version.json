@@ -1,8 +1,13 @@
 {
-  "version": "9.0.2",
+  "version": "9.0.3",
   "released": "2026-08-04",
-  "title": "Kana-builder conversations",
+  "title": "Spoken kana guidance and Admin consolidation",
   "changes": [
+    "Added romaji beneath every selectable kana in Live Conversation.",
+    "Added romaji beneath kana already placed into the response.",
+    "Moved Journey testing, Mnemonic Studio and Image Diagnostics out of normal Settings and into the owner-only Admin area.",
+    "Normal Settings now retains only the owner-only Admin entry point.",
+    "Updated application and asset versions to v9.0.3.",
     "Redesigned Live Conversation as a WhatsApp-style chat with Aiko on the left and the learner avatar on the right.",
     "Added English translations beneath Japanese NPC and learner messages.",
     "Changed correction wording to A suitable response would be and shows its English meaning.",
