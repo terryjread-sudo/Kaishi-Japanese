@@ -1,7 +1,7 @@
 {
-  "version": "9.0.1",
+  "version": "9.0.2",
   "released": "2026-08-04",
-  "title": "Live Conversation polish",
+  "title": "Kana-builder conversations",
   "changes": [
     "Redesigned Live Conversation as a WhatsApp-style chat with Aiko on the left and the learner avatar on the right.",
     "Added English translations beneath Japanese NPC and learner messages.",
