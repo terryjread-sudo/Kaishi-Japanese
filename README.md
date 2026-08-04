@@ -1,21 +1,9 @@
-# Kaishi Quest v8.3.3 patch
+# Kaishi Quest v9.0.0 — Japan Ready
 
-## Upload these files to the repository root
+Upload all files while preserving the `data/` and `media/guides/` folders.
 
-- `app.js`
-- `index.html`
-- `cloud.js`
-- `service-worker.js`
-- `version.json`
+Japan Ready adds ten practical travel scenarios, Aiko the tourist guide, focused study using existing activities, and typed Live Conversation with romaji suggestions.
 
-## Image performance
-
-Common graphics and viewed learning images are cached locally. Images for the next three cards are preloaded while the current card is displayed. The runtime image cache is limited to roughly 350 images.
-
-The first visit after uploading installs the service worker. Repeated images and later visits should load faster.
-
-## Cloud conflict fix
-
-Routine refreshes, tab changes and token refreshes no longer repeatedly open the progress-choice dialog. The app records a fingerprint after each successful sync and automatically keeps whichever side changed. The chooser remains for genuine independent conflicts and manual **Sync or restore now**.
+Vocabulary mastery and normal learning progress remain shared with Journey. Scenario confidence and conversation completion are campaign-specific within the same cloud payload.
 
 No Supabase SQL changes are required.
