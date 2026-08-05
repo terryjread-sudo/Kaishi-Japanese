@@ -1,24 +1,17 @@
-# Kaishi Quest v9.0.4 — Unified Study Modes dashboard
+# Kaishi Quest v9.0.5 patch
 
-Upload these changed files to the repository root:
+Upload all files while preserving the `data/` and `media/profiles/` folders.
 
-- `app.js`
-- `index.html`
-- `styles.css`
-- `cloud.js`
-- `service-worker.js`
-- `japan-ready.js`
-- `version.json`
+## Included
 
-## Main changes
+- Guest learner avatar for signed-out users
+- More prominent GitHub sign-in and cloud-progress benefits
+- Desktop-safe Japan Ready dashboard preview
+- Expanded three-turn travel conversations across ten scenarios
+- Recommended scenario highlighting in the scenario list
+- Travel Cheat Sheet grouped by situation
+- Japanese, romaji, English and speaker playback for every cheat-sheet phrase
 
-- Fixed the blank page from the Study Modes Journey button.
-- The Journey dashboard button now runs the same `continueJourney()` setup as the original working button.
-- Renamed **Choose your adventure** to **Study modes**.
-- Made the Study Modes card match the width of the dashboard.
-- Embedded the existing Current Topic and Teacher recommendation experience directly into the Journey preview.
-- Added a matching Aiko-led Japan Ready preview.
-- Removed the duplicate standalone Journey panel.
-- Added a short fade when switching modes.
+The travel phrase coverage was reviewed against practical categories commonly recommended for visitors: courtesy, transportation, dining, shopping, hotels/airports and emergencies.
 
 No Supabase SQL changes are required.

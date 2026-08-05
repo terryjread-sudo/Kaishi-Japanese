@@ -13,7 +13,7 @@
  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const avatarKey=value=>AVATARS.includes(value)?value:'boy';
  const avatarState=(streak=0)=>{streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'};
- const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.4`;
+ const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.5`;
 
  function profile(){const m=user?.user_metadata||{},login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';return{github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null}}
  function isOwner(){return Boolean(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
@@ -35,12 +35,23 @@
  function remembered(){return localStorage.getItem(FP_KEY)||''}
 
  function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
- function renderDashboardAvatar(){const streak=Number(adapter()?.stats?.().streak||0),src=avatarImage(selectedAvatar,streak),image=$('#dashboardAvatar');if(image)image.src=src;if($('#journeyHomeAvatar'))$('#journeyHomeAvatar').src=src;if($('#journeyAvatar'))$('#journeyAvatar').src=src;if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Sign in to choose your character';if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=streak>=60?'Superhero form unlocked!':`${streak} day${streak===1?'':'s'} streak · Next pose at ${[3,7,14,30,60].find(days=>days>streak)||60} days.`}
+ function renderDashboardAvatar(){
+ const streak=Number(adapter()?.stats?.().streak||0);
+ const src=user?avatarImage(selectedAvatar,streak):'media/profiles/guest-learner.webp?v=9.0.5';
+ const image=$('#dashboardAvatar');if(image)image.src=src;
+ if($('#journeyHomeAvatar'))$('#journeyHomeAvatar').src=src;
+ if($('#journeyAvatar'))$('#journeyAvatar').src=src;
+ if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Save your progress across devices';
+ if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=user
+  ?(streak>=60?'Superhero form unlocked!':`${streak} day${streak===1?'':'s'} streak · Next pose at ${[3,7,14,30,60].find(days=>days>streak)||60} days.`)
+  :'Sign in with GitHub to choose a character, protect your progress and continue on another device.';
+ const heroSignIn=$('#dashboardSignIn');if(heroSignIn){heroSignIn.hidden=Boolean(user);heroSignIn.onclick=signIn}
+}
  function renderStudioAccess(){const owner=isOwner(),link=$('#mnemonicStudioLink');if(link)link.hidden=!owner;window.KaishiQuestPath?.renderOwnerPathControls?.(owner)}
 
  function renderSignedOut(message='Sign in with GitHub to sync progress between devices.'){
   user=null;initialisedUserId='';selectedAvatar='boy';
-  if(account)account.innerHTML=`<div><strong>Play as a guest or save to the cloud</strong><p>${esc(message)}</p></div><button id="cloudSignIn" class="github-button">Continue with GitHub</button>`;
+  if(account)account.innerHTML=`<img class="cloud-avatar" src="media/profiles/guest-learner.webp?v=9.0.5" alt="Guest learner"><div><strong>Protect your Kaishi Quest progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
   $('#cloudSignIn')?.addEventListener('click',signIn);
   if(join){join.checked=false;join.disabled=true}
   setStatus('Guest progress is saved only on this device.');
