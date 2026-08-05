@@ -3,9 +3,10 @@
   "released": "2026-08-05",
   "title": "Friends and easier Live Conversation",
   "changes": [
-    "Friend-request emails are enabled by default for signed-in users.",
-    "Added a Cloud Settings toggle allowing users to disable friend-request emails.",
-    "Added a Supabase Edge Function for secure email delivery through Resend.",
+    "Removed all friend-request email functionality.",
+    "Made community leaderboard users clickable with profile and friend controls.",
+    "New signed-in users join the leaderboard by default and may opt out.",
+    "Added secure one-time invite links that automatically connect users after sign-in.",
     "Added a small internal buffer between Journey controls and the green dashboard border.",
     "Reduced Live Conversation to four kana choices.",
     "Wrong kana choices lower the scenario score.",

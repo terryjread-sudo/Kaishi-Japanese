@@ -835,3 +835,15 @@ header{
  background:#f8fafc;
  border:1px solid #dbe3f0;
 }
+
+.leaderboard-row[data-community-user]{cursor:pointer}
+.leaderboard-row[data-community-user]:hover{transform:translateY(-1px);box-shadow:0 7px 20px #17255418}
+.community-profile-dialog{position:relative;display:grid;grid-template-columns:82px minmax(0,1fr);gap:14px;padding:22px}
+.community-profile-dialog>img{width:82px;height:82px;border-radius:50%;object-fit:cover}
+.community-profile-dialog h2{margin:3px 0}.community-profile-dialog p{margin:3px 0;color:#64748b}
+.dialog-close{position:absolute;right:10px;top:10px;width:36px;height:36px;padding:0;border-radius:50%}
+.community-profile-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.community-profile-stats span{padding:10px;border-radius:12px;background:#f8fafc;text-align:center;font-size:.7rem}
+.community-profile-stats strong{display:block;font-size:1.05rem}
+#communityProfileStatus,.community-profile-actions{grid-column:1/-1}
+.community-profile-actions{display:flex;gap:8px}
