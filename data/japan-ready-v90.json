@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "release": "9.0.1",
+  "schemaVersion": 2,
+  "release": "9.0.5",
   "campaign": {
     "id": "japan-ready",
     "title": "Japan Ready",
@@ -12,9 +12,9 @@
       "order": 1,
       "icon": "🙇",
       "region": "Before You Go",
-      "title": "Essential Politeness",
-      "description": "Greet people, thank them and ask for help.",
-      "confidenceGoal": "Handle the essential politeness situation.",
+      "title": "Greetings & Courtesy",
+      "description": "Greet people, get attention and make polite requests.",
+      "confidenceGoal": "Use polite phrases naturally in a brief interaction.",
       "wordHints": [
         "hello",
         "thank",
@@ -25,49 +25,60 @@
         "no",
         "help"
       ],
-      "cultureTip": "A small bow and a polite phrase go a long way.",
+      "cultureTip": "すみません works both as “excuse me” and as a light apology.",
       "phrases": [
         {
-          "npc": "こんにちは！",
-          "npcRomaji": "konnichiwa",
-          "prompt": "Reply with hello.",
+          "npc": "おはようございます。",
+          "npcRomaji": "ohayou gozaimasu",
+          "npcEnglish": "Good morning.",
+          "prompt": "Return the greeting.",
           "accepted": [
-            "こんにちは"
+            "おはようございます"
           ],
           "romaji": [
-            "konnichiwa"
+            "ohayou gozaimasu"
+          ],
+          "acceptedEnglish": [
+            "Good morning."
           ],
           "suggestions": [
-            "こんにちは",
-            "ありがとう",
-            "すみません"
-          ],
-          "npcEnglish": "Hello!",
-          "acceptedEnglish": [
-            "Hello."
+            "おはようございます"
           ]
         },
         {
-          "npc": "ありがとうございます。",
-          "npcRomaji": "arigatou gozaimasu",
-          "prompt": "Reply politely.",
+          "npc": "何かお手伝いしましょうか？",
+          "npcRomaji": "nanika otetsudai shimashou ka",
+          "npcEnglish": "Can I help you?",
+          "prompt": "Politely say yes, please.",
           "accepted": [
-            "どういたしまして",
-            "ありがとう"
+            "はい、お願いします"
           ],
           "romaji": [
-            "douitashimashite",
-            "arigatou"
+            "hai onegaishimasu"
+          ],
+          "acceptedEnglish": [
+            "Yes, please."
           ],
           "suggestions": [
-            "どういたしまして",
-            "ありがとう",
-            "すみません"
+            "はい、お願いします"
+          ]
+        },
+        {
+          "npc": "どうぞ。",
+          "npcRomaji": "douzo",
+          "npcEnglish": "Here you are.",
+          "prompt": "Thank the person politely.",
+          "accepted": [
+            "ありがとうございます"
           ],
-          "npcEnglish": "Thank you very much.",
+          "romaji": [
+            "arigatou gozaimasu"
+          ],
           "acceptedEnglish": [
-            "You’re welcome.",
-            "Thank you."
+            "Thank you very much."
+          ],
+          "suggestions": [
+            "ありがとうございます"
           ]
         }
       ]
@@ -77,9 +88,9 @@
       "order": 2,
       "icon": "🏪",
       "region": "Everyday Stops",
-      "title": "Convenience Store",
-      "description": "Buy snacks and answer bag and payment questions.",
-      "confidenceGoal": "Handle the convenience store situation.",
+      "title": "Convenience Store Checkout",
+      "description": "Buy an item and answer common bag and payment questions.",
+      "confidenceGoal": "Complete a normal convenience-store checkout.",
       "wordHints": [
         "water",
         "coffee",
@@ -92,30 +103,48 @@
         "cash",
         "price"
       ],
-      "cultureTip": "Cashier questions about bags and payment are very common.",
+      "cultureTip": "Staff may ask about a bag, heating food and your payment method in quick succession.",
       "phrases": [
         {
           "npc": "袋は要りますか？",
           "npcRomaji": "fukuro wa irimasu ka",
-          "prompt": "Say that you need a bag.",
+          "npcEnglish": "Do you need a bag?",
+          "prompt": "Say no, thank you.",
+          "accepted": [
+            "いいえ、けっこうです"
+          ],
+          "romaji": [
+            "iie kekkou desu"
+          ],
+          "acceptedEnglish": [
+            "No, thank you."
+          ],
+          "suggestions": [
+            "いいえ、けっこうです"
+          ]
+        },
+        {
+          "npc": "温めますか？",
+          "npcRomaji": "atatamemasu ka",
+          "npcEnglish": "Would you like it heated?",
+          "prompt": "Say yes, please.",
           "accepted": [
             "はい、お願いします"
           ],
           "romaji": [
             "hai onegaishimasu"
           ],
-          "suggestions": [
-            "はい、お願いします",
-            "いいえ、けっこうです"
-          ],
-          "npcEnglish": "Do you need a bag?",
           "acceptedEnglish": [
             "Yes, please."
+          ],
+          "suggestions": [
+            "はい、お願いします"
           ]
         },
         {
-          "npc": "お支払いはカードですか？",
-          "npcRomaji": "oshiharai wa kaado desu ka",
+          "npc": "お支払いは？",
+          "npcRomaji": "oshiharai wa",
+          "npcEnglish": "How will you pay?",
           "prompt": "Say you will pay by card.",
           "accepted": [
             "カードでお願いします"
@@ -123,13 +152,11 @@
           "romaji": [
             "kaado de onegaishimasu"
           ],
-          "suggestions": [
-            "カードでお願いします",
-            "現金でお願いします"
-          ],
-          "npcEnglish": "Are you paying by card?",
           "acceptedEnglish": [
             "By card, please."
+          ],
+          "suggestions": [
+            "カードでお願いします"
           ]
         }
       ]
@@ -140,8 +167,8 @@
       "icon": "☕",
       "region": "Food & Drink",
       "title": "Order at a Café",
-      "description": "Order drinks, quantities and understand the price.",
-      "confidenceGoal": "Handle the order at a café situation.",
+      "description": "Order drinks, quantities and ask the price.",
+      "confidenceGoal": "Order drinks and complete payment.",
       "wordHints": [
         "coffee",
         "tea",
@@ -153,11 +180,12 @@
         "how much",
         "please"
       ],
-      "cultureTip": "二つ is a useful general counter for small items.",
+      "cultureTip": "General counters such as 一つ and 二つ are useful when a specialised counter is unknown.",
       "phrases": [
         {
           "npc": "ご注文は？",
           "npcRomaji": "gochuumon wa",
+          "npcEnglish": "What would you like to order?",
           "prompt": "Order two coffees.",
           "accepted": [
             "コーヒーを二つお願いします"
@@ -165,36 +193,47 @@
           "romaji": [
             "koohii o futatsu onegaishimasu"
           ],
-          "suggestions": [
-            "コーヒー",
-            "二つ",
-            "お願いします"
-          ],
-          "npcEnglish": "What would you like to order?",
           "acceptedEnglish": [
             "Two coffees, please."
+          ],
+          "suggestions": [
+            "コーヒーを二つお願いします"
+          ]
+        },
+        {
+          "npc": "店内ですか？",
+          "npcRomaji": "tennai desu ka",
+          "npcEnglish": "Is that for here?",
+          "prompt": "Say it is to take away.",
+          "accepted": [
+            "持ち帰りでお願いします"
+          ],
+          "romaji": [
+            "mochikaeri de onegaishimasu"
+          ],
+          "acceptedEnglish": [
+            "To take away, please."
+          ],
+          "suggestions": [
+            "持ち帰りでお願いします"
           ]
         },
         {
           "npc": "千二百円です。",
           "npcRomaji": "sen nihyaku en desu",
-          "prompt": "Acknowledge the price.",
+          "npcEnglish": "That will be 1,200 yen.",
+          "prompt": "Ask whether card is accepted.",
           "accepted": [
-            "はい",
-            "わかりました"
+            "カードは使えますか"
           ],
           "romaji": [
-            "hai",
-            "wakarimashita"
+            "kaado wa tsukaemasu ka"
+          ],
+          "acceptedEnglish": [
+            "Can I use a card?"
           ],
           "suggestions": [
-            "はい",
-            "わかりました"
-          ],
-          "npcEnglish": "That will be 1,200 yen.",
-          "acceptedEnglish": [
-            "Yes.",
-            "I understand."
+            "カードは使えますか"
           ]
         }
       ]
@@ -205,8 +244,8 @@
       "icon": "🍜",
       "region": "Food & Drink",
       "title": "Restaurant Meal",
-      "description": "Ask for a table, order and request the bill.",
-      "confidenceGoal": "Handle the restaurant meal situation.",
+      "description": "Get a table, ask about food and request the bill.",
+      "confidenceGoal": "Complete a simple restaurant visit.",
       "wordHints": [
         "restaurant",
         "menu",
@@ -219,11 +258,12 @@
         "one",
         "two"
       ],
-      "cultureTip": "Many restaurants provide water without charge.",
+      "cultureTip": "お会計をお願いします is a reliable way to request the bill.",
       "phrases": [
         {
           "npc": "何名様ですか？",
           "npcRomaji": "nanmei sama desu ka",
+          "npcEnglish": "How many people are in your party?",
           "prompt": "Say there are two people.",
           "accepted": [
             "二人です"
@@ -231,33 +271,47 @@
           "romaji": [
             "futari desu"
           ],
-          "suggestions": [
-            "二人です",
-            "一人です"
-          ],
-          "npcEnglish": "How many people are in your party?",
           "acceptedEnglish": [
             "There are two of us."
+          ],
+          "suggestions": [
+            "二人です"
           ]
         },
         {
           "npc": "ご注文は？",
           "npcRomaji": "gochuumon wa",
-          "prompt": "Order one ramen.",
+          "npcEnglish": "What would you like to order?",
+          "prompt": "Ask for the recommended item.",
           "accepted": [
-            "ラーメンを一つお願いします"
+            "おすすめは何ですか"
           ],
           "romaji": [
-            "raamen o hitotsu onegaishimasu"
+            "osusume wa nan desu ka"
+          ],
+          "acceptedEnglish": [
+            "What do you recommend?"
           ],
           "suggestions": [
-            "ラーメン",
-            "一つ",
-            "お願いします"
+            "おすすめは何ですか"
+          ]
+        },
+        {
+          "npc": "ほかにありますか？",
+          "npcRomaji": "hoka ni arimasu ka",
+          "npcEnglish": "Anything else?",
+          "prompt": "Ask for the bill.",
+          "accepted": [
+            "お会計をお願いします"
           ],
-          "npcEnglish": "What would you like to order?",
+          "romaji": [
+            "okaikei o onegaishimasu"
+          ],
           "acceptedEnglish": [
-            "One ramen, please."
+            "The bill, please."
+          ],
+          "suggestions": [
+            "お会計をお願いします"
           ]
         }
       ]
@@ -267,9 +321,9 @@
       "order": 5,
       "icon": "🚉",
       "region": "Getting Around",
-      "title": "Find Your Train",
-      "description": "Ask where the station or platform is.",
-      "confidenceGoal": "Handle the find your train situation.",
+      "title": "Trains & Transfers",
+      "description": "Find a station, confirm a train and ask where to transfer.",
+      "confidenceGoal": "Reach the correct train and destination.",
       "wordHints": [
         "train",
         "station",
@@ -281,11 +335,12 @@
         "where",
         "which"
       ],
-      "cultureTip": "Station staff are used to helping visitors.",
+      "cultureTip": "Say the destination name before に行きますか to check whether a train goes there.",
       "phrases": [
         {
           "npc": "どうしましたか？",
           "npcRomaji": "dou shimashita ka",
+          "npcEnglish": "How can I help?",
           "prompt": "Ask where the station is.",
           "accepted": [
             "駅はどこですか"
@@ -293,36 +348,47 @@
           "romaji": [
             "eki wa doko desu ka"
           ],
-          "suggestions": [
-            "駅",
-            "どこ",
-            "ですか"
-          ],
-          "npcEnglish": "How can I help?",
           "acceptedEnglish": [
             "Where is the station?"
+          ],
+          "suggestions": [
+            "駅はどこですか"
           ]
         },
         {
-          "npc": "まっすぐ行って、右です。",
-          "npcRomaji": "massugu itte migi desu",
-          "prompt": "Confirm you understand.",
+          "npc": "この電車でいいですか？",
+          "npcRomaji": "kono densha de ii desu ka",
+          "npcEnglish": "Is this train all right?",
+          "prompt": "Ask if it goes to Tokyo.",
           "accepted": [
-            "わかりました",
-            "ありがとうございます"
+            "この電車は東京に行きますか"
           ],
           "romaji": [
-            "wakarimashita",
-            "arigatou gozaimasu"
+            "kono densha wa toukyou ni ikimasu ka"
+          ],
+          "acceptedEnglish": [
+            "Does this train go to Tokyo?"
           ],
           "suggestions": [
-            "わかりました",
-            "ありがとうございます"
+            "この電車は東京に行きますか"
+          ]
+        },
+        {
+          "npc": "次で乗り換えてください。",
+          "npcRomaji": "tsugi de norikaete kudasai",
+          "npcEnglish": "Please transfer at the next stop.",
+          "prompt": "Ask where the transfer is.",
+          "accepted": [
+            "乗り換えはどこですか"
           ],
-          "npcEnglish": "Go straight, then it is on the right.",
+          "romaji": [
+            "norikae wa doko desu ka"
+          ],
           "acceptedEnglish": [
-            "I understand.",
-            "Thank you very much."
+            "Where do I transfer?"
+          ],
+          "suggestions": [
+            "乗り換えはどこですか"
           ]
         }
       ]
@@ -332,9 +398,9 @@
       "order": 6,
       "icon": "🏨",
       "region": "Staying in Japan",
-      "title": "Hotel Check-in",
-      "description": "Confirm a reservation and provide your passport.",
-      "confidenceGoal": "Handle the hotel check-in situation.",
+      "title": "Hotel & Luggage",
+      "description": "Check in, ask about breakfast, Wi-Fi and luggage storage.",
+      "confidenceGoal": "Handle the essential hotel exchanges.",
       "wordHints": [
         "hotel",
         "reservation",
@@ -343,46 +409,63 @@
         "key",
         "breakfast",
         "wifi",
-        "passport"
+        "passport",
+        "luggage"
       ],
-      "cultureTip": "Hotels commonly ask to see every foreign guest’s passport.",
+      "cultureTip": "Hotels usually need to inspect passports for overseas visitors.",
       "phrases": [
         {
-          "npc": "ご予約のお名前は？",
-          "npcRomaji": "goyoyaku no onamae wa",
-          "prompt": "Say your name.",
+          "npc": "ご予約はありますか？",
+          "npcRomaji": "goyoyaku wa arimasu ka",
+          "npcEnglish": "Do you have a reservation?",
+          "prompt": "Say you have a reservation.",
           "accepted": [
-            "リードです"
+            "予約しています"
           ],
           "romaji": [
-            "riido desu"
+            "yoyaku shiteimasu"
+          ],
+          "acceptedEnglish": [
+            "I have a reservation."
           ],
           "suggestions": [
-            "リードです",
-            "予約があります"
-          ],
-          "npcEnglish": "What name is the reservation under?",
-          "acceptedEnglish": [
-            "It is under Read."
+            "予約しています"
           ]
         },
         {
-          "npc": "パスポートをお願いします。",
-          "npcRomaji": "pasupooto o onegaishimasu",
-          "prompt": "Acknowledge the request.",
+          "npc": "朝食について質問はありますか？",
+          "npcRomaji": "choushoku ni tsuite shitsumon wa arimasu ka",
+          "npcEnglish": "Do you have a question about breakfast?",
+          "prompt": "Ask what time breakfast is.",
           "accepted": [
-            "はい、どうぞ"
+            "朝食は何時ですか"
           ],
           "romaji": [
-            "hai douzo"
+            "choushoku wa nanji desu ka"
+          ],
+          "acceptedEnglish": [
+            "What time is breakfast?"
           ],
           "suggestions": [
-            "はい、どうぞ",
-            "わかりました"
+            "朝食は何時ですか"
+          ]
+        },
+        {
+          "npc": "チェックアウト後はどうしますか？",
+          "npcRomaji": "chekkuauto go wa dou shimasu ka",
+          "npcEnglish": "What will you do after checkout?",
+          "prompt": "Ask to leave your luggage.",
+          "accepted": [
+            "荷物を預けてもいいですか"
           ],
-          "npcEnglish": "May I see your passport, please?",
+          "romaji": [
+            "nimotsu o azukete mo ii desu ka"
+          ],
           "acceptedEnglish": [
-            "Yes, here you are."
+            "May I leave my luggage?"
+          ],
+          "suggestions": [
+            "荷物を預けてもいいですか"
           ]
         }
       ]
@@ -392,9 +475,9 @@
       "order": 7,
       "icon": "🛍️",
       "region": "Shopping",
-      "title": "Buy a Souvenir",
-      "description": "Ask the price and pay for an item.",
-      "confidenceGoal": "Handle the buy a souvenir situation.",
+      "title": "Shopping & Payment",
+      "description": "Ask prices, choose an item and check payment or tax-free options.",
+      "confidenceGoal": "Buy an item confidently.",
       "wordHints": [
         "shop",
         "price",
@@ -407,44 +490,60 @@
         "buy",
         "card"
       ],
-      "cultureTip": "Use これ for an item close to you.",
+      "cultureTip": "Prices are generally fixed; polite requests work better than bargaining.",
       "phrases": [
         {
           "npc": "何をお探しですか？",
           "npcRomaji": "nani o osagashi desu ka",
-          "prompt": "Say you are looking for this.",
+          "npcEnglish": "What are you looking for?",
+          "prompt": "Say you would like this.",
           "accepted": [
-            "これを探しています"
+            "これをください"
           ],
           "romaji": [
-            "kore o sagashite imasu"
+            "kore o kudasai"
+          ],
+          "acceptedEnglish": [
+            "I’ll take this, please."
           ],
           "suggestions": [
-            "これ",
-            "探しています"
-          ],
-          "npcEnglish": "What are you looking for?",
-          "acceptedEnglish": [
-            "I’m looking for this."
+            "これをください"
           ]
         },
         {
-          "npc": "こちらは三千円です。",
-          "npcRomaji": "kochira wa sanzen en desu",
-          "prompt": "Ask if you can pay by card.",
+          "npc": "何か質問はありますか？",
+          "npcRomaji": "nanika shitsumon wa arimasu ka",
+          "npcEnglish": "Do you have any questions?",
+          "prompt": "Ask how much it is.",
           "accepted": [
-            "カードで払えますか"
+            "いくらですか"
           ],
           "romaji": [
-            "kaado de haraemasu ka"
+            "ikura desu ka"
+          ],
+          "acceptedEnglish": [
+            "How much is it?"
           ],
           "suggestions": [
-            "カード",
-            "払えますか"
+            "いくらですか"
+          ]
+        },
+        {
+          "npc": "お会計はこちらです。",
+          "npcRomaji": "okaikei wa kochira desu",
+          "npcEnglish": "You can pay here.",
+          "prompt": "Ask whether tax-free shopping is available.",
+          "accepted": [
+            "免税できますか"
           ],
-          "npcEnglish": "This one is 3,000 yen.",
+          "romaji": [
+            "menzei dekimasu ka"
+          ],
           "acceptedEnglish": [
-            "Can I pay by card?"
+            "Is tax-free shopping available?"
+          ],
+          "suggestions": [
+            "免税できますか"
           ]
         }
       ]
@@ -454,9 +553,9 @@
       "order": 8,
       "icon": "🧭",
       "region": "Getting Around",
-      "title": "Ask for Directions",
-      "description": "Ask for and follow simple directions.",
-      "confidenceGoal": "Handle the ask for directions situation.",
+      "title": "Directions & Facilities",
+      "description": "Find places, toilets and understand simple directions.",
+      "confidenceGoal": "Ask for a place and confirm the directions.",
       "wordHints": [
         "where",
         "left",
@@ -466,109 +565,139 @@
         "far",
         "map",
         "place",
-        "help"
+        "help",
+        "toilet"
       ],
-      "cultureTip": "Showing the destination on your phone can support a spoken question.",
+      "cultureTip": "Showing a map while asking can make place names easier to understand.",
       "phrases": [
         {
           "npc": "どこへ行きたいですか？",
           "npcRomaji": "doko e ikitai desu ka",
-          "prompt": "Ask for the nearest station.",
+          "npcEnglish": "Where would you like to go?",
+          "prompt": "Ask where the toilet is.",
           "accepted": [
-            "一番近い駅はどこですか"
+            "トイレはどこですか"
           ],
           "romaji": [
-            "ichiban chikai eki wa doko desu ka"
+            "toire wa doko desu ka"
+          ],
+          "acceptedEnglish": [
+            "Where is the restroom?"
           ],
           "suggestions": [
-            "一番近い",
-            "駅",
-            "どこですか"
-          ],
-          "npcEnglish": "Where would you like to go?",
-          "acceptedEnglish": [
-            "Where is the nearest station?"
+            "トイレはどこですか"
           ]
         },
         {
-          "npc": "左に曲がってください。",
-          "npcRomaji": "hidari ni magatte kudasai",
-          "prompt": "Thank the person.",
+          "npc": "まっすぐ行って、左です。",
+          "npcRomaji": "massugu itte hidari desu",
+          "npcEnglish": "Go straight, then it is on the left.",
+          "prompt": "Ask the person to show you a map.",
           "accepted": [
-            "ありがとうございます"
+            "地図を見せてください"
           ],
           "romaji": [
-            "arigatou gozaimasu"
+            "chizu o misete kudasai"
+          ],
+          "acceptedEnglish": [
+            "Please show me a map."
           ],
           "suggestions": [
-            "ありがとうございます",
-            "わかりました"
+            "地図を見せてください"
+          ]
+        },
+        {
+          "npc": "分かりましたか？",
+          "npcRomaji": "wakarimashita ka",
+          "npcEnglish": "Did you understand?",
+          "prompt": "Say you understand and thank them.",
+          "accepted": [
+            "分かりました、ありがとうございます"
           ],
-          "npcEnglish": "Please turn left.",
+          "romaji": [
+            "wakarimashita arigatou gozaimasu"
+          ],
           "acceptedEnglish": [
-            "Thank you very much."
+            "I understand, thank you."
+          ],
+          "suggestions": [
+            "分かりました、ありがとうございます"
           ]
         }
       ]
     },
     {
-      "id": "attractions",
+      "id": "airport",
       "order": 9,
-      "icon": "⛩️",
-      "region": "Sightseeing",
-      "title": "Attractions & Tickets",
-      "description": "Buy admission and ask a simple question.",
-      "confidenceGoal": "Handle the attractions & tickets situation.",
+      "icon": "✈️",
+      "region": "Airport",
+      "title": "Airport & Departure",
+      "description": "Find check-in, confirm documents and locate the gate.",
+      "confidenceGoal": "Handle a basic airport exchange.",
       "wordHints": [
+        "airport",
+        "passport",
         "ticket",
-        "entrance",
-        "exit",
-        "open",
-        "close",
-        "time",
-        "photo",
-        "temple",
-        "shrine",
-        "museum"
+        "gate",
+        "luggage",
+        "check in",
+        "where",
+        "flight"
       ],
-      "cultureTip": "Photography rules vary between attractions.",
+      "cultureTip": "Keep your passport and booking details ready when approaching the counter.",
       "phrases": [
         {
-          "npc": "チケットは何枚ですか？",
-          "npcRomaji": "chiketto wa nanmai desu ka",
-          "prompt": "Ask for two tickets.",
+          "npc": "チェックインですか？",
+          "npcRomaji": "chekkuin desu ka",
+          "npcEnglish": "Are you checking in?",
+          "prompt": "Ask to check in.",
           "accepted": [
-            "二枚お願いします"
+            "チェックインをお願いします"
           ],
           "romaji": [
-            "nimai onegaishimasu"
+            "chekkuin o onegaishimasu"
+          ],
+          "acceptedEnglish": [
+            "Check-in, please."
           ],
           "suggestions": [
-            "二枚",
-            "お願いします"
-          ],
-          "npcEnglish": "How many tickets would you like?",
-          "acceptedEnglish": [
-            "Two tickets, please."
+            "チェックインをお願いします"
           ]
         },
         {
-          "npc": "写真は大丈夫です。",
-          "npcRomaji": "shashin wa daijoubu desu",
-          "prompt": "Thank the staff member.",
+          "npc": "身分証明書はありますか？",
+          "npcRomaji": "mibun shoumeisho wa arimasu ka",
+          "npcEnglish": "Do you have identification?",
+          "prompt": "Ask whether your passport is okay.",
           "accepted": [
-            "ありがとうございます"
+            "パスポートでいいですか"
           ],
           "romaji": [
-            "arigatou gozaimasu"
+            "pasupooto de ii desu ka"
+          ],
+          "acceptedEnglish": [
+            "Is a passport okay?"
           ],
           "suggestions": [
-            "ありがとうございます",
-            "わかりました"
+            "パスポートでいいですか"
+          ]
+        },
+        {
+          "npc": "何かお困りですか？",
+          "npcRomaji": "nanika okomari desu ka",
+          "npcEnglish": "Do you need help?",
+          "prompt": "Ask where the gate is.",
+          "accepted": [
+            "搭乗口はどこですか"
           ],
-          "npcEnglish": "Photography is allowed.",
+          "romaji": [
+            "toujouguchi wa doko desu ka"
+          ],
           "acceptedEnglish": [
-            "Thank you very much."
+            "Where is the boarding gate?"
+          ],
+          "suggestions": [
+            "搭乗口はどこですか"
           ]
         }
       ]
@@ -578,9 +707,9 @@
       "order": 10,
       "icon": "🆘",
       "region": "Safety",
-      "title": "Get Help",
-      "description": "Say you are lost, unwell or need help.",
-      "confidenceGoal": "Handle the get help situation.",
+      "title": "Emergencies & Lost Items",
+      "description": "Ask urgently for help, medical care or the police.",
+      "confidenceGoal": "Communicate a critical need quickly.",
       "wordHints": [
         "help",
         "police",
@@ -592,47 +721,270 @@
         "lost",
         "passport"
       ],
-      "cultureTip": "110 is police and 119 is ambulance or fire in Japan.",
+      "cultureTip": "In Japan, call 119 for ambulance or fire and 110 for police.",
       "phrases": [
         {
           "npc": "大丈夫ですか？",
           "npcRomaji": "daijoubu desu ka",
-          "prompt": "Say you need help.",
+          "npcEnglish": "Are you all right?",
+          "prompt": "Ask for help.",
           "accepted": [
             "助けてください"
           ],
           "romaji": [
             "tasukete kudasai"
           ],
-          "suggestions": [
-            "助けてください",
-            "病院",
-            "警察"
-          ],
-          "npcEnglish": "Are you all right?",
           "acceptedEnglish": [
             "Please help me."
+          ],
+          "suggestions": [
+            "助けてください"
           ]
         },
         {
-          "npc": "どこが痛いですか？",
-          "npcRomaji": "doko ga itai desu ka",
-          "prompt": "Say your stomach hurts.",
+          "npc": "何をなくしましたか？",
+          "npcRomaji": "nani o nakushimashita ka",
+          "npcEnglish": "What did you lose?",
+          "prompt": "Say you lost your passport.",
           "accepted": [
-            "お腹が痛いです"
+            "パスポートをなくしました"
           ],
           "romaji": [
-            "onaka ga itai desu"
+            "pasupooto o nakushimashita"
+          ],
+          "acceptedEnglish": [
+            "I lost my passport."
           ],
           "suggestions": [
-            "お腹",
-            "痛いです",
-            "薬"
-          ],
-          "npcEnglish": "Where does it hurt?",
-          "acceptedEnglish": [
-            "My stomach hurts."
+            "パスポートをなくしました"
           ]
+        },
+        {
+          "npc": "どうしましょうか？",
+          "npcRomaji": "dou shimashou ka",
+          "npcEnglish": "What should we do?",
+          "prompt": "Ask them to call the police.",
+          "accepted": [
+            "警察を呼んでください"
+          ],
+          "romaji": [
+            "keisatsu o yonde kudasai"
+          ],
+          "acceptedEnglish": [
+            "Please call the police."
+          ],
+          "suggestions": [
+            "警察を呼んでください"
+          ]
+        }
+      ]
+    }
+  ],
+  "cheatSheet": [
+    {
+      "id": "courtesy",
+      "icon": "🙇",
+      "title": "Greetings & Courtesy",
+      "phrases": [
+        {
+          "jp": "おはようございます",
+          "romaji": "ohayou gozaimasu",
+          "en": "Good morning"
+        },
+        {
+          "jp": "こんにちは",
+          "romaji": "konnichiwa",
+          "en": "Hello / good afternoon"
+        },
+        {
+          "jp": "こんばんは",
+          "romaji": "konbanwa",
+          "en": "Good evening"
+        },
+        {
+          "jp": "ありがとうございます",
+          "romaji": "arigatou gozaimasu",
+          "en": "Thank you very much"
+        },
+        {
+          "jp": "すみません",
+          "romaji": "sumimasen",
+          "en": "Excuse me / sorry"
+        },
+        {
+          "jp": "お願いします",
+          "romaji": "onegaishimasu",
+          "en": "Please"
+        }
+      ]
+    },
+    {
+      "id": "transport",
+      "icon": "🚉",
+      "title": "Transport & Directions",
+      "phrases": [
+        {
+          "jp": "駅はどこですか",
+          "romaji": "eki wa doko desu ka",
+          "en": "Where is the station?"
+        },
+        {
+          "jp": "この電車は東京に行きますか",
+          "romaji": "kono densha wa toukyou ni ikimasu ka",
+          "en": "Does this train go to Tokyo?"
+        },
+        {
+          "jp": "乗り換えはどこですか",
+          "romaji": "norikae wa doko desu ka",
+          "en": "Where do I transfer?"
+        },
+        {
+          "jp": "切符をください",
+          "romaji": "kippu o kudasai",
+          "en": "A ticket, please"
+        },
+        {
+          "jp": "トイレはどこですか",
+          "romaji": "toire wa doko desu ka",
+          "en": "Where is the restroom?"
+        },
+        {
+          "jp": "道に迷いました",
+          "romaji": "michi ni mayoimashita",
+          "en": "I am lost"
+        }
+      ]
+    },
+    {
+      "id": "food",
+      "icon": "🍜",
+      "title": "Food & Drink",
+      "phrases": [
+        {
+          "jp": "メニューをください",
+          "romaji": "menyuu o kudasai",
+          "en": "The menu, please"
+        },
+        {
+          "jp": "おすすめは何ですか",
+          "romaji": "osusume wa nan desu ka",
+          "en": "What do you recommend?"
+        },
+        {
+          "jp": "お水をください",
+          "romaji": "omizu o kudasai",
+          "en": "Water, please"
+        },
+        {
+          "jp": "ベジタリアンです",
+          "romaji": "bejitarian desu",
+          "en": "I am vegetarian"
+        },
+        {
+          "jp": "お会計をお願いします",
+          "romaji": "okaikei o onegaishimasu",
+          "en": "The bill, please"
+        },
+        {
+          "jp": "おいしいです",
+          "romaji": "oishii desu",
+          "en": "It is delicious"
+        }
+      ]
+    },
+    {
+      "id": "shopping",
+      "icon": "🛍️",
+      "title": "Shopping & Money",
+      "phrases": [
+        {
+          "jp": "いくらですか",
+          "romaji": "ikura desu ka",
+          "en": "How much is it?"
+        },
+        {
+          "jp": "これをください",
+          "romaji": "kore o kudasai",
+          "en": "I will take this, please"
+        },
+        {
+          "jp": "カードは使えますか",
+          "romaji": "kaado wa tsukaemasu ka",
+          "en": "Can I use a card?"
+        },
+        {
+          "jp": "袋は要りますか",
+          "romaji": "fukuro wa irimasu ka",
+          "en": "Do you need a bag?"
+        },
+        {
+          "jp": "免税できますか",
+          "romaji": "menzei dekimasu ka",
+          "en": "Is tax-free shopping available?"
+        }
+      ]
+    },
+    {
+      "id": "hotel",
+      "icon": "🏨",
+      "title": "Hotel & Airport",
+      "phrases": [
+        {
+          "jp": "予約しています",
+          "romaji": "yoyaku shiteimasu",
+          "en": "I have a reservation"
+        },
+        {
+          "jp": "チェックインをお願いします",
+          "romaji": "chekkuin o onegaishimasu",
+          "en": "Check-in, please"
+        },
+        {
+          "jp": "朝食は何時ですか",
+          "romaji": "choushoku wa nanji desu ka",
+          "en": "What time is breakfast?"
+        },
+        {
+          "jp": "ワイファイはありますか",
+          "romaji": "waifai wa arimasu ka",
+          "en": "Is there Wi-Fi?"
+        },
+        {
+          "jp": "荷物を預けてもいいですか",
+          "romaji": "nimotsu o azukete mo ii desu ka",
+          "en": "May I leave my luggage?"
+        }
+      ]
+    },
+    {
+      "id": "emergency",
+      "icon": "🆘",
+      "title": "Emergencies",
+      "phrases": [
+        {
+          "jp": "助けてください",
+          "romaji": "tasukete kudasai",
+          "en": "Please help me"
+        },
+        {
+          "jp": "病院はどこですか",
+          "romaji": "byouin wa doko desu ka",
+          "en": "Where is the hospital?"
+        },
+        {
+          "jp": "薬局はどこですか",
+          "romaji": "yakkyoku wa doko desu ka",
+          "en": "Where is the pharmacy?"
+        },
+        {
+          "jp": "警察を呼んでください",
+          "romaji": "keisatsu o yonde kudasai",
+          "en": "Please call the police"
+        },
+        {
+          "jp": "パスポートをなくしました",
+          "romaji": "pasupooto o nakushimashita",
+          "en": "I lost my passport"
         }
       ]
     }
