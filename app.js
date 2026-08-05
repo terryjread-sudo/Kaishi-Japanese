@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='9.1.0';
+const APP_VERSION='10.0.0';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -31,7 +31,7 @@ const defaults={pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 settings.playMode='journey';
 let progress=loadJSON('kq-progress',{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana'],adventurePointsSpent:0,activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},updatedAt:0};
 let meta={...META_DEFAULTS,...loadJSON('kq-meta',{})};
 meta.kanaProgress=meta.kanaProgress||{};
 meta.grammarProgress=meta.grammarProgress||{};
@@ -42,7 +42,7 @@ meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];
 meta.pathVisits={...(meta.pathVisits||{})};
 meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];
 meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];meta.unlockNoticesSeen=Array.isArray(meta.unlockNoticesSeen)?[...meta.unlockNoticesSeen]:[];meta.unlockNoticesDismissed=Array.isArray(meta.unlockNoticesDismissed)?[...meta.unlockNoticesDismissed]:[];meta.topicProgress=meta.topicProgress||{};
-meta.activeCampaign=meta.activeCampaign||'journey';meta.campaignProgress=meta.campaignProgress||{};
+meta.activeCampaign=meta.activeCampaign||'journey';meta.campaignProgress=meta.campaignProgress||{};meta.activityPurchases=Array.isArray(meta.activityPurchases)?[...new Set(['vocabulary','kana',...meta.activityPurchases])]:['vocabulary','kana'];meta.activityModeLevels=meta.activityModeLevels||{};meta.adventurePointsSpent=Number(meta.adventurePointsSpent||0);
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
 function serialiseMissionItem(item){return{wordId:item?.v?.id||'',skill:item?.skill||'',pictureMode:item?.pictureMode||'',bossTopicId:item?.bossTopicId||''}}
 function saveMissionResume(){
@@ -186,6 +186,20 @@ function renderSkillScores(){
  const list=$('#skills');if(!list)return;
  list.innerHTML=SKILLS.map(skill=>{let attempts=0,correct=0,words=0,strength=0;Object.values(progress).forEach(p=>{const metric=p.skills?.[skill];if(!metric||!Number(metric.attempts))return;attempts+=Number(metric.attempts);correct+=Number(metric.correct||0);strength+=Number(metric.strength||0);words++});const score=words?Math.round(strength/words*100):0,accuracy=attempts?Math.round(correct/attempts*100):0,sample=words===0?'Not tested yet':words<5?'Early signal':words<20?'Developing signal':'Established signal';return `<div class="skill-score-row" tabindex="0" role="group" aria-label="${esc(LABELS[skill])}: ${score}% current strength, ${accuracy}% accuracy across ${attempts} attempts and ${words} words. ${esc(SKILL_HELP[skill])}"><div class="skill-score-heading"><b>${esc(LABELS[skill])}</b><strong>${score}%</strong></div><div class="bar" aria-hidden="true"><i style="width:${score}%"></i></div><p>${esc(SKILL_HELP[skill])}</p><div class="skill-score-details"><span><b>${accuracy}%</b> accuracy</span><span><b>${attempts}</b> attempts</span><span><b>${words}</b> words</span><small>${sample}</small></div></div>`}).join('');
 }
+const ACTIVITY_VILLAGE_CONFIG={
+ vocabulary:{cost:0,words:0,action:'Enter Village',theme:'village'},
+ kana:{cost:0,words:0,action:'Cross the Bridge',theme:'bridge'},
+ picture:{cost:100,words:8,action:'Restore Meadow',theme:'meadow'},
+ listening:{cost:150,words:12,action:'Open Listening Station',theme:'station'},
+ karuta:{cost:220,words:16,action:'Open Karuta Arena',theme:'arena'},
+ conversation:{cost:280,words:20,action:'Open Conversation Town',theme:'town'},
+ grammar:{cost:320,words:24,action:'Restore Particle Shrine',theme:'shrine'},
+ theatre:{cost:450,words:35,action:'Raise the Curtain',theme:'theatre'},
+ kanji:{cost:350,words:20,action:'Open Kanji Gate',theme:'gate'},
+ builder:{cost:420,words:25,action:'Light the Workshop',theme:'forge'},
+ manga:{cost:550,words:45,action:'Open Manga Library',theme:'library'},
+ battle:{cost:650,words:55,action:'Open Memory Dojo',theme:'dojo'}
+};
 const PATH_MILESTONES=[
  {id:'vocabulary',icon:'🌱',title:'Starting Village',activity:'Vocabulary Study',japanese:'単語学習',description:'Meet your first words and build the memory links that power every later activity.',requirement:'Available from the beginning.'},
  {id:'kana',icon:'あ',title:'Kana Bridge',activity:'Hiragana & Katakana',japanese:'かな学習',description:'Strengthen the sounds and scripts that make Japanese easier to read.',requirement:'Available from the beginning.'},
@@ -234,16 +248,27 @@ function pathProgress(id){
  return'';
 }
 function refreshPathUnlocks(){
- const before=new Set(meta.pathUnlocks);
- PATH_MILESTONES.forEach((item,itemIndex)=>{
-  const previousEarned=itemIndex<2||meta.pathUnlocks.includes(PATH_MILESTONES[itemIndex-1].id);
-  if(previousEarned&&pathCondition(item.id)&&!meta.pathUnlocks.includes(item.id))meta.pathUnlocks.push(item.id);
- });
- const unlocked=meta.pathUnlocks.filter(id=>!before.has(id));
- if(unlocked.length){meta.lastUnlockedActivities=unlocked;save()}
- return unlocked;
+ const ready=PATH_MILESTONES.filter(item=>{const state=activityReadiness(item.id);return !state.purchased&&state.wordReady&&state.apReady}).map(item=>item.id);
+ meta.pathUnlocks=ready;
+ return ready;
 }
-function pathUnlocked(id){return meta.pathUnlocks.includes(id)||meta.pathOverrides.includes(id)}
+function lifetimeXp(){return Math.max(0,Number(meta.totalCorrect||0)*10+Object.values(progress).filter(mastery).length*50+Number(meta.totalMonsterVictories||0)*100+Number(meta.streak||0)*20)}
+function adventurePoints(){return Math.max(0,lifetimeXp()-Number(meta.adventurePointsSpent||0))}
+function introducedWords(){return vocab.filter(wordIntroduced)}
+function activitySupportedWords(id){
+ const introduced=introducedWords();
+ if(id==='picture')return introduced.filter(v=>Boolean(memoryScenes[sceneKey(v)]?.file));
+ if(id==='listening')return introduced.filter(v=>Boolean(v.wordAudio));
+ if(id==='karuta')return introduced.filter(v=>Boolean(v.wordAudio&&memoryScenes[sceneKey(v)]?.file));
+ if(id==='kanji'||id==='builder')return introduced.filter(v=>kanjiCharacters(v).length);
+ return introduced;
+}
+function activityReadiness(id){
+ const cfg=ACTIVITY_VILLAGE_CONFIG[id]||{cost:0,words:0};
+ const supported=activitySupportedWords(id).length;
+ return{cfg,supported,wordReady:supported>=cfg.words,apReady:adventurePoints()>=cfg.cost,purchased:meta.activityPurchases.includes(id)};
+}
+function pathUnlocked(id){return meta.activityPurchases.includes(id)||meta.pathOverrides.includes(id)}
 function pathCurrentIndex(){const firstUnvisited=PATH_MILESTONES.findIndex(item=>pathUnlocked(item.id)&&!meta.pathVisits[item.id]);if(firstUnvisited>=0)return firstUnvisited;let current=0;PATH_MILESTONES.forEach((item,itemIndex)=>{if(pathUnlocked(item.id))current=itemIndex});return current}
 const WORD_CHAPTER_SIZE=50,WORD_CHAPTER_NAMES=['First Steps','Riverside Path','Bamboo Trail','Lantern Market','Tea Garden','Green Hill','Cedar Crossing','Crane Lake','Festival Street','Moonlit Terrace','Torii Pass','Maple Valley','Coastal Road','Snowy Hamlet','Castle Approach','Artisan Quarter','Mountain Shrine','Firefly Marsh','Orchard Lane','Scholar’s Court','Cloud Pass','Silver Waterfall','Sunflower Plain','Old Post Town','Red Maple Ridge','Starry Plateau','Dragonfly Coast','Summit Trail','Dawn Sanctuary','Kaishi Summit'];
 function wordChapterCount(){return Math.max(1,Math.ceil(vocab.length/WORD_CHAPTER_SIZE))}
@@ -393,13 +418,71 @@ function renderJourneyHome(){
  if(kanjiButton){kanjiButton.disabled=!pathUnlocked('kanji');kanjiButton.querySelector('small').textContent=pathUnlocked('kanji')?'View progress →':'Unlock at Kanji Gate'}
  $('#journeyHomeAvatar').src=pathAvatarSource();$('#journeyHomeTitle').textContent=next?next.title:'Today’s adventure is complete!';$('#journeyHomeActivity').textContent=senseiRecommendation(topic);$('#currentTopicTitle').textContent=`${topic.icon||'🗾'} ${topic.title}`;$('#currentTopicStatus').textContent=`${stats.introduced}/${stats.words.length} words · ${stats.percent}% · ${stats.complete?'Boss defeated':stats.bossReady?'Boss ready':'In progress'}`;$('#journeyHomeProgress').textContent=`${completed.length}/${route.steps.length} missions today · ${unlocked}/${PATH_MILESTONES.length} activities`;$('#journeyHomeFill').style.width=`${Math.max(3,stats.percent)}%`;if($('#homeReviewCount'))$('#homeReviewCount').textContent=dailyDueWords().length;
 }
+let selectedVillageActivity=null;
+function activityPreview(id,count){
+ if(id==='picture')return `${count} illustrated cards · beginner-first picture modes`;
+ if(id==='listening')return `${count} audio-enabled words`;
+ if(id==='karuta')return `${count} illustrated audio cards`;
+ if(id==='conversation')return `Conversations scoped to your introduced vocabulary`;
+ if(id==='theatre')return `Scenes filtered to familiar vocabulary where metadata is available`;
+ if(id==='builder'||id==='kanji')return `${count} introduced Kanji words`;
+ return `${count} introduced words available`;
+}
+function openActivityUnlock(id){
+ const item=PATH_MILESTONES.find(x=>x.id===id);if(!item)return;
+ selectedVillageActivity=id;
+ const state=activityReadiness(id),cfg=state.cfg,dialog=$('#activityUnlockDialog');
+ $('#activityUnlockBuilding').textContent=item.icon;
+ $('#activityUnlockName').textContent=item.title;
+ $('#activityUnlockDescription').textContent=item.description;
+ $('#activityWordProgress').textContent=`${state.supported} / ${cfg.words}`;
+ $('#activityWordBar').style.width=`${cfg.words?Math.min(100,state.supported/cfg.words*100):100}%`;
+ $('#activityWordNeed').textContent=state.wordReady?'Enough familiar vocabulary':`${cfg.words-state.supported} more supported words needed`;
+ $('#activityApProgress').textContent=`${adventurePoints()} / ${cfg.cost} AP`;
+ $('#activityApBar').style.width=`${cfg.cost?Math.min(100,adventurePoints()/cfg.cost*100):100}%`;
+ $('#activityApNeed').textContent=state.apReady?'Enough Adventure Points':`${cfg.cost-adventurePoints()} more AP needed`;
+ $('#activityLifetimeXp').textContent=lifetimeXp().toLocaleString();
+ $('#activityAvailableAp').textContent=adventurePoints().toLocaleString();
+ $('#activityContentPreview').innerHTML=`<strong>What opens here</strong><p>${esc(activityPreview(id,state.supported))}</p><small>Activities only test introduced words supported by this location.</small>`;
+ const action=$('#activityUnlockAction');
+ if(state.purchased){action.textContent='Practice';action.disabled=false}
+ else if(state.wordReady&&state.apReady){action.textContent=`${cfg.action} · ${cfg.cost} AP`;action.disabled=false}
+ else{action.textContent=state.wordReady?'Earn more Adventure Points':'Continue learning';action.disabled=true}
+ $('#activityTeacherMessage').textContent=state.purchased
+  ?`This location is open. I will only use words you have already met.`
+  :state.wordReady&&state.apReady
+   ?`You know enough Japanese to enjoy this location, and you have enough Adventure Points to restore it.`
+   :!state.wordReady
+    ?`Keep learning. Once you know ${cfg.words} supported words, this activity will have enough substance to be enjoyable.`
+    :`Your vocabulary is ready. Keep learning to earn the remaining Adventure Points.`;
+ action.onclick=()=>{
+  const current=activityReadiness(id);
+  if(!current.purchased){
+   if(!current.wordReady||!current.apReady)return;
+   meta.activityPurchases.push(id);meta.adventurePointsSpent+=current.cfg.cost;save();
+   dialog.classList.add('unlocking');
+   setTimeout(()=>{dialog.classList.remove('unlocking');dialog.close();renderJourney();launchVillageActivity(id)},1100);
+  }else{dialog.close();launchVillageActivity(id)}
+ };
+ $('#activityContinueJourney').onclick=()=>dialog.close();
+ $('#activityUnlockClose').onclick=()=>dialog.close();
+ if(!dialog.open)dialog.showModal();
+}
+function launchVillageActivity(id){
+ activityReturnScreen='journey';
+ if(id==='picture'){
+  const level=Number(meta.activityModeLevels.picture||1);
+  startPictureGame(level<=1?'picture-english-word':level===2?'picture-word':'word-picture');return;
+ }
+ launchPathMilestone(id,true);
+}
 function renderJourney(){
  refreshPathUnlocks();const currentIndex=pathCurrentIndex(),unlocked=PATH_MILESTONES.filter(item=>pathUnlocked(item.id)).length,wordPosition=wordJourneyPosition(),masteryState=masterySnapshot();$('#journeyStats').innerHTML=`<article><strong>${unlocked}/${PATH_MILESTONES.length}</strong><span>Activities unlocked</span></article><article><strong>${wordPosition.explored}/${vocab.length}</strong><span>Words introduced</span></article><article><strong>${masteryState.mastered}</strong><span>Full mastery journeys</span></article><article><strong>${wordPosition.completed}/${wordPosition.total}</strong><span>Chapters completed</span></article>`;
  renderDailyRoute();
- $('#pathRoad').innerHTML=PATH_MILESTONES.map((item,itemIndex)=>{const unlockedItem=pathUnlocked(item.id),visited=Boolean(meta.pathVisits[item.id]),current=itemIndex===currentIndex;return `<article class="path-stop ${unlockedItem?'unlocked':'locked'} ${visited?'visited':''} ${current?'current':''}"><div class="path-marker">${esc(item.icon)}</div>${current?`<img id="journeyAvatar" class="path-avatar" src="${pathAvatarSource()}" alt="Your Kaishi character at ${esc(item.title)}">`:''}<button data-path-launch="${esc(item.id)}"${unlockedItem?'':' disabled'}><span class="path-status">${unlockedItem?(visited?'✓ Unlocked':'✨ New activity'):'🔒 Locked'}</span><strong>${esc(item.title)}</strong><b>${esc(item.activity)}</b><small lang="ja">${esc(item.japanese)}</small><p>${esc(item.description)}</p><i>${unlockedItem?'Tap to practise':esc(pathProgress(item.id))}</i></button></article>`}).join('');
- $('#topicAdventure').innerHTML=journeyTopics().map((topic,itemIndex)=>{const stats=topicStats(topic),unlockedTopic=topicUnlocked(itemIndex),current=itemIndex===currentTopicIndex(),status=stats.complete?'✓ Boss defeated':stats.bossReady?'Boss ready':unlockedTopic?'In progress':'🔒 Locked';if(!current)return `<article class="topic-region compact ${stats.complete?'complete':''} ${unlockedTopic?'unlocked':'locked'}"><button data-topic-launch="${esc(topic.id)}"${unlockedTopic?'':' disabled'}><span>${esc(topic.icon||'🗾')}</span><div><strong>${esc(topic.title)}</strong><small>${stats.introduced}/${stats.words.length} words · ${status}</small></div></button></article>`;return `<article class="topic-region current ${stats.complete?'complete':''}"><div class="topic-region-heading"><span>${esc(topic.icon||'🗾')}</span><div><small>Current region</small><strong>${esc(topic.title)}</strong><p>${esc(senseiRecommendation(topic))}</p></div></div><div class="topic-region-stats"><span><b>${stats.introduced}</b> introduced</span><span><b>${stats.tested}</b> practised</span><span><b>${stats.mastered}</b> mastered</span></div><i class="topic-progress"><b style="width:${stats.percent}%"></b></i><div class="topic-region-actions"><button class="primary" data-topic-launch="${esc(topic.id)}">Continue topic</button>${stats.bossReady&&!stats.complete?`<button data-topic-boss="${esc(topic.id)}">⚔️ Challenge boss</button>`:''}</div></article>`}).join('');
- document.querySelectorAll('[data-topic-launch]').forEach(button=>button.onclick=()=>startTopicSession(button.dataset.topicLaunch));document.querySelectorAll('[data-topic-boss]').forEach(button=>button.onclick=()=>startTopicBoss(button.dataset.topicBoss));
- $('#practiceHub').innerHTML=PATH_MILESTONES.filter(item=>pathUnlocked(item.id)&&(item.id==='vocabulary'||Boolean(meta.pathVisits[item.id]))).map(item=>`<button data-path-launch="${esc(item.id)}"><span>${esc(item.icon)}</span><strong>${esc(item.activity)}</strong><small>${esc(item.title)}</small></button>`).join('');document.querySelectorAll('[data-path-launch]').forEach(button=>button.onclick=()=>launchPathMilestone(button.dataset.pathLaunch));document.querySelectorAll('[data-word-chapter]').forEach(button=>button.onclick=()=>startJourneyChapter(+button.dataset.wordChapter));
+ $('#pathRoad').innerHTML=PATH_MILESTONES.map((item,itemIndex)=>{const state=activityReadiness(item.id),ready=state.wordReady&&state.apReady;return `<article class="activity-location ${state.purchased?'restored':ready?'ready':'building'} theme-${state.cfg.theme||'village'}"><button data-village-activity="${esc(item.id)}"><span class="activity-location-icon">${esc(item.icon)}</span><span class="activity-location-status">${state.purchased?'Open':ready?'Ready to restore':'Developing'}</span><strong>${esc(item.title)}</strong><small>${state.supported}/${state.cfg.words} supported words · ${state.cfg.cost} AP</small><div class="activity-location-meter"><i style="width:${state.cfg.words?Math.min(100,state.supported/state.cfg.words*100):100}%"></i></div><b>${state.purchased?'Practice':ready?state.cfg.action:`${Math.max(0,state.cfg.words-state.supported)} words to go`}</b></button></article>`}).join('');
+ $('#practiceHub').innerHTML=PATH_MILESTONES.filter(item=>activityReadiness(item.id).purchased).map(item=>`<button data-village-activity="${esc(item.id)}"><span>${esc(item.icon)}</span><strong>${esc(item.title)}</strong><small>Practice with introduced words</small></button>`).join('');
+ document.querySelectorAll('[data-village-activity]').forEach(button=>button.onclick=()=>openActivityUnlock(button.dataset.villageActivity));
+ document.querySelectorAll('[data-word-chapter]').forEach(button=>button.onclick=()=>startJourneyChapter(+button.dataset.wordChapter));
 }
 function startTopicBoss(topicId){const topic=journeyTopics().find(item=>item.id===topicId);if(!topic)return;const stats=topicStats(topic);if(!stats.bossReady){toast('Teacher will unlock the boss after more topic practice');return}const skills=['meaning','listening','reading','picture','sentence','production'],pool=shuffle([...topic.words.filter(wordIntroduced),...topicSupportWords(topic,4)]);session=[];pool.slice(0,Math.min(12,pool.length)).forEach((v,i)=>{let skill=skills[i%skills.length];if(skill==='picture'&&!memoryScenes[sceneKey(v)])skill='meaning';if(skill==='sentence'&&!v.sentence&&!v._anki?.sentence)skill='reading';session.push({v,skill,bossTopicId:topic.id})});meta.activeTopicBoss={topicId,correct:0,total:session.length};activityReturnScreen='journey';index=0;current=null;show('study');renderCurrent();toast(`${topic.icon||'⚔️'} ${topic.title} boss started`)}
 function completeTopicBoss(topicId,passed=true){meta.topicProgress=meta.topicProgress||{};meta.topicProgress[topicId]={...(meta.topicProgress[topicId]||{}),bossPassed:passed,bossCompletedAt:Date.now()};const topics=journeyTopics(),index=topics.findIndex(topic=>topic.id===topicId);if(passed&&topics[index+1])meta.topicProgress[topics[index+1].id]={...(meta.topicProgress[topics[index+1].id]||{}),unlocked:true};delete meta.activeTopicBoss;save();toast(passed?'Topic complete — next region unlocked!':'Sensei created a recovery route')}
@@ -407,10 +490,10 @@ function renderCollection(tab='words'){const stats=$('#collectionStats'),content
 function openCollection(tab='words'){renderCollection(tab);show('collection')}
 function openJourney(section='missions'){renderJourney();show('journey');if(section==='practice')requestAnimationFrame(()=>$('#practiceHubTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(section==='missions')requestAnimationFrame(()=>$('#dailyRouteTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(section==='current')requestAnimationFrame(()=>{const hasNew=PATH_MILESTONES.some(item=>pathUnlocked(item.id)&&!meta.pathVisits[item.id]);$(hasNew?'.path-stop.current':'.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'})})}
 function startJourneyChapter(itemIndex){if(!chapterUnlocked(itemIndex)){toast('Complete the previous vocabulary chapter first');return}activityReturnScreen='journey';activeVocabularyChapter=itemIndex;makeSession(itemIndex)}
-function launchPathMilestone(id){
- if(pathUnlocked(id)&&!meta.unlockNoticesSeen.includes(id)){meta.unlockNoticesSeen.push(id);save(false)}
- if(!pathUnlocked(id)){toast('Keep following the journey to unlock this activity');return}activityReturnScreen='journey';if(activeJourneyMission?.activityId!==id)meta.pathVisits[id]=Date.now();save();renderJourneyHome();
- if(id==='vocabulary'){startJourneyChapter(currentWordChapterIndex());return}if(id==='kana'){openKanaPath();return}if(id==='picture'){startPictureGame('picture-word');return}if(id==='listening'){startPictureGame('listen-meaning');return}if(id==='karuta'){startKarutaGame();return}if(id==='conversation'){openConversationLibrary();return}if(id==='grammar'){openGrammarPath();return}if(id==='theatre'){openTheatreLibrary();return}if(id==='kanji'){renderKanjiOverview();show('kanjiOverview');return}if(id==='builder'){openKanjiBuilder();return}if(id==='manga'){openMangaLibrary();return}if(id==='battle')startDecayBattle();
+function launchPathMilestone(id,fromVillage=false){
+ if((pathUnlocked(id)||fromVillage)&&!meta.unlockNoticesSeen.includes(id)){meta.unlockNoticesSeen.push(id);save(false)}
+ if(!pathUnlocked(id)&&!fromVillage){openActivityUnlock(id);return}activityReturnScreen='journey';if(activeJourneyMission?.activityId!==id)meta.pathVisits[id]=Date.now();save();renderJourneyHome();
+ if(id==='vocabulary'){startJourneyChapter(currentWordChapterIndex());return}if(id==='kana'){openKanaPath();return}if(id==='picture'){startPictureGame('picture-english-word');return}if(id==='listening'){startPictureGame('listen-meaning');return}if(id==='karuta'){startKarutaGame();return}if(id==='conversation'){openConversationLibrary();return}if(id==='grammar'){openGrammarPath();return}if(id==='theatre'){openTheatreLibrary();return}if(id==='kanji'){renderKanjiOverview();show('kanjiOverview');return}if(id==='builder'){openKanjiBuilder();return}if(id==='manga'){openMangaLibrary();return}if(id==='battle')startDecayBattle();
 }
 function continueJourney(){openJourney('missions')}
 function returnToActivitySource(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';activeVocabularyChapter=null;if(destination==='journey'){finishActiveJourneyMission();openJourney()}else show(destination)}
@@ -910,14 +993,17 @@ function showKanjiBuilderSummary(){const total=kanjiBuilder.rounds.length,correc
 
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
 function pictureChoices(v,n){
- const pool=shuffle(illustratedWords().filter(x=>x.id!==v.id));
+ const pool=shuffle(illustratedWords().filter(x=>x.id!==v.id&&wordIntroduced(x)));
  return shuffle([v,...pool.slice(0,Math.max(1,n-1))]);
 }
 function renderPictureQuestion(v,mode='picture-word'){
  const count=Math.max(2,Math.min(6,+settings.pictureDifficulty||4));
  const choices=pictureChoices(v,count),scene=memoryScenes[sceneKey(v)],c=$('#card');
  let prompt='',answer='',buttons='';
- if(mode==='picture-word'){
+ if(mode==='picture-english-word'){
+  prompt=`${sceneSprite(scene,'quiz-picture')}<p class="picture-learning-meaning">${esc(v.meaning)}</p><h2>Which Japanese word matches?</h2>`;
+  answer=v.id;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.id)}"><span lang="ja">${esc(x.word)}</span><small>${esc(x.reading)}</small></button>`).join('');
+ }else if(mode==='picture-word'){
   prompt=`${sceneSprite(scene,'quiz-picture')}<h2>Which word matches this picture?</h2>`;
   answer=v.id;buttons=choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x.id)}">${esc(x.word)}</button>`).join('');
  }else if(mode==='picture-kanji-meaning'){
@@ -940,12 +1026,12 @@ function renderPictureQuestion(v,mode='picture-word'){
  }
 }
 async function startPictureGame(mode){
- abortSession('games');
- const all=illustratedWords().filter(v=>mode!=='listen-meaning'||v.wordAudio);
+ abortSession('journey');
+ const all=illustratedWords().filter(v=>wordIntroduced(v)&&(mode!=='listen-meaning'||v.wordAudio));
  if(all.length<2){toast('More illustrated vocabulary is needed');return}
 
  const pool=shuffle(all.filter(v=>progress[v.id]?.stage>=1));
- const available=pool.length>=2?pool:shuffle(all);
+ const available=pool;
  session=available
   .slice(0,Math.min(settings.sessionSize,available.length))
   .map(v=>({v,skill:'picture',pictureMode:mode}));
@@ -997,7 +1083,7 @@ function showKarutaSummary(){
  const average=karuta.times.length?karuta.times.reduce((sum,time)=>sum+time,0)/karuta.times.length:0,fastest=karuta.times.length?Math.min(...karuta.times):0;
  const total=karuta.correct+karuta.wrong,averageScore=total?karuta.score/total:0;meta.karutaBest=Math.max(Number(meta.karutaBest||0),karuta.score);meta.karutaSessions=Array.isArray(meta.karutaSessions)?meta.karutaSessions:[];meta.karutaSessions.push({at:Date.now(),averageScore,score:karuta.score,total,correct:karuta.correct});recentKarutaBestAverage();save();$('#sessionCounter').textContent='Complete';$('#progressFill').style.width='100%';
  $('#card').innerHTML=`<div class="eyebrow">Karuta summary · かるた</div><h2 class="battle-summary-title">Reflex round complete</h2><div class="battle-summary-grid karuta-summary-grid"><article><strong>${karuta.score.toLocaleString()}</strong><span>Points</span></article><article><strong>${karuta.correct}/${karuta.correct+karuta.wrong}</strong><span>Correct cards</span></article><article><strong>${average.toFixed(2)}s</strong><span>Average reaction</span></article><article><strong>${fastest.toFixed(2)}s</strong><span>Fastest tap</span></article><article><strong>${karuta.bestCombo}</strong><span>Best speed combo</span></article><article><strong>${Number(meta.karutaBest||0).toLocaleString()}</strong><span>Personal best</span></article></div><p class="battle-summary-note">Fast, correct taps within three seconds build the combo. Replaying the audio or taking longer gives you time to learn, but resets the speed chain.</p><button id="karutaAgain" class="primary reveal">Play Karuta again</button><button id="karutaDone" class="reveal">Return to games</button>`;
- $('#karutaAgain').onclick=startKarutaGame;$('#karutaDone').onclick=()=>abortSession('games');
+ $('#karutaAgain').onclick=startKarutaGame;$('#karutaDone').onclick=()=>{abortSession('journey');openJourney('practice')};
 }
 function startKarutaGame(){
  abortSession('games');
@@ -1135,11 +1221,11 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.1.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v10.0.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
-$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').onclick=openKanaPath;$('#kanaBack').onclick=()=>show('home');$('#kanaLessonExit').onclick=openKanaPath;document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));$('#mangaBtn').onclick=openMangaLibrary;$('#mangaBack').onclick=()=>show('home');$('#mangaLibraryBack').onclick=openMangaLibrary;$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>{if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}else show('settings')};$('#checkpointContinue').onclick=continueAfterCheckpoint;$('#checkpointFinish').onclick=finishAtCheckpoint;$('#quickSettingsSave').onclick=()=>{settings.autoAudio=$('#quickAutoAudio').checked;settings.mnemonicStyle=$('#quickMnemonicStyle').value;save();$('#quickSettingsDialog').close();toast('Quick settings applied')};$('#quickSettingsCancel').onclick=()=>$('#quickSettingsDialog').close();$('#quickFullSettings').onclick=()=>{saveMissionResume();$('#quickSettingsDialog').close();show('settings')};$('#settingsBack').onclick=()=>{settings.playMode='journey';settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];if(meta.dailyReviewPlan?.date!==day())delete meta.dailyReviewPlan;settings={...defaults,...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={...META_DEFAULTS,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[]};save();updateHome();toast('Progress reset')}};
+$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').onclick=openKanaPath;$('#kanaBack').onclick=()=>show('home');$('#kanaLessonExit').onclick=openKanaPath;document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));$('#mangaBtn').onclick=openMangaLibrary;$('#mangaBack').onclick=()=>show('home');$('#mangaLibraryBack').onclick=openMangaLibrary;$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>{abortSession('journey');openJourney('practice')};document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{if(pictureGameActive){abortSession('journey');openJourney('practice')}else abortSession('home')};$('#settingsBtn').onclick=()=>{if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}else show('settings')};$('#checkpointContinue').onclick=continueAfterCheckpoint;$('#checkpointFinish').onclick=finishAtCheckpoint;$('#quickSettingsSave').onclick=()=>{settings.autoAudio=$('#quickAutoAudio').checked;settings.mnemonicStyle=$('#quickMnemonicStyle').value;save();$('#quickSettingsDialog').close();toast('Quick settings applied')};$('#quickSettingsCancel').onclick=()=>$('#quickSettingsDialog').close();$('#quickFullSettings').onclick=()=>{saveMissionResume();$('#quickSettingsDialog').close();show('settings')};$('#settingsBack').onclick=()=>{settings.playMode='journey';settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];if(meta.dailyReviewPlan?.date!==day())delete meta.dailyReviewPlan;settings={...defaults,...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{if(confirm('Delete all learning progress?')){progress={};meta={...META_DEFAULTS,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[]};save();updateHome();toast('Progress reset')}};
 $('#dashboardAvatarButton').onclick=openCharacterSettings;
 $('#kanjiOverviewBtn').onclick=()=>{if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')};
 $('#kanjiOverviewBack').onclick=()=>show('home');

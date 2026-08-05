@@ -1,5 +1,5 @@
 'use strict';
-const VERSION='9.1.0';
+const VERSION='10.0.0';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE='kaishi-images-v1';
 const MAX_RUNTIME_IMAGES=350;
@@ -8,7 +8,7 @@ const SHELL=[
  `./app.js?v=${VERSION}`,`./vms.js?v=${VERSION}`,`./cloud.js?v=${VERSION}`,
  `./reporting.js?v=${VERSION}`,`./japan-ready.js?v=${VERSION}`,'./data/japan-ready-v90.json','./icons/icon-192.png','./icons/icon-512.png',
  `./media/guides/teacher-guide.webp?v=${VERSION}`,
- './media/profiles/guest-learner.webp?v=9.1.0','./media/profiles/boy-base.webp','./media/profiles/girl-base.webp',
+ './media/profiles/guest-learner.webp?v=10.0.0','./media/profiles/boy-base.webp','./media/profiles/girl-base.webp',
  './media/profiles/master-base.webp','./media/profiles/man-base.webp',
  './media/profiles/woman-base.webp'
 ];

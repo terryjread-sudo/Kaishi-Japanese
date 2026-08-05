@@ -1,21 +1,41 @@
-# Kaishi Quest v9.1.0 — Guided Adventure Phase 1 & 2
+# Kaishi Quest v10.0.0 — Activity Village
 
-This package is based on v9.0.12. The discarded v9.0.13 patch is not included.
+Upload these files over v9.1.0.
 
-## Phase 1: Three-step route
+## Activity Village
 
-The route now follows:
+Practice Grounds is replaced by a village map. Each activity is a location that can be restored and then used for practice.
 
-1. **Learn** — continue the current topic.
-2. **Use** — try a newly unlocked or relevant activity.
-3. **Reinforce** — complete due reviews or an optional Memory Warm-up.
+An activity requires both:
 
-Only the current step is clickable. Completing it makes the next step available. Buttons now use Locked, Start, Complete and Optional practice states.
+- enough introduced words supported by that activity;
+- enough spendable Adventure Points.
 
-## Phase 2: Teacher guidance
+Lifetime XP never decreases and remains the leaderboard score. Available AP is lifetime XP minus AP already spent.
 
-When an activity unlocks, the teacher displays a dismissible Journey notice explaining the new activity.
+## Fair activity word pools
 
-The learner can choose **Start now** or **Maybe later**. Each activity notice is shown once. A short animation celebrates the unlock and respects reduced-motion preferences.
+Picture Meadow, listening games and Karuta now strictly use:
 
-No Supabase SQL changes are required.
+`introduced words ∩ activity-supported words`
+
+No fallback to unseen vocabulary is allowed.
+
+Picture Meadow begins with an easier mode that shows the picture and English meaning before asking for the Japanese word.
+
+## RPG unlock flow
+
+Selecting a location opens a full-screen scene showing:
+
+- vocabulary readiness;
+- AP readiness and cost;
+- available content;
+- lifetime XP;
+- available AP;
+- teacher guidance.
+
+Restoring a location plays a short animation and permanently records the purchase.
+
+The legacy Games chooser is hidden. Exiting an activity returns to Activity Village.
+
+No Supabase SQL changes are required because village purchases and AP spending are stored inside the existing progress payload.
