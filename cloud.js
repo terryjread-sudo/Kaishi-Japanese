@@ -5,7 +5,7 @@
  const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
  const AVATARS=['boy','girl','master','man','woman'],OWNER_LOGIN='terryjread-sudo';
  const FP_KEY='kq-cloud-sync-fingerprint-v1';
- let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map();
+ let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false;
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
  const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}};
@@ -154,7 +154,7 @@
     ?`<h4>Friend requests</h4>${requests.map(row=>`<article class="friend-row request"><img src="${friendAvatar(row)}" alt=""><div><strong>${esc(row.display_name||row.github_login)}</strong><small>@${esc(row.github_login)}</small></div><div class="friend-actions"><button data-friend-accept="${row.request_id}" class="primary">Accept</button><button data-friend-decline="${row.request_id}">Decline</button></div></article>`).join('')}`
     :'';
    list.innerHTML=`<h4>Your friends</h4>${friends.length
-    ?friends.map(row=>`<article class="friend-row"><img src="${friendAvatar(row)}" alt=""><div><strong>${esc(row.display_name||row.github_login)}</strong><small>@${esc(row.github_login)} · active ${timeAgo(row.last_active_at)}</small></div><button data-unfriend="${row.user_id}">Unfriend</button></article>`).join('')
+    ?friends.map(row=>`<article class="friend-row accepted"><button class="friend-profile-link" data-friend-profile="${row.user_id}" type="button"><img src="${friendAvatar(row)}" alt=""><span><strong>${esc(row.display_name||row.github_login)}</strong><small>@${esc(row.github_login)} · active ${timeAgo(row.last_active_at)}</small></span></button><button data-unfriend="${row.user_id}" class="friend-unfriend-small" type="button">Unfriend</button></article>`).join('')
     :'<p class="muted">No friends yet. Select a learner from the leaderboard or share an invitation link.</p>'}`;
    document.querySelectorAll('[data-friend-accept]').forEach(button=>button.onclick=async()=>{
     await friendRpc('respond_kaishi_friend_request',{request_id:button.dataset.friendAccept,accept_request:true});
@@ -164,12 +164,13 @@
     await friendRpc('respond_kaishi_friend_request',{request_id:button.dataset.friendDecline,accept_request:false});
     await loadFriends();await loadLeaderboard();
    });
+   document.querySelectorAll('[data-friend-profile]').forEach(button=>button.onclick=()=>openCommunityProfile(button.dataset.friendProfile));
    document.querySelectorAll('[data-unfriend]').forEach(button=>button.onclick=async()=>{
     if(!confirm('Remove this friend?'))return;
     await friendRpc('remove_kaishi_friend',{friend_user_id:button.dataset.unfriend});
     await loadFriends();await loadLeaderboard();
    });
-   renderFriendNudge(friends);
+   renderFriendNudge(friends);await renderSocialNotifications(rows||[]);
   }catch(error){
    window.__kaishiFriendRows=[];
    incoming.innerHTML='';
@@ -177,7 +178,35 @@
    renderFriendNudge([]);
   }
  }
- function renderFriendNudge(friends){const card=$('#friendActivityNudge');if(!card)return;const recent=(friends||[]).filter(r=>r.last_active_at&&Date.now()-new Date(r.last_active_at).getTime()<86400000).sort((a,b)=>new Date(b.last_active_at)-new Date(a.last_active_at))[0];if(!user||!recent){card.hidden=true;return}card.hidden=false;$('#friendActivityAvatar').src=friendAvatar(recent);$('#friendActivityTitle').textContent=`${recent.display_name||recent.github_login} has been learning`;$('#friendActivityText').textContent=`They were active ${timeAgo(recent.last_active_at)}. Complete a short mission and keep pace with them.`;$('#friendActivityOpen').onclick=()=>{$('#communityBtn')?.click();setTimeout(()=>$('#friendsPanel')?.scrollIntoView({behavior:'smooth'}),100)}}
+ function renderFriendNudge(friends){
+  const card=$('#friendActivityNudge');if(!card)return;
+  const recent=(friends||[]).filter(r=>r.last_active_at&&Date.now()-new Date(r.last_active_at).getTime()<86400000).sort((a,b)=>new Date(b.last_active_at)-new Date(a.last_active_at))[0];
+  let dismissed={};try{dismissed=JSON.parse(localStorage.getItem(FRIEND_NUDGE_DISMISS_KEY)||'{}')}catch{}
+  if(!user||!recent||(dismissed.userId===recent.user_id&&dismissed.activity===recent.last_active_at)){card.hidden=true;return}
+  card.hidden=false;$('#friendActivityAvatar').src=friendAvatar(recent);$('#friendActivityTitle').textContent=`${recent.display_name||recent.github_login} studied ${timeAgo(recent.last_active_at)}`;$('#friendActivityText').textContent='Keep pace with a quick mission.';
+  const open=()=>openCommunityProfile(recent.user_id);$('#friendActivityOpen').onclick=open;$('#friendActivityOpen').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}};
+  $('#friendActivityDismiss').onclick=e=>{e.stopPropagation();localStorage.setItem(FRIEND_NUDGE_DISMISS_KEY,JSON.stringify({userId:recent.user_id,activity:recent.last_active_at}));card.hidden=true};
+ }
+ async function renderSocialNotifications(rows=[]){
+  const button=$('#socialNotificationButton'),panel=$('#socialNotificationPanel'),list=$('#socialNotificationList');if(!button||!panel||!list)return;
+  if(!user){button.hidden=true;panel.hidden=true;return}
+  let read={};try{read=JSON.parse(localStorage.getItem(SOCIAL_READ_KEY)||'{}')}catch{}
+  const items=rows.filter(r=>r.relationship_status==='pending_incoming').map(r=>({id:`req:${r.request_id}`,type:'request',row:r,title:`${r.display_name||r.github_login} sent a friend request`}));
+  rows.filter(r=>r.relationship_status==='accepted'&&r.accepted_at).forEach(r=>{const id=`accepted:${r.request_id}:${r.accepted_at}`;if(!read[id])items.push({id,type:'accepted',row:r,title:`${r.display_name||r.github_login} accepted your request`})});
+  if(isOwner()){try{const{data}=await client.rpc('get_kaishi_admin_notification_counts');if(Number(data?.unreviewed_reports||0)>0)items.push({id:'admin-reports',type:'admin',title:`${data.unreviewed_reports} learning-card report${Number(data.unreviewed_reports)===1?'':'s'} need review`})}catch{}}
+  button.hidden=!items.length;$('#socialNotificationCount').textContent=String(items.length);
+  list.innerHTML=items.length?items.map(i=>`<article class="social-notification-item"><strong>${esc(i.title)}</strong><div class="social-notification-actions">${i.type==='request'?`<button data-na="${i.row.request_id}" class="primary">Accept</button><button data-nd="${i.row.request_id}">Decline</button>`:''}${i.type==='accepted'?`<button data-np="${i.row.user_id}">View</button><button data-nx="${esc(i.id)}">Dismiss</button>`:''}${i.type==='admin'?'<button id="openAdminNotice" class="primary">Open Admin</button>':''}</div></article>`).join(''):'<p class="muted">No new notifications.</p>';
+  document.querySelectorAll('[data-na]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.na,accept_request:true});await loadFriends();await loadLeaderboard()});
+  document.querySelectorAll('[data-nd]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.nd,accept_request:false});await loadFriends();await loadLeaderboard()});
+  document.querySelectorAll('[data-np]').forEach(b=>b.onclick=()=>openCommunityProfile(b.dataset.np));
+  document.querySelectorAll('[data-nx]').forEach(b=>b.onclick=()=>{read[b.dataset.nx]=Date.now();localStorage.setItem(SOCIAL_READ_KEY,JSON.stringify(read));renderSocialNotifications(rows)});
+  $('#openAdminNotice')?.addEventListener('click',()=>{$('#adminEntry')?.click();panel.hidden=true});
+ }
+ async function loadAdminUsers(){
+  const list=$('#adminUsersList'),summary=$('#adminUsersSummary');if(!list||!summary||!isOwner())return;
+  list.innerHTML='<p class="muted">Loading users…</p>';
+  try{const{data,error}=await client.rpc('get_kaishi_admin_users');if(error)throw error;const rows=data||[];summary.innerHTML=`<span><strong>${rows.length}</strong> profiles</span><span><strong>${rows.filter(r=>r.opted_in).length}</strong> visible</span><span><strong>${rows.filter(r=>!r.opted_in).length}</strong> opted out</span>`;list.innerHTML=rows.map(r=>`<article class="admin-user-row"><img src="${avatarImage(r.avatar_key||'boy',r.streak||0)}" alt=""><div><strong>${esc(r.display_name||r.github_login)}</strong><small>@${esc(r.github_login)} · active ${timeAgo(r.updated_at)}</small></div><span>${r.xp||0} XP · ${r.mastered||0} mastered · ${r.friend_count||0} friends</span><b>${r.opted_in?'Visible':'Opted out'}</b></article>`).join('');adminUsersLoaded=true}catch(e){list.innerHTML=`<p class="muted">${esc(describeError(e))}</p>`}
+ }
  async function initialiseFriends(){
   await loadFriends();
   clearInterval(friendRefreshTimer);
@@ -205,7 +234,7 @@ async function loadLeaderboard(){
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
  async function syncNow(){if(!user){await signIn();return}await initialiseAccount(true)}
  async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Quest cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
- async function handleSession(session){user=session?.user||null;if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
+ async function handleSession(session){user=session?.user||null;if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
 
 
  function friendRelation(userId){
@@ -320,7 +349,7 @@ async function loadLeaderboard(){
 
  async function init(){
   capturePendingInvite();
-  $('#communityProfileClose')?.addEventListener('click',()=>$('#communityProfileDialog')?.close());$('#avatarPicker')?.addEventListener('click',changeAvatar);join?.addEventListener('change',changeOptIn);$('#cloudSyncNow')?.addEventListener('click',syncNow);$('#cloudDelete')?.addEventListener('click',deleteCloudData);$('#leaderboardSignIn')?.addEventListener('click',()=>user?$('#settingsBtn').click():signIn());
+  $('#socialNotificationButton')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=!p.hidden});$('#socialNotificationClose')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=true});$('#refreshAdminUsers')?.addEventListener('click',loadAdminUsers);$('#communityProfileClose')?.addEventListener('click',()=>$('#communityProfileDialog')?.close());$('#avatarPicker')?.addEventListener('click',changeAvatar);join?.addEventListener('change',changeOptIn);$('#cloudSyncNow')?.addEventListener('click',syncNow);$('#cloudDelete')?.addEventListener('click',deleteCloudData);$('#leaderboardSignIn')?.addEventListener('click',()=>user?$('#settingsBtn').click():signIn());
   if(!config?.url||!config?.publishableKey||!sdk?.createClient){renderSignedOut('Cloud sync could not start. Guest mode is still available.');setStatus('Cloud configuration or library is unavailable.','error');return}
   client=sdk.createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   client.auth.onAuthStateChange((event,session)=>{if(['TOKEN_REFRESHED','USER_UPDATED'].includes(event))return;setTimeout(()=>handleSession(session),0)});

@@ -1,8 +1,14 @@
 {
-  "version": "9.0.8",
+  "version": "9.0.9",
   "released": "2026-08-05",
-  "title": "Corrected social release",
+  "title": "Social polish and admin users",
   "changes": [
+    "Added in-app social notifications and owner report alerts.",
+    "Made friend motivation compact and dismissible.",
+    "Added friend and invite limits.",
+    "Made friend rows clickable with compact unfriend controls.",
+    "Added owner-only user listing from leaderboard_entries.",
+    "Browser notifications are not included.",
     "Reissued the corrected social release as v9.0.8 for users who already installed v9.0.7.",
     "Removed the GitHub username friend-search form.",
     "Made leaderboard learners selectable with working friend controls.",
