@@ -1,17 +1,35 @@
-# Kaishi Quest v9.0.5 patch
+# Kaishi Quest v9.0.6 — Learning Together
 
-Upload all files while preserving the `data/` and `media/profiles/` folders.
+Upload all changed root files, preserving the `supabase/functions/friend-request-email/` folder.
 
-## Included
+## Supabase setup
 
-- Guest learner avatar for signed-out users
-- More prominent GitHub sign-in and cloud-progress benefits
-- Desktop-safe Japan Ready dashboard preview
-- Expanded three-turn travel conversations across ten scenarios
-- Recommended scenario highlighting in the scenario list
-- Travel Cheat Sheet grouped by situation
-- Japanese, romaji, English and speaker playback for every cheat-sheet phrase
+1. Run `supabase-friends.sql` once in Supabase SQL Editor.
+2. Deploy the Edge Function:
+   `supabase functions deploy friend-request-email`
+3. Add these Edge Function secrets:
+   - `RESEND_API_KEY`
+   - `KAISHI_APP_URL` — your GitHub Pages app URL
+   - `KAISHI_FROM_EMAIL` — a verified Resend sender, such as `Kaishi Quest <friends@yourdomain.com>`
 
-The travel phrase coverage was reviewed against practical categories commonly recommended for visitors: courtesy, transportation, dining, shopping, hotels/airports and emergencies.
+Supabase supplies `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY`.
 
-No Supabase SQL changes are required.
+## Email behaviour
+
+Friend-request emails are enabled by default. Signed-in users can turn them off under **Settings → Cloud progress → Email me about friend requests**.
+
+An email is sent only when the recipient:
+- has a usable email address associated with Supabase authentication;
+- has not disabled friend-request emails.
+
+The on-screen friend request is created even if email delivery is unavailable.
+
+## Included features
+
+- Four kana choices in Live Conversation
+- Wrong kana choices lower the earned score
+- Friend requests by GitHub username
+- Accept, decline and unfriend
+- Recent-friend dashboard encouragement
+- Friend-request email notification and opt-out
+- Small spacing buffer inside the green Journey card

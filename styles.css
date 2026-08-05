@@ -581,7 +581,7 @@ header{
 @media(max-width:520px){.collection-tabs{grid-template-columns:repeat(3,1fr)}}
 
 
-/* v9.0.5 answer feedback */
+/* v9.0.6 answer feedback */
 .teacher-answer-feedback{margin-top:14px}
 .teacher-answer-feedback .teacher-guide{margin:0 0 8px}
 .teacher-correct-answer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;align-items:center;padding:11px 13px;border:1px solid #86efac;border-radius:15px;background:#f0fdf4}
@@ -664,7 +664,7 @@ header{
  .report-dialog-actions{grid-template-columns:1fr}
 }
 
-/* v9.0.5 short missions, save points and quick settings */
+/* v9.0.6 short missions, save points and quick settings */
 .adaptive-settings-note{padding:12px 14px;border-radius:16px;background:#eff6ff;border:1px solid #bfdbfe}.adaptive-settings-note strong{display:block;color:#1d4ed8}.adaptive-settings-note p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.4}
 #missionCheckpointDialog,#quickSettingsDialog{width:min(92vw,480px);border:0;border-radius:22px;padding:0;box-shadow:0 24px 80px #0f172a55}#missionCheckpointDialog::backdrop,#quickSettingsDialog::backdrop{background:#0f172a99}
 .mission-checkpoint,.quick-settings{display:grid;gap:14px;padding:22px}.mission-checkpoint h2,.quick-settings h2{margin:0}.mission-checkpoint p,.quick-settings p{margin:0;color:#475569}
@@ -678,17 +678,17 @@ header{
 .live-conversation-page{display:grid;gap:16px}.live-conversation-heading{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center}.live-conversation-heading img{width:76px;height:76px;border-radius:19px;object-fit:cover}.live-conversation-transcript{display:grid;gap:10px;max-height:48vh;overflow:auto;padding:6px}.conversation-bubble{display:grid;gap:3px;max-width:86%;padding:11px 13px;border-radius:17px}.conversation-bubble.npc{justify-self:start;background:#f1f5f9;border-bottom-left-radius:5px}.conversation-bubble.user{justify-self:end;background:#dbeafe;border-bottom-right-radius:5px;text-align:right}.conversation-bubble span{font-size:1.12rem;font-weight:750}.conversation-bubble small{color:#64748b}.live-conversation-input{display:grid;gap:9px;padding:13px;border-radius:17px;background:#f8fafc}.live-conversation-suggestions{display:flex;flex-wrap:wrap;gap:6px}.live-conversation-suggestions button{padding:7px 9px;font-size:.72rem;border-radius:999px}.live-conversation-complete{text-align:center;padding:18px;border-radius:20px;background:linear-gradient(135deg,#ecfdf5,#eff6ff)}.live-conversation-complete img{width:100px;height:100px;border-radius:24px;object-fit:cover}.live-conversation-complete>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 @media(max-width:620px){.japan-ready-hero{grid-template-columns:1fr}.japan-ready-hero>img{max-height:260px}.japan-ready-current{align-items:stretch;flex-direction:column}.japan-scenario{grid-template-columns:48px minmax(0,1fr)}.japan-scenario>button{grid-column:1/-1}.scenario-actions,.live-conversation-complete>div{grid-template-columns:1fr}}
 
-/* v9.0.5 WhatsApp-style Live Conversation */
+/* v9.0.6 WhatsApp-style Live Conversation */
 .live-conversation-transcript{background:#efeae2;background-image:radial-gradient(#d8d2c8 .7px,transparent .7px);background-size:16px 16px;padding:14px;border-radius:18px}.wa-message-row{display:flex;gap:8px;align-items:flex-end;max-width:92%}.wa-message-row.wa-npc{justify-self:start}.wa-message-row.wa-user{justify-self:end;flex-direction:row-reverse}.wa-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:2px solid #fff;box-shadow:0 1px 4px #0002}.wa-bubble{display:grid;gap:3px;padding:9px 11px;border-radius:10px;box-shadow:0 1px 2px #0002;min-width:120px}.wa-npc .wa-bubble{background:#fff;border-bottom-left-radius:3px}.wa-user .wa-bubble{background:#d9fdd3;border-bottom-right-radius:3px;text-align:right}.wa-bubble strong{font-size:.64rem;color:#667781}.wa-bubble span{font-size:1.08rem;font-weight:750;line-height:1.35}.wa-bubble small{font-size:.68rem;color:#667781}.wa-bubble em{font-size:.72rem;color:#3b4a54;font-style:normal;border-top:1px solid #00000012;padding-top:4px;margin-top:2px}#liveConversationPrompt strong{color:#b45309}.campaign-choice-actions button{transition:none}
 
-/* v9.0.5 */
+/* v9.0.6 */
 .campaign-chooser-heading{display:grid;gap:12px}.campaign-preview-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px;border-radius:17px;background:#fff;border:1px solid #dbe3f0}.campaign-preview-panel[hidden]{display:none}#japanReadyCampaignPreview{grid-template-columns:64px minmax(0,1fr) auto;background:linear-gradient(135deg,#fff7ed,#fff1f2);border-color:#fed7aa}#japanReadyCampaignPreview img{width:64px;height:64px;border-radius:16px;object-fit:cover}.kana-builder-heading{display:flex;justify-content:space-between}.kana-builder-answer{min-height:62px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;padding:12px;border:2px dashed #cbd5e1;border-radius:16px;background:#fff}.kana-builder-answer span:not(.kana-builder-placeholder){min-width:36px;height:42px;display:grid;place-items:center;border-radius:10px;background:#dbeafe;font-size:1.35rem;font-weight:850}.kana-builder-placeholder{color:#94a3b8;font-size:.78rem}.kana-builder-choices{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.kana-builder-choices button{min-height:54px;font-size:1.35rem;font-weight:850}.kana-builder-choices button.wrong{background:#fee2e2;color:#991b1b}@media(max-width:620px){.campaign-preview-panel,#japanReadyCampaignPreview{grid-template-columns:1fr}}
 
-/* v9.0.5 */
+/* v9.0.6 */
 .kana-builder-choices button{display:grid;place-items:center;align-content:center;gap:1px;line-height:1}.kana-builder-choices button>span{font-size:1.35rem;font-weight:850}.kana-builder-choices button>small{font-size:.62rem;line-height:1.15;color:#64748b;font-weight:750}.kana-builder-answer .built-kana{min-width:42px;min-height:50px;display:grid;place-items:center;align-content:center;gap:1px;padding:5px;border-radius:10px;background:#dbeafe}.kana-builder-answer .built-kana b{font-size:1.28rem;line-height:1}.kana-builder-answer .built-kana small{font-size:.58rem;color:#475569}.admin-tools-slot>#ownerPathControls,.admin-tools-slot>#mnemonicStudioLink,.admin-tools-slot>a[href="image-diagnostics.html"]{display:block;width:100%}
 
 
-/* v9.0.5 unified Study Modes dashboard */
+/* v9.0.6 unified Study Modes dashboard */
 .campaign-chooser{
  margin:18px 0 0;
  width:100%;
@@ -776,7 +776,7 @@ header{
  .japan-ready-home-summary{grid-template-columns:1fr}
 }
 
-/* v9.0.5 guest sign-in, desktop Japan Ready and travel cheat sheet */
+/* v9.0.6 guest sign-in, desktop Japan Ready and travel cheat sheet */
 .dashboard-sign-in{margin-top:8px;padding:8px 12px;background:#fff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:.75rem}
 .dashboard-sign-in[hidden]{display:none}
 #japanReadyCampaignPreview{display:block;min-width:0}
@@ -814,4 +814,24 @@ header{
 }
 @media(max-width:620px){
  .japan-ready-tools{align-items:stretch;flex-direction:column}
+}
+
+.kana-builder-choices{grid-template-columns:repeat(2,minmax(0,1fr))}.friend-activity-nudge{margin:14px 0 0;padding:12px;border-radius:18px;background:linear-gradient(135deg,#ecfdf5,#eff6ff);border:1px solid #86efac;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:11px;align-items:center}.friend-activity-nudge[hidden]{display:none}.friend-activity-nudge img{width:52px;height:52px;border-radius:50%;object-fit:cover}.friend-activity-nudge p{margin:3px 0 0;color:#475569;font-size:.76rem}.friends-panel{margin-bottom:16px;padding:16px;border-radius:20px;background:#fff;border:1px solid #dbe3f0}.friends-heading{display:flex;justify-content:space-between;gap:12px}.friends-heading h3{margin:3px 0}.friends-heading p{margin:0;color:#475569}.friend-request-badge{padding:5px 9px;border-radius:999px;background:#dc2626;color:#fff;font-size:.68rem;font-weight:850}.friend-request-form{display:grid;gap:7px;margin:14px 0}.friend-request-form>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.friend-request-form input{border:1px solid #cbd5e1;border-radius:12px;padding:12px}.friend-list-section{display:grid;gap:8px}.friend-row{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-radius:14px;background:#f8fafc}.friend-row img{width:46px;height:46px;border-radius:50%;object-fit:cover}.friend-row strong,.friend-row small{display:block}.friend-row small{color:#64748b}.friend-actions{display:flex;gap:6px}@media(max-width:520px){.friend-activity-nudge{grid-template-columns:48px 1fr}.friend-activity-nudge>button{grid-column:1/-1}.friend-request-form>div{grid-template-columns:1fr}.friend-row{grid-template-columns:42px 1fr}.friend-row>.friend-actions,.friend-row>button{grid-column:1/-1}}
+
+/* v9.0.6 final dashboard spacing and friend-email preference */
+.campaign-preview-full .journey-home{
+ padding:10px 10px 14px!important;
+}
+.campaign-preview-full .journey-home-actions,
+.campaign-preview-full .adventure-home-links,
+.campaign-preview-full .journey-utility-actions{
+ margin-left:2px;
+ margin-right:2px;
+}
+.friend-email-toggle{
+ margin-top:12px;
+ padding:12px;
+ border-radius:14px;
+ background:#f8fafc;
+ border:1px solid #dbe3f0;
 }

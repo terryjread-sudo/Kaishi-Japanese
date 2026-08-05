@@ -1,8 +1,16 @@
 {
-  "version": "9.0.5",
+  "version": "9.0.6",
   "released": "2026-08-05",
-  "title": "Travel scenarios, cheat sheet and guest sign-in",
+  "title": "Friends and easier Live Conversation",
   "changes": [
+    "Friend-request emails are enabled by default for signed-in users.",
+    "Added a Cloud Settings toggle allowing users to disable friend-request emails.",
+    "Added a Supabase Edge Function for secure email delivery through Resend.",
+    "Added a small internal buffer between Journey controls and the green dashboard border.",
+    "Reduced Live Conversation to four kana choices.",
+    "Wrong kana choices lower the scenario score.",
+    "Added friend requests, acceptance, decline and unfriend.",
+    "Added recent friend activity encouragement.",
     "Added a dedicated guest learner avatar matching the app’s anime character style.",
     "Made the dashboard GitHub sign-in action clearer and explains cloud progress, cross-device continuation and character selection.",
     "Fixed the Japan Ready Study Modes preview layout on wider desktop browsers.",

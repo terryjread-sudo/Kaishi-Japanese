@@ -5,7 +5,7 @@
  const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
  const AVATARS=['boy','girl','master','man','woman'],OWNER_LOGIN='terryjread-sudo';
  const FP_KEY='kq-cloud-sync-fingerprint-v1';
- let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy';
+ let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null;
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
  const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}};
@@ -13,7 +13,7 @@
  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const avatarKey=value=>AVATARS.includes(value)?value:'boy';
  const avatarState=(streak=0)=>{streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'};
- const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.5`;
+ const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.6`;
 
  function profile(){const m=user?.user_metadata||{},login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';return{github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null}}
  function isOwner(){return Boolean(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
@@ -37,7 +37,7 @@
  function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
  function renderDashboardAvatar(){
  const streak=Number(adapter()?.stats?.().streak||0);
- const src=user?avatarImage(selectedAvatar,streak):'media/profiles/guest-learner.webp?v=9.0.5';
+ const src=user?avatarImage(selectedAvatar,streak):'media/profiles/guest-learner.webp?v=9.0.6';
  const image=$('#dashboardAvatar');if(image)image.src=src;
  if($('#journeyHomeAvatar'))$('#journeyHomeAvatar').src=src;
  if($('#journeyAvatar'))$('#journeyAvatar').src=src;
@@ -51,7 +51,7 @@
 
  function renderSignedOut(message='Sign in with GitHub to sync progress between devices.'){
   user=null;initialisedUserId='';selectedAvatar='boy';
-  if(account)account.innerHTML=`<img class="cloud-avatar" src="media/profiles/guest-learner.webp?v=9.0.5" alt="Guest learner"><div><strong>Protect your Kaishi Quest progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
+  if(account)account.innerHTML=`<img class="cloud-avatar" src="media/profiles/guest-learner.webp?v=9.0.6" alt="Guest learner"><div><strong>Protect your Kaishi Quest progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
   $('#cloudSignIn')?.addEventListener('click',signIn);
   if(join){join.checked=false;join.disabled=true}
   setStatus('Guest progress is saved only on this device.');
@@ -126,10 +126,40 @@
   if(error)throw error;
   remember(payload);await ensureLeaderboardEntry();
  }
- function scheduleSync(){if(!user||!client)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
+ function scheduleSync(){if(!user||!client)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
  async function flush(){clearTimeout(syncTimer);if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
 
- async function loadLeaderboard(){
+ 
+ async function friendRpc(name,args={}){if(!client||!user)throw new Error('Sign in with GitHub to use friends.');const{data,error}=await client.rpc(name,args);if(error)throw error;return data}
+ function friendAvatar(row){return avatarImage(row.avatar_key||'boy',Number(row.streak||0))}
+ function timeAgo(value){if(!value)return'not recently';const seconds=Math.max(0,Math.floor((Date.now()-new Date(value).getTime())/1000));if(seconds<60)return'just now';if(seconds<3600)return`${Math.floor(seconds/60)}m ago`;if(seconds<86400)return`${Math.floor(seconds/3600)}h ago`;return`${Math.floor(seconds/86400)}d ago`}
+ async function loadFriends(){const incoming=$('#incomingFriendRequests'),list=$('#friendsList'),badge=$('#friendRequestBadge');if(!incoming||!list)return;if(!user){incoming.innerHTML='<p class="muted">Sign in with GitHub to receive friend requests.</p>';list.innerHTML='';if(badge)badge.hidden=true;renderFriendNudge([]);return}try{const rows=await friendRpc('get_kaishi_friends'),requests=(rows||[]).filter(r=>r.relationship_status==='pending_incoming'),friends=(rows||[]).filter(r=>r.relationship_status==='accepted');if(badge){badge.hidden=!requests.length;badge.textContent=`${requests.length} new`}incoming.innerHTML=requests.length?`<h4>Friend requests</h4>${requests.map(r=>`<article class="friend-row request"><img src="${friendAvatar(r)}"><div><strong>${esc(r.display_name||r.github_login)}</strong><small>@${esc(r.github_login)}</small></div><div class="friend-actions"><button data-friend-accept="${r.request_id}" class="primary">Accept</button><button data-friend-decline="${r.request_id}">Decline</button></div></article>`).join('')}`:'';list.innerHTML=`<h4>Your friends</h4>${friends.length?friends.map(r=>`<article class="friend-row"><img src="${friendAvatar(r)}"><div><strong>${esc(r.display_name||r.github_login)}</strong><small>@${esc(r.github_login)} · active ${timeAgo(r.last_active_at)}</small></div><button data-unfriend="${r.user_id}">Unfriend</button></article>`).join(''):'<p class="muted">No friends yet.</p>'}`;document.querySelectorAll('[data-friend-accept]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.friendAccept,accept_request:true});await loadFriends()});document.querySelectorAll('[data-friend-decline]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.friendDecline,accept_request:false});await loadFriends()});document.querySelectorAll('[data-unfriend]').forEach(b=>b.onclick=async()=>{if(confirm('Remove this friend?')){await friendRpc('remove_kaishi_friend',{friend_user_id:b.dataset.unfriend});await loadFriends()}});renderFriendNudge(friends)}catch(error){incoming.innerHTML='';list.innerHTML=`<p class="muted">${esc(describeError(error))}</p>`;renderFriendNudge([])}}
+ function renderFriendNudge(friends){const card=$('#friendActivityNudge');if(!card)return;const recent=(friends||[]).filter(r=>r.last_active_at&&Date.now()-new Date(r.last_active_at).getTime()<86400000).sort((a,b)=>new Date(b.last_active_at)-new Date(a.last_active_at))[0];if(!user||!recent){card.hidden=true;return}card.hidden=false;$('#friendActivityAvatar').src=friendAvatar(recent);$('#friendActivityTitle').textContent=`${recent.display_name||recent.github_login} has been learning`;$('#friendActivityText').textContent=`They were active ${timeAgo(recent.last_active_at)}. Complete a short mission and keep pace with them.`;$('#friendActivityOpen').onclick=()=>{$('#communityBtn')?.click();setTimeout(()=>$('#friendsPanel')?.scrollIntoView({behavior:'smooth'}),100)}}
+ async function loadFriendEmailPreference(){
+  const toggle=$('#friendEmailNotifications');if(!toggle)return;
+  if(!user){toggle.checked=true;toggle.disabled=true;return}
+  toggle.disabled=false;
+  try{
+   const value=await friendRpc('get_kaishi_email_preferences');
+   toggle.checked=value?.friend_request_email!==false;
+  }catch(error){toggle.checked=true;console.warn('Email preference unavailable',error)}
+ }
+ async function saveFriendEmailPreference(){
+  const toggle=$('#friendEmailNotifications');if(!toggle||!user)return;
+  toggle.disabled=true;
+  try{
+   await friendRpc('set_kaishi_friend_email_preference',{enabled:toggle.checked});
+   setStatus(toggle.checked?'Friend-request emails enabled.':'Friend-request emails disabled.','ok');
+  }catch(error){toggle.checked=!toggle.checked;setStatus(describeError(error),'error')}
+  finally{toggle.disabled=false}
+ }
+ async function initialiseFriends(){const emailToggle=$('#friendEmailNotifications');if(emailToggle&&!emailToggle.dataset.bound){emailToggle.dataset.bound='true';emailToggle.addEventListener('change',saveFriendEmailPreference)}await loadFriendEmailPreference();const form=$('#friendRequestForm');if(form&&!form.dataset.bound){form.dataset.bound='true';form.addEventListener('submit',async e=>{e.preventDefault();const status=$('#friendRequestStatus'),username=$('#friendUsername').value.trim();try{
+ status.textContent='Sending request…';
+ const requestId=await friendRpc('send_kaishi_friend_request',{target_login:username});
+ try{await client.functions.invoke('friend-request-email',{body:{request_id:requestId}})}catch(emailError){console.warn('Friend email was not sent',emailError)}
+ $('#friendUsername').value='';status.textContent='Friend request sent.';await loadFriends()
+}catch(error){status.textContent=describeError(error)}})}await loadFriends();clearInterval(friendRefreshTimer);friendRefreshTimer=setInterval(()=>{if(document.visibilityState==='visible')loadFriends()},60000)}
+async function loadLeaderboard(){
   if(!client||!leaderboard)return;setLeaderboardMessage('Loading leaderboard…');
   const{data,error}=await client.from('leaderboard_entries').select('user_id,github_login,display_name,avatar_key,streak,xp,mastered,accuracy,monsters_defeated').eq('opted_in',true).order('xp',{ascending:false}).order('mastered',{ascending:false}).limit(20);
   if(error){leaderboard.innerHTML='';setLeaderboardMessage(describeError(error));return}
@@ -152,6 +182,6 @@
   addEventListener('online',()=>user&&scheduleSync());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
  }
- window.KaishiCloud={scheduleSync,loadLeaderboard,flush,avatarImage,renderDashboardAvatar,isOwner,currentAvatar:()=>selectedAvatar};
+ window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,flush,avatarImage,renderDashboardAvatar,isOwner,currentAvatar:()=>selectedAvatar};
  init();
 })();
