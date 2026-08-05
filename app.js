@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='9.0.12';
+const APP_VERSION='9.1.0';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -31,7 +31,7 @@ const defaults={pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true};
 let settings={...defaults,...loadJSON('kq-settings',{})};
 settings.playMode='journey';
 let progress=loadJSON('kq-progress',{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},updatedAt:0};
 let meta={...META_DEFAULTS,...loadJSON('kq-meta',{})};
 meta.kanaProgress=meta.kanaProgress||{};
 meta.grammarProgress=meta.grammarProgress||{};
@@ -41,7 +41,7 @@ meta.theatreProgress=meta.theatreProgress||{};
 meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];
 meta.pathVisits={...(meta.pathVisits||{})};
 meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];
-meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];meta.topicProgress=meta.topicProgress||{};
+meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];meta.unlockNoticesSeen=Array.isArray(meta.unlockNoticesSeen)?[...meta.unlockNoticesSeen]:[];meta.unlockNoticesDismissed=Array.isArray(meta.unlockNoticesDismissed)?[...meta.unlockNoticesDismissed]:[];meta.topicProgress=meta.topicProgress||{};
 meta.activeCampaign=meta.activeCampaign||'journey';meta.campaignProgress=meta.campaignProgress||{};
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
 function serialiseMissionItem(item){return{wordId:item?.v?.id||'',skill:item?.skill||'',pictureMode:item?.pictureMode||'',bossTopicId:item?.bossTopicId||''}}
@@ -234,7 +234,14 @@ function pathProgress(id){
  return'';
 }
 function refreshPathUnlocks(){
- const before=meta.pathUnlocks.length;PATH_MILESTONES.forEach((item,itemIndex)=>{const previousEarned=itemIndex<2||meta.pathUnlocks.includes(PATH_MILESTONES[itemIndex-1].id);if(previousEarned&&pathCondition(item.id)&&!meta.pathUnlocks.includes(item.id))meta.pathUnlocks.push(item.id)});if(meta.pathUnlocks.length!==before)save();
+ const before=new Set(meta.pathUnlocks);
+ PATH_MILESTONES.forEach((item,itemIndex)=>{
+  const previousEarned=itemIndex<2||meta.pathUnlocks.includes(PATH_MILESTONES[itemIndex-1].id);
+  if(previousEarned&&pathCondition(item.id)&&!meta.pathUnlocks.includes(item.id))meta.pathUnlocks.push(item.id);
+ });
+ const unlocked=meta.pathUnlocks.filter(id=>!before.has(id));
+ if(unlocked.length){meta.lastUnlockedActivities=unlocked;save()}
+ return unlocked;
 }
 function pathUnlocked(id){return meta.pathUnlocks.includes(id)||meta.pathOverrides.includes(id)}
 function pathCurrentIndex(){const firstUnvisited=PATH_MILESTONES.findIndex(item=>pathUnlocked(item.id)&&!meta.pathVisits[item.id]);if(firstUnvisited>=0)return firstUnvisited;let current=0;PATH_MILESTONES.forEach((item,itemIndex)=>{if(pathUnlocked(item.id))current=itemIndex});return current}
@@ -273,14 +280,76 @@ function currentWordChapterIndex(){let lastUnlocked=0;for(let itemIndex=0;itemIn
 function wordJourneyPosition(){const total=wordChapterCount(),explored=vocab.filter(wordIntroduced).length,chapter=currentWordChapterIndex()+1,completed=Array.from({length:total},(_,itemIndex)=>chapterStats(itemIndex).complete).filter(Boolean).length;return{explored,chapter,total,completed}}
 function missionActivityId(){const available=['kana','picture','listening','karuta','conversation','grammar','theatre','builder','manga','battle'].filter(id=>pathUnlocked(id)),newActivity=available.find(id=>!meta.pathVisits[id]);if(newActivity)return newActivity;const seed=day().split('-').reduce((sum,value)=>sum+Number(value||0),0);return available[seed%Math.max(1,available.length)]||'kana'}
 function ensureDailyJourneyRoute(){
- refreshPathUnlocks();if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===2&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
- const due=dailyDueWords().length,chapter=currentWordChapterIndex(),topic=currentTopic(),activityId=missionActivityId(),activity=PATH_MILESTONES.find(item=>item.id===activityId),discover=activity&&!meta.pathVisits[activityId],focus=masteryFocus(),third=discover?{id:'activity',kind:'activity',activityId,icon:activity.icon,title:`Discover ${activity.activity}`,detail:`Your progress has unlocked ${activity.title}. This guided mission teaches how it works.`}:{id:'mastery',kind:'mastery',skill:focus.skill,targetIds:focus.words.map(word=>word.id),activityId:focus.skill==='components'?'builder':'vocabulary',icon:focus.skill==='listening'?'🎧':focus.skill==='components'?'🧩':'🎯',title:`${focus.label} focus`,detail:focus.reason};
- meta.dailyJourneyRoute={schemaVersion:2,date:day(),completed:[],explanation:{due,chapter,focus:third.detail},steps:[{id:'warmup',kind:'review',icon:'🧠',title:due?`Review ${Math.min(due,DAILY_REVIEW_TARGET)} due words`:'Memory warm-up',detail:due?'These words are due now or nearing their forgetting threshold.':'No reviews are overdue, so this mission keeps established memories flexible.'},{id:'topic',kind:'topic',topicId:topic.id,icon:topic.icon||'🗺️',title:`Continue ${topic.title}`,detail:`Learn connected words and use the best games for this topic.`},third]};save();return meta.dailyJourneyRoute
+ refreshPathUnlocks();
+ if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===3&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
+ const previousCompleted=meta.dailyJourneyRoute?.date===day()?meta.dailyJourneyRoute.completed||[]:[];
+ const due=dailyDueWords().length,chapter=currentWordChapterIndex(),topic=currentTopic();
+ const activityId=missionActivityId(),activity=PATH_MILESTONES.find(item=>item.id===activityId);
+ const discover=activity&&!meta.pathVisits[activityId],focus=masteryFocus();
+ const useStep=discover
+  ?{id:'activity',kind:'activity',activityId,icon:activity.icon,title:`Discover ${activity.activity}`,detail:`Use what you know in ${activity.title}. The teacher will introduce this newly available activity.`}
+  :{id:'mastery',kind:'mastery',skill:focus.skill,targetIds:focus.words.map(word=>word.id),activityId:focus.skill==='components'?'builder':'vocabulary',icon:focus.skill==='listening'?'🎧':focus.skill==='components'?'🧩':'🎯',title:`${focus.label} practice`,detail:focus.reason};
+ const reviewStep={id:'warmup',kind:'review',optional:true,icon:'🧠',title:due?`Review ${Math.min(due,DAILY_REVIEW_TARGET)} due words`:'Memory warm-up',detail:due?'Finish with memories that are due now or nearing their forgetting threshold.':'Finish with a short optional refresher to keep established memories flexible.'};
+ meta.dailyJourneyRoute={schemaVersion:3,date:day(),completed:previousCompleted,explanation:{due,chapter,focus:useStep.detail,sequence:'Learn → Use → Reinforce'},steps:[
+  {id:'topic',kind:'topic',topicId:topic.id,icon:topic.icon||'🗺️',title:`Continue ${topic.title}`,detail:'Move your main Japanese journey forward with connected vocabulary and practice.'},
+  useStep,
+  reviewStep
+ ]};
+ save();
+ return meta.dailyJourneyRoute;
 }
 function journeyRouteProgress(){const route=ensureDailyJourneyRoute(),completed=route.completed||[];return{route,completed,next:route.steps.find(step=>!completed.includes(step.id))}}
-function renderDailyRoute(){const container=$('#dailyRoute');if(!container)return;const {route,completed,next}=journeyRouteProgress(),reason=$('#todayExplanation');if(reason){const explanation=route.explanation||{},headline=explanation.due?`${explanation.due} review${explanation.due===1?' is':'s are'} due`:'No reviews are overdue';reason.innerHTML=`<details><summary><span>Why these missions?</span><strong>${headline}</strong><i>Details</i></summary><p>${esc(currentTopic().title)} is your current topic. ${esc(explanation.focus||'Your weakest current skill determines the final mission.')}</p></details>`}container.innerHTML=route.steps.map((step,itemIndex)=>{const done=completed.includes(step.id),current=next?.id===step.id;return `<article class="daily-mission ${done?'complete':''} ${current?'current':''}"><span class="mission-step">${done?'✓':itemIndex+1}</span><div><b>${esc(step.icon)} ${esc(step.title)}</b><p>${esc(step.detail)}</p></div><button data-journey-mission="${esc(step.id)}"${current?'':' disabled'}>${done?'Complete':current?'Start':'Up next'}</button></article>`}).join('');document.querySelectorAll('[data-journey-mission]').forEach(button=>button.onclick=()=>startJourneyMission(button.dataset.journeyMission));const start=$('#startNextMission');if(start){start.hidden=!next;start.textContent=next?`Start next: ${next.title}`:'Today’s route complete ✓';start.disabled=!next;start.onclick=()=>next&&startJourneyMission(next.id)}}
+function renderDailyRoute(){
+ const container=$('#dailyRoute');if(!container)return;
+ const {route,completed,next}=journeyRouteProgress(),reason=$('#todayExplanation');
+ if(reason){
+  const explanation=route.explanation||{};
+  reason.innerHTML=`<details><summary><span>Why these missions?</span><strong>${esc(explanation.sequence||'Learn → Use → Reinforce')}</strong><i>Details</i></summary><p>First continue ${esc(currentTopic().title)}, then use Japanese in a relevant activity, and finally reinforce it with ${explanation.due?'due reviews':'an optional memory warm-up'}.</p></details>`;
+ }
+ container.innerHTML=route.steps.map((step,itemIndex)=>{
+  const done=completed.includes(step.id),available=next?.id===step.id;
+  const state=done?'complete':available?'available':'locked';
+  const label=done?'✓ Complete':available?(step.optional?'Optional practice':'Start'):'🔒 Locked';
+  return `<article class="daily-mission ${state}">
+   <span class="mission-step">${done?'✓':itemIndex+1}</span>
+   <div><b>${esc(step.icon)} ${esc(step.title)}${step.optional?' <small class="optional-tag">Optional</small>':''}</b><p>${esc(step.detail)}</p></div>
+   <button data-journey-mission="${esc(step.id)}"${available?'':' disabled'}>${label}</button>
+  </article>`;
+ }).join('');
+ document.querySelectorAll('[data-journey-mission]').forEach(button=>button.onclick=()=>startJourneyMission(button.dataset.journeyMission));
+ const start=$('#startNextMission');
+ if(start){
+  start.hidden=!next;
+  start.textContent=next?(next.optional?`${next.title} (optional)`:`${next.title}`):'Today’s route complete ✓';
+  start.disabled=!next;
+  start.onclick=()=>next&&startJourneyMission(next.id);
+ }
+ renderJourneyUnlockNotice();
+}
+function pendingJourneyUnlock(){
+ refreshPathUnlocks();
+ return PATH_MILESTONES.find(item=>pathUnlocked(item.id)&&!meta.unlockNoticesSeen.includes(item.id)&&!meta.unlockNoticesDismissed.includes(item.id));
+}
+function renderJourneyUnlockNotice(){
+ const notice=$('#journeyUnlockNotice');if(!notice)return;
+ const activity=pendingJourneyUnlock();
+ if(!activity){notice.hidden=true;return}
+ notice.hidden=false;
+ notice.classList.remove('celebrate');
+ requestAnimationFrame(()=>notice.classList.add('celebrate'));
+ $('#journeyUnlockTitle').textContent=`New activity unlocked: ${activity.activity}`;
+ $('#journeyUnlockText').textContent=`${activity.title} is now available. ${activity.description}`;
+ $('#journeyUnlockStart').onclick=()=>{
+  if(!meta.unlockNoticesSeen.includes(activity.id))meta.unlockNoticesSeen.push(activity.id);
+  save();notice.hidden=true;launchPathMilestone(activity.id);
+ };
+ $('#journeyUnlockDismiss').onclick=()=>{
+  if(!meta.unlockNoticesDismissed.includes(activity.id))meta.unlockNoticesDismissed.push(activity.id);
+  save();notice.hidden=true;
+ };
+}
 function startJourneyMission(missionId){const {route,completed}=journeyRouteProgress(),mission=route.steps.find(step=>step.id===missionId);if(!mission||completed.includes(mission.id))return;activeJourneyMission={id:mission.id,title:mission.title,activityId:mission.activityId||null,startAnswers:Number(meta.totalAnswers||0),startKana:Number(meta.kanaAnswers||0),startIntroduced:vocab.filter(wordIntroduced).length,targetIds:mission.targetIds||[]};activityReturnScreen='journey';if(mission.kind==='topic'){startTopicSession(mission.topicId);return}if(mission.kind==='chapter'){startJourneyChapter(mission.chapter);return}if(mission.kind==='activity'){launchPathMilestone(mission.activityId);return}if(mission.kind==='mastery'){if(mission.skill==='components'){openKanjiBuilder(mission.targetIds);startKanjiBuilder();return}makeTargetedMasterySession(mission.targetIds,mission.skill);return}makeSession()}
-function finishActiveJourneyMission(){if(!activeJourneyMission)return false;const mission=activeJourneyMission;activeJourneyMission=null;const answers=Math.max(0,Number(meta.totalAnswers||0)-mission.startAnswers)+Math.max(0,Number(meta.kanaAnswers||0)-mission.startKana);if(!answers){toast('Mission paused — complete a tested answer when you return');return false}const route=ensureDailyJourneyRoute();route.completed=Array.isArray(route.completed)?route.completed:[];if(!route.completed.includes(mission.id))route.completed.push(mission.id);if(mission.activityId)meta.pathVisits[mission.activityId]=Date.now();const introduced=Math.max(0,vocab.filter(wordIntroduced).length-mission.startIntroduced),remaining=route.steps.length-route.completed.length;save();const title=remaining?`${mission.title} complete`:'Today’s route complete!';const content=`<div class="mission-summary-stats"><article><strong>${answers}</strong><span>Tested answers</span></article><article><strong>${introduced}</strong><span>Words introduced</span></article><article><strong>${route.completed.length}/${route.steps.length}</strong><span>Route missions</span></article></div><p>${remaining?`${remaining} mission${remaining===1?'':'s'} remain on today’s recommended route.`:'Excellent work—your reviews, vocabulary and activity practice are complete for today.'}</p>`;requestAnimationFrame(()=>{const dialog=$('#missionSummaryDialog');if(!dialog)return;$('#missionSummaryTitle').textContent=title;$('#missionSummaryContent').innerHTML=content;if(!dialog.open)dialog.showModal()});return true}
+function finishActiveJourneyMission(){if(!activeJourneyMission)return false;const mission=activeJourneyMission;activeJourneyMission=null;const answers=Math.max(0,Number(meta.totalAnswers||0)-mission.startAnswers)+Math.max(0,Number(meta.kanaAnswers||0)-mission.startKana);if(!answers){toast('Mission paused — complete a tested answer when you return');return false}const route=ensureDailyJourneyRoute();route.completed=Array.isArray(route.completed)?route.completed:[];if(!route.completed.includes(mission.id))route.completed.push(mission.id);if(mission.activityId)meta.pathVisits[mission.activityId]=Date.now();renderDailyRoute();const introduced=Math.max(0,vocab.filter(wordIntroduced).length-mission.startIntroduced),remaining=route.steps.length-route.completed.length;save();const title=remaining?`${mission.title} complete`:'Today’s route complete!';const content=`<div class="mission-summary-stats"><article><strong>${answers}</strong><span>Tested answers</span></article><article><strong>${introduced}</strong><span>Words introduced</span></article><article><strong>${route.completed.length}/${route.steps.length}</strong><span>Route missions</span></article></div><p>${remaining?`${remaining} mission${remaining===1?'':'s'} remain on today’s recommended route.`:'Excellent work—your reviews, vocabulary and activity practice are complete for today.'}</p>`;requestAnimationFrame(()=>{const dialog=$('#missionSummaryDialog');if(!dialog)return;$('#missionSummaryTitle').textContent=title;$('#missionSummaryContent').innerHTML=content;if(!dialog.open)dialog.showModal()});return true}
 const KAISHI_SHARE_URL='https://terryjread-sudo.github.io/Kakashi-Web/';
 let activeFriendInviteUrl=KAISHI_SHARE_URL;
 function inviteText(url=activeFriendInviteUrl){return`I’m learning Japanese with Kaishi Quest! Join me on the 1,500-word journey: ${url}`}
@@ -339,6 +408,7 @@ function openCollection(tab='words'){renderCollection(tab);show('collection')}
 function openJourney(section='missions'){renderJourney();show('journey');if(section==='practice')requestAnimationFrame(()=>$('#practiceHubTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(section==='missions')requestAnimationFrame(()=>$('#dailyRouteTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(section==='current')requestAnimationFrame(()=>{const hasNew=PATH_MILESTONES.some(item=>pathUnlocked(item.id)&&!meta.pathVisits[item.id]);$(hasNew?'.path-stop.current':'.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'})})}
 function startJourneyChapter(itemIndex){if(!chapterUnlocked(itemIndex)){toast('Complete the previous vocabulary chapter first');return}activityReturnScreen='journey';activeVocabularyChapter=itemIndex;makeSession(itemIndex)}
 function launchPathMilestone(id){
+ if(pathUnlocked(id)&&!meta.unlockNoticesSeen.includes(id)){meta.unlockNoticesSeen.push(id);save(false)}
  if(!pathUnlocked(id)){toast('Keep following the journey to unlock this activity');return}activityReturnScreen='journey';if(activeJourneyMission?.activityId!==id)meta.pathVisits[id]=Date.now();save();renderJourneyHome();
  if(id==='vocabulary'){startJourneyChapter(currentWordChapterIndex());return}if(id==='kana'){openKanaPath();return}if(id==='picture'){startPictureGame('picture-word');return}if(id==='listening'){startPictureGame('listen-meaning');return}if(id==='karuta'){startKarutaGame();return}if(id==='conversation'){openConversationLibrary();return}if(id==='grammar'){openGrammarPath();return}if(id==='theatre'){openTheatreLibrary();return}if(id==='kanji'){renderKanjiOverview();show('kanjiOverview');return}if(id==='builder'){openKanjiBuilder();return}if(id==='manga'){openMangaLibrary();return}if(id==='battle')startDecayBattle();
 }
@@ -1065,7 +1135,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.12';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.1.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

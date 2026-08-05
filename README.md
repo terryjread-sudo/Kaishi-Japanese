@@ -1,15 +1,21 @@
-# Kaishi Quest v9.0.12
+# Kaishi Quest v9.1.0 — Guided Adventure Phase 1 & 2
 
-Upload these files over v9.0.11.
+This package is based on v9.0.12. The discarded v9.0.13 patch is not included.
 
-## Fixed
+## Phase 1: Three-step route
 
-- Dashboard friend-activity X now persists.
-- Popup Dismiss now persists after refresh.
-- The notification icon disappears when no unread notifications remain.
-- Daily planned-review counts decrease after each planned word is attempted, including an incorrect attempt.
-- Daily streaks are awarded once per local calendar day after five tested answers.
-- Completing a mandatory mission immediately completes its three-step-route stage.
-- The following route step becomes available without requiring an extra navigation action.
+The route now follows:
 
-No additional Supabase SQL is required.
+1. **Learn** — continue the current topic.
+2. **Use** — try a newly unlocked or relevant activity.
+3. **Reinforce** — complete due reviews or an optional Memory Warm-up.
+
+Only the current step is clickable. Completing it makes the next step available. Buttons now use Locked, Start, Complete and Optional practice states.
+
+## Phase 2: Teacher guidance
+
+When an activity unlocks, the teacher displays a dismissible Journey notice explaining the new activity.
+
+The learner can choose **Start now** or **Maybe later**. Each activity notice is shown once. A short animation celebrates the unlock and respects reduced-motion preferences.
+
+No Supabase SQL changes are required.
