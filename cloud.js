@@ -185,7 +185,8 @@
   if(!user||!recent||(dismissed.userId===recent.user_id&&dismissed.activity===recent.last_active_at)){card.hidden=true;return}
   card.hidden=false;$('#friendActivityAvatar').src=friendAvatar(recent);$('#friendActivityTitle').textContent=`${recent.display_name||recent.github_login} studied ${timeAgo(recent.last_active_at)}`;$('#friendActivityText').textContent='Keep pace with a quick mission.';
   const open=()=>openCommunityProfile(recent.user_id);$('#friendActivityOpen').onclick=open;$('#friendActivityOpen').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}};
-  $('#friendActivityDismiss').onclick=e=>{e.stopPropagation();localStorage.setItem(FRIEND_NUDGE_DISMISS_KEY,JSON.stringify({userId:recent.user_id,activity:recent.last_active_at}));card.hidden=true};
+  const dismiss=$('#friendActivityDismiss');if(dismiss){dismiss.dataset.friendUser=recent.user_id;dismiss.dataset.friendActivity=recent.last_active_at}
+
  }
  async function renderSocialNotifications(rows=[]){
   const button=$('#socialNotificationButton'),panel=$('#socialNotificationPanel'),list=$('#socialNotificationList');if(!button||!panel||!list)return;
@@ -199,7 +200,6 @@
   document.querySelectorAll('[data-na]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.na,accept_request:true});await loadFriends();await loadLeaderboard()});
   document.querySelectorAll('[data-nd]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.nd,accept_request:false});await loadFriends();await loadLeaderboard()});
   document.querySelectorAll('[data-np]').forEach(b=>b.onclick=()=>openCommunityProfile(b.dataset.np));
-  document.querySelectorAll('[data-nx]').forEach(b=>b.onclick=()=>{read[b.dataset.nx]=Date.now();localStorage.setItem(SOCIAL_READ_KEY,JSON.stringify(read));renderSocialNotifications(rows)});
   $('#openAdminNotice')?.addEventListener('click',()=>{$('#adminEntry')?.click();panel.hidden=true});
  }
  async function loadAdminUsers(){
@@ -347,7 +347,38 @@ async function loadLeaderboard(){
  }
 
 
+ function bindPersistentSocialDismissHandlers(){
+  if(document.documentElement.dataset.socialDismissBound==='true')return;
+  document.documentElement.dataset.socialDismissBound='true';
+  document.addEventListener('click',event=>{
+   const nudgeDismiss=event.target.closest('#friendActivityDismiss');
+   if(nudgeDismiss){
+    event.preventDefault();event.stopPropagation();
+    try{localStorage.setItem(FRIEND_NUDGE_DISMISS_KEY,JSON.stringify({userId:nudgeDismiss.dataset.friendUser||'',activity:nudgeDismiss.dataset.friendActivity||''}))}catch(error){}
+    const card=nudgeDismiss.closest('#friendActivityNudge');
+    if(card)card.hidden=true;
+    return;
+   }
+   const notificationDismiss=event.target.closest('[data-nx]');
+   if(notificationDismiss){
+    event.preventDefault();event.stopPropagation();
+    const id=notificationDismiss.dataset.nx;
+    let read={};try{read=JSON.parse(localStorage.getItem(SOCIAL_READ_KEY)||'{}')}catch(error){}
+    read[id]=Date.now();
+    try{localStorage.setItem(SOCIAL_READ_KEY,JSON.stringify(read))}catch(error){}
+    const item=notificationDismiss.closest('.social-notification-item');
+    if(item)item.remove();
+    const list=$('#socialNotificationList');
+    const remaining=list?.querySelectorAll('.social-notification-item').length||0;
+    const badge=$('#socialNotificationCount');
+    if(badge){badge.textContent=String(remaining);badge.hidden=remaining===0}
+    if(remaining===0&&list)list.innerHTML='<p class="muted">No new notifications.</p>';
+    return;
+   }
+  },true);
+ }
  async function init(){
+  bindPersistentSocialDismissHandlers();
   capturePendingInvite();
   $('#socialNotificationButton')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=!p.hidden});$('#socialNotificationClose')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=true});$('#refreshAdminUsers')?.addEventListener('click',loadAdminUsers);$('#communityProfileClose')?.addEventListener('click',()=>$('#communityProfileDialog')?.close());$('#avatarPicker')?.addEventListener('click',changeAvatar);join?.addEventListener('change',changeOptIn);$('#cloudSyncNow')?.addEventListener('click',syncNow);$('#cloudDelete')?.addEventListener('click',deleteCloudData);$('#leaderboardSignIn')?.addEventListener('click',()=>user?$('#settingsBtn').click():signIn());
   if(!config?.url||!config?.publishableKey||!sdk?.createClient){renderSignedOut('Cloud sync could not start. Guest mode is still available.');setStatus('Cloud configuration or library is unavailable.','error');return}

@@ -1,8 +1,11 @@
 {
-  "version": "9.0.10",
+  "version": "9.0.11",
   "released": "2026-08-05",
-  "title": "Notification and SQL compatibility fix",
+  "title": "Notification dismiss fix",
   "changes": [
+    "Fixed the dashboard friend-activity dismiss control using persistent delegated event handling.",
+    "Fixed popup notification Dismiss so the item disappears immediately and stays read after refresh.",
+    "Kept the motivation dismiss button fixed on the right without adding extra lines.",
     "Moved the social notification icon beside the Settings cog.",
     "Fixed the friend activity dismiss button and aligned it on the right.",
     "Fixed Admin Users by reading created_at from auth.users.",

@@ -1,9 +1,12 @@
-# Kaishi Quest v9.0.10
+# Kaishi Quest v9.0.11 — Dismiss Fix
 
-Upload the included website files over v9.0.9, then run:
+Upload these files over v9.0.10.
 
-`supabase-v9010-notification-sql-fix.sql`
+This patch fixes both dismiss controls:
 
-This fixes the Admin Users query for your actual schema and counts report notifications using `learning_card_reports.status`.
+- the X on the dashboard friend motivation strip;
+- Dismiss on accepted-friend notifications in the notification popup.
 
-It also moves the social notification icon beside Settings and fixes the right-aligned friend motivation dismiss button.
+Both now use persistent delegated click handling, remove the item immediately, and store the dismissal in local storage.
+
+No Supabase SQL is required.
