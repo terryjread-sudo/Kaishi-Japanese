@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='9.0.7';
+const APP_VERSION='9.0.8';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -260,10 +260,39 @@ function renderDailyRoute(){const container=$('#dailyRoute');if(!container)retur
 function startJourneyMission(missionId){const {route,completed}=journeyRouteProgress(),mission=route.steps.find(step=>step.id===missionId);if(!mission||completed.includes(mission.id))return;activeJourneyMission={id:mission.id,title:mission.title,activityId:mission.activityId||null,startAnswers:Number(meta.totalAnswers||0),startKana:Number(meta.kanaAnswers||0),startIntroduced:vocab.filter(wordIntroduced).length,targetIds:mission.targetIds||[]};activityReturnScreen='journey';if(mission.kind==='topic'){startTopicSession(mission.topicId);return}if(mission.kind==='chapter'){startJourneyChapter(mission.chapter);return}if(mission.kind==='activity'){launchPathMilestone(mission.activityId);return}if(mission.kind==='mastery'){if(mission.skill==='components'){openKanjiBuilder(mission.targetIds);startKanjiBuilder();return}makeTargetedMasterySession(mission.targetIds,mission.skill);return}makeSession()}
 function finishActiveJourneyMission(){if(!activeJourneyMission)return false;const mission=activeJourneyMission;activeJourneyMission=null;const answers=Math.max(0,Number(meta.totalAnswers||0)-mission.startAnswers)+Math.max(0,Number(meta.kanaAnswers||0)-mission.startKana);if(!answers){toast('Mission paused — complete a tested answer when you return');return false}const route=ensureDailyJourneyRoute();route.completed=Array.isArray(route.completed)?route.completed:[];if(!route.completed.includes(mission.id))route.completed.push(mission.id);if(mission.activityId)meta.pathVisits[mission.activityId]=Date.now();const introduced=Math.max(0,vocab.filter(wordIntroduced).length-mission.startIntroduced),remaining=route.steps.length-route.completed.length;save();const title=remaining?`${mission.title} complete`:'Today’s route complete!';const content=`<div class="mission-summary-stats"><article><strong>${answers}</strong><span>Tested answers</span></article><article><strong>${introduced}</strong><span>Words introduced</span></article><article><strong>${route.completed.length}/${route.steps.length}</strong><span>Route missions</span></article></div><p>${remaining?`${remaining} mission${remaining===1?'':'s'} remain on today’s recommended route.`:'Excellent work—your reviews, vocabulary and activity practice are complete for today.'}</p>`;requestAnimationFrame(()=>{const dialog=$('#missionSummaryDialog');if(!dialog)return;$('#missionSummaryTitle').textContent=title;$('#missionSummaryContent').innerHTML=content;if(!dialog.open)dialog.showModal()});return true}
 const KAISHI_SHARE_URL='https://terryjread-sudo.github.io/Kakashi-Web/';
-function inviteText(){return`I’m learning Japanese with Kaishi Quest! Join me on the 1,500-word journey: ${KAISHI_SHARE_URL}`}
-function openInviteDialog(){const dialog=$('#shareDialog');if(!dialog)return;$('#shareWhatsApp').href=`https://wa.me/?text=${encodeURIComponent(inviteText())}`;if(!dialog.open)dialog.showModal()}
-async function nativeShareInvite(){if(navigator.share){try{await navigator.share({title:'Kaishi Quest',text:'Join me on the 1,500-word Japanese journey!',url:KAISHI_SHARE_URL});return}catch(error){if(error?.name==='AbortError')return}}openInviteDialog()}
-async function copyInviteLink(){try{await navigator.clipboard.writeText(KAISHI_SHARE_URL);toast('Invitation link copied')}catch{prompt('Copy this invitation link:',KAISHI_SHARE_URL)}}
+let activeFriendInviteUrl=KAISHI_SHARE_URL;
+function inviteText(url=activeFriendInviteUrl){return`I’m learning Japanese with Kaishi Quest! Join me on the 1,500-word journey: ${url}`}
+async function prepareFriendInvite(){
+ const generated=await window.KaishiCloud?.createFriendInviteLink?.();
+ if(!generated)return null;
+ activeFriendInviteUrl=generated;
+ const whatsapp=$('#shareWhatsApp');
+ if(whatsapp)whatsapp.href=`https://wa.me/?text=${encodeURIComponent(inviteText(generated))}`;
+ return generated;
+}
+async function openInviteDialog(){
+ const dialog=$('#shareDialog');if(!dialog)return;
+ const url=await prepareFriendInvite();
+ if(!url)return;
+ if(!dialog.open)dialog.showModal();
+}
+async function nativeShareInvite(){
+ const url=activeFriendInviteUrl!==KAISHI_SHARE_URL?activeFriendInviteUrl:await prepareFriendInvite();
+ if(!url)return;
+ if(navigator.share){
+  try{
+   await navigator.share({title:'Kaishi Quest',text:'Join me on the 1,500-word Japanese journey!',url});
+   return;
+  }catch(error){if(error?.name==='AbortError')return}
+ }
+ openInviteDialog();
+}
+async function copyInviteLink(){
+ const url=activeFriendInviteUrl!==KAISHI_SHARE_URL?activeFriendInviteUrl:await prepareFriendInvite();
+ if(!url)return;
+ try{await navigator.clipboard.writeText(url);toast('Secure invitation link copied')}
+ catch{prompt('Copy this invitation link:',url)}
+}
 async function achievementBlob(){const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1080;const ctx=canvas.getContext('2d'),gradient=ctx.createLinearGradient(0,0,1080,1080);gradient.addColorStop(0,'#172554');gradient.addColorStop(.58,'#2563eb');gradient.addColorStop(1,'#7c3aed');ctx.fillStyle=gradient;ctx.fillRect(0,0,1080,1080);ctx.fillStyle='#ffffff18';for(let index=0;index<8;index++){ctx.beginPath();ctx.arc(100+index*150,120+index%2*650,90,0,Math.PI*2);ctx.fill()}const position=wordJourneyPosition(),username=$('#dashboardAvatarTitle')?.textContent?.startsWith('@')?$('#dashboardAvatarTitle').textContent:'Kaishi learner';ctx.fillStyle='#fff';ctx.font='800 58px system-ui';ctx.fillText('KAISHI QUEST',80,110);ctx.font='900 88px system-ui';ctx.fillText('My Japanese Journey',80,235);ctx.font='700 48px system-ui';ctx.fillStyle='#dbeafe';ctx.fillText(username,80,315);try{const image=new Image();image.src=pathAvatarSource();await image.decode();ctx.save();ctx.beginPath();if(ctx.roundRect)ctx.roundRect(80,385,300,300,54);else ctx.rect(80,385,300,300);ctx.clip();ctx.drawImage(image,80,385,300,300);ctx.restore()}catch{}ctx.fillStyle='#fff';ctx.font='900 116px system-ui';ctx.fillText(String(position.explored),450,500);ctx.font='700 40px system-ui';ctx.fillStyle='#bfdbfe';ctx.fillText('WORDS INTRODUCED',455,555);ctx.fillStyle='#fff';ctx.font='900 90px system-ui';ctx.fillText(`${position.completed}/${position.total}`,450,660);ctx.font='700 40px system-ui';ctx.fillStyle='#ddd6fe';ctx.fillText('CHAPTERS COMPLETE',455,715);ctx.fillStyle='#fff';ctx.font='800 45px system-ui';ctx.fillText(`🔥 ${Number(meta.streak||0)} day streak`,80,835);ctx.font='650 34px system-ui';ctx.fillStyle='#dbeafe';ctx.fillText('Join me on the 1,500-word Japanese adventure',80,925);ctx.font='650 28px system-ui';ctx.fillText('terryjread-sudo.github.io/Kakashi-Web',80,990);return new Promise(resolve=>canvas.toBlob(resolve,'image/png'))}
 async function shareAchievement(){const blob=await achievementBlob();if(!blob){toast('Could not create the achievement image');return}const file=typeof File==='function'?new File([blob],'kaishi-quest-progress.png',{type:'image/png'}):null,data=file?{files:[file],title:'My Kaishi Quest journey',text:'Join me learning Japanese with Kaishi Quest!'}:null;if(file&&navigator.canShare?.({files:[file]})){try{await navigator.share(data);return}catch(error){if(error?.name==='AbortError')return}}const link=document.createElement('a');link.download='kaishi-quest-progress.png';link.href=URL.createObjectURL(blob);link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);toast('Achievement image downloaded — it is ready for Instagram or another app')}
 function pathAvatarSource(){return $('#dashboardAvatar')?.src||`media/profiles/boy-base.webp?v=${APP_VERSION}`}
@@ -1014,7 +1043,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.7';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.8';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
@@ -1080,7 +1109,7 @@ $('#journeyInvite').onclick=openInviteDialog;
 $('#communityInvite').onclick=openInviteDialog;
 $('#journeyShareProgress').onclick=openInviteDialog;
 $('#shareNative').onclick=()=>{$('#shareDialog').close();nativeShareInvite()};
-$('#shareCopy').onclick=()=>{copyInviteLink();$('#shareDialog').close()};
+$('#shareCopy').onclick=async()=>{await copyInviteLink();$('#shareDialog').close()};
 $('#shareAchievement').onclick=()=>{$('#shareDialog').close();shareAchievement()};
 $('#shareClose').onclick=()=>$('#shareDialog').close();
 $('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};

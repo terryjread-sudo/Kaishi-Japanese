@@ -1,25 +1,41 @@
-# Kaishi Quest v9.0.7 — First-launch Welcome
+# Kaishi Quest v9.0.8 — Corrected Social Release
 
-Upload the included files over v9.0.6.
+Use this package to upgrade from the v9.0.7 release already installed.
 
-## New behaviour
+## Upload these files
 
-When Kaishi Quest launches and no Kaishi Quest data exists in local storage, a welcome overlay appears.
+Upload the included website files over the existing repository files.
 
-It advertises:
+## Supabase update
 
-- Adventure Journey
-- Live Conversations
-- Japan Ready
-- Travel Cheat Sheet
-- Streaks and progress
-- Learn Together
+You already ran the original `supabase-friends.sql`, which is fine.
 
-The learner can choose:
+Now run:
 
-- **Start exploring**
-- **Sign in to save progress**
+`supabase-v908-corrected-social.sql`
 
-Once dismissed, the overlay stores `kaishi_first_launch_seen=1` and will not appear again on that browser.
+Run it once in the Supabase SQL Editor.
 
-No additional Supabase SQL is required for v9.0.7.
+## Corrected friend flow
+
+- The GitHub username friend-search form has been removed.
+- Select another learner directly from the Community leaderboard.
+- Their profile offers Add friend, Accept, Decline, Request sent or Unfriend depending on the relationship.
+- The leaderboard remains opt-in by default for new users, with an opt-out available in Settings.
+
+## Secure invitation links
+
+Invite, WhatsApp, native sharing and Copy Link now create a secure one-time friendship URL.
+
+When the recipient opens the link:
+
+1. The token is retained before GitHub authentication.
+2. They sign in or create their Kaishi Quest cloud account.
+3. The token is redeemed after sign-in.
+4. The two accounts become accepted friends.
+
+Links expire after 30 days and can only be redeemed once.
+
+The v9.0.7 first-launch welcome overlay remains included.
+
+No email service, domain or Supabase Edge Function is required.
