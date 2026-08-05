@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='9.0.11';
+const APP_VERSION='9.0.12';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -112,18 +112,40 @@ function dailyDueWords(){
  const today=day(),limit=DAILY_REVIEW_TARGET;
  if(!meta.dailyReviewPlan||meta.dailyReviewPlan.date!==today||!Array.isArray(meta.dailyReviewPlan.ids)){
   const ids=dueWords().sort((a,b)=>pFor(a.id).due-pFor(b.id).due).slice(0,limit).map(v=>v.id);
-  meta.dailyReviewPlan={date:today,ids,limit,initialTotal:ids.length};
+  meta.dailyReviewPlan={date:today,ids,completedIds:[],limit,initialTotal:ids.length};
   save(false);
  }
- if(!Number.isFinite(meta.dailyReviewPlan.initialTotal))meta.dailyReviewPlan.initialTotal=meta.dailyReviewPlan.ids.length;
+ if(!Number.isFinite(meta.dailyReviewPlan.initialTotal))meta.dailyReviewPlan.initialTotal=meta.dailyReviewPlan.ids.length;meta.dailyReviewPlan.completedIds=Array.isArray(meta.dailyReviewPlan.completedIds)?meta.dailyReviewPlan.completedIds:[];
  const byId=new Map(vocab.map(v=>[v.id,v])),now=Date.now();
- return meta.dailyReviewPlan.ids.map(id=>byId.get(id)).filter(v=>v&&progress[v.id]?.due<=now);
+ const completed=new Set(meta.dailyReviewPlan.completedIds);return meta.dailyReviewPlan.ids.map(id=>byId.get(id)).filter(v=>v&&!completed.has(v.id)&&progress[v.id]?.due<=now);
+}
+function markDailyReviewAttempted(wordId){
+ const plan=meta.dailyReviewPlan;
+ if(!plan||plan.date!==day()||!Array.isArray(plan.ids)||!plan.ids.includes(wordId))return;
+ plan.completedIds=Array.isArray(plan.completedIds)?plan.completedIds:[];
+ if(!plan.completedIds.includes(wordId))plan.completedIds.push(wordId);
 }
 function started(){return Object.keys(progress).length}
 function accuracy(){return meta.totalAnswers?Math.round(meta.totalCorrect/meta.totalAnswers*100):0}
 function mastery(p){return p&&p.interval>=21&&['meaning','listening','reading'].every(skill=>(p.skills?.[skill]?.strength||0)>=.65)}
 function todayActivity(){const today=day();if(!meta.dailyActivity||meta.dailyActivity.date!==today)meta.dailyActivity={date:today,tested:0,qualified:false,sources:{}};return meta.dailyActivity}
-function recordMeaningfulActivity(source,amount=1){const activity=todayActivity();activity.tested+=Math.max(0,Number(amount)||0);activity.sources[source]=Number(activity.sources[source]||0)+Math.max(0,Number(amount)||0);if(!activity.qualified&&activity.tested>=5){activity.qualified=true;const today=day();if(meta.lastStudy!==today){const yesterday=day(new Date(Date.now()-86400000));meta.streak=meta.lastStudy===yesterday?Number(meta.streak||0)+1:1;meta.lastStudy=today}toast('Daily streak protected! 🔥')}return activity}
+function recordMeaningfulActivity(source,amount=1){
+ const activity=todayActivity(),increment=Math.max(0,Number(amount)||0);
+ activity.tested+=increment;
+ activity.sources[source]=Number(activity.sources[source]||0)+increment;
+ if(activity.tested>=5&&!activity.qualified)activity.qualified=true;
+ if(activity.qualified&&!activity.streakAwarded){
+  const today=day();
+  if(meta.lastStudy!==today){
+   const yesterday=day(new Date(Date.now()-86400000));
+   meta.streak=meta.lastStudy===yesterday?Number(meta.streak||0)+1:1;
+   meta.lastStudy=today;
+  }
+  activity.streakAwarded=true;
+  toast('Daily streak protected! 🔥');
+ }
+ return activity;
+}
 function recentMonsterVictories(){const cutoff=Date.now()-72*3600000;meta.monsterVictories=(Array.isArray(meta.monsterVictories)?meta.monsterVictories:[]).filter(t=>Number(t)>cutoff);return meta.monsterVictories.length}
 function recentKarutaBestAverage(){const cutoff=Date.now()-72*3600000;meta.karutaSessions=(Array.isArray(meta.karutaSessions)?meta.karutaSessions:[]).filter(item=>Number(item.at)>cutoff);return meta.karutaSessions.length?Math.max(...meta.karutaSessions.map(item=>Number(item.averageScore)||0)):null}
 function detectLostStreak(){
@@ -769,12 +791,12 @@ function bindGameChoices(answer,v){
   $('#gameNext').focus({preventScroll:true});
  });
 }
-function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}recordMeaningfulActivity(battleActive?'battle':karutaActive?'karuta':pictureGameActive?'game':mangaStory&&$('#manga').classList.contains('active')?'manga':'vocabulary');save();window.KaishiCloud?.flush?.();if(advance)next()}
+function grade(v,skill,rating,correct,advance=true){const p=pFor(v.id),sp=p.skills[skill];const response=(Date.now()-startedAt)/1000;sp.attempts++;if(correct)sp.correct++;const quality=rating/4*(hintUsed?.72:1)*(response>15?.9:1);sp.strength=Math.max(0,Math.min(1,sp.strength*.75+quality*.25));meta.totalAnswers++;if(correct)meta.totalCorrect++;markDailyReviewAttempted(v.id);p.reps++;if(rating===1){p.lapses++;p.interval=0;p.stage=1;p.due=Date.now()+10*60*1000;p.ease=Math.max(1.3,p.ease-.2)}else if(p.stage<2){p.stage=2;p.interval=rating===2?1:rating===3?2:4;p.due=Date.now()+p.interval*86400000}else{const mult=rating===2?1.2:rating===3?p.ease:p.ease*1.35;p.interval=Math.max(1,Math.round(Math.max(1,p.interval)*mult));p.ease=Math.max(1.3,p.ease+(rating===2?-.15:rating===4?.15:0));p.due=Date.now()+p.interval*86400000}recordMeaningfulActivity(battleActive?'battle':karutaActive?'karuta':pictureGameActive?'game':mangaStory&&$('#manga').classList.contains('active')?'manga':'vocabulary');save();window.KaishiCloud?.flush?.();if(advance)next()}
 function showMissionCheckpoint(){saveMissionResume();const dialog=$('#missionCheckpointDialog');if(!dialog){index++;renderCurrent();return}$('#checkpointProgress').textContent=`${index+1} of ${session.length} cards complete. Your progress is saved.`;dialog.showModal()}
 function continueAfterCheckpoint(){clearMissionResume();$('#missionCheckpointDialog')?.close();index++;renderCurrent()}
 function finishAtCheckpoint(){saveMissionResume();$('#missionCheckpointDialog')?.close();session=[];index=0;current=null;revealed=false;hintUsed=false;updateHome();show('home');toast('Progress saved — Continue Adventure will resume here')}
 function next(){saveMissionResume();const completed=index+1;if(completed<session.length&&completed%CHECKPOINT_INTERVAL===0&&!pictureGameActive&&!karutaActive&&!battleActive){showMissionCheckpoint();return}index++;renderCurrent()}
-function finishSession(){clearMissionResume();if(battleActive){showBattleSummary();return}if(karutaActive){showKarutaSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}save();updateHome();const c=$('#card');$('#sessionCounter').textContent='Complete';$('#progressFill').style.width='100%';c.innerHTML=`${senseiBlock('Mandatory mission complete. Your progress is safely saved.')}<div class="eyebrow">Mission complete</div><h2>Great work — you reached today’s save point.</h2><p>You can finish now, or continue with another short optional mission.</p><div class="mission-complete-actions"><button id="finishMissionNow" class="primary">Finish for now</button><button id="keepLearningMission">Keep learning</button></div>`;$('#finishMissionNow').onclick=()=>{returnToActivitySource('home');toast(todayActivity().qualified?'Mission complete — streak protected 🎉':'Mission complete — progress saved')};$('#keepLearningMission').onclick=()=>{session=[];index=0;current=null;startTopicSession(currentTopic().id)}}
+function finishSession(){clearMissionResume();const completedJourneyMission=Boolean(activeJourneyMission)&&finishActiveJourneyMission();if(battleActive){showBattleSummary();return}if(karutaActive){showKarutaSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}save();updateHome();if(completedJourneyMission)renderJourney();const c=$('#card');$('#sessionCounter').textContent='Complete';$('#progressFill').style.width='100%';c.innerHTML=`${senseiBlock('Mandatory mission complete. Your progress is safely saved.')}<div class="eyebrow">Mission complete</div><h2>Great work — you reached today’s save point.</h2><p>You can finish now, or continue with another short optional mission.</p><div class="mission-complete-actions"><button id="finishMissionNow" class="primary">Finish for now</button><button id="keepLearningMission">Keep learning</button></div>`;$('#finishMissionNow').onclick=()=>{activityReturnScreen=activityReturnScreen==='journey'?'home':activityReturnScreen;returnToActivitySource('home');toast(todayActivity().qualified?'Mission complete — streak protected 🎉':'Mission complete — progress saved')};$('#keepLearningMission').onclick=()=>{session=[];index=0;current=null;startTopicSession(currentTopic().id)}}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 
 function componentWords(record,introducedOnly=true){return vocab.filter(word=>kanjiCharacters(word).includes(record.kanji)&&(!introducedOnly||wordIntroduced(word)))}
@@ -1043,7 +1065,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.11';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.12';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

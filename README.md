@@ -1,12 +1,15 @@
-# Kaishi Quest v9.0.11 — Dismiss Fix
+# Kaishi Quest v9.0.12
 
-Upload these files over v9.0.10.
+Upload these files over v9.0.11.
 
-This patch fixes both dismiss controls:
+## Fixed
 
-- the X on the dashboard friend motivation strip;
-- Dismiss on accepted-friend notifications in the notification popup.
+- Dashboard friend-activity X now persists.
+- Popup Dismiss now persists after refresh.
+- The notification icon disappears when no unread notifications remain.
+- Daily planned-review counts decrease after each planned word is attempted, including an incorrect attempt.
+- Daily streaks are awarded once per local calendar day after five tested answers.
+- Completing a mandatory mission immediately completes its three-step-route stage.
+- The following route step becomes available without requiring an extra navigation action.
 
-Both now use persistent delegated click handling, remove the item immediately, and store the dismissal in local storage.
-
-No Supabase SQL is required.
+No additional Supabase SQL is required.

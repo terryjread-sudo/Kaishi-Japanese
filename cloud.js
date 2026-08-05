@@ -4,8 +4,8 @@
  const account=$('#cloudAccount'),status=$('#cloudStatus'),join=$('#leaderboardOptIn');
  const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
  const AVATARS=['boy','girl','master','man','woman'],OWNER_LOGIN='terryjread-sudo';
- const FP_KEY='kq-cloud-sync-fingerprint-v1';
- let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false;
+ const FP_KEY='kq-cloud-sync-fingerprint-v1',FRIEND_NUDGE_DISMISS_KEY='kq-friend-nudge-dismiss-v1',SOCIAL_READ_KEY='kq-social-notifications-read-v1';
+ let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[];
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
  const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}};
@@ -183,7 +183,7 @@
   const recent=(friends||[]).filter(r=>r.last_active_at&&Date.now()-new Date(r.last_active_at).getTime()<86400000).sort((a,b)=>new Date(b.last_active_at)-new Date(a.last_active_at))[0];
   let dismissed={};try{dismissed=JSON.parse(localStorage.getItem(FRIEND_NUDGE_DISMISS_KEY)||'{}')}catch{}
   if(!user||!recent||(dismissed.userId===recent.user_id&&dismissed.activity===recent.last_active_at)){card.hidden=true;return}
-  card.hidden=false;$('#friendActivityAvatar').src=friendAvatar(recent);$('#friendActivityTitle').textContent=`${recent.display_name||recent.github_login} studied ${timeAgo(recent.last_active_at)}`;$('#friendActivityText').textContent='Keep pace with a quick mission.';
+  card.hidden=false;card.style.display='';$('#friendActivityAvatar').src=friendAvatar(recent);$('#friendActivityTitle').textContent=`${recent.display_name||recent.github_login} studied ${timeAgo(recent.last_active_at)}`;$('#friendActivityText').textContent='Keep pace with a quick mission.';
   const open=()=>openCommunityProfile(recent.user_id);$('#friendActivityOpen').onclick=open;$('#friendActivityOpen').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}};
   const dismiss=$('#friendActivityDismiss');if(dismiss){dismiss.dataset.friendUser=recent.user_id;dismiss.dataset.friendActivity=recent.last_active_at}
 
@@ -195,7 +195,7 @@
   const items=rows.filter(r=>r.relationship_status==='pending_incoming').map(r=>({id:`req:${r.request_id}`,type:'request',row:r,title:`${r.display_name||r.github_login} sent a friend request`}));
   rows.filter(r=>r.relationship_status==='accepted'&&r.accepted_at).forEach(r=>{const id=`accepted:${r.request_id}:${r.accepted_at}`;if(!read[id])items.push({id,type:'accepted',row:r,title:`${r.display_name||r.github_login} accepted your request`})});
   if(isOwner()){try{const{data}=await client.rpc('get_kaishi_admin_notification_counts');if(Number(data?.unreviewed_reports||0)>0)items.push({id:'admin-reports',type:'admin',title:`${data.unreviewed_reports} learning-card report${Number(data.unreviewed_reports)===1?'':'s'} need review`})}catch{}}
-  button.hidden=!items.length;$('#socialNotificationCount').textContent=String(items.length);
+  button.hidden=!items.length;const notificationCount=$('#socialNotificationCount');if(notificationCount){notificationCount.textContent=String(items.length);notificationCount.hidden=!items.length;}
   list.innerHTML=items.length?items.map(i=>`<article class="social-notification-item"><strong>${esc(i.title)}</strong><div class="social-notification-actions">${i.type==='request'?`<button data-na="${i.row.request_id}" class="primary">Accept</button><button data-nd="${i.row.request_id}">Decline</button>`:''}${i.type==='accepted'?`<button data-np="${i.row.user_id}">View</button><button data-nx="${esc(i.id)}">Dismiss</button>`:''}${i.type==='admin'?'<button id="openAdminNotice" class="primary">Open Admin</button>':''}</div></article>`).join(''):'<p class="muted">No new notifications.</p>';
   document.querySelectorAll('[data-na]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.na,accept_request:true});await loadFriends();await loadLeaderboard()});
   document.querySelectorAll('[data-nd]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.nd,accept_request:false});await loadFriends();await loadLeaderboard()});
@@ -353,10 +353,11 @@ async function loadLeaderboard(){
   document.addEventListener('click',event=>{
    const nudgeDismiss=event.target.closest('#friendActivityDismiss');
    if(nudgeDismiss){
-    event.preventDefault();event.stopPropagation();
-    try{localStorage.setItem(FRIEND_NUDGE_DISMISS_KEY,JSON.stringify({userId:nudgeDismiss.dataset.friendUser||'',activity:nudgeDismiss.dataset.friendActivity||''}))}catch(error){}
+    event.preventDefault();event.stopImmediatePropagation();
+    const dismissal={userId:nudgeDismiss.dataset.friendUser||'',activity:nudgeDismiss.dataset.friendActivity||''};
+    try{localStorage.setItem(FRIEND_NUDGE_DISMISS_KEY,JSON.stringify(dismissal))}catch(error){}
     const card=nudgeDismiss.closest('#friendActivityNudge');
-    if(card)card.hidden=true;
+    if(card){card.hidden=true;card.style.display='none'}
     return;
    }
    const notificationDismiss=event.target.closest('[data-nx]');
@@ -368,11 +369,7 @@ async function loadLeaderboard(){
     try{localStorage.setItem(SOCIAL_READ_KEY,JSON.stringify(read))}catch(error){}
     const item=notificationDismiss.closest('.social-notification-item');
     if(item)item.remove();
-    const list=$('#socialNotificationList');
-    const remaining=list?.querySelectorAll('.social-notification-item').length||0;
-    const badge=$('#socialNotificationCount');
-    if(badge){badge.textContent=String(remaining);badge.hidden=remaining===0}
-    if(remaining===0&&list)list.innerHTML='<p class="muted">No new notifications.</p>';
+    Promise.resolve(renderSocialNotifications(lastFriendRows)).catch(console.warn);
     return;
    }
   },true);
