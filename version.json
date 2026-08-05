@@ -1,8 +1,12 @@
 {
-  "version": "9.0.9",
+  "version": "9.0.10",
   "released": "2026-08-05",
-  "title": "Social polish and admin users",
+  "title": "Notification and SQL compatibility fix",
   "changes": [
+    "Moved the social notification icon beside the Settings cog.",
+    "Fixed the friend activity dismiss button and aligned it on the right.",
+    "Fixed Admin Users by reading created_at from auth.users.",
+    "Fixed report notifications to use learning_card_reports.status.",
     "Added in-app social notifications and owner report alerts.",
     "Made friend motivation compact and dismissible.",
     "Added friend and invite limits.",

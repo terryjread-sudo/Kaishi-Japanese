@@ -1,7 +1,9 @@
-# Kaishi Quest v9.0.9 — Social Polish
+# Kaishi Quest v9.0.10
 
-Upload the website files over v9.0.8, then run `supabase-v909-social-polish.sql` once.
+Upload the included website files over v9.0.9, then run:
 
-Includes in-app friend notifications, owner-only report alerts, compact dismissible friend motivation, friend limits, clickable friend rows, a smaller invite panel, and an owner-only user list sourced from `leaderboard_entries`.
+`supabase-v9010-notification-sql-fix.sql`
 
-Limits: 25 accepted friends, 10 outgoing pending requests, and 5 active invitation links. Browser notifications are not included.
+This fixes the Admin Users query for your actual schema and counts report notifications using `learning_card_reports.status`.
+
+It also moves the social notification icon beside Settings and fixes the right-aligned friend motivation dismiss button.
