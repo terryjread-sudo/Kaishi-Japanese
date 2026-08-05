@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='9.0.6';
+const APP_VERSION='9.0.7';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -1014,7 +1014,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.6';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v9.0.7';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
@@ -1086,3 +1086,51 @@ $('#shareClose').onclick=()=>$('#shareDialog').close();
 $('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};
 $('#missionSummaryShare').onclick=()=>{$('#missionSummaryDialog').close();openInviteDialog()};
 init();
+
+
+function hasAnyKaishiLocalData(){
+  try{
+    if(localStorage.length===0)return false;
+    for(let index=0;index<localStorage.length;index++){
+      const key=localStorage.key(index);
+      if(key&&(
+        key.toLowerCase().includes('kaishi')||
+        key.toLowerCase().includes('kakashi')||
+        key.toLowerCase().includes('progress')||
+        key.toLowerCase().includes('journey')
+      ))return true;
+    }
+    return false;
+  }catch(error){
+    console.warn('Unable to inspect local storage',error);
+    return true;
+  }
+}
+function dismissFirstLaunch(){
+  const overlay=document.getElementById('firstLaunchOverlay');
+  if(overlay)overlay.hidden=true;
+  try{localStorage.setItem('kaishi_first_launch_seen','1')}catch(error){}
+}
+function initialiseFirstLaunchWelcome(){
+  const overlay=document.getElementById('firstLaunchOverlay');
+  if(!overlay)return;
+  let seen=false;
+  try{seen=localStorage.getItem('kaishi_first_launch_seen')==='1'}catch(error){}
+  if(!seen&&!hasAnyKaishiLocalData()){
+    overlay.hidden=false;
+    document.body.classList.add('welcome-open');
+  }
+  const close=()=>{
+    dismissFirstLaunch();
+    document.body.classList.remove('welcome-open');
+  };
+  document.getElementById('firstLaunchClose')?.addEventListener('click',close);
+  document.getElementById('firstLaunchStart')?.addEventListener('click',close);
+  document.getElementById('firstLaunchSignIn')?.addEventListener('click',async()=>{
+    close();
+    const signIn=document.getElementById('dashboardSignIn')||document.getElementById('cloudSignIn');
+    if(signIn)signIn.click();
+  });
+}
+
+initialiseFirstLaunchWelcome();

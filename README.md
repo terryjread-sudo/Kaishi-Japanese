@@ -1,17 +1,25 @@
-# Kaishi Quest v9.0.6 — Learning Together
+# Kaishi Quest v9.0.7 — First-launch Welcome
 
-This revised package removes all email functionality.
+Upload the included files over v9.0.6.
 
-You already ran `supabase-friends.sql`, which is fine. Keep it in place.
+## New behaviour
 
-Now run `supabase-v906-social-update.sql`. It:
-- removes unused email preference objects;
-- defaults new users into the leaderboard;
-- preserves existing opt-in and opt-out choices;
-- adds secure one-time friend invite links.
+When Kaishi Quest launches and no Kaishi Quest data exists in local storage, a welcome overlay appears.
 
-Community Challenge users are clickable. Their profile offers Add friend, Accept, Decline or Unfriend depending on the relationship.
+It advertises:
 
-Invite links expire after 30 days and can be redeemed once. When the recipient opens the link and signs in, the two users become friends automatically.
+- Adventure Journey
+- Live Conversations
+- Japan Ready
+- Travel Cheat Sheet
+- Streaks and progress
+- Learn Together
 
-No domain, Resend account or Edge Function is required.
+The learner can choose:
+
+- **Start exploring**
+- **Sign in to save progress**
+
+Once dismissed, the overlay stores `kaishi_first_launch_seen=1` and will not appear again on that browser.
+
+No additional Supabase SQL is required for v9.0.7.

@@ -1,8 +1,12 @@
 {
-  "version": "9.0.6",
+  "version": "9.0.7",
   "released": "2026-08-05",
-  "title": "Friends and easier Live Conversation",
+  "title": "First-launch welcome",
   "changes": [
+    "Added a first-launch welcome overlay when no Kaishi Quest data exists in local storage.",
+    "The overlay highlights Journey, Live Conversation, Japan Ready, the travel cheat sheet, progress tracking and friends.",
+    "Added Start exploring and Sign in to save progress actions.",
+    "The welcome is dismissed permanently after the learner continues.",
     "Removed all friend-request email functionality.",
     "Made community leaderboard users clickable with profile and friend controls.",
     "New signed-in users join the leaderboard by default and may opt out.",
