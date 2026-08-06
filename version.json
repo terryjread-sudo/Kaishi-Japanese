@@ -1,8 +1,14 @@
 {
-  "version": "10.0.1",
+  "version": "10.0.2",
   "released": "2026-08-06",
-  "title": "Activity Village MVP Toggle",
+  "title": "Activity Village visual polish",
   "changes": [
+    "Strengthened the water shimmer using two slow CSS reflection layers.",
+    "Removed duplicate map labels that were assigned to the same physical buildings.",
+    "Replaced green building rectangles with compact open, ready and developing status dots.",
+    "Made the insufficient-requirements action navigate to the learner's current Journey progress.",
+    "Changed the action text to show the exact number of words or Adventure Points still needed.",
+    "Reset the building dialog to the top whenever it opens on mobile.",
     "Added the illustrated Activity Village map as an optional, reversible activity interface.",
     "Added a persistent Settings toggle and an inline Village/Classical view switch.",
     "Added responsive percentage-based hotspots for activity locations.",

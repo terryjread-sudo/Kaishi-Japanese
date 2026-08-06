@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='10.0.1';
+const APP_VERSION='10.0.2';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -390,7 +390,7 @@ async function openInviteDialog(){
  const dialog=$('#shareDialog');if(!dialog)return;
  const url=await prepareFriendInvite();
  if(!url)return;
- if(!dialog.open)dialog.showModal();
+ if(!dialog.open)dialog.showModal();requestAnimationFrame(()=>{dialog.scrollTop=0;dialog.querySelector('.activity-unlock-scene')?.scrollTo({top:0})});
 }
 async function nativeShareInvite(){
  const url=activeFriendInviteUrl!==KAISHI_SHARE_URL?activeFriendInviteUrl:await prepareFriendInvite();
@@ -445,9 +445,14 @@ function openActivityUnlock(id){
  $('#activityAvailableAp').textContent=adventurePoints().toLocaleString();
  $('#activityContentPreview').innerHTML=`<strong>What opens here</strong><p>${esc(activityPreview(id,state.supported))}</p><small>Activities only test introduced words supported by this location.</small>`;
  const action=$('#activityUnlockAction');
- if(state.purchased){action.textContent='Practice';action.disabled=false}
- else if(state.wordReady&&state.apReady){action.textContent=`${cfg.action} · ${cfg.cost} AP`;action.disabled=false}
- else{action.textContent=state.wordReady?'Earn more Adventure Points':'Continue learning';action.disabled=true}
+ if(state.purchased){action.textContent='Practice';action.disabled=false;action.dataset.mode='practice'}
+ else if(state.wordReady&&state.apReady){action.textContent=`${cfg.action} · ${cfg.cost} AP`;action.disabled=false;action.dataset.mode='unlock'}
+ else{
+  const wordsNeeded=Math.max(0,cfg.words-state.supported),apNeeded=Math.max(0,cfg.cost-adventurePoints());
+  action.textContent=wordsNeeded?`Learn ${wordsNeeded} more supported word${wordsNeeded===1?'':'s'}`:`Earn ${apNeeded} more AP`;
+  action.disabled=false;
+  action.dataset.mode='learn';
+ }
  $('#activityTeacherMessage').textContent=state.purchased
   ?`This location is open. I will only use words you have already met.`
   :state.wordReady&&state.apReady
@@ -457,6 +462,13 @@ function openActivityUnlock(id){
     :`Your vocabulary is ready. Keep learning to earn the remaining Adventure Points.`;
  action.onclick=()=>{
   const current=activityReadiness(id);
+  if(action.dataset.mode==='learn'){
+   dialog.close();
+   openJourney('current');
+   requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}));
+   toast(current.wordReady?'Complete learning activities to earn more Adventure Points':`Keep learning to introduce ${Math.max(0,current.cfg.words-current.supported)} more supported words`);
+   return;
+  }
   if(!current.purchased){
    if(!current.wordReady||!current.apReady)return;
    meta.activityPurchases.push(id);meta.adventurePointsSpent+=current.cfg.cost;save();
@@ -485,10 +497,7 @@ const VILLAGE_HOTSPOTS=[
  {id:'grammar',label:'Particle Shrine',x:1,y:65,w:28,h:15},
  {id:'manga',label:'Manga Library',x:48,y:65,w:29,h:15},
  {id:'kana',label:'Kana Bridge',x:31,y:57,w:20,h:12},
- {id:'vocabulary',label:'Starting Village',x:69,y:78,w:30,h:18},
- {id:'conversation',label:'Conversation Quest',x:10,y:27,w:25,h:11},
- {id:'karuta',label:'Karuta Arena',x:74,y:56,w:23,h:10},
- {id:'kanji',label:'Kanji Gate',x:3,y:69,w:23,h:10}
+ {id:'vocabulary',label:'Starting Village',x:69,y:78,w:30,h:18}
 ];
 function renderVillageMap(){
  const map=$('#activityVillageMap'),classic=$('#classicActivityView'),practice=$('.practice-hub');
@@ -1257,7 +1266,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v10.0.1';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v10.0.2';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
