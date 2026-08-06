@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='10.1.1';
+const APP_VERSION='11.0.0';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -513,6 +513,39 @@ function playVillageRestoration(id){
  layer.innerHTML=`<i class="restoration-fx" style="--fx-x:${point.x+point.w/2}%;--fx-y:${point.y+point.h/2}%"></i>`;
  setTimeout(()=>layer.innerHTML='',1700);
 }
+
+let villageCatTimer=null;
+const VILLAGE_CAT_SPOTS={
+ picture:{x:21,y:54},listening:{x:78,y:62},manga:{x:60,y:76},
+ kana:{x:44,y:64},vocabulary:{x:83,y:90},theatre:{x:23,y:38},
+ builder:{x:80,y:43},grammar:{x:18,y:74},battle:{x:72,y:24}
+};
+function placeVillageCat(force=false){
+ const cat=$('#villageCat');
+ if(!cat||settings.activityVillageMode===false)return;
+ const open=VILLAGE_HOTSPOTS.filter(point=>activityReadiness(point.id).purchased&&VILLAGE_CAT_SPOTS[point.id]);
+ if(!open.length){cat.hidden=true;return}
+ const current=cat.dataset.location;
+ let choices=open.filter(point=>force||point.id!==current);
+ if(!choices.length)choices=open;
+ const point=choices[Math.floor(Math.random()*choices.length)],spot=VILLAGE_CAT_SPOTS[point.id];
+ cat.hidden=false;cat.dataset.location=point.id;
+ cat.style.setProperty('--cat-x',`${spot.x}%`);
+ cat.style.setProperty('--cat-y',`${spot.y}%`);
+ cat.classList.remove('cat-arriving');
+ requestAnimationFrame(()=>cat.classList.add('cat-arriving'));
+ clearTimeout(villageCatTimer);
+ villageCatTimer=setTimeout(()=>placeVillageCat(),22000+Math.random()*26000);
+}
+function setupVillageCat(){
+ const cat=$('#villageCat');if(!cat)return;
+ cat.onclick=()=>{
+  cat.classList.remove('cat-reacting');
+  requestAnimationFrame(()=>cat.classList.add('cat-reacting'));
+  toast(['The village cat looks pleased to see you.','The cat gives a tiny approving meow.','The cat is keeping watch over your studies.'][Math.floor(Math.random()*3)]);
+ };
+ placeVillageCat(true);
+}
 function renderVillageMap(){
  const map=$('#activityVillageMap'),classic=$('#classicActivityView'),practice=$('.practice-hub');
  const enabled=settings.activityVillageMode!==false;
@@ -522,15 +555,19 @@ function renderVillageMap(){
  const toggle=$('#activityViewToggle'),description=$('#activityViewDescription');
  if(toggle){toggle.textContent=enabled?'Switch to Classic view':'Switch to Village view';toggle.setAttribute('aria-pressed',String(enabled))}
  if(description)description.textContent=enabled?'Explore the interactive village map.':'Use the familiar activity cards and practice list.';
- const host=$('#villageHotspots');if(!host||!enabled)return;
- host.innerHTML=VILLAGE_HOTSPOTS.map(point=>{
+ const host=$('#villageHotspots'),fogHost=$('#villageFogLayer');if(!host||!enabled)return;
+ const points=VILLAGE_HOTSPOTS.map(point=>{
   const item=PATH_MILESTONES.find(entry=>entry.id===point.id),state=activityReadiness(point.id),ready=state.wordReady&&state.apReady;
-  if(!item)return'';
-  const status=state.purchased?'Open':ready?'Ready':`${Math.max(0,state.cfg.words-state.supported)} words`;
+  if(!item)return null;
+  const remainingWords=Math.max(0,state.cfg.words-state.supported);
+  const status=state.purchased?'Open':ready?'Ready to restore':`${remainingWords} word${remainingWords===1?'':'s'}`;
   const fogClass=state.purchased?'fog-none':ready?'fog-light':state.supported>=Math.ceil(state.cfg.words*.55)?'fog-medium':'fog-heavy';
-  return `<button class="village-hotspot ${state.purchased?'open':ready?'ready':'developing'}" data-village-activity="${esc(point.id)}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" aria-label="${esc(point.label)}. ${esc(status)}"><i class="building-fog ${fogClass}" aria-hidden="true"></i><span>${esc(item.icon)}</span><b>${esc(point.label)}</b><small>${esc(status)}</small></button>`;
- }).join('');
+  return{point,item,state,ready,status,fogClass};
+ }).filter(Boolean);
+ if(fogHost)fogHost.innerHTML=points.map(({point,fogClass,state})=>`<i class="village-building-fog ${fogClass}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" data-fog-for="${esc(point.id)}" aria-hidden="true"></i>`).join('');
+ host.innerHTML=points.map(({point,item,state,ready,status})=>`<button class="village-hotspot ${state.purchased?'open':ready?'ready':'developing'}" data-village-activity="${esc(point.id)}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" aria-label="${esc(point.label)}. ${esc(status)}"><span class="location-panel"><i class="location-icon">${esc(item.icon)}</i><strong>${esc(point.label)}</strong><small>${esc(status)}</small></span></button>`).join('');
  host.querySelectorAll('[data-village-activity]').forEach(button=>button.onclick=()=>focusVillageLocation(button.dataset.villageActivity,button));
+ setupVillageCat();
 }
 function setActivityVillageMode(enabled){
  settings.activityVillageMode=Boolean(enabled);save();renderVillageMap();toast(enabled?'Activity Village enabled':'Classic activity view enabled');
@@ -1281,7 +1318,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v10.1.1';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.0.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
