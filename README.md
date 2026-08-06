@@ -1,41 +1,23 @@
-# Kaishi Quest v10.0.0 — Activity Village
+# Kaishi Quest v10.0.1 — Activity Village MVP Toggle
 
-Upload these files over v9.1.0.
+Upload these files over v10.0.0.
 
-## Activity Village
+## Reversible interface
 
-Practice Grounds is replaced by a village map. Each activity is a location that can be restored and then used for practice.
+Users can switch between:
 
-An activity requires both:
+- **Village view** — the animated illustrated map with clickable activity locations;
+- **Classic view** — the existing activity cards and practice list.
 
-- enough introduced words supported by that activity;
-- enough spendable Adventure Points.
+The switch appears above the activity area and in Settings. It changes presentation only: XP, Adventure Points, purchases, unlocks and learning progress are shared.
 
-Lifetime XP never decreases and remains the leaderboard score. Available AP is lifetime XP minus AP already spent.
+## Map MVP
 
-## Fair activity word pools
+- Responsive 1024 × 1536 clean map.
+- Percentage-positioned, accessible building hotspots.
+- Subtle water shimmer, petals, smoke, waterfall mist and pond ripples.
+- Central torii remains decorative and is not a duplicate menu.
+- Mobile-friendly scaling and touch targets.
+- `prefers-reduced-motion` support.
 
-Picture Meadow, listening games and Karuta now strictly use:
-
-`introduced words ∩ activity-supported words`
-
-No fallback to unseen vocabulary is allowed.
-
-Picture Meadow begins with an easier mode that shows the picture and English meaning before asking for the Japanese word.
-
-## RPG unlock flow
-
-Selecting a location opens a full-screen scene showing:
-
-- vocabulary readiness;
-- AP readiness and cost;
-- available content;
-- lifetime XP;
-- available AP;
-- teacher guidance.
-
-Restoring a location plays a short animation and permanently records the purchase.
-
-The legacy Games chooser is hidden. Exiting an activity returns to Activity Village.
-
-No Supabase SQL changes are required because village purchases and AP spending are stored inside the existing progress payload.
+No Supabase SQL changes are required.

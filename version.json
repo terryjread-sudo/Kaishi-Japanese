@@ -1,8 +1,15 @@
 {
-  "version": "10.0.0",
-  "released": "2026-08-05",
-  "title": "Activity Village",
+  "version": "10.0.1",
+  "released": "2026-08-06",
+  "title": "Activity Village MVP Toggle",
   "changes": [
+    "Added the illustrated Activity Village map as an optional, reversible activity interface.",
+    "Added a persistent Settings toggle and an inline Village/Classical view switch.",
+    "Added responsive percentage-based hotspots for activity locations.",
+    "Added subtle water shimmer, petals, forge smoke, waterfall mist and pond-ripple effects.",
+    "Kept the central torii as scenery rather than another duplicated activity menu.",
+    "Classic activity cards remain available and use the same progress, unlock and AP state.",
+    "Added mobile-friendly scaling, large touch targets and reduced-motion support.",
     "Replaced Practice Grounds with an RPG-style Activity Village.",
     "Added spendable Adventure Points while preserving lifetime XP for leaderboards.",
     "Activities require both enough supported introduced words and enough Adventure Points.",
