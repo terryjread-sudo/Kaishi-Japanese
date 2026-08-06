@@ -1,43 +1,30 @@
-# Kaishi Quest v11.0.0 — The Living Village
+# Kaishi Quest v11.0.1 — Water and cat correction
 
-This package is based on the repository's current v10.1.1 main state.
+Upload this package over v11.0.0.
 
-## Village presentation
+## Water correction
 
-- Building labels are now compact RPG panels with activity icon, building name and status.
-- A map legend identifies Locked in fog, Ready to restore and Open states.
-- Touch targets remain larger than the visible labels.
+The previous mask images contained opaque alpha across their entire canvas. Browsers therefore applied the moving texture to the complete village rather than just the white water shapes.
 
-## Progressive magical fog
+The four masks are now genuine transparent alpha masks:
 
-Fog is now rendered in a dedicated layer above the map and below labels:
+- rivers and connecting streams;
+- pools and calmer water;
+- castle waterfalls;
+- sea and harbour.
 
-- heavy fog when far from the activity's word requirement;
-- medium fog once meaningful progress has been made;
-- light wisps when ready to restore;
-- completely clear after restoration.
+Movement is now clipped to water only and its opacity has been reduced slightly.
 
-## Water and ambience
+## Village cat correction
 
-- River highlights now travel straight down the map.
-- Castle waterfall highlights move vertically down.
-- Waterfall mist is positioned over the base of the two castle falls.
-- River, pool, waterfall, petal and foreground effects are more visible.
-- Reduced-motion preferences remain supported.
+The cat now uses a curated list of clear resting places.
 
-## Village cat
+A position is rejected when it:
 
-A small animated calico cat appears only near opened buildings.
+- falls inside an unopened or fog-covered building;
+- overlaps a building panel;
+- is too close to a blocked location.
 
-- It changes location every 22–48 seconds.
-- It uses a subtle four-frame idle animation.
-- Tapping it produces a short friendly message.
-- It moves to a newly restored building after an unlock.
-
-## Cache reliability
-
-The image cache is now versioned with the application release. Old shell and image caches are deleted during service-worker activation.
-
-The Classic/Village toggle, learning progress, AP, lifetime XP and purchases are preserved.
+Building labels render above the cat, so activity information always remains readable.
 
 No Supabase SQL changes are required.

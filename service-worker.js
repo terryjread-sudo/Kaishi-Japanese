@@ -1,5 +1,5 @@
 'use strict';
-const VERSION='11.0.0';
+const VERSION='11.0.1';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -8,12 +8,16 @@ const SHELL=[
  `./app.js?v=${VERSION}`,`./vms.js?v=${VERSION}`,`./cloud.js?v=${VERSION}`,
  `./reporting.js?v=${VERSION}`,`./japan-ready.js?v=${VERSION}`,'./data/japan-ready-v90.json','./icons/icon-192.png','./icons/icon-512.png',
  `./media/guides/teacher-guide.webp?v=${VERSION}`,
- './media/activity-village/village-cat-idle.png?v=11.0.0',
- './media/activity-village/fog-heavy.png?v=11.0.0',
- './media/activity-village/fog-medium.png?v=11.0.0',
- './media/activity-village/fog-wisp.png?v=11.0.0',
- './media/activity-village/kaishi-village-map.webp?v=11.0.0','./media/activity-village/water-shimmer.png?v=11.0.0','./media/activity-village/petals.png?v=11.0.0','./media/activity-village/mist.png?v=11.0.0','./media/activity-village/ripple.png?v=11.0.0',
- './media/profiles/guest-learner.webp?v=11.0.0','./media/profiles/boy-base.webp','./media/profiles/girl-base.webp',
+ './media/activity-village/village-cat-idle.png?v=11.0.1',
+ './media/activity-village/water-mask-rivers.png?v=11.0.1',
+ './media/activity-village/water-mask-pools.png?v=11.0.1',
+ './media/activity-village/water-mask-waterfalls.png?v=11.0.1',
+ './media/activity-village/water-mask-sea.png?v=11.0.1',
+ './media/activity-village/fog-heavy.png?v=11.0.1',
+ './media/activity-village/fog-medium.png?v=11.0.1',
+ './media/activity-village/fog-wisp.png?v=11.0.1',
+ './media/activity-village/kaishi-village-map.webp?v=11.0.1','./media/activity-village/water-shimmer.png?v=11.0.1','./media/activity-village/petals.png?v=11.0.1','./media/activity-village/mist.png?v=11.0.1','./media/activity-village/ripple.png?v=11.0.1',
+ './media/profiles/guest-learner.webp?v=11.0.1','./media/profiles/boy-base.webp','./media/profiles/girl-base.webp',
  './media/profiles/master-base.webp','./media/profiles/man-base.webp',
  './media/profiles/woman-base.webp'
 ];

@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.0.0';
+const APP_VERSION='11.0.1';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -515,21 +515,42 @@ function playVillageRestoration(id){
 }
 
 let villageCatTimer=null;
-const VILLAGE_CAT_SPOTS={
- picture:{x:21,y:54},listening:{x:78,y:62},manga:{x:60,y:76},
- kana:{x:44,y:64},vocabulary:{x:83,y:90},theatre:{x:23,y:38},
- builder:{x:80,y:43},grammar:{x:18,y:74},battle:{x:72,y:24}
-};
+const VILLAGE_CAT_SPOTS=[
+ {id:'picture',x:30,y:59},
+ {id:'picture',x:15,y:63},
+ {id:'listening',x:69,y:70},
+ {id:'listening',x:83,y:67},
+ {id:'manga',x:49,y:84},
+ {id:'manga',x:63,y:87},
+ {id:'kana',x:47,y:54},
+ {id:'vocabulary',x:73,y:91},
+ {id:'vocabulary',x:87,y:86},
+ {id:'theatre',x:35,y:42},
+ {id:'builder',x:72,y:48},
+ {id:'grammar',x:30,y:79},
+ {id:'battle',x:59,y:28}
+];
+function villageCatSpotIsClear(spot){
+ const margin=5;
+ return !VILLAGE_HOTSPOTS.some(point=>{
+  const state=activityReadiness(point.id);
+  const insideBuilding=spot.x>point.x-margin&&spot.x<point.x+point.w+margin&&spot.y>point.y-margin&&spot.y<point.y+point.h+margin;
+  if(!insideBuilding)return false;
+  if(!state.purchased)return true;
+  const labelTop=point.y+point.h*.58;
+  return spot.y>labelTop-margin;
+ });
+}
 function placeVillageCat(force=false){
  const cat=$('#villageCat');
  if(!cat||settings.activityVillageMode===false)return;
- const open=VILLAGE_HOTSPOTS.filter(point=>activityReadiness(point.id).purchased&&VILLAGE_CAT_SPOTS[point.id]);
- if(!open.length){cat.hidden=true;return}
+ const available=VILLAGE_CAT_SPOTS.filter(spot=>activityReadiness(spot.id).purchased&&villageCatSpotIsClear(spot));
+ if(!available.length){cat.hidden=true;return}
  const current=cat.dataset.location;
- let choices=open.filter(point=>force||point.id!==current);
- if(!choices.length)choices=open;
- const point=choices[Math.floor(Math.random()*choices.length)],spot=VILLAGE_CAT_SPOTS[point.id];
- cat.hidden=false;cat.dataset.location=point.id;
+ let choices=available.filter(spot=>force||`${spot.id}:${spot.x}:${spot.y}`!==current);
+ if(!choices.length)choices=available;
+ const spot=choices[Math.floor(Math.random()*choices.length)];
+ cat.hidden=false;cat.dataset.location=`${spot.id}:${spot.x}:${spot.y}`;
  cat.style.setProperty('--cat-x',`${spot.x}%`);
  cat.style.setProperty('--cat-y',`${spot.y}%`);
  cat.classList.remove('cat-arriving');
@@ -1318,7 +1339,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.0.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.0.1';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

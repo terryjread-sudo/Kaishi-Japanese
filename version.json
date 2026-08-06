@@ -1,8 +1,14 @@
 {
-  "version": "11.0.0",
+  "version": "11.0.1",
   "released": "2026-08-06",
-  "title": "The Living Village",
+  "title": "Living Village water and cat correction",
   "changes": [
+    "Fixed water movement covering the whole village by converting grayscale masks into genuine transparent alpha masks.",
+    "River, pool, waterfall and harbour effects are now restricted to their intended water areas.",
+    "Reduced water effect strength after correcting the clipping.",
+    "Added a curated set of safe cat positions on open paths and clear ground.",
+    "The village cat now avoids unopened buildings, fog layers and building labels.",
+    "Placed building labels above the cat so the mascot can never obscure activity information.",
     "Added polished RPG-style building panels matching the Activity Village mock-up.",
     "Added a dedicated progressive magical-fog layer over unopened buildings.",
     "Fog changes from heavy to medium to light before clearing when restored.",
