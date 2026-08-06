@@ -1,8 +1,13 @@
 {
-  "version": "10.1.0",
+  "version": "10.1.1",
   "released": "2026-08-06",
-  "title": "The Living Village",
+  "title": "Living Village water-mask correction",
   "changes": [
+    "Replaced misaligned SVG water clips with exact pixel-matched masks.",
+    "Animated waterways now cover rivers throughout the full village map.",
+    "Still pools, waterfalls and harbour water have separate movement and strength.",
+    "Water effects no longer cross paths, roofs, bridges or buildings.",
+    "Reduced shimmer density so the effect reads as reflected light rather than fog.",
     "Replaced the village background with the calmer, darker-water illustrated map.",
     "Traced actual rivers, pools, waterfalls and sea into separate SVG clip paths.",
     "Shimmer now animates only water pixels and uses a different speed and strength for each water type.",

@@ -1,31 +1,20 @@
-# Kaishi Quest v10.1.0 — The Living Village
+# Kaishi Quest v10.1.1 — Water-mask correction
 
-This package is based on the current repository v10.0.2.
+Upload this package over v10.1.0.
 
-## Living water
+## Corrected
 
-- Uses the revised village map with calmer, darker water.
-- Water pixels were traced into SVG clip paths.
-- Rivers, still pools, waterfalls and sea have separate shimmer behaviour.
-- The old rectangular shimmer zones are removed.
-- Bridges, paths, rocks and buildings remain static.
+The v10.1.0 vector clip paths did not align reliably in the mobile browser. Only part of the upper-right waterfall received visible animation.
 
-## Building discovery
+v10.1.1 uses four exact 1024 × 1536 masks matched pixel-for-pixel to the shipped map:
 
-Unavailable buildings are covered by magical fog:
+- rivers and connecting channels;
+- wider pools and still water;
+- the two castle waterfalls;
+- sea and harbour water.
 
-- heavy fog when far from the vocabulary requirement;
-- medium fog while progressing;
-- light wisps when ready to restore;
-- no fog once restored.
+Each water type has its own movement speed and opacity. Roads, bridges, roofs, rocks and buildings remain still.
 
-## Village polish
-
-- Foreground cherry and lantern details add depth.
-- Tapping a location gently focuses the camera before opening its panel.
-- Restoring a building plays a short ring, sparkle and burst effect.
-- Animations pause in hidden tabs and support reduced-motion preferences.
-
-The Classic/Village toggle remains available and does not change progress, XP, AP or purchases.
+The illustrated map remains the clean map asset. The earlier labelled image was a visual concept mock-up; the real app intentionally renders labels and statuses as accessible HTML.
 
 No Supabase SQL changes are required.
