@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.0.1';
+const APP_VERSION='11.1.0';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -567,6 +567,49 @@ function setupVillageCat(){
  };
  placeVillageCat(true);
 }
+
+let villageResidentTimer=null,villageResidentDialogueTimer=null;
+const VILLAGE_RESIDENTS=[
+ {id:'kai',name:'Kai',img:'resident_kai.png',home:'vocabulary',line:'The village feels a little bigger every time you learn something new.'},
+ {id:'hana',name:'Hana',img:'resident_hana.png',home:'picture',line:'Pictures are easier to remember when you notice one strong detail.'},
+ {id:'scholar',name:'The Scholar',img:'resident_scholar.png',home:'manga',line:'A word becomes useful when you recognise it in a story.'},
+ {id:'blacksmith',name:'The Blacksmith',img:'resident_blacksmith.png',home:'builder',line:'Strong skills are forged by short practice, repeated often.'},
+ {id:'woodcutter',name:'The Woodcutter',img:'resident_woodcutter.png',home:'builder',line:'One small cut at a time clears even a difficult path.'},
+ {id:'farmer',name:'The Farmer',img:'resident_farmer.png',home:'vocabulary',line:'A few words every day grow into a surprisingly large harvest.'},
+ {id:'monk',name:'The Monk',img:'resident_monk.png',home:'grammar',line:'Listen for the shape of the sentence before worrying about every word.'},
+ {id:'merchant',name:'Travelling Merchant',img:'resident_travelling_merchant.png',home:'theatre',line:'Useful Japanese is the best thing to carry on a journey.'},
+ {id:'gardener',name:'Village Gardener',img:'resident_gardener.png',home:'picture',line:'Notice what is familiar first. The rest becomes easier.'},
+ {id:'shrine',name:'Shrine Keeper',img:'resident_shrine_keeper.png',home:'kana',line:'Small characters open the way to many more words.'},
+ {id:'field',name:'Field Keeper',img:'resident_farmer_pitchfork.png',home:'vocabulary',line:'Practice what is ready today and leave tomorrow’s work for tomorrow.'},
+ {id:'herbalist',name:'Village Herbalist',img:'resident_herbalist.png',home:'listening',line:'A quiet repeat can be more useful than rushing to the next answer.'}
+];
+const VILLAGE_RESIDENT_SPOTS={
+ vocabulary:[{x:78,y:86},{x:67,y:92}],picture:[{x:28,y:61},{x:15,y:65}],listening:[{x:70,y:69},{x:86,y:70}],manga:[{x:50,y:83},{x:64,y:88}],kana:[{x:44,y:58}],theatre:[{x:33,y:44}],builder:[{x:71,y:50}],grammar:[{x:28,y:77}]
+};
+function residentSpotClear(spot){
+ const pad=4;
+ return !VILLAGE_HOTSPOTS.some(point=>{
+  const state=activityReadiness(point.id);if(state.purchased)return false;
+  return spot.x>point.x-pad&&spot.x<point.x+point.w+pad&&spot.y>point.y-pad&&spot.y<point.y+point.h+pad;
+ });
+}
+function showVillageResidentDialogue(resident,button){
+ const panel=$('#villageResidentDialogue');if(!panel)return;
+ $('#villageResidentPortrait').src=`media/activity-village/storybook/${resident.img}?v=${APP_VERSION}`;
+ $('#villageResidentPortrait').alt=resident.name;$('#villageResidentName').textContent=resident.name;$('#villageResidentLine').textContent=resident.line;
+ panel.hidden=false;clearTimeout(villageResidentDialogueTimer);villageResidentDialogueTimer=setTimeout(()=>panel.hidden=true,5200);
+}
+function renderVillageResidents(){
+ const layer=$('#villageResidentLayer');if(!layer||settings.activityVillageMode===false)return;
+ const eligible=VILLAGE_RESIDENTS.flatMap(resident=>{
+  if(!activityReadiness(resident.home).purchased)return[];
+  return (VILLAGE_RESIDENT_SPOTS[resident.home]||[]).filter(residentSpotClear).map(spot=>({resident,spot}));
+ });
+ const chosen=shuffle(eligible).slice(0,Math.min(3,eligible.length));
+ layer.innerHTML=chosen.map(({resident,spot},i)=>`<button class="village-resident resident-${i+1}" data-resident="${esc(resident.id)}" style="--resident-x:${spot.x}%;--resident-y:${spot.y}%" aria-label="Talk to ${esc(resident.name)}"><img src="media/activity-village/storybook/${resident.img}?v=${APP_VERSION}" alt=""></button>`).join('');
+ layer.querySelectorAll('[data-resident]').forEach(button=>button.onclick=e=>{e.stopPropagation();const resident=VILLAGE_RESIDENTS.find(item=>item.id===button.dataset.resident);if(resident)showVillageResidentDialogue(resident,button)});
+ clearTimeout(villageResidentTimer);villageResidentTimer=setTimeout(renderVillageResidents,45000);
+}
 function renderVillageMap(){
  const map=$('#activityVillageMap'),classic=$('#classicActivityView'),practice=$('.practice-hub');
  const enabled=settings.activityVillageMode!==false;
@@ -589,6 +632,7 @@ function renderVillageMap(){
  host.innerHTML=points.map(({point,item,state,ready,status})=>`<button class="village-hotspot ${state.purchased?'open':ready?'ready':'developing'}" data-village-activity="${esc(point.id)}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" aria-label="${esc(point.label)}. ${esc(status)}"><span class="location-panel"><i class="location-icon">${esc(item.icon)}</i><strong>${esc(point.label)}</strong><small>${esc(status)}</small></span></button>`).join('');
  host.querySelectorAll('[data-village-activity]').forEach(button=>button.onclick=()=>focusVillageLocation(button.dataset.villageActivity,button));
  setupVillageCat();
+ renderVillageResidents();
 }
 function setActivityVillageMode(enabled){
  settings.activityVillageMode=Boolean(enabled);save();renderVillageMap();toast(enabled?'Activity Village enabled':'Classic activity view enabled');
@@ -1339,7 +1383,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.0.1';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.1.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
