@@ -1,11 +1,8 @@
-KAISHI QUEST v11.2.1 — DROP-IN PATCH
-
-NO NEW IMAGES ARE REQUIRED.
+KAISHI QUEST v11.2.2 — DROP-IN PATCH
 
 1. Extract this ZIP.
 2. Copy everything inside it into the ROOT of Kakashi-Web.
-3. Allow the existing files to be overwritten.
-4. Commit/push the changes.
-5. Wait for GitHub Pages to finish building, then refresh the app.
+3. Allow existing files to be overwritten and the new media/activity-village/cat-v3 folder to be added.
+4. Commit/push and wait for GitHub Pages to finish building.
 
-Changes: smaller/lower cat; smaller blossoms that fall downward only; locked building labels now show a lock plus a real vocabulary-readiness progress bar.
+This patch fixes the missing locked-building progress bars and permanently aligns the cat components by using normalized shared-canvas layers. The cat-v3 PNGs are derived from the existing cat artwork; no new artwork was generated.
