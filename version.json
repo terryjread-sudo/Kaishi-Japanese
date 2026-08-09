@@ -1,10 +1,12 @@
 {
-  "version": "11.2.3",
+  "version": "11.3.0",
   "released": "2026-08-09",
-  "title": "Original Cat Alignment",
+  "title": "Kotoba Colosseum",
   "changes": [
-    "Returned to original cat-v2 artwork and corrected layer positions in CSS.",
-    "Retained v11.2.2 progress bars and blossom fixes."
+    "Added Kotoba Colosseum \u00b7 Listen & Strike, a three-character tactical listening battle.",
+    "Added Kitsune, Kappa, Tanuki and Karakasa battle encounters with new party artwork, arena and music.",
+    "Removed the village cat from the Activity Village interface.",
+    "Kept SRS Decay Battle available alongside Kotoba Colosseum for comparison."
   ],
   "sourcePacksIncluded": 5,
   "mappedWords": 646,
