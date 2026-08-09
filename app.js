@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.2.0';
+const APP_VERSION='11.2.1';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -615,12 +615,17 @@ function renderVillageMap(){
   const item=PATH_MILESTONES.find(entry=>entry.id===point.id),state=activityReadiness(point.id),ready=state.wordReady&&state.apReady;
   if(!item)return null;
   const remainingWords=Math.max(0,state.cfg.words-state.supported);
-  const status=state.purchased?'Open':ready?'Ready to restore':`${remainingWords} word${remainingWords===1?'':'s'}`;
+  const wordPercent=state.cfg.words?Math.max(0,Math.min(100,Math.round(state.supported/state.cfg.words*100))):100;
+  const status=state.purchased?'Open':ready?'Ready to restore':'Locked';
   const fogClass=state.purchased?'fog-none':ready?'fog-light':state.supported>=Math.ceil(state.cfg.words*.55)?'fog-medium':'fog-heavy';
-  return{point,item,state,ready,status,fogClass};
+  return{point,item,state,ready,status,fogClass,remainingWords,wordPercent};
  }).filter(Boolean);
  if(fogHost)fogHost.innerHTML=points.map(({point,fogClass,state})=>`<i class="village-building-fog ${fogClass}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" data-fog-for="${esc(point.id)}" aria-hidden="true"></i>`).join('');
- host.innerHTML=points.map(({point,item,state,ready,status})=>`<button class="village-hotspot ${state.purchased?'open':ready?'ready':'developing'}" data-village-activity="${esc(point.id)}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" aria-label="${esc(point.label)}. ${esc(status)}"><span class="location-panel"><i class="location-icon">${esc(item.icon)}</i><strong>${esc(point.label)}</strong><small>${esc(status)}</small></span></button>`).join('');
+ host.innerHTML=points.map(({point,item,state,ready,status,remainingWords,wordPercent})=>{
+  const subline=state.purchased?`<small class="location-open">Open</small>`:ready?`<small class="location-ready">Ready to restore</small>`:`<small class="location-lock-progress" title="${remainingWords} supported word${remainingWords===1?'':'s'} still needed"><span aria-hidden="true">🔒</span><i class="location-progress-track" aria-hidden="true"><b style="width:${wordPercent}%"></b></i></small>`;
+  const detail=state.purchased?'Open':ready?'Ready to restore':`${state.supported} of ${state.cfg.words} supported words`;
+  return `<button class="village-hotspot ${state.purchased?'open':ready?'ready':'developing'}" data-village-activity="${esc(point.id)}" style="--x:${point.x}%;--y:${point.y}%;--w:${point.w}%;--h:${point.h}%" aria-label="${esc(point.label)}. ${esc(detail)}"><span class="location-panel"><i class="location-icon">${esc(item.icon)}</i><strong>${esc(point.label)}</strong>${subline}</span></button>`;
+ }).join('');
  host.querySelectorAll('[data-village-activity]').forEach(button=>button.onclick=()=>focusVillageLocation(button.dataset.villageActivity,button));
  setupVillageCat();
  renderVillageResidents();
@@ -1374,7 +1379,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.2.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.2.1';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

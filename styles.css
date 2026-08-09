@@ -581,7 +581,7 @@ header{
 @media(max-width:520px){.collection-tabs{grid-template-columns:repeat(3,1fr)}}
 
 
-/* v11.2.0 answer feedback */
+/* v11.2.1 answer feedback */
 .teacher-answer-feedback{margin-top:14px}
 .teacher-answer-feedback .teacher-guide{margin:0 0 8px}
 .teacher-correct-answer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;align-items:center;padding:11px 13px;border:1px solid #86efac;border-radius:15px;background:#f0fdf4}
@@ -664,7 +664,7 @@ header{
  .report-dialog-actions{grid-template-columns:1fr}
 }
 
-/* v11.2.0 short missions, save points and quick settings */
+/* v11.2.1 short missions, save points and quick settings */
 .adaptive-settings-note{padding:12px 14px;border-radius:16px;background:#eff6ff;border:1px solid #bfdbfe}.adaptive-settings-note strong{display:block;color:#1d4ed8}.adaptive-settings-note p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.4}
 #missionCheckpointDialog,#quickSettingsDialog{width:min(92vw,480px);border:0;border-radius:22px;padding:0;box-shadow:0 24px 80px #0f172a55}#missionCheckpointDialog::backdrop,#quickSettingsDialog::backdrop{background:#0f172a99}
 .mission-checkpoint,.quick-settings{display:grid;gap:14px;padding:22px}.mission-checkpoint h2,.quick-settings h2{margin:0}.mission-checkpoint p,.quick-settings p{margin:0;color:#475569}
@@ -678,17 +678,17 @@ header{
 .live-conversation-page{display:grid;gap:16px}.live-conversation-heading{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center}.live-conversation-heading img{width:76px;height:76px;border-radius:19px;object-fit:cover}.live-conversation-transcript{display:grid;gap:10px;max-height:48vh;overflow:auto;padding:6px}.conversation-bubble{display:grid;gap:3px;max-width:86%;padding:11px 13px;border-radius:17px}.conversation-bubble.npc{justify-self:start;background:#f1f5f9;border-bottom-left-radius:5px}.conversation-bubble.user{justify-self:end;background:#dbeafe;border-bottom-right-radius:5px;text-align:right}.conversation-bubble span{font-size:1.12rem;font-weight:750}.conversation-bubble small{color:#64748b}.live-conversation-input{display:grid;gap:9px;padding:13px;border-radius:17px;background:#f8fafc}.live-conversation-suggestions{display:flex;flex-wrap:wrap;gap:6px}.live-conversation-suggestions button{padding:7px 9px;font-size:.72rem;border-radius:999px}.live-conversation-complete{text-align:center;padding:18px;border-radius:20px;background:linear-gradient(135deg,#ecfdf5,#eff6ff)}.live-conversation-complete img{width:100px;height:100px;border-radius:24px;object-fit:cover}.live-conversation-complete>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 @media(max-width:620px){.japan-ready-hero{grid-template-columns:1fr}.japan-ready-hero>img{max-height:260px}.japan-ready-current{align-items:stretch;flex-direction:column}.japan-scenario{grid-template-columns:48px minmax(0,1fr)}.japan-scenario>button{grid-column:1/-1}.scenario-actions,.live-conversation-complete>div{grid-template-columns:1fr}}
 
-/* v11.2.0 WhatsApp-style Live Conversation */
+/* v11.2.1 WhatsApp-style Live Conversation */
 .live-conversation-transcript{background:#efeae2;background-image:radial-gradient(#d8d2c8 .7px,transparent .7px);background-size:16px 16px;padding:14px;border-radius:18px}.wa-message-row{display:flex;gap:8px;align-items:flex-end;max-width:92%}.wa-message-row.wa-npc{justify-self:start}.wa-message-row.wa-user{justify-self:end;flex-direction:row-reverse}.wa-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:2px solid #fff;box-shadow:0 1px 4px #0002}.wa-bubble{display:grid;gap:3px;padding:9px 11px;border-radius:10px;box-shadow:0 1px 2px #0002;min-width:120px}.wa-npc .wa-bubble{background:#fff;border-bottom-left-radius:3px}.wa-user .wa-bubble{background:#d9fdd3;border-bottom-right-radius:3px;text-align:right}.wa-bubble strong{font-size:.64rem;color:#667781}.wa-bubble span{font-size:1.08rem;font-weight:750;line-height:1.35}.wa-bubble small{font-size:.68rem;color:#667781}.wa-bubble em{font-size:.72rem;color:#3b4a54;font-style:normal;border-top:1px solid #00000012;padding-top:4px;margin-top:2px}#liveConversationPrompt strong{color:#b45309}.campaign-choice-actions button{transition:none}
 
-/* v11.2.0 */
+/* v11.2.1 */
 .campaign-chooser-heading{display:grid;gap:12px}.campaign-preview-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px;border-radius:17px;background:#fff;border:1px solid #dbe3f0}.campaign-preview-panel[hidden]{display:none}#japanReadyCampaignPreview{grid-template-columns:64px minmax(0,1fr) auto;background:linear-gradient(135deg,#fff7ed,#fff1f2);border-color:#fed7aa}#japanReadyCampaignPreview img{width:64px;height:64px;border-radius:16px;object-fit:cover}.kana-builder-heading{display:flex;justify-content:space-between}.kana-builder-answer{min-height:62px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;padding:12px;border:2px dashed #cbd5e1;border-radius:16px;background:#fff}.kana-builder-answer span:not(.kana-builder-placeholder){min-width:36px;height:42px;display:grid;place-items:center;border-radius:10px;background:#dbeafe;font-size:1.35rem;font-weight:850}.kana-builder-placeholder{color:#94a3b8;font-size:.78rem}.kana-builder-choices{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.kana-builder-choices button{min-height:54px;font-size:1.35rem;font-weight:850}.kana-builder-choices button.wrong{background:#fee2e2;color:#991b1b}@media(max-width:620px){.campaign-preview-panel,#japanReadyCampaignPreview{grid-template-columns:1fr}}
 
-/* v11.2.0 */
+/* v11.2.1 */
 .kana-builder-choices button{display:grid;place-items:center;align-content:center;gap:1px;line-height:1}.kana-builder-choices button>span{font-size:1.35rem;font-weight:850}.kana-builder-choices button>small{font-size:.62rem;line-height:1.15;color:#64748b;font-weight:750}.kana-builder-answer .built-kana{min-width:42px;min-height:50px;display:grid;place-items:center;align-content:center;gap:1px;padding:5px;border-radius:10px;background:#dbeafe}.kana-builder-answer .built-kana b{font-size:1.28rem;line-height:1}.kana-builder-answer .built-kana small{font-size:.58rem;color:#475569}.admin-tools-slot>#ownerPathControls,.admin-tools-slot>#mnemonicStudioLink,.admin-tools-slot>a[href="image-diagnostics.html"]{display:block;width:100%}
 
 
-/* v11.2.0 unified Study Modes dashboard */
+/* v11.2.1 unified Study Modes dashboard */
 .campaign-chooser{
  margin:18px 0 0;
  width:100%;
@@ -776,7 +776,7 @@ header{
  .japan-ready-home-summary{grid-template-columns:1fr}
 }
 
-/* v11.2.0 guest sign-in, desktop Japan Ready and travel cheat sheet */
+/* v11.2.1 guest sign-in, desktop Japan Ready and travel cheat sheet */
 .dashboard-sign-in{margin-top:8px;padding:8px 12px;background:#fff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:.75rem}
 .dashboard-sign-in[hidden]{display:none}
 #japanReadyCampaignPreview{display:block;min-width:0}
@@ -818,7 +818,7 @@ header{
 
 .kana-builder-choices{grid-template-columns:repeat(2,minmax(0,1fr))}.friend-activity-nudge{margin:14px 0 0;padding:12px;border-radius:18px;background:linear-gradient(135deg,#ecfdf5,#eff6ff);border:1px solid #86efac;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:11px;align-items:center}.friend-activity-nudge[hidden]{display:none}.friend-activity-nudge img{width:52px;height:52px;border-radius:50%;object-fit:cover}.friend-activity-nudge p{margin:3px 0 0;color:#475569;font-size:.76rem}.friends-panel{margin-bottom:16px;padding:16px;border-radius:20px;background:#fff;border:1px solid #dbe3f0}.friends-heading{display:flex;justify-content:space-between;gap:12px}.friends-heading h3{margin:3px 0}.friends-heading p{margin:0;color:#475569}.friend-request-badge{padding:5px 9px;border-radius:999px;background:#dc2626;color:#fff;font-size:.68rem;font-weight:850}.friend-request-form{display:grid;gap:7px;margin:14px 0}.friend-request-form>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.friend-request-form input{border:1px solid #cbd5e1;border-radius:12px;padding:12px}.friend-list-section{display:grid;gap:8px}.friend-row{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-radius:14px;background:#f8fafc}.friend-row img{width:46px;height:46px;border-radius:50%;object-fit:cover}.friend-row strong,.friend-row small{display:block}.friend-row small{color:#64748b}.friend-actions{display:flex;gap:6px}@media(max-width:520px){.friend-activity-nudge{grid-template-columns:48px 1fr}.friend-activity-nudge>button{grid-column:1/-1}.friend-request-form>div{grid-template-columns:1fr}.friend-row{grid-template-columns:42px 1fr}.friend-row>.friend-actions,.friend-row>button{grid-column:1/-1}}
 
-/* v11.2.0 final dashboard spacing and friend-email preference */
+/* v11.2.1 final dashboard spacing and friend-email preference */
 .campaign-preview-full .journey-home{
  padding:10px 10px 14px!important;
 }
@@ -848,7 +848,7 @@ header{
 #communityProfileStatus,.community-profile-actions{grid-column:1/-1}
 .community-profile-actions{display:flex;gap:8px}
 
-/* v11.2.0 first-launch welcome */
+/* v11.2.1 first-launch welcome */
 body.welcome-open{overflow:hidden}
 .first-launch-overlay{
  position:fixed;
@@ -943,7 +943,7 @@ body.welcome-open{overflow:hidden}
  .first-launch-features{grid-template-columns:1fr}
 }
 
-/* v11.2.0 corrected social interactions */
+/* v11.2.1 corrected social interactions */
 .leaderboard-row[data-community-user]{cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
 .leaderboard-row[data-community-user]:hover,
 .leaderboard-row[data-community-user]:focus-visible{
@@ -954,10 +954,10 @@ body.welcome-open{overflow:hidden}
 }
 .community-profile-actions:empty{display:none}
 
-/* v11.2.0 */
+/* v11.2.1 */
 .social-notification-button{position:relative;margin-top:8px;width:44px;height:38px;padding:0;border-radius:12px}.social-notification-button[hidden]{display:none}.social-notification-button b{position:absolute;right:-7px;top:-7px;min-width:20px;height:20px;border-radius:99px;background:#dc2626;color:#fff;font-size:.65rem;display:grid;place-items:center}.social-notification-panel{position:absolute;z-index:100;right:18px;top:92px;width:min(380px,calc(100vw - 28px));padding:12px;border-radius:18px;background:#fff;border:1px solid #dbe3f0;box-shadow:0 20px 60px #0f172a33}.social-notification-panel[hidden]{display:none}.social-notification-heading{display:flex;justify-content:space-between}.social-notification-list{display:grid;gap:8px;margin-top:8px}.social-notification-item{padding:10px;border-radius:13px;background:#f8fafc}.social-notification-actions{display:flex;gap:6px;margin-top:7px}.friend-activity-nudge.compact{grid-template-columns:40px minmax(0,1fr) 28px;padding:8px 10px;margin-top:9px;border-radius:13px}.friend-activity-nudge.compact img{width:40px;height:40px}.friend-activity-nudge.compact strong{font-size:.76rem}.friend-activity-nudge.compact p{font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.friend-activity-dismiss{width:28px;height:28px;padding:0;border-radius:50%}.friend-row.accepted{grid-template-columns:minmax(0,1fr) auto}.friend-profile-link{display:grid;grid-template-columns:46px minmax(0,1fr);gap:10px;align-items:center;padding:0;border:0;background:transparent;text-align:left}.friend-profile-link img{width:46px;height:46px;border-radius:50%;object-fit:cover}.friend-profile-link span strong,.friend-profile-link span small{display:block}.friend-unfriend-small{padding:5px 8px!important;font-size:.62rem!important}.invite-card h4{font-size:.9rem;margin:0 0 4px}.invite-card p{font-size:.72rem}.admin-users-panel{display:grid;gap:12px;margin:14px 0;padding:14px;border-radius:18px;background:#f8fafc;border:1px solid #dbe3f0}.admin-users-heading{display:flex;justify-content:space-between}.admin-users-summary{display:flex;gap:8px;flex-wrap:wrap}.admin-users-summary span{padding:8px 10px;border-radius:99px;background:#fff;font-size:.7rem}.admin-users-list{display:grid;gap:8px}.admin-user-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:9px;border-radius:13px;background:#fff}.admin-user-row img{width:44px;height:44px;border-radius:50%}.admin-user-row strong,.admin-user-row small{display:block}.admin-user-row small{color:#64748b}.admin-user-row span,.admin-user-row b{font-size:.65rem}@media(max-width:620px){.admin-user-row{grid-template-columns:40px minmax(0,1fr)}.admin-user-row span,.admin-user-row b{grid-column:2}}
 
-/* v11.2.0 */
+/* v11.2.1 */
 .header-notification{position:relative;width:48px;height:48px;min-width:48px;padding:0;border-radius:16px;display:grid;place-items:center;background:#17306d;color:#fff;border:0}
 .header-notification[hidden]{display:none}.header-notification b[hidden]{display:none}
 .header-notification b{position:absolute;right:-4px;top:-5px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#dc2626;color:#fff;font-size:.65rem;display:grid;place-items:center}
@@ -965,16 +965,16 @@ body.welcome-open{overflow:hidden}
 .friend-activity-dismiss{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;z-index:3}
 .friend-activity-nudge.compact>div{padding-right:34px;min-width:0}
 
-/* v11.2.0 reliable dismiss controls */
+/* v11.2.1 reliable dismiss controls */
 #friendActivityNudge[hidden]{display:none!important}
 .friend-activity-dismiss{pointer-events:auto!important;touch-action:manipulation}
 .social-notification-item [data-nx]{pointer-events:auto;touch-action:manipulation}
 
-/* v11.2.0 state reliability */
+/* v11.2.1 state reliability */
 #friendActivityNudge[hidden],
 #socialNotificationButton[hidden]{display:none!important}
 
-/* v11.2.0 Guided Adventure */
+/* v11.2.1 Guided Adventure */
 .daily-mission.locked{opacity:.72}
 .daily-mission.available{border:2px solid #2563eb;background:linear-gradient(135deg,#eff6ff,#fff)}
 .daily-mission.complete{border-color:#86efac;background:#f0fdf4}
@@ -1033,7 +1033,7 @@ body.welcome-open{overflow:hidden}
 @media(max-width:460px){.path-road{grid-template-columns:1fr}.activity-teacher-message{grid-template-columns:54px minmax(0,1fr)}.activity-teacher-message img{width:54px;height:54px}}
 @media(prefers-reduced-motion:reduce){.activity-location.ready,.activity-unlock-building,.activity-unlock-dialog.unlocking .activity-unlock-building{animation:none}}
 
-/* v11.2.0 Activity Village MVP toggle */
+/* v11.2.1 Activity Village MVP toggle */
 .activity-view-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0;padding:12px 14px;border:1px solid #bfdbfe;border-radius:18px;background:#f8fbff}
 .activity-view-toolbar strong,.activity-view-toolbar small{display:block}.activity-view-toolbar small{color:#64748b;margin-top:2px}.activity-view-toolbar button{white-space:nowrap}
 .activity-village-map[hidden],#classicActivityView[hidden],.practice-hub[hidden]{display:none!important}
@@ -1042,17 +1042,17 @@ body.welcome-open{overflow:hidden}
 .village-map-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1}
 .village-water-effects,.village-ambient-effects,.village-hotspots{position:absolute;inset:0;pointer-events:none}
 .village-water-effects{z-index:2;mix-blend-mode:screen;opacity:.19}
-.water-zone{position:absolute;background-image:url('media/activity-village/water-shimmer.png?v=11.2.0');background-size:32% auto;animation:villageWaterShimmer 18s linear infinite;filter:saturate(.7) brightness(1.15)}
+.water-zone{position:absolute;background-image:url('media/activity-village/water-shimmer.png?v=11.2.1');background-size:32% auto;animation:villageWaterShimmer 18s linear infinite;filter:saturate(.7) brightness(1.15)}
 .water-zone-a{left:0;top:24%;width:63%;height:48%;clip-path:polygon(0 0,38% 7%,55% 24%,86% 14%,100% 45%,73% 58%,90% 100%,46% 88%,22% 100%,0 78%)}
 .water-zone-b{right:0;top:24%;width:46%;height:56%;clip-path:polygon(40% 0,100% 10%,100% 100%,28% 92%,0 66%,31% 42%,0 20%)}
 .water-zone-c{left:0;bottom:0;width:72%;height:30%;clip-path:polygon(0 10%,48% 0,74% 30%,100% 60%,86% 100%,0 100%)}
 .water-zone-d{right:0;bottom:0;width:46%;height:29%;clip-path:polygon(13% 0,100% 3%,100% 100%,0 100%,28% 54%);animation-duration:23s;animation-direction:reverse}
 .village-ambient-effects{z-index:3;overflow:hidden}
-.petal-drift{position:absolute;width:12%;height:10%;background:url('media/activity-village/petals.png?v=11.2.0') center/contain no-repeat;opacity:.32;animation:petalFloat 16s ease-in-out infinite}
+.petal-drift{position:absolute;width:12%;height:10%;background:url('media/activity-village/petals.png?v=11.2.1') center/contain no-repeat;opacity:.32;animation:petalFloat 16s ease-in-out infinite}
 .petal-one{left:2%;top:25%}.petal-two{right:2%;top:48%;animation-delay:-8s;animation-duration:20s}
-.forge-smoke{position:absolute;right:7%;top:27%;width:11%;height:12%;background:url('media/activity-village/mist.png?v=11.2.0') center/contain no-repeat;opacity:.17;animation:smokeRise 8s ease-out infinite}
-.waterfall-mist{position:absolute;right:13%;top:18%;width:14%;height:11%;background:url('media/activity-village/mist.png?v=11.2.0') center/contain no-repeat;opacity:.16;animation:mistBreathe 6s ease-in-out infinite}
-.pond-ripple{position:absolute;left:44%;top:51%;width:18%;height:10%;background:url('media/activity-village/ripple.png?v=11.2.0') center/contain no-repeat;opacity:.2;animation:ripplePulse 9s ease-out infinite}
+.forge-smoke{position:absolute;right:7%;top:27%;width:11%;height:12%;background:url('media/activity-village/mist.png?v=11.2.1') center/contain no-repeat;opacity:.17;animation:smokeRise 8s ease-out infinite}
+.waterfall-mist{position:absolute;right:13%;top:18%;width:14%;height:11%;background:url('media/activity-village/mist.png?v=11.2.1') center/contain no-repeat;opacity:.16;animation:mistBreathe 6s ease-in-out infinite}
+.pond-ripple{position:absolute;left:44%;top:51%;width:18%;height:10%;background:url('media/activity-village/ripple.png?v=11.2.1') center/contain no-repeat;opacity:.2;animation:ripplePulse 9s ease-out infinite}
 .village-hotspots{z-index:4}
 .village-hotspot{pointer-events:auto;position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);padding:0;border:0;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-shadow:0 1px 3px #000;cursor:pointer}
 .village-hotspot::before{content:'';position:absolute;inset:8%;border-radius:28%;border:2px solid transparent;transition:.2s ease}
@@ -1073,7 +1073,7 @@ body.welcome-open{overflow:hidden}
 @media(max-width:600px){.activity-view-toolbar{align-items:flex-start}.activity-view-toolbar button{font-size:.68rem;padding:8px 10px}.village-map-stage{border-radius:18px}.village-hotspot b{padding:2px 4px}.village-map-help{font-size:.68rem}}
 @media(prefers-reduced-motion:reduce){.water-zone,.petal-drift,.forge-smoke,.waterfall-mist,.pond-ripple,.village-hotspot.ready::before{animation:none!important}.village-water-effects{opacity:.1}}
 
-/* v11.2.0 Village clarity and interaction patch */
+/* v11.2.1 Village clarity and interaction patch */
 
 /* Make the shimmer visible without washing out the artwork. */
 .village-water-effects{
@@ -1088,7 +1088,7 @@ body.welcome-open{overflow:hidden}
     radial-gradient(ellipse at 20% 45%,rgba(255,255,255,.78) 0 1.2%,transparent 2.8%),
     radial-gradient(ellipse at 66% 54%,rgba(191,235,255,.72) 0 1.3%,transparent 3.2%),
     repeating-linear-gradient(112deg,transparent 0 13px,rgba(215,244,255,.3) 15px 17px,transparent 19px 34px),
-    url('media/activity-village/water-shimmer.png?v=11.2.0');
+    url('media/activity-village/water-shimmer.png?v=11.2.1');
   background-size:85px 48px,110px 62px,150px 80px,38% auto;
   animation:villageWaterShimmerStrong 11s linear infinite;
   filter:none;
@@ -1177,12 +1177,12 @@ body.welcome-open{overflow:hidden}
   .village-water-effects{opacity:.38}
 }
 
-/* v11.2.0 — The Living Village */
+/* v11.2.1 — The Living Village */
 .village-mask-defs{position:absolute;pointer-events:none}
 .village-map-stage{transition:transform .28s ease,box-shadow .28s ease;transform-origin:var(--focus-x,50%) var(--focus-y,50%)}
 .village-map-stage.location-focused{transform:scale(1.035);box-shadow:0 22px 52px #0f172a42}
 .village-water-effects{opacity:.32!important;filter:none!important;mix-blend-mode:screen;overflow:hidden}
-.water-layer{position:absolute;inset:0;background-image:url('media/activity-village/water-shimmer.png?v=11.2.0');background-repeat:repeat;background-size:38% auto;will-change:background-position,opacity}
+.water-layer{position:absolute;inset:0;background-image:url('media/activity-village/water-shimmer.png?v=11.2.1');background-repeat:repeat;background-size:38% auto;will-change:background-position,opacity}
 .water-rivers{clip-path:url(#villageRiverClip);opacity:.42;animation:livingRiver 17s linear infinite}
 .water-pools{clip-path:url(#villagePoolClip);opacity:.26;animation:livingPool 26s ease-in-out infinite alternate}
 .water-waterfalls{clip-path:url(#villageWaterfallClip);opacity:.56;animation:livingFalls 6.5s linear infinite}
@@ -1195,24 +1195,24 @@ body.welcome-open{overflow:hidden}
 .water-zone,.water-zone::after{display:none!important}
 
 .foreground-decor{position:absolute;pointer-events:none;background-repeat:no-repeat;background-size:contain;z-index:2}
-.decor-sakura{left:-2%;top:-1%;width:34%;height:24%;background-image:url('media/activity-village/foreground-sakura.png?v=11.2.0');opacity:.64;transform-origin:left top;animation:branchBreathe 9s ease-in-out infinite}
-.decor-lantern{right:1%;top:32%;width:9%;height:14%;background-image:url('media/activity-village/foreground-lantern.png?v=11.2.0');opacity:.48;animation:lanternSway 7s ease-in-out infinite}
+.decor-sakura{left:-2%;top:-1%;width:34%;height:24%;background-image:url('media/activity-village/foreground-sakura.png?v=11.2.1');opacity:.64;transform-origin:left top;animation:branchBreathe 9s ease-in-out infinite}
+.decor-lantern{right:1%;top:32%;width:9%;height:14%;background-image:url('media/activity-village/foreground-lantern.png?v=11.2.1');opacity:.48;animation:lanternSway 7s ease-in-out infinite}
 @keyframes branchBreathe{50%{transform:rotate(.45deg) translateY(1px)}}
 @keyframes lanternSway{50%{transform:rotate(1.4deg);filter:brightness(1.08)}}
 
 .building-fog{position:absolute;left:-12%;right:-12%;top:0;bottom:8%;z-index:0;background-position:center;background-repeat:no-repeat;background-size:contain;pointer-events:none;transition:opacity .45s ease,transform .45s ease;filter:drop-shadow(0 3px 5px #fff4)}
-.building-fog.fog-heavy{background-image:url('media/activity-village/fog-heavy.png?v=11.2.0');opacity:.82;animation:fogDriftHeavy 11s ease-in-out infinite alternate}
-.building-fog.fog-medium{background-image:url('media/activity-village/fog-medium.png?v=11.2.0');opacity:.55;animation:fogDrift 13s ease-in-out infinite alternate}
-.building-fog.fog-light{background-image:url('media/activity-village/fog-wisp.png?v=11.2.0');opacity:.28;animation:fogDrift 16s ease-in-out infinite alternate}
+.building-fog.fog-heavy{background-image:url('media/activity-village/fog-heavy.png?v=11.2.1');opacity:.82;animation:fogDriftHeavy 11s ease-in-out infinite alternate}
+.building-fog.fog-medium{background-image:url('media/activity-village/fog-medium.png?v=11.2.1');opacity:.55;animation:fogDrift 13s ease-in-out infinite alternate}
+.building-fog.fog-light{background-image:url('media/activity-village/fog-wisp.png?v=11.2.1');opacity:.28;animation:fogDrift 16s ease-in-out infinite alternate}
 .building-fog.fog-none{opacity:0}
 @keyframes fogDrift{from{transform:translateX(-4%) scale(.96)}to{transform:translateX(5%) scale(1.04)}}
 @keyframes fogDriftHeavy{from{transform:translate(-5%,1%) scale(1)}to{transform:translate(4%,-2%) scale(1.09)}}
 .village-hotspot span,.village-hotspot b,.village-hotspot small,.village-hotspot::before{z-index:2}
 
 .village-restoration-layer{position:absolute;inset:0;pointer-events:none;z-index:5}
-.restoration-fx{position:absolute;left:var(--fx-x);top:var(--fx-y);width:34%;aspect-ratio:2/1;transform:translate(-50%,-50%);background:url('media/activity-village/restore-burst.png?v=11.2.0') center/contain no-repeat;animation:restoreVillageFx 1.65s cubic-bezier(.2,.8,.2,1) both}
-.restoration-fx::before{content:'';position:absolute;inset:-30%;background:url('media/activity-village/restore-ring.png?v=11.2.0') center/contain no-repeat;animation:restoreRing 1.5s ease-out both}
-.restoration-fx::after{content:'';position:absolute;inset:-45%;background:url('media/activity-village/restore-sparkles.png?v=11.2.0') center/contain no-repeat;animation:restoreSparkles 1.65s ease-out both}
+.restoration-fx{position:absolute;left:var(--fx-x);top:var(--fx-y);width:34%;aspect-ratio:2/1;transform:translate(-50%,-50%);background:url('media/activity-village/restore-burst.png?v=11.2.1') center/contain no-repeat;animation:restoreVillageFx 1.65s cubic-bezier(.2,.8,.2,1) both}
+.restoration-fx::before{content:'';position:absolute;inset:-30%;background:url('media/activity-village/restore-ring.png?v=11.2.1') center/contain no-repeat;animation:restoreRing 1.5s ease-out both}
+.restoration-fx::after{content:'';position:absolute;inset:-45%;background:url('media/activity-village/restore-sparkles.png?v=11.2.1') center/contain no-repeat;animation:restoreSparkles 1.65s ease-out both}
 @keyframes restoreVillageFx{0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}}
 @keyframes restoreRing{0%{opacity:0;transform:scale(.35)}45%{opacity:1}100%{opacity:0;transform:scale(1.15)}}
 @keyframes restoreSparkles{0%{opacity:0;transform:translateY(14%) scale(.6)}35%{opacity:1}100%{opacity:0;transform:translateY(-10%) scale(1.1)}}
@@ -1221,7 +1221,7 @@ body.welcome-open{overflow:hidden}
 @media(max-width:600px){.decor-sakura{width:38%;opacity:.5}.decor-lantern{display:none}.building-fog{left:-20%;right:-20%}.restoration-fx{width:48%}}
 @media(prefers-reduced-motion:reduce){.water-layer,.building-fog,.foreground-decor,.restoration-fx,.restoration-fx::before,.restoration-fx::after{animation:none!important}.village-water-effects{opacity:.14!important}.village-map-stage.location-focused{transform:none}}
 
-/* v11.2.0 — exact water masks matched to the shipped 1024 × 1536 map */
+/* v11.2.1 — exact water masks matched to the shipped 1024 × 1536 map */
 .village-water-effects{
   opacity:.38!important;
   mix-blend-mode:screen;
@@ -1240,28 +1240,28 @@ body.welcome-open{overflow:hidden}
   filter:brightness(1.12) contrast(1.04);
 }
 .water-rivers{
-  mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.0');
-  -webkit-mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.0');
+  mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.1');
+  -webkit-mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.1');
   opacity:.42;
   animation:livingRiverFixed 18s linear infinite;
 }
 .water-pools{
-  mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.0');
-  -webkit-mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.0');
+  mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.1');
+  -webkit-mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.1');
   opacity:.23;
   background-size:34% auto!important;
   animation:livingPoolFixed 27s ease-in-out infinite alternate;
 }
 .water-waterfalls{
-  mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.0');
-  -webkit-mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.0');
+  mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.1');
+  -webkit-mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.1');
   opacity:.62;
   background-size:24% auto!important;
   animation:livingFallsFixed 5.8s linear infinite;
 }
 .water-sea{
-  mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.0');
-  -webkit-mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.0');
+  mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.1');
+  -webkit-mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.1');
   opacity:.18;
   background-size:44% auto!important;
   animation:livingSeaFixed 36s linear infinite;
@@ -1293,7 +1293,7 @@ body.welcome-open{overflow:hidden}
   .village-water-effects{opacity:.15!important}
 }
 
-/* v11.2.0 — Living Village final visual pass */
+/* v11.2.1 — Living Village final visual pass */
 
 /* Labels styled as compact RPG panels rather than separate black text pills. */
 .village-hotspot{justify-content:center;overflow:visible;filter:none!important}
@@ -1362,17 +1362,17 @@ body.welcome-open{overflow:hidden}
   filter:drop-shadow(0 4px 8px rgba(255,255,255,.32));
 }
 .village-building-fog.fog-heavy{
-  background-image:url('media/activity-village/fog-heavy.png?v=11.2.0');
+  background-image:url('media/activity-village/fog-heavy.png?v=11.2.1');
   opacity:.9;
   animation:villageFogHeavy 12s ease-in-out infinite alternate;
 }
 .village-building-fog.fog-medium{
-  background-image:url('media/activity-village/fog-medium.png?v=11.2.0');
+  background-image:url('media/activity-village/fog-medium.png?v=11.2.1');
   opacity:.67;
   animation:villageFogMedium 15s ease-in-out infinite alternate;
 }
 .village-building-fog.fog-light{
-  background-image:url('media/activity-village/fog-wisp.png?v=11.2.0');
+  background-image:url('media/activity-village/fog-wisp.png?v=11.2.1');
   opacity:.38;
   animation:villageFogLight 18s ease-in-out infinite alternate;
 }
@@ -1433,7 +1433,7 @@ body.welcome-open{overflow:hidden}
   padding:0;
   border:0;
   background-color:transparent;
-  background-image:url('media/activity-village/village-cat-idle.png?v=11.2.0');
+  background-image:url('media/activity-village/village-cat-idle.png?v=11.2.1');
   background-repeat:no-repeat;
   background-size:400% 100%;
   background-position:0 0;
@@ -1486,7 +1486,7 @@ body.welcome-open{overflow:hidden}
  .village-cat{transition:none}
 }
 
-/* v11.2.0 — water mask and cat placement correction */
+/* v11.2.1 — water mask and cat placement correction */
 
 .water-layer{
   mask-mode:alpha!important;
@@ -1521,7 +1521,7 @@ body.welcome-open{overflow:hidden}
 }
 
 
-/* v11.2.0 Storybook resident layer */
+/* v11.2.1 Storybook resident layer */
 .village-resident-layer{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
 .village-resident{position:absolute;left:var(--resident-x);top:var(--resident-y);width:clamp(30px,6.5%,58px);padding:0;border:0;background:transparent;transform:translate(-50%,-88%);pointer-events:auto;filter:drop-shadow(0 3px 3px #17203388);animation:residentBreathe 4.8s ease-in-out infinite;transform-origin:50% 100%}
 .village-resident:nth-child(2){animation-delay:-1.6s}.village-resident:nth-child(3){animation-delay:-3.1s}
@@ -1529,20 +1529,20 @@ body.welcome-open{overflow:hidden}
 .village-resident:focus-visible{outline:3px solid #fff;outline-offset:3px;border-radius:999px}
 .village-resident:hover{filter:drop-shadow(0 0 7px #fde68a) drop-shadow(0 3px 3px #17203388)}
 @keyframes residentBreathe{0%,100%{transform:translate(-50%,-88%) translateY(0) scale(1)}50%{transform:translate(-50%,-88%) translateY(-1.5px) scale(1.012)}}
-.village-resident-dialogue{position:absolute;left:5%;right:5%;bottom:4%;z-index:9;min-height:92px;display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center;padding:13px 18px;background:#f6eed5 url('media/activity-village/storybook/dialogue_panel.png?v=11.2.0') center/100% 100% no-repeat;color:#3a2418;border-radius:12px;filter:drop-shadow(0 8px 14px #17203366);pointer-events:none}
+.village-resident-dialogue{position:absolute;left:5%;right:5%;bottom:4%;z-index:9;min-height:92px;display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center;padding:13px 18px;background:#f6eed5 url('media/activity-village/storybook/dialogue_panel.png?v=11.2.1') center/100% 100% no-repeat;color:#3a2418;border-radius:12px;filter:drop-shadow(0 8px 14px #17203366);pointer-events:none}
 .village-resident-dialogue[hidden]{display:none}.village-resident-dialogue img{width:54px;height:64px;object-fit:contain;object-position:center bottom}.village-resident-dialogue strong{font-size:.88rem}.village-resident-dialogue p{margin:3px 0 0;font-size:.72rem;line-height:1.3;color:#4b3526}
 @media(max-width:600px){.village-resident{width:clamp(26px,7%,48px)}.village-resident img{max-height:66px}.village-resident-dialogue{grid-template-columns:45px 1fr;min-height:78px;padding:10px 14px}.village-resident-dialogue img{width:42px;height:52px}.village-resident-dialogue strong{font-size:.76rem}.village-resident-dialogue p{font-size:.62rem}}
 @media(prefers-reduced-motion:reduce){.village-resident{animation:none!important}}
 
 
-/* v11.2.0 — coherent storybook village migration */
+/* v11.2.1 — coherent storybook village migration */
 .village-map-image{width:100%;height:auto;display:block;object-fit:contain}
 .village-water-effects{opacity:.40!important}
-.water-layer{background-image:url('media/activity-village/water-shimmer.png?v=11.2.0')!important;background-repeat:repeat!important}
-.water-rivers{mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.0')!important;-webkit-mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.0')!important;animation:riverFlowDown 13s linear infinite!important;opacity:.46!important}
-.water-pools{mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.0')!important;-webkit-mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.0')!important;animation:poolShimmerVisible 20s ease-in-out infinite alternate!important;opacity:.18!important}
-.water-waterfalls{mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.0')!important;-webkit-mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.0')!important;animation:waterfallStraightDown 4.4s linear infinite!important;opacity:.62!important}
-.water-sea{mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.0')!important;-webkit-mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.0')!important;opacity:.17!important}
+.water-layer{background-image:url('media/activity-village/water-shimmer.png?v=11.2.1')!important;background-repeat:repeat!important}
+.water-rivers{mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.1')!important;-webkit-mask-image:url('media/activity-village/water-mask-rivers.png?v=11.2.1')!important;animation:riverFlowDown 13s linear infinite!important;opacity:.46!important}
+.water-pools{mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.1')!important;-webkit-mask-image:url('media/activity-village/water-mask-pools.png?v=11.2.1')!important;animation:poolShimmerVisible 20s ease-in-out infinite alternate!important;opacity:.18!important}
+.water-waterfalls{mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.1')!important;-webkit-mask-image:url('media/activity-village/water-mask-waterfalls.png?v=11.2.1')!important;animation:waterfallStraightDown 4.4s linear infinite!important;opacity:.62!important}
+.water-sea{mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.1')!important;-webkit-mask-image:url('media/activity-village/water-mask-sea.png?v=11.2.1')!important;opacity:.17!important}
 .waterfall-mist{left:47%!important;right:auto!important;top:18%!important;width:22%!important;height:15%!important}
 
 /* Production layered cat: body stays still; only tail, blink and rare ear twitches move. */
@@ -1566,3 +1566,4 @@ body.welcome-open{overflow:hidden}
 @keyframes catEarRight{0%,61%,64%,100%{transform:scaleX(-1) rotate(0)}62%{transform:scaleX(-1) rotate(8deg)}}
 @keyframes catV2Arrival{from{opacity:0;transform:translate(-50%,-82%) scale(.88)}to{opacity:1;transform:translate(-50%,-82%) scale(1)}}
 @media(prefers-reduced-motion:reduce){.village-cat-v2 .cat-part{animation:none!important}}
+\n\n/* v11.2.1 — mobile village polish */\n/* Cat: smaller and visually seated closer to the ground anchor. */\n.village-cat-v2{width:clamp(34px,6.4%,56px)!important;transform:translate(-50%,-70%)!important}\n.village-cat-v2.cat-arriving{animation:catV2121Arrival .72s ease both!important}\n@keyframes catV2121Arrival{from{opacity:0;transform:translate(-50%,-70%) scale(.9)}to{opacity:1;transform:translate(-50%,-70%) scale(1)}}\n\n/* Blossoms: smaller, subtler and one-way downward drift only. */\n.petal-drift{width:9%!important;height:8%!important;opacity:.58!important;animation-name:petalFall1121!important;animation-timing-function:linear!important;animation-iteration-count:infinite!important}\n.petal-one{width:11%!important;height:9%!important;animation-duration:15s!important}\n.petal-two{width:10%!important;height:9%!important;animation-duration:19s!important}\n@keyframes petalFall1121{0%{transform:translate(0,-35%) rotate(-5deg);opacity:0}8%{opacity:.58}92%{opacity:.48}100%{transform:translate(42%,260%) rotate(28deg);opacity:0}}\n\n/* Locked map labels: compact lock + actual supported-word progress. */\n.location-lock-progress{display:flex!important;align-items:center;justify-content:center;gap:5px;margin-top:3px!important;color:#e2e8f0!important;font-size:.68rem!important;line-height:1!important}\n.location-progress-track{display:block;width:52px;height:5px;border-radius:999px;overflow:hidden;background:#ffffff38;box-shadow:inset 0 1px 2px #0007}\n.location-progress-track b{display:block;height:100%;border-radius:inherit;background:#c4b5fd;box-shadow:0 0 5px #c4b5fdaa}\n.location-open{color:#86efac!important}.location-ready{color:#fde68a!important}\n@media(max-width:480px){.village-cat-v2{width:clamp(31px,6%,48px)!important}.location-progress-track{width:46px}}\n
