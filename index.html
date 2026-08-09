@@ -115,7 +115,19 @@
   </div>
  <p class="village-map-help">Tap a location to see its vocabulary readiness, Adventure Point cost, or practise there. The central torii is scenery—not another menu.</p>
 </section>
-<div id="classicActivityView"><div id="pathRoad" class="path-road"></div></div><section class="word-expedition"><span class="eyebrow">Your Japanese regions</span><h2>Curated Topic Adventure</h2><p>Travel through connected topics. Words, mnemonic images, games, sentences and boss reviews reinforce the same subject before the next region opens.</p><div id="topicAdventure" class="topic-adventure-grid"></div></section><section class="practice-hub"><span class="eyebrow">Explore, restore and practise</span><h2 id="practiceHubTitle">Activity Village</h2><p class="activity-village-intro">Restore locations using Adventure Points once you know enough supported words. Every activity only tests words already introduced to you.</p><div id="practiceHub" class="practice-hub-grid"></div></section></article></section>
+<div id="classicActivityView"><div id="pathRoad" class="path-road"></div></div><section class="word-expedition"><span class="eyebrow">Your Japanese regions</span><h2>Curated Topic Adventure</h2><p>Travel through connected topics. Words, mnemonic images, games, sentences and boss reviews reinforce the same subject before the next region opens.</p><div id="topicAdventure" class="topic-adventure-grid"></div></section><section class="practice-hub"><span class="eyebrow">Explore, restore and practise</span><h2 id="practiceHubTitle">Activity Village</h2><p class="activity-village-intro">Restore locations using Adventure Points once you know enough supported words. Every activity only tests words already introduced to you.</p><div id="practiceHub" class="practice-hub-grid"></div>
+<article id="kotobaActivityCard" class="card" style="margin-top:14px">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <div style="font-size:2rem" aria-hidden="true">⚔️</div>
+    <div style="flex:1;min-width:220px">
+      <span class="eyebrow">Listening battle</span>
+      <h3 style="margin:.2rem 0">Kotoba Colosseum · 言葉コロシアム</h3>
+      <p style="margin:.25rem 0">Listen to Japanese and command a three-character party against yōkai. It only uses words you have already met.</p>
+      <small id="kotobaReadiness">Checking your vocabulary readiness…</small>
+    </div>
+    <button id="kotobaColosseumMode" class="battle-mode" type="button" disabled>🔒 Not ready</button>
+  </div>
+</article></section></article></section>
 <section id="japanReady" class="screen"><div class="study-top"><button id="japanReadyBack">← Dashboard</button><h2>Japan Ready · 日本旅行</h2></div><article class="card japan-ready-page"><section class="japan-ready-hero"><img src="media/guides/aiko-guide-large.webp?v=11.3.0" alt="Aiko, your Japan tourist guide"><div><span class="eyebrow">Focused travel campaign</span><h2>Get ready for real situations in Japan</h2><p>Aiko guides you through short scenario missions. Every word learned here also counts in the full Journey.</p><div id="japanReadyStats" class="japan-ready-stats"></div></div></section><section class="japan-ready-tools"><div><span class="eyebrow">Travel tools</span><h3>Choose a scenario or open your phrase cheat sheet</h3></div><button id="openJapanReadyCheatSheet">📋 Travel cheat sheet</button></section><div id="japanReadyScenarioList" class="japan-ready-scenarios"></div></article></section>
 <section id="japanReadyCheatSheet" class="screen"><div class="study-top"><button id="cheatSheetBack">← Japan Ready</button><h2>Travel Cheat Sheet · 旅行フレーズ</h2></div><article class="card cheat-sheet-page"><div class="cheat-sheet-hero"><img src="media/guides/aiko-guide-icon.webp?v=11.3.0" alt="Aiko"><div><span class="eyebrow">Quick reference</span><h2>Useful phrases when you are out in Japan</h2><p>Browse by situation. Each phrase shows Japanese, romaji and English, with a speaker button.</p></div></div><div id="cheatSheetSections" class="cheat-sheet-sections"></div></article></section>
 <section id="liveConversation" class="screen"><div class="study-top"><button id="liveConversationBack">← Scenarios</button><h2>Live Conversation · 実践会話</h2></div><article class="card live-conversation-page"><div class="live-conversation-heading"><img src="media/guides/aiko-guide-portrait.webp?v=11.3.0" alt="Aiko"><div><span class="eyebrow">Active travel practice</span><h2 id="liveConversationTitle">Conversation</h2><p id="liveConversationGoal"></p></div></div><div id="liveConversationTranscript" class="live-conversation-transcript"></div><section id="liveConversationInputArea" class="live-conversation-input kana-builder"><div class="kana-builder-heading"><div><span class="eyebrow">Build your response</span><h3 id="kanaBuilderTarget">Choose the next kana</h3></div><button id="kanaBuilderUndo" type="button">Undo</button></div><div id="kanaBuilderAnswer" class="kana-builder-answer"></div><div id="kanaBuilderChoices" class="kana-builder-choices"></div><p id="liveConversationPrompt" class="muted"></p><button id="liveConversationSubmit" class="primary" disabled>Use this response</button></section><section id="liveConversationComplete" class="live-conversation-complete" hidden></section></article></section>
@@ -175,6 +187,11 @@
 <p id="streakRescueMessage" class="rescue-message" hidden></p>
 <label>Difficulty<select id="pictureDifficulty"><option value="2">Easy — 2 choices</option><option value="4">Normal — 4 choices</option><option value="6">Expert — 6 choices</option></select></label>
 </article></section>
+
+<section id="listenBattle" class="screen" aria-hidden="true">
+  <div class="study-top"><button id="kbBack">← Activity Village</button><h2>Kotoba Colosseum · 言葉コロシアム</h2></div>
+  <article class="card kb-wrap" id="kbCard"></article>
+</section>
 
 <section id="adminArea" class="screen">
 <div class="study-top"><button id="adminBack">← Settings</button><h2>Admin</h2></div>
@@ -266,4 +283,7 @@
 <div id="communityProfileStats" class="community-profile-stats"></div>
 <p id="communityProfileStatus" class="muted"></p>
 <div id="communityProfileActions" class="community-profile-actions"></div>
-</div></dialog><dialog id="cloudConflictDialog"><div class="cloud-conflict"><span class="eyebrow">Progress found</span><h2>Which progress should Kaishi Quest keep?</h2><p>This device and your cloud account both contain learning progress. Choose the version you want to use everywhere.</p><button id="useCloudProgress" class="primary">Restore cloud progress</button><button id="keepDeviceProgress">Keep this device’s progress</button></div></dialog><script src="app.js?v=11.3.0"></script><script src="japan-ready.js?v=11.3.0"></script><script src="vms.js?v=11.3.0"></script><script src="supabase-config.js?v=11.3.0"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js" crossorigin="anonymous"></script><script src="cloud.js?v=11.3.0"></script><script src="reporting.js?v=11.3.0"></script></body></html>
+</div></dialog><dialog id="cloudConflictDialog"><div class="cloud-conflict"><span class="eyebrow">Progress found</span><h2>Which progress should Kaishi Quest keep?</h2><p>This device and your cloud account both contain learning progress. Choose the version you want to use everywhere.</p><button id="useCloudProgress" class="primary">Restore cloud progress</button><button id="keepDeviceProgress">Keep this device’s progress</button></div></dialog><script src="app.js?v=11.3.0"></script><script src="japan-ready.js?v=11.3.0"></script><script src="vms.js?v=11.3.0"></script><script src="supabase-config.js?v=11.3.0"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js" crossorigin="anonymous"></script><script src="cloud.js?v=11.3.0"></script><script src="reporting.js?v=11.3.0"></script>
+<script id="kotobaColosseumScript" src="battle-listen.js?v=11.3.0"></script>
+<script src="kotoba-activity.js?v=11.3.0"></script>
+</body></html>
