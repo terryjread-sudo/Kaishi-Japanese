@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.1.0';
+const APP_VERSION='11.2.0';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -489,15 +489,15 @@ function launchVillageActivity(id){
  launchPathMilestone(id,true);
 }
 const VILLAGE_HOTSPOTS=[
- {id:'battle',label:'Castle Keep',x:61,y:5,w:24,h:18},
- {id:'theatre',label:'Kaishi Theatre',x:4,y:23,w:34,h:17},
- {id:'builder',label:'Builder Forge',x:67,y:27,w:30,h:17},
- {id:'picture',label:'Picture Meadow',x:1,y:42,w:28,h:17},
- {id:'listening',label:'Audio Dojo',x:69,y:49,w:29,h:16},
- {id:'grammar',label:'Particle Shrine',x:1,y:65,w:28,h:15},
- {id:'manga',label:'Manga Library',x:48,y:65,w:29,h:15},
- {id:'kana',label:'Kana Bridge',x:31,y:57,w:20,h:12},
- {id:'vocabulary',label:'Starting Village',x:69,y:78,w:30,h:18}
+ {id:'battle',label:'Castle Keep',x:64,y:3,w:32,h:20},
+ {id:'theatre',label:'Kaishi Theatre',x:3,y:17,w:35,h:19},
+ {id:'builder',label:'Builder Forge',x:66,y:26,w:32,h:18},
+ {id:'kana',label:'Kana Bridge',x:37,y:27,w:27,h:12},
+ {id:'grammar',label:'Particle Shrine',x:36,y:39,w:28,h:18},
+ {id:'listening',label:'Audio Dojo',x:68,y:48,w:30,h:17},
+ {id:'picture',label:'Picture Meadow',x:31,y:58,w:38,h:17},
+ {id:'manga',label:'Manga Library',x:1,y:68,w:34,h:18},
+ {id:'vocabulary',label:'Starting Village',x:66,y:70,w:33,h:20}
 ];
 function clearVillageFocus(){const stage=$('.village-map-stage');if(stage){stage.classList.remove('location-focused');stage.style.removeProperty('--focus-x');stage.style.removeProperty('--focus-y')}}
 function focusVillageLocation(id,button){
@@ -516,19 +516,10 @@ function playVillageRestoration(id){
 
 let villageCatTimer=null;
 const VILLAGE_CAT_SPOTS=[
- {id:'picture',x:30,y:59},
- {id:'picture',x:15,y:63},
- {id:'listening',x:69,y:70},
- {id:'listening',x:83,y:67},
- {id:'manga',x:49,y:84},
- {id:'manga',x:63,y:87},
- {id:'kana',x:47,y:54},
- {id:'vocabulary',x:73,y:91},
- {id:'vocabulary',x:87,y:86},
- {id:'theatre',x:35,y:42},
- {id:'builder',x:72,y:48},
- {id:'grammar',x:30,y:79},
- {id:'battle',x:59,y:28}
+ {id:'theatre',x:37,y:37},{id:'battle',x:62,y:24},{id:'builder',x:64,y:43},
+ {id:'kana',x:49,y:36},{id:'grammar',x:66,y:57},{id:'listening',x:64,y:64},
+ {id:'picture',x:31,y:66},{id:'manga',x:35,y:82},{id:'vocabulary',x:65,y:84},
+ {id:'vocabulary',x:52,y:88},{id:'picture',x:50,y:76}
 ];
 function villageCatSpotIsClear(spot){
  const margin=5;
@@ -1383,7 +1374,7 @@ async function init(){
  $('#pictureDifficulty').value=settings.pictureDifficulty;
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.1.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent='Kaishi Quest v11.2.0';versionCard.querySelector('span').textContent='Integrated Journey';versionCard.querySelector('small').textContent='Sensei now links required kana, first encounters, mnemonic images and example sentences into one continuous learning flow.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

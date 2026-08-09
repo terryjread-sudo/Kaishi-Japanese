@@ -1,10 +1,8 @@
-Kaishi Quest v11.1.0 — DROP-IN PATCH
+KAISHI QUEST v11.2.0 — DROP-IN PATCH
 
 1. Extract this ZIP.
-2. Copy every extracted file/folder into the ROOT of your Kakashi-Web repository.
-3. Allow files to overwrite the existing copies.
-4. Commit and push.
+2. Copy its contents into the ROOT of Kakashi-Web.
+3. Allow files to overwrite.
+4. Commit/push and wait for GitHub Pages to finish building.
 
-This is a changed-files-only patch based on the current v11.0.1 Activity Village release. Files not present in this ZIP should remain untouched.
-
-No Supabase changes are required.
+This patch replaces the old village map, remaps the interactive village to it, rebuilds water masks for the new map, and replaces the old cat with the layered production cat. Existing learning/progression data is unchanged.

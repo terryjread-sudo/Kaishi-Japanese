@@ -1,8 +1,16 @@
 {
-  "version": "11.1.0",
+  "version": "11.2.0",
   "released": "2026-08-08",
-  "title": "Storybook Village Residents",
+  "title": "Storybook Village Migration",
   "changes": [
+    "Replaced the legacy Activity Village background with the new mobile-first painterly village map.",
+    "Remapped every activity hotspot, focus point, fog anchor and restoration centre to the new map composition.",
+    "Regenerated water masks directly from the new map so shimmer is restricted to water rather than the whole scene.",
+    "Replaced the old spinning/sprite cat with the supplied layered cat artwork.",
+    "The cat now uses only subtle tail movement, occasional blinking and rare ear twitches.",
+    "Cat positions were re-authored for clear paths and open ground and continue to avoid locked/fogged buildings and labels.",
+    "Kept the v11.1 storybook residents and dialogue system.",
+    "Kept Activity Village / Classic view toggle and all learning, AP, XP and unlock logic unchanged.",
     "Added storybook village residents using the supplied illustrated asset pack.",
     "Corrected mislabelled supplied images by classifying them from their actual artwork instead of their filenames.",
     "Converted resident art from opaque white canvases to tightly cropped transparent PNGs.",
