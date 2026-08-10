@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.3.2';
+const VERSION='11.3.3';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -21,6 +21,7 @@ const SHELL=[
   v('./release-manager.js'),
   v('./battle-listen.js'),
   v('./kotoba-activity.js'),
+  v('./battle-ui-patch.js'),
   './data/japan-ready-v90.json',
   './icons/icon-192.png',
   './icons/icon-512.png',

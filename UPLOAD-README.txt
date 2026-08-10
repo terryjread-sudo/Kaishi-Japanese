@@ -1,30 +1,29 @@
-KAISHI QUEST v11.3.2 — EMERGENCY LAUNCH FIX
-================================================
+KAISHI QUEST v11.3.3 — KOTOBA COLOSSEUM POLISH
+==================================================
 
-Overwrite the files in the repo root with the contents of this ZIP.
+Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
-ROOT CAUSE FIXED
-----------------
-v11.3.1 added a MutationObserver that called ensureLaunchers() for every
-Activity Village subtree mutation. ensureLaunchers() updates text in the same
-subtree, which generates another mutation. That can create a continuous
-observer loop and make the site appear not to launch / freeze.
-
-v11.3.2 only calls ensureLaunchers() when a Kotoba launcher is genuinely
-missing, and queues the restore once per animation frame.
-
-FILES
------
+OVERWRITE / ADD
+---------------
 index.html
 kotoba-activity.js
+battle-ui-patch.js          (new)
 release-manager.js
 service-worker.js
-supabase-config.js
 version.json
+media/battle-listen/*.png   (transparent-background replacements)
 
-The version badge remains clickable and performs the update/cache refresh flow.
+CHANGES
+-------
+- Kotoba Colosseum now sits inside the normal Activity Village activity grid
+  rather than appearing as a large separate card above it.
+- Its village-map launcher is reduced to a normal landmark-sized label.
+- Black rectangular backgrounds have been removed from the party and monster
+  sprites.
+- Once an answer is scored, the answer choices are replaced in-place by the
+  normal result/word/Next Turn feedback box. No scrolling down to Continue.
+- Back to Activity Village and the battle-summary exit both stop/reset BGM.
+- Full version/cache bump to v11.3.3.
 
-IMPORTANT
----------
-This refresh only clears Kaishi Cache Storage entries. It does not clear
-localStorage learner progress, streaks, settings, or cloud progress.
+No Supabase/database migration is required.
+Learner progress/localStorage/cloud progress is not cleared.

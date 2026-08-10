@@ -2,13 +2,13 @@
 
 /*
  * Kotoba Colosseum Activity Village integration
- * Kaishi Quest v11.3.2
+ * Kaishi Quest v11.3.3
  *
  * The launcher is deliberately independent of app.js's Activity Village
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.3.2';
+  const RELEASE_VERSION='11.3.3';
   const REQUIRED_WORDS=4;
 
   function introducedCount(){
@@ -33,18 +33,18 @@
     style.id='kotobaActivityStyles';
     style.textContent=`
       #villageCat,.village-cat{display:none!important;visibility:hidden!important;pointer-events:none!important}
-      .kotoba-launcher{margin:14px 0!important;border:2px solid rgba(251,191,36,.45)!important}
-      .kotoba-launch-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+      .kotoba-launcher{margin:0!important;border:1px solid rgba(99,102,241,.25)!important;min-height:100%;display:flex}
+      .kotoba-launch-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;width:100%}
       .kotoba-launch-icon{font-size:2rem}
-      .kotoba-launch-copy{flex:1;min-width:210px}
+      .kotoba-launch-copy{flex:1;min-width:170px}
       .kotoba-launch-copy h3{margin:.15rem 0}
       .kotoba-launch-copy p{margin:.25rem 0}
       #kotobaMapHotspot{
-        position:absolute!important;left:50%!important;bottom:4%!important;transform:translateX(-50%)!important;
-        z-index:40!important;width:min(86%,360px)!important;padding:10px 14px!important;
-        border-radius:14px!important;border:2px solid rgba(251,191,36,.8)!important;
-        background:rgba(15,23,42,.94)!important;color:#fff!important;
-        box-shadow:0 8px 24px rgba(0,0,0,.35)!important;text-align:left!important
+        position:absolute!important;right:7%!important;top:34%!important;left:auto!important;bottom:auto!important;transform:none!important;
+        z-index:40!important;width:auto!important;max-width:190px!important;padding:7px 10px!important;
+        border-radius:12px!important;border:1px solid rgba(251,191,36,.75)!important;
+        background:rgba(15,23,42,.9)!important;color:#fff!important;
+        box-shadow:0 5px 14px rgba(0,0,0,.32)!important;text-align:left!important;font-size:.78rem!important
       }
       #kotobaMapHotspot strong,#kotobaMapHotspot small{display:block!important}
       #kotobaMapHotspot small{opacity:.82;margin-top:2px}
@@ -98,16 +98,12 @@
   }
 
   function ensureLaunchers(){
-    // Visible regardless of map/classic mode.
-    const toolbar=document.querySelector('.activity-view-toolbar');
-    if(toolbar && !document.getElementById('kotobaPrimaryLauncher')){
-      toolbar.insertAdjacentElement('afterend',makeLauncher('kotobaPrimaryLauncher'));
-    }
-
     // Also show inside the classic Activity Village list.
     const hub=document.getElementById('practiceHub');
     if(hub && !document.getElementById('kotobaClassicLauncher')){
-      hub.appendChild(makeLauncher('kotobaClassicLauncher',true));
+      const card=makeLauncher('kotobaClassicLauncher',true);
+      card.classList.add('practice-activity-card');
+      hub.appendChild(card);
     }
 
     // And add a marker directly on the animated village.
@@ -164,13 +160,19 @@
       }
     });
 
-    // battle-listen's own Back/Done defaults point at the hidden legacy Games
-    // page, so keep the main Back button returning to Journey.
+    // IMPORTANT: do not overwrite battle-listen's kbBack onclick because that
+    // handler calls stopBgm(). Let it run first, then route from legacy Games
+    // back to Journey / Activity Village.
     setTimeout(()=>{
       const back=document.getElementById('kbBack');
-      if(back) back.onclick=()=>{
-        try{ if(typeof show==='function') show('journey'); }catch{}
-      };
+      if(back && !back.dataset.kotobaJourneyReturn){
+        back.dataset.kotobaJourneyReturn='1';
+        back.addEventListener('click',()=>{
+          setTimeout(()=>{
+            try{ if(typeof show==='function') show('journey'); }catch{}
+          },0);
+        });
+      }
     },600);
   }
 
@@ -191,7 +193,6 @@
       let restoreQueued=false;
       const observer=new MutationObserver(()=>{
         const missing=
-          !document.getElementById('kotobaPrimaryLauncher') ||
           !document.getElementById('kotobaClassicLauncher') ||
           !document.getElementById('kotobaMapHotspot');
         if(!missing || restoreQueued) return;
