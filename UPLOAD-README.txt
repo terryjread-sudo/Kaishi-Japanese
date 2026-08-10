@@ -1,47 +1,58 @@
-KAISHI QUEST v11.3.0 — KOTOBA COLOSSEUM UPDATE
-===============================================
+KAISHI QUEST v11.3.1
+=====================
 
-Extract/copy the CONTENTS of this ZIP over the ROOT of the existing
-Kakashi-Web repository, preserving the folder structure.
+Copy the CONTENTS of this ZIP over the root of the Kakashi-Web repository.
 
-OVERWRITTEN FILES
------------------
-supabase-config.js
-  - Keeps the existing public Supabase configuration unchanged.
-  - Hides the village cat.
-  - Adds Kotoba Colosseum to Games.
-  - Adds the battle screen and loads battle-listen.js.
-  - Updates the displayed release version to v11.3.0.
-
-service-worker.js
-  - Bumps the app/cache version from 11.2.3 to 11.3.0.
-  - Creates fresh shell/image cache names.
-  - Adds battle-listen.js to the shell cache.
-  - Removes the old village-cat asset from the shell precache list.
-
-version.json
-  - Announces v11.3.0 and the Kotoba Colosseum release notes.
-
-NEW FILES
+OVERWRITE
 ---------
-battle-listen.js
-media/battle-listen/kitsune.png
-media/battle-listen/kappa.png
-media/battle-listen/tanuki.png
-media/battle-listen/karakasa.png
-media/battle-listen/party-warrior.png
-media/battle-listen/party-mage.png
-media/battle-listen/party-guardian.png
-media/battle-listen/arena-backdrop.jpg
-media/battle-listen/bgm.mp3
-
-NOT CHANGED
------------
-app.js
 index.html
-styles.css
-vocabulary/SRS data
-database schema
+supabase-config.js
+kotoba-activity.js
+service-worker.js
+version.json
 
-The existing SRS Decay Battle remains available so you can compare it with
-Kotoba Colosseum before deciding whether to replace it.
+NEW
+---
+release-manager.js
+
+WHAT THIS RELEASE DOES
+----------------------
+1. Kotoba Colosseum is made visible from Activity Village:
+   - a launcher below the Activity View toolbar,
+   - a launcher in Classic Activity Village,
+   - a marker on the animated village map.
+
+2. The village cat is removed.
+
+3. Version/cache handling is now release-based:
+   - v11.3.1 is shown in the header and Settings.
+   - JS/CSS/release assets use ?v=11.3.1.
+   - service-worker caches are named kaishi-shell-11.3.1
+     and kaishi-images-11.3.1.
+   - old Kaishi caches are removed when the new worker activates.
+   - version.json is always requested network-first/no-store.
+
+4. Clicking the HEADER VERSION BADGE now:
+   - checks version.json from the network,
+   - asks the service worker to update,
+   - clears Kaishi app caches (NOT user progress),
+   - activates a waiting worker if one exists,
+   - reloads the app with a cache-busting URL.
+
+The Settings 'Check for updates' button is routed through the same mechanism.
+
+USER DATA
+---------
+The refresh process does NOT clear localStorage, vocabulary progress, streaks,
+settings, authentication data, or cloud progress. It only clears Kaishi shell
+and image Cache Storage entries.
+
+FUTURE RELEASE RULE
+-------------------
+For every release, increment the semantic version and update the same version in:
+  index.html asset query strings
+  release-manager.js CURRENT_VERSION
+  service-worker.js VERSION
+  version.json
+
+Do not publish changed app files under an unchanged version number.

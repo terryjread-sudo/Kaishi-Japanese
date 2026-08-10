@@ -1,14 +1,13 @@
 {
-  "version": "11.3.0",
+  "version": "11.3.1",
   "released": "2026-08-09",
-  "title": "Kotoba Colosseum",
+  "title": "Kotoba Colosseum visibility & release refresh",
   "changes": [
-    "Added Kotoba Colosseum \u00b7 Listen & Strike, a three-character tactical listening battle.",
-    "Added Kitsune, Kappa, Tanuki and Karakasa battle encounters with new party artwork, arena and music.",
-    "Removed the village cat from the Activity Village interface.",
-    "Kept SRS Decay Battle available alongside Kotoba Colosseum for comparison."
-  ],
-  "sourcePacksIncluded": 5,
-  "mappedWords": 646,
-  "standaloneImages": 646
+    "Made Kotoba Colosseum visible from Activity Village in both map and classic views.",
+    "Removed the village cat from Activity Village.",
+    "Added a release manager so the header version badge checks for updates and refreshes app files.",
+    "Clicking the version badge now clears Kaishi app caches, asks the service worker to update, and reloads from a cache-busted URL.",
+    "Moved all service-worker release asset cache keys to the single 11.3.1 version value.",
+    "Kept existing learner progress and cloud data untouched during refresh."
+  ]
 }
