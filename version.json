@@ -1,20 +1,12 @@
 {
-  "version": "11.4.0",
+  "version": "11.4.1",
   "released": "2026-08-10",
-  "title": "Adaptive Learning Update",
+  "title": "Adaptive Learning launch fix",
   "changes": [
-    "Added learner word states: New, Recognising, Recall and Usable.",
-    "Made Journey mission composition adaptive to current strength and due-review load.",
-    "Added delayed same-session repair questions after mistakes.",
-    "Mixed weak older vocabulary into later Journey topics to reduce forgetting.",
-    "Added specific Sensei learning insights based on the learner's weakest skill.",
-    "Added optional Campfire Recall after Journey missions for no-choice self-retrieval.",
-    "Added optional Kotoba Rain after Journey missions, prioritising today's and weak words.",
-    "Kotoba Rain correct catches now count as moderate recognition evidence rather than full recall evidence.",
-    "Kotoba Rain can send missed words directly into a Campfire quick review.",
-    "Kotoba Colosseum readiness now uses battle-ready learned words rather than a simple introduced-word minimum.",
-    "Removed the animated Village view and its setting; Classic Activity Landmarks are now the only activity view.",
-    "Removed unused animated-village assets from the service-worker shell cache.",
-    "Bumped all release-controlled files and caches to v11.4.0."
+    "Fixed the v11.4.0 startup error that prevented main-page buttons from being wired.",
+    "Restored hidden compatibility elements expected by the existing app.js while keeping Village view unavailable.",
+    "Forces Classic Activity Landmarks and the Practice Hub visible immediately, including for users whose saved setting previously selected Village view.",
+    "Retains all v11.4.0 Adaptive Learning features: word states, adaptive missions, mistake repair, Campfire Recall and Kotoba Rain.",
+    "Bumped release-controlled assets and service-worker caches to v11.4.1."
   ]
 }
