@@ -1,12 +1,20 @@
 {
-  "version": "11.3.4",
-  "released": "2026-08-09",
-  "title": "Kotoba classic landmark & audio ducking",
+  "version": "11.4.0",
+  "released": "2026-08-10",
+  "title": "Adaptive Learning Update",
   "changes": [
-    "Added Kotoba Colosseum to the Classic Activity Landmarks path alongside the existing landmark cards.",
-    "Reduced Colosseum background music to a lower normal level and ducks it to near-silent while Japanese word audio or speech synthesis is playing.",
-    "Restores the music gently after the Japanese word finishes.",
-    "Retains the v11.3.3 in-place answer feedback, transparent sprites and stop-music-on-exit fixes.",
-    "Bumped all release-controlled asset and service-worker cache versions to v11.3.4."
+    "Added learner word states: New, Recognising, Recall and Usable.",
+    "Made Journey mission composition adaptive to current strength and due-review load.",
+    "Added delayed same-session repair questions after mistakes.",
+    "Mixed weak older vocabulary into later Journey topics to reduce forgetting.",
+    "Added specific Sensei learning insights based on the learner's weakest skill.",
+    "Added optional Campfire Recall after Journey missions for no-choice self-retrieval.",
+    "Added optional Kotoba Rain after Journey missions, prioritising today's and weak words.",
+    "Kotoba Rain correct catches now count as moderate recognition evidence rather than full recall evidence.",
+    "Kotoba Rain can send missed words directly into a Campfire quick review.",
+    "Kotoba Colosseum readiness now uses battle-ready learned words rather than a simple introduced-word minimum.",
+    "Removed the animated Village view and its setting; Classic Activity Landmarks are now the only activity view.",
+    "Removed unused animated-village assets from the service-worker shell cache.",
+    "Bumped all release-controlled files and caches to v11.4.0."
   ]
 }

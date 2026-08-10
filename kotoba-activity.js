@@ -2,19 +2,23 @@
 
 /*
  * Kotoba Colosseum Activity Village integration
- * Kaishi Quest v11.3.4
+ * Kaishi Quest v11.4.0
  *
  * The launcher is deliberately independent of app.js's Activity Village
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.3.4';
-  const REQUIRED_WORDS=4;
+  const RELEASE_VERSION='11.4.0';
+  const REQUIRED_WORDS=8;
 
   function introducedCount(){
     try{
-      return Array.isArray(vocab) && typeof wordIntroduced==='function'
-        ? vocab.filter(wordIntroduced).length : 0;
+      if(!Array.isArray(vocab) || typeof wordIntroduced!=='function') return 0;
+      const stateFn=window.KaishiLearning?.wordState;
+      return vocab.filter(word=>
+        wordIntroduced(word) &&
+        (!stateFn || stateFn(word)!=='New')
+      ).length;
     }catch{ return 0; }
   }
 
@@ -22,9 +26,9 @@
 
   function readinessText(){
     const count=introducedCount();
-    if(count>=REQUIRED_WORDS) return `${count} introduced words · Ready to enter`;
+    if(count>=REQUIRED_WORDS) return `${count} battle-ready words · Ready to enter`;
     const remaining=REQUIRED_WORDS-count;
-    return `${count} / ${REQUIRED_WORDS} introduced words · Learn ${remaining} more to unlock`;
+    return `${count} / ${REQUIRED_WORDS} battle-ready words · Strengthen ${remaining} more`;
   }
 
   function ensureStyles(){
@@ -46,15 +50,6 @@
       .kotoba-launch-copy{flex:1;min-width:170px}
       .kotoba-launch-copy h3{margin:.15rem 0}
       .kotoba-launch-copy p{margin:.25rem 0}
-      #kotobaMapHotspot{
-        position:absolute!important;right:7%!important;top:34%!important;left:auto!important;bottom:auto!important;transform:none!important;
-        z-index:40!important;width:auto!important;max-width:190px!important;padding:7px 10px!important;
-        border-radius:12px!important;border:1px solid rgba(251,191,36,.75)!important;
-        background:rgba(15,23,42,.9)!important;color:#fff!important;
-        box-shadow:0 5px 14px rgba(0,0,0,.32)!important;text-align:left!important;font-size:.78rem!important
-      }
-      #kotobaMapHotspot strong,#kotobaMapHotspot small{display:block!important}
-      #kotobaMapHotspot small{opacity:.82;margin-top:2px}
     `;
     document.head.appendChild(style);
   }
@@ -113,16 +108,6 @@
       card.classList.add('journey-landmark','kotoba-classic-landmark');
       pathRoad.appendChild(card);
     }
-
-    // And add a marker directly on the animated village.
-    const stage=document.querySelector('.village-map-stage');
-    if(stage && !document.getElementById('kotobaMapHotspot')){
-      const button=document.createElement('button');
-      button.id='kotobaMapHotspot';
-      button.type='button';
-      button.innerHTML='<strong>⚔️ Kotoba Colosseum</strong><small>Checking readiness…</small>';
-      stage.appendChild(button);
-    }
     updateReadiness();
   }
 
@@ -139,11 +124,6 @@
         button.textContent=ready?'⚔️ Enter Colosseum':`🔒 ${Math.max(0,REQUIRED_WORDS-count)} more`;
       }
     });
-    const map=document.getElementById('kotobaMapHotspot');
-    if(map){
-      map.disabled=!ready;
-      map.querySelector('small').textContent=readinessText();
-    }
   }
 
   function launch(){
@@ -162,7 +142,7 @@
 
   function wire(){
     document.addEventListener('click',event=>{
-      if(event.target.closest('.kotoba-open,#kotobaMapHotspot')){
+      if(event.target.closest('.kotoba-open')){
         event.preventDefault();
         launch();
       }
@@ -201,8 +181,7 @@
       let restoreQueued=false;
       const observer=new MutationObserver(()=>{
         const missing=
-          !document.getElementById('kotobaClassicLauncher') ||
-          !document.getElementById('kotobaMapHotspot');
+          !document.getElementById('kotobaClassicLauncher');
         if(!missing || restoreQueued) return;
         restoreQueued=true;
         requestAnimationFrame(()=>{
