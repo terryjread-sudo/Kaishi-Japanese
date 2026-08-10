@@ -2,13 +2,13 @@
 
 /*
  * Kotoba Colosseum Activity Village integration
- * Kaishi Quest v11.3.1
+ * Kaishi Quest v11.3.2
  *
  * The launcher is deliberately independent of app.js's Activity Village
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.3.1';
+  const RELEASE_VERSION='11.3.2';
   const REQUIRED_WORDS=4;
 
   function introducedCount(){
@@ -182,10 +182,26 @@
     ensureLaunchers();
     wire();
 
-    // app.js can rebuild Activity Village DOM. Restore our launchers if needed.
+    // app.js can rebuild Activity Village DOM. Only restore launchers when
+    // one has actually been removed. Do NOT call ensureLaunchers() on every
+    // subtree mutation: updating launcher text itself creates childList
+    // mutations and caused the v11.3.1 infinite MutationObserver loop.
     const journey=document.getElementById('journey');
     if(journey){
-      new MutationObserver(()=>ensureLaunchers()).observe(journey,{childList:true,subtree:true});
+      let restoreQueued=false;
+      const observer=new MutationObserver(()=>{
+        const missing=
+          !document.getElementById('kotobaPrimaryLauncher') ||
+          !document.getElementById('kotobaClassicLauncher') ||
+          !document.getElementById('kotobaMapHotspot');
+        if(!missing || restoreQueued) return;
+        restoreQueued=true;
+        requestAnimationFrame(()=>{
+          restoreQueued=false;
+          ensureLaunchers();
+        });
+      });
+      observer.observe(journey,{childList:true,subtree:true});
     }
 
     [250,750,1500,3000,5000].forEach(ms=>setTimeout(ensureLaunchers,ms));

@@ -1,13 +1,11 @@
 {
-  "version": "11.3.1",
+  "version": "11.3.2",
   "released": "2026-08-09",
-  "title": "Kotoba Colosseum visibility & release refresh",
+  "title": "Emergency launch fix",
   "changes": [
-    "Made Kotoba Colosseum visible from Activity Village in both map and classic views.",
-    "Removed the village cat from Activity Village.",
-    "Added a release manager so the header version badge checks for updates and refreshes app files.",
-    "Clicking the version badge now clears Kaishi app caches, asks the service worker to update, and reloads from a cache-busted URL.",
-    "Moved all service-worker release asset cache keys to the single 11.3.1 version value.",
-    "Kept existing learner progress and cloud data untouched during refresh."
+    "Fixed an infinite Activity Village MutationObserver loop introduced in v11.3.1 that could freeze the app during launch.",
+    "Kept Kotoba Colosseum visible while only restoring its launchers when they are actually removed.",
+    "Bumped all release-controlled asset URLs and service-worker caches to v11.3.2.",
+    "Kept the clickable header version badge update-and-refresh behaviour."
   ]
 }
