@@ -1,12 +1,12 @@
 {
-  "version": "11.3.3",
+  "version": "11.3.4",
   "released": "2026-08-09",
-  "title": "Kotoba Colosseum polish",
+  "title": "Kotoba classic landmark & audio ducking",
   "changes": [
-    "Integrated Kotoba Colosseum into the normal Activity Village card/grid presentation and made its village marker match the existing map style more closely.",
-    "Removed the solid black sprite backgrounds from party members and battle monsters while preserving the pixel-art characters.",
-    "After answering, the normal feedback and Next Turn box now replaces the answer choices in place so no downward scrolling is needed.",
-    "Returning to Activity Village now always stops and resets the Colosseum background music.",
-    "Bumped all release-controlled files and caches to v11.3.3."
+    "Added Kotoba Colosseum to the Classic Activity Landmarks path alongside the existing landmark cards.",
+    "Reduced Colosseum background music to a lower normal level and ducks it to near-silent while Japanese word audio or speech synthesis is playing.",
+    "Restores the music gently after the Japanese word finishes.",
+    "Retains the v11.3.3 in-place answer feedback, transparent sprites and stop-music-on-exit fixes.",
+    "Bumped all release-controlled asset and service-worker cache versions to v11.3.4."
   ]
 }

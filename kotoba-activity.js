@@ -2,13 +2,13 @@
 
 /*
  * Kotoba Colosseum Activity Village integration
- * Kaishi Quest v11.3.3
+ * Kaishi Quest v11.3.4
  *
  * The launcher is deliberately independent of app.js's Activity Village
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.3.3';
+  const RELEASE_VERSION='11.3.4';
   const REQUIRED_WORDS=4;
 
   function introducedCount(){
@@ -33,7 +33,14 @@
     style.id='kotobaActivityStyles';
     style.textContent=`
       #villageCat,.village-cat{display:none!important;visibility:hidden!important;pointer-events:none!important}
-      .kotoba-launcher{margin:0!important;border:1px solid rgba(99,102,241,.25)!important;min-height:100%;display:flex}
+      .kotoba-launcher{margin:0!important;border:1px solid rgba(99,102,241,.25)!important;display:flex}
+      .kotoba-classic-landmark{
+        width:100%!important;min-height:0!important;padding:18px!important;border-radius:22px!important;
+        background:linear-gradient(135deg,#eef2ff,#fff7ed)!important;
+        box-shadow:0 10px 28px rgba(30,41,59,.10)!important;
+      }
+      .kotoba-classic-landmark .kotoba-launch-row{align-items:center!important}
+      .kotoba-classic-landmark .kotoba-open{margin-left:auto!important}
       .kotoba-launch-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;width:100%}
       .kotoba-launch-icon{font-size:2rem}
       .kotoba-launch-copy{flex:1;min-width:170px}
@@ -98,12 +105,13 @@
   }
 
   function ensureLaunchers(){
-    // Also show inside the classic Activity Village list.
-    const hub=document.getElementById('practiceHub');
-    if(hub && !document.getElementById('kotobaClassicLauncher')){
+    // Show as a proper Classic Activity Landmark, inside the same pathRoad
+    // container used by the existing landmark cards.
+    const pathRoad=document.getElementById('pathRoad');
+    if(pathRoad && !document.getElementById('kotobaClassicLauncher')){
       const card=makeLauncher('kotobaClassicLauncher',true);
-      card.classList.add('practice-activity-card');
-      hub.appendChild(card);
+      card.classList.add('journey-landmark','kotoba-classic-landmark');
+      pathRoad.appendChild(card);
     }
 
     // And add a marker directly on the animated village.

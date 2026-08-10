@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.3.3 — Kotoba Colosseum UI patch
+ * Kaishi Quest v11.3.4 — Kotoba Colosseum UI patch
  *
  * - Keeps a reference to the Colosseum BGM so exiting can always stop it.
  * - Replaces the answer-choice area with feedback/Continue after an answer,
@@ -10,20 +10,88 @@
  *   own stopBgm() handler.
  */
 (() => {
-  const RELEASE='11.3.3';
+  const RELEASE='11.3.4';
   const trackedBgm=new Set();
+  const BGM_NORMAL_VOLUME=0.12;
+  const BGM_DUCK_VOLUME=0.015;
+  let duckDepth=0;
+  let duckRestoreTimer=null;
 
-  // Track the non-DOM Audio object created by battle-listen.js.
+  function setTrackedBgmVolume(volume){
+    trackedBgm.forEach(audio=>{
+      try{
+        if(!audio.paused) audio.volume=Math.max(0,Math.min(1,volume));
+      }catch{}
+    });
+  }
+
+  function duckBgm(){
+    duckDepth++;
+    if(duckRestoreTimer){
+      clearTimeout(duckRestoreTimer);
+      duckRestoreTimer=null;
+    }
+    setTrackedBgmVolume(BGM_DUCK_VOLUME);
+  }
+
+  function restoreBgm(delay=180){
+    duckDepth=Math.max(0,duckDepth-1);
+    if(duckDepth>0) return;
+    if(duckRestoreTimer) clearTimeout(duckRestoreTimer);
+    duckRestoreTimer=setTimeout(()=>{
+      duckRestoreTimer=null;
+      setTrackedBgmVolume(BGM_NORMAL_VOLUME);
+    },delay);
+  }
+
+  // Track the non-DOM BGM Audio object and duck it while Japanese word audio plays.
   const originalPlay=HTMLMediaElement.prototype.play;
   HTMLMediaElement.prototype.play=function(...args){
-    try{
-      const src=String(this.currentSrc || this.src || '');
-      if(src.includes('/battle-listen/bgm.mp3')) trackedBgm.add(this);
-    }catch{}
+    let src='';
+    try{ src=String(this.currentSrc || this.src || ''); }catch{}
+    const isBgm=src.includes('/battle-listen/bgm.mp3');
+    const inBattle=Boolean(document.getElementById('listenBattle')?.classList.contains('active'));
+
+    if(isBgm){
+      trackedBgm.add(this);
+      try{ this.volume=BGM_NORMAL_VOLUME; }catch{}
+    }else if(inBattle && src){
+      duckBgm();
+      const finish=()=>restoreBgm();
+      this.addEventListener('ended',finish,{once:true});
+      this.addEventListener('pause',finish,{once:true});
+      // Safety restore for audio formats/devices that fail to emit ended.
+      setTimeout(()=>restoreBgm(),5000);
+    }
     return originalPlay.apply(this,args);
   };
 
+  // Also duck around speechSynthesis fallback used when no word-audio file exists.
+  if(window.speechSynthesis && typeof window.speechSynthesis.speak==='function'){
+    const originalSpeak=window.speechSynthesis.speak.bind(window.speechSynthesis);
+    window.speechSynthesis.speak=function(utterance){
+      const inBattle=Boolean(document.getElementById('listenBattle')?.classList.contains('active'));
+      if(inBattle && utterance){
+        duckBgm();
+        const originalEnd=utterance.onend;
+        const originalError=utterance.onerror;
+        utterance.onend=function(event){
+          restoreBgm();
+          if(typeof originalEnd==='function') originalEnd.call(this,event);
+        };
+        utterance.onerror=function(event){
+          restoreBgm();
+          if(typeof originalError==='function') originalError.call(this,event);
+        };
+        setTimeout(()=>restoreBgm(),5000);
+      }
+      return originalSpeak(utterance);
+    };
+  }
+
   function stopBattleMusic(){
+    duckDepth=0;
+    if(duckRestoreTimer){ clearTimeout(duckRestoreTimer); duckRestoreTimer=null; }
     trackedBgm.forEach(audio=>{
       try{
         audio.pause();
