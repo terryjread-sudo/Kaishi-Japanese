@@ -1,25 +1,19 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.4.1 — Campfire Recall
+ * Kaishi Quest v11.4.2 — Campfire Recall
  * Short optional, no-choice retrieval practice.
  */
 (() => {
   let run=null;
 
   function ensureScreen(){
-    if(document.getElementById('campfireRecall')) return;
-    const section=document.createElement('section');
-    section.id='campfireRecall';
-    section.className='screen';
-    section.setAttribute('aria-hidden','true');
-    section.innerHTML=`
-      <div class="study-top">
-        <button id="cfBack">← Finish</button>
-        <h2>Campfire Recall · 思い出す</h2>
-      </div>
-      <article class="card cf-card" id="cfCard"></article>`;
-    document.querySelector('main')?.appendChild(section);
+    const screen=document.getElementById('campfireRecall');
+    const card=document.getElementById('cfCard');
+    if(screen && card) return true;
+    console.error('[Campfire Recall] Required static screen markup is missing');
+    toast('Campfire Recall could not open — please refresh Kaishi Quest');
+    return false;
   }
 
   function ensureStyles(){
@@ -76,7 +70,7 @@
   }
 
   function start(ids=[],options={}){
-    ensureScreen();
+    if(!ensureScreen()) return;
     ensureStyles();
     const words=fillWords(ids);
     if(!words.length){
@@ -215,7 +209,8 @@
   function install(){
     ensureScreen();
     ensureStyles();
-    document.getElementById('cfBack').onclick=stop;
+    const back=document.getElementById('cfBack');
+    if(back) back.onclick=stop;
   }
 
   window.KaishiCampfire={start,stop};

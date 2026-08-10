@@ -1,40 +1,48 @@
-KAISHI QUEST v11.4.1 — STARTUP FIX
-=======================================
+KAISHI QUEST v11.4.2 — BONUS SCREEN FIX
+============================================
 
 Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
 ROOT CAUSE
 ----------
-v11.4.0 removed the old Village/Classic toggle and Activity Village checkbox
-from index.html. The existing app.js still contains direct bindings:
+app.js captures the application's screens once, immediately at startup:
 
-  $('#activityViewToggle').onclick = ...
-  $('#activityVillageMode').onchange = ...
+  const screens=[...document.querySelectorAll('.screen')];
 
-Because those elements no longer existed, app.js threw a TypeError while
-initialising. Execution stopped at that point, so the later main-page button
-handlers were never attached.
+v11.4.0/11.4.1 created Campfire Recall dynamically after app.js had already
+captured that list, while Kotoba Rain did not have its required #wordRain /
+#wrCard screen markup at all.
+
+So show('wordRain') / show('campfireRecall') could not activate those bonus
+screens correctly. Kotoba Rain then tried to render into a missing #wrCard,
+producing the blank page you saw.
 
 FIX
 ---
-v11.4.1 restores those two elements as hidden compatibility hooks. They cannot
-be seen or used by the learner, but they allow the existing app.js startup
-sequence to complete normally.
+v11.4.2 puts BOTH bonus screens directly in index.html before app.js runs:
 
-The app remains CLASSIC-ONLY:
-- no animated Village view
-- no Village/Classic toggle
-- no Activity Village setting
-- Classic Activity Landmarks are forced visible
-- Practice Hub is forced visible
+  #wordRain / #wrCard
+  #campfireRecall / #cfCard
 
-All v11.4.0 Adaptive Learning functionality remains included.
+They are now part of app.js's normal screen navigation from startup.
+
+Defensive checks have also been added so a missing bonus screen can never fail
+silently as a blank screen again.
+
+RETAINED
+--------
+- Classic Activity Landmarks only
+- Adaptive Journey missions
+- New / Recognising / Recall / Usable word states
+- same-session mistake repair
+- Campfire Recall
+- Kotoba Rain session bonus
+- Rain -> quick review missed words
+- Kotoba Colosseum
+- clickable version/update refresh
 
 VERSION / CACHE
 ---------------
-Release and service-worker caches are bumped to v11.4.1.
+Release and service-worker cache references are bumped to v11.4.2.
 
-NO DATABASE MIGRATION
----------------------
-No Supabase schema change is required.
-Learner progress, streaks, settings and cloud progress are preserved.
+No Supabase migration is required.

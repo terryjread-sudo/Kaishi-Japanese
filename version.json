@@ -1,12 +1,13 @@
 {
-  "version": "11.4.1",
+  "version": "11.4.2",
   "released": "2026-08-10",
-  "title": "Adaptive Learning launch fix",
+  "title": "Bonus activity screen fix",
   "changes": [
-    "Fixed the v11.4.0 startup error that prevented main-page buttons from being wired.",
-    "Restored hidden compatibility elements expected by the existing app.js while keeping Village view unavailable.",
-    "Forces Classic Activity Landmarks and the Practice Hub visible immediately, including for users whose saved setting previously selected Village view.",
-    "Retains all v11.4.0 Adaptive Learning features: word states, adaptive missions, mistake repair, Campfire Recall and Kotoba Rain.",
-    "Bumped release-controlled assets and service-worker caches to v11.4.1."
+    "Fixed Kotoba Rain opening to a blank screen.",
+    "Fixed the same underlying issue for Campfire Recall before it could affect users.",
+    "Moved both bonus activity screens into index.html so they exist before app.js snapshots the available screens.",
+    "Added defensive checks so bonus activities show an error instead of silently rendering blank if required markup is ever missing.",
+    "Retains all v11.4 Adaptive Learning and Classic-only Activity Landmark changes.",
+    "Bumped release-controlled assets and service-worker caches to v11.4.2."
   ]
 }

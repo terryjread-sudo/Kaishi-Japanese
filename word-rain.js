@@ -43,6 +43,15 @@
   let wr = null;
   let dragging = false;
 
+  function ensureWordRainScreen() {
+    const screen = $('#wordRain');
+    const card = $('#wrCard');
+    if (screen && card) return true;
+    console.error('[Kotoba Rain] Required static screen markup is missing');
+    toast('Kotoba Rain could not open — please refresh Kaishi Quest');
+    return false;
+  }
+
   // --- Small synthesized SFX (no audio files needed) ---------------------
   const SFXR = (() => {
     let ctx = null;
@@ -212,6 +221,7 @@
 
   function startWordRain(options = {}) {
     if (options instanceof Event) options = {};
+    if (!ensureWordRainScreen()) return;
     requestedWordIds = Array.isArray(options?.wordIds) ? [...new Set(options.wordIds)] : null;
     requestedSource = options?.source || 'bonus';
     const words = pool();

@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.4.1
+ * Kaishi Quest release manager — v11.4.2
  *
  * The header version badge is an active "check + refresh" control.
  * Clicking it:
@@ -15,7 +15,7 @@
  * the same value in index.html and service-worker.js.
  */
 (() => {
-  const CURRENT_VERSION='11.4.1';
+  const CURRENT_VERSION='11.4.2';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   let refreshing=false;
 
