@@ -34,7 +34,7 @@
   const START_SECONDS = 60;
   const PENALTY_MISS = 5;
   const PENALTY_WRONG = 10;
-  const MAX_DISTRACTORS = 3;
+  const MAX_DISTRACTORS = 2;
   const ROUND_GAP_MS = 450;
 
   let requestedWordIds = null;
@@ -308,7 +308,35 @@
   }
 
   function currentRoundDurationMs() {
-    return Math.max(2500, 5200 - wr.roundsPlayed * 150);
+    // v11.4.3: gentler opening pace. Starts at 6.4s and speeds up gradually,
+    // but never becomes faster than 3.2s per fall.
+    return Math.max(3200, 6400 - wr.roundsPlayed * 120);
+  }
+
+  function readJapanesePrompt(v) {
+    if (!v) return;
+    try {
+      if (typeof speakJapanese === 'function') {
+        speakJapanese(v.word || v.reading || '');
+        return;
+      }
+    } catch {}
+
+    try {
+      if (typeof speak === 'function') {
+        speak(v.word || v.reading || '');
+        return;
+      }
+    } catch {}
+
+    try {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(v.word || v.reading || '');
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.88;
+      window.speechSynthesis.speak(utterance);
+    } catch {}
   }
 
   function nextRound() {
@@ -326,6 +354,13 @@
 
     const label = $('#wrPlatformLabel');
     if (label) label.textContent = promptText;
+
+    // Read the controlled Japanese target aloud as the new round begins.
+    if (wr.promptLang === 'jp') {
+      setTimeout(() => {
+        if (wr && wr.running && wr.promptWord?.id === v.id) readJapanesePrompt(v);
+      }, 120);
+    }
 
     spawnFallingItems(items);
     updateHud();

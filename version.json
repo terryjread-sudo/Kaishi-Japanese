@@ -1,13 +1,13 @@
 {
-  "version": "11.4.2",
+  "version": "11.4.3",
   "released": "2026-08-10",
-  "title": "Bonus activity screen fix",
+  "title": "Kotoba Rain difficulty tuning",
   "changes": [
-    "Fixed Kotoba Rain opening to a blank screen.",
-    "Fixed the same underlying issue for Campfire Recall before it could affect users.",
-    "Moved both bonus activity screens into index.html so they exist before app.js snapshots the available screens.",
-    "Added defensive checks so bonus activities show an error instead of silently rendering blank if required markup is ever missing.",
-    "Retains all v11.4 Adaptive Learning and Classic-only Activity Landmark changes.",
-    "Bumped release-controlled assets and service-worker caches to v11.4.2."
+    "Reads the controlled Japanese word aloud when a new Kotoba Rain round begins.",
+    "Limits Kotoba Rain to a maximum of three falling choices at once: one correct word and up to two distractors.",
+    "Slows the opening falling speed from roughly 5.2 seconds to 6.4 seconds and makes the difficulty ramp gentler.",
+    "Keeps a minimum fall duration of 3.2 seconds so late rounds remain playable.",
+    "Retains all v11.4 Adaptive Learning, Campfire Recall and Classic-only Activity Landmark changes.",
+    "Bumped release-controlled assets and service-worker caches to v11.4.3."
   ]
 }

@@ -1,48 +1,17 @@
-KAISHI QUEST v11.4.2 — BONUS SCREEN FIX
-============================================
+KAISHI QUEST v11.4.3 — KOTOBA RAIN TUNING
+==============================================
 
 Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
-ROOT CAUSE
-----------
-app.js captures the application's screens once, immediately at startup:
+CHANGES
+-------
+- Japanese controlled/platform words are now read aloud when each round starts.
+- Maximum of three falling choices at once: one correct + up to two distractors.
+- Opening fall speed is slower: about 6.4 seconds.
+- Difficulty increases more gradually.
+- Late rounds never become faster than 3.2 seconds per fall.
 
-  const screens=[...document.querySelectorAll('.screen')];
-
-v11.4.0/11.4.1 created Campfire Recall dynamically after app.js had already
-captured that list, while Kotoba Rain did not have its required #wordRain /
-#wrCard screen markup at all.
-
-So show('wordRain') / show('campfireRecall') could not activate those bonus
-screens correctly. Kotoba Rain then tried to render into a missing #wrCard,
-producing the blank page you saw.
-
-FIX
----
-v11.4.2 puts BOTH bonus screens directly in index.html before app.js runs:
-
-  #wordRain / #wrCard
-  #campfireRecall / #cfCard
-
-They are now part of app.js's normal screen navigation from startup.
-
-Defensive checks have also been added so a missing bonus screen can never fail
-silently as a blank screen again.
-
-RETAINED
---------
-- Classic Activity Landmarks only
-- Adaptive Journey missions
-- New / Recognising / Recall / Usable word states
-- same-session mistake repair
-- Campfire Recall
-- Kotoba Rain session bonus
-- Rain -> quick review missed words
-- Kotoba Colosseum
-- clickable version/update refresh
-
-VERSION / CACHE
----------------
-Release and service-worker cache references are bumped to v11.4.2.
+All v11.4 Adaptive Learning, Campfire Recall, Classic Activity Landmarks,
+Kotoba Colosseum, and version/cache-refresh behaviour are retained.
 
 No Supabase migration is required.
