@@ -2,13 +2,13 @@
 
 /*
  * Kotoba Colosseum Activity Village integration
- * Kaishi Quest v11.7.1
+ * Kaishi Quest v11.7.2
  *
  * The launcher is deliberately independent of app.js's Activity Village
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.7.1';
+  const RELEASE_VERSION='11.7.2';
   const REQUIRED_WORDS=8;
 
   function introducedCount(){

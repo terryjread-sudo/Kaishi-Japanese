@@ -1,55 +1,52 @@
-KAISHI QUEST v11.7.1 — NAVIGATION PERFORMANCE & CAROUSEL
-============================================================
+KAISHI QUEST v11.7.2 — COMPACT KEEP LEARNING PATCH
+======================================================
 
 Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
-NEW FILE
---------
-carousel-navigation.js
+KEEP LEARNING
+-------------
+The old tall "Want to keep going?" section is replaced by a compact optional
+extra-learning carousel on mobile:
 
-PERFORMANCE FIX
----------------
-v11.7.0 added two expensive background behaviours:
-- dashboard refresh every 2.5 seconds
-- a MutationObserver watching the whole document and potentially recolouring
-  Japanese text across the whole page after routine DOM changes
+  Another Mission
+  Reviews
+  Practice
 
-v11.7.1 removes both.
+Each card uses shorter text and occupies about 78% of the viewport width so a
+portion of the next card is visible.
 
-Dashboard / Today data now refreshes on meaningful events and page lifecycle
-events. Japanese recolouring is limited to learning/game containers that are
-actually rebuilt.
+On wider desktop layouts all three cards appear side-by-side.
 
 JOURNEY / JAPAN READY
 ---------------------
-The explicit:
-  "Swipe here to switch Journey / Japan Ready"
-message is removed.
+Both study-mode cards now have explicit headings:
 
-The study mode area now uses a native horizontal scroll-snap carousel:
-- current card occupies about 90% of the width
-- part of the neighbouring card remains visible
-- two small page indicators sit underneath
-- swiping uses native browser scrolling for better performance
-- tapping a page dot changes mode
-- existing Journey / Japan Ready application state is still updated underneath
+  Japanese Journey
+  Japan Ready
 
-This follows the common mobile pattern where a partially visible next card
-signals that more content exists horizontally.
+Interaction adapts to input:
+- touch: native swipe
+- trackpad: native horizontal scrolling
+- mouse: click a card
+- keyboard: left/right arrows, Enter/Space
+- wide desktop: both cards visible side-by-side
+
+The mobile partial-card peek and subtle page dots remain; there is no written
+"Swipe here" instruction.
 
 RETAINED
 --------
-- persistent Today summary
-- Keep Learning after the three-step route
-- Kanji / Hiragana / Katakana visual colour cues
-- Kana result overlay with manual Continue
-- Kotoba Rain 0-second finish fix
-- v11.6 touch interactions
-- v11.5 dashboard clarity
-- v11.4 adaptive learning
+- navigation performance fixes from v11.7.1
+- Today learning summary
+- Keep Learning logic
+- writing-system colour cues
+- Kana answer overlay/manual Continue
+- Kotoba Rain timer fix
+- touch enhancements
+- adaptive learning
 
 VERSION / CACHE
 ---------------
-Release and service-worker references are bumped to v11.7.1.
+Release and service-worker references are bumped to v11.7.2.
 
 No Supabase migration is required.

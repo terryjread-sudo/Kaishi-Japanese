@@ -1,14 +1,14 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.1 — Journey / Japan Ready native carousel
+ * Kaishi Quest v11.7.2 — Journey / Japan Ready native carousel
  *
  * Uses the mobile pattern of partially revealing the neighbouring card.
  * No instructional text is required: the visible edge + page dots indicate
  * horizontal content. Native scrolling keeps interaction smooth.
  */
 (() => {
-  const RELEASE='11.7.1';
+  const RELEASE='11.7.2';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){
@@ -59,13 +59,45 @@
       }
       @media(min-width:720px){
         #campaignChooser .campaign-preview{
-          padding-right:0!important;gap:14px!important
+          padding-right:0!important;gap:14px!important;overflow-x:visible!important
         }
-        #campaignChooser .campaign-preview-panel{flex-basis:calc(50% - 7px)!important}
+        #campaignChooser .campaign-preview-panel{
+          flex-basis:calc(50% - 7px)!important;
+          cursor:pointer
+        }
         .campaign-carousel-dots{display:none}
+      }
+      .campaign-card-heading{
+        display:flex;align-items:center;justify-content:space-between;gap:8px;
+        margin:0 0 10px;padding:0 2px
+      }
+      .campaign-card-heading strong{font-size:.9rem}
+      .campaign-card-heading small{color:#64748b}
+      @media(hover:hover) and (pointer:fine){
+        #campaignChooser .campaign-preview-panel:hover{
+          transform:translateY(-1px);
+          box-shadow:0 10px 24px #17255412
+        }
       }
     `;
     document.head.appendChild(style);
+  }
+
+  function ensureCardHeadings(){
+    const journey=$('#journeyCampaignPreview');
+    const japan=$('#japanReadyCampaignPreview');
+    if(journey && !journey.querySelector('.campaign-card-heading')){
+      const h=document.createElement('div');
+      h.className='campaign-card-heading';
+      h.innerHTML='<strong>📖 Japanese Journey</strong><small>Full learning path</small>';
+      journey.prepend(h);
+    }
+    if(japan && !japan.querySelector('.campaign-card-heading')){
+      const h=document.createElement('div');
+      h.className='campaign-card-heading';
+      h.innerHTML='<strong>✈️ Japan Ready</strong><small>Practical travel Japanese</small>';
+      japan.prepend(h);
+    }
   }
 
   function ensureDots(){
@@ -148,10 +180,48 @@
     requestAnimationFrame(()=>scrollToIndex(journeyActive?0:1,false));
   }
 
+  function installDesktopInteractions(){
+    const ps=panels();
+    ps.forEach((panel,index)=>{
+      if(panel.dataset.desktopBound==='1')return;
+      panel.dataset.desktopBound='1';
+      panel.setAttribute('tabindex','0');
+      panel.addEventListener('click',event=>{
+        if(event.target.closest('button,a,input,select,textarea'))return;
+        activateIndex(index);
+        if(window.matchMedia('(max-width:719px)').matches)scrollToIndex(index,false);
+      });
+      panel.addEventListener('keydown',event=>{
+        if(event.key==='Enter' || event.key===' '){
+          event.preventDefault();
+          activateIndex(index);
+        }
+      });
+    });
+
+    const strip=$('#campaignChooser .campaign-preview');
+    if(strip && strip.dataset.keyboardBound!=='1'){
+      strip.dataset.keyboardBound='1';
+      strip.setAttribute('tabindex','0');
+      strip.addEventListener('keydown',event=>{
+        if(event.key!=='ArrowLeft' && event.key!=='ArrowRight')return;
+        event.preventDefault();
+        const journeyActive=$('#chooseJourneyCampaign')?.classList.contains('active');
+        const current=journeyActive?0:1;
+        const next=event.key==='ArrowRight'?Math.min(1,current+1):Math.max(0,current-1);
+        activateIndex(next);
+        if(window.matchMedia('(max-width:719px)').matches)scrollToIndex(next,false);
+        updateDots(next);
+      });
+    }
+  }
+
   function install(){
     ensureStyles();
+    ensureCardHeadings();
     ensureDots();
     installScrollSync();
+    installDesktopInteractions();
     syncToExistingState();
 
     // Keep carousel aligned when existing app state changes programmatically.

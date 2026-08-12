@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.1 — Dashboard Clarity
+ * Kaishi Quest v11.7.2 — Dashboard Clarity
  *
  * Goal: the front dashboard should answer three questions:
  *   1. What should I do now?
@@ -12,7 +12,7 @@
  * mission composition, grading or cloud progress.
  */
 (() => {
-  const RELEASE='11.7.1';
+  const RELEASE='11.7.2';
   let installed=false;
 
   function el(id){ return document.getElementById(id); }

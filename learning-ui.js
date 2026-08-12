@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.1 — Learning UI & Daily Summary
+ * Kaishi Quest v11.7.2 — Learning UI & Daily Summary
  *
  * Adds:
  * - persistent Today summary available after activities are closed
@@ -11,7 +11,7 @@
  * - Kana correct/wrong feedback as a modal overlay, with manual Continue only
  */
 (() => {
-  const RELEASE='11.7.1';
+  const RELEASE='11.7.2';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 
@@ -179,15 +179,33 @@
 
       /* Keep learning after the daily route. */
       .keep-learning-panel{
-        margin-top:14px;padding:16px;border-radius:20px;
+        margin-top:14px;padding:14px;border-radius:20px;
         background:linear-gradient(135deg,#eff6ff,#faf5ff);
         border:1px solid #c7d2fe
       }
-      .keep-learning-panel h3{margin:.2rem 0}
-      .keep-learning-panel p{margin:.25rem 0 .8rem;color:#475569}
-      .keep-learning-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-      .keep-learning-actions button{min-height:72px;text-align:left}
-      .keep-learning-actions small{display:block;margin-top:3px;color:#64748b}
+      .keep-learning-panel h3{margin:.15rem 0}
+      .keep-learning-panel p{margin:.2rem 0 .55rem;color:#64748b;font-size:.82rem}
+      .keep-learning-actions{
+        display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;
+        scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+        scrollbar-width:none;padding:2px max(18vw,56px) 4px 0
+      }
+      .keep-learning-actions::-webkit-scrollbar{display:none}
+      .keep-learning-actions button{
+        flex:0 0 78%;min-height:94px;text-align:left;
+        scroll-snap-align:start;scroll-snap-stop:always;
+        padding:14px;border-radius:16px
+      }
+      .keep-learning-actions button strong{display:block;font-size:1rem}
+      .keep-learning-actions small{display:block;margin-top:4px;color:#64748b;font-size:.74rem;line-height:1.25}
+      .keep-learning-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+      .keep-learning-dot{width:7px;height:7px;border-radius:50%;background:#cbd5e1;min-height:7px!important;padding:0!important}
+      .keep-learning-dot.active{width:18px;border-radius:999px;background:#2563eb}
+      @media(min-width:720px){
+        .keep-learning-actions{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;padding-right:0}
+        .keep-learning-actions button{min-width:0;min-height:92px}
+        .keep-learning-dots{display:none}
+      }
 
       /* Visible touch affordances. */
       .touch-visual-hint{
@@ -429,13 +447,27 @@
     panel.id='keepLearningPanel';
     panel.className='keep-learning-panel';
     panel.innerHTML=`
-      <span class="eyebrow">Today's route complete</span>
-      <h3>Want to keep going?</h3>
-      <p>Your three recommended steps are done. Anything below is optional extra learning.</p>
-      <div class="keep-learning-actions">
-        <button id="keepAnotherMission" class="primary">📖 Another mission<small>Keep building the current topic</small></button>
-        <button id="keepReviews">🧠 Reviews<small>Strengthen words that are due</small></button>
-        <button id="keepPractice">🎯 Practice<small>Choose a learning activity</small></button>
+      <span class="eyebrow">Today's route complete ✓</span>
+      <h3>Keep learning?</h3>
+      <p>Optional extras</p>
+      <div id="keepLearningActions" class="keep-learning-actions">
+        <button id="keepAnotherMission" class="primary">
+          <strong>📖 Another Mission</strong>
+          <small>Continue your topic</small>
+        </button>
+        <button id="keepReviews">
+          <strong>🧠 Reviews</strong>
+          <small>Strengthen due words</small>
+        </button>
+        <button id="keepPractice">
+          <strong>🎯 Practice</strong>
+          <small>Play a learning activity</small>
+        </button>
+      </div>
+      <div id="keepLearningDots" class="keep-learning-dots" aria-hidden="true">
+        <span class="keep-learning-dot active"></span>
+        <span class="keep-learning-dot"></span>
+        <span class="keep-learning-dot"></span>
       </div>
     `;
     route.insertAdjacentElement('afterend',panel);
@@ -447,6 +479,7 @@
     $('#keepPractice').onclick=()=>{
       try{openJourney('practice')}catch{$('#openPracticeHub')?.click()}
     };
+    wireKeepLearningCarousel();
   }
 
   /* ---------- touch affordance visuals ---------- */
@@ -518,6 +551,30 @@
     }).observe(dialog,{attributes:true,attributeFilter:['open']});
   }
 
+  function wireKeepLearningCarousel(){
+    const strip=$('#keepLearningActions');
+    const dots=[...document.querySelectorAll('#keepLearningDots .keep-learning-dot')];
+    if(!strip || strip.dataset.carouselBound==='1')return;
+    strip.dataset.carouselBound='1';
+
+    let settle=null;
+    strip.addEventListener('scroll',()=>{
+      clearTimeout(settle);
+      settle=setTimeout(()=>{
+        const cards=[...strip.querySelectorAll('button')];
+        if(!cards.length)return;
+        const center=strip.scrollLeft + strip.clientWidth/2;
+        let best=0,bestDist=Infinity;
+        cards.forEach((card,i)=>{
+          const c=card.offsetLeft + card.offsetWidth/2;
+          const d=Math.abs(c-center);
+          if(d<bestDist){best=i;bestDist=d}
+        });
+        dots.forEach((dot,i)=>dot.classList.toggle('active',i===best));
+      },80);
+    },{passive:true});
+  }
+
   function install(){
     ensureStyles();
     ensureDaily();
@@ -528,6 +585,7 @@
     colourJapanese(document.body);
     refreshTodaySummary();
     ensureKeepLearning();
+    wireKeepLearningCarousel();
     ensureTouchVisuals();
     patchKanaFeedback();
 
