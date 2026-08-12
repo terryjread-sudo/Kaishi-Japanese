@@ -8,7 +8,7 @@
  * controls make the two destinations discoverable and accessible.
  */
 (() => {
-  const RELEASE='11.8.4';
+  const RELEASE='11.8.5';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){
@@ -44,7 +44,7 @@
         flex:0 0 100%!important;
         min-width:0!important;
         max-width:100%!important;
-        min-height:var(--campaign-equal-height,auto)!important;
+        min-height:0!important;
         scroll-snap-align:start!important;
         scroll-snap-stop:always!important;
         box-sizing:border-box!important;
@@ -62,39 +62,81 @@
       }
       #campaignChooser .campaign-preview-panel[hidden]{display:block!important}
       #journeyCampaignPreview,#japanReadyCampaignPreview{
-        border-radius:24px!important;
+        border-radius:24px!important;padding:12px!important;border:1px solid!important
       }
-      .campaign-carousel-dots{
+      #journeyCampaignPreview{
+        background:linear-gradient(135deg,#ecfdf5,#eff6ff 58%,#f5f3ff)!important;
+        border-color:#86efac!important
+      }
+      #japanReadyCampaignPreview{
+        background:linear-gradient(135deg,#fff7ed,#fff1f2)!important;
+        border-color:#fed7aa!important
+      }
+      #japanReadyCampaignPreview .japan-ready-dashboard-card{
+        display:grid!important;grid-template-columns:1fr!important;gap:13px!important;
+        padding:18px!important;border-radius:22px!important;
+        background:linear-gradient(145deg,#ffffff,#f8fafc)!important;
+        border:1px solid #dbe4f0!important;box-shadow:0 8px 25px #17255410!important
+      }
+      #japanReadyCampaignPreview .japan-ready-home-main{
+        order:1!important;display:block!important;padding:0!important;border:0!important;
+        grid-column:1!important;border-radius:0!important;background:transparent!important
+      }
+      #japanReadyCampaignPreview .japan-ready-home-main img{display:none!important}
+      #japanReadyCampaignPreview .home-aiko-guide{
+        order:2!important;grid-template-columns:48px minmax(0,1fr)!important;
+        grid-column:1!important;
+        gap:10px!important;padding:11px 12px!important;border:0!important;
+        border-radius:14px!important;background:#fff7ed!important
+      }
+      #japanReadyCampaignPreview .home-aiko-guide img{
+        width:48px!important;height:48px!important;border-radius:14px!important
+      }
+      #japanReadyCampaignPreview .journey-home-progress{order:3!important;grid-column:1!important}
+      #japanReadyCampaignPreview .journey-home-actions{order:4!important;grid-column:1!important;margin-top:auto!important}
+      .campaign-carousel-tabs{
         display:grid;grid-template-columns:1fr 1fr;gap:6px;
         margin:4px 0 0;padding:4px;border-radius:16px;
         background:#e2e8f0
       }
-      .campaign-carousel-dot{
+      .campaign-carousel-tab{
         width:100%;min-height:44px!important;border-radius:12px;border:0;
         padding:8px 10px!important;background:transparent;color:#475569;
         font-size:.78rem;font-weight:850
       }
-      .campaign-carousel-dot.active{
+      .campaign-carousel-tab.active{
         background:#fff;color:#1d4ed8;box-shadow:0 3px 10px #17255418
       }
-      .campaign-carousel-dot:focus-visible{
+      .campaign-carousel-tab:focus-visible,.campaign-pagination-dot:focus-visible{
         outline:3px solid #f59e0b;outline-offset:2px
       }
-      .campaign-swipe-hint{
-        display:flex;align-items:center;justify-content:center;gap:7px;
-        min-height:30px;margin:1px 0 0;color:#64748b;font-size:.7rem;
-        font-weight:800;letter-spacing:.01em
+      .campaign-pagination-dots{
+        display:flex;align-items:center;justify-content:center;gap:2px;
+        min-height:34px;margin:0;padding:0
       }
-      .campaign-swipe-hint b{color:#2563eb;font-size:1rem;line-height:1}
-      .campaign-swipe-hint[data-direction="next"] b:last-child{animation:campaignSwipeNext 1.5s ease-in-out infinite}
-      .campaign-swipe-hint[data-direction="previous"] b:first-child{animation:campaignSwipePrevious 1.5s ease-in-out infinite}
-      @keyframes campaignSwipeNext{
-        0%,100%{transform:translateX(0);opacity:.65}
-        50%{transform:translateX(4px);opacity:1}
+      .campaign-pagination-dot{
+        width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;
+        border:0!important;border-radius:50%!important;background:transparent!important
       }
-      @keyframes campaignSwipePrevious{
-        0%,100%{transform:translateX(0);opacity:.65}
-        50%{transform:translateX(-4px);opacity:1}
+      .campaign-pagination-dot::before{
+        content:'';display:block;width:9px;height:9px;margin:auto;box-sizing:border-box;
+        border:2px solid #64748b;border-radius:50%;background:transparent
+      }
+      .campaign-pagination-dot.active::before{
+        background:#2563eb;border-color:#2563eb;box-shadow:0 0 0 4px #dbeafe
+      }
+      @media(max-width:520px){
+        #japanReadyCampaignPreview .japan-ready-dashboard-card{
+          gap:11px!important;padding:15px!important;border-radius:18px!important;
+          box-shadow:0 4px 14px #1725540a!important
+        }
+        #japanReadyCampaignPreview .home-aiko-guide{
+          grid-template-columns:42px minmax(0,1fr)!important;
+          padding:10px!important;border-radius:12px!important;background:#fff7ed!important
+        }
+        #japanReadyCampaignPreview .home-aiko-guide img{
+          width:42px!important;height:42px!important;border-radius:12px!important
+        }
       }
       @media(min-width:720px){
         #campaignChooser .campaign-preview{
@@ -106,7 +148,7 @@
           scroll-snap-align:start!important;
           cursor:pointer
         }
-        .campaign-carousel-dots,.campaign-swipe-hint{display:none}
+        .campaign-carousel-tabs,.campaign-pagination-dots{display:none}
         #campaignChooser .campaign-preview-panel .campaign-card-heading{
           visibility:visible!important
         }
@@ -159,23 +201,28 @@
     if($('#campaignCarouselDots'))return;
     const chooser=$('#campaignChooser');
     if(!chooser)return;
-    const dots=document.createElement('div');
-    dots.id='campaignCarouselDots';
-    dots.className='campaign-carousel-dots';
-    dots.setAttribute('aria-label','Study mode pages');
-    dots.innerHTML=`
-      <button class="campaign-carousel-dot active" data-carousel-index="0" aria-label="Show Japanese Journey">Journey</button>
-      <button class="campaign-carousel-dot" data-carousel-index="1" aria-label="Show Japan Ready">Japan Ready</button>
+    const tabs=document.createElement('div');
+    tabs.id='campaignCarouselDots';
+    tabs.className='campaign-carousel-tabs';
+    tabs.setAttribute('aria-label','Study mode pages');
+    tabs.innerHTML=`
+      <button class="campaign-carousel-tab active" data-carousel-index="0" aria-label="Show Japanese Journey">Journey</button>
+      <button class="campaign-carousel-tab" data-carousel-index="1" aria-label="Show Japan Ready">Japan Ready</button>
     `;
-    chooser.querySelector('.campaign-preview')?.insertAdjacentElement('beforebegin',dots);
+    const strip=chooser.querySelector('.campaign-preview');
+    strip?.insertAdjacentElement('beforebegin',tabs);
 
-    const hint=document.createElement('div');
-    hint.id='campaignSwipeHint';
-    hint.className='campaign-swipe-hint';
-    hint.setAttribute('aria-live','polite');
-    dots.insertAdjacentElement('afterend',hint);
+    const dots=document.createElement('div');
+    dots.id='campaignPaginationDots';
+    dots.className='campaign-pagination-dots';
+    dots.setAttribute('aria-label','Swipe pages');
+    dots.innerHTML=`
+      <button class="campaign-pagination-dot active" data-carousel-index="0" aria-label="Show Japanese Journey"></button>
+      <button class="campaign-pagination-dot" data-carousel-index="1" aria-label="Show Japan Ready"></button>
+    `;
+    strip?.insertAdjacentElement('afterend',dots);
 
-    dots.querySelectorAll('[data-carousel-index]').forEach(button=>{
+    [...tabs.querySelectorAll('[data-carousel-index]'),...dots.querySelectorAll('[data-carousel-index]')].forEach(button=>{
       button.addEventListener('click',()=>{
         const index=Number(button.dataset.carouselIndex||0);
         scrollToIndex(index,true);
@@ -207,22 +254,15 @@
   }
 
   function updateDots(index){
-    document.querySelectorAll('.campaign-carousel-dot').forEach((dot,i)=>{
-      dot.classList.toggle('active',i===index);
-      dot.setAttribute('aria-current',i===index?'true':'false');
+    document.querySelectorAll('[data-carousel-index]').forEach(control=>{
+      const active=Number(control.dataset.carouselIndex)===index;
+      control.classList.toggle('active',active);
+      control.setAttribute('aria-current',active?'page':'false');
     });
     panels().forEach((panel,i)=>{
       panel.classList.toggle('carousel-current',i===index);
       panel.setAttribute('aria-current',i===index?'true':'false');
     });
-    const hint=$('#campaignSwipeHint');
-    if(hint){
-      const next=index===0;
-      hint.dataset.direction=next?'next':'previous';
-      hint.innerHTML=next
-        ? '<span>Swipe left for Japan Ready</span><b aria-hidden="true">→</b>'
-        : '<b aria-hidden="true">←</b><span>Swipe right for Journey</span>';
-    }
   }
 
   function installScrollSync(){
@@ -252,36 +292,6 @@
   function syncToExistingState(){
     const journeyActive=$('#chooseJourneyCampaign')?.classList.contains('active');
     requestAnimationFrame(()=>scrollToIndex(journeyActive?0:1,false));
-  }
-
-  let heightRaf=0;
-  function syncPanelHeights(){
-    const ps=panels();
-    if(ps.length<2)return;
-
-    cancelAnimationFrame(heightRaf);
-    heightRaf=requestAnimationFrame(()=>{
-      // Clear previous equal-height constraint before measuring real content.
-      ps.forEach(panel=>panel.style.removeProperty('--campaign-equal-height'));
-      const max=Math.ceil(Math.max(...ps.map(panel=>panel.scrollHeight)));
-      if(max>0){
-        ps.forEach(panel=>panel.style.setProperty('--campaign-equal-height',`${max}px`));
-      }
-    });
-  }
-
-  function installHeightSync(){
-    const ps=panels();
-    if(!ps.length)return;
-    syncPanelHeights();
-
-    if('ResizeObserver' in window){
-      const observer=new ResizeObserver(()=>syncPanelHeights());
-      ps.forEach(panel=>observer.observe(panel));
-    }
-
-    // Dynamic Journey/Japan Ready data can update after cloud/app rendering.
-    [250,700,1500,2800].forEach(ms=>setTimeout(syncPanelHeights,ms));
   }
 
   function installDesktopInteractions(){
@@ -326,7 +336,6 @@
     ensureDots();
     installScrollSync();
     installDesktopInteractions();
-    installHeightSync();
     const journeyActive=$('#chooseJourneyCampaign')?.classList.contains('active');
     updateDots(journeyActive?0:1);
     syncToExistingState();
@@ -337,11 +346,9 @@
     });
 
     window.addEventListener('resize',()=>{
-      syncPanelHeights();
       syncToExistingState();
     },{passive:true});
     window.addEventListener('pageshow',()=>{
-      syncPanelHeights();
       syncToExistingState();
     });
   }

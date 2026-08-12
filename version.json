@@ -1,7 +1,7 @@
 {
-  "version": "11.8.4",
+  "version": "11.8.5",
   "released": "2026-08-13",
-  "title": "Matched Campaign Cards & Swipe Guidance",
+  "title": "Unified Campaign Cards & Swipe Dots",
   "changes": [
     "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
     "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
@@ -18,9 +18,10 @@
     "Stored all test answers, settings and resumable missions separately from personal learning progress.",
     "Paused cloud progress sync, snapshots and flushes while the test learner is active.",
     "Added a persistent test-mode banner with one-tap return to the real profile.",
-    "Matched the Japanese Journey card structure and dimensions to Japan Ready.",
-    "Added a contextual animated swipe indicator in both campaign directions.",
+    "Restored the Japanese Journey single-card design with a coloured outer surround.",
+    "Restyled Japan Ready to match Journey's unified card hierarchy and dimensions.",
+    "Added accessible pagination dots beneath the mobile cards with the active page filled.",
     "Kept the labelled Journey and Japan Ready selector for direct navigation.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.4."
+    "Bumped release-controlled assets and service-worker caches to v11.8.5."
   ]
 }
