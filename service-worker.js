@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.4.3';
+const VERSION='11.5.0';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -21,6 +21,7 @@ const SHELL=[
   v('./release-manager.js'),
   v('./battle-listen.js'),
   v('./kotoba-activity.js'),
+  v('./dashboard-clarity.js'),
   v('./adaptive-learning.js'),
   v('./campfire-recall.js'),
   v('./word-rain.js'),

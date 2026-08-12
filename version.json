@@ -1,13 +1,18 @@
 {
-  "version": "11.4.3",
-  "released": "2026-08-10",
-  "title": "Kotoba Rain difficulty tuning",
+  "version": "11.5.0",
+  "released": "2026-08-11",
+  "title": "Dashboard Clarity",
   "changes": [
-    "Reads the controlled Japanese word aloud when a new Kotoba Rain round begins.",
-    "Limits Kotoba Rain to a maximum of three falling choices at once: one correct word and up to two distractors.",
-    "Slows the opening falling speed from roughly 5.2 seconds to 6.4 seconds and makes the difficulty ramp gentler.",
-    "Keeps a minimum fall duration of 3.2 seconds so late rounds remain playable.",
-    "Retains all v11.4 Adaptive Learning, Campfire Recall and Classic-only Activity Landmark changes.",
-    "Bumped release-controlled assets and service-worker caches to v11.4.3."
+    "Redesigned the front dashboard around three questions: what to do next, how Japanese is progressing, and what needs attention.",
+    "Combined Journey topic, Sensei guidance, mission composition and Continue/Reviews into one Today's Learning card.",
+    "Removed the eight-card dashboard stats grid and replaced it with a capability chart for Recognising, Recall and Usable vocabulary.",
+    "Simplified Study Modes to a Journey / Japan Ready switch without permanent explanatory copy.",
+    "Replaced duplicated dashboard shortcuts with four clear destinations: Practice, Collection, Progress and Community.",
+    "Moved Invite out of the front dashboard; it remains available from Community.",
+    "Made streak text actionable by showing how many answers remain to protect today's streak.",
+    "Removed generic hero text and permanent avatar milestone copy from the dashboard.",
+    "Renamed Activity Village wording to Practice Activities where it remains visible.",
+    "Retains all v11.4 Adaptive Learning, Campfire Recall, Kotoba Rain and Kotoba Colosseum functionality.",
+    "Bumped release-controlled assets and service-worker caches to v11.5.0."
   ]
 }
