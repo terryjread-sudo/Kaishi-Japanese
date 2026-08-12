@@ -3,9 +3,9 @@
 /*
  * Kaishi Quest v11.8.1 — Journey / Japan Ready native carousel
  *
- * Uses the mobile pattern of partially revealing the neighbouring card.
- * No instructional text is required: the visible edge + page dots indicate
- * horizontal content. Native scrolling keeps interaction smooth.
+ * Uses a labelled mobile selector with one full-width campaign at a time.
+ * Native scrolling remains available for touch users while the explicit
+ * controls make the two destinations discoverable and accessible.
  */
 (() => {
   const RELEASE='11.8.1';
@@ -29,10 +29,10 @@
         align-items:stretch!important;
         overflow-x:auto!important;overflow-y:visible!important;
         scroll-snap-type:x mandatory!important;
-        scroll-padding-inline:12px!important;
+        scroll-padding-inline:0!important;
         scroll-behavior:smooth!important;
         -webkit-overflow-scrolling:touch;
-        padding:12px 12px 10px!important;
+        padding:10px 0 8px!important;
         scrollbar-width:none;
         touch-action:pan-x pan-y;
         overscroll-behavior-x:contain;
@@ -41,11 +41,11 @@
       #campaignChooser .campaign-preview-panel{
         display:flex!important;
         flex-direction:column!important;
-        flex:0 0 calc(100% - 38px)!important;
+        flex:0 0 100%!important;
         min-width:0!important;
-        max-width:calc(100% - 38px)!important;
+        max-width:100%!important;
         min-height:var(--campaign-equal-height,auto)!important;
-        scroll-snap-align:center!important;
+        scroll-snap-align:start!important;
         scroll-snap-stop:always!important;
         box-sizing:border-box!important;
         overflow:hidden!important;
@@ -65,15 +65,20 @@
         border-radius:24px!important;
       }
       .campaign-carousel-dots{
-        display:flex;justify-content:center;gap:6px;margin:3px 0 2px
+        display:grid;grid-template-columns:1fr 1fr;gap:6px;
+        margin:4px 0 0;padding:4px;border-radius:16px;
+        background:#e2e8f0
       }
       .campaign-carousel-dot{
-        width:7px;height:7px;border-radius:50%;border:0;padding:0!important;
-        min-height:7px!important;background:#cbd5e1
+        width:100%;min-height:44px!important;border-radius:12px;border:0;
+        padding:8px 10px!important;background:transparent;color:#475569;
+        font-size:.78rem;font-weight:850
       }
-      .campaign-carousel-dot.active{width:18px;border-radius:999px;background:#2563eb}
-      .campaign-carousel-caption{
-        text-align:center;color:#94a3b8;font-size:.68rem;margin-top:1px
+      .campaign-carousel-dot.active{
+        background:#fff;color:#1d4ed8;box-shadow:0 3px 10px #17255418
+      }
+      .campaign-carousel-dot:focus-visible{
+        outline:3px solid #f59e0b;outline-offset:2px
       }
       @media(min-width:720px){
         #campaignChooser .campaign-preview{
@@ -143,10 +148,10 @@
     dots.className='campaign-carousel-dots';
     dots.setAttribute('aria-label','Study mode pages');
     dots.innerHTML=`
-      <button class="campaign-carousel-dot active" data-carousel-index="0" aria-label="Journey"></button>
-      <button class="campaign-carousel-dot" data-carousel-index="1" aria-label="Japan Ready"></button>
+      <button class="campaign-carousel-dot active" data-carousel-index="0" aria-label="Show Japanese Journey">Journey</button>
+      <button class="campaign-carousel-dot" data-carousel-index="1" aria-label="Show Japan Ready">Japan Ready</button>
     `;
-    chooser.insertAdjacentElement('afterend',dots);
+    chooser.querySelector('.campaign-preview')?.insertAdjacentElement('beforebegin',dots);
 
     dots.querySelectorAll('[data-carousel-index]').forEach(button=>{
       button.addEventListener('click',()=>{
