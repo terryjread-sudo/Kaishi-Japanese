@@ -182,18 +182,41 @@
       .kb-monster-hp span.filled{background:#f43f5e}
       .kb-monster-hit{animation:kbShake .32s ease}
       .kb-monster-defeat{animation:kbPop .5s ease forwards}
+      .kb-monster-sprite.counter-lunge{animation:kbMonsterAttack .66s cubic-bezier(.2,.8,.25,1)}
       @keyframes kbShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-4deg)}75%{transform:translateX(8px) rotate(4deg)}}
       @keyframes kbPop{to{transform:scale(0) rotate(30deg);opacity:0}}
+      @keyframes kbMonsterAttack{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(58px) scale(1.12)}52%{transform:translateY(68px) scale(1.08)}70%{transform:translateY(18px) scale(1.02)}}
       .kb-party-row{position:relative;display:flex;justify-content:center;gap:14px;padding-top:6px}
       .kb-hero{text-align:center;font-size:.68rem;color:#e2e8f0;opacity:1;transition:opacity .2s ease,transform .2s ease;width:78px}
       .kb-hero.ko{opacity:.4}
       .kb-hero.acting{transform:translateY(-6px)}
+      .kb-hero.attack-lunge{animation:kbHeroAttack .66s cubic-bezier(.2,.8,.25,1)}
+      .kb-hero.hero-knockback{animation:kbHeroKnockback .56s ease}
+      .kb-hero.revive-glow{animation:kbReviveHero .9s ease}
       .kb-hero-sprite-wrap{position:relative;height:78px;display:flex;align-items:flex-end;justify-content:center}
       .kb-hero-sprite{max-height:78px;max-width:78px;width:auto;display:block;filter:drop-shadow(0 5px 7px #000a);transition:filter .2s ease}
       .kb-hero.ko .kb-hero-sprite{filter:grayscale(1) brightness(.55) drop-shadow(0 5px 7px #000a)}
       .kb-hero-ko-badge{position:absolute;top:-2px;right:2px;font-size:1rem;text-shadow:0 2px 3px #000}
       .kb-hero-sprite.hit{animation:kbFlash .3s ease}
       @keyframes kbFlash{0%,100%{filter:drop-shadow(0 4px 6px #000a) brightness(1)}50%{filter:drop-shadow(0 4px 6px #000a) brightness(2.4)}}
+      @keyframes kbHeroAttack{0%,100%{transform:translateY(-6px) scale(1)}35%{transform:translateY(-70px) scale(1.13)}52%{transform:translateY(-76px) rotate(-4deg) scale(1.1)}72%{transform:translateY(-18px)}}
+      @keyframes kbHeroKnockback{0%,100%{transform:translate(0,0)}32%{transform:translate(-15px,16px) rotate(-10deg);filter:brightness(2)}58%{transform:translate(8px,8px) rotate(5deg)}}
+      @keyframes kbReviveHero{0%,100%{filter:none;transform:translateY(0)}45%{filter:drop-shadow(0 0 18px #86efac) brightness(1.7);transform:translateY(-12px)}}
+      .kb-field.field-impact{animation:kbFieldImpact .34s ease}
+      @keyframes kbFieldImpact{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}55%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+      .kb-battle-fx{position:absolute;z-index:12;pointer-events:none;display:grid;place-items:center;font-family:system-ui,sans-serif;font-weight:950}
+      .kb-battle-fx.monster{left:50%;top:25%;transform:translate(-50%,-50%)}
+      .kb-battle-fx.party{left:50%;bottom:15%;transform:translate(-50%,50%)}
+      .kb-battle-fx.revive{left:50%;bottom:8%;transform:translate(-50%,50%)}
+      .kb-impact-ring{width:94px;height:94px;border-radius:50%;border:7px solid #fff7ed;box-shadow:0 0 0 8px #f59e0b88,0 0 42px #fde047;animation:kbImpactRing .62s ease-out forwards}
+      .kb-impact-slash{position:absolute;width:112px;height:18px;border-radius:999px;background:linear-gradient(90deg,transparent,#fff,#fde047,transparent);transform:rotate(-28deg);box-shadow:0 0 18px #facc15;animation:kbSlash .5s ease-out forwards}
+      .kb-damage-pop{position:absolute;top:-20px;padding:5px 10px;border-radius:999px;background:#7f1d1d;color:#fff;font-size:1rem;text-shadow:0 2px 0 #000;animation:kbDamagePop .8s ease-out forwards;white-space:nowrap}
+      .kb-battle-fx.party .kb-impact-ring{border-color:#fee2e2;box-shadow:0 0 0 8px #ef444466,0 0 38px #f87171}
+      .kb-battle-fx.revive .kb-impact-ring{border-color:#dcfce7;box-shadow:0 0 0 8px #22c55e66,0 0 42px #86efac}
+      .kb-battle-fx.revive .kb-damage-pop{background:#166534}
+      @keyframes kbImpactRing{0%{opacity:0;transform:scale(.25)}45%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.45)}}
+      @keyframes kbSlash{0%{opacity:0;transform:rotate(-28deg) scaleX(.2)}35%{opacity:1;transform:rotate(-28deg) scaleX(1.2)}100%{opacity:0;transform:rotate(-28deg) translateX(35px) scaleX(.8)}}
+      @keyframes kbDamagePop{0%{opacity:0;transform:translateY(12px) scale(.7)}30%{opacity:1;transform:translateY(-8px) scale(1.12)}100%{opacity:0;transform:translateY(-42px) scale(1)}}
       .kb-hero b{display:block;margin-top:2px}
       .kb-hero small{display:block;color:#94a3b8}
       .kb-menu{margin-top:16px;background:#0b1330;border:3px solid #fde68a;border-radius:12px;padding:10px;display:grid;gap:8px}
@@ -208,6 +231,10 @@
       .kb-choice{background:#f1f5f9;border:2px solid transparent;font-size:1.05rem;padding:16px;text-align:left;font-weight:700}
       .kb-choice.correct{background:#dcfce7;border-color:#22c55e}
       .kb-choice.wrong{background:#fee2e2;border-color:#ef4444}
+      @media(prefers-reduced-motion:reduce){
+        .kb-monster-sprite,.kb-hero,.kb-field,.kb-battle-fx>*{animation:none!important}
+        .kb-battle-fx{display:none!important}
+      }
     `;
     document.head.appendChild(style);
   }
@@ -273,7 +300,7 @@
   function partyRowHtml(actingId) {
     return `<div class="kb-party-row">${kb.party
       .map(
-        p => `<div class="kb-hero ${p.alive ? '' : 'ko'} ${p.id === actingId ? 'acting' : ''}">
+        p => `<div class="kb-hero ${p.alive ? '' : 'ko'} ${p.id === actingId ? 'acting' : ''}" id="kbHeroUnit-${p.id}">
           <div class="kb-hero-sprite-wrap">
             <img class="kb-hero-sprite" id="kbHero-${p.id}" src="${p.sprite}?v=${SPRITE_V}" alt="${esc(p.name)}">
             ${p.alive ? '' : '<span class="kb-hero-ko-badge">💀</span>'}
@@ -297,6 +324,48 @@
         ${partyRowHtml(actingId)}
       </section>
     `;
+  }
+
+  function animateBattleAction(kind, options = {}) {
+    const field = $('.kb-field');
+    if (!field) return;
+    const monster = $('#kbMonsterEmoji');
+    const actor = options.actorId ? $(`#kbHeroUnit-${options.actorId}`) : null;
+    const target = options.targetId ? $(`#kbHeroUnit-${options.targetId}`) : null;
+    const fx = document.createElement('div');
+    const isPlayerAttack = kind === 'player';
+    const isRevive = kind === 'revive';
+    fx.className = `kb-battle-fx ${isPlayerAttack ? 'monster' : isRevive ? 'revive' : 'party'}`;
+    fx.setAttribute('aria-hidden', 'true');
+    fx.innerHTML = `<i class="kb-impact-ring"></i>${isRevive ? '' : '<i class="kb-impact-slash"></i>'}<b class="kb-damage-pop">${isRevive ? 'REVIVE!' : options.critical ? 'CRITICAL!' : 'HIT!'}</b>`;
+    field.appendChild(fx);
+
+    if (isPlayerAttack) {
+      actor?.classList.add('attack-lunge');
+      setTimeout(() => {
+        field.classList.add('field-impact');
+        monster?.classList.add(options.defeated ? 'kb-monster-defeat' : 'kb-monster-hit');
+      }, 250);
+    } else if (isRevive) {
+      actor?.classList.add('attack-lunge');
+      target?.classList.add('revive-glow');
+    } else {
+      monster?.classList.add('counter-lunge');
+      setTimeout(() => {
+        field.classList.add('field-impact');
+        target?.classList.add('hero-knockback');
+        target?.querySelector('.kb-hero-sprite')?.classList.add('hit');
+      }, 240);
+    }
+
+    setTimeout(() => {
+      actor?.classList.remove('attack-lunge');
+      target?.classList.remove('hero-knockback', 'revive-glow');
+      target?.querySelector('.kb-hero-sprite')?.classList.remove('hit');
+      monster?.classList.remove('counter-lunge', 'kb-monster-hit');
+      field.classList.remove('field-impact');
+      fx.remove();
+    }, options.defeated ? 900 : 820);
   }
 
   function renderMenu() {
@@ -414,42 +483,33 @@
 
     let result;
     let victim = null;
-    const emoji = $('#kbMonsterEmoji');
     if (ok) {
       kb.correct++;
       if (!kb.hint) kb.critical++;
       if (kb.mode === 'attack') {
         kb.monsterHp--;
         SFX.hit();
-        if (emoji) {
-          emoji.classList.add('kb-monster-hit');
-          setTimeout(() => emoji.classList.remove('kb-monster-hit'), 320);
-        }
         result = `${esc(kb.actor.name)}'s ${esc(kb.actor.move)} lands true!`;
+        const defeated = kb.monsterHp <= 0;
         if (kb.monsterHp <= 0) {
           kb.defeated++;
           recordVictory();
           result = `${esc(currentMonster().name)} is defeated!`;
-          if (emoji) emoji.classList.add('kb-monster-defeat');
           setTimeout(() => SFX.monsterDefeat(), 120);
         }
+        animateBattleAction('player', { actorId: kb.actor.id, critical: !kb.hint, defeated });
       } else {
         kb.target.alive = true;
         SFX.revive();
         result = `${esc(kb.target.name)} rejoins the fight!`;
+        animateBattleAction('revive', { actorId: kb.actor.id, targetId: kb.target.id });
       }
     } else {
       victim = knockOutRandom();
       SFX.miss();
       result = victim ? `${esc(currentMonster().name)} strikes down ${esc(victim.name)}!` : `${esc(currentMonster().name)} lunges, but the party holds.`;
       kb.missed.push(v.id);
-      if (victim) {
-        const heroSprite = $(`#kbHero-${victim.id}`);
-        if (heroSprite) {
-          heroSprite.classList.add('hit');
-          setTimeout(() => heroSprite.classList.remove('hit'), 300);
-        }
-      }
+      animateBattleAction('enemy', { targetId: victim?.id });
     }
 
     const partyWiped = alive().length === 0;

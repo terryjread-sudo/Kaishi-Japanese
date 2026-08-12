@@ -12,7 +12,7 @@
  * mission composition, grading or cloud progress.
  */
 (() => {
-  const RELEASE='11.8.5';
+  const RELEASE='11.8.6';
   let installed=false;
 
   function el(id){ return document.getElementById(id); }

@@ -1667,3 +1667,75 @@ body.welcome-open{overflow:hidden}
 /* v11.2.3 cat-v2 alignment */
 .village-cat-v3{display:none!important}.village-cat-v2.cat-v2-fixed{width:clamp(29px,5.5%,42px)!important;height:clamp(43px,8.1%,62px)!important;padding:0!important;background:none!important;border:0!important;overflow:visible!important;transform:translate(-50%,-72%)!important;animation:none!important;position:absolute!important}.cat-v2-fixed .cat-part{position:absolute!important;display:block!important;object-fit:contain!important;max-width:none!important;max-height:none!important}.cat-v2-fixed .cat-body{left:7.8%!important;top:12.8%!important;width:84.4%!important;height:78.5%!important;z-index:3}.cat-v2-fixed .cat-tail{left:-10.5%!important;top:42.5%!important;width:55%!important;height:48%!important;z-index:2;transform-origin:82% 72%;animation:cv2tail 5.4s ease-in-out infinite alternate!important}.cat-v2-fixed .cat-ear{top:6.2%!important;width:24.5%!important;height:24.5%!important;z-index:4}.cat-v2-fixed .cat-ear-left{left:25.5%!important}.cat-v2-fixed .cat-ear-right{right:25.5%!important;transform:scaleX(-1)!important}.cat-v2-fixed .cat-eyes{left:35.1%!important;top:27.1%!important;width:29.8%!important;height:11.5%!important;z-index:5}.cat-v2-fixed .cat-eyes-open{animation:cv2open 8.8s steps(1,end) infinite!important}.cat-v2-fixed .cat-eyes-closed{opacity:0;animation:cv2closed 8.8s steps(1,end) infinite!important}@keyframes cv2tail{from{transform:rotate(-2deg)}to{transform:rotate(4deg)}}@keyframes cv2open{0%,46%,50%,100%{opacity:1}47%,49%{opacity:0}}@keyframes cv2closed{0%,46%,50%,100%{opacity:0}47%,49%{opacity:1}}
 .admin-test-banner{position:sticky;z-index:80;top:0;display:flex;align-items:center;justify-content:center;gap:18px;padding:10px max(14px,env(safe-area-inset-right)) 10px max(14px,env(safe-area-inset-left));background:#fef3c7;border-bottom:2px solid #f59e0b;color:#78350f;box-shadow:0 5px 18px #78350f20}.admin-test-banner[hidden]{display:none}.admin-test-banner div{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.admin-test-banner span{font-size:.78rem;font-weight:700}.admin-test-banner button{min-height:44px;padding:9px 14px;background:#78350f;color:#fff}.admin-test-account{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:12px 0 18px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#fef3c7,#fff7ed);border:1px solid #f59e0b}.admin-test-account h3,.admin-test-account p{margin:4px 0}.admin-test-account p{max-width:620px;color:#78350f;line-height:1.45}.admin-test-account button{min-width:190px}@media(max-width:560px){.admin-test-banner,.admin-test-account{align-items:stretch;flex-direction:column}.admin-test-banner{gap:8px}.admin-test-banner button,.admin-test-account button{width:100%}}
+
+/* v11.8.6 Activity Landmark skill web */
+#classicActivityView{overflow:visible}
+.path-road{
+  display:block!important;position:relative!important;height:850px;margin:22px 0 40px!important;
+  padding:0!important;overflow:hidden!important;border:1px solid #334155!important;border-radius:30px!important;
+  background:radial-gradient(circle at 50% 8%,#1e3a8a 0,#111c44 24%,#0b1027 62%,#050816 100%)!important;
+  box-shadow:inset 0 0 80px #020617,0 20px 50px #0f172a2e!important;isolation:isolate
+}
+.path-road::before{
+  content:''!important;position:absolute!important;inset:0!important;z-index:0!important;width:auto!important;
+  transform:none!important;border-radius:inherit!important;box-shadow:none!important;
+  background-image:radial-gradient(circle,#fff 0 1px,transparent 1.5px),radial-gradient(circle,#93c5fd 0 1px,transparent 1.5px)!important;
+  background-size:43px 47px,71px 67px!important;background-position:5px 8px,21px 32px!important;opacity:.24
+}
+.path-road::after{
+  content:'';position:absolute;z-index:0;inset:8% 10%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse,#2563eb19,transparent 62%);filter:blur(6px)
+}
+.activity-skill-web-head{
+  position:absolute;z-index:5;top:12px;left:14px;right:14px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;color:#fff;pointer-events:none
+}
+.activity-skill-web-head b,.activity-skill-web-head small{display:block}
+.activity-skill-web-head b{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:#fde68a}
+.activity-skill-web-head small{margin-top:2px;color:#bfdbfe;font-size:.68rem}
+.activity-skill-legend{display:flex;align-items:center;gap:5px;font-size:.64rem;color:#cbd5e1}
+.activity-skill-legend i{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 9px #4ade80}
+.activity-skill-legend i:nth-of-type(2){margin-left:5px;background:#f59e0b;box-shadow:0 0 9px #fbbf24}
+.activity-skill-links{position:absolute;z-index:1;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.activity-skill-link{stroke:#334155;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 2px #020617)}
+.activity-skill-link.available{stroke:#b45309;stroke-dasharray:5 6;animation:skillPathFlow 2.2s linear infinite}
+.activity-skill-link.unlocked{stroke:#22c55e;filter:drop-shadow(0 0 4px #4ade80)}
+.activity-skill-node{
+  position:absolute;z-index:3;left:var(--skill-x);top:var(--skill-y);width:126px;
+  transform:translate(-50%,-50%);text-align:center
+}
+.activity-skill-node button{
+  width:100%;min-height:92px;padding:3px!important;display:grid!important;justify-items:center!important;
+  gap:4px!important;border:0!important;background:transparent!important;color:#e2e8f0!important;box-shadow:none!important
+}
+.activity-skill-orb{
+  display:grid;place-items:center;width:72px;height:72px;padding:5px;border-radius:50%;
+  background:conic-gradient(#64748b var(--skill-progress),#1e293b 0);box-shadow:0 0 0 2px #64748b,0 8px 18px #020617aa
+}
+.activity-skill-orb i{
+  position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 30%,#475569,#172033 65%,#080d1b);
+  border:2px solid #94a3b8;font-size:1.75rem;font-style:normal;filter:saturate(.35)
+}
+.activity-skill-node strong{max-width:126px;color:#e2e8f0;font-size:.76rem;line-height:1.1;text-shadow:0 2px 3px #000}
+.activity-skill-node small{padding:2px 7px;border-radius:999px;background:#0f172acc;color:#94a3b8;font-size:.59rem;font-weight:850}
+.activity-skill-node.available .activity-skill-orb{background:conic-gradient(#f59e0b var(--skill-progress),#3f2b13 0);box-shadow:0 0 0 3px #f59e0b,0 0 20px #fbbf2477;animation:skillNodeReady 2s ease-in-out infinite}
+.activity-skill-node.available .activity-skill-orb i{border-color:#fde68a;background:radial-gradient(circle at 38% 30%,#92400e,#451a03 72%);filter:none}
+.activity-skill-node.available small{background:#78350f;color:#fde68a}
+.activity-skill-node.unlocked .activity-skill-orb{background:conic-gradient(#4ade80 var(--skill-progress),#14532d 0);box-shadow:0 0 0 3px #22c55e,0 0 22px #4ade8088}
+.activity-skill-node.unlocked .activity-skill-orb i{border-color:#bbf7d0;background:radial-gradient(circle at 38% 30%,#15803d,#052e16 72%);filter:none}
+.activity-skill-node.unlocked small{background:#14532d;color:#bbf7d0}
+.activity-skill-node.locked{opacity:.72}
+.activity-skill-node.locked .activity-skill-orb i::after{content:'🔒';position:absolute;font-size:.72rem;transform:translate(24px,22px)}
+.activity-skill-node button:hover .activity-skill-orb,.activity-skill-node button:focus-visible .activity-skill-orb{transform:scale(1.08);filter:brightness(1.18)}
+.activity-skill-node button:focus-visible{outline:3px solid #fde68a!important;outline-offset:4px!important;border-radius:18px!important}
+@keyframes skillPathFlow{to{stroke-dashoffset:-22}}
+@keyframes skillNodeReady{50%{box-shadow:0 0 0 5px #f59e0b55,0 0 30px #fbbf2499}}
+@media(max-width:600px){
+  .path-road{height:740px!important;border-radius:22px!important;margin-inline:-4px!important}
+  .activity-skill-web-head{top:9px;left:10px;right:10px}.activity-skill-web-head small{display:none}
+  .activity-skill-node{width:88px}.activity-skill-node button{min-height:78px;padding:1px!important;gap:2px!important}
+  .activity-skill-orb{width:58px;height:58px;padding:4px}.activity-skill-orb i{font-size:1.38rem}
+  .activity-skill-node strong{max-width:88px;font-size:.65rem}.activity-skill-node small{font-size:.53rem;padding:2px 5px}
+  .activity-skill-link{stroke-width:3}
+}
+@media(prefers-reduced-motion:reduce){.activity-skill-link.available,.activity-skill-node.available .activity-skill-orb{animation:none!important}}

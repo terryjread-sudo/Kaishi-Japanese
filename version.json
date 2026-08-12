@@ -1,7 +1,7 @@
 {
-  "version": "11.8.5",
+  "version": "11.8.6",
   "released": "2026-08-13",
-  "title": "Unified Campaign Cards & Swipe Dots",
+  "title": "Colosseum Combat & Activity Skill Web",
   "changes": [
     "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
     "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
@@ -22,6 +22,10 @@
     "Restyled Japan Ready to match Journey's unified card hierarchy and dimensions.",
     "Added accessible pagination dots beneath the mobile cards with the active page filled.",
     "Kept the labelled Journey and Japan Ready selector for direct navigation.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.5."
+    "Added party lunge, strike impact, monster counterattack, knockback and revival animations to Kotoba Colosseum.",
+    "Added clear critical-hit, hit and revive effects while respecting reduced-motion preferences.",
+    "Rebuilt Activity Landmarks as an original connected RPG skill web with unlock paths, progress rings and branching nodes.",
+    "Optimised the skill web for compact mobile screens and keyboard/touch navigation.",
+    "Bumped release-controlled assets and service-worker caches to v11.8.6."
   ]
 }

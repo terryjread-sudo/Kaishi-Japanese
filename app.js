@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.5';
+const APP_VERSION='11.8.6';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -653,11 +653,28 @@ function renderVillageMap(){
 function setActivityVillageMode(enabled){
  settings.activityVillageMode=Boolean(enabled);save();renderVillageMap();toast(enabled?'Activity Village enabled':'Classic activity view enabled');
 }
+const ACTIVITY_SKILL_LAYOUT={
+ vocabulary:{x:50,y:14},kana:{x:24,y:26},picture:{x:76,y:26},listening:{x:50,y:38},
+ karuta:{x:18,y:51},conversation:{x:50,y:52},grammar:{x:82,y:51},kanji:{x:28,y:65},
+ theatre:{x:69,y:65},builder:{x:27,y:79},manga:{x:67,y:79},battle:{x:50,y:93}
+};
+const ACTIVITY_SKILL_LINKS=[
+ ['vocabulary','kana'],['vocabulary','picture'],['kana','listening'],['picture','listening'],
+ ['listening','karuta'],['listening','conversation'],['listening','grammar'],['karuta','kanji'],
+ ['grammar','theatre'],['conversation','theatre'],['kanji','builder'],['kanji','manga'],
+ ['theatre','manga'],['builder','battle'],['manga','battle']
+];
+function activitySkillWebHtml(){
+ const states=Object.fromEntries(PATH_MILESTONES.map(item=>{const state=activityReadiness(item.id);return[item.id,{...state,ready:state.wordReady&&state.apReady}]}));
+ const links=ACTIVITY_SKILL_LINKS.map(([from,to])=>{const a=ACTIVITY_SKILL_LAYOUT[from],b=ACTIVITY_SKILL_LAYOUT[to],source=states[from],target=states[to];const status=source.purchased&&target.purchased?'unlocked':source.purchased&&(target.ready||target.purchased)?'available':'locked';return`<line class="activity-skill-link ${status}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" vector-effect="non-scaling-stroke"></line>`}).join('');
+ const nodes=PATH_MILESTONES.map(item=>{const state=states[item.id],point=ACTIVITY_SKILL_LAYOUT[item.id]||{x:50,y:50},ready=state.ready,progress=state.cfg.words?Math.min(100,state.supported/state.cfg.words*100):100,status=state.purchased?'Unlocked':ready?'Ready':'Locked';return`<article class="activity-skill-node ${state.purchased?'unlocked':ready?'available':'locked'}" style="--skill-x:${point.x}%;--skill-y:${point.y}%;--skill-progress:${progress*3.6}deg"><button data-village-activity="${esc(item.id)}" aria-label="${esc(item.title)}. ${status}. ${state.supported} of ${state.cfg.words} supported words."><span class="activity-skill-orb"><i>${esc(item.icon)}</i></span><strong>${esc(item.title)}</strong><small>${state.purchased?'Open':ready?'Unlock now':`${Math.max(0,state.cfg.words-state.supported)} words`}</small></button></article>`}).join('');
+ return`<div class="activity-skill-web-head"><span><b>Activity Skill Web</b><small>Unlock connected ways to practise</small></span><span class="activity-skill-legend"><i></i> Open <i></i> Ready</span></div><svg class="activity-skill-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links}</svg>${nodes}`;
+}
 function renderJourney(){
  refreshPathUnlocks();const currentIndex=pathCurrentIndex(),unlocked=PATH_MILESTONES.filter(item=>pathUnlocked(item.id)).length,wordPosition=wordJourneyPosition(),masteryState=masterySnapshot();$('#journeyStats').innerHTML=`<article><strong>${unlocked}/${PATH_MILESTONES.length}</strong><span>Activities unlocked</span></article><article><strong>${wordPosition.explored}/${vocab.length}</strong><span>Words introduced</span></article><article><strong>${masteryState.mastered}</strong><span>Full mastery journeys</span></article><article><strong>${wordPosition.completed}/${wordPosition.total}</strong><span>Chapters completed</span></article>`;
  renderDailyRoute();
  renderVillageMap();
- $('#pathRoad').innerHTML=PATH_MILESTONES.map((item,itemIndex)=>{const state=activityReadiness(item.id),ready=state.wordReady&&state.apReady;return `<article class="activity-location ${state.purchased?'restored':ready?'ready':'building'} theme-${state.cfg.theme||'village'}"><button data-village-activity="${esc(item.id)}"><span class="activity-location-icon">${esc(item.icon)}</span><span class="activity-location-status">${state.purchased?'Open':ready?'Ready to restore':'Developing'}</span><strong>${esc(item.title)}</strong><small>${state.supported}/${state.cfg.words} supported words · ${state.cfg.cost} AP</small><div class="activity-location-meter"><i style="width:${state.cfg.words?Math.min(100,state.supported/state.cfg.words*100):100}%"></i></div><b>${state.purchased?'Practice':ready?state.cfg.action:`${Math.max(0,state.cfg.words-state.supported)} words to go`}</b></button></article>`}).join('');
+ $('#pathRoad').innerHTML=activitySkillWebHtml();
  $('#practiceHub').innerHTML=PATH_MILESTONES.filter(item=>activityReadiness(item.id).purchased).map(item=>`<button data-village-activity="${esc(item.id)}"><span>${esc(item.icon)}</span><strong>${esc(item.title)}</strong><small>Practice with introduced words</small></button>`).join('');
  document.querySelectorAll('[data-village-activity]').forEach(button=>button.onclick=()=>openActivityUnlock(button.dataset.villageActivity));
  document.querySelectorAll('[data-word-chapter]').forEach(button=>button.onclick=()=>startJourneyChapter(+button.dataset.wordChapter));
