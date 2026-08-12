@@ -308,7 +308,7 @@
   }
 
   function currentRoundDurationMs() {
-    // v11.8.0: gentler opening pace. Starts at 6.4s and speeds up gradually,
+    // v11.8.1: gentler opening pace. Starts at 6.4s and speeds up gradually,
     // but never becomes faster than 3.2s per fall.
     return Math.max(3200, 6400 - wr.roundsPlayed * 120);
   }

@@ -1,14 +1,14 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.8.0 — Journey / Japan Ready native carousel
+ * Kaishi Quest v11.8.1 — Journey / Japan Ready native carousel
  *
  * Uses the mobile pattern of partially revealing the neighbouring card.
  * No instructional text is required: the visible edge + page dots indicate
  * horizontal content. Native scrolling keeps interaction smooth.
  */
 (() => {
-  const RELEASE='11.8.0';
+  const RELEASE='11.8.1';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){
@@ -26,26 +26,30 @@
       }
       #campaignChooser .campaign-preview{
         display:flex!important;gap:12px!important;
+        align-items:stretch!important;
         overflow-x:auto!important;overflow-y:visible!important;
         scroll-snap-type:x mandatory!important;
-        scroll-padding-inline:8px!important;
+        scroll-padding-inline:12px!important;
         scroll-behavior:smooth!important;
         -webkit-overflow-scrolling:touch;
-        padding:2px 8px 8px!important;
+        padding:12px 12px 10px!important;
         scrollbar-width:none;
         touch-action:pan-x pan-y;
         overscroll-behavior-x:contain;
       }
       #campaignChooser .campaign-preview::-webkit-scrollbar{display:none}
       #campaignChooser .campaign-preview-panel{
-        display:block!important;
-        flex:0 0 calc(100% - 28px)!important;
+        display:flex!important;
+        flex-direction:column!important;
+        flex:0 0 calc(100% - 38px)!important;
         min-width:0!important;
-        max-width:calc(100% - 28px)!important;
+        max-width:calc(100% - 38px)!important;
+        min-height:var(--campaign-equal-height,auto)!important;
         scroll-snap-align:center!important;
         scroll-snap-stop:always!important;
         box-sizing:border-box!important;
         overflow:hidden!important;
+        padding-top:10px!important;
       }
       #campaignChooser .campaign-preview-panel *{min-width:0}
       #campaignChooser .campaign-preview-panel h1,
@@ -82,13 +86,27 @@
           cursor:pointer
         }
         .campaign-carousel-dots{display:none}
+        #campaignChooser .campaign-preview-panel .campaign-card-heading{
+          visibility:visible!important
+        }
       }
       .campaign-card-heading{
         display:flex;align-items:center;justify-content:space-between;gap:8px;
         margin:0 0 10px;padding:0 2px
       }
-      .campaign-card-heading strong{font-size:.9rem}
-      .campaign-card-heading small{color:#64748b}
+      .campaign-card-heading{
+        flex:0 0 auto;
+        min-height:30px;
+        overflow:hidden;
+      }
+      .campaign-card-heading strong{font-size:.9rem;white-space:nowrap}
+      .campaign-card-heading small{color:#64748b;white-space:nowrap}
+      #campaignChooser .campaign-preview-panel:not(.carousel-current) .campaign-card-heading{
+        visibility:hidden
+      }
+      #campaignChooser .campaign-preview-panel.carousel-current .campaign-card-heading{
+        visibility:visible
+      }
       @media(hover:hover) and (pointer:fine){
         #campaignChooser .campaign-preview-panel:hover{
           transform:translateY(-1px);
@@ -166,6 +184,10 @@
       dot.classList.toggle('active',i===index);
       dot.setAttribute('aria-current',i===index?'true':'false');
     });
+    panels().forEach((panel,i)=>{
+      panel.classList.toggle('carousel-current',i===index);
+      panel.setAttribute('aria-current',i===index?'true':'false');
+    });
   }
 
   function installScrollSync(){
@@ -195,6 +217,36 @@
   function syncToExistingState(){
     const journeyActive=$('#chooseJourneyCampaign')?.classList.contains('active');
     requestAnimationFrame(()=>scrollToIndex(journeyActive?0:1,false));
+  }
+
+  let heightRaf=0;
+  function syncPanelHeights(){
+    const ps=panels();
+    if(ps.length<2)return;
+
+    cancelAnimationFrame(heightRaf);
+    heightRaf=requestAnimationFrame(()=>{
+      // Clear previous equal-height constraint before measuring real content.
+      ps.forEach(panel=>panel.style.removeProperty('--campaign-equal-height'));
+      const max=Math.ceil(Math.max(...ps.map(panel=>panel.scrollHeight)));
+      if(max>0){
+        ps.forEach(panel=>panel.style.setProperty('--campaign-equal-height',`${max}px`));
+      }
+    });
+  }
+
+  function installHeightSync(){
+    const ps=panels();
+    if(!ps.length)return;
+    syncPanelHeights();
+
+    if('ResizeObserver' in window){
+      const observer=new ResizeObserver(()=>syncPanelHeights());
+      ps.forEach(panel=>observer.observe(panel));
+    }
+
+    // Dynamic Journey/Japan Ready data can update after cloud/app rendering.
+    [250,700,1500,2800].forEach(ms=>setTimeout(syncPanelHeights,ms));
   }
 
   function installDesktopInteractions(){
@@ -239,6 +291,9 @@
     ensureDots();
     installScrollSync();
     installDesktopInteractions();
+    installHeightSync();
+    const journeyActive=$('#chooseJourneyCampaign')?.classList.contains('active');
+    updateDots(journeyActive?0:1);
     syncToExistingState();
 
     // Keep carousel aligned when existing app state changes programmatically.
@@ -246,8 +301,14 @@
       $('#'+id)?.addEventListener('click',()=>setTimeout(()=>scrollToIndex(index,false),0));
     });
 
-    window.addEventListener('resize',syncToExistingState,{passive:true});
-    window.addEventListener('pageshow',syncToExistingState);
+    window.addEventListener('resize',()=>{
+      syncPanelHeights();
+      syncToExistingState();
+    },{passive:true});
+    window.addEventListener('pageshow',()=>{
+      syncPanelHeights();
+      syncToExistingState();
+    });
   }
 
   if(document.readyState==='loading'){

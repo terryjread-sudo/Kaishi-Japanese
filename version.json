@@ -1,16 +1,16 @@
 {
-  "version": "11.8.0",
+  "version": "11.8.1",
   "released": "2026-08-12",
-  "title": "Adaptive Micro-Practice",
+  "title": "Micro-Practice Flow & Carousel Alignment",
   "changes": [
-    "Added Adaptive Micro-Practice for repeatedly missed word \u00d7 skill combinations.",
-    "A single short Listening Station, Campfire-style recall, Theatre-style context or meaning repair card can be inserted into the lesson flow.",
-    "One ordinary mistake does not trigger an intervention; difficulty scores persist and interventions have a cooldown.",
-    "Successful micro-practice reduces the stored difficulty score.",
-    "Fixed the squashed Sensei portrait by preserving its aspect ratio and enlarging its frame.",
-    "Added shorter, friendlier Sensei zero-state wording.",
-    "Reduced mobile Journey/Japan Ready neighbouring-card intrusion while retaining the swipe cue.",
-    "Retains all v11.7.x summary, touch, Kana overlay, Keep Learning and performance improvements.",
-    "Bumped release and cache references to v11.8.0."
+    "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
+    "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
+    "Continue Lesson simply closes the intervention and returns to the already-rendered normal learning card.",
+    "Matched Japanese Journey and Japan Ready carousel card heights dynamically so swiping no longer jumps between different card heights.",
+    "Added safe top spacing inside study-mode carousel cards so active headings and icons are never clipped.",
+    "Inactive neighbouring cards now show only a subtle visual edge; their heading/icon is hidden until that card becomes active, avoiding chopped airplane/book icons.",
+    "Retains desktop side-by-side cards with both headings fully visible.",
+    "Retains all v11.8.0 Adaptive Micro-Practice scoring/cooldown behavior and v11.7.x learning-summary/touch/performance improvements.",
+    "Bumped release-controlled assets and service-worker caches to v11.8.1."
   ]
 }
