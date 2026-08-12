@@ -1,7 +1,7 @@
 {
-  "version": "11.8.1",
-  "released": "2026-08-12",
-  "title": "Micro-Practice Flow & Carousel Alignment",
+  "version": "11.8.2",
+  "released": "2026-08-13",
+  "title": "Mobile Dashboard Navigation",
   "changes": [
     "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
     "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
@@ -11,6 +11,9 @@
     "Inactive neighbouring cards now show only a subtle visual edge; their heading/icon is hidden until that card becomes active, avoiding chopped airplane/book icons.",
     "Retains desktop side-by-side cards with both headings fully visible.",
     "Retains all v11.8.0 Adaptive Micro-Practice scoring/cooldown behavior and v11.7.x learning-summary/touch/performance improvements.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.1."
+    "Added a clear Journey and Japan Ready selector with full-width mobile campaign cards.",
+    "Made the mobile dashboard more compact and added persistent bottom navigation.",
+    "Improved touch target sizes, focus visibility and dashboard visual hierarchy.",
+    "Bumped release-controlled assets and service-worker caches to v11.8.2."
   ]
 }
