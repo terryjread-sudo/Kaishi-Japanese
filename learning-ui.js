@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.3 — Learning UI & Daily Summary
+ * Kaishi Quest v11.8.0 — Learning UI & Daily Summary
  *
  * Adds:
  * - persistent Today summary available after activities are closed
@@ -11,7 +11,7 @@
  * - Kana correct/wrong feedback as a modal overlay, with manual Continue only
  */
 (() => {
-  const RELEASE='11.7.3';
+  const RELEASE='11.8.0';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 

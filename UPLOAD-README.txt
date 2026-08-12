@@ -1,30 +1,15 @@
-KAISHI QUEST v11.7.3 — SWIPE CARD LAYOUT FIX
-================================================
+KAISHI QUEST v11.8.0 — ADAPTIVE MICRO-PRACTICE
 
-Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
+Copy the CONTENTS of this ZIP over the repository root.
 
-FIXED
------
-1. Japanese Journey / Japan Ready carousel
-   - active card is fully readable
-   - a small controlled part of the neighbouring card remains visible
-   - balanced left/right padding
-   - centered scroll snapping
-   - card text/content no longer clips at the viewport edges
+NEW: micro-practice.js
 
-2. Keep Learning carousel
-   - Another Mission / Reviews / Practice cards use consistent mobile width
-   - cards snap to the center
-   - text no longer gets chopped off at the right edge
-   - both sides of the carousel have safe padding
+Repeated difficulty with the same word + skill can insert one short practice
+card into the normal lesson flow, then return to the lesson after Continue.
 
-DESKTOP
--------
-Desktop continues to show cards side by side and is not restricted by the
-mobile widths.
-
-VERSION / CACHE
----------------
-Release and service-worker references are bumped to v11.7.3.
+Also included:
+- Sensei portrait aspect-ratio fix
+- friendlier zero-state Sensei wording
+- smaller mobile Journey/Japan Ready card peek
 
 No Supabase migration is required.

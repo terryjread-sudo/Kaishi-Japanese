@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.3 — Campfire Recall
+ * Kaishi Quest v11.8.0 — Campfire Recall
  * Short optional, no-choice retrieval practice.
  */
 (() => {

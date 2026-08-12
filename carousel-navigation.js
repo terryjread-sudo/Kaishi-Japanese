@@ -1,14 +1,14 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.3 — Journey / Japan Ready native carousel
+ * Kaishi Quest v11.8.0 — Journey / Japan Ready native carousel
  *
  * Uses the mobile pattern of partially revealing the neighbouring card.
  * No instructional text is required: the visible edge + page dots indicate
  * horizontal content. Native scrolling keeps interaction smooth.
  */
 (() => {
-  const RELEASE='11.7.3';
+  const RELEASE='11.8.0';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){
@@ -28,10 +28,10 @@
         display:flex!important;gap:12px!important;
         overflow-x:auto!important;overflow-y:visible!important;
         scroll-snap-type:x mandatory!important;
-        scroll-padding-inline:14px!important;
+        scroll-padding-inline:8px!important;
         scroll-behavior:smooth!important;
         -webkit-overflow-scrolling:touch;
-        padding:2px 14px 8px!important;
+        padding:2px 8px 8px!important;
         scrollbar-width:none;
         touch-action:pan-x pan-y;
         overscroll-behavior-x:contain;
@@ -39,9 +39,9 @@
       #campaignChooser .campaign-preview::-webkit-scrollbar{display:none}
       #campaignChooser .campaign-preview-panel{
         display:block!important;
-        flex:0 0 calc(100% - 42px)!important;
+        flex:0 0 calc(100% - 28px)!important;
         min-width:0!important;
-        max-width:calc(100% - 42px)!important;
+        max-width:calc(100% - 28px)!important;
         scroll-snap-align:center!important;
         scroll-snap-stop:always!important;
         box-sizing:border-box!important;

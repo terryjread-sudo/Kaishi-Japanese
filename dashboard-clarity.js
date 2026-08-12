@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.3 — Dashboard Clarity
+ * Kaishi Quest v11.8.0 — Dashboard Clarity
  *
  * Goal: the front dashboard should answer three questions:
  *   1. What should I do now?
@@ -12,7 +12,7 @@
  * mission composition, grading or cloud progress.
  */
 (() => {
-  const RELEASE='11.7.3';
+  const RELEASE='11.8.0';
   let installed=false;
 
   function el(id){ return document.getElementById(id); }
@@ -69,7 +69,7 @@
         display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:14px;
         background:#eef2ff;color:#312e81
       }
-      .dashboard-focus img{width:38px;height:38px;object-fit:cover;border-radius:50%}
+      .dashboard-focus img{width:48px;height:48px;object-fit:contain;object-position:center;border-radius:14px;flex:0 0 48px;background:#fff}
       .dashboard-focus strong{display:block;font-size:.78rem;margin-bottom:2px}
       .dashboard-focus p{margin:0;font-size:.88rem;line-height:1.42}
       .dashboard-mission-meta{
@@ -149,7 +149,12 @@
 
   function focusText(){
     const adaptive=el('adaptiveLearningInsight')?.textContent?.trim();
-    if(adaptive) return adaptive;
+    if(adaptive){
+      if(/0 words can be actively recalled|0 are showing usable context knowledge/i.test(adaptive)){
+        return 'You’re building recognition now. Active recall and sentence use will come next.';
+      }
+      return adaptive.replace(/\s+/g,' ').replace(/^(Sensei[:\s-]*)/i,'').slice(0,180);
+    }
     const teacher=el('journeyHomeActivity')?.textContent?.trim();
     if(teacher && !/preparing|choosing/i.test(teacher)) return teacher;
     return 'Kaishi will choose the next mix of new words, reviews and recall practice for you.';
