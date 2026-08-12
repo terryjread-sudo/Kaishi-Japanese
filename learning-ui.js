@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.0 — Learning UI & Daily Summary
+ * Kaishi Quest v11.7.1 — Learning UI & Daily Summary
  *
  * Adds:
  * - persistent Today summary available after activities are closed
@@ -11,7 +11,7 @@
  * - Kana correct/wrong feedback as a modal overlay, with manual Continue only
  */
 (() => {
-  const RELEASE='11.7.0';
+  const RELEASE='11.7.1';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 
@@ -76,6 +76,7 @@
     data.updatedAt=Date.now();
     saveDaily(data);
     refreshTodaySummary();
+    document.dispatchEvent(new CustomEvent('kaishi:learning-updated'));
   }
 
   function recordActivity(name,stats={}){
@@ -456,15 +457,6 @@
   function ensureTouchVisuals(){
     if(!touchCapable())return;
 
-    const campaignButtons=$('#campaignChooser .campaign-choice-actions');
-    if(campaignButtons && !$('#dashboardSwipeHint')){
-      const hint=document.createElement('div');
-      hint.id='dashboardSwipeHint';
-      hint.className='touch-visual-hint';
-      hint.textContent='↔ Swipe here to switch Journey / Japan Ready';
-      campaignButtons.insertAdjacentElement('afterend',hint);
-    }
-
     const field=$('#wrPlayfield');
     if(field && !field.dataset.touchCoachShown){
       field.dataset.touchCoachShown='1';
@@ -539,23 +531,38 @@
     ensureTouchVisuals();
     patchKanaFeedback();
 
-    const observer=new MutationObserver(mutations=>{
-      if(suppressColorObserver)return;
-      let needsColour=false;
-      for(const mutation of mutations){
-        if(mutation.type==='childList' && mutation.addedNodes.length)needsColour=true;
-      }
-      requestAnimationFrame(()=>{
-        if(needsColour)colourJapanese(document.body);
-        ensureTodaySummaryCard();
-        refreshTodaySummary();
-        ensureKeepLearning();
-        ensureTouchVisuals();
-        patchKanaFeedback();
-        recordKanaFeedback();
-      });
+    // Observe only small learning containers that are intentionally rebuilt.
+    // v11.7.0 watched the entire document and rescanned all Japanese text on
+    // routine navigation, which made screen changes feel sluggish on phones.
+    const targeted=[
+      '#card','#kanaCard','#wrCard','#kbCard','#cfCard',
+      '#missionSummaryDialog','#dailyRoute','#journeyHome'
+    ];
+    targeted.forEach(selector=>{
+      const root=$(selector);
+      if(!root)return;
+      new MutationObserver(()=>{
+        requestAnimationFrame(()=>{
+          colourJapanese(root);
+          if(selector==='#kanaCard'){
+            patchKanaFeedback();
+            recordKanaFeedback();
+            ensureTouchVisuals();
+          }
+          if(selector==='#dailyRoute')ensureKeepLearning();
+        });
+      }).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','class','open']});
     });
-    observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','class','open']});
+
+    document.addEventListener('kaishi:learning-updated',()=>{
+      refreshTodaySummary();
+      ensureKeepLearning();
+      document.dispatchEvent(new CustomEvent('kaishi:dashboard-refresh'));
+    });
+    document.addEventListener('kaishi:activity-complete',()=>{
+      refreshTodaySummary();
+      document.dispatchEvent(new CustomEvent('kaishi:dashboard-refresh'));
+    });
 
     window.addEventListener('focus',()=>{
       refreshTodaySummary();
@@ -564,6 +571,7 @@
     window.addEventListener('pageshow',()=>{
       refreshTodaySummary();
       ensureKeepLearning();
+      document.dispatchEvent(new CustomEvent('kaishi:dashboard-refresh'));
     });
   }
 

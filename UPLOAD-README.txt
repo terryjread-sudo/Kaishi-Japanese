@@ -1,67 +1,55 @@
-KAISHI QUEST v11.7.0 — LEARNING FEEDBACK & DAILY SUMMARY
-=============================================================
+KAISHI QUEST v11.7.1 — NAVIGATION PERFORMANCE & CAROUSEL
+============================================================
 
 Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
 NEW FILE
 --------
-learning-ui.js
+carousel-navigation.js
 
-TODAY SUMMARY
--------------
-A persistent "Your learning so far" card is shown on the dashboard.
-It remains available after exiting lessons and activities.
+PERFORMANCE FIX
+---------------
+v11.7.0 added two expensive background behaviours:
+- dashboard refresh every 2.5 seconds
+- a MutationObserver watching the whole document and potentially recolouring
+  Japanese text across the whole page after routine DOM changes
 
-The detailed Today summary includes:
-- new words learned today
-- learning answers and accuracy
-- missions completed
-- activities completed
-- overall Recognising / Recall / Usable totals
-- today's increases in those learning states
+v11.7.1 removes both.
 
-Daily data is stored locally under a date-specific kq-daily-summary-* key.
+Dashboard / Today data now refreshes on meaningful events and page lifecycle
+events. Japanese recolouring is limited to learning/game containers that are
+actually rebuilt.
 
-KEEP LEARNING
--------------
-Once all 3 recommended daily-route steps are complete, Journey shows:
-- Another mission
-- Reviews
-- Practice
-
-These are explicitly optional extra learning.
-
-JAPANESE SCRIPT COLOUR
-----------------------
-Japanese text is progressively enhanced:
-- Kanji: warm terracotta / meaning anchor
-- Hiragana: neutral existing text colour
-- Katakana: soft teal / loanword-emphasis cue
-
-The colouriser uses lighter variants when the surrounding text is light on a
-dark surface.
-
-TOUCH DISCOVERABILITY
+JOURNEY / JAPAN READY
 ---------------------
-Touch devices now receive visible hints for:
-- swiping Journey / Japan Ready
-- dragging in Kotoba Rain
-- tapping / long-pressing kana where available
+The explicit:
+  "Swipe here to switch Journey / Japan Ready"
+message is removed.
 
-KANA FEEDBACK
--------------
-Correct/wrong feedback is now a centered overlay rather than content below
-the choices. The learner MUST press Continue (or View path summary).
-There is no timed automatic progression.
+The study mode area now uses a native horizontal scroll-snap carousel:
+- current card occupies about 90% of the width
+- part of the neighbouring card remains visible
+- two small page indicators sit underneath
+- swiping uses native browser scrolling for better performance
+- tapping a page dot changes mode
+- existing Journey / Japan Ready application state is still updated underneath
 
-KOTOBA RAIN
------------
-Fixed the 0-second stuck state. When the clock reaches zero, endGame() now
-runs immediately and is guarded so it can only finish once.
+This follows the common mobile pattern where a partially visible next card
+signals that more content exists horizontally.
+
+RETAINED
+--------
+- persistent Today summary
+- Keep Learning after the three-step route
+- Kanji / Hiragana / Katakana visual colour cues
+- Kana result overlay with manual Continue
+- Kotoba Rain 0-second finish fix
+- v11.6 touch interactions
+- v11.5 dashboard clarity
+- v11.4 adaptive learning
 
 VERSION / CACHE
 ---------------
-Release and service-worker references are bumped to v11.7.0.
-learning-ui.js is included in the shell cache.
+Release and service-worker references are bumped to v11.7.1.
 
 No Supabase migration is required.

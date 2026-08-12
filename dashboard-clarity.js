@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.0 — Dashboard Clarity
+ * Kaishi Quest v11.7.1 — Dashboard Clarity
  *
  * Goal: the front dashboard should answer three questions:
  *   1. What should I do now?
@@ -12,7 +12,7 @@
  * mission composition, grading or cloud progress.
  */
 (() => {
-  const RELEASE='11.7.0';
+  const RELEASE='11.7.1';
   let installed=false;
 
   function el(id){ return document.getElementById(id); }
@@ -360,13 +360,12 @@
     ensureNavigation();
     refresh();
 
-    // app.js refreshes dashboard values after learning/cloud sync. Keep the
-    // presentation current without observing/mutating the whole DOM tree.
-    [400,1000,2200,4500].forEach(ms=>setTimeout(refresh,ms));
-    const timer=setInterval(refresh,2500);
-    window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
+    // Refresh only on meaningful lifecycle events. Previous releases used a
+    // permanent 2.5-second timer, which added avoidable work during navigation.
+    [350,900,1800].forEach(ms=>setTimeout(refresh,ms));
     window.addEventListener('focus',refresh);
     window.addEventListener('pageshow',refresh);
+    document.addEventListener('kaishi:dashboard-refresh',refresh);
   }
 
   if(document.readyState==='loading'){

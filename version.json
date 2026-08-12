@@ -1,18 +1,17 @@
 {
-  "version": "11.7.0",
+  "version": "11.7.1",
   "released": "2026-08-11",
-  "title": "Learning Feedback & Daily Summary",
+  "title": "Navigation Performance & Carousel",
   "changes": [
-    "Added a persistent Today summary on the dashboard that remains available after leaving lessons and games.",
-    "Today's summary shows new words, answers/accuracy, completed missions, activities played, and changes in Recognising, Recall and Usable vocabulary.",
-    "Added optional Keep Learning choices after the recommended three-step daily route is complete.",
-    "Added visible touch coaching so touch gestures are discoverable instead of hidden.",
-    "Added writing-system colour cues: Kanji uses a warm terracotta tone, Hiragana stays neutral, and Katakana uses a soft teal; colours adapt for light/dark text contexts.",
-    "Changed Kana correct/wrong feedback to a centred overlay so no scrolling is needed.",
-    "Kana feedback never auto-progresses; the learner must press Continue or View path summary.",
-    "Fixed Kotoba Rain getting stuck at 0 seconds by ending the run immediately when the timer reaches zero.",
-    "Logged Campfire Recall, Kotoba Rain and Kotoba Colosseum completions into the persistent daily summary.",
-    "Retains all v11.6 touch interactions, v11.5 Dashboard Clarity and v11.4 Adaptive Learning functionality.",
-    "Bumped release-controlled assets and service-worker caches to v11.7.0."
+    "Removed the permanent dashboard refresh timer that was doing work every 2.5 seconds.",
+    "Removed the whole-document MutationObserver and full-page Japanese recolouring pass that made navigation sluggish on phones.",
+    "Restricted UI observers to the small lesson/game containers that actually change.",
+    "Changed dashboard and Today-summary updates to event-driven refreshes.",
+    "Removed the explicit 'Swipe here to switch Journey / Japan Ready' instruction.",
+    "Replaced the Journey / Japan Ready selector with a native horizontal scroll-snap carousel.",
+    "The active study-mode card now shows part of the neighbouring card, creating the standard mobile visual cue that it can be swiped.",
+    "Added subtle page indicators below the carousel; tapping the visible neighbouring card or its dot also changes study mode.",
+    "Retains the v11.7 Today summary, Japanese script colouring, Kana overlay feedback and Keep Learning panel.",
+    "Bumped release-controlled assets and service-worker caches to v11.7.1."
   ]
 }

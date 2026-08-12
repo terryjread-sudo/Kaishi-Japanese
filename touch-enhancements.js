@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.0 — Touch Enhancements
+ * Kaishi Quest v11.7.1 — Touch Enhancements
  *
  * Progressive enhancement only:
  * - no device sniffing
@@ -9,7 +9,7 @@
  * - gestures duplicate visible controls rather than hiding functionality
  */
 (() => {
-  const RELEASE='11.7.0';
+  const RELEASE='11.7.1';
   const coarse=window.matchMedia?.('(pointer: coarse)');
   const noHover=window.matchMedia?.('(hover: none)');
   const touchCapable=Boolean(
@@ -86,53 +86,10 @@
   }
 
   /* ---------------------------------------------------------------
-   * 1. Dashboard: swipe horizontally between Journey and Japan Ready.
-   * Visible tab buttons remain the primary/accessible controls.
+   * 1. Dashboard Journey / Japan Ready navigation is handled by the
+   * native scroll-snap carousel in carousel-navigation.js.
    * ------------------------------------------------------------- */
-  function installDashboardSwipe(){
-    const preview=$('#campaignChooser');
-    if(!preview || preview.dataset.touchSwipe==='1') return;
-    preview.dataset.touchSwipe='1';
-
-    let startX=0,startY=0,lastX=0,tracking=false,pointerId=null;
-
-    preview.addEventListener('pointerdown',event=>{
-      if(event.pointerType==='mouse') return;
-      if(event.target.closest('button,input,a,select,textarea')) return;
-      startX=lastX=event.clientX;
-      startY=event.clientY;
-      pointerId=event.pointerId;
-      tracking=true;
-    });
-
-    preview.addEventListener('pointermove',event=>{
-      if(!tracking || event.pointerId!==pointerId) return;
-      const dx=event.clientX-startX;
-      const dy=event.clientY-startY;
-      if(Math.abs(dy)>Math.abs(dx)*1.25){
-        tracking=false;
-        return;
-      }
-      lastX=event.clientX;
-    });
-
-    preview.addEventListener('pointerup',event=>{
-      if(!tracking || event.pointerId!==pointerId) return;
-      tracking=false;
-      const dx=(lastX||event.clientX)-startX;
-      const dy=event.clientY-startY;
-      if(Math.abs(dx)<65 || Math.abs(dx)<Math.abs(dy)*1.25) return;
-
-      if(dx<0){
-        $('#chooseJapanReadyCampaign')?.click();
-      }else{
-        $('#chooseJourneyCampaign')?.click();
-      }
-      vibrate(18);
-    });
-
-    preview.addEventListener('pointercancel',()=>{tracking=false});
-  }
+  function installDashboardSwipe(){}
 
   /* ---------------------------------------------------------------
    * 2. Campfire Recall: swipe right = I knew it, left = Didn't know.
