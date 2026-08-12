@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.6.0 — Touch Enhancements
+ * Kaishi Quest v11.7.0 — Touch Enhancements
  *
  * Progressive enhancement only:
  * - no device sniffing
@@ -9,7 +9,7 @@
  * - gestures duplicate visible controls rather than hiding functionality
  */
 (() => {
-  const RELEASE='11.6.0';
+  const RELEASE='11.7.0';
   const coarse=window.matchMedia?.('(pointer: coarse)');
   const noHover=window.matchMedia?.('(hover: none)');
   const touchCapable=Boolean(

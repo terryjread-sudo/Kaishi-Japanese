@@ -308,7 +308,7 @@
   }
 
   function currentRoundDurationMs() {
-    // v11.6.0: gentler opening pace. Starts at 6.4s and speeds up gradually,
+    // v11.7.0: gentler opening pace. Starts at 6.4s and speeds up gradually,
     // but never becomes faster than 3.2s per fall.
     return Math.max(3200, 6400 - wr.roundsPlayed * 120);
   }
@@ -492,7 +492,10 @@
       wr.timeLeft = Math.max(0, wr.timeLeft - 1);
       updateHud();
       if (wr.timeLeft <= 0) {
-        wr.running = false;
+        // End immediately. Previous releases only set running=false here,
+        // which could leave the playfield sitting at 0s until another round
+        // callback happened.
+        endGame();
       }
     }, 1000);
   }
@@ -503,7 +506,8 @@
   }
 
   function endGame() {
-    if (!wr) return;
+    if (!wr || wr.ended) return;
+    wr.ended = true;
     wr.running = false;
     if (wr.clockId) clearInterval(wr.clockId);
     clearRoundTimers();
@@ -517,6 +521,13 @@
     const rightWords = [...new Map(wr.history.filter(h => h.ok).map(h => [h.id, h])).keys()].map(id => vocab.find(v => v.id === id)).filter(Boolean);
     const wrongWords = [...new Map(wr.history.filter(h => !h.ok).map(h => [h.id, h])).keys()].map(id => vocab.find(v => v.id === id)).filter(Boolean);
     recordRunMeta();
+    window.KaishiDailySummary?.recordActivity?.('Kotoba Rain', {
+      rounds: wr.roundsPlayed,
+      correct: wr.correctCount,
+      wrong: wr.wrongCount,
+      missed: wr.missCount,
+      accuracy
+    });
     updateHome();
 
     $('#wrCard').innerHTML = `

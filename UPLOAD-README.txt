@@ -1,61 +1,67 @@
-KAISHI QUEST v11.6.0 — TOUCH INTERACTION UPDATE
-===================================================
+KAISHI QUEST v11.7.0 — LEARNING FEEDBACK & DAILY SUMMARY
+=============================================================
 
 Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
 NEW FILE
 --------
-touch-enhancements.js
+learning-ui.js
 
-TOUCH ENHANCEMENTS
-------------------
-Kaishi detects touch/coarse-pointer capability rather than checking whether the
-device is Android, iPhone, tablet, etc. Mouse and keyboard behaviour remains.
-
-DASHBOARD
----------
-Swipe horizontally across the non-button area of the Study Modes card:
-  swipe left  -> Japan Ready
-  swipe right -> Journey
-
-The visible Journey / Japan Ready buttons remain available.
-
-CAMPFIRE RECALL
----------------
-After Reveal:
-  swipe right -> I knew it
-  swipe left  -> Didn't know
-
-"Almost" remains a normal visible button. This avoids using vertical swipe,
-which would interfere with page scrolling.
-
-JAPAN READY KANA BUILDER
-------------------------
-- normal tap still selects a kana
-- long press reads the kana aloud without entering it
-- drag a kana tile onto the built-answer area to select it
-
-KOTOBA RAIN / COLOSSEUM
------------------------
-Where navigator.vibrate() is supported:
-- short haptic on correct
-- double haptic pattern on wrong
-
-Rain retains direct finger tracking of the platform.
-
-TOUCH TARGETS
+TODAY SUMMARY
 -------------
-Coarse-pointer devices receive larger button/choice/kana targets and slightly
-more spacing. Desktop mouse layouts are unchanged.
+A persistent "Your learning so far" card is shown on the dashboard.
+It remains available after exiting lessons and activities.
 
-IMPORTANT
----------
-These are progressive enhancements. No learning, SRS, mission, Japan Ready,
-cloud or Supabase data structures are changed.
+The detailed Today summary includes:
+- new words learned today
+- learning answers and accuracy
+- missions completed
+- activities completed
+- overall Recognising / Recall / Usable totals
+- today's increases in those learning states
+
+Daily data is stored locally under a date-specific kq-daily-summary-* key.
+
+KEEP LEARNING
+-------------
+Once all 3 recommended daily-route steps are complete, Journey shows:
+- Another mission
+- Reviews
+- Practice
+
+These are explicitly optional extra learning.
+
+JAPANESE SCRIPT COLOUR
+----------------------
+Japanese text is progressively enhanced:
+- Kanji: warm terracotta / meaning anchor
+- Hiragana: neutral existing text colour
+- Katakana: soft teal / loanword-emphasis cue
+
+The colouriser uses lighter variants when the surrounding text is light on a
+dark surface.
+
+TOUCH DISCOVERABILITY
+---------------------
+Touch devices now receive visible hints for:
+- swiping Journey / Japan Ready
+- dragging in Kotoba Rain
+- tapping / long-pressing kana where available
+
+KANA FEEDBACK
+-------------
+Correct/wrong feedback is now a centered overlay rather than content below
+the choices. The learner MUST press Continue (or View path summary).
+There is no timed automatic progression.
+
+KOTOBA RAIN
+-----------
+Fixed the 0-second stuck state. When the clock reaches zero, endGame() now
+runs immediately and is guarded so it can only finish once.
 
 VERSION / CACHE
 ---------------
-Release and service-worker references are bumped to v11.6.0.
-touch-enhancements.js is included in the new shell cache.
+Release and service-worker references are bumped to v11.7.0.
+learning-ui.js is included in the shell cache.
 
 No Supabase migration is required.

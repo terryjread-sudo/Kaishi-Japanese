@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.6.0 — Campfire Recall
+ * Kaishi Quest v11.7.0 — Campfire Recall
  * Short optional, no-choice retrieval practice.
  */
 (() => {
@@ -183,6 +183,13 @@
     const almost=run.results.filter(item=>item.rating===3).length;
     const missed=run.results.filter(item=>item.rating===1).length;
     const byId=new Map(vocab.map(word=>[word.id,word]));
+    window.KaishiDailySummary?.recordActivity?.('Campfire Recall', {
+      total: run.results.length,
+      confident: knew,
+      almost,
+      missed,
+      accuracy: run.results.length ? Math.round(((knew + almost) / run.results.length) * 100) : 0
+    });
 
     document.getElementById('cfCard').innerHTML=`
       <div class="cf-flame">🔥</div>

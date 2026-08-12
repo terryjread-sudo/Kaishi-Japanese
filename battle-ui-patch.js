@@ -135,6 +135,12 @@
   }
 
   function patchExitButtons(){
+    const doneNow=document.getElementById('kbDone');
+    if(doneNow && !doneNow.dataset.dailySummaryLogged){
+      doneNow.dataset.dailySummaryLogged='1';
+      window.KaishiDailySummary?.recordActivity?.('Kotoba Colosseum', {});
+    }
+
     const back=document.getElementById('kbBack');
     if(back && !back.dataset.musicStopPatched){
       back.dataset.musicStopPatched='1';
