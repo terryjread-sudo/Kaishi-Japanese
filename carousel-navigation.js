@@ -8,7 +8,7 @@
  * controls make the two destinations discoverable and accessible.
  */
 (() => {
-  const RELEASE='11.8.3';
+  const RELEASE='11.8.4';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){
@@ -80,6 +80,22 @@
       .campaign-carousel-dot:focus-visible{
         outline:3px solid #f59e0b;outline-offset:2px
       }
+      .campaign-swipe-hint{
+        display:flex;align-items:center;justify-content:center;gap:7px;
+        min-height:30px;margin:1px 0 0;color:#64748b;font-size:.7rem;
+        font-weight:800;letter-spacing:.01em
+      }
+      .campaign-swipe-hint b{color:#2563eb;font-size:1rem;line-height:1}
+      .campaign-swipe-hint[data-direction="next"] b:last-child{animation:campaignSwipeNext 1.5s ease-in-out infinite}
+      .campaign-swipe-hint[data-direction="previous"] b:first-child{animation:campaignSwipePrevious 1.5s ease-in-out infinite}
+      @keyframes campaignSwipeNext{
+        0%,100%{transform:translateX(0);opacity:.65}
+        50%{transform:translateX(4px);opacity:1}
+      }
+      @keyframes campaignSwipePrevious{
+        0%,100%{transform:translateX(0);opacity:.65}
+        50%{transform:translateX(-4px);opacity:1}
+      }
       @media(min-width:720px){
         #campaignChooser .campaign-preview{
           padding-right:0!important;gap:14px!important;overflow-x:visible!important
@@ -90,7 +106,7 @@
           scroll-snap-align:start!important;
           cursor:pointer
         }
-        .campaign-carousel-dots{display:none}
+        .campaign-carousel-dots,.campaign-swipe-hint{display:none}
         #campaignChooser .campaign-preview-panel .campaign-card-heading{
           visibility:visible!important
         }
@@ -153,6 +169,12 @@
     `;
     chooser.querySelector('.campaign-preview')?.insertAdjacentElement('beforebegin',dots);
 
+    const hint=document.createElement('div');
+    hint.id='campaignSwipeHint';
+    hint.className='campaign-swipe-hint';
+    hint.setAttribute('aria-live','polite');
+    dots.insertAdjacentElement('afterend',hint);
+
     dots.querySelectorAll('[data-carousel-index]').forEach(button=>{
       button.addEventListener('click',()=>{
         const index=Number(button.dataset.carouselIndex||0);
@@ -193,6 +215,14 @@
       panel.classList.toggle('carousel-current',i===index);
       panel.setAttribute('aria-current',i===index?'true':'false');
     });
+    const hint=$('#campaignSwipeHint');
+    if(hint){
+      const next=index===0;
+      hint.dataset.direction=next?'next':'previous';
+      hint.innerHTML=next
+        ? '<span>Swipe left for Japan Ready</span><b aria-hidden="true">→</b>'
+        : '<b aria-hidden="true">←</b><span>Swipe right for Journey</span>';
+    }
   }
 
   function installScrollSync(){

@@ -12,7 +12,7 @@
  * mission composition, grading or cloud progress.
  */
 (() => {
-  const RELEASE='11.8.3';
+  const RELEASE='11.8.4';
   let installed=false;
 
   function el(id){ return document.getElementById(id); }
@@ -52,33 +52,42 @@
       #journeyHome>.journey-home-actions,
       #journeyHome>.adventure-home-links,
       #journeyHome>.journey-utility-actions{display:none!important}
+      #journeyCampaignPreview #journeyHome{
+        margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+        background:transparent!important;box-shadow:none!important
+      }
       #home .stats{display:none!important}
       #home #classicActions{display:none!important}
 
       .dashboard-today{
-        display:grid;gap:13px;padding:18px;border-radius:22px;
-        background:linear-gradient(145deg,#ffffff,#f8fafc);
-        border:1px solid #dbe4f0;box-shadow:0 8px 25px #17255410
+        display:grid;gap:12px;min-height:330px;padding:0;border-radius:0;
+        background:transparent;border:0;box-shadow:none
       }
-      .dashboard-today-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-      .dashboard-today-top h2{margin:2px 0 0;font-size:1.25rem}
+      .dashboard-today-top{
+        order:2;display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;
+        align-items:center;padding:12px;border-radius:16px;background:#fff;
+        border:1px solid #dbe3f0
+      }
+      .dashboard-today-top img{width:70px;height:70px;border-radius:17px;object-fit:cover;background:#dbeafe}
+      .dashboard-today-top h2{margin:2px 0 0;font-size:1.08rem}
       .dashboard-topic-progress{
-        min-width:54px;text-align:right;font-weight:900;color:#2563eb;font-size:1.05rem
+        display:block;margin-top:4px;color:#64748b;font-size:.76rem;font-weight:750
       }
       .dashboard-focus{
-        display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:14px;
-        background:#eef2ff;color:#312e81
+        order:1;display:grid;grid-template-columns:64px minmax(0,1fr);gap:11px;
+        align-items:center;padding:12px;border-radius:16px;
+        background:#ecfdf5;color:#065f46;border:1px solid #86efac
       }
-      .dashboard-focus img{width:48px;height:48px;object-fit:contain;object-position:center;border-radius:14px;flex:0 0 48px;background:#fff}
+      .dashboard-focus img{width:64px;height:64px;object-fit:cover;border-radius:14px;background:#fff}
       .dashboard-focus strong{display:block;font-size:.78rem;margin-bottom:2px}
-      .dashboard-focus p{margin:0;font-size:.88rem;line-height:1.42}
+      .dashboard-focus p{margin:0;color:#475569;font-size:.78rem;line-height:1.4}
       .dashboard-mission-meta{
-        display:flex;gap:7px;flex-wrap:wrap;color:#475569;font-size:.78rem
+        order:3;display:flex;gap:7px;flex-wrap:wrap;color:#475569;font-size:.72rem
       }
       .dashboard-mission-meta span{
         background:#f1f5f9;border-radius:999px;padding:5px 9px;font-weight:750
       }
-      .dashboard-main-actions{display:grid;grid-template-columns:2fr 1fr;gap:9px}
+      .dashboard-main-actions{order:4;display:grid;grid-template-columns:2fr 1fr;gap:9px;margin-top:auto}
       .dashboard-main-actions button{min-height:56px}
       .dashboard-main-actions #continueJourney{font-size:1rem}
       .dashboard-main-actions #openReviews{font-size:.85rem}
@@ -138,12 +147,11 @@
 
         /* A single strong surface; secondary information stays visually quiet. */
         .dashboard-today{
-          gap:11px;padding:15px;border-radius:18px;border-color:#e2e8f0;
-          box-shadow:0 4px 14px #1725540a
+          gap:12px;min-height:330px;padding:0;border-radius:0;box-shadow:none
         }
-        .dashboard-focus{padding:10px;border-radius:12px;background:#f1f5f9;color:#334155}
-        .dashboard-focus img{width:42px;height:42px;flex-basis:42px;border-radius:12px}
-        .dashboard-focus p{font-size:.82rem;line-height:1.35}
+        .dashboard-focus{padding:12px;border-radius:16px;background:#ecfdf5;color:#065f46}
+        .dashboard-focus img{width:64px;height:64px;border-radius:14px}
+        .dashboard-focus p{font-size:.78rem;line-height:1.4}
         .dashboard-main-actions button{min-height:52px}
         .dashboard-learning{
           padding:15px;border-radius:18px;box-shadow:none;background:#f8fafc
@@ -220,16 +228,17 @@
     card.className='dashboard-today';
     card.innerHTML=`
       <div class="dashboard-today-top">
+        <img id="dashboardTopicAvatar" src="media/profiles/boy-base.webp?v=${RELEASE}" alt="Your journey character">
         <div>
-          <span class="eyebrow">Today's learning</span>
+          <span class="eyebrow">Current topic</span>
           <h2 id="dashboardTodayTopic">Current topic</h2>
+          <small id="dashboardTodayProgress" class="dashboard-topic-progress"></small>
         </div>
-        <div id="dashboardTodayProgress" class="dashboard-topic-progress"></div>
       </div>
       <div class="dashboard-focus">
         <img src="media/guides/teacher-guide.webp?v=${RELEASE}" alt="">
         <div>
-          <strong>Sensei's focus</strong>
+          <strong>Sensei's recommendation</strong>
           <p id="dashboardFocusText">Preparing your learning focus…</p>
         </div>
       </div>
@@ -341,7 +350,10 @@
     if(topic) el('dashboardTodayTopic').textContent=topic;
 
     const percent=parseProgressPercent();
-    el('dashboardTodayProgress').textContent=percent;
+    el('dashboardTodayProgress').textContent=percent?`${percent} topic progress`:'Building topic progress';
+    const avatar=el('dashboardAvatar');
+    const topicAvatar=el('dashboardTopicAvatar');
+    if(avatar?.src&&topicAvatar) topicAvatar.src=avatar.src;
 
     el('dashboardFocusText').textContent=focusText();
 
