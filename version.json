@@ -1,18 +1,16 @@
 {
-  "version": "11.5.0",
+  "version": "11.6.0",
   "released": "2026-08-11",
-  "title": "Dashboard Clarity",
+  "title": "Touch Interaction Update",
   "changes": [
-    "Redesigned the front dashboard around three questions: what to do next, how Japanese is progressing, and what needs attention.",
-    "Combined Journey topic, Sensei guidance, mission composition and Continue/Reviews into one Today's Learning card.",
-    "Removed the eight-card dashboard stats grid and replaced it with a capability chart for Recognising, Recall and Usable vocabulary.",
-    "Simplified Study Modes to a Journey / Japan Ready switch without permanent explanatory copy.",
-    "Replaced duplicated dashboard shortcuts with four clear destinations: Practice, Collection, Progress and Community.",
-    "Moved Invite out of the front dashboard; it remains available from Community.",
-    "Made streak text actionable by showing how many answers remain to protect today's streak.",
-    "Removed generic hero text and permanent avatar milestone copy from the dashboard.",
-    "Renamed Activity Village wording to Practice Activities where it remains visible.",
-    "Retains all v11.4 Adaptive Learning, Campfire Recall, Kotoba Rain and Kotoba Colosseum functionality.",
-    "Bumped release-controlled assets and service-worker caches to v11.5.0."
+    "Added capability-based touch enhancements using pointer/coarse-input detection rather than phone/tablet device sniffing.",
+    "Added horizontal swipe switching between Journey and Japan Ready while keeping both visible tab buttons.",
+    "Added Campfire Recall swipe grading: right for I knew it and left for Didn't know; Almost remains a visible button.",
+    "Added long-press Japanese kana audio in Japan Ready and drag-to-answer support while preserving normal tap selection.",
+    "Added subtle supported-device haptics for Kotoba Rain catches and Kotoba Colosseum correct/wrong answers.",
+    "Increased touch target sizes and spacing on coarse-pointer devices without changing desktop sizing.",
+    "Kept Kotoba Rain direct finger tracking and made touch-game areas resist accidental text selection.",
+    "Retains all v11.5 Dashboard Clarity and v11.4 Adaptive Learning functionality.",
+    "Bumped release-controlled assets and service-worker caches to v11.6.0."
   ]
 }

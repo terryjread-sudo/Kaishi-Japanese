@@ -1,54 +1,61 @@
-KAISHI QUEST v11.5.0 — DASHBOARD CLARITY
-=============================================
+KAISHI QUEST v11.6.0 — TOUCH INTERACTION UPDATE
+===================================================
 
 Copy the CONTENTS of this ZIP over the ROOT of the Kakashi-Web repository.
 
 NEW FILE
 --------
-dashboard-clarity.js
+touch-enhancements.js
 
-DASHBOARD CHANGES
------------------
-The dashboard now focuses on:
-  1. What should I do now?
-  2. How is my Japanese progressing?
-  3. Is there anything important I should know?
+TOUCH ENHANCEMENTS
+------------------
+Kaishi detects touch/coarse-pointer capability rather than checking whether the
+device is Android, iPhone, tablet, etc. Mouse and keyboard behaviour remains.
 
-- Journey topic + Sensei guidance + mission composition + main actions are
-  combined into one "Today's Learning" card.
-- The old 8-card stats grid is hidden on the dashboard.
-- A capability chart shows cumulative vocabulary at:
-    Recognising
-    Recall
-    Usable
-- Generic "Ready to learn?", deck summary, avatar milestone and redundant
-  permanent explanatory text are removed from the front dashboard.
-- Streak qualification text becomes actionable:
-    "2 answers to protect today's streak"
-    or
-    "Today's streak is protected"
-- Study Modes becomes a simple Journey / Japan Ready switch.
-- Dashboard navigation becomes:
-    Practice | Collection | Progress | Community
-- Invite is no longer duplicated on the dashboard; it remains in Community.
-- "Activity Village" wording is changed to "Practice Activities" where the
-  dashboard layer encounters it.
+DASHBOARD
+---------
+Swipe horizontally across the non-button area of the Study Modes card:
+  swipe left  -> Japan Ready
+  swipe right -> Journey
+
+The visible Journey / Japan Ready buttons remain available.
+
+CAMPFIRE RECALL
+---------------
+After Reveal:
+  swipe right -> I knew it
+  swipe left  -> Didn't know
+
+"Almost" remains a normal visible button. This avoids using vertical swipe,
+which would interfere with page scrolling.
+
+JAPAN READY KANA BUILDER
+------------------------
+- normal tap still selects a kana
+- long press reads the kana aloud without entering it
+- drag a kana tile onto the built-answer area to select it
+
+KOTOBA RAIN / COLOSSEUM
+-----------------------
+Where navigator.vibrate() is supported:
+- short haptic on correct
+- double haptic pattern on wrong
+
+Rain retains direct finger tracking of the platform.
+
+TOUCH TARGETS
+-------------
+Coarse-pointer devices receive larger button/choice/kana targets and slightly
+more spacing. Desktop mouse layouts are unchanged.
 
 IMPORTANT
 ---------
-This is a PRESENTATION release only. It does not change:
-- SRS grading
-- word-state thresholds
-- adaptive mission composition
-- Journey topic progression
-- Japan Ready progression
-- cloud data
-
-All v11.4.x learning features remain.
+These are progressive enhancements. No learning, SRS, mission, Japan Ready,
+cloud or Supabase data structures are changed.
 
 VERSION / CACHE
 ---------------
-Release and service-worker references are bumped to v11.5.0.
-dashboard-clarity.js is precached by the new service worker.
+Release and service-worker references are bumped to v11.6.0.
+touch-enhancements.js is included in the new shell cache.
 
 No Supabase migration is required.
