@@ -100,6 +100,7 @@
  }
 
  async function initialiseAccount(forceChoice=false){
+  if(adapter()?.isTestMode?.()){setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}
   if(!user||syncing)return;syncing=true;setStatus('Checking cloud progress…','working');
   try{
    const entry=await ensureLeaderboardEntry();renderSignedIn(entry);
@@ -126,8 +127,8 @@
   if(error)throw error;
   remember(payload);await ensureLeaderboardEntry();
  }
- function scheduleSync(){if(!user||!client)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
- async function flush(){clearTimeout(syncTimer);if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
+ function scheduleSync(){if(adapter()?.isTestMode?.()||!user||!client)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
+ async function flush(){clearTimeout(syncTimer);if(adapter()?.isTestMode?.())return;if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
 
  
  async function friendRpc(name,args={}){if(!client||!user)throw new Error('Sign in with GitHub to use friends.');const{data,error}=await client.rpc(name,args);if(error)throw error;return data}
@@ -234,7 +235,7 @@ async function loadLeaderboard(){
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
  async function syncNow(){if(!user){await signIn();return}await initialiseAccount(true)}
  async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Quest cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
- async function handleSession(session){user=session?.user||null;if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
+ async function handleSession(session){user=session?.user||null;if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
 
 
  function friendRelation(userId){

@@ -336,6 +336,10 @@
     });
 
     $('#adminAreaLink')?.addEventListener('click',openAdmin);
+    $('#enterAdminTest')?.addEventListener('click',()=>{
+      if(!isAdmin){alert('Administrator access is required.');return}
+      window.KaishiAdminTest?.enter?.();
+    });
     $('#adminBack')?.addEventListener('click',()=>{
       document.querySelectorAll('.screen').forEach(screen=>screen.classList.toggle('active',screen.id==='settings'));
       window.scrollTo(0,0);

@@ -1,7 +1,7 @@
 {
-  "version": "11.8.2",
+  "version": "11.8.3",
   "released": "2026-08-13",
-  "title": "Mobile Dashboard Navigation",
+  "title": "Isolated Admin Test Learner",
   "changes": [
     "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
     "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
@@ -14,6 +14,10 @@
     "Added a clear Journey and Japan Ready selector with full-width mobile campaign cards.",
     "Made the mobile dashboard more compact and added persistent bottom navigation.",
     "Improved touch target sizes, focus visibility and dashboard visual hierarchy.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.2."
+    "Added an admin-only fully unlocked test learner for end-to-end feature testing.",
+    "Stored all test answers, settings and resumable missions separately from personal learning progress.",
+    "Paused cloud progress sync, snapshots and flushes while the test learner is active.",
+    "Added a persistent test-mode banner with one-tap return to the real profile.",
+    "Bumped release-controlled assets and service-worker caches to v11.8.3."
   ]
 }
