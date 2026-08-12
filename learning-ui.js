@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.2 — Learning UI & Daily Summary
+ * Kaishi Quest v11.7.3 — Learning UI & Daily Summary
  *
  * Adds:
  * - persistent Today summary available after activities are closed
@@ -11,7 +11,7 @@
  * - Kana correct/wrong feedback as a modal overlay, with manual Continue only
  */
 (() => {
-  const RELEASE='11.7.2';
+  const RELEASE='11.7.3';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 
@@ -187,14 +187,20 @@
       .keep-learning-panel p{margin:.2rem 0 .55rem;color:#64748b;font-size:.82rem}
       .keep-learning-actions{
         display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;
-        scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
-        scrollbar-width:none;padding:2px max(18vw,56px) 4px 0
+        scroll-snap-type:x mandatory;scroll-padding-inline:10px;
+        -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+        scrollbar-width:none;padding:2px 10px 4px
       }
       .keep-learning-actions::-webkit-scrollbar{display:none}
       .keep-learning-actions button{
-        flex:0 0 78%;min-height:94px;text-align:left;
-        scroll-snap-align:start;scroll-snap-stop:always;
-        padding:14px;border-radius:16px
+        flex:0 0 calc(100% - 54px);min-width:0;max-width:calc(100% - 54px);
+        min-height:94px;text-align:left;box-sizing:border-box;
+        scroll-snap-align:center;scroll-snap-stop:always;
+        padding:14px;border-radius:16px;overflow:hidden
+      }
+      .keep-learning-actions button strong,
+      .keep-learning-actions button small{
+        overflow-wrap:anywhere;word-break:normal
       }
       .keep-learning-actions button strong{display:block;font-size:1rem}
       .keep-learning-actions small{display:block;margin-top:4px;color:#64748b;font-size:.74rem;line-height:1.25}
@@ -203,7 +209,7 @@
       .keep-learning-dot.active{width:18px;border-radius:999px;background:#2563eb}
       @media(min-width:720px){
         .keep-learning-actions{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;padding-right:0}
-        .keep-learning-actions button{min-width:0;min-height:92px}
+        .keep-learning-actions button{min-width:0;max-width:none;min-height:92px;scroll-snap-align:start}
         .keep-learning-dots{display:none}
       }
 

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=11.7.2"><link rel="stylesheet" href="vms.css?v=11.7.2"><title>Kaishi Quest • v11.7.2</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=11.7.3"><link rel="stylesheet" href="vms.css?v=11.7.3"><title>Kaishi Quest • v11.7.3</title>
 <style id="kaishiClassicOnly">
   #activityVillageMap,.activity-view-toolbar,.activity-view-settings,#activityViewToggle,#activityVillageMode{display:none!important}
   #classicActivityView,.practice-hub{display:block!important}
@@ -32,10 +32,10 @@
   </section>
 </div>
 
-<header><div><small>Japanese vocabulary</small><div class="title-row"><h1>Kaishi Quest</h1><span id="versionBadge" class="version-badge" role="button" tabindex="0" aria-label="Kaishi Quest version 11.7.2. Check for updates and refresh the app." title="Check for updates and refresh">v11.7.2</span></div></div><button id="socialNotificationButton" class="social-notification-button header-notification" type="button" aria-label="Open notifications"><span>👥</span><b id="socialNotificationCount" hidden>0</b></button><button id="settingsBtn" class="icon">⚙️</button></header>
+<header><div><small>Japanese vocabulary</small><div class="title-row"><h1>Kaishi Quest</h1><span id="versionBadge" class="version-badge" role="button" tabindex="0" aria-label="Kaishi Quest version 11.7.3. Check for updates and refresh the app." title="Check for updates and refresh">v11.7.3</span></div></div><button id="socialNotificationButton" class="social-notification-button header-notification" type="button" aria-label="Open notifications"><span>👥</span><b id="socialNotificationCount" hidden>0</b></button><button id="settingsBtn" class="icon">⚙️</button></header>
 <div id="updateBanner" class="update-banner" hidden style="display:none!important"><div><strong id="updateTitle">Update available</strong><span id="updateSummary">A new version of Kaishi Quest is ready.</span></div><div class="update-actions"><button id="laterUpdate">Later</button><button id="applyUpdate" class="primary">Update now</button></div></div>
 
-<!-- v11.7.2 compatibility hooks:
+<!-- v11.7.3 compatibility hooks:
      app.js still binds these IDs directly. They stay hidden and locked to
      Classic mode until that legacy binding is removed from app.js. -->
 <div id="classicCompatibilityHooks" hidden aria-hidden="true">
@@ -45,8 +45,8 @@
 
 <main>
 <section id="home" class="screen active">
-<div class="hero"><div class="hero-copy"><div id="dashboardProfile" class="hero-profile"><button id="dashboardAvatarButton" type="button" aria-label="Choose your Kaishi character"><img id="dashboardAvatar" src="media/profiles/guest-learner.webp?v=11.7.2" alt="Guest learner"></button><div><span id="streak">🔥 0 day streak</span><h2>Ready to learn?</h2><strong id="dashboardAvatarTitle">Guest learner</strong><button id="dashboardSignIn" class="dashboard-sign-in" hidden>Sign in with GitHub</button></div></div><p id="summary">Loading your deck…</p><small id="dashboardAvatarMilestone" class="hero-profile-milestone">Reach streak milestones to unlock new poses.</small><div class="streak-qualifier"><span id="streakActivity">0 / 5 tested answers</span><i><b id="streakActivityFill"></b></i></div></div><div class="ring"><strong id="dueCount">0</strong><span id="dueProgressLabel">due</span></div></div>
-<section id="socialNotificationPanel" class="social-notification-panel" hidden><div class="social-notification-heading"><strong>Notifications</strong><button id="socialNotificationClose" type="button">×</button></div><div id="socialNotificationList" class="social-notification-list"></div></section><section id="friendActivityNudge" class="friend-activity-nudge compact" hidden><img id="friendActivityAvatar" src="media/profiles/guest-learner.webp?v=11.7.2" alt=""><div id="friendActivityOpen" role="button" tabindex="0"><strong id="friendActivityTitle">A friend has been learning</strong><p id="friendActivityText"></p></div><button id="friendActivityDismiss" class="friend-activity-dismiss" type="button" aria-label="Dismiss">×</button></section>
+<div class="hero"><div class="hero-copy"><div id="dashboardProfile" class="hero-profile"><button id="dashboardAvatarButton" type="button" aria-label="Choose your Kaishi character"><img id="dashboardAvatar" src="media/profiles/guest-learner.webp?v=11.7.3" alt="Guest learner"></button><div><span id="streak">🔥 0 day streak</span><h2>Ready to learn?</h2><strong id="dashboardAvatarTitle">Guest learner</strong><button id="dashboardSignIn" class="dashboard-sign-in" hidden>Sign in with GitHub</button></div></div><p id="summary">Loading your deck…</p><small id="dashboardAvatarMilestone" class="hero-profile-milestone">Reach streak milestones to unlock new poses.</small><div class="streak-qualifier"><span id="streakActivity">0 / 5 tested answers</span><i><b id="streakActivityFill"></b></i></div></div><div class="ring"><strong id="dueCount">0</strong><span id="dueProgressLabel">due</span></div></div>
+<section id="socialNotificationPanel" class="social-notification-panel" hidden><div class="social-notification-heading"><strong>Notifications</strong><button id="socialNotificationClose" type="button">×</button></div><div id="socialNotificationList" class="social-notification-list"></div></section><section id="friendActivityNudge" class="friend-activity-nudge compact" hidden><img id="friendActivityAvatar" src="media/profiles/guest-learner.webp?v=11.7.3" alt=""><div id="friendActivityOpen" role="button" tabindex="0"><strong id="friendActivityTitle">A friend has been learning</strong><p id="friendActivityText"></p></div><button id="friendActivityDismiss" class="friend-activity-dismiss" type="button" aria-label="Dismiss">×</button></section>
 <section id="campaignChooser" class="campaign-chooser card">
 <div class="campaign-chooser-heading">
 <div><span class="eyebrow">Study Modes</span><h2 id="campaignChooserTitle">Full Japanese Journey</h2><p id="campaignChooserText">Choose what you would like to work on next. Progress is shared between both paths.</p></div>
@@ -58,7 +58,7 @@
 <section class="campaign-preview">
 <div id="journeyCampaignPreview" class="campaign-preview-panel campaign-preview-full">
 <section id="journeyHome" class="journey-home adventure-home campaign-mode-detail">
-<div class="home-sensei teacher-home-guide"><img id="homeSenseiAvatar" src="media/guides/teacher-guide.webp?v=11.7.2" alt="Teacher"><div><small>Teacher’s recommendation</small><strong id="journeyHomeTitle">Preparing your adventure…</strong><p id="journeyHomeActivity">I am choosing the best memory game for you.</p></div></div>
+<div class="home-sensei teacher-home-guide"><img id="homeSenseiAvatar" src="media/guides/teacher-guide.webp?v=11.7.3" alt="Teacher"><div><small>Teacher’s recommendation</small><strong id="journeyHomeTitle">Preparing your adventure…</strong><p id="journeyHomeActivity">I am choosing the best memory game for you.</p></div></div>
 <div class="journey-home-main"><img id="journeyHomeAvatar" src="media/profiles/boy-base.webp" alt="Your journey character"><div><span class="eyebrow">Current topic</span><strong id="currentTopicTitle">Core Japanese</strong><small id="currentTopicStatus">Preparing topic progress…</small></div></div>
 <div class="journey-home-progress"><span id="journeyHomeProgress">Preparing today’s route…</span><i><b id="journeyHomeFill"></b></i></div>
 <div class="journey-home-actions"><button id="continueJourney" class="primary adventure-continue">Continue Adventure <small lang="ja">冒険を続ける</small></button><button id="openReviews">🧠 Today’s Reviews <b id="homeReviewCount">0</b></button></div>
@@ -69,11 +69,11 @@
 <div id="japanReadyCampaignPreview" class="campaign-preview-panel campaign-preview-full" hidden>
 <section class="japan-ready-dashboard-card">
 <div class="home-aiko-guide">
-<img src="media/guides/aiko-guide-icon.webp?v=11.7.2" alt="Aiko">
+<img src="media/guides/aiko-guide-icon.webp?v=11.7.3" alt="Aiko">
 <div><small>Aiko’s recommendation</small><strong id="japanReadyHomeTitle">Preparing your next travel scenario…</strong><p id="japanReadyHomeActivity">I am choosing the most useful situation for your trip.</p></div>
 </div>
 <div class="japan-ready-home-main">
-<img src="media/guides/aiko-guide-portrait.webp?v=11.7.2" alt="Aiko">
+<img src="media/guides/aiko-guide-portrait.webp?v=11.7.3" alt="Aiko">
 <div><span class="eyebrow">Current scenario</span><strong id="japanReadyHomeScenario">Essential Politeness</strong><small id="japanReadyHomeStatus">Preparing scenario progress…</small></div>
 </div>
 <div class="journey-home-progress"><span id="japanReadyHomeProgress">Preparing your travel route…</span><i><b id="japanReadyHomeFill"></b></i></div>
@@ -89,7 +89,7 @@
 <div class="stats"><article><strong id="learnedCount">0</strong><span>Words started</span></article><article><strong id="accuracy">0%</strong><span>Accuracy</span></article><article><strong id="mastered">0</strong><span>Words mastered</span></article><article class="kanji-stat"><button id="kanjiOverviewBtn" class="dashboard-stat-button" aria-label="View Kanji progress"><strong id="kanjiMastered">0</strong><span>Kanji mastered</span><small>View progress →</small></button></article><article><strong id="kanaMastered">0</strong><span>Kana mastered</span></article><article><strong id="totalWords">0</strong><span>Total words</span></article><article class="monster-stat"><strong id="monsters72h">0</strong><span>Yōkai defeated · 72h</span></article><article class="karuta-stat"><strong id="karutaAverage72h">—</strong><span>Karuta best avg · 72h</span></article></div>
 </section>
 <section id="journey" class="screen"><div class="study-top"><button id="journeyBack">← Dashboard</button><h2>Kaishi Adventure · 日本語の冒険</h2></div><article class="card journey-section"><span class="eyebrow">Your guided Japanese path</span><h2>Today’s Adventure Missions</h2><p>A short adaptive route combines reviews, new vocabulary and the most useful next learning activity. Complete missions in order, or revisit unlocked activities below.</p><div id="journeyStats" class="manga-library-stats"></div><aside id="journeyUnlockNotice" class="journey-unlock-notice" hidden aria-live="polite">
-<img src="media/guides/teacher-guide.webp?v=11.7.2" alt="Teacher">
+<img src="media/guides/teacher-guide.webp?v=11.7.3" alt="Teacher">
 <div><span class="eyebrow">Teacher update</span><strong id="journeyUnlockTitle">New activity unlocked!</strong><p id="journeyUnlockText"></p><div class="journey-unlock-actions"><button id="journeyUnlockStart" class="primary" type="button">Start now</button><button id="journeyUnlockDismiss" type="button">Maybe later</button></div></div>
 </aside><section class="daily-route" aria-labelledby="dailyRouteTitle"><div class="daily-route-heading"><div><span class="eyebrow">Recommended today</span><h2 id="dailyRouteTitle">Your three-step route</h2></div><button id="journeyShareProgress" class="share-progress-badge" aria-label="Share progress">↗ Share</button></div><aside id="todayExplanation" class="today-explanation" aria-live="polite"></aside><div id="dailyRoute" class="daily-route-grid"></div><button id="startNextMission" class="primary">Start next mission</button></section><h2 class="journey-landmark-title">Activity landmarks</h2><p>Unlock new ways to practise as your Japanese develops. Activities only become useful once you know enough supported vocabulary.</p>
 
@@ -106,9 +106,9 @@
     <button id="kotobaColosseumMode" class="battle-mode" type="button" disabled>🔒 Not ready</button>
   </div>
 </article></section></article></section>
-<section id="japanReady" class="screen"><div class="study-top"><button id="japanReadyBack">← Dashboard</button><h2>Japan Ready · 日本旅行</h2></div><article class="card japan-ready-page"><section class="japan-ready-hero"><img src="media/guides/aiko-guide-large.webp?v=11.7.2" alt="Aiko, your Japan tourist guide"><div><span class="eyebrow">Focused travel campaign</span><h2>Get ready for real situations in Japan</h2><p>Aiko guides you through short scenario missions. Every word learned here also counts in the full Journey.</p><div id="japanReadyStats" class="japan-ready-stats"></div></div></section><section class="japan-ready-tools"><div><span class="eyebrow">Travel tools</span><h3>Choose a scenario or open your phrase cheat sheet</h3></div><button id="openJapanReadyCheatSheet">📋 Travel cheat sheet</button></section><div id="japanReadyScenarioList" class="japan-ready-scenarios"></div></article></section>
-<section id="japanReadyCheatSheet" class="screen"><div class="study-top"><button id="cheatSheetBack">← Japan Ready</button><h2>Travel Cheat Sheet · 旅行フレーズ</h2></div><article class="card cheat-sheet-page"><div class="cheat-sheet-hero"><img src="media/guides/aiko-guide-icon.webp?v=11.7.2" alt="Aiko"><div><span class="eyebrow">Quick reference</span><h2>Useful phrases when you are out in Japan</h2><p>Browse by situation. Each phrase shows Japanese, romaji and English, with a speaker button.</p></div></div><div id="cheatSheetSections" class="cheat-sheet-sections"></div></article></section>
-<section id="liveConversation" class="screen"><div class="study-top"><button id="liveConversationBack">← Scenarios</button><h2>Live Conversation · 実践会話</h2></div><article class="card live-conversation-page"><div class="live-conversation-heading"><img src="media/guides/aiko-guide-portrait.webp?v=11.7.2" alt="Aiko"><div><span class="eyebrow">Active travel practice</span><h2 id="liveConversationTitle">Conversation</h2><p id="liveConversationGoal"></p></div></div><div id="liveConversationTranscript" class="live-conversation-transcript"></div><section id="liveConversationInputArea" class="live-conversation-input kana-builder"><div class="kana-builder-heading"><div><span class="eyebrow">Build your response</span><h3 id="kanaBuilderTarget">Choose the next kana</h3></div><button id="kanaBuilderUndo" type="button">Undo</button></div><div id="kanaBuilderAnswer" class="kana-builder-answer"></div><div id="kanaBuilderChoices" class="kana-builder-choices"></div><p id="liveConversationPrompt" class="muted"></p><button id="liveConversationSubmit" class="primary" disabled>Use this response</button></section><section id="liveConversationComplete" class="live-conversation-complete" hidden></section></article></section>
+<section id="japanReady" class="screen"><div class="study-top"><button id="japanReadyBack">← Dashboard</button><h2>Japan Ready · 日本旅行</h2></div><article class="card japan-ready-page"><section class="japan-ready-hero"><img src="media/guides/aiko-guide-large.webp?v=11.7.3" alt="Aiko, your Japan tourist guide"><div><span class="eyebrow">Focused travel campaign</span><h2>Get ready for real situations in Japan</h2><p>Aiko guides you through short scenario missions. Every word learned here also counts in the full Journey.</p><div id="japanReadyStats" class="japan-ready-stats"></div></div></section><section class="japan-ready-tools"><div><span class="eyebrow">Travel tools</span><h3>Choose a scenario or open your phrase cheat sheet</h3></div><button id="openJapanReadyCheatSheet">📋 Travel cheat sheet</button></section><div id="japanReadyScenarioList" class="japan-ready-scenarios"></div></article></section>
+<section id="japanReadyCheatSheet" class="screen"><div class="study-top"><button id="cheatSheetBack">← Japan Ready</button><h2>Travel Cheat Sheet · 旅行フレーズ</h2></div><article class="card cheat-sheet-page"><div class="cheat-sheet-hero"><img src="media/guides/aiko-guide-icon.webp?v=11.7.3" alt="Aiko"><div><span class="eyebrow">Quick reference</span><h2>Useful phrases when you are out in Japan</h2><p>Browse by situation. Each phrase shows Japanese, romaji and English, with a speaker button.</p></div></div><div id="cheatSheetSections" class="cheat-sheet-sections"></div></article></section>
+<section id="liveConversation" class="screen"><div class="study-top"><button id="liveConversationBack">← Scenarios</button><h2>Live Conversation · 実践会話</h2></div><article class="card live-conversation-page"><div class="live-conversation-heading"><img src="media/guides/aiko-guide-portrait.webp?v=11.7.3" alt="Aiko"><div><span class="eyebrow">Active travel practice</span><h2 id="liveConversationTitle">Conversation</h2><p id="liveConversationGoal"></p></div></div><div id="liveConversationTranscript" class="live-conversation-transcript"></div><section id="liveConversationInputArea" class="live-conversation-input kana-builder"><div class="kana-builder-heading"><div><span class="eyebrow">Build your response</span><h3 id="kanaBuilderTarget">Choose the next kana</h3></div><button id="kanaBuilderUndo" type="button">Undo</button></div><div id="kanaBuilderAnswer" class="kana-builder-answer"></div><div id="kanaBuilderChoices" class="kana-builder-choices"></div><p id="liveConversationPrompt" class="muted"></p><button id="liveConversationSubmit" class="primary" disabled>Use this response</button></section><section id="liveConversationComplete" class="live-conversation-complete" hidden></section></article></section>
 <section id="community" class="screen"><div class="study-top"><button id="communityBack">← Back</button><h2>Community challenge</h2></div><section class="invite-card"><div><span class="eyebrow">Learn together</span><h4>Invite a learning buddy</h4><p>Share a secure link that connects you after sign-in.</p></div><button id="communityInvite" class="primary">💌 Invite a friend</button></section><section id="friendsPanel" class="friends-panel">
 <div class="friends-heading">
   <div>
@@ -259,7 +259,7 @@
 <span class="eyebrow">Activity Village</span>
 <h2 id="activityUnlockName">Picture Meadow</h2>
 <p id="activityUnlockDescription"></p>
-<div class="activity-teacher-message"><img src="media/guides/teacher-guide.webp?v=11.7.2" alt="Teacher"><p id="activityTeacherMessage"></p></div>
+<div class="activity-teacher-message"><img src="media/guides/teacher-guide.webp?v=11.7.3" alt="Teacher"><p id="activityTeacherMessage"></p></div>
 <div class="activity-requirements">
 <section><span>Known supported words</span><strong id="activityWordProgress"></strong><div class="bar"><i id="activityWordBar"></i></div><small id="activityWordNeed"></small></section>
 <section><span>Adventure Points</span><strong id="activityApProgress"></strong><div class="bar"><i id="activityApBar"></i></div><small id="activityApNeed"></small></section>
@@ -274,18 +274,18 @@
 </div>
 </dialog><dialog id="communityProfileDialog"><div class="community-profile-dialog">
 <button id="communityProfileClose" class="dialog-close" aria-label="Close">×</button>
-<img id="communityProfileAvatar" src="media/profiles/guest-learner.webp?v=11.7.2" alt="">
+<img id="communityProfileAvatar" src="media/profiles/guest-learner.webp?v=11.7.3" alt="">
 <div><span class="eyebrow">Kaishi Quest learner</span><h2 id="communityProfileName">Learner</h2><p id="communityProfileUsername"></p></div>
 <div id="communityProfileStats" class="community-profile-stats"></div>
 <p id="communityProfileStatus" class="muted"></p>
 <div id="communityProfileActions" class="community-profile-actions"></div>
-</div></dialog><dialog id="cloudConflictDialog"><div class="cloud-conflict"><span class="eyebrow">Progress found</span><h2>Which progress should Kaishi Quest keep?</h2><p>This device and your cloud account both contain learning progress. Choose the version you want to use everywhere.</p><button id="useCloudProgress" class="primary">Restore cloud progress</button><button id="keepDeviceProgress">Keep this device’s progress</button></div></dialog><script src="app.js?v=11.7.2"></script><script src="japan-ready.js?v=11.7.2"></script><script src="vms.js?v=11.7.2"></script><script src="supabase-config.js?v=11.7.2"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js" crossorigin="anonymous"></script><script src="cloud.js?v=11.7.2"></script><script src="reporting.js?v=11.7.2"></script>
-<script src="release-manager.js?v=11.7.2"></script>
-<script src="battle-ui-patch.js?v=11.7.2"></script>
-<script id="kotobaColosseumScript" src="battle-listen.js?v=11.7.2"></script>
-<script src="adaptive-learning.js?v=11.7.2"></script><script src="campfire-recall.js?v=11.7.2"></script><script src="word-rain.js?v=11.7.2"></script><script src="kotoba-activity.js?v=11.7.2"></script>
-<script src="dashboard-clarity.js?v=11.7.2"></script>
-<script src="touch-enhancements.js?v=11.7.2"></script>
-<script src="learning-ui.js?v=11.7.2"></script>
-<script src="carousel-navigation.js?v=11.7.2"></script>
+</div></dialog><dialog id="cloudConflictDialog"><div class="cloud-conflict"><span class="eyebrow">Progress found</span><h2>Which progress should Kaishi Quest keep?</h2><p>This device and your cloud account both contain learning progress. Choose the version you want to use everywhere.</p><button id="useCloudProgress" class="primary">Restore cloud progress</button><button id="keepDeviceProgress">Keep this device’s progress</button></div></dialog><script src="app.js?v=11.7.3"></script><script src="japan-ready.js?v=11.7.3"></script><script src="vms.js?v=11.7.3"></script><script src="supabase-config.js?v=11.7.3"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js" crossorigin="anonymous"></script><script src="cloud.js?v=11.7.3"></script><script src="reporting.js?v=11.7.3"></script>
+<script src="release-manager.js?v=11.7.3"></script>
+<script src="battle-ui-patch.js?v=11.7.3"></script>
+<script id="kotobaColosseumScript" src="battle-listen.js?v=11.7.3"></script>
+<script src="adaptive-learning.js?v=11.7.3"></script><script src="campfire-recall.js?v=11.7.3"></script><script src="word-rain.js?v=11.7.3"></script><script src="kotoba-activity.js?v=11.7.3"></script>
+<script src="dashboard-clarity.js?v=11.7.3"></script>
+<script src="touch-enhancements.js?v=11.7.3"></script>
+<script src="learning-ui.js?v=11.7.3"></script>
+<script src="carousel-navigation.js?v=11.7.3"></script>
 </body></html>

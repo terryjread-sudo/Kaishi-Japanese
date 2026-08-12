@@ -1,14 +1,14 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.2 — Journey / Japan Ready native carousel
+ * Kaishi Quest v11.7.3 — Journey / Japan Ready native carousel
  *
  * Uses the mobile pattern of partially revealing the neighbouring card.
  * No instructional text is required: the visible edge + page dots indicate
  * horizontal content. Native scrolling keeps interaction smooth.
  */
 (() => {
-  const RELEASE='11.7.2';
+  const RELEASE='11.7.3';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){
@@ -28,19 +28,33 @@
         display:flex!important;gap:12px!important;
         overflow-x:auto!important;overflow-y:visible!important;
         scroll-snap-type:x mandatory!important;
+        scroll-padding-inline:14px!important;
         scroll-behavior:smooth!important;
         -webkit-overflow-scrolling:touch;
-        padding:2px max(7vw,22px) 8px 0!important;
+        padding:2px 14px 8px!important;
         scrollbar-width:none;
         touch-action:pan-x pan-y;
+        overscroll-behavior-x:contain;
       }
       #campaignChooser .campaign-preview::-webkit-scrollbar{display:none}
       #campaignChooser .campaign-preview-panel{
         display:block!important;
-        flex:0 0 90%!important;
+        flex:0 0 calc(100% - 42px)!important;
         min-width:0!important;
-        scroll-snap-align:start!important;
+        max-width:calc(100% - 42px)!important;
+        scroll-snap-align:center!important;
         scroll-snap-stop:always!important;
+        box-sizing:border-box!important;
+        overflow:hidden!important;
+      }
+      #campaignChooser .campaign-preview-panel *{min-width:0}
+      #campaignChooser .campaign-preview-panel h1,
+      #campaignChooser .campaign-preview-panel h2,
+      #campaignChooser .campaign-preview-panel h3,
+      #campaignChooser .campaign-preview-panel strong,
+      #campaignChooser .campaign-preview-panel p,
+      #campaignChooser .campaign-preview-panel small{
+        overflow-wrap:anywhere;
       }
       #campaignChooser .campaign-preview-panel[hidden]{display:block!important}
       #journeyCampaignPreview,#japanReadyCampaignPreview{
@@ -63,6 +77,8 @@
         }
         #campaignChooser .campaign-preview-panel{
           flex-basis:calc(50% - 7px)!important;
+          max-width:none!important;
+          scroll-snap-align:start!important;
           cursor:pointer
         }
         .campaign-carousel-dots{display:none}
@@ -131,7 +147,8 @@
     const ps=panels();
     const target=ps[index];
     if(!strip||!target)return;
-    strip.scrollTo({left:target.offsetLeft-strip.offsetLeft,behavior:'smooth'});
+    const left = target.offsetLeft - strip.offsetLeft - Math.max(0,(strip.clientWidth-target.offsetWidth)/2);
+    strip.scrollTo({left:Math.max(0,left),behavior:'smooth'});
     if(activate)activateIndex(index);
     updateDots(index);
   }

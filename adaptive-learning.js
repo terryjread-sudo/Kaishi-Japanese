@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.7.2 — Adaptive Learning Update
+ * Kaishi Quest v11.7.3 — Adaptive Learning Update
  *
  * Adds:
  * - New → Recognising → Recall → Usable word states
@@ -13,7 +13,7 @@
  * - Classic Activity Landmarks as the only activity presentation
  */
 (() => {
-  const RELEASE_VERSION='11.7.2';
+  const RELEASE_VERSION='11.7.3';
   const REPAIR_DELAY=4;
   const recentRepairKeys=new Set();
 
@@ -362,7 +362,7 @@
     // Apply the Classic-only state immediately after replacing the old
     // village renderer, including on upgrades from users who had Village on.
     try{ renderVillageMap(); }catch(error){
-      console.warn('[Kaishi v11.7.2] Unable to apply Classic view immediately',error);
+      console.warn('[Kaishi v11.7.3] Unable to apply Classic view immediately',error);
     }
 
     const settingsBack=document.getElementById('settingsBack');

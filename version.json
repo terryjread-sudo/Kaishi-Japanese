@@ -1,15 +1,14 @@
 {
-  "version": "11.7.2",
+  "version": "11.7.3",
   "released": "2026-08-11",
-  "title": "Compact Keep Learning & Adaptive Carousel",
+  "title": "Swipe Card Layout Fix",
   "changes": [
-    "Compressed the completed-route Keep Learning section into horizontal cards on mobile to reduce vertical scrolling.",
-    "The Keep Learning row now uses concise cards for Another Mission, Reviews and Practice with subtle page indicators.",
-    "On wider desktop layouts, the three Keep Learning options display side by side.",
-    "Added clear headings to the study-mode cards: Japanese Journey and Japan Ready.",
-    "Improved Journey / Japan Ready interaction by input type: touch swipes, trackpad native scroll, mouse click, keyboard arrows/Enter, and wide desktop side-by-side cards.",
-    "Retains the mobile partial-card peek pattern so users naturally discover horizontal swiping without instructional text.",
-    "Retains all v11.7.1 performance improvements and v11.7 learning feedback features.",
-    "Bumped release-controlled assets and service-worker caches to v11.7.2."
+    "Fixed the Journey / Japan Ready carousel so the active card is fully readable while only a controlled sliver of the neighbouring card is visible.",
+    "Centered mobile scroll-snap points and added balanced left/right carousel padding to prevent card headings and content being clipped.",
+    "Fixed the Keep Learning carousel so Review/Practice cards no longer get cut off or overflow their card boundaries.",
+    "Changed mobile Keep Learning cards to a consistent viewport-relative width with centered snapping and proper edge padding.",
+    "Kept desktop layouts side by side and removed mobile width constraints from desktop cards.",
+    "Retains all v11.7.2 headings, touch/mouse/keyboard behavior, performance fixes and learning-summary features.",
+    "Bumped release-controlled assets and service-worker caches to v11.7.3."
   ]
 }
