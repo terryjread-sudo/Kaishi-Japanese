@@ -13,7 +13,7 @@
  * - Classic Activity Landmarks as the only activity presentation
  */
 (() => {
-  const RELEASE_VERSION='11.8.8';
+  const RELEASE_VERSION='11.8.9';
   const REPAIR_DELAY=4;
   const recentRepairKeys=new Set();
 

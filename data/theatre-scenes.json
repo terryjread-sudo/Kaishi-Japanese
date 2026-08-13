@@ -216,6 +216,81 @@
         {"prompt":"Who operates the camera?","choices":["Master","Kai","Mia","A stranger"],"answer":"Master","explanation":"Master directs the children while preparing the photograph."},
         {"prompt":"What does 二人とも refer to?","choices":["Both of you","The two cameras","Two more minutes","Everyone at the festival"],"answer":"Both of you","explanation":"二人とも addresses Kai and Mia together."}
       ]
+    },
+    {
+      "id": "cafe-order",
+      "featured": true,
+      "fiveAct": true,
+      "title": "Ordering at a Café",
+      "japaneseTitle": "カフェで注文",
+      "level": 2,
+      "setting": "Neighbourhood café",
+      "background": "media/theatre/cafe-counter-v1.webp",
+      "prop": "☕",
+      "summary": "Order a drink and dessert, answer a follow-up question, and practise the complete exchange.",
+      "duration": 29,
+      "characters": [
+        {"id":"aiko","name":"Aiko","image":"media/guides/aiko-guide-portrait.webp","side":"left","mouth":{"x":50,"y":54,"width":12,"openBase":true,"skin":"#e5a47c"}},
+        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"right","mouth":{"x":50,"y":57,"width":10,"openBase":false,"skin":"#e5a071"}}
+      ],
+      "timeline": [
+        {"at":1,"speaker":"aiko","line":"いらっしゃいませ。ご注文はお決まりですか。","reading":"いらっしゃいませ。ごちゅうもんは おきまりですか。","meaning":"Welcome. Have you decided what you would like to order?","action":"wave","focus":"ご注文 is a polite way to refer to the customer's order."},
+        {"at":6,"speaker":"kai","line":"はい、カフェラテを一つお願いします。","reading":"はい、カフェラテを ひとつ おねがいします。","meaning":"Yes, one café latte, please.","action":"talk","focus":"一つ counts one item; お願いします makes the request polite."},
+        {"at":11,"speaker":"aiko","line":"ホットとアイス、どちらになさいますか。","reading":"ホットと アイス、どちらに なさいますか。","meaning":"Would you like it hot or iced?","action":"offer","focus":"どちら is the polite choice word for ‘which one’."},
+        {"at":16,"speaker":"kai","line":"アイスでお願いします。それから、チーズケーキもください。","reading":"アイスで おねがいします。それから、チーズケーキも ください。","meaning":"Iced, please. And I would also like a cheesecake.","action":"point","focus":"で marks the selected option; も adds ‘also’."},
+        {"at":21,"speaker":"aiko","line":"かしこまりました。店内でお召し上がりですか。","reading":"かしこまりました。てんないで おめしあがりですか。","meaning":"Certainly. Will you be having it here?","action":"talk","focus":"店内 means inside the shop; お召し上がり is respectful language for eating or drinking."},
+        {"at":26,"speaker":"kai","line":"はい、店内で。ありがとうございます。","reading":"はい、てんないで。ありがとうございます。","meaning":"Yes, for here. Thank you.","action":"talk","focus":"店内で is a concise, natural reply meaning ‘for here’."}
+      ],
+      "questions": [
+        {"prompt":"What is Kai mainly trying to do?","choices":["Order at the café","Apply for a job","Ask for directions","Return a purchase"],"answer":"Order at the café","explanation":"Kai orders a café latte and cheesecake from Aiko."},
+        {"prompt":"How does Kai want his café latte?","choices":["Iced","Hot","Without milk","To take away"],"answer":"Iced","explanation":"アイスでお願いします means ‘Iced, please.’"},
+        {"prompt":"What else does Kai order?","choices":["Cheesecake","A sandwich","Green tea","Two coffees"],"answer":"Cheesecake","explanation":"チーズケーキもください means ‘I would also like a cheesecake.’"},
+        {"prompt":"Will Kai eat and drink inside?","choices":["Yes, for here","No, takeaway","He has not decided","Only the cake is takeaway"],"answer":"Yes, for here","explanation":"Kai answers はい、店内で—‘Yes, for here.’"},
+        {"prompt":"Why does Aiko say どちら?","choices":["She is asking him to choose between hot and iced","She is asking where he lives","She is asking how many people","She is asking how he will pay"],"answer":"She is asking him to choose between hot and iced","explanation":"どちら is a polite way to ask ‘which one?’ when presenting two options."}
+      ],
+      "roleplay": [
+        {
+          "speaker":"aiko",
+          "prompt":"ご注文はお決まりですか。",
+          "reading":"ごちゅうもんは おきまりですか。",
+          "meaning":"Have you decided what you would like to order?",
+          "choices":[
+            {"line":"カフェラテを一つお願いします。","reading":"カフェラテを ひとつ おねがいします。","meaning":"One café latte, please.","correct":true},
+            {"line":"カフェラテが一つですか。","reading":"カフェラテが ひとつですか。","meaning":"Is there one café latte?","correct":false},
+            {"line":"カフェラテを知りません。","reading":"カフェラテを しりません。","meaning":"I do not know the café latte.","correct":false}
+          ],
+          "feedback":"Use item + を + quantity + お願いします for a polite order."
+        },
+        {
+          "speaker":"aiko",
+          "prompt":"ホットとアイス、どちらになさいますか。",
+          "reading":"ホットと アイス、どちらに なさいますか。",
+          "meaning":"Would you like it hot or iced?",
+          "choices":[
+            {"line":"アイスでお願いします。","reading":"アイスで おねがいします。","meaning":"Iced, please.","correct":true},
+            {"line":"アイスをいます。","reading":"アイスを います。","meaning":"Incorrect use of います.","correct":false},
+            {"line":"アイスはどこですか。","reading":"アイスは どこですか。","meaning":"Where is the ice?","correct":false}
+          ],
+          "feedback":"Option + でお願いします is a natural way to choose from alternatives."
+        },
+        {
+          "speaker":"aiko",
+          "prompt":"店内でお召し上がりですか。",
+          "reading":"てんないで おめしあがりですか。",
+          "meaning":"Will you be having it here?",
+          "choices":[
+            {"line":"はい、店内でお願いします。","reading":"はい、てんないで おねがいします。","meaning":"Yes, for here, please.","correct":true},
+            {"line":"はい、店内があります。","reading":"はい、てんないが あります。","meaning":"Yes, there is an interior.","correct":false},
+            {"line":"店内を食べます。","reading":"てんないを たべます。","meaning":"I eat the shop interior.","correct":false}
+          ],
+          "feedback":"店内で means ‘inside the shop’ or ‘for here’; 持ち帰りで would mean takeaway."
+        }
+      ],
+      "shadowing": [
+        {"line":"カフェラテを一つお願いします。","reading":"カフェラテを ひとつ おねがいします。","meaning":"One café latte, please.","tip":"Keep 一つ and お願いします connected in one smooth phrase."},
+        {"line":"アイスでお願いします。","reading":"アイスで おねがいします。","meaning":"Iced, please.","tip":"Give で a light beat; the main stress stays on アイス."},
+        {"line":"はい、店内でお願いします。","reading":"はい、てんないで おねがいします。","meaning":"Yes, for here, please.","tip":"Pause briefly after はい, then say the rest as one polite response."}
+      ]
     }
   ]
 }
