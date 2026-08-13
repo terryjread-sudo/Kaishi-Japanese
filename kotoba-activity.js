@@ -8,7 +8,7 @@
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.8.9';
+  const RELEASE_VERSION='11.8.10';
   const REQUIRED_WORDS=8;
 
   function introducedCount(){

@@ -226,20 +226,25 @@
       "level": 2,
       "setting": "Neighbourhood café",
       "background": "media/theatre/cafe-counter-v1.webp",
+      "shots": {
+        "wide": "media/theatre/cafe-counter-v1.webp",
+        "counterClose": "media/theatre/cafe-counter-close-v2.webp",
+        "reverse": "media/theatre/cafe-reverse-v2.webp"
+      },
       "prop": "☕",
       "summary": "Order a drink and dessert, answer a follow-up question, and practise the complete exchange.",
       "duration": 29,
       "characters": [
-        {"id":"aiko","name":"Aiko","image":"media/guides/aiko-guide-portrait.webp","side":"left","mouth":{"x":50,"y":54,"width":12,"openBase":true,"skin":"#e5a47c"}},
-        {"id":"kai","name":"Kai","image":"media/profiles/boy-base.webp","side":"right","mouth":{"x":50,"y":57,"width":10,"openBase":false,"skin":"#e5a071"}}
+        {"id":"aiko","name":"Aiko","image":"media/theatre/aiko-rest-v2.webp","talkImage":"media/theatre/aiko-talk-v2.webp","side":"left"},
+        {"id":"kai","name":"Kai","image":"media/theatre/kai-rest-v2.webp","talkImage":"media/theatre/kai-talk-v2.webp","side":"right"}
       ],
       "timeline": [
-        {"at":1,"speaker":"aiko","line":"いらっしゃいませ。ご注文はお決まりですか。","reading":"いらっしゃいませ。ごちゅうもんは おきまりですか。","meaning":"Welcome. Have you decided what you would like to order?","action":"wave","focus":"ご注文 is a polite way to refer to the customer's order."},
-        {"at":6,"speaker":"kai","line":"はい、カフェラテを一つお願いします。","reading":"はい、カフェラテを ひとつ おねがいします。","meaning":"Yes, one café latte, please.","action":"talk","focus":"一つ counts one item; お願いします makes the request polite."},
-        {"at":11,"speaker":"aiko","line":"ホットとアイス、どちらになさいますか。","reading":"ホットと アイス、どちらに なさいますか。","meaning":"Would you like it hot or iced?","action":"offer","focus":"どちら is the polite choice word for ‘which one’."},
-        {"at":16,"speaker":"kai","line":"アイスでお願いします。それから、チーズケーキもください。","reading":"アイスで おねがいします。それから、チーズケーキも ください。","meaning":"Iced, please. And I would also like a cheesecake.","action":"point","focus":"で marks the selected option; も adds ‘also’."},
-        {"at":21,"speaker":"aiko","line":"かしこまりました。店内でお召し上がりですか。","reading":"かしこまりました。てんないで おめしあがりですか。","meaning":"Certainly. Will you be having it here?","action":"talk","focus":"店内 means inside the shop; お召し上がり is respectful language for eating or drinking."},
-        {"at":26,"speaker":"kai","line":"はい、店内で。ありがとうございます。","reading":"はい、てんないで。ありがとうございます。","meaning":"Yes, for here. Thank you.","action":"talk","focus":"店内で is a concise, natural reply meaning ‘for here’."}
+        {"at":1,"speaker":"aiko","shot":"counterClose","line":"いらっしゃいませ。ご注文はお決まりですか。","reading":"いらっしゃいませ。ごちゅうもんは おきまりですか。","meaning":"Welcome. Have you decided what you would like to order?","action":"wave","focus":"ご注文 is a polite way to refer to the customer's order."},
+        {"at":6,"speaker":"kai","shot":"reverse","line":"はい、カフェラテを一つお願いします。","reading":"はい、カフェラテを ひとつ おねがいします。","meaning":"Yes, one café latte, please.","action":"talk","focus":"一つ counts one item; お願いします makes the request polite."},
+        {"at":11,"speaker":"aiko","shot":"counterClose","line":"ホットとアイス、どちらになさいますか。","reading":"ホットと アイス、どちらに なさいますか。","meaning":"Would you like it hot or iced?","action":"offer","focus":"どちら is the polite choice word for ‘which one’."},
+        {"at":16,"speaker":"kai","shot":"reverse","line":"アイスでお願いします。それから、チーズケーキもください。","reading":"アイスで おねがいします。それから、チーズケーキも ください。","meaning":"Iced, please. And I would also like a cheesecake.","action":"point","focus":"で marks the selected option; も adds ‘also’."},
+        {"at":21,"speaker":"aiko","shot":"counterClose","line":"かしこまりました。店内でお召し上がりですか。","reading":"かしこまりました。てんないで おめしあがりですか。","meaning":"Certainly. Will you be having it here?","action":"talk","focus":"店内 means inside the shop; お召し上がり is respectful language for eating or drinking."},
+        {"at":26,"speaker":"kai","shot":"wide","line":"はい、店内で。ありがとうございます。","reading":"はい、てんないで。ありがとうございます。","meaning":"Yes, for here. Thank you.","action":"talk","focus":"店内で is a concise, natural reply meaning ‘for here’."}
       ],
       "questions": [
         {"prompt":"What is Kai mainly trying to do?","choices":["Order at the café","Apply for a job","Ask for directions","Return a purchase"],"answer":"Order at the café","explanation":"Kai orders a café latte and cheesecake from Aiko."},

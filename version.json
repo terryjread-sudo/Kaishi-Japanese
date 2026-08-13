@@ -1,8 +1,13 @@
 {
-  "version": "11.8.9",
+  "version": "11.8.10",
   "released": "2026-08-13",
-  "title": "Kaishi Theatre: Café Five-Act Episode",
+  "title": "Kaishi Theatre: Cinematic Café Animation",
   "changes": [
+    "Replaced the synthetic mouth overlay with matched full character animation frames.",
+    "Added dedicated resting and speaking portraits for both Kai and Aiko.",
+    "Added three genuine café camera angles: establishing, close counter and reverse seating views.",
+    "Cut between speaker-focused shots throughout the dialogue with responsive character framing.",
+    "Added asset preloading so camera and mouth-frame changes remain smooth during playback.",
     "Added a complete Ordering at a Café episode built around real-world Japanese practice.",
     "Introduced Theatre's five-act learning flow: Watch, Understand, Explore, Join and Perform.",
     "Added three interactive customer role-play decisions with natural phrase feedback.",
@@ -39,6 +44,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.9."
+    "Bumped release-controlled assets and service-worker caches to v11.8.10."
   ]
 }
