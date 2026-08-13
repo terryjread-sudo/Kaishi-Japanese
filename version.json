@@ -1,8 +1,11 @@
 {
-  "version": "11.8.10",
+  "version": "11.8.11",
   "released": "2026-08-13",
   "title": "Kaishi Theatre: Cinematic Café Animation",
   "changes": [
+    "Added four stable speech poses for both Aiko and Kai: closed, small, rounded and wide mouths.",
+    "Locked every frame to the same portrait, pose, crop and background to prevent animation wobble.",
+    "Replaced binary open-and-close swapping with a smoother phoneme-style speaking cycle.",
     "Replaced the synthetic mouth overlay with matched full character animation frames.",
     "Added dedicated resting and speaking portraits for both Kai and Aiko.",
     "Added three genuine café camera angles: establishing, close counter and reverse seating views.",
@@ -44,6 +47,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.10."
+    "Bumped release-controlled assets and service-worker caches to v11.8.11."
   ]
 }

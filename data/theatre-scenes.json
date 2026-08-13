@@ -235,8 +235,8 @@
       "summary": "Order a drink and dessert, answer a follow-up question, and practise the complete exchange.",
       "duration": 29,
       "characters": [
-        {"id":"aiko","name":"Aiko","image":"media/theatre/aiko-rest-v2.webp","talkImage":"media/theatre/aiko-talk-v2.webp","side":"left"},
-        {"id":"kai","name":"Kai","image":"media/theatre/kai-rest-v2.webp","talkImage":"media/theatre/kai-talk-v2.webp","side":"right"}
+        {"id":"aiko","name":"Aiko","image":"media/theatre/aiko-mouth-closed-v3.webp","talkImage":"media/theatre/aiko-mouth-wide-v3.webp","speechFrames":["media/theatre/aiko-mouth-closed-v3.webp","media/theatre/aiko-mouth-small-v3.webp","media/theatre/aiko-mouth-round-v3.webp","media/theatre/aiko-mouth-wide-v3.webp"],"side":"left"},
+        {"id":"kai","name":"Kai","image":"media/theatre/kai-mouth-closed-v3.webp","talkImage":"media/theatre/kai-mouth-wide-v3.webp","speechFrames":["media/theatre/kai-mouth-closed-v3.webp","media/theatre/kai-mouth-small-v3.webp","media/theatre/kai-mouth-round-v3.webp","media/theatre/kai-mouth-wide-v3.webp"],"side":"right"}
       ],
       "timeline": [
         {"at":1,"speaker":"aiko","shot":"counterClose","line":"いらっしゃいませ。ご注文はお決まりですか。","reading":"いらっしゃいませ。ごちゅうもんは おきまりですか。","meaning":"Welcome. Have you decided what you would like to order?","action":"wave","focus":"ご注文 is a polite way to refer to the customer's order."},
