@@ -1,7 +1,7 @@
 {
-  "version": "11.8.6",
+  "version": "11.8.7",
   "released": "2026-08-13",
-  "title": "Colosseum Combat & Activity Skill Web",
+  "title": "Kotoba Colosseum Skill-Web Integration",
   "changes": [
     "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
     "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
@@ -26,6 +26,9 @@
     "Added clear critical-hit, hit and revive effects while respecting reduced-motion preferences.",
     "Rebuilt Activity Landmarks as an original connected RPG skill web with unlock paths, progress rings and branching nodes.",
     "Optimised the skill web for compact mobile screens and keyboard/touch navigation.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.6."
+    "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
+    "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
+    "Removed the redundant detached Colosseum landmark beneath the skill web.",
+    "Bumped release-controlled assets and service-worker caches to v11.8.7."
   ]
 }

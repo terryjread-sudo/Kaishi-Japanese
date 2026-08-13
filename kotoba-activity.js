@@ -8,7 +8,7 @@
  * renderer so a re-render cannot permanently remove the new activity.
  */
 (() => {
-  const RELEASE_VERSION='11.8.6';
+  const RELEASE_VERSION='11.8.7';
   const REQUIRED_WORDS=8;
 
   function introducedCount(){
@@ -22,7 +22,10 @@
     }catch{ return 0; }
   }
 
-  function isReady(){ return introducedCount()>=REQUIRED_WORDS; }
+  function isReady(){
+    try{ if(typeof isAdminTestMode==='function'&&isAdminTestMode()) return true; }catch{}
+    return introducedCount()>=REQUIRED_WORDS;
+  }
 
   function readinessText(){
     const count=introducedCount();
@@ -50,6 +53,7 @@
       .kotoba-launch-copy{flex:1;min-width:170px}
       .kotoba-launch-copy h3{margin:.15rem 0}
       .kotoba-launch-copy p{margin:.25rem 0}
+      #kotobaActivityCard{display:none!important}
     `;
     document.head.appendChild(style);
   }
@@ -100,20 +104,15 @@
   }
 
   function ensureLaunchers(){
-    // Show as a proper Classic Activity Landmark, inside the same pathRoad
-    // container used by the existing landmark cards.
-    const pathRoad=document.getElementById('pathRoad');
-    if(pathRoad && !document.getElementById('kotobaClassicLauncher')){
-      const card=makeLauncher('kotobaClassicLauncher',true);
-      card.classList.add('journey-landmark','kotoba-classic-landmark');
-      pathRoad.appendChild(card);
-    }
+    // Colosseum is now a native node in app.js's skill web. Remove the
+    // older injected landmark if it survived from a cached render.
+    document.getElementById('kotobaClassicLauncher')?.remove();
     updateReadiness();
   }
 
   function updateReadiness(){
     const count=introducedCount();
-    const ready=count>=REQUIRED_WORDS;
+    const ready=isReady();
     document.querySelectorAll('.kotoba-launcher').forEach(card=>{
       const status=card.querySelector('.kotoba-status');
       const button=card.querySelector('.kotoba-open');
@@ -171,26 +170,6 @@
     ensureWireTarget();
     ensureLaunchers();
     wire();
-
-    // app.js can rebuild Activity Village DOM. Only restore launchers when
-    // one has actually been removed. Do NOT call ensureLaunchers() on every
-    // subtree mutation: updating launcher text itself creates childList
-    // mutations and caused the v11.3.1 infinite MutationObserver loop.
-    const journey=document.getElementById('journey');
-    if(journey){
-      let restoreQueued=false;
-      const observer=new MutationObserver(()=>{
-        const missing=
-          !document.getElementById('kotobaClassicLauncher');
-        if(!missing || restoreQueued) return;
-        restoreQueued=true;
-        requestAnimationFrame(()=>{
-          restoreQueued=false;
-          ensureLaunchers();
-        });
-      });
-      observer.observe(journey,{childList:true,subtree:true});
-    }
 
     [250,750,1500,3000,5000].forEach(ms=>setTimeout(ensureLaunchers,ms));
     window.addEventListener('focus',ensureLaunchers);

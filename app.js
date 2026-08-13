@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.6';
+const APP_VERSION='11.8.7';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -655,20 +655,25 @@ function setActivityVillageMode(enabled){
 }
 const ACTIVITY_SKILL_LAYOUT={
  vocabulary:{x:50,y:14},kana:{x:24,y:26},picture:{x:76,y:26},listening:{x:50,y:38},
- karuta:{x:18,y:51},conversation:{x:50,y:52},grammar:{x:82,y:51},kanji:{x:28,y:65},
- theatre:{x:69,y:65},builder:{x:27,y:79},manga:{x:67,y:79},battle:{x:50,y:93}
+ karuta:{x:18,y:50},conversation:{x:50,y:51},grammar:{x:82,y:50},kanji:{x:28,y:60},
+ theatre:{x:69,y:60},builder:{x:27,y:70},manga:{x:67,y:70},battle:{x:50,y:81},colosseum:{x:50,y:92}
 };
 const ACTIVITY_SKILL_LINKS=[
  ['vocabulary','kana'],['vocabulary','picture'],['kana','listening'],['picture','listening'],
  ['listening','karuta'],['listening','conversation'],['listening','grammar'],['karuta','kanji'],
  ['grammar','theatre'],['conversation','theatre'],['kanji','builder'],['kanji','manga'],
- ['theatre','manga'],['builder','battle'],['manga','battle']
+ ['theatre','manga'],['builder','battle'],['manga','battle'],['battle','colosseum']
 ];
 function activitySkillWebHtml(){
  const states=Object.fromEntries(PATH_MILESTONES.map(item=>{const state=activityReadiness(item.id);return[item.id,{...state,ready:state.wordReady&&state.apReady}]}));
+ const colosseumSupported=introducedWords().filter(word=>!window.KaishiLearning?.wordState||window.KaishiLearning.wordState(word)!=='New').length;
+ const colosseumReady=isAdminTestMode()||colosseumSupported>=8;
+ states.colosseum={purchased:colosseumReady,ready:colosseumReady,supported:colosseumSupported,cfg:{words:8,cost:0}};
  const links=ACTIVITY_SKILL_LINKS.map(([from,to])=>{const a=ACTIVITY_SKILL_LAYOUT[from],b=ACTIVITY_SKILL_LAYOUT[to],source=states[from],target=states[to];const status=source.purchased&&target.purchased?'unlocked':source.purchased&&(target.ready||target.purchased)?'available':'locked';return`<line class="activity-skill-link ${status}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" vector-effect="non-scaling-stroke"></line>`}).join('');
  const nodes=PATH_MILESTONES.map(item=>{const state=states[item.id],point=ACTIVITY_SKILL_LAYOUT[item.id]||{x:50,y:50},ready=state.ready,progress=state.cfg.words?Math.min(100,state.supported/state.cfg.words*100):100,status=state.purchased?'Unlocked':ready?'Ready':'Locked';return`<article class="activity-skill-node ${state.purchased?'unlocked':ready?'available':'locked'}" style="--skill-x:${point.x}%;--skill-y:${point.y}%;--skill-progress:${progress*3.6}deg"><button data-village-activity="${esc(item.id)}" aria-label="${esc(item.title)}. ${status}. ${state.supported} of ${state.cfg.words} supported words."><span class="activity-skill-orb"><i>${esc(item.icon)}</i></span><strong>${esc(item.title)}</strong><small>${state.purchased?'Open':ready?'Unlock now':`${Math.max(0,state.cfg.words-state.supported)} words`}</small></button></article>`}).join('');
- return`<div class="activity-skill-web-head"><span><b>Activity Skill Web</b><small>Unlock connected ways to practise</small></span><span class="activity-skill-legend"><i></i> Open <i></i> Ready</span></div><svg class="activity-skill-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links}</svg>${nodes}`;
+ const colosseumPoint=ACTIVITY_SKILL_LAYOUT.colosseum,remaining=Math.max(0,8-colosseumSupported);
+ const colosseumNode=`<article id="kotobaSkillNode" class="activity-skill-node activity-skill-boss ${colosseumReady?'unlocked':'locked'}" style="--skill-x:${colosseumPoint.x}%;--skill-y:${colosseumPoint.y}%;--skill-progress:${Math.min(100,colosseumSupported/8*100)*3.6}deg"><button class="kotoba-open" type="button" ${colosseumReady?'':'disabled'} aria-label="Kotoba Colosseum. ${colosseumReady?'Open':'Locked'}. ${colosseumSupported} of 8 battle-ready words."><span class="activity-skill-orb"><i>⚔️</i></span><strong>Kotoba Colosseum</strong><small>${colosseumReady?'Enter battle':`${remaining} words`}</small></button></article>`;
+ return`<div class="activity-skill-web-head"><span><b>Activity Skill Web</b><small>Unlock connected ways to practise</small></span><span class="activity-skill-legend"><i></i> Open <i></i> Ready</span></div><svg class="activity-skill-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links}</svg>${nodes}${colosseumNode}`;
 }
 function renderJourney(){
  refreshPathUnlocks();const currentIndex=pathCurrentIndex(),unlocked=PATH_MILESTONES.filter(item=>pathUnlocked(item.id)).length,wordPosition=wordJourneyPosition(),masteryState=masterySnapshot();$('#journeyStats').innerHTML=`<article><strong>${unlocked}/${PATH_MILESTONES.length}</strong><span>Activities unlocked</span></article><article><strong>${wordPosition.explored}/${vocab.length}</strong><span>Words introduced</span></article><article><strong>${masteryState.mastered}</strong><span>Full mastery journeys</span></article><article><strong>${wordPosition.completed}/${wordPosition.total}</strong><span>Chapters completed</span></article>`;

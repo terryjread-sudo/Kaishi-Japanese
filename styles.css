@@ -1724,6 +1724,10 @@ body.welcome-open{overflow:hidden}
 .activity-skill-node.unlocked .activity-skill-orb{background:conic-gradient(#4ade80 var(--skill-progress),#14532d 0);box-shadow:0 0 0 3px #22c55e,0 0 22px #4ade8088}
 .activity-skill-node.unlocked .activity-skill-orb i{border-color:#bbf7d0;background:radial-gradient(circle at 38% 30%,#15803d,#052e16 72%);filter:none}
 .activity-skill-node.unlocked small{background:#14532d;color:#bbf7d0}
+.activity-skill-boss .activity-skill-orb{width:78px;height:78px}
+.activity-skill-boss.unlocked .activity-skill-orb{box-shadow:0 0 0 4px #fbbf24,0 0 30px #ef444499;background:conic-gradient(#fbbf24 var(--skill-progress),#7f1d1d 0)}
+.activity-skill-boss.unlocked .activity-skill-orb i{border-color:#fef3c7;background:radial-gradient(circle at 38% 30%,#b91c1c,#450a0a 72%)}
+.activity-skill-boss.unlocked small{background:#7f1d1d;color:#fef3c7}
 .activity-skill-node.locked{opacity:.72}
 .activity-skill-node.locked .activity-skill-orb i::after{content:'🔒';position:absolute;font-size:.72rem;transform:translate(24px,22px)}
 .activity-skill-node button:hover .activity-skill-orb,.activity-skill-node button:focus-visible .activity-skill-orb{transform:scale(1.08);filter:brightness(1.18)}
@@ -1735,6 +1739,7 @@ body.welcome-open{overflow:hidden}
   .activity-skill-web-head{top:9px;left:10px;right:10px}.activity-skill-web-head small{display:none}
   .activity-skill-node{width:88px}.activity-skill-node button{min-height:78px;padding:1px!important;gap:2px!important}
   .activity-skill-orb{width:58px;height:58px;padding:4px}.activity-skill-orb i{font-size:1.38rem}
+  .activity-skill-boss .activity-skill-orb{width:64px;height:64px}
   .activity-skill-node strong{max-width:88px;font-size:.65rem}.activity-skill-node small{font-size:.53rem;padding:2px 5px}
   .activity-skill-link{stroke-width:3}
 }
