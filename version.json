@@ -1,8 +1,11 @@
 {
-  "version": "11.8.11",
+  "version": "11.8.12",
   "released": "2026-08-13",
-  "title": "Kaishi Theatre: Cinematic Café Animation",
+  "title": "Interactive Right-to-Left Manga",
   "changes": [
+    "Added The Lost Wallet, a three-page right-to-left interactive manga story.",
+    "Placed Japanese dialogue inside comic-panel speech balloons with tap-to-hear words.",
+    "Added an English dialogue toggle, mobile page swiping, manga-direction controls and keyboard navigation.",
     "Added four stable speech poses for both Aiko and Kai: closed, small, rounded and wide mouths.",
     "Locked every frame to the same portrait, pose, crop and background to prevent animation wobble.",
     "Replaced binary open-and-close swapping with a smoother phoneme-style speaking cycle.",
@@ -47,6 +50,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.11."
+    "Bumped release-controlled assets and service-worker caches to v11.8.12."
   ]
 }

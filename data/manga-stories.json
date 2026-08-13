@@ -177,6 +177,47 @@
         {"sentence":"本当の原因は、歯車に挟まった写真でした。","reading":"ほんとうのげんいんは、はぐるまにはさまったしゃしんでした。","translation":"The true cause was a photograph caught in the gears.","focus":"本当","targetKey":"本当|ほんとう"}
       ],
       "question":{"prompt":"時計を止めていた物は何ですか。","translation":"What object had stopped the clock?","choices":["写真","鍵","手紙"],"answer":"写真"}
+    },
+    {
+      "id": "lost-wallet-comic",
+      "format": "comic",
+      "featured": true,
+      "title": "なくした財布",
+      "titleReading": "なくしたさいふ",
+      "englishTitle": "The Lost Wallet",
+      "difficulty": 2,
+      "image": "media/manga/lost-wallet-page-1-v1.webp",
+      "summary": "Read a true right-to-left manga as Kai returns a lost wallet at a neighbourhood police box.",
+      "pages": [
+        {
+          "image": "media/manga/lost-wallet-page-1-v1.webp",
+          "alt": "Kai arrives at a station, discovers a wallet and shows it to Aiko.",
+          "balloons": [
+            {"speaker":"Kai","x":67,"y":4,"width":28,"words":[{"text":"駅","reading":"えき","meaning":"station"},{"text":"に","reading":"に","meaning":"destination marker"},{"text":"着きました","reading":"つきました","meaning":"arrived"},{"text":"。"}],"english":"I've arrived at the station."},
+            {"speaker":"Kai","x":5,"y":37,"width":29,"tone":"thought","words":[{"text":"あれ","reading":"あれ","meaning":"huh?"},{"text":"？"},{"text":"財布","reading":"さいふ","meaning":"wallet"},{"text":"が","reading":"が","meaning":"subject marker"},{"text":"あります","reading":"あります","meaning":"there is"},{"text":"。"}],"english":"Huh? There's a wallet."},
+            {"speaker":"Kai","x":56,"y":68,"width":39,"words":[{"text":"すみません","reading":"すみません","meaning":"excuse me"},{"text":"。"},{"text":"財布","reading":"さいふ","meaning":"wallet"},{"text":"を","reading":"を","meaning":"object marker"},{"text":"見つけました","reading":"みつけました","meaning":"found"},{"text":"。"}],"english":"Excuse me. I found a wallet."}
+          ]
+        },
+        {
+          "image": "media/manga/lost-wallet-page-2-v1.webp",
+          "alt": "Aiko guides Kai to the police box where they hand the wallet to an officer.",
+          "balloons": [
+            {"speaker":"Aiko","x":4,"y":4,"width":35,"words":[{"text":"交番","reading":"こうばん","meaning":"police box"},{"text":"は","reading":"は","meaning":"topic marker"},{"text":"あちら","reading":"あちら","meaning":"over there"},{"text":"です","reading":"です","meaning":"is"},{"text":"。"}],"english":"The police box is over there."},
+            {"speaker":"Kai","x":61,"y":37,"width":34,"words":[{"text":"一緒に","reading":"いっしょに","meaning":"together"},{"text":"来て","reading":"きて","meaning":"come"},{"text":"ください","reading":"ください","meaning":"please"},{"text":"。"}],"english":"Please come with me."},
+            {"speaker":"Kai","x":4,"y":68,"width":38,"words":[{"text":"この","reading":"この","meaning":"this"},{"text":"財布","reading":"さいふ","meaning":"wallet"},{"text":"を","reading":"を","meaning":"object marker"},{"text":"届けに","reading":"とどけに","meaning":"in order to deliver"},{"text":"来ました","reading":"きました","meaning":"came"},{"text":"。"}],"english":"I came to hand in this wallet."}
+          ]
+        },
+        {
+          "image": "media/manga/lost-wallet-page-3-v1.webp",
+          "alt": "The officer records the wallet, its owner arrives and thanks Kai.",
+          "balloons": [
+            {"speaker":"Officer","x":4,"y":3,"width":41,"words":[{"text":"分かりました","reading":"わかりました","meaning":"understood"},{"text":"。"},{"text":"ここ","reading":"ここ","meaning":"here"},{"text":"に","reading":"に","meaning":"location marker"},{"text":"名前","reading":"なまえ","meaning":"name"},{"text":"を","reading":"を","meaning":"object marker"},{"text":"書いて","reading":"かいて","meaning":"write"},{"text":"ください","reading":"ください","meaning":"please"},{"text":"。"}],"english":"Understood. Please write your name here."},
+            {"speaker":"Owner","x":61,"y":38,"width":33,"words":[{"text":"私","reading":"わたし","meaning":"I / my"},{"text":"の","reading":"の","meaning":"possessive marker"},{"text":"財布","reading":"さいふ","meaning":"wallet"},{"text":"です","reading":"です","meaning":"is"},{"text":"！"}],"english":"It's my wallet!"},
+            {"speaker":"Owner","x":4,"y":68,"width":39,"words":[{"text":"本当に","reading":"ほんとうに","meaning":"truly"},{"text":"ありがとう","reading":"ありがとう","meaning":"thank you"},{"text":"ございます","reading":"ございます","meaning":"polite ending"},{"text":"。"}],"english":"Thank you so much."},
+            {"speaker":"Kai","x":56,"y":82,"width":39,"words":[{"text":"見つかって","reading":"みつかって","meaning":"was found"},{"text":"よかった","reading":"よかった","meaning":"I'm glad"},{"text":"です","reading":"です","meaning":"polite ending"},{"text":"。"}],"english":"I'm glad it was found."}
+          ]
+        }
+      ]
     }
   ]
 }

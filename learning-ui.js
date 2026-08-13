@@ -11,7 +11,7 @@
  * - Kana correct/wrong feedback as a modal overlay, with manual Continue only
  */
 (() => {
-  const RELEASE='11.8.11';
+  const RELEASE='11.8.12';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 
