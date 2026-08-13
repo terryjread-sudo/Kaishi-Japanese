@@ -6750,5 +6750,455 @@
     "soundMnemonic": "wand + car + eel",
     "status": "approved",
     "imageStatus": "approved"
+  },
+  "ここ|ここ": {
+    "alt": "A cocoa mascot points to the exact spot beside Kai and Mia.",
+    "caption": "The cocoa mascot points right here.",
+    "meaning": "here",
+    "file": "mnemonic-11-8-8-01-koko-koko.webp",
+    "soundMnemonic": "cocoa",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "考える|かんがえる": {
+    "alt": "A thoughtful kangaroo weighs choices in a cloud above Kai and Mia.",
+    "caption": "The kangaroo carefully thinks through every choice.",
+    "meaning": "to think, to consider",
+    "file": "mnemonic-11-8-8-02-kangaeru-kangaeru.webp",
+    "soundMnemonic": "kangaroo",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "手|て": {
+    "alt": "A giant hand serves tea to Kai and Mia.",
+    "caption": "A giant hand passes over the tea.",
+    "meaning": "hand",
+    "file": "mnemonic-11-8-8-03-te-te.webp",
+    "soundMnemonic": "tea",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "分かる|わかる": {
+    "alt": "Kai solves a puzzle as a bright lightbulb appears above a waka canoe.",
+    "caption": "The waka puzzle clicks and Kai understands.",
+    "meaning": "to understand",
+    "file": "mnemonic-11-8-8-04-wakaru-wakaru.webp",
+    "soundMnemonic": "waka canoe",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "力|ちから": {
+    "alt": "A tiny chick shows enormous power by lifting a car.",
+    "caption": "The chick lifts a car with astonishing strength.",
+    "meaning": "strength, power",
+    "file": "mnemonic-11-8-8-05-chikara-chikara.webp",
+    "soundMnemonic": "chick + car",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "あげる|あげる": {
+    "alt": "Mia gives a giant egg to someone outside the group.",
+    "caption": "A giver offers the giant egg.",
+    "meaning": "to give",
+    "file": "mnemonic-11-8-8-06-ageru-ageru.webp",
+    "soundMnemonic": "a giver",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "怒る|おこる": {
+    "alt": "An angry ogre scolds a rolling acorn while Kai and Mia watch.",
+    "caption": "The ogre gets angry at the rolling acorn.",
+    "meaning": "to get angry, to scold",
+    "file": "mnemonic-11-8-8-07-okoru-okoru.webp",
+    "soundMnemonic": "ogre rolls",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "道|みち": {
+    "alt": "Kai and Mia follow a road made of giant mochi cakes.",
+    "caption": "The mochi road shows the way.",
+    "meaning": "road",
+    "file": "mnemonic-11-8-8-08-michi-michi.webp",
+    "soundMnemonic": "mochi",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "元気|げんき": {
+    "alt": "An energetic genie bursts from a lamp beside Kai and Mia.",
+    "caption": "The genie is bursting with healthy energy.",
+    "meaning": "energetic, healthy",
+    "file": "mnemonic-11-8-8-09-genki-genki.webp",
+    "soundMnemonic": "genie",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "甘い|あまい": {
+    "alt": "Kai tastes a sweet candy apple dripping with honey.",
+    "caption": "Ah, my candy apple is incredibly sweet.",
+    "meaning": "sweet",
+    "file": "mnemonic-11-8-8-10-amai-amai.webp",
+    "soundMnemonic": "ah, my",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "疲れる|つかれる": {
+    "alt": "Kai collapses tired beside rails made from sugar cubes.",
+    "caption": "The sugar rails leave Kai completely tired.",
+    "meaning": "to get tired",
+    "file": "mnemonic-11-8-8-11-tsukareru-tsukareru.webp",
+    "soundMnemonic": "sugar rail",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "花|はな": {
+    "alt": "A huge flower shaped like a nose blooms between Kai and Mia.",
+    "caption": "The hana nose blossoms into a flower.",
+    "meaning": "flower",
+    "file": "mnemonic-11-8-8-12-hana-hana.webp",
+    "soundMnemonic": "hana nose",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "あそこ|あそこ": {
+    "alt": "Kai and Mia point toward a glowing place far over there.",
+    "caption": "Ah, so far away—look over there.",
+    "meaning": "over there",
+    "file": "mnemonic-11-8-8-13-asoko-asoko.webp",
+    "soundMnemonic": "ah, so far",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "山|やま": {
+    "alt": "Kai and Mia climb a mountain made from a giant yam.",
+    "caption": "The enormous yam forms a mountain.",
+    "meaning": "mountain",
+    "file": "mnemonic-11-8-8-14-yama-yama.webp",
+    "soundMnemonic": "yam",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "どうしても|どうしても": {
+    "alt": "Kai and Mia use an absurd pile of tools to cross a gap by any means.",
+    "caption": "They will do whatever it takes, by any means.",
+    "meaning": "by any means, really",
+    "file": "mnemonic-11-8-8-15-doushitemo-doushitemo.webp",
+    "soundMnemonic": "do whatever",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "考え|かんがえ": {
+    "alt": "A kangaroo presents a glowing thought bubble to Kai and Mia.",
+    "caption": "The kangaroo shares a thoughtful view.",
+    "meaning": "thought, view",
+    "file": "mnemonic-11-8-8-16-kangae-kangae.webp",
+    "soundMnemonic": "kangaroo idea",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "過去|かこ": {
+    "alt": "A cuckoo clock opens a portal into Kai and Mia's past.",
+    "caption": "The cuckoo clock swings open into the past.",
+    "meaning": "the past",
+    "file": "mnemonic-11-8-8-17-kako-kako.webp",
+    "soundMnemonic": "cuckoo",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "気配|けはい": {
+    "alt": "Glowing footprints and a shadow give Kai and Mia a sign that someone is near.",
+    "caption": "The mysterious trail is a clear sign of a presence.",
+    "meaning": "indication, sign",
+    "file": "mnemonic-11-8-8-18-kehai-kehai.webp",
+    "soundMnemonic": "key, hi",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "本人|ほんにん": {
+    "alt": "The real person steps out from a crowd of cardboard copies.",
+    "caption": "There he is—the person in question himself.",
+    "meaning": "the person in question",
+    "file": "mnemonic-11-8-8-19-honnin-honnin.webp",
+    "soundMnemonic": "hon, him",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "町|まち": {
+    "alt": "A complete miniature town unfolds from a matchbox.",
+    "caption": "The matchbox becomes a bustling town.",
+    "meaning": "town, city",
+    "file": "mnemonic-11-8-8-20-machi-machi.webp",
+    "soundMnemonic": "match",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "現実|げんじつ": {
+    "alt": "Kai removes virtual reality goggles and finds a real dragon in front of him.",
+    "caption": "The goggles come off and the dragon is reality.",
+    "meaning": "reality, actuality",
+    "file": "mnemonic-11-8-8-21-genjitsu-genjitsu.webp",
+    "soundMnemonic": "genie's truth",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "決して|けっして": {
+    "alt": "Mia firmly refuses to open a heavily locked gate.",
+    "caption": "That gate must never be opened.",
+    "meaning": "never, by no means",
+    "file": "mnemonic-11-8-8-22-kesshite-kesshite.webp",
+    "soundMnemonic": "can't, ever",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "いつか|いつか": {
+    "alt": "Kai and Mia bury a time capsule to open someday in the future.",
+    "caption": "The time capsule will be opened someday.",
+    "meaning": "some time, some day",
+    "file": "mnemonic-11-8-8-23-itsuka-itsuka.webp",
+    "soundMnemonic": "it's someday",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "床|ゆか": {
+    "alt": "A yak polishes a sparkling floor while Kai and Mia balance nearby.",
+    "caption": "The yak makes the floor shine.",
+    "meaning": "floor",
+    "file": "mnemonic-11-8-8-24-yuka-yuka.webp",
+    "soundMnemonic": "yak",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "横|よこ": {
+    "alt": "A giant yo-yo rolls sideways across the full width of a bridge.",
+    "caption": "The yo-yo travels sideways across the bridge.",
+    "meaning": "side, width across",
+    "file": "mnemonic-11-8-8-25-yoko-yoko.webp",
+    "soundMnemonic": "yo-yo",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "休む|やすむ": {
+    "alt": "Kai and Mia rest peacefully in hammocks after an adventure.",
+    "caption": "There is room to rest in the hammocks.",
+    "meaning": "to rest, take time off",
+    "file": "mnemonic-11-8-8-26-yasumu-yasumu.webp",
+    "soundMnemonic": "yes, room",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "振り返る|ふりかえる": {
+    "alt": "A furry cow suddenly turns its head to look back at Kai and Mia.",
+    "caption": "The furry cow turns around and looks back.",
+    "meaning": "to turn one's head, to look back",
+    "file": "mnemonic-11-8-8-27-furikaeru-furikaeru.webp",
+    "soundMnemonic": "furry cow",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "わざわざ|わざわざ": {
+    "alt": "Kai takes a wildly winding detour just to deliver one flower.",
+    "caption": "Kai goes far out of his way to deliver the flower.",
+    "meaning": "go out of one's way",
+    "file": "mnemonic-11-8-8-28-wazawaza-wazawaza.webp",
+    "soundMnemonic": "was a long way",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "質問|しつもん": {
+    "alt": "Kai and Mia examine a mysterious object surrounded by question marks.",
+    "caption": "The strange object raises a big question.",
+    "meaning": "question",
+    "file": "mnemonic-11-8-8-29-shitsumon-shitsumon.webp",
+    "soundMnemonic": "sheets, moon?",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "興味|きょうみ": {
+    "alt": "Kai and Mia peer with fascination into a glass orb containing a tiny world.",
+    "caption": "The tiny world captures their interest.",
+    "meaning": "interest",
+    "file": "mnemonic-11-8-8-30-kyoumi-kyoumi.webp",
+    "soundMnemonic": "curious me",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "距離|きょり": {
+    "alt": "Kai and Mia stand on opposite cliffs measuring a long ribbon between them.",
+    "caption": "The long ribbon shows the distance across the cliffs.",
+    "meaning": "distance, interval",
+    "file": "mnemonic-11-8-8-31-kyori-kyori.webp",
+    "soundMnemonic": "key, far",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "内容|ないよう": {
+    "alt": "A small container opens to reveal an entire universe inside.",
+    "caption": "The container's contents fill a whole universe.",
+    "meaning": "contents",
+    "file": "mnemonic-11-8-8-32-naiyou-naiyou.webp",
+    "soundMnemonic": "what's inside",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "つい|つい": {
+    "alt": "Kai inadvertently tips a teacup and makes a comic mess.",
+    "caption": "Oops—the tea spills carelessly.",
+    "meaning": "inadvertently, carelessly",
+    "file": "mnemonic-11-8-8-33-tsui-tsui.webp",
+    "soundMnemonic": "oops, tea",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "大好き|だいすき": {
+    "alt": "Kai and Mia hug a huge pair of heart-shaped skis.",
+    "caption": "They love the giant heart skis.",
+    "meaning": "love",
+    "file": "mnemonic-11-8-8-34-daisuki-daisuki.webp",
+    "soundMnemonic": "die for skiing",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "回る|まわる": {
+    "alt": "Kai and Mia spin around on an enormous colourful wheel.",
+    "caption": "The wheel rotates round and round.",
+    "meaning": "to rotate, go around",
+    "file": "mnemonic-11-8-8-35-mawaru-mawaru.webp",
+    "soundMnemonic": "my whirl",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "並ぶ|ならぶ": {
+    "alt": "A row of narwhals lines up neatly in front of Kai and Mia.",
+    "caption": "The narwhals line up in a perfect row.",
+    "meaning": "to line up",
+    "file": "mnemonic-11-8-8-36-narabu-narabu.webp",
+    "soundMnemonic": "narwhal row",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "住む|すむ": {
+    "alt": "A friendly sumo wrestler settles into a tiny house.",
+    "caption": "The sumo wrestler lives in the tiny house.",
+    "meaning": "to live, reside",
+    "file": "mnemonic-11-8-8-37-sumu-sumu.webp",
+    "soundMnemonic": "sumo",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "終える|おえる": {
+    "alt": "Kai and Mia cross the finish line at the end of an obstacle course.",
+    "caption": "They reach the end and finish the course.",
+    "meaning": "to end, finish",
+    "file": "mnemonic-11-8-8-38-oeru-oeru.webp",
+    "soundMnemonic": "oh, end",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "態度|たいど": {
+    "alt": "Two characters display sharply contrasting postures and attitudes.",
+    "caption": "Their poses reveal completely different attitudes.",
+    "meaning": "attitude, manner",
+    "file": "mnemonic-11-8-8-39-taido-taido.webp",
+    "soundMnemonic": "tied pose",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "金|かね": {
+    "alt": "A walking cane bursts open and showers Kai and Mia with coins.",
+    "caption": "The magic cane sprays money everywhere.",
+    "meaning": "money",
+    "file": "mnemonic-11-8-8-40-kane-kane.webp",
+    "soundMnemonic": "cane",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "さすが|さすが": {
+    "alt": "Mia catches a falling star exactly as Kai expected.",
+    "caption": "Of course she catches it—just as expected.",
+    "meaning": "just as expected",
+    "file": "mnemonic-11-8-8-41-sasuga-sasuga.webp",
+    "soundMnemonic": "star sure",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "自然|しぜん": {
+    "alt": "Kai and Mia explore a lush untouched forest filled with wildlife.",
+    "caption": "They are surrounded by thriving nature.",
+    "meaning": "nature",
+    "file": "mnemonic-11-8-8-42-shizen-shizen.webp",
+    "soundMnemonic": "she's in nature",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "眺める|ながめる": {
+    "alt": "Kai and Mia gaze through a telescope across a spectacular landscape.",
+    "caption": "They pause to gaze out at the long view.",
+    "meaning": "to gaze, look out",
+    "file": "mnemonic-11-8-8-43-nagameru-nagameru.webp",
+    "soundMnemonic": "long gaze",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "向く|むく": {
+    "alt": "A moose gently turns Kai so he faces the right direction.",
+    "caption": "The moose makes Kai turn and face forward.",
+    "meaning": "to face, look",
+    "file": "mnemonic-11-8-8-44-muku-muku.webp",
+    "soundMnemonic": "moose turns",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "相変わらず|あいかわらず": {
+    "alt": "Kai and Mia repeat the very same cafe routine as always.",
+    "caption": "Nothing has changed at the cafe; it is the same as always.",
+    "meaning": "as usual, as before",
+    "file": "mnemonic-11-8-8-45-aikawarazu-aikawarazu.webp",
+    "soundMnemonic": "same as always",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "普段|ふだん": {
+    "alt": "Kai follows his ordinary morning routine of food, clothes and school.",
+    "caption": "It is Kai's usual, ordinary routine.",
+    "meaning": "usual, ordinary",
+    "file": "mnemonic-11-8-8-46-fudan-fudan.webp",
+    "soundMnemonic": "food done",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "どれ|どれ": {
+    "alt": "Kai and Mia hesitate between several different treasure chests.",
+    "caption": "Which treasure chest should they choose?",
+    "meaning": "which, what",
+    "file": "mnemonic-11-8-8-47-dore-dore.webp",
+    "soundMnemonic": "which door",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "どうも|どうも": {
+    "alt": "A mysterious domino chain starts moving for no obvious reason.",
+    "caption": "Somehow, for some reason, the dominoes begin to fall.",
+    "meaning": "for some reason, somehow",
+    "file": "mnemonic-11-8-8-48-doumo-doumo.webp",
+    "soundMnemonic": "domino",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "運ぶ|はこぶ": {
+    "alt": "Kai and a helpful cow carry a huge box together.",
+    "caption": "Kai and the cow haul the heavy box.",
+    "meaning": "to carry",
+    "file": "mnemonic-11-8-8-49-hakobu-hakobu.webp",
+    "soundMnemonic": "haul with cow",
+    "status": "approved",
+    "imageStatus": "approved"
+  },
+  "やっと|やっと": {
+    "alt": "Kai and Mia finally reach a mountaintop after a long climb.",
+    "caption": "At last, they finally make it to the top.",
+    "meaning": "at last, finally",
+    "file": "mnemonic-11-8-8-50-yatto-yatto.webp",
+    "soundMnemonic": "yeah, at top",
+    "status": "approved",
+    "imageStatus": "approved"
   }
 }

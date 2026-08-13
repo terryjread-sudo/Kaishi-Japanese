@@ -1,8 +1,12 @@
 {
-  "version": "11.8.7",
+  "version": "11.8.8",
   "released": "2026-08-13",
-  "title": "Kotoba Colosseum Skill-Web Integration",
+  "title": "50 New Illustrated Mnemonics",
   "changes": [
+    "Added 50 new illustrated vocabulary mnemonics for previously uncovered words.",
+    "Matched the established colourful anime scene style and recurring learner characters.",
+    "Added concise visual captions, sound hooks and accessible alternative text for every new scene.",
+    "Expanded approved mnemonic coverage from 646 to 696 vocabulary entries.",
     "Fixed the lesson getting stuck after an Adaptive Micro-Practice / Listening Station intervention.",
     "Micro-Practice now opens as an overlay and never replaces the underlying lesson card DOM, preserving all native event handlers and progression state.",
     "Continue Lesson simply closes the intervention and returns to the already-rendered normal learning card.",
@@ -29,6 +33,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.7."
+    "Bumped release-controlled assets and service-worker caches to v11.8.8."
   ]
 }
