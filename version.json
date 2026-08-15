@@ -1,8 +1,13 @@
 {
-  "version": "11.8.20",
+  "version": "11.8.21",
   "released": "2026-08-15",
-  "title": "Step-by-Step Pronunciation Chunks",
+  "title": "Pronunciation Review Always Completes",
   "changes": [
+    "Prevented Pixel Chrome pronunciation review from remaining on Finishing Japanese detection.",
+    "Added a three-second hard fallback when Android omits the recorder or recognition completion event.",
+    "Disabled retry during finalisation to prevent overlapping recording sessions.",
+    "Changed the status to Review ready and scrolled feedback into view as soon as processing completes.",
+    "Captured recording data in short intervals so playback survives a missing final recorder event.",
     "Added an optional Build in chunks pronunciation mode before the complete-sentence attempt.",
     "Let learners hear, record and review each short Japanese phrase independently.",
     "Added a mobile-friendly progress track with completed chunks and an All together final step.",
