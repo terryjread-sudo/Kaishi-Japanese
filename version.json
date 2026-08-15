@@ -1,8 +1,11 @@
 {
-  "version": "11.8.21",
+  "version": "11.8.22",
   "released": "2026-08-15",
-  "title": "Pronunciation Review Always Completes",
+  "title": "Original Manga Reader Restored",
   "changes": [
+    "Fixed all ten original graded manga stories failing to open after comic-format stories were added.",
+    "Limited original-story question distractors to manga entries that contain traditional reading panels.",
+    "Kept the three newer swipeable comic stories available and unchanged.",
     "Prevented Pixel Chrome pronunciation review from remaining on Finishing Japanese detection.",
     "Added a three-second hard fallback when Android omits the recorder or recognition completion event.",
     "Disabled retry during finalisation to prevent overlapping recording sessions.",

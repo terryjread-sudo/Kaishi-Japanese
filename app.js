@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.21';
+const APP_VERSION='11.8.22';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -911,8 +911,9 @@ function mangaNearMisses(panel,field,count=3){const source=panel[field],rules=fi
 function mangaQuestionAlternatives(panel,field,count=3){
  const near=mangaNearMisses(panel,field,count);
  const sameStory=mangaStory.panels.filter(candidate=>candidate!==panel).map(candidate=>candidate[field]);
- const sameLevel=mangaStories.filter(story=>story.id!==mangaStory.id&&story.difficulty===mangaStory.difficulty).flatMap(story=>story.panels.map(candidate=>candidate[field]));
- const all=mangaStories.flatMap(story=>story.panels.map(candidate=>candidate[field]));
+ const panelStories=mangaStories.filter(story=>Array.isArray(story.panels));
+ const sameLevel=panelStories.filter(story=>story.id!==mangaStory.id&&story.difficulty===mangaStory.difficulty).flatMap(story=>story.panels.map(candidate=>candidate[field]));
+ const all=panelStories.flatMap(story=>story.panels.map(candidate=>candidate[field]));
  return [...near,...shuffle([...new Set([...sameStory,...sameLevel,...all].filter(value=>value&&value!==panel[field]&&!near.includes(value)))])].slice(0,count);
 }
 function mangaPanelQuestionPool(panel,target){
