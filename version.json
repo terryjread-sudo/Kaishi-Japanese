@@ -1,8 +1,12 @@
 {
-  "version": "11.8.15",
+  "version": "11.8.16",
   "released": "2026-08-15",
-  "title": "Playable Admin Test Activities",
+  "title": "Reading and Listening Learning Balance",
   "changes": [
+    "Added a five-position preference slider from mostly listening to mostly reading.",
+    "Added Let Sensei decide mode, which compares reading and listening performance and reinforces the weaker skill.",
+    "Applied the preference to vocabulary question selection, mastery priorities and daily activity recommendations.",
+    "Kept both reading and listening in every learning path with a protective minimum share for the non-preferred skill.",
     "Fixed Listening Station immediately reporting Game complete for a fresh admin test learner.",
     "Restored a safe default activity session length for isolated profiles with no saved settings.",
     "Allowed Picture Meadow, Listening Station, Karuta Arena and Memory Dojo to build test rounds from unlocked test content without requiring fake completion progress.",
@@ -61,6 +65,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.15."
+    "Bumped release-controlled assets and service-worker caches to v11.8.16."
   ]
 }

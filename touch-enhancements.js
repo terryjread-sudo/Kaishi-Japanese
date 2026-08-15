@@ -9,7 +9,7 @@
  * - gestures duplicate visible controls rather than hiding functionality
  */
 (() => {
-  const RELEASE='11.8.15';
+  const RELEASE='11.8.16';
   const coarse=window.matchMedia?.('(pointer: coarse)');
   const noHover=window.matchMedia?.('(hover: none)');
   const touchCapable=Boolean(
