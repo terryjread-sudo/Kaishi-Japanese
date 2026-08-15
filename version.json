@@ -1,8 +1,13 @@
 {
-  "version": "11.8.18",
+  "version": "11.8.19",
   "released": "2026-08-15",
-  "title": "Expressive Feedback, Activity Identities and Pronunciation Coaching",
+  "title": "Reliable Japanese Pronunciation Detection",
   "changes": [
+    "Fixed Pixel Chrome judging pronunciation before its final Japanese transcript arrived.",
+    "Kept live interim Japanese recognition and displayed detected words while the learner is speaking.",
+    "Waited for both audio recording and speech recognition to finish before showing pronunciation feedback.",
+    "Matched equivalent hiragana, katakana and common numeral transcriptions such as 二つ and 2つ.",
+    "Added clearer microphone-permission, live-listening and finishing-detection status messages.",
     "Added distinct visual identities, colour themes and resident guides to all thirteen activities in the live Activity Skill Web.",
     "Added persistent mastered states and illuminated skill-web branches backed by earned real-world can-do cards.",
     "Added expressive completion scenes with stronger celebration art, resident guidance and a reduced-motion mode.",
