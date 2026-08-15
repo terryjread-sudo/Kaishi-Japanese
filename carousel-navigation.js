@@ -8,7 +8,7 @@
  * controls make the two destinations discoverable and accessible.
  */
 (() => {
-  const RELEASE='11.8.12';
+  const RELEASE='11.8.13';
   const $=(s,r=document)=>r.querySelector(s);
 
   function ensureStyles(){

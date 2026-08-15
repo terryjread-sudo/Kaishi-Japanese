@@ -1,8 +1,12 @@
 {
-  "version": "11.8.12",
+  "version": "11.8.13",
   "released": "2026-08-13",
-  "title": "Interactive Right-to-Left Manga",
+  "title": "Guided Manga Panel Audio",
   "changes": [
+    "Changed manga page progression to a left-to-right swipe gesture with matching navigation arrows.",
+    "Added a speaker control to the bottom-right of every comic panel.",
+    "Panel playback now reads Japanese word by word and highlights the active word.",
+    "Displayed The Lost Wallet's Level 2 difficulty and two-of-four rating consistently with other manga stories.",
     "Added The Lost Wallet, a three-page right-to-left interactive manga story.",
     "Placed Japanese dialogue inside comic-panel speech balloons with tap-to-hear words.",
     "Added an English dialogue toggle, mobile page swiping, manga-direction controls and keyboard navigation.",
@@ -50,6 +54,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.12."
+    "Bumped release-controlled assets and service-worker caches to v11.8.13."
   ]
 }
