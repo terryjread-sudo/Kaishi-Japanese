@@ -218,6 +218,88 @@
           ]
         }
       ]
+    },
+    {
+      "id": "convenience-store-comic",
+      "format": "comic",
+      "featured": true,
+      "title": "コンビニの昼ご飯",
+      "titleReading": "コンビニのひるごはん",
+      "englishTitle": "Lunch at the Convenience Store",
+      "difficulty": 1,
+      "image": "media/manga/convenience-lunch-page-1-v1.webp",
+      "summary": "Practise choosing lunch, answering checkout questions and paying naturally at a Japanese convenience store.",
+      "pages": [
+        {
+          "image": "media/manga/convenience-lunch-page-1-v1.webp",
+          "alt": "Kai enters a convenience store, chooses a rice ball and tea, and meets the cashier.",
+          "balloons": [
+            {"speaker":"Kai","x":68,"y":4,"width":27,"words":[{"text":"お昼ご飯","reading":"おひるごはん","meaning":"lunch"},{"text":"を","reading":"を","meaning":"object marker"},{"text":"買います","reading":"かいます","meaning":"will buy"},{"text":"。"}],"english":"I'm going to buy lunch."},
+            {"speaker":"Kai","x":4,"y":37,"width":31,"tone":"thought","words":[{"text":"おにぎり","reading":"おにぎり","meaning":"rice ball"},{"text":"と","reading":"と","meaning":"and"},{"text":"お茶","reading":"おちゃ","meaning":"tea"},{"text":"にします","reading":"にします","meaning":"will choose"},{"text":"。"}],"english":"I'll choose a rice ball and tea."},
+            {"speaker":"Clerk","x":68,"y":69,"width":27,"words":[{"text":"いらっしゃいませ","reading":"いらっしゃいませ","meaning":"welcome"},{"text":"。"}],"english":"Welcome."}
+          ]
+        },
+        {
+          "image": "media/manga/convenience-lunch-page-2-v1.webp",
+          "alt": "The cashier asks about heating the rice ball and whether Kai needs a bag.",
+          "balloons": [
+            {"speaker":"Clerk","x":68,"y":4,"width":27,"words":[{"text":"おにぎり","reading":"おにぎり","meaning":"rice ball"},{"text":"を","reading":"を","meaning":"object marker"},{"text":"温めます","reading":"あたためます","meaning":"heat"},{"text":"か","reading":"か","meaning":"question marker"},{"text":"。"}],"english":"Shall I heat the rice ball?"},
+            {"speaker":"Kai","x":4,"y":37,"width":28,"words":[{"text":"はい","reading":"はい","meaning":"yes"},{"text":"、"},{"text":"お願いします","reading":"おねがいします","meaning":"please"},{"text":"。"}],"english":"Yes, please."},
+            {"speaker":"Clerk","x":69,"y":69,"width":26,"words":[{"text":"袋","reading":"ふくろ","meaning":"bag"},{"text":"は","reading":"は","meaning":"topic marker"},{"text":"要ります","reading":"いります","meaning":"need"},{"text":"か","reading":"か","meaning":"question marker"},{"text":"。"}],"english":"Do you need a bag?"}
+          ]
+        },
+        {
+          "image": "media/manga/convenience-lunch-page-3-v1.webp",
+          "alt": "Kai declines a bag, hears the total and pays by card.",
+          "balloons": [
+            {"speaker":"Kai","x":68,"y":4,"width":27,"words":[{"text":"いいえ","reading":"いいえ","meaning":"no"},{"text":"、"},{"text":"要りません","reading":"いりません","meaning":"do not need"},{"text":"。"}],"english":"No, I don't need one."},
+            {"speaker":"Clerk","x":4,"y":37,"width":28,"words":[{"text":"五百円","reading":"ごひゃくえん","meaning":"500 yen"},{"text":"です","reading":"です","meaning":"is"},{"text":"。"}],"english":"It is 500 yen."},
+            {"speaker":"Kai","x":69,"y":69,"width":26,"words":[{"text":"カード","reading":"カード","meaning":"card"},{"text":"で","reading":"で","meaning":"by / with"},{"text":"払います","reading":"はらいます","meaning":"will pay"},{"text":"。"}],"english":"I'll pay by card."},
+            {"speaker":"Clerk","x":62,"y":82,"width":33,"words":[{"text":"ありがとうございました","reading":"ありがとうございました","meaning":"thank you very much"},{"text":"。"}],"english":"Thank you very much."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "train-delay-comic",
+      "format": "comic",
+      "featured": true,
+      "title": "電車が止まった日",
+      "titleReading": "でんしゃがとまったひ",
+      "englishTitle": "The Day the Train Stopped",
+      "difficulty": 3,
+      "image": "media/manga/train-delay-page-1-v1.webp",
+      "summary": "Navigate a train disruption by asking station staff for an alternative route and confirming the correct bus.",
+      "pages": [
+        {
+          "image": "media/manga/train-delay-page-1-v1.webp",
+          "alt": "Kai and Aiko discover a train disruption and ask a station attendant for help.",
+          "balloons": [
+            {"speaker":"Aiko","x":68,"y":4,"width":27,"words":[{"text":"電車","reading":"でんしゃ","meaning":"train"},{"text":"が","reading":"が","meaning":"subject marker"},{"text":"止まっています","reading":"とまっています","meaning":"has stopped"},{"text":"。"}],"english":"The trains have stopped."},
+            {"speaker":"Kai","x":4,"y":37,"width":31,"tone":"thought","words":[{"text":"困った","reading":"こまった","meaning":"this is a problem"},{"text":"な","reading":"な","meaning":"reflective ending"},{"text":"。"},{"text":"約束","reading":"やくそく","meaning":"appointment"},{"text":"に","reading":"に","meaning":"time marker"},{"text":"遅れそう","reading":"おくれそう","meaning":"may be late"},{"text":"です","reading":"です","meaning":"polite ending"},{"text":"。"}],"english":"Oh no. I may be late for my appointment."},
+            {"speaker":"Kai","x":68,"y":69,"width":27,"words":[{"text":"すみません","reading":"すみません","meaning":"excuse me"},{"text":"。"},{"text":"市役所","reading":"しやくしょ","meaning":"city hall"},{"text":"へ","reading":"へ","meaning":"towards"},{"text":"行きたい","reading":"いきたい","meaning":"want to go"},{"text":"です","reading":"です","meaning":"polite ending"},{"text":"。"}],"english":"Excuse me. I want to go to city hall."}
+          ]
+        },
+        {
+          "image": "media/manga/train-delay-page-2-v1.webp",
+          "alt": "The station attendant explains the bus stop and transfer route before Kai thanks her.",
+          "balloons": [
+            {"speaker":"Attendant","x":69,"y":4,"width":26,"words":[{"text":"二番乗り場","reading":"にばんのりば","meaning":"stop number two"},{"text":"から","reading":"から","meaning":"from"},{"text":"バス","reading":"バス","meaning":"bus"},{"text":"に","reading":"に","meaning":"onto"},{"text":"乗って","reading":"のって","meaning":"take / board"},{"text":"ください","reading":"ください","meaning":"please"},{"text":"。"}],"english":"Please take the bus from stop number two."},
+            {"speaker":"Attendant","x":4,"y":37,"width":31,"words":[{"text":"駅前","reading":"えきまえ","meaning":"in front of the station"},{"text":"で","reading":"で","meaning":"at"},{"text":"乗り換える","reading":"のりかえる","meaning":"transfer"},{"text":"と","reading":"と","meaning":"if / when"},{"text":"早い","reading":"はやい","meaning":"faster"},{"text":"です","reading":"です","meaning":"is"},{"text":"。"}],"english":"It is faster if you transfer in front of the station."},
+            {"speaker":"Kai","x":69,"y":69,"width":26,"words":[{"text":"分かりました","reading":"わかりました","meaning":"understood"},{"text":"。"},{"text":"ありがとうございます","reading":"ありがとうございます","meaning":"thank you"},{"text":"。"}],"english":"Understood. Thank you."}
+          ]
+        },
+        {
+          "image": "media/manga/train-delay-page-3-v1.webp",
+          "alt": "Kai and Aiko confirm the bus, board it and arrive at city hall in time.",
+          "balloons": [
+            {"speaker":"Kai","x":69,"y":4,"width":26,"words":[{"text":"この","reading":"この","meaning":"this"},{"text":"バス","reading":"バス","meaning":"bus"},{"text":"で","reading":"で","meaning":"with / by"},{"text":"合っています","reading":"あっています","meaning":"is correct"},{"text":"か","reading":"か","meaning":"question marker"},{"text":"。"}],"english":"Is this the correct bus?"},
+            {"speaker":"Driver","x":4,"y":37,"width":29,"words":[{"text":"はい","reading":"はい","meaning":"yes"},{"text":"。"},{"text":"市役所","reading":"しやくしょ","meaning":"city hall"},{"text":"まで","reading":"まで","meaning":"as far as"},{"text":"行きます","reading":"いきます","meaning":"goes"},{"text":"。"}],"english":"Yes. It goes to city hall."},
+            {"speaker":"Kai","x":69,"y":69,"width":26,"words":[{"text":"間に合って","reading":"まにあって","meaning":"made it in time"},{"text":"よかった","reading":"よかった","meaning":"I'm glad"},{"text":"です","reading":"です","meaning":"polite ending"},{"text":"。"}],"english":"I'm glad we made it in time."},
+            {"speaker":"Aiko","x":61,"y":82,"width":34,"words":[{"text":"別","reading":"べつ","meaning":"another"},{"text":"の","reading":"の","meaning":"possessive marker"},{"text":"行き方","reading":"いきかた","meaning":"way to get there"},{"text":"も","reading":"も","meaning":"also"},{"text":"覚えました","reading":"おぼえました","meaning":"learned"},{"text":"ね","reading":"ね","meaning":"isn't that so"},{"text":"。"}],"english":"We learned another way to get there too."}
+          ]
+        }
+      ]
     }
   ]
 }

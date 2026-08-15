@@ -1,8 +1,12 @@
 {
-  "version": "11.8.13",
-  "released": "2026-08-13",
-  "title": "Guided Manga Panel Audio",
+  "version": "11.8.14",
+  "released": "2026-08-15",
+  "title": "Two New Interactive Manga Stories",
   "changes": [
+    "Added Lunch at the Convenience Store, a Level 1 three-page interactive manga for checkout practice.",
+    "Added The Day the Train Stopped, a Level 3 three-page interactive manga for navigating travel disruption.",
+    "Created six matching monochrome manga pages with mobile-friendly dialogue space.",
+    "Included tappable vocabulary, English translations, guided panel audio and active-word highlighting throughout both stories.",
     "Changed manga page progression to a left-to-right swipe gesture with matching navigation arrows.",
     "Added a speaker control to the bottom-right of every comic panel.",
     "Panel playback now reads Japanese word by word and highlights the active word.",
@@ -54,6 +58,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.13."
+    "Bumped release-controlled assets and service-worker caches to v11.8.14."
   ]
 }
