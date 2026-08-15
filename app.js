@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.14';
+const APP_VERSION='11.8.15';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -30,7 +30,7 @@ let activeVocabularyChapter=null;
 let activeJourneyMission=null;
 let introGuidanceCount=0;
 const MISSION_CARD_LIMIT=15,NEW_WORDS_PER_MISSION=3,DAILY_REVIEW_TARGET=6,ACTIVE_WORD_MIX=3,CHECKPOINT_INTERVAL=5;
-const defaults={pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true,activityVillageMode:true};
+const defaults={sessionSize:10,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true,activityVillageMode:true};
 let settings={...defaults,...loadJSON(profileStorageKey('kq-settings'),{})};
 settings.playMode='journey';
 let progress=loadJSON(profileStorageKey('kq-progress'),{});
@@ -294,6 +294,7 @@ const WORD_CHAPTER_SIZE=50,WORD_CHAPTER_NAMES=['First Steps','Riverside Path','B
 function wordChapterCount(){return Math.max(1,Math.ceil(vocab.length/WORD_CHAPTER_SIZE))}
 function chapterWords(itemIndex){return vocab.slice(itemIndex*WORD_CHAPTER_SIZE,Math.min(vocab.length,(itemIndex+1)*WORD_CHAPTER_SIZE))}
 function wordIntroduced(item){if(isAdminTestMode())return true;const p=progress[item.id];return Boolean(p&&(Number(p.stage||0)>=1||wordPracticeCount(p)>0))}
+function activitySessionSize(total){const requested=Number(settings.sessionSize),fallback=defaults.sessionSize;return Math.min(total,Math.max(1,Number.isFinite(requested)?Math.round(requested):fallback))}
 const MASTERY_SEQUENCE=[
  {id:'meaning',label:'Meaning recognition',minimum:2,strength:.42,reason:'recognise the meaning from written Japanese'},
  {id:'listening',label:'Listening',minimum:2,strength:.42,reason:'recognise the word by sound'},
@@ -1271,10 +1272,10 @@ async function startPictureGame(mode){
  const all=illustratedWords().filter(v=>wordIntroduced(v)&&(mode!=='listen-meaning'||v.wordAudio));
  if(all.length<2){toast('More illustrated vocabulary is needed');return}
 
- const pool=shuffle(all.filter(v=>progress[v.id]?.stage>=1));
+ const pool=shuffle(all);
  const available=pool;
  session=available
-  .slice(0,Math.min(settings.sessionSize,available.length))
+  .slice(0,activitySessionSize(available.length))
   .map(v=>({v,skill:'picture',pictureMode:mode}));
 
  pictureGameActive=true;
@@ -1328,16 +1329,16 @@ function showKarutaSummary(){
 }
 function startKarutaGame(){
  abortSession('games');
- const pool=shuffle(illustratedWords().filter(v=>v.wordAudio&&progress[v.id]?.stage>=1));
+ const pool=shuffle(illustratedWords().filter(v=>v.wordAudio&&wordIntroduced(v)));
  if(pool.length<2){toast('Learn at least two illustrated words with audio to unlock Karuta');return}
- session=pool.slice(0,Math.min(settings.sessionSize,pool.length)).map(v=>({v,skill:'listening',karuta:true}));
+ session=pool.slice(0,activitySessionSize(pool.length)).map(v=>({v,skill:'listening',karuta:true}));
  karutaActive=true;karuta={pool,score:0,combo:0,bestCombo:0,correct:0,wrong:0,times:[],roundStarted:0,replayed:false};index=0;current=null;show('study');renderCurrent();
 }
 
 function decayCandidates(){
  const now=Date.now(),dayMs=86400000;
- const started=vocab.filter(v=>progress[v.id]?.stage>=1).map(v=>{
-  const p=pFor(v.id),window=Math.max(6*3600000,Math.min(3*dayMs,(p.interval||1)*dayMs*.2));
+ const started=vocab.filter(wordIntroduced).map(v=>{
+  const p=progress[v.id]||{interval:1,due:now},window=Math.max(6*3600000,Math.min(3*dayMs,(p.interval||1)*dayMs*.2));
   return {v,risk:(now-(p.due-window))/window,due:p.due};
  }).sort((a,b)=>b.risk-a.risk||a.due-b.due);
  const near=started.filter(x=>x.risk>=0);
@@ -1348,7 +1349,7 @@ function startDecayBattle(){
  abortSession('games');
  const pool=decayCandidates();
  if(!pool.length){toast('Study some words first to unlock decay battles');return}
- session=pool.slice(0,Math.min(settings.sessionSize,pool.length)).map(v=>({v,skill:'meaning',battle:true}));
+ session=pool.slice(0,activitySessionSize(pool.length)).map(v=>({v,skill:'meaning',battle:true}));
  battleActive=true;battle={castle:3,enemyHp:2,enemyMax:2,position:4,defeated:0,roster:shuffle(BATTLE_MONSTERS),monsterIndex:0,state:'approach',reviewed:0,correct:0,hinted:0,wrong:0,critical:0,missed:[],startedAt:Date.now()};index=0;current=null;show('study');renderCurrent();
 }
 function startStreakRescue(){

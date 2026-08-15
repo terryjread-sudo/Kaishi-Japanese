@@ -1,8 +1,11 @@
 {
-  "version": "11.8.14",
+  "version": "11.8.15",
   "released": "2026-08-15",
-  "title": "Two New Interactive Manga Stories",
+  "title": "Playable Admin Test Activities",
   "changes": [
+    "Fixed Listening Station immediately reporting Game complete for a fresh admin test learner.",
+    "Restored a safe default activity session length for isolated profiles with no saved settings.",
+    "Allowed Picture Meadow, Listening Station, Karuta Arena and Memory Dojo to build test rounds from unlocked test content without requiring fake completion progress.",
     "Added Lunch at the Convenience Store, a Level 1 three-page interactive manga for checkout practice.",
     "Added The Day the Train Stopped, a Level 3 three-page interactive manga for navigating travel disruption.",
     "Created six matching monochrome manga pages with mobile-friendly dialogue space.",
@@ -58,6 +61,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.14."
+    "Bumped release-controlled assets and service-worker caches to v11.8.15."
   ]
 }
