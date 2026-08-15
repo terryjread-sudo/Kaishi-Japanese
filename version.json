@@ -1,8 +1,13 @@
 {
-  "version": "11.8.19",
+  "version": "11.8.20",
   "released": "2026-08-15",
-  "title": "Reliable Japanese Pronunciation Detection",
+  "title": "Step-by-Step Pronunciation Chunks",
   "changes": [
+    "Added an optional Build in chunks pronunciation mode before the complete-sentence attempt.",
+    "Let learners hear, record and review each short Japanese phrase independently.",
+    "Added a mobile-friendly progress track with completed chunks and an All together final step.",
+    "Used Sentence Lab's authored grammar chunks where available and safe phrase boundaries elsewhere.",
+    "Kept direct Whole sentence practice available at any time.",
     "Fixed Pixel Chrome judging pronunciation before its final Japanese transcript arrived.",
     "Kept live interim Japanese recognition and displayed detected words while the learner is speaking.",
     "Waited for both audio recording and speech recognition to finish before showing pronunciation feedback.",
