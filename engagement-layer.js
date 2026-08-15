@@ -1,0 +1,47 @@
+'use strict';
+(()=>{
+ const base='media/activity-village/storybook/';
+ const identities={
+  vocabulary:{accent:'#16a34a',soft:'#dcfce7',guide:'The Farmer',resident:'resident_farmer.png',symbol:'🌱',canDo:'Build and recall useful Japanese vocabulary'},
+  kana:{accent:'#0284c7',soft:'#e0f2fe',guide:'The Shrine Keeper',resident:'resident_shrine_keeper.png',symbol:'あ',canDo:'Recognise Japanese sounds in hiragana and katakana'},
+  picture:{accent:'#65a30d',soft:'#ecfccb',guide:'Hana',resident:'resident_hana.png',symbol:'🌄',canDo:'Recall Japanese through vivid visual memory links'},
+  listening:{accent:'#0891b2',soft:'#cffafe',guide:'The Herbalist',resident:'resident_herbalist.png',symbol:'🎧',canDo:'Recognise familiar Japanese by sound'},
+  karuta:{accent:'#dc2626',soft:'#fee2e2',guide:'Kai',resident:'resident_kai.png',symbol:'🎴',canDo:'Match spoken Japanese quickly and accurately'},
+  conversation:{accent:'#7c3aed',soft:'#ede9fe',guide:'The Merchant',resident:'resident_travelling_merchant.png',symbol:'💬',canDo:'Choose a natural reply in a Japanese conversation'},
+  grammar:{accent:'#c2410c',soft:'#ffedd5',guide:'The Monk',resident:'resident_monk.png',symbol:'助',canDo:'Use particles to understand complete Japanese thoughts'},
+  sentenceLab:{accent:'#4f46e5',soft:'#e0e7ff',guide:'The Scholar',resident:'resident_scholar.png',symbol:'文',canDo:'Decode, rebuild and transform a complete sentence'},
+  theatre:{accent:'#db2777',soft:'#fce7f3',guide:'The Merchant',resident:'resident_travelling_merchant.png',symbol:'🎬',canDo:'Follow and perform a practical Japanese scene'},
+  kanji:{accent:'#475569',soft:'#e2e8f0',guide:'The Scholar',resident:'resident_scholar.png',symbol:'漢',canDo:'Recognise familiar words through their Kanji'},
+  builder:{accent:'#b45309',soft:'#fef3c7',guide:'The Blacksmith',resident:'resident_blacksmith.png',symbol:'🧩',canDo:'Rebuild Kanji from meaningful visual components'},
+  manga:{accent:'#9333ea',soft:'#f3e8ff',guide:'The Scholar',resident:'resident_scholar.png',symbol:'📖',canDo:'Read Japanese dialogue in an illustrated story'},
+  battle:{accent:'#be123c',soft:'#ffe4e6',guide:'The Woodcutter',resident:'resident_woodcutter.png',symbol:'⚔️',canDo:'Protect memories by reviewing them at the right time'}
+ };
+ const titleFor=id=>PATH_MILESTONES.find(item=>item.id===id)?.title||id;
+ const awards=()=>Array.isArray(meta.canDoAwards)?meta.canDoAwards:(meta.canDoAwards=[]);
+ const hasAward=id=>awards().some(item=>item.id===id);
+ const css=(node,id)=>{const identity=identities[id];if(!node||!identity)return;node.style.setProperty('--activity-accent',identity.accent);node.style.setProperty('--activity-soft',identity.soft)};
+ function decorateActivityDialog(id){
+  const identity=identities[id],scene=document.querySelector('#activityUnlockDialog .activity-unlock-scene');if(!identity||!scene)return;css(scene,id);const state=hasAward(id)?'mastered':activityReadiness(id).purchased?'ready':'locked';scene.dataset.activityState=state;let hero=scene.querySelector('.activity-identity-hero');if(!hero){hero=document.createElement('section');hero.className='activity-identity-hero';scene.querySelector('#activityUnlockBuilding')?.insertAdjacentElement('beforebegin',hero)}hero.dataset.symbol=identity.symbol;hero.innerHTML=`<div class="activity-identity-copy"><span>Activity identity · ${identity.guide}</span><strong>${titleFor(id)}</strong><small>${identity.canDo}</small><span class="activity-identity-state">${state==='mastered'?'★ Can-do earned':state==='ready'?'Open for practice':'Building readiness'}</span></div><img class="activity-identity-resident" src="${base}${identity.resident}?v=${APP_VERSION}" alt="${identity.guide}, guide for ${titleFor(id)}">`;const eyebrow=scene.querySelector(':scope>.eyebrow');if(eyebrow)eyebrow.textContent='Activity Skill Web';const sensei=scene.querySelector('.activity-teacher-message img');if(sensei)sensei.src=`media/guides/sensei/sensei-pointing.webp?v=${APP_VERSION}`;
+ }
+ function decorateSkillWeb(){
+  document.querySelectorAll('.activity-skill-node [data-village-activity]').forEach(button=>{const id=button.dataset.villageActivity,identity=identities[id],node=button.closest('.activity-skill-node');if(!identity||!node)return;node.dataset.activityId=id;css(node,id);node.classList.toggle('mastered',hasAward(id));if(hasAward(id)){const status=node.querySelector('small');if(status&&status.textContent!=='Can-do earned')status.textContent='Can-do earned'}});
+  document.querySelectorAll('.practice-hub-grid [data-village-activity]').forEach(button=>{const id=button.dataset.villageActivity,identity=identities[id];if(!identity)return;css(button,id);button.dataset.guide=identity.guide});
+  document.querySelectorAll('.activity-skill-link[data-skill-to]').forEach(link=>link.classList.toggle('mastered',hasAward(link.dataset.skillTo)));
+  const collection=document.querySelector('#collectionContent'),achievementTab=document.querySelector('[data-collection-tab="achievements"].active');if(collection&&achievementTab&&!collection.querySelector('[data-can-do-awards]')&&awards().length){const group=document.createElement('section');group.dataset.canDoAwards='true';group.className='can-do-awards-collection';group.innerHTML=`<div class="collection-award-heading"><span class="eyebrow">Real-world can-do cards</span><h3>What you can now do</h3></div>${awardsHtml()}`;collection.prepend(group)}
+ }
+ function ensureDialog(){let dialog=document.querySelector('#engagementCelebration');if(dialog)return dialog;dialog=document.createElement('dialog');dialog.id='engagementCelebration';dialog.className='engagement-celebration';document.body.append(dialog);return dialog}
+ function complete(id,detail=''){const identity=identities[id];if(!identity)return;const first=!hasAward(id);if(first){awards().push({id,earnedAt:Date.now(),canDo:identity.canDo});save()}decorateSkillWeb();const node=document.querySelector(`.activity-skill-node[data-activity-id="${id}"]`);node?.classList.add('just-mastered');setTimeout(()=>node?.classList.remove('just-mastered'),1000);const dialog=ensureDialog();dialog.innerHTML=`<section class="celebration-scene" style="--activity-accent:${identity.accent};--activity-soft:${identity.soft}"><div class="celebration-copy"><span>${first?'New can-do earned':'Practice complete'}</span><h2>${titleFor(id)} shines brighter</h2><p>${detail||`${identity.guide} has marked this branch of your skill web.`}</p></div><div class="celebration-cast"><img class="celebration-resident" src="${base}${identity.resident}?v=${APP_VERSION}" alt="${identity.guide} appearing to celebrate"><img class="celebration-sensei" src="media/guides/sensei/sensei-celebrating.webp?v=${APP_VERSION}" alt="Sensei celebrating your progress"></div></section><section class="can-do-award"><strong>I can ${identity.canDo.charAt(0).toLowerCase()+identity.canDo.slice(1)}.</strong><small>${titleFor(id)} · ${new Date().toLocaleDateString()}</small></section><div class="celebration-actions"><button data-celebration-collection>View my awards</button><button class="primary" data-celebration-close>Continue</button></div>`;dialog.querySelector('[data-celebration-close]').onclick=()=>dialog.close();dialog.querySelector('[data-celebration-collection]').onclick=()=>{dialog.close();show('collection');renderCollection('achievements')};if(!dialog.open)dialog.showModal()}
+ function awardsHtml(){return awards().map(item=>{const identity=identities[item.id];if(!identity)return'';return `<article class="achievement can-do-achievement"><img src="${base}${identity.resident}?v=${APP_VERSION}" alt=""><div><strong>I can ${esc((item.canDo||identity.canDo).charAt(0).toLowerCase()+(item.canDo||identity.canDo).slice(1))}.</strong><small>${esc(titleFor(item.id))} · ${new Date(item.earnedAt).toLocaleDateString()}</small></div></article>`}).join('')}
+ function installCompletionHooks(){
+  const wrap=(name,id,before=()=>true)=>{const original=window[name];if(typeof original!=='function'||original.__engagementWrapped)return;const wrapped=function(...args){const shouldCelebrate=before(...args),resolvedId=typeof id==='function'?id(...args):id;const result=original.apply(this,args);if(shouldCelebrate)setTimeout(()=>complete(resolvedId),380);return result};wrapped.__engagementWrapped=true;window[name]=wrapped};
+  wrap('finishGrammarLesson','grammar',()=>Boolean(grammarRun?.questions?.length&&grammarRun.correct>=Math.ceil(grammarRun.questions.length*.67)));
+  wrap('finishSentenceLabLesson','sentenceLab',()=>Boolean(sentenceLabRun?.total&&Math.round(sentenceLabRun.correct/sentenceLabRun.total*100)>=65));
+  wrap('finishKanaStudy','kana');wrap('renderKanjiWords','kanji',item=>item?.status==='mastered');
+  wrap('finishConversation','conversation');wrap('completeTheatreEpisode','theatre');wrap('finishMangaComic','manga');wrap('finishMangaStory','manga');
+  wrap('showKanjiBuilderSummary','builder',()=>Boolean(kanjiBuilder?.rounds?.length&&kanjiBuilder.correct/kanjiBuilder.rounds.length>=.6));wrap('showKarutaSummary','karuta');wrap('showBattleSummary','battle');
+  wrap('finishSession',()=>session?.some(item=>item?.skill==='listening')?'listening':pictureGameActive?'picture':'vocabulary',()=>!battleActive&&!karutaActive);
+ }
+ const observer=new MutationObserver(()=>decorateSkillWeb());observer.observe(document.documentElement,{childList:true,subtree:true});
+  window.KaishiEngagement={identities,decorateActivityDialog,decorateSkillWeb,complete,awardsHtml};
+ installCompletionHooks();addEventListener('DOMContentLoaded',decorateSkillWeb,{once:true});
+})();

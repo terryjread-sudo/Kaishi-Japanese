@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.17';
+const APP_VERSION='11.8.18';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -36,7 +36,7 @@ settings.playMode='journey';
 settings.learningBalance=Math.max(-2,Math.min(2,Math.round(Number(settings.learningBalance)||0)));
 settings.learningBalanceAdaptive=settings.learningBalanceAdaptive!==false;
 let progress=loadJSON(profileStorageKey('kq-progress'),{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},mangaProgress:{},conversationProgress:{},theatreProgress:{},canDoAwards:[],pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},updatedAt:0};
 let meta={...META_DEFAULTS,...loadJSON(profileStorageKey('kq-meta'),{})};
 meta.kanaProgress=meta.kanaProgress||{};
 meta.grammarProgress=meta.grammarProgress||{};
@@ -105,7 +105,7 @@ function enrichVocabularyFromAnki(){
  vocab.forEach((word,originalIndex)=>{const record=byWord.get(word.word),assignment=learningGraph.assignmentsByWord?.[word.word];word._originalOrder=originalIndex;if(record){word._anki=record;word.exampleSentence=record.sentence||'';word.exampleSentenceRomaji=record.sentenceRomaji||'';word.exampleSentenceMeaning=record.sentenceMeaning||''}if(assignment){word.topicId=assignment.primaryTopicId;word.secondaryTopicIds=assignment.secondaryTopicIds||[];word.foundationTags=assignment.foundationTags||[];word.topicOrder=assignment.topicOrder;word.contentOrder=assignment.contentOrder;const topic=learningGraph.topics?.find(item=>item.id===assignment.primaryTopicId);word.topic=topic?.title||word.topic}});
  vocab.sort((a,b)=>Number(topicForWord(a).regionOrder??999)-Number(topicForWord(b).regionOrder??999)||Number(a.topicOrder??999)-Number(b.topicOrder??999)||Number(a.contentOrder??999999)-Number(b.contentOrder??999999)||Number(a._originalOrder)-Number(b._originalOrder));
 }
-function senseiBlock(message,compact=true){return `<aside class="sensei-guide teacher-guide ${compact?'compact':''}"><div class="sensei-avatar teacher-guide-avatar"><img src="media/guides/teacher-guide.webp?v=${APP_VERSION}" alt="Teacher"></div><div><strong>Teacher’s guidance</strong><p>${esc(message)}</p></div></aside>`}
+function senseiBlock(message,compact=true,pose='auto'){const lower=String(message).toLowerCase(),inferred=/not quite|mistake|try again|almost/.test(lower)?'encouraging':/complete|great work|excellent|mastered/.test(lower)?'celebrating':/first|welcome|meet this/.test(lower)?'welcoming':/notice|look|select|tap|use the/.test(lower)?'pointing':/review|compare|why|understand/.test(lower)?'analysing':'explaining',safePose=['welcoming','explaining','celebrating','encouraging','pointing','analysing'].includes(pose)?pose:inferred;return `<aside class="sensei-guide teacher-guide sensei-${safePose} ${compact?'compact':''}"><div class="sensei-avatar teacher-guide-avatar"><img src="media/guides/sensei/sensei-${safePose}.webp?v=${APP_VERSION}" alt="Sensei ${safePose}"></div><div><strong>Sensei’s guidance</strong><p>${esc(message)}</p></div></aside>`}
 function markKanaIntroduced(character){const entry=kanaData.find(item=>item.kana===character);if(!entry)return;const state=kanaState(entry.id);state.stage=Math.max(1,Number(state.stage||0));state.due=Date.now();save(false)}
 function save(sync=true){if(sync)meta.updatedAt=Date.now();localStorage.setItem(profileStorageKey('kq-progress'),JSON.stringify(progress));localStorage.setItem(profileStorageKey('kq-settings'),JSON.stringify(settings));localStorage.setItem(profileStorageKey('kq-meta'),JSON.stringify(meta));if(sync&&!isAdminTestMode())window.KaishiCloud?.scheduleSync?.()}
 function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0)}
@@ -511,6 +511,7 @@ function openActivityUnlock(id){
    :!state.wordReady
     ?`Keep learning. Once you know ${cfg.words} supported words, this activity will have enough substance to be enjoyable.`
     :`Your vocabulary is ready. Keep learning to earn the remaining Adventure Points.`;
+ window.KaishiEngagement?.decorateActivityDialog?.(id);
  action.onclick=()=>{
   const current=activityReadiness(id);
   if(action.dataset.mode==='learn'){
@@ -701,7 +702,7 @@ function activitySkillWebHtml(){
  const colosseumSupported=introducedWords().filter(word=>!window.KaishiLearning?.wordState||window.KaishiLearning.wordState(word)!=='New').length;
  const colosseumReady=isAdminTestMode()||colosseumSupported>=8;
  states.colosseum={purchased:colosseumReady,ready:colosseumReady,supported:colosseumSupported,cfg:{words:8,cost:0}};
- const links=ACTIVITY_SKILL_LINKS.map(([from,to])=>{const a=ACTIVITY_SKILL_LAYOUT[from],b=ACTIVITY_SKILL_LAYOUT[to],source=states[from],target=states[to];const status=source.purchased&&target.purchased?'unlocked':source.purchased&&(target.ready||target.purchased)?'available':'locked';return`<line class="activity-skill-link ${status}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" vector-effect="non-scaling-stroke"></line>`}).join('');
+ const links=ACTIVITY_SKILL_LINKS.map(([from,to])=>{const a=ACTIVITY_SKILL_LAYOUT[from],b=ACTIVITY_SKILL_LAYOUT[to],source=states[from],target=states[to];const status=source.purchased&&target.purchased?'unlocked':source.purchased&&(target.ready||target.purchased)?'available':'locked';return`<line class="activity-skill-link ${status}" data-skill-from="${esc(from)}" data-skill-to="${esc(to)}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" vector-effect="non-scaling-stroke"></line>`}).join('');
  const nodes=PATH_MILESTONES.map(item=>{const state=states[item.id],point=ACTIVITY_SKILL_LAYOUT[item.id]||{x:50,y:50},ready=state.ready,progress=state.cfg.words?Math.min(100,state.supported/state.cfg.words*100):100,status=state.purchased?'Unlocked':ready?'Ready':'Locked';return`<article class="activity-skill-node ${state.purchased?'unlocked':ready?'available':'locked'}" style="--skill-x:${point.x}%;--skill-y:${point.y}%;--skill-progress:${progress*3.6}deg"><button data-village-activity="${esc(item.id)}" aria-label="${esc(item.title)}. ${status}. ${state.supported} of ${state.cfg.words} supported words."><span class="activity-skill-orb"><i>${esc(item.icon)}</i></span><strong>${esc(item.title)}</strong><small>${state.purchased?'Open':ready?'Unlock now':`${Math.max(0,state.cfg.words-state.supported)} words`}</small></button></article>`}).join('');
  const colosseumPoint=ACTIVITY_SKILL_LAYOUT.colosseum,remaining=Math.max(0,8-colosseumSupported);
  const colosseumNode=`<article id="kotobaSkillNode" class="activity-skill-node activity-skill-boss ${colosseumReady?'unlocked':'locked'}" style="--skill-x:${colosseumPoint.x}%;--skill-y:${colosseumPoint.y}%;--skill-progress:${Math.min(100,colosseumSupported/8*100)*3.6}deg"><button class="kotoba-open" type="button" ${colosseumReady?'':'disabled'} aria-label="Kotoba Colosseum. ${colosseumReady?'Open':'Locked'}. ${colosseumSupported} of 8 battle-ready words."><span class="activity-skill-orb"><i>⚔️</i></span><strong>Kotoba Colosseum</strong><small>${colosseumReady?'Enter battle':`${remaining} words`}</small></button></article>`;
@@ -1495,7 +1496,7 @@ async function init(){
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
  renderLearningBalanceSettings();
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent=`Kaishi Quest v${APP_VERSION}`;versionCard.querySelector('span').textContent='Sentence Lab';versionCard.querySelector('small').textContent='Decode, hear, rebuild, transform and mine complete Japanese sentences through a new seven-stage learning activity.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent=`Kaishi Quest v${APP_VERSION}`;versionCard.querySelector('span').textContent='Expressive learning feedback';versionCard.querySelector('small').textContent='Activity identities, animated Sensei guidance, can-do awards and optional evidence-based pronunciation coaching.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

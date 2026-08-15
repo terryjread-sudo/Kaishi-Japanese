@@ -1,8 +1,16 @@
 {
-  "version": "11.8.17",
+  "version": "11.8.18",
   "released": "2026-08-15",
-  "title": "Sentence Lab: Complete Sentence Understanding",
+  "title": "Expressive Feedback, Activity Identities and Pronunciation Coaching",
   "changes": [
+    "Added distinct visual identities, colour themes and resident guides to all thirteen activities in the live Activity Skill Web.",
+    "Added persistent mastered states and illuminated skill-web branches backed by earned real-world can-do cards.",
+    "Added expressive completion scenes with stronger celebration art, resident guidance and a reduced-motion mode.",
+    "Created six consistent Sensei poses for welcoming, explaining, celebrating, encouraging, pointing and analysing feedback.",
+    "Added an optional Japanese pronunciation coach with private local recording, waveform playback and browser speech recognition.",
+    "Pronunciation feedback now reports which important phrases were heard and what to retry without inventing a percentage score.",
+    "Connected pronunciation coaching to Sentence Lab, Kaishi Theatre, Conversation Quest and Manga Stories.",
+    "Renamed visible Activity Village labels to Activity Skills so the interface accurately describes the current skill web.",
     "Added Sentence Lab as a complete Activity Village and normal Journey destination.",
     "Made the guided Sentence Lab available from the beginning while keeping later labs sequentially unlocked.",
     "Created five guided real-world sentence missions with seven understanding stages in every lesson.",

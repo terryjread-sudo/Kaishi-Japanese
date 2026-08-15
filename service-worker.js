@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.17';
+const VERSION='11.8.18';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -12,6 +12,8 @@ const SHELL=[
   './index.html',
   v('./styles.css'),
   v('./sentence-lab.css'),
+  v('./engagement-layer.css'),
+  v('./pronunciation-coach.css'),
   v('./vms.css'),
   v('./app.js'),
   v('./vms.js'),
@@ -28,6 +30,8 @@ const SHELL=[
   v('./carousel-navigation.js'),
   v('./micro-practice.js'),
   v('./sentence-lab.js'),
+  v('./engagement-layer.js'),
+  v('./pronunciation-coach.js'),
   v('./adaptive-learning.js'),
   v('./campfire-recall.js'),
   v('./word-rain.js'),
@@ -37,6 +41,12 @@ const SHELL=[
   './icons/icon-192.png',
   './icons/icon-512.png',
   v('./media/guides/teacher-guide.webp'),
+  v('./media/guides/sensei/sensei-welcoming.webp'),
+  v('./media/guides/sensei/sensei-explaining.webp'),
+  v('./media/guides/sensei/sensei-celebrating.webp'),
+  v('./media/guides/sensei/sensei-encouraging.webp'),
+  v('./media/guides/sensei/sensei-pointing.webp'),
+  v('./media/guides/sensei/sensei-analysing.webp'),
   v('./media/sentence-lab/sentence-lab-hero.webp'),
   v('./media/profiles/guest-learner.webp'),
   v('./media/profiles/boy-base.webp'),
