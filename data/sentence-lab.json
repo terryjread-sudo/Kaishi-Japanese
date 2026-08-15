@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "roles": {
+    "topic": "Topic",
+    "time": "Time",
+    "place": "Place",
+    "companion": "Companion",
+    "object": "Object",
+    "quantity": "Quantity",
+    "destination": "Destination",
+    "means": "Means",
+    "description": "Description",
+    "connector": "Connector",
+    "action": "Action",
+    "request": "Request"
+  },
+  "lessons": [
+    {
+      "id": "cafe-order",
+      "level": 1,
+      "title": "Order at a café",
+      "japaneseTitle": "カフェで注文",
+      "canDo": "Politely order a quantity of something",
+      "sentence": "カフェでコーヒーを二つお願いします。",
+      "reading": "かふぇで こーひーを ふたつ おねがいします。",
+      "meaning": "Two coffees at the café, please.",
+      "targetWords": ["コーヒー", "二つ", "お願い"],
+      "chunks": [
+        {"text":"カフェで","reading":"かふぇで","role":"place","label":"setting","meaning":"at the café","note":"で marks the place where the ordering action happens.","connectsTo":"お願いします"},
+        {"text":"コーヒーを","reading":"こーひーを","role":"object","label":"thing requested","meaning":"coffee","note":"を marks coffee as the thing involved in the request.","connectsTo":"お願いします"},
+        {"text":"二つ","reading":"ふたつ","role":"quantity","label":"amount","meaning":"two","note":"二つ is a general counter for two things.","connectsTo":"コーヒー"},
+        {"text":"お願いします","reading":"おねがいします","role":"request","label":"polite request","meaning":"please / I request it","note":"This polite phrase completes the order. The subject ‘I’ is understood and omitted.","connectsTo":"コーヒーを"}
+      ],
+      "progressive": ["お願いします。", "コーヒーをお願いします。", "コーヒーを二つお願いします。", "カフェでコーヒーを二つお願いします。"],
+      "builder": {
+        "prompt": "Build: Two coffees at the café, please.",
+        "tiles": ["二つ", "お願いします", "カフェで", "コーヒーを"],
+        "accepted": ["カフェで|コーヒーを|二つ|お願いします"],
+        "explanation": "Japanese normally builds the setting and requested item before finishing with the polite request."
+      },
+      "particle": {
+        "before": "カフェ",
+        "after": "コーヒーを二つお願いします。",
+        "options": ["で", "に", "を", "は"],
+        "answer": "で",
+        "explanations": {
+          "で": "Correct: で marks the café as the place where the ordering action occurs.",
+          "に": "に usually marks a destination or a point of arrival, not where this ordering action takes place.",
+          "を": "を marks the object of an action. Coffee already fills that role here.",
+          "は": "は could make the café a contrastive topic, but it does not express ‘at the café’ in this sentence."
+        }
+      },
+      "listening": {
+        "prompt": "What is the speaker doing?",
+        "choices": ["Ordering two coffees", "Asking where the café is", "Saying coffee is expensive", "Inviting two friends"],
+        "answer": "Ordering two coffees",
+        "explanation": "コーヒーを names the requested item, 二つ gives the quantity, and お願いします makes the request polite."
+      },
+      "transform": {
+        "prompt": "Change the order to one tea while keeping it polite.",
+        "choices": ["お茶を一つお願いします。", "お茶が一つでした。", "お茶に一つ行きます。", "一つをお茶です。"],
+        "answer": "お茶を一つお願いします。",
+        "explanation": "Replace the item and quantity while preserving object + quantity + polite request."
+      },
+      "context": {
+        "lines": ["店員：ホットとアイス、どちらにしますか。", "客：アイスでお願いします。"],
+        "question": "What is understood but omitted from the customer’s reply?",
+        "choices": ["The chosen coffee", "The café location", "The staff member", "The number two"],
+        "answer": "The chosen coffee",
+        "explanation": "The conversation already establishes coffee as the topic, so repeating コーヒー is unnecessary."
+      },
+      "transfer": {
+        "prompt": "Now ask for two teas. The café setting may be stated or understood.",
+        "tiles": ["カフェで", "お茶を", "二つ", "お願いします"],
+        "accepted": ["カフェで|お茶を|二つ|お願いします", "お茶を|二つ|お願いします"],
+        "explanation": "Both answers are natural. Japanese can omit the café setting when everyone already knows where the conversation is happening."
+      }
+    },
+    {
+      "id": "lunch-plan",
+      "level": 1,
+      "title": "Make a lunch plan",
+      "japaneseTitle": "昼の予定",
+      "canDo": "Say who you do something with and when",
+      "sentence": "友達と昼に寿司を食べます。",
+      "reading": "ともだちと ひるに すしを たべます。",
+      "meaning": "I will eat sushi with a friend at lunchtime.",
+      "targetWords": ["友達", "昼", "寿司", "食べ"],
+      "chunks": [
+        {"text":"友達と","reading":"ともだちと","role":"companion","label":"companion","meaning":"with a friend","note":"と marks the person accompanying you.","connectsTo":"食べます"},
+        {"text":"昼に","reading":"ひるに","role":"time","label":"time","meaning":"at lunchtime","note":"に marks a specific point in time.","connectsTo":"食べます"},
+        {"text":"寿司を","reading":"すしを","role":"object","label":"food","meaning":"sushi","note":"を marks what is eaten.","connectsTo":"食べます"},
+        {"text":"食べます","reading":"たべます","role":"action","label":"action","meaning":"will eat","note":"The verb comes last and completes the sentence. ‘I’ is understood from context.","connectsTo":"寿司を"}
+      ],
+      "progressive": ["食べます。", "寿司を食べます。", "昼に寿司を食べます。", "友達と昼に寿司を食べます。"],
+      "builder": {
+        "prompt": "Build: I will eat sushi with a friend at lunchtime.",
+        "tiles": ["寿司を", "友達と", "食べます", "昼に"],
+        "accepted": ["友達と|昼に|寿司を|食べます", "昼に|友達と|寿司を|食べます"],
+        "explanation": "Time and companion phrases can trade places because their particles preserve their roles. The object stays close to the final verb."
+      },
+      "particle": {
+        "before": "友達",
+        "after": "昼に寿司を食べます。",
+        "options": ["と", "で", "に", "を"],
+        "answer": "と",
+        "explanations": {
+          "と": "Correct: と marks the friend as the person accompanying the speaker.",
+          "で": "で would suggest a means or place and cannot mean ‘with a friend’ here.",
+          "に": "に can mark a destination, target or time, but not an equal companion in this sentence.",
+          "を": "を would make the friend the object of the eating action, which changes the meaning completely."
+        }
+      },
+      "listening": {
+        "prompt": "Which detail does the sentence include?",
+        "choices": ["The speaker will eat with a friend", "The friend cooked breakfast", "The speaker dislikes sushi", "They will meet at a station"],
+        "answer": "The speaker will eat with a friend",
+        "explanation": "友達と supplies the companion and 食べます supplies the planned action."
+      },
+      "transform": {
+        "prompt": "Change the sentence to the past.",
+        "choices": ["友達と昼に寿司を食べました。", "友達と昼に寿司を食べません。", "友達と昼に寿司を食べたいです。", "友達と昼に寿司を食べますか。"],
+        "answer": "友達と昼に寿司を食べました。",
+        "explanation": "The polite past ending is ました. All other sentence roles remain unchanged."
+      },
+      "context": {
+        "lines": ["美亜：昼は何をしますか。", "海：友達と寿司を食べます。"],
+        "question": "Who will eat sushi?",
+        "choices": ["Kai", "Mia", "The friend alone", "The sushi chef"],
+        "answer": "Kai",
+        "explanation": "Kai is speaking, so the omitted subject is naturally ‘I’—Kai—not the nearby noun 友達."
+      },
+      "transfer": {
+        "prompt": "Say: I will study Japanese with a friend.",
+        "tiles": ["友達と", "日本語を", "勉強します", "昼に"],
+        "accepted": ["友達と|日本語を|勉強します", "昼に|友達と|日本語を|勉強します", "友達と|昼に|日本語を|勉強します"],
+        "explanation": "The core is companion + object + action. Adding 昼に is also valid because Japanese often allows contextual details before the object and verb."
+      }
+    },
+    {
+      "id": "train-trip",
+      "level": 2,
+      "title": "Explain a train journey",
+      "japaneseTitle": "電車の旅",
+      "canDo": "Separate destination from means of travel",
+      "sentence": "明日の朝、東京に電車で行きます。",
+      "reading": "あしたの あさ、とうきょうに でんしゃで いきます。",
+      "meaning": "Tomorrow morning, I will go to Tokyo by train.",
+      "targetWords": ["明日", "朝", "東京", "電車", "行き"],
+      "chunks": [
+        {"text":"明日の朝","reading":"あしたのあさ","role":"time","label":"time","meaning":"tomorrow morning","note":"の links tomorrow to morning, forming one time phrase.","connectsTo":"行きます"},
+        {"text":"東京に","reading":"とうきょうに","role":"destination","label":"destination","meaning":"to Tokyo","note":"に marks the destination of movement.","connectsTo":"行きます"},
+        {"text":"電車で","reading":"でんしゃで","role":"means","label":"transport","meaning":"by train","note":"で marks the means used to perform the journey.","connectsTo":"行きます"},
+        {"text":"行きます","reading":"いきます","role":"action","label":"movement","meaning":"will go","note":"The movement verb controls both the destination and transport phrases.","connectsTo":"東京に"}
+      ],
+      "progressive": ["行きます。", "東京に行きます。", "東京に電車で行きます。", "明日の朝、東京に電車で行きます。"],
+      "builder": {
+        "prompt": "Build: Tomorrow morning, I will go to Tokyo by train.",
+        "tiles": ["電車で", "行きます", "明日の朝", "東京に"],
+        "accepted": ["明日の朝|東京に|電車で|行きます", "明日の朝|電車で|東京に|行きます"],
+        "explanation": "に identifies the destination and で identifies the means, so those phrases may move while 行きます remains last."
+      },
+      "particle": {
+        "before": "東京",
+        "after": "電車で行きます。",
+        "options": ["に", "で", "を", "と"],
+        "answer": "に",
+        "explanations": {
+          "に": "Correct: 東京 is the destination of 行きます, so it takes に.",
+          "で": "で would mark Tokyo as the place of an action or as a means, not the destination here.",
+          "を": "を can mark a route being traversed with some movement verbs, but 東京 is the destination in this sentence.",
+          "と": "と means ‘with’ or marks a quotation; neither relationship fits Tokyo here."
+        }
+      },
+      "listening": {
+        "prompt": "How and when will the speaker travel?",
+        "choices": ["By train tomorrow morning", "By car tonight", "On foot tomorrow afternoon", "By train next week"],
+        "answer": "By train tomorrow morning",
+        "explanation": "明日の朝 gives the time and 電車で gives the means of travel."
+      },
+      "transform": {
+        "prompt": "Change the destination to Kyoto while keeping every other detail.",
+        "choices": ["明日の朝、京都に電車で行きます。", "明日の朝、京都で電車に行きます。", "明日の朝、京都を電車に行きます。", "明日の朝、京都と電車で行きます。"],
+        "answer": "明日の朝、京都に電車で行きます。",
+        "explanation": "Only the destination noun changes. に still marks the destination and で still marks transport."
+      },
+      "context": {
+        "lines": ["美亜：いつ東京に行きますか。", "海：明日の朝、行きます。"],
+        "question": "Why can Kai omit 東京に?",
+        "choices": ["Mia’s question already established the destination", "Tokyo is never used with に", "Morning words replace destinations", "行きます always means Tokyo"],
+        "answer": "Mia’s question already established the destination",
+        "explanation": "Known information is commonly omitted in Japanese when the listener can recover it from the conversation."
+      },
+      "transfer": {
+        "prompt": "Say: I will go to Kyoto by bus.",
+        "tiles": ["京都に", "バスで", "行きます", "明日"],
+        "accepted": ["京都に|バスで|行きます", "バスで|京都に|行きます", "明日|京都に|バスで|行きます"],
+        "explanation": "The particles keep destination and transport clear. 明日 is optional extra information and does not require に here."
+      }
+    },
+    {
+      "id": "shopping-opinion",
+      "level": 2,
+      "title": "Give a balanced opinion",
+      "japaneseTitle": "買い物の意見",
+      "canDo": "Connect contrasting thoughts naturally",
+      "sentence": "このかばんは少し高いですが、好きです。",
+      "reading": "この かばんは すこし たかいですが、すきです。",
+      "meaning": "This bag is a little expensive, but I like it.",
+      "targetWords": ["少し", "高い", "好き"],
+      "chunks": [
+        {"text":"このかばんは","reading":"このかばんは","role":"topic","label":"topic","meaning":"as for this bag","note":"は introduces the bag as the shared topic.","connectsTo":"高いです"},
+        {"text":"少し","reading":"すこし","role":"description","label":"degree","meaning":"a little","note":"少し softens the following description.","connectsTo":"高い"},
+        {"text":"高いですが","reading":"たかいですが","role":"connector","label":"contrast setup","meaning":"is expensive, but…","note":"ですが politely signals that a contrasting thought is coming.","connectsTo":"好きです"},
+        {"text":"好きです","reading":"すきです","role":"description","label":"opinion","meaning":"I like it","note":"The bag and ‘I’ are both understood from context and need not be repeated.","connectsTo":"このかばんは"}
+      ],
+      "progressive": ["好きです。", "高いですが、好きです。", "少し高いですが、好きです。", "このかばんは少し高いですが、好きです。"],
+      "builder": {
+        "prompt": "Build: This bag is a little expensive, but I like it.",
+        "tiles": ["好きです", "少し", "このかばんは", "高いですが"],
+        "accepted": ["このかばんは|少し|高いですが|好きです"],
+        "explanation": "The first clause creates an expectation with ですが; the contrasting opinion follows it."
+      },
+      "particle": {
+        "before": "このかばん",
+        "after": "少し高いですが、好きです。",
+        "options": ["は", "を", "で", "に"],
+        "answer": "は",
+        "explanations": {
+          "は": "Correct: は establishes the bag as the topic shared by both descriptions.",
+          "を": "を would require a transitive action, but 高い is a description.",
+          "で": "で marks a place, means or cause and cannot introduce this descriptive topic.",
+          "に": "に marks destinations, targets and times; none of those relationships applies."
+        }
+      },
+      "listening": {
+        "prompt": "What is the speaker’s overall opinion?",
+        "choices": ["The bag is expensive, but they like it", "The bag is cheap and useful", "They dislike the bag’s colour", "They want a smaller bag"],
+        "answer": "The bag is expensive, but they like it",
+        "explanation": "ですが connects the negative consideration 高い with the positive conclusion 好きです."
+      },
+      "transform": {
+        "prompt": "Change ‘expensive’ to ‘cheap’ while preserving the contrast pattern.",
+        "choices": ["このかばんは少し安いですが、好きです。", "このかばんを少し安いですが、好きです。", "このかばんは少し安くて、好きません。", "このかばんに少し安いで、好きです。"],
+        "answer": "このかばんは少し安いですが、好きです。",
+        "explanation": "高い is replaced by 安い. The topic and polite contrast structure remain the same."
+      },
+      "context": {
+        "lines": ["店員：このかばんはいかがですか。", "客：少し高いですが、好きです。"],
+        "question": "What does 好きです refer to?",
+        "choices": ["The bag", "The price", "The shop assistant", "The word ‘little’"],
+        "answer": "The bag",
+        "explanation": "The bag remains the established topic across both clauses, even though it is not repeated after ですが."
+      },
+      "transfer": {
+        "prompt": "Say: This restaurant is small, but I like it.",
+        "tiles": ["このレストランは", "小さいですが", "好きです", "少し"],
+        "accepted": ["このレストランは|小さいですが|好きです", "このレストランは|少し|小さいですが|好きです"],
+        "explanation": "少し is optional and softens ‘small’. Both versions preserve the natural topic + contrast + opinion pattern."
+      }
+    },
+    {
+      "id": "station-wait",
+      "level": 3,
+      "title": "Understand an unfolding action",
+      "japaneseTitle": "駅で待つ",
+      "canDo": "Describe an action in progress and recover its subject",
+      "sentence": "駅で友達を待っています。",
+      "reading": "えきで ともだちを まっています。",
+      "meaning": "I am waiting for a friend at the station.",
+      "targetWords": ["駅", "友達", "待って"],
+      "chunks": [
+        {"text":"駅で","reading":"えきで","role":"place","label":"action place","meaning":"at the station","note":"で marks where the waiting action is happening.","connectsTo":"待っています"},
+        {"text":"友達を","reading":"ともだちを","role":"object","label":"person awaited","meaning":"for a friend","note":"With 待つ, the person or thing awaited takes を.","connectsTo":"待っています"},
+        {"text":"待っています","reading":"まっています","role":"action","label":"ongoing action","meaning":"am waiting","note":"The ています form presents the waiting as currently in progress.","connectsTo":"友達を"}
+      ],
+      "progressive": ["待っています。", "友達を待っています。", "駅で友達を待っています。"],
+      "builder": {
+        "prompt": "Build: I am waiting for a friend at the station.",
+        "tiles": ["待っています", "友達を", "駅で"],
+        "accepted": ["駅で|友達を|待っています", "友達を|駅で|待っています"],
+        "explanation": "で and を identify the roles even if the place and object switch positions. The ongoing action comes last."
+      },
+      "particle": {
+        "before": "駅",
+        "after": "友達を待っています。",
+        "options": ["で", "に", "を", "が"],
+        "answer": "で",
+        "explanations": {
+          "で": "Correct: waiting is an action taking place at the station, so the station takes で.",
+          "に": "に can mark where something exists, but 待っています is an ongoing action here.",
+          "を": "を already marks the person being awaited and cannot mark the station in this meaning.",
+          "が": "が would make the station the grammatical subject—the station would be waiting."
+        }
+      },
+      "listening": {
+        "prompt": "What is happening now?",
+        "choices": ["The speaker is waiting for a friend", "A friend is buying a station ticket", "The speaker already left", "The station is closed"],
+        "answer": "The speaker is waiting for a friend",
+        "explanation": "待っています describes an action in progress; 友達を names who is being awaited."
+      },
+      "transform": {
+        "prompt": "Change the sentence to ‘I waited for a friend at the station.’",
+        "choices": ["駅で友達を待ちました。", "駅に友達が待っています。", "駅を友達で待ちます。", "駅で友達を待ちません。"],
+        "answer": "駅で友達を待ちました。",
+        "explanation": "待ちました is the polite past form. で and を keep their original roles."
+      },
+      "context": {
+        "lines": ["海：今どこですか。", "美亜：駅です。友達を待っています。"],
+        "question": "Who is waiting for a friend?",
+        "choices": ["Mia", "Kai", "The station", "An unknown shop assistant"],
+        "answer": "Mia",
+        "explanation": "Mia is speaking and the subject stays implicit across her two sentences. Context identifies her as the person waiting."
+      },
+      "transfer": {
+        "prompt": "Say: I am reading a book at the café.",
+        "tiles": ["カフェで", "本を", "読んでいます", "友達と"],
+        "accepted": ["カフェで|本を|読んでいます", "友達と|カフェで|本を|読んでいます", "カフェで|友達と|本を|読んでいます"],
+        "explanation": "The core sentence is place + object + ongoing action. The companion phrase is optional but natural in either contextual position."
+      }
+    }
+  ]
+}

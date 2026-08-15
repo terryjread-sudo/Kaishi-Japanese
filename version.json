@@ -1,8 +1,24 @@
 {
-  "version": "11.8.16",
+  "version": "11.8.17",
   "released": "2026-08-15",
-  "title": "Reading and Listening Learning Balance",
+  "title": "Sentence Lab: Complete Sentence Understanding",
   "changes": [
+    "Added Sentence Lab as a complete Activity Village and normal Journey destination.",
+    "Made the guided Sentence Lab available from the beginning while keeping later labs sequentially unlocked.",
+    "Created five guided real-world sentence missions with seven understanding stages in every lesson.",
+    "Added tappable colour-coded sentence breakdowns showing meaning, reading, grammatical role and word connections.",
+    "Added animated progressive sentence reveals that build meaning from the final action outward.",
+    "Added meaning-first phrase construction with support for multiple natural Japanese word orders.",
+    "Added particle replacement experiments with an exact explanation for every selected particle.",
+    "Added listen-predict-reveal challenges with phrase-by-phrase audio playback and active chunk highlighting.",
+    "Added tense, vocabulary and politeness transformations that preserve the rest of the sentence structure.",
+    "Added contextual subject inference to teach why familiar information is naturally omitted in Japanese.",
+    "Added transfer challenges that ask learners to produce new sentences from familiar patterns.",
+    "Added a shared Sentence Notebook for mining, hearing, translating and revisiting useful Japanese.",
+    "Connected Sentence Notebook mining controls to Manga Stories, Conversation Quest and Kaishi Theatre dialogue.",
+    "Added persistent mistake review with targeted explanations and one-tap pattern practice.",
+    "Connected Sentence Lab answers to sentence and listening mastery, streak activity, cloud progress and daily recommendations.",
+    "Added a mobile-optimised illustrated Sentence Lab workshop and lightweight learning animations.",
     "Added a five-position preference slider from mostly listening to mostly reading.",
     "Added Let Sensei decide mode, which compares reading and listening performance and reinforces the weaker skill.",
     "Applied the preference to vocabulary question selection, mastery priorities and daily activity recommendations.",
@@ -65,6 +81,6 @@
     "Integrated Kotoba Colosseum as the final combat node connected directly after Memory Dojo.",
     "Made the Colosseum node show battle-word readiness and launch the activity directly from the tree.",
     "Removed the redundant detached Colosseum landmark beneath the skill web.",
-    "Bumped release-controlled assets and service-worker caches to v11.8.16."
+    "Bumped release-controlled assets and service-worker caches to v11.8.17."
   ]
 }

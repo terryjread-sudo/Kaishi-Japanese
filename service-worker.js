@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.16';
+const VERSION='11.8.17';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -11,6 +11,7 @@ const SHELL=[
   './',
   './index.html',
   v('./styles.css'),
+  v('./sentence-lab.css'),
   v('./vms.css'),
   v('./app.js'),
   v('./vms.js'),
@@ -26,14 +27,17 @@ const SHELL=[
   v('./learning-ui.js'),
   v('./carousel-navigation.js'),
   v('./micro-practice.js'),
+  v('./sentence-lab.js'),
   v('./adaptive-learning.js'),
   v('./campfire-recall.js'),
   v('./word-rain.js'),
   v('./battle-ui-patch.js'),
   './data/japan-ready-v90.json',
+  './data/sentence-lab.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   v('./media/guides/teacher-guide.webp'),
+  v('./media/sentence-lab/sentence-lab-hero.webp'),
   v('./media/profiles/guest-learner.webp'),
   v('./media/profiles/boy-base.webp'),
   v('./media/profiles/girl-base.webp'),
