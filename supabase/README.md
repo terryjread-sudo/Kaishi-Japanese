@@ -19,8 +19,6 @@ password, or a Supabase secret/service-role key.
 5. Then run `migrations/20260731_profile_streak_rescue.sql` to add profile
    character choices and streak display. If this is a fresh installation, it is
    still safe to run the second migration after the first.
-6. Run `migrations/20260816_garden_streak.sql` to enable private Garden of
-   Practice previews between accepted friends.
 
 The migration creates private progress storage, public opt-in leaderboard
 entries, Row Level Security policies, and the learner-controlled cloud-account
@@ -31,7 +29,6 @@ deletion function.
 - Guest progress remains in the browser's local storage.
 - Signed-in users can read and write only their own progress row.
 - Anyone can read leaderboard rows only when the owner has opted in.
-- Garden previews are readable only by their owner and accepted friends.
 - The leaderboard never exposes per-word learning progress or settings.
 - Deleting a cloud account removes the Supabase Auth user and cascades to both
   Kaishi Quest data tables while leaving local browser progress untouched.

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=11.8.28"><link rel="stylesheet" href="sentence-lab.css?v=11.8.28"><link rel="stylesheet" href="vms.css?v=11.8.28"><link rel="stylesheet" href="engagement-layer.css?v=11.8.28"><link rel="stylesheet" href="pronunciation-coach.css?v=11.8.28"><link rel="stylesheet" href="garden-streak.css?v=11.8.28"><title>Kaishi Quest • v11.8.28</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=11.8.29"><link rel="stylesheet" href="sentence-lab.css?v=11.8.29"><link rel="stylesheet" href="vms.css?v=11.8.29"><link rel="stylesheet" href="engagement-layer.css?v=11.8.29"><link rel="stylesheet" href="pronunciation-coach.css?v=11.8.29"><link rel="stylesheet" href="bonsai-progress.css?v=11.8.29"><title>Kaishi Quest • v11.8.29</title>
 <style id="kaishiClassicOnly">
   #activityVillageMap,.activity-view-toolbar,.activity-view-settings,#activityViewToggle,#activityVillageMode{display:none!important}
   #classicActivityView,.practice-hub{display:block!important}
@@ -10,29 +10,27 @@
       <div class="first-launch-logo">開</div>
       <div>
         <span class="eyebrow">Welcome to Kaishi Quest</span>
-        <h1 id="firstLaunchTitle">Your Japanese adventure starts here</h1>
-        <p>Learn useful Japanese through lessons, conversations, travel scenarios and friendly challenges.</p>
+        <h1 id="firstLaunchTitle">Learn your first Japanese in three minutes</h1>
+        <p>Meet two useful words, hear them clearly, then prove you can remember them. Sensei will guide every step.</p>
       </div>
     </div>
 
-    <div class="first-launch-features">
-      <article><span>🗺️</span><div><strong>Adventure Journey</strong><p>Progress through guided missions and unlock new topics.</p></div></article>
-      <article><span>💬</span><div><strong>Live Conversations</strong><p>Build real Japanese replies and practise speaking naturally.</p></div></article>
-      <article><span>🇯🇵</span><div><strong>Japan Ready</strong><p>Prepare for cafés, trains, hotels, shopping and emergencies.</p></div></article>
-      <article><span>📋</span><div><strong>Travel Cheat Sheet</strong><p>Quickly find Japanese, romaji and English phrases with audio.</p></div></article>
-      <article><span>🪴</span><div><strong>Garden and Progress</strong><p>Grow a calmer daily learning rhythm without losing everything after one missed day.</p></div></article>
-      <article><span>👥</span><div><strong>Learn Together</strong><p>Add friends, follow their activity and encourage each other.</p></div></article>
+    <div class="first-launch-features first-launch-steps">
+      <article><span>1</span><div><strong>See and hear</strong><p>Sensei introduces two useful Japanese words without testing you immediately.</p></div></article>
+      <article><span>2</span><div><strong>Make a memory</strong><p>Connect each sound to a clear image and meaning.</p></div></article>
+      <article><span>3</span><div><strong>Recall successfully</strong><p>Answer two gentle questions and grow your first bonsai leaves.</p></div></article>
     </div>
 
     <div class="first-launch-actions">
-      <button id="firstLaunchStart" class="primary" type="button">Start exploring</button>
+      <button id="firstLaunchFirstLesson" class="primary" type="button">Learn my first two words</button>
+      <button id="firstLaunchStart" type="button">Explore first</button>
       <button id="firstLaunchSignIn" type="button">Sign in to save progress</button>
     </div>
     <small>Your progress stays on this device unless you sign in with GitHub.</small>
   </section>
 </div>
 
-<header><div><small>Japanese vocabulary</small><div class="title-row"><h1>Kaishi Quest</h1><span id="versionBadge" class="version-badge" role="button" tabindex="0" aria-label="Kaishi Quest version 11.8.28. Check for updates and refresh the app." title="Check for updates and refresh">v11.8.28</span></div></div><button id="socialNotificationButton" class="social-notification-button header-notification" type="button" aria-label="Open notifications"><span>👥</span><b id="socialNotificationCount" hidden>0</b></button><button id="settingsBtn" class="icon">⚙️</button></header>
+<header><div><small>Japanese vocabulary</small><div class="title-row"><h1>Kaishi Quest</h1><span id="versionBadge" class="version-badge" role="button" tabindex="0" aria-label="Kaishi Quest version 11.8.29. Check for updates and refresh the app." title="Check for updates and refresh">v11.8.29</span></div></div><button id="socialNotificationButton" class="social-notification-button header-notification" type="button" aria-label="Open notifications"><span>👥</span><b id="socialNotificationCount" hidden>0</b></button><button id="settingsBtn" class="icon">⚙️</button></header>
 <aside id="adminTestBanner" class="admin-test-banner" hidden><div><strong>🧪 Test learner</strong><span>Everything is unlocked. Progress is isolated and will not sync.</span></div><button id="exitAdminTest" type="button">Return to my profile</button></aside>
 <div id="updateBanner" class="update-banner" hidden style="display:none!important"><div><strong id="updateTitle">Update available</strong><span id="updateSummary">A new version of Kaishi Quest is ready.</span></div><div class="update-actions"><button id="laterUpdate">Later</button><button id="applyUpdate" class="primary">Update now</button></div></div>
 
@@ -46,7 +44,8 @@
 
 <main>
 <section id="home" class="screen active">
-<div class="hero"><div class="hero-copy"><div id="dashboardProfile" class="hero-profile"><button id="dashboardAvatarButton" type="button" aria-label="Choose your Kaishi character"><img id="dashboardAvatar" src="media/profiles/guest-learner.webp?v=11.8.1" alt="Guest learner"></button><div><button id="gardenStreakButton" class="garden-streak-strip" type="button" aria-label="Open your Garden Streak"><span class="garden-mini" aria-hidden="true"><img id="gardenMiniAvatar" src="media/profiles/guest-learner.webp?v=11.8.1" alt=""><i class="garden-mini-rake"></i><b id="gardenMiniWeather"></b></span><span class="garden-streak-copy"><strong id="streak">0 days · Garden streak</strong><small id="gardenMiniStatus">Tap to tend your garden</small></span><span id="gardenQuickTokens" class="garden-quick-tokens" aria-label="Two Quick Rakes available"><i></i><i></i></span></button><h2>Ready to learn?</h2><strong id="dashboardAvatarTitle">Guest learner</strong><button id="dashboardSignIn" class="dashboard-sign-in" hidden>Sign in with GitHub</button></div></div><p id="summary">Loading your deck…</p><small id="dashboardAvatarMilestone" class="hero-profile-milestone">Reach streak milestones to unlock new poses.</small><div class="streak-qualifier"><span id="streakActivity">0 / 5 tested answers</span><i><b id="streakActivityFill"></b></i></div></div><div class="ring"><strong id="dueCount">0</strong><span id="dueProgressLabel">due</span></div></div>
+<div class="hero"><div class="hero-copy"><div id="dashboardProfile" class="hero-profile"><button id="dashboardAvatarButton" type="button" aria-label="Choose your Kaishi character"><img id="dashboardAvatar" src="media/profiles/guest-learner.webp?v=11.8.1" alt="Guest learner"></button><div><span id="streak" class="learning-rhythm-pill">0 days · Learning rhythm</span><h2>Ready to learn?</h2><strong id="dashboardAvatarTitle">Guest learner</strong><button id="dashboardSignIn" class="dashboard-sign-in" hidden>Sign in with GitHub</button></div></div><p id="summary">Loading your deck…</p><small id="dashboardAvatarMilestone" class="hero-profile-milestone">Reach learning milestones to unlock new poses.</small><div class="streak-qualifier"><span id="streakActivity">0 / 5 tested answers</span><i><b id="streakActivityFill"></b></i></div></div><div class="ring"><strong id="dueCount">0</strong><span id="dueProgressLabel">due</span></div></div>
+<section id="bonsaiProgressCard" class="bonsai-progress-card" aria-labelledby="bonsaiStageName"><div class="bonsai-visual"><div id="bonsaiTree" class="bonsai-tree" data-stage="0" role="img" aria-label="First Sprout bonsai stage"></div><span id="bonsaiStageCount">Stage 1 of 5</span></div><div class="bonsai-copy"><span class="eyebrow">Your Japanese is taking root</span><h2 id="bonsaiStageName">First Sprout</h2><p id="bonsaiDescription">Your first useful Japanese is ready to grow.</p><div class="bonsai-growth-track" aria-label="Progress to next bonsai stage"><i id="bonsaiGrowthFill"></i></div><small id="bonsaiNextMilestone">Begin your first lesson to grow new leaves.</small><div id="bonsaiStats" class="bonsai-stats"></div><div class="bonsai-actions"><button id="bonsaiPrimaryAction" class="primary" type="button">Start my first lesson</button><button id="bonsaiQuickStep" type="button">Quick Step · 3 reviews</button></div></div></section>
 <section id="socialNotificationPanel" class="social-notification-panel" hidden><div class="social-notification-heading"><strong>Notifications</strong><button id="socialNotificationClose" type="button">×</button></div><div id="socialNotificationList" class="social-notification-list"></div></section><section id="friendActivityNudge" class="friend-activity-nudge compact" hidden><img id="friendActivityAvatar" src="media/profiles/guest-learner.webp?v=11.8.1" alt=""><div id="friendActivityOpen" role="button" tabindex="0"><strong id="friendActivityTitle">A friend has been learning</strong><p id="friendActivityText"></p></div><button id="friendActivityDismiss" class="friend-activity-dismiss" type="button" aria-label="Dismiss">×</button></section>
 <section id="campaignChooser" class="campaign-chooser card">
 <div class="campaign-chooser-heading">
@@ -59,12 +58,12 @@
 <section class="campaign-preview">
 <div id="journeyCampaignPreview" class="campaign-preview-panel campaign-preview-full">
 <section id="journeyHome" class="journey-home adventure-home campaign-mode-detail">
-<div class="home-sensei teacher-home-guide"><img id="homeSenseiAvatar" src="media/guides/sensei/sensei-welcoming.webp?v=11.8.28" alt="Sensei welcoming you"><div><small>Sensei’s recommendation</small><strong id="journeyHomeTitle">Preparing your adventure…</strong><p id="journeyHomeActivity">I am choosing the best memory game for you.</p></div></div>
+<div class="home-sensei teacher-home-guide"><img id="homeSenseiAvatar" src="media/guides/sensei/sensei-welcoming.webp?v=11.8.29" alt="Sensei welcoming you"><div><small>Sensei’s recommendation</small><strong id="journeyHomeTitle">Preparing your adventure…</strong><p id="journeyHomeActivity">I am choosing the best memory game for you.</p></div></div>
 <div class="journey-home-main"><img id="journeyHomeAvatar" src="media/profiles/boy-base.webp" alt="Your journey character"><div><span class="eyebrow">Current topic</span><strong id="currentTopicTitle">Core Japanese</strong><small id="currentTopicStatus">Preparing topic progress…</small></div></div>
 <div class="journey-home-progress"><span id="journeyHomeProgress">Preparing today’s route…</span><i><b id="journeyHomeFill"></b></i></div>
 <div class="journey-home-actions"><button id="continueJourney" class="primary adventure-continue">Continue Adventure <small lang="ja">冒険を続ける</small></button><button id="openReviews">🧠 Today’s Reviews <b id="homeReviewCount">0</b></button></div>
 <div class="adventure-home-links"><button id="openPracticeHub">✨ <span>Activity Skills</span></button><button id="openCollection">📚 <span>Collection</span></button></div>
-<div class="journey-utility-actions"><button id="journeyGarden">🪴 Garden</button><button id="journeyCommunity">🏆 Community</button><button id="journeySkills">📊 Skills</button><button id="journeyInvite">💌 Invite</button></div>
+<div class="journey-utility-actions"><button id="journeyCommunity">🏆 Community</button><button id="journeySkills">📊 Skills</button><button id="journeyInvite">💌 Invite</button></div>
 </section>
 </div>
 <div id="japanReadyCampaignPreview" class="campaign-preview-panel campaign-preview-full" hidden>
@@ -90,7 +89,7 @@
 <div class="stats"><article><strong id="learnedCount">0</strong><span>Words started</span></article><article><strong id="accuracy">0%</strong><span>Accuracy</span></article><article><strong id="mastered">0</strong><span>Words mastered</span></article><article class="kanji-stat"><button id="kanjiOverviewBtn" class="dashboard-stat-button" aria-label="View Kanji progress"><strong id="kanjiMastered">0</strong><span>Kanji mastered</span><small>View progress →</small></button></article><article><strong id="kanaMastered">0</strong><span>Kana mastered</span></article><article><strong id="totalWords">0</strong><span>Total words</span></article><article class="monster-stat"><strong id="monsters72h">0</strong><span>Yōkai defeated · 72h</span></article><article class="karuta-stat"><strong id="karutaAverage72h">—</strong><span>Karuta best avg · 72h</span></article></div>
 </section>
 <section id="journey" class="screen"><div class="study-top"><button id="journeyBack">← Dashboard</button><h2>Kaishi Adventure · 日本語の冒険</h2></div><article class="card journey-section"><span class="eyebrow">Your guided Japanese path</span><h2>Today’s Adventure Missions</h2><p>A short adaptive route combines reviews, new vocabulary and the most useful next learning activity. Complete missions in order, or revisit unlocked activities below.</p><div id="journeyStats" class="manga-library-stats"></div><aside id="journeyUnlockNotice" class="journey-unlock-notice" hidden aria-live="polite">
-<img src="media/guides/sensei/sensei-explaining.webp?v=11.8.28" alt="Sensei explaining the journey">
+<img src="media/guides/sensei/sensei-explaining.webp?v=11.8.29" alt="Sensei explaining the journey">
 <div><span class="eyebrow">Teacher update</span><strong id="journeyUnlockTitle">New activity unlocked!</strong><p id="journeyUnlockText"></p><div class="journey-unlock-actions"><button id="journeyUnlockStart" class="primary" type="button">Start now</button><button id="journeyUnlockDismiss" type="button">Maybe later</button></div></div>
 </aside><section class="daily-route" aria-labelledby="dailyRouteTitle"><div class="daily-route-heading"><div><span class="eyebrow">Recommended today</span><h2 id="dailyRouteTitle">Your three-step route</h2></div><button id="journeyShareProgress" class="share-progress-badge" aria-label="Share progress">↗ Share</button></div><aside id="todayExplanation" class="today-explanation" aria-live="polite"></aside><div id="dailyRoute" class="daily-route-grid"></div><button id="startNextMission" class="primary">Start next mission</button></section><h2 class="journey-landmark-title">Activity landmarks</h2><p>Unlock new ways to practise as your Japanese develops. Activities only become useful once you know enough supported vocabulary.</p>
 
@@ -230,7 +229,6 @@
 <section class="cloud-settings" aria-labelledby="cloudTitle"><span class="eyebrow">Optional account</span><h3 id="cloudTitle">Cloud progress</h3><div id="cloudAccount" class="cloud-account"><div><strong>Play as a guest or save to the cloud</strong><p>Sign in with GitHub to sync progress between devices.</p></div><button disabled>Loading…</button></div><p id="cloudStatus" class="cloud-status" aria-live="polite">Guest progress is saved only on this device.</p><label class="leaderboard-toggle"><input id="leaderboardOptIn" type="checkbox" disabled><span><strong>Join the public leaderboard</strong><small>Share your GitHub display name, Kaishi character, XP and learning totals. Your word progress remains private.</small></span></label><div class="cloud-actions"><button id="cloudSyncNow">Sync or restore now</button><button id="cloudDelete" class="danger">Delete cloud account</button></div><p class="cloud-privacy">Signing in is optional. Kaishi Quest stores only the progress needed for synchronisation and ranking. Manual export remains available below.</p></section>
 <button id="adminAreaLink" class="settings-link admin-settings-link" hidden>🛡️ Open Admin area</button>
 <button id="checkUpdateBtn">Check for updates</button><p id="updateStatus" class="muted">Version status has not been checked yet.</p><button id="exportBtn">Export progress</button><label class="file">Import progress<input id="importInput" type="file" accept="application/json"></label><button id="resetBtn" class="danger">Reset local progress</button><p class="muted">Guest progress stays on this device. Signed-in progress is also backed up to the cloud.</p><div class="version-card"><strong>Kaishi Quest v5.9</strong><span>Karuta audio reflex game</span><small>Listen to Japanese, race to tap the matching mnemonic-and-kanji card, and build speed combos.</small></div><div class="acknowledgement"><strong>Acknowledgement</strong><p>Kaishi Quest uses vocabulary adapted from the excellent Kaishi 1.5k Anki deck.</p><a href="https://ankiweb.net/shared/info/1196762551" target="_blank" rel="noopener noreferrer">View the original Kaishi 1.5k deck</a></div></article></section>
-<section id="garden" class="screen garden-screen"><div class="study-top"><button id="gardenBack" type="button">← Dashboard</button><h2>Garden of Practice · 練習の庭</h2></div><section class="garden-page"><header class="garden-page-header"><div><span class="eyebrow">A gentler daily rhythm</span><h2>Your Japanese garden</h2><p id="gardenPageIntro">Your learner rests here until today’s Japanese begins, then walks the sand with the rake.</p></div><strong id="gardenApBalance">0 AP</strong></header><nav class="garden-tabs" aria-label="Garden sections"><button class="active" type="button" data-garden-tab="garden">Garden</button><button type="button" data-garden-tab="decorate">Decorate</button></nav><section id="gardenViewPanel" class="garden-view-panel"><div id="gardenScene" class="garden-scene"></div><div id="gardenStatusCards" class="garden-status-cards"></div><div class="garden-actions"><button id="gardenQuickRake" class="primary" type="button">Quick Rake · 3 reviews</button><button id="gardenDecorate" type="button">Decorate my garden</button><p id="gardenQuickHelp"></p></div></section><section id="gardenStorePanel" class="garden-store" hidden><div class="garden-store-heading"><div><span class="eyebrow">Garden collection</span><h3>Choose what belongs in your garden</h3></div><strong id="gardenStoreBalance">0 AP</strong></div><p>Decorations are cosmetic. AP used here is also unavailable for activity unlocks, so choose what matters to you.</p><div id="gardenStoreGrid" class="garden-store-grid"></div></section></section></section>
 </main><div id="toast"></div>
 <dialog id="missionCheckpointDialog"><div class="mission-checkpoint"><span class="eyebrow">Save point reached</span><h2>Progress saved</h2><p id="checkpointProgress">5 cards complete.</p><div class="mission-checkpoint-actions"><button id="checkpointFinish">Finish for now</button><button id="checkpointContinue" class="primary">Continue mission</button></div></div></dialog>
 <dialog id="quickSettingsDialog"><div class="quick-settings"><span class="eyebrow">Keep your place</span><h2>Quick settings</h2><p>These changes apply without leaving or rebuilding the current card.</p><label><input id="quickAutoAudio" type="checkbox"> Play audio automatically</label><label>Mnemonic style<select id="quickMnemonicStyle"><option value="clear">Clear</option><option value="funny">Funny</option><option value="gamer">Gamer</option><option value="ghibli">Ghibli-inspired</option><option value="pokemon">Creature-adventure</option></select></label><div class="quick-settings-actions"><button id="quickSettingsCancel">Cancel</button><button id="quickSettingsSave" class="primary">Apply</button></div><button id="quickFullSettings" class="quick-full-settings">Open full settings — mission will be saved</button></div></dialog>
@@ -264,7 +262,7 @@
 <span class="eyebrow">Activity Skill Web</span>
 <h2 id="activityUnlockName">Picture Meadow</h2>
 <p id="activityUnlockDescription"></p>
-<div class="activity-teacher-message"><img src="media/guides/sensei/sensei-pointing.webp?v=11.8.28" alt="Sensei pointing to the activity"><p id="activityTeacherMessage"></p></div>
+<div class="activity-teacher-message"><img src="media/guides/sensei/sensei-pointing.webp?v=11.8.29" alt="Sensei pointing to the activity"><p id="activityTeacherMessage"></p></div>
 <div class="activity-requirements">
 <section><span>Known supported words</span><strong id="activityWordProgress"></strong><div class="bar"><i id="activityWordBar"></i></div><small id="activityWordNeed"></small></section>
 <section><span>Adventure Points</span><strong id="activityApProgress"></strong><div class="bar"><i id="activityApBar"></i></div><small id="activityApNeed"></small></section>
@@ -282,21 +280,20 @@
 <img id="communityProfileAvatar" src="media/profiles/guest-learner.webp?v=11.8.1" alt="">
 <div><span class="eyebrow">Kaishi Quest learner</span><h2 id="communityProfileName">Learner</h2><p id="communityProfileUsername"></p></div>
 <div id="communityProfileStats" class="community-profile-stats"></div>
-<section id="communityProfileGarden" class="community-profile-garden" hidden></section>
 <p id="communityProfileStatus" class="muted"></p>
 <div id="communityProfileActions" class="community-profile-actions"></div>
-</div></dialog><dialog id="cloudConflictDialog"><div class="cloud-conflict"><span class="eyebrow">Progress found</span><h2>Which progress should Kaishi Quest keep?</h2><p>This device and your cloud account both contain learning progress. Choose the version you want to use everywhere.</p><button id="useCloudProgress" class="primary">Restore cloud progress</button><button id="keepDeviceProgress">Keep this device’s progress</button></div></dialog><script src="app.js?v=11.8.28"></script><script src="japan-ready.js?v=11.8.28"></script><script src="vms.js?v=11.8.28"></script><script src="supabase-config.js?v=11.8.28"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js" crossorigin="anonymous"></script><script src="cloud.js?v=11.8.28"></script><script src="reporting.js?v=11.8.28"></script>
-<script src="release-manager.js?v=11.8.28"></script>
-<script src="battle-ui-patch.js?v=11.8.28"></script>
-<script id="kotobaColosseumScript" src="battle-listen.js?v=11.8.28"></script>
-<script src="adaptive-learning.js?v=11.8.28"></script><script src="campfire-recall.js?v=11.8.28"></script><script src="word-rain.js?v=11.8.28"></script><script src="kotoba-activity.js?v=11.8.28"></script>
-<script src="dashboard-clarity.js?v=11.8.28"></script>
-<script src="touch-enhancements.js?v=11.8.28"></script>
-<script src="learning-ui.js?v=11.8.28"></script>
-<script src="carousel-navigation.js?v=11.8.28"></script>
-<script src="micro-practice.js?v=11.8.28"></script>
-<script src="sentence-lab.js?v=11.8.28"></script>
-<script src="pronunciation-coach.js?v=11.8.28"></script>
-<script src="garden-streak.js?v=11.8.28"></script>
-<script src="engagement-layer.js?v=11.8.28"></script>
+</div></dialog><dialog id="cloudConflictDialog"><div class="cloud-conflict"><span class="eyebrow">Progress found</span><h2>Which progress should Kaishi Quest keep?</h2><p>This device and your cloud account both contain learning progress. Choose the version you want to use everywhere.</p><button id="useCloudProgress" class="primary">Restore cloud progress</button><button id="keepDeviceProgress">Keep this device’s progress</button></div></dialog><script src="app.js?v=11.8.29"></script><script src="japan-ready.js?v=11.8.29"></script><script src="vms.js?v=11.8.29"></script><script src="supabase-config.js?v=11.8.29"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js" crossorigin="anonymous"></script><script src="cloud.js?v=11.8.29"></script><script src="reporting.js?v=11.8.29"></script>
+<script src="release-manager.js?v=11.8.29"></script>
+<script src="battle-ui-patch.js?v=11.8.29"></script>
+<script id="kotobaColosseumScript" src="battle-listen.js?v=11.8.29"></script>
+<script src="adaptive-learning.js?v=11.8.29"></script><script src="campfire-recall.js?v=11.8.29"></script><script src="word-rain.js?v=11.8.29"></script><script src="kotoba-activity.js?v=11.8.29"></script>
+<script src="dashboard-clarity.js?v=11.8.29"></script>
+<script src="touch-enhancements.js?v=11.8.29"></script>
+<script src="learning-ui.js?v=11.8.29"></script>
+<script src="carousel-navigation.js?v=11.8.29"></script>
+<script src="micro-practice.js?v=11.8.29"></script>
+<script src="sentence-lab.js?v=11.8.29"></script>
+<script src="pronunciation-coach.js?v=11.8.29"></script>
+<script src="bonsai-progress.js?v=11.8.29"></script>
+<script src="engagement-layer.js?v=11.8.29"></script>
 </body></html>

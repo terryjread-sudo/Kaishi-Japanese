@@ -1,8 +1,15 @@
 {
-  "version": "11.8.28",
+  "version": "11.8.29",
   "released": "2026-08-16",
-  "title": "Living Garden",
+  "title": "Bonsai Beginnings",
   "changes": [
+    "Replaced the garden destination, decoration store and friend-garden sharing with a compact five-stage bonsai progress card.",
+    "Made the bonsai grow from permanent learning achievements, so missed days never shrink the learner's visible progress.",
+    "Added a focused first-launch experience that teaches and recalls two useful Japanese words with no assumed knowledge.",
+    "Added a celebratory first-lesson result that immediately reveals the bonsai's second growth stage.",
+    "Kept the forgiving three-day learning-rhythm cushion and two weekly three-review Quick Steps without the garden metaphor.",
+    "Refunded Adventure Points previously spent on garden decorations while migrating existing rhythm history safely.",
+    "Created a cohesive transparent five-stage bonsai illustration set designed for compact desktop and mobile layouts.",
     "Changed the garden from a modal into a full-page destination with a dedicated dashboard navigation button.",
     "Made the learner sit on a cushion before practising and walk a complete garden route with an animated rake after their first Japanese attempt of the day.",
     "Separated the garden and decoration collection into clear tabs so the AP shop no longer dominates the garden view.",

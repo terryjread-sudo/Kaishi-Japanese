@@ -13,7 +13,7 @@
  * - Classic Activity Landmarks as the only activity presentation
  */
 (() => {
-  const RELEASE_VERSION='11.8.28';
+  const RELEASE_VERSION='11.8.29';
   const REPAIR_DELAY=4;
   const recentRepairKeys=new Set();
 
@@ -222,7 +222,7 @@
         meta.adaptiveRecentMistakes=meta.adaptiveRecentMistakes.slice(0,30);
 
         const activeScreen=document.querySelector('.screen.active')?.id;
-        const repairable=activeScreen==='study' && SKILLS.includes(skill) && !activeQuickRake;
+        const repairable=activeScreen==='study' && SKILLS.includes(skill) && !activeQuickStep;
         const key=`${v.id}:${skill}`;
 
         if(repairable && !recentRepairKeys.has(key)){
