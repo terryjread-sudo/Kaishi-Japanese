@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.27';
+const APP_VERSION='11.8.28';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -280,7 +280,7 @@ function refreshPathUnlocks(){
 }
 function lifetimeXp(){return Math.max(0,Number(meta.totalCorrect||0)*10+Object.values(progress).filter(mastery).length*50+Number(meta.totalMonsterVictories||0)*100+Number(meta.streak||0)*20)}
 function adventurePoints(){return Math.max(0,lifetimeXp()-Number(meta.adventurePointsSpent||0)-Number(meta.gardenApSpent||0))}
-function gardenPublicState(){const garden=gardenState();return{version:1,streak:Number(meta.streak||0),items:garden.placed.filter(id=>GARDEN_ITEMS.some(item=>item.id===id)).slice(0,5)}}
+function gardenPublicState(){const garden=gardenState(),activity=todayActivity();return{version:2,streak:Number(meta.streak||0),items:garden.placed.filter(id=>GARDEN_ITEMS.some(item=>item.id===id)).slice(0,5),activeOn:Number(activity.tested||0)>0?activity.date:''}}
 function buyGardenItem(id){const item=GARDEN_ITEMS.find(entry=>entry.id===id),garden=gardenState();if(!item)return{ok:false,message:'Garden item not found.'};if(garden.owned.includes(id)){garden.placed=garden.placed.includes(id)?garden.placed.filter(entry=>entry!==id):[...garden.placed,id].slice(-5);save();updateHome();return{ok:true,message:garden.placed.includes(id)?`${item.name} placed in your garden.`:`${item.name} stored.`}}if(adventurePoints()<item.cost)return{ok:false,message:`You need ${item.cost-adventurePoints()} more AP.`};meta.gardenApSpent=Number(meta.gardenApSpent||0)+item.cost;garden.owned.push(id);garden.placed=[...garden.placed,id].slice(-5);save();updateHome();return{ok:true,message:`${item.name} added to your garden.`}}
 function startQuickRake(){const activity=todayActivity(),garden=reconcileGarden();if(activity.qualified){toast('Your garden is already cared for today');return false}if(garden.quickUsed>=2){toast('Both Quick Rakes have been used this week');return false}const pool=[...new Map([...dueWords(),...vocab.filter(wordIntroduced),...vocab].map(word=>[word.id,word])).values()].slice(0,3);if(!pool.length){toast('Learning content is still loading');return false}activity.quickRake=true;activity.quickTarget=3;activity.quickStartTested=Number(activity.tested||0);activeQuickRake=true;activityReturnScreen='home';pictureGameActive=false;session=pool.map((v,itemIndex)=>({v,skill:itemIndex===1&&v.wordAudio?'listening':itemIndex===2&&v.word!==v.reading?'reading':'meaning'}));index=0;current=null;clearMissionResume();save();show('study');renderCurrent();return true}
 function introducedWords(){return vocab.filter(wordIntroduced)}

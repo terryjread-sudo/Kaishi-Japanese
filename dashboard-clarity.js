@@ -12,7 +12,7 @@
  * mission composition, grading or cloud progress.
  */
 (() => {
-  const RELEASE='11.8.27';
+  const RELEASE='11.8.28';
   let installed=false;
 
   function el(id){ return document.getElementById(id); }
@@ -107,7 +107,7 @@
       .learning-state-help{margin:12px 0 0;color:#64748b;font-size:.76rem;line-height:1.4}
 
       .dashboard-nav{
-        margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px
+        margin-top:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px
       }
       .dashboard-nav button{
         min-height:66px;padding:10px 7px;display:grid;place-items:center;gap:2px;
@@ -153,10 +153,10 @@
           padding:15px;border-radius:18px;box-shadow:none;background:#f8fafc
         }
 
-        /* Persistent thumb navigation for the four primary destinations. */
+        /* Persistent thumb navigation for the five primary destinations. */
         .dashboard-nav{
           position:fixed;z-index:40;left:50%;bottom:0;transform:translateX(-50%);
-          width:min(100%,520px);grid-template-columns:repeat(4,1fr);gap:2px;
+          width:min(100%,520px);grid-template-columns:repeat(5,1fr);gap:2px;
           margin:0;padding:7px 8px calc(7px + env(safe-area-inset-bottom));
           background:#fffffff2;border-top:1px solid #cbd5e1;
           box-shadow:0 -8px 24px #17255418;backdrop-filter:blur(14px)
@@ -308,15 +308,17 @@
 
     const practice=el('openPracticeHub');
     const collection=el('openCollection');
+    const garden=el('journeyGarden');
     const progress=el('journeySkills');
     const community=el('journeyCommunity');
 
     makeNavButton(practice,'🎯','Practice');
     makeNavButton(collection,'📚','Collection');
+    makeNavButton(garden,'🪴','Garden');
     makeNavButton(progress,'📊','Progress');
     makeNavButton(community,'👥','Community');
 
-    [practice,collection,progress,community].forEach(button=>{
+    [practice,collection,garden,progress,community].forEach(button=>{
       if(button) nav.appendChild(button);
     });
   }

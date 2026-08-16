@@ -1,8 +1,12 @@
 {
-  "version": "11.8.27",
+  "version": "11.8.28",
   "released": "2026-08-16",
-  "title": "Garden of Practice",
+  "title": "Living Garden",
   "changes": [
+    "Changed the garden from a modal into a full-page destination with a dedicated dashboard navigation button.",
+    "Made the learner sit on a cushion before practising and walk a complete garden route with an animated rake after their first Japanese attempt of the day.",
+    "Separated the garden and decoration collection into clear tabs so the AP shop no longer dominates the garden view.",
+    "Shared friend gardens now show whether the learner is actively tending their garden today.",
     "Replaced the compact flame counter with a tappable Garden Streak showing the learner avatar tending a live sand pattern.",
     "Added two weekly Quick Rakes that protect the day through three genuine Japanese review attempts.",
     "Changed missed-day handling so the garden falls up to three stages behind before the streak journey ends.",
