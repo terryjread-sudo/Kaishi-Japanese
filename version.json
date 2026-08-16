@@ -1,8 +1,12 @@
 {
-  "version": "11.8.25",
+  "version": "11.8.26",
   "released": "2026-08-16",
-  "title": "Exclusive Pronunciation Modes",
+  "title": "Sensei Pronunciation Feedback",
   "changes": [
+    "Replaced technical pronunciation results with responsive Sensei coaching for clear, partial and unsuccessful attempts.",
+    "Added celebrating, encouraging and analysing Sensei reactions with specific advice about the sounds to practise next.",
+    "Removed the pronunciation diagnostics viewer and stopped storing troubleshooting events in the browser.",
+    "Automatically clears diagnostic events left by the temporary troubleshooting release.",
     "Separated Japanese speech recognition from local recording so the two browser systems never compete for the microphone.",
     "Added Check my Japanese mode with exclusive browser speech recognition and automatic single-utterance stopping.",
     "Added Record & compare mode with private local playback, a live waveform and silence-based stopping.",
