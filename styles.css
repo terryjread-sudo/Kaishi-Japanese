@@ -683,6 +683,14 @@ header{
 .admin-tools-slot{display:grid;gap:12px}
 .admin-tools-slot .owner-path-controls{margin:0}
 .admin-tools-slot .settings-link{display:block}
+.admin-diagnostic-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.admin-diagnostic-list{display:grid;gap:8px;margin-top:10px}
+.admin-diagnostic-entry{border:1px solid #dbe3f0;border-radius:12px;background:#f8fafc;overflow:hidden}
+.admin-diagnostic-entry summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;cursor:pointer}
+.admin-diagnostic-entry summary strong{overflow-wrap:anywhere}
+.admin-diagnostic-entry time{color:#64748b;font-size:.76rem;text-align:right}
+.admin-diagnostic-entry pre{margin:0;padding:12px;border-top:1px solid #dbe3f0;background:#0f172a;color:#dbeafe;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.72rem;line-height:1.45}
+@media(max-width:600px){.admin-section-heading{align-items:flex-start}.admin-diagnostic-entry summary{align-items:flex-start;flex-direction:column}.admin-diagnostic-entry time{text-align:left}}
 @media(max-width:560px){
  .admin-report-controls{grid-template-columns:1fr}
  .admin-report-controls .admin-search{grid-column:auto}

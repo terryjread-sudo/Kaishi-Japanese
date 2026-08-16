@@ -161,6 +161,35 @@
     if(studio&&!slot.contains(studio)){studio.hidden=false;slot.appendChild(studio)}
   }
 
+  function renderPronunciationDiagnostics(){
+    const list=$('#pronunciationDiagnosticList');
+    const summary=$('#pronunciationDiagnosticSummary');
+    if(!list||!summary||!isAdmin)return;
+    const diagnostics=window.KaishiPronunciationDiagnostics;
+    const entries=diagnostics?.list?.()||[];
+    if(!entries.length){
+      summary.textContent='No pronunciation attempts have been logged on this device.';
+      list.innerHTML='<p class="muted">Open Pronunciation Coach and make an attempt, then return here and refresh.</p>';
+      return;
+    }
+    const failures=entries.filter(entry=>/failed|error|unavailable/.test(entry.event)).length;
+    summary.textContent=`${entries.length} local event${entries.length===1?'':'s'} · ${failures} problem event${failures===1?'':'s'} · newest first`;
+    list.innerHTML=entries.map(entry=>{
+      const details={...entry};delete details.at;delete details.event;
+      const detailText=Object.keys(details).length?JSON.stringify(details,null,2):'No additional details';
+      return `<details class="admin-diagnostic-entry"${/failed|error|unavailable/.test(entry.event)?' open':''}>
+        <summary><strong>${escapeHtml(entry.event)}</strong><time datetime="${escapeHtml(entry.at)}">${escapeHtml(new Date(entry.at).toLocaleString())}</time></summary>
+        <pre>${escapeHtml(detailText)}</pre>
+      </details>`;
+    }).join('');
+  }
+
+  function clearPronunciationDiagnostics(){
+    if(!isAdmin||!confirm('Clear pronunciation diagnostics stored in this browser?'))return;
+    window.KaishiPronunciationDiagnostics?.clear?.();
+    renderPronunciationDiagnostics();
+  }
+
   async function openAdmin(){
     if(!await checkAdmin()){
       alert('Administrator access is required.');
@@ -170,6 +199,7 @@
     $('#adminAccessMessage').textContent=`Signed in as @${githubLogin()}. Database access is protected by Supabase policies.`;
     window.scrollTo(0,0);
     document.querySelectorAll('.screen').forEach(screen=>screen.classList.toggle('active',screen.id==='adminArea'));
+    renderPronunciationDiagnostics();
     await loadReports();
   }
 
@@ -349,6 +379,9 @@
     $('#reportCategoryFilter')?.addEventListener('change',renderReports);
     $('#reportSearch')?.addEventListener('input',renderReports);
     $('#exportReports')?.addEventListener('click',exportReports);
+    $('#refreshPronunciationDiagnostics')?.addEventListener('click',renderPronunciationDiagnostics);
+    $('#clearPronunciationDiagnostics')?.addEventListener('click',clearPronunciationDiagnostics);
+    window.addEventListener('kaishi:pronunciation-diagnostic',()=>{if(isAdmin&&$('#adminArea')?.classList.contains('active'))renderPronunciationDiagnostics()});
   }
 
   window.KaishiReports={attachToLearningCard,isSignedIn:signedIn,isAdmin:()=>isAdmin};

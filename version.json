@@ -1,8 +1,11 @@
 {
-  "version": "11.8.22",
-  "released": "2026-08-15",
-  "title": "Original Manga Reader Restored",
+  "version": "11.8.23",
+  "released": "2026-08-16",
+  "title": "Pronunciation Diagnostics",
   "changes": [
+    "Added privacy-safe local diagnostics for microphone, recorder and Japanese speech-recognition stages.",
+    "Added an admin-only diagnostics viewer with refresh and clear controls.",
+    "Recorded failure stage, browser support and recognition error codes without retaining audio or spoken transcripts.",
     "Fixed all ten original graded manga stories failing to open after comic-format stories were added.",
     "Limited original-story question distractors to manga entries that contain traditional reading panels.",
     "Kept the three newer swipeable comic stories available and unchanged.",
