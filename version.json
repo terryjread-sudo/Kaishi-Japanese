@@ -1,8 +1,12 @@
 {
-  "version": "11.8.23",
+  "version": "11.8.24",
   "released": "2026-08-16",
-  "title": "Pronunciation Diagnostics",
+  "title": "Automatic Pronunciation Capture",
   "changes": [
+    "Stopped pronunciation recordings automatically after the learner finishes speaking or a final Japanese transcript arrives.",
+    "Changed browser speech recognition to Japanese single-utterance mode for more reliable Android and Safari behaviour.",
+    "Added a short finalisation grace period so Pixel Chrome can return its transcript before review begins.",
+    "Kept manual stop, ten-second safety stopping and local playback when browser transcription is unavailable.",
     "Added privacy-safe local diagnostics for microphone, recorder and Japanese speech-recognition stages.",
     "Added an admin-only diagnostics viewer with refresh and clear controls.",
     "Recorded failure stage, browser support and recognition error codes without retaining audio or spoken transcripts.",
