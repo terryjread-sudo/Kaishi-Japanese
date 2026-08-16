@@ -1,8 +1,12 @@
 {
-  "version": "11.8.24",
+  "version": "11.8.25",
   "released": "2026-08-16",
-  "title": "Automatic Pronunciation Capture",
+  "title": "Exclusive Pronunciation Modes",
   "changes": [
+    "Separated Japanese speech recognition from local recording so the two browser systems never compete for the microphone.",
+    "Added Check my Japanese mode with exclusive browser speech recognition and automatic single-utterance stopping.",
+    "Added Record & compare mode with private local playback, a live waveform and silence-based stopping.",
+    "Added mode-specific privacy guidance and diagnostics for Pixel Chrome and Safari.",
     "Stopped pronunciation recordings automatically after the learner finishes speaking or a final Japanese transcript arrives.",
     "Changed browser speech recognition to Japanese single-utterance mode for more reliable Android and Safari behaviour.",
     "Added a short finalisation grace period so Pixel Chrome can return its transcript before review begins.",
