@@ -1,8 +1,15 @@
 {
-  "version": "11.8.26",
+  "version": "11.8.27",
   "released": "2026-08-16",
-  "title": "Sensei Pronunciation Feedback",
+  "title": "Garden of Practice",
   "changes": [
+    "Replaced the compact flame counter with a tappable Garden Streak showing the learner avatar tending a live sand pattern.",
+    "Added two weekly Quick Rakes that protect the day through three genuine Japanese review attempts.",
+    "Changed missed-day handling so the garden falls up to three stages behind before the streak journey ends.",
+    "Added progressive recovery: a full daily objective restores one disturbed garden stage.",
+    "Added an AP garden store with six cosmetic decorations that can be placed or stored.",
+    "Added a private friend-garden preview protected so only accepted friends can view shared gardens.",
+    "Created a new character-free illustrated karesansui garden backdrop with live avatar, rake, leaf and decoration layers.",
     "Replaced technical pronunciation results with responsive Sensei coaching for clear, partial and unsuccessful attempts.",
     "Added celebrating, encouraging and analysing Sensei reactions with specific advice about the sounds to practise next.",
     "Removed the pronunciation diagnostics viewer and stopped storing troubleshooting events in the browser.",

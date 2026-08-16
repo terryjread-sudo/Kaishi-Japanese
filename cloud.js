@@ -125,7 +125,7 @@
   const payload=adapter()?.snapshot?.();if(!payload)return;
   const{error}=await client.from('user_progress').upsert({user_id:user.id,schema_version:2,payload},{onConflict:'user_id'});
   if(error)throw error;
-  remember(payload);await ensureLeaderboardEntry();
+  remember(payload);await ensureLeaderboardEntry();await saveSharedGarden(adapter()?.garden?.());
  }
  function scheduleSync(){if(adapter()?.isTestMode?.()||!user||!client)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
  async function flush(){clearTimeout(syncTimer);if(adapter()?.isTestMode?.())return;if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
@@ -133,6 +133,8 @@
  
  async function friendRpc(name,args={}){if(!client||!user)throw new Error('Sign in with GitHub to use friends.');const{data,error}=await client.rpc(name,args);if(error)throw error;return data}
  function friendAvatar(row){return avatarImage(row.avatar_key||'boy',Number(row.streak||0))}
+ async function loadFriendGardens(friends=[]){const ids=friends.map(row=>row.user_id).filter(Boolean);if(!ids.length)return new Map();try{const{data,error}=await client.from('kaishi_gardens').select('user_id,state').in('user_id',ids);if(error)throw error;return new Map((data||[]).map(row=>[row.user_id,row.state||{}]))}catch{return new Map()}}
+ async function saveSharedGarden(state){if(!client||!user||!state)return;try{await client.from('kaishi_gardens').upsert({user_id:user.id,state,updated_at:new Date().toISOString()},{onConflict:'user_id'})}catch{}}
  function timeAgo(value){if(!value)return'not recently';const seconds=Math.max(0,Math.floor((Date.now()-new Date(value).getTime())/1000));if(seconds<60)return'just now';if(seconds<3600)return`${Math.floor(seconds/60)}m ago`;if(seconds<86400)return`${Math.floor(seconds/3600)}h ago`;return`${Math.floor(seconds/86400)}d ago`}
  async function loadFriends(){
   const incoming=$('#incomingFriendRequests'),list=$('#friendsList'),badge=$('#friendRequestBadge');
@@ -149,7 +151,7 @@
    const rows=await friendRpc('get_kaishi_friends');
    window.__kaishiFriendRows=rows||[];
    const requests=(rows||[]).filter(row=>row.relationship_status==='pending_incoming');
-   const friends=(rows||[]).filter(row=>row.relationship_status==='accepted');
+   const friends=(rows||[]).filter(row=>row.relationship_status==='accepted'),gardens=await loadFriendGardens(friends);friends.forEach(row=>{row.garden_state=gardens.get(row.user_id)||null;communityProfiles.set(row.user_id,row)});
    if(badge){badge.hidden=!requests.length;badge.textContent=`${requests.length} new`}
    incoming.innerHTML=requests.length
     ?`<h4>Friend requests</h4>${requests.map(row=>`<article class="friend-row request"><img src="${friendAvatar(row)}" alt=""><div><strong>${esc(row.display_name||row.github_login)}</strong><small>@${esc(row.github_login)}</small></div><div class="friend-actions"><button data-friend-accept="${row.request_id}" class="primary">Accept</button><button data-friend-decline="${row.request_id}">Decline</button></div></article>`).join('')}`
@@ -220,7 +222,7 @@ async function loadLeaderboard(){
   if(!data?.length){leaderboard.innerHTML='';setLeaderboardMessage('No learners have joined yet. Be the first!');return}
   setLeaderboardMessage('Friendly community ranking · progress is self-reported by the app.');
   communityProfiles=new Map(data.map(row=>[row.user_id,row]));
-  leaderboard.innerHTML=data.map((row,index)=>{const isYou=row.user_id===user?.id;return`<article class="leaderboard-row ${isYou?'is-you':''}" data-community-user="${row.user_id}" tabindex="0" role="button" aria-label="View ${esc(row.display_name)}'s profile"><span class="leaderboard-rank">${index+1}</span><img src="${avatarImage(row.avatar_key,row.streak)}" alt="${esc(row.display_name)}'s Kaishi character"><div><strong>${esc(row.display_name)}${isYou?'<span class="you-badge">Your profile</span>':''}</strong><small>@${esc(row.github_login)}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.streak||0} day streak</small></article>`}).join('');
+  leaderboard.innerHTML=data.map((row,index)=>{const isYou=row.user_id===user?.id;return`<article class="leaderboard-row ${isYou?'is-you':''}" data-community-user="${row.user_id}" tabindex="0" role="button" aria-label="View ${esc(row.display_name)}'s profile"><span class="leaderboard-rank">${index+1}</span><img src="${avatarImage(row.avatar_key,row.streak)}" alt="${esc(row.display_name)}'s Kaishi character"><div><strong>${esc(row.display_name)}${isYou?'<span class="you-badge">Your profile</span>':''}</strong><small>@${esc(row.github_login)}</small></div><b>${Number(row.xp).toLocaleString()} XP</b><small>${row.mastered} mastered · ${row.accuracy}% · ${row.streak||0} day garden</small></article>`}).join('');
   document.querySelectorAll('[data-community-user]').forEach(item=>{
    item.addEventListener('click',()=>openCommunityProfile(item.dataset.communityUser));
    item.addEventListener('keydown',event=>{
@@ -247,8 +249,8 @@ async function loadLeaderboard(){
   $('#communityProfileAvatar').src=friendAvatar(row);
   $('#communityProfileName').textContent=row.display_name||row.github_login;
   $('#communityProfileUsername').textContent=`@${row.github_login}`;
-  $('#communityProfileStats').innerHTML=`<span><strong>${Number(row.xp||0).toLocaleString()}</strong> XP</span><span><strong>${row.mastered||0}</strong> mastered</span><span><strong>${row.streak||0}</strong> day streak</span>`;
-  const relation=friendRelation(userId),actions=$('#communityProfileActions'),isYou=userId===user?.id;
+  $('#communityProfileStats').innerHTML=`<span><strong>${Number(row.xp||0).toLocaleString()}</strong> XP</span><span><strong>${row.mastered||0}</strong> mastered</span><span><strong>${row.streak||0}</strong> day garden</span>`;
+  const relation=friendRelation(userId),actions=$('#communityProfileActions'),isYou=userId===user?.id,garden=$('#communityProfileGarden'),gardenState=isYou?adapter()?.garden?.():relation?.relationship_status==='accepted'?row.garden_state:null;if(garden){garden.hidden=!gardenState;garden.innerHTML=gardenState&&window.KaishiGarden?.preview?window.KaishiGarden.preview(gardenState,friendAvatar(row)):''}
   actions.innerHTML='';
   if(isYou){
    $('#communityProfileStatus').textContent='This is your community profile.';
