@@ -5,25 +5,37 @@
  const card=document.querySelector('#bonsaiProgressCard');
  const quick=document.querySelector('#bonsaiQuickStep');
  if(!bridge||!card||!quick)return;
- let lastStage=-1;
+ let lastStage=-1,lastCondition='';
 
  function render(){
   const state=bridge.state();
   const tree=document.querySelector('#bonsaiTree');
+  const aura=document.querySelector('#bonsaiConditionAura');
+  const condition=document.querySelector('#bonsaiCondition');
   const primary=document.querySelector('#bonsaiPrimaryAction');
   card.classList.toggle('new-learner',state.newLearner);
   if(lastStage>=0&&state.stage>lastStage){
    card.classList.remove('stage-grown');
    requestAnimationFrame(()=>card.classList.add('stage-grown'));
   }
+  if(lastCondition&&lastCondition!==state.key){
+   card.classList.remove('condition-changed');
+   requestAnimationFrame(()=>card.classList.add('condition-changed'));
+  }
   lastStage=state.stage;
+  lastCondition=state.key;
+  card.dataset.condition=state.key;
+  aura.dataset.condition=state.key;
+  condition.dataset.condition=state.key;
   tree.dataset.stage=String(state.stage);
-  tree.setAttribute('aria-label',`${state.stageName} bonsai stage`);
-  document.querySelector('#bonsaiStageCount').textContent=`Stage ${state.stage+1} of 5`;
+  tree.setAttribute('aria-label',`${state.stageName} bonsai, ${state.name.toLowerCase()}`);
+  document.querySelector('#bonsaiStageCount').textContent=`Stage ${state.stage+1}/5 · ${state.name}`;
   document.querySelector('#bonsaiStageName').textContent=state.stageName;
   document.querySelector('#bonsaiDescription').textContent=state.newLearner
    ?'Your first guided lesson teaches only two useful words, with no assumed knowledge.'
    :state.description;
+  document.querySelector('#bonsaiConditionName').textContent=state.name;
+  document.querySelector('#bonsaiConditionNote').textContent=state.note;
   document.querySelector('#bonsaiGrowthFill').style.width=`${state.progress}%`;
   document.querySelector('#bonsaiNextMilestone').textContent=state.stage===4
    ?'Your bonsai is in bloom. Continued practice strengthens long-term recall.'

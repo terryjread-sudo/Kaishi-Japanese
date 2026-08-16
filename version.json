@@ -1,8 +1,12 @@
 {
-  "version": "11.8.29",
-  "released": "2026-08-16",
-  "title": "Bonsai Beginnings",
+  "version": "11.8.30",
+  "released": "2026-08-17",
+  "title": "Living Bonsai Rhythm",
   "changes": [
+    "Added four bonsai condition states—Resting, Steady, Flourishing and Radiant—driven by the learner's current streak.",
+    "Kept bonsai size tied to permanent learning progress while condition now responds independently to recent consistency.",
+    "Made each missed-day cushion temporarily lower the bonsai by one condition state without shrinking its earned growth.",
+    "Added animated transparent condition artwork with cool, green, flourishing and radiant visual effects.",
     "Replaced the garden destination, decoration store and friend-garden sharing with a compact five-stage bonsai progress card.",
     "Made the bonsai grow from permanent learning achievements, so missed days never shrink the learner's visible progress.",
     "Added a focused first-launch experience that teaches and recalls two useful Japanese words with no assumed knowledge.",

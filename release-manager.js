@@ -15,7 +15,7 @@
  * the same value in index.html and service-worker.js.
  */
 (() => {
-  const CURRENT_VERSION='11.8.29';
+  const CURRENT_VERSION='11.8.30';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   let refreshing=false;
 

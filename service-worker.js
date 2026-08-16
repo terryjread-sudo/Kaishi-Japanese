@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.29';
+const VERSION='11.8.30';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -51,6 +51,7 @@ const SHELL=[
   v('./media/guides/sensei/sensei-analysing.webp'),
   v('./media/sentence-lab/sentence-lab-hero.webp'),
   v('./media/bonsai/bonsai-growth-stages.png'),
+  v('./media/bonsai/bonsai-condition-overlays.png'),
   v('./media/profiles/guest-learner.webp'),
   v('./media/profiles/boy-base.webp'),
   v('./media/profiles/girl-base.webp'),
