@@ -12,6 +12,7 @@
   const tree=document.querySelector('#bonsaiTree');
   const aura=document.querySelector('#bonsaiConditionAura');
   const condition=document.querySelector('#bonsaiCondition');
+  const conditionTrigger=document.querySelector('#bonsaiConditionTrigger');
   const primary=document.querySelector('#bonsaiPrimaryAction');
   card.classList.toggle('new-learner',state.newLearner);
   if(lastStage>=0&&state.stage>lastStage){
@@ -27,9 +28,10 @@
   card.dataset.condition=state.key;
   aura.dataset.condition=state.key;
   condition.dataset.condition=state.key;
+  conditionTrigger.setAttribute('aria-label',`${state.name} bonsai condition. Open explanation`);
   tree.dataset.stage=String(state.stage);
   tree.setAttribute('aria-label',`${state.stageName} bonsai, ${state.name.toLowerCase()}`);
-  document.querySelector('#bonsaiStageCount').textContent=`Stage ${state.stage+1}/5 · ${state.name}`;
+  document.querySelector('#bonsaiStageCount').textContent=`Stage ${state.stage+1}/5`;
   document.querySelector('#bonsaiStageName').textContent=state.stageName;
   document.querySelector('#bonsaiDescription').textContent=state.newLearner
    ?'Your first guided lesson teaches only two useful words, with no assumed knowledge.'
@@ -41,10 +43,10 @@
    ?'Your bonsai is in bloom. Continued practice strengthens long-term recall.'
    :state.newLearner
     ?'Begin your first lesson to grow new leaves.'
-    :`${Math.max(0,state.nextScore-state.score)} growth points until the next bonsai stage.`;
+    :`Start more words, master them and complete topics to reach ${state.nextStageName}.`;
   document.querySelector('#bonsaiStats').innerHTML=`<span><strong>${state.words}</strong>words started</span><span><strong>${state.mastered}</strong>mastered</span><span><strong>${state.streak}</strong>day rhythm</span>`;
   document.querySelector('#streak').textContent=`${state.streak} day${state.streak===1?'':'s'} · Learning rhythm${state.behind?` · ${state.behind}/3 cushion used`:''}`;
-  primary.textContent=state.newLearner?'Start my first lesson':'Continue today’s lesson';
+  primary.textContent=state.newLearner?'Start my first lesson':'Continue learning';
   primary.onclick=()=>state.newLearner?bridge.startFirst():startTopicSession(currentTopic().id);
   quick.hidden=state.newLearner;
   quick.disabled=state.qualified||!state.quickRemaining;
@@ -56,6 +58,9 @@
  }
 
  quick.addEventListener('click',()=>bridge.startQuick());
+ document.querySelector('#bonsaiConditionTrigger')?.addEventListener('click',()=>document.querySelector('#bonsaiConditionDialog')?.showModal());
+ document.querySelector('#bonsaiConditionClose')?.addEventListener('click',()=>document.querySelector('#bonsaiConditionDialog')?.close());
+ document.querySelector('#bonsaiConditionDialog')?.addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});
  window.KaishiBonsai={render};
  render();
 })();

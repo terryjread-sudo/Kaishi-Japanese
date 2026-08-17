@@ -1,8 +1,13 @@
 {
-  "version": "11.8.30",
+  "version": "11.8.31",
   "released": "2026-08-17",
-  "title": "Living Bonsai Rhythm",
+  "title": "Focused Bonsai Progress",
   "changes": [
+    "Corrected bonsai growth so repeated correct reviews no longer inflate the tree's permanent stage.",
+    "Based growth primarily on words started, genuine mastery and completed learning topics.",
+    "Moved Continue learning and Quick Step directly below today's objective as the dashboard's priority actions.",
+    "Moved the bonsai condition explanation into a compact tap-to-open hint instead of occupying the progress card.",
+    "Reduced the visual priority of account sign-in so learning actions remain the clearest next step.",
     "Added four bonsai condition states—Resting, Steady, Flourishing and Radiant—driven by the learner's current streak.",
     "Kept bonsai size tied to permanent learning progress while condition now responds independently to recent consistency.",
     "Made each missed-day cushion temporarily lower the bonsai by one condition state without shrinking its earned growth.",
