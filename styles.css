@@ -226,17 +226,17 @@ header{
 @media(max-width:520px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.kanji-overview-stats{grid-template-columns:repeat(2,1fr)}.kanji-grid{grid-template-columns:repeat(5,1fr)}.kanji-word-list article{grid-template-columns:1fr auto}.kanji-word-list article>b{grid-column:1/-1}.ring{width:82px;height:82px;flex-basis:82px}}
 .avatar-picker{display:grid!important;gap:10px!important;padding:14px!important;border:1px solid #c7d2fe!important;border-radius:16px!important;background:#fff!important}
 .avatar-picker>p{margin:0;color:#64748b;font-size:.78rem;line-height:1.4}
-.avatar-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.avatar-grid button{display:grid;gap:5px;padding:5px;border:2px solid transparent;background:#eef2ff;color:#172554;font-size:.72rem}
+.avatar-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.avatar-grid button{position:relative;display:grid;align-content:start;gap:4px;min-width:0;padding:6px;border:2px solid transparent;background:#eef2ff;color:#172554;font-size:.72rem;text-align:left}
 .avatar-grid button.selected{border-color:#2563eb;background:#dbeafe;box-shadow:0 0 0 2px #93c5fd55}
-.avatar-grid img{width:100%;aspect-ratio:1;border-radius:10px;object-fit:cover}.avatar-grid span{overflow:hidden;text-overflow:ellipsis}
-.avatar-picker:disabled{opacity:.62}.avatar-picker:disabled button{cursor:not-allowed}
+.avatar-grid img{width:100%;aspect-ratio:1;border-radius:10px;object-fit:cover;transition:filter .2s,opacity .2s}.avatar-grid span{overflow:hidden;font-weight:850;text-overflow:ellipsis;white-space:nowrap}.avatar-grid small{min-height:2.3em;color:#64748b;font-size:.58rem;line-height:1.2}.avatar-grid button.locked{border-color:#cbd5e1;background:#e2e8f0;color:#64748b}.avatar-grid button.locked img{filter:grayscale(1) saturate(0);opacity:.46}.avatar-grid button.locked::after{content:'🔒';position:absolute;top:10px;right:10px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#172554d9;color:#fff;font-size:.78rem;box-shadow:0 3px 9px #0f172a45}.avatar-grid button.locked:hover img,.avatar-grid button.locked:focus-visible img{opacity:.6}.avatar-grid button[aria-disabled="true"]{cursor:not-allowed}
 .avatar-picker.profile-target{box-shadow:0 0 0 4px #60a5fa,0 10px 28px #2563eb30;transition:box-shadow .25s}
 .rescue-mode{width:100%;margin-top:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;box-shadow:0 8px 20px #ea580c35}
 .rescue-message{margin:10px 0;padding:12px;border:1px solid #fdba74;border-radius:13px;background:#fff7ed;color:#9a3412;font-size:.82rem;font-weight:700;line-height:1.45}
 .rescue-board{border-color:#f59e0b;background:linear-gradient(180deg,#fef3c7,#fff7ed)}
 .rescue-result-monster{display:block;width:min(260px,70%);height:230px;margin:0 auto;object-fit:contain}
 @media(max-width:560px){.avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-profile img{width:58px;height:58px}.hero-profile{gap:9px}.hero-profile strong{max-width:190px}.hero-profile-milestone{max-width:250px}}
+@media(max-width:390px){.avatar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* Manga Stories */
 .manga-button{background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;box-shadow:0 8px 20px #7c3aed26}

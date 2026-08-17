@@ -19,6 +19,8 @@ password, or a Supabase secret/service-role key.
 5. Then run `migrations/20260731_profile_streak_rescue.sql` to add profile
    character choices and streak display. If this is a fresh installation, it is
    still safe to run the second migration after the first.
+6. Run `migrations/20260817_progression_avatars.sql` to allow the Harajuku Girl,
+   Harajuku Guy, and Izakaya Cook keys in saved cloud and community profiles.
 
 The migration creates private progress storage, public opt-in leaderboard
 entries, Row Level Security policies, and the learner-controlled cloud-account

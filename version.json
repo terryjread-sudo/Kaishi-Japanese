@@ -1,8 +1,13 @@
 {
-  "version": "11.8.32",
+  "version": "11.8.33",
   "released": "2026-08-17",
-  "title": "Clear Reward Screens",
+  "title": "Progression Characters",
   "changes": [
+    "Replaced the generic signed-out portrait with a distinctive Kaishi guest learner carrying a Japanese phrasebook.",
+    "Added Harajuku Girl, Harajuku Guy and Izakaya Cook characters that unlock at 10, 25 and 50 mastered words.",
+    "Created six consistent progression poses for every new character, including their final superhero forms.",
+    "Kept locked characters visible in the selector with greyscale previews and clear mastery requirements.",
+    "Made admin test mode expose all progression characters while preserving safe fallbacks for older cloud profiles.",
     "Prevented Sensei and activity-guide artwork from overlapping post-activity reward text on narrow screens.",
     "Added a stacked character layout for extra-small phones while keeping the full celebration scene on larger displays.",
     "Corrected bonsai growth so repeated correct reviews no longer inflate the tree's permanent stage.",

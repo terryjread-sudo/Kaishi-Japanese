@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.32';
+const APP_VERSION='11.8.33';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -1498,7 +1498,7 @@ async function init(){
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
  renderLearningBalanceSettings();
- const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent=`Kaishi Quest v${APP_VERSION}`;versionCard.querySelector('span').textContent='Clear Reward Screens';versionCard.querySelector('small').textContent='Post-activity characters now stay safely separated from reward text on every phone size.'}
+ const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent=`Kaishi Quest v${APP_VERSION}`;versionCard.querySelector('span').textContent='Progression Characters';versionCard.querySelector('small').textContent='Three new characters and complete pose sets now unlock through genuine vocabulary mastery.'}
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }

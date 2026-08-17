@@ -3,7 +3,11 @@
  const config=window.KAISHI_SUPABASE_CONFIG,sdk=window.supabase;
  const account=$('#cloudAccount'),status=$('#cloudStatus'),join=$('#leaderboardOptIn');
  const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
- const AVATARS=['boy','girl','master','man','woman'],OWNER_LOGIN='terryjread-sudo';
+ const RELEASE='11.8.33',OWNER_LOGIN='terryjread-sudo',GUEST_IMAGE=`media/profiles/guest-learner.webp?v=${RELEASE}`;
+ const AVATARS=[
+  {key:'boy',name:'Boy',mastered:0},{key:'girl',name:'Girl',mastered:0},{key:'master',name:'Master',mastered:0},{key:'man',name:'Man',mastered:0},{key:'woman',name:'Woman',mastered:0},
+  {key:'harajuku-girl',name:'Harajuku Girl',mastered:10},{key:'harajuku-guy',name:'Harajuku Guy',mastered:25},{key:'izakaya-cook',name:'Izakaya Cook',mastered:50}
+ ];
  const FP_KEY='kq-cloud-sync-fingerprint-v1',FRIEND_NUDGE_DISMISS_KEY='kq-friend-nudge-dismiss-v1',SOCIAL_READ_KEY='kq-social-notifications-read-v1';
  let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[];
 
@@ -11,9 +15,12 @@
  const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}};
  const setLeaderboardMessage=message=>{if(leaderboardMessage)leaderboardMessage.textContent=message};
  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
- const avatarKey=value=>AVATARS.includes(value)?value:'boy';
+ const avatarDefinition=value=>AVATARS.find(avatar=>avatar.key===value);
+ const avatarKey=value=>avatarDefinition(value)?.key||'boy';
  const avatarState=(streak=0)=>{streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'};
- const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=9.0.6`;
+ const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=${RELEASE}`;
+ const avatarUnlocked=(key,stats=adapter()?.stats?.()||{})=>Boolean(adapter()?.isTestMode?.()||Number(stats.mastered||0)>=Number(avatarDefinition(key)?.mastered||0));
+ const nextAvatarUnlock=(stats=adapter()?.stats?.()||{})=>AVATARS.find(avatar=>avatar.mastered&&!avatarUnlocked(avatar.key,stats));
 
  function profile(){const m=user?.user_metadata||{},login=m.user_name||m.preferred_username||m.login||user?.email?.split('@')[0]||'learner';return{github_login:String(login),display_name:String(m.full_name||m.name||login),avatar_url:m.avatar_url||null}}
  function isOwner(){return Boolean(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
@@ -34,16 +41,16 @@
  function remember(snapshot){localStorage.setItem(FP_KEY,fingerprint(snapshot))}
  function remembered(){return localStorage.getItem(FP_KEY)||''}
 
- function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;picker.disabled=!user;picker.querySelector('p').textContent=user?'Your character evolves at 3, 7, 14, 30 and 60 streak days.':'Sign in to choose and sync a character.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const chosen=button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.setAttribute('aria-pressed',String(chosen))})}
+ function renderAvatarPicker(){const picker=$('#avatarPicker');if(!picker)return;const stats=adapter()?.stats?.()||{};picker.disabled=false;picker.querySelector('p').textContent=user?'Master words to unlock new characters. Every character gains new poses at 3, 7, 14, 30 and 60 rhythm days.':'Your guest learner is ready now. Sign in to choose characters; progression characters remain visible as future goals.';picker.querySelectorAll('[data-avatar]').forEach(button=>{const definition=avatarDefinition(button.dataset.avatar),unlocked=avatarUnlocked(button.dataset.avatar,stats),chosen=Boolean(user)&&button.dataset.avatar===selectedAvatar;button.classList.toggle('selected',chosen);button.classList.toggle('locked',!unlocked);button.setAttribute('aria-pressed',String(chosen));button.setAttribute('aria-disabled',String(!user||!unlocked));const status=button.querySelector('[data-avatar-status]');if(status)status.textContent=unlocked?(user?'Available':'Sign in to choose'):`Master ${definition?.mastered||0} words`;button.setAttribute('aria-label',`${definition?.name||'Character'}. ${unlocked?'Unlocked':`Unlocks at ${definition?.mastered||0} mastered words`}${chosen?'. Selected':''}`)})}
  function renderDashboardAvatar(){
  const streak=Number(adapter()?.stats?.().streak||0);
- const src=user?avatarImage(selectedAvatar,streak):'media/profiles/guest-learner.webp?v=9.0.6';
+ const stats=adapter()?.stats?.()||{},src=user?avatarImage(selectedAvatar,streak):GUEST_IMAGE;
  const image=$('#dashboardAvatar');if(image)image.src=src;
  if($('#journeyHomeAvatar'))$('#journeyHomeAvatar').src=src;
  if($('#journeyAvatar'))$('#journeyAvatar').src=src;
  if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Save your progress across devices';
  if($('#dashboardAvatarMilestone'))$('#dashboardAvatarMilestone').textContent=user
-  ?(streak>=60?'Superhero form unlocked!':`${streak} day${streak===1?'':'s'} streak · Next pose at ${[3,7,14,30,60].find(days=>days>streak)||60} days.`)
+  ?(()=>{const nextCharacter=nextAvatarUnlock(stats),nextPose=[3,7,14,30,60].find(days=>days>streak);if(nextCharacter)return`Next character: ${nextCharacter.name} at ${nextCharacter.mastered} mastered words${nextPose?` · Next pose at ${nextPose} rhythm days`:''}.`;return nextPose?`All characters unlocked · Next pose at ${nextPose} rhythm days.`:'Every character and superhero pose unlocked!'})()
   :'Sign in with GitHub to choose a character, protect your progress and continue on another device.';
  const heroSignIn=$('#dashboardSignIn');if(heroSignIn){heroSignIn.hidden=Boolean(user);heroSignIn.onclick=signIn}
 }
@@ -51,7 +58,7 @@
 
  function renderSignedOut(message='Sign in with GitHub to sync progress between devices.'){
   user=null;initialisedUserId='';selectedAvatar='boy';
-  if(account)account.innerHTML=`<img class="cloud-avatar" src="media/profiles/guest-learner.webp?v=9.0.6" alt="Guest learner"><div><strong>Protect your Kaishi Quest progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
+  if(account)account.innerHTML=`<img class="cloud-avatar" src="${GUEST_IMAGE}" alt="Guest learner"><div><strong>Protect your Kaishi Quest progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
   $('#cloudSignIn')?.addEventListener('click',signIn);
   if(join){join.checked=true;join.disabled=true}
   setStatus('Guest progress is saved only on this device.');
@@ -231,7 +238,7 @@ async function loadLeaderboard(){
    });
   });
  }
- async function changeAvatar(event){const button=event.target.closest('[data-avatar]');if(!button||!user)return;selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();const accountAvatar=account?.querySelector('img');if(accountAvatar)accountAvatar.src=avatarImage(selectedAvatar,adapter()?.stats?.().streak);const{error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);if(error){setStatus(describeError(error),'error');return}setStatus('Kaishi character saved.','ok');await loadLeaderboard()}
+ async function changeAvatar(event){const button=event.target.closest('[data-avatar]');if(!button)return;const definition=avatarDefinition(button.dataset.avatar);if(!user){toast('Sign in to choose and sync a Kaishi character');return}if(!avatarUnlocked(button.dataset.avatar)){toast(`${definition?.name||'This character'} unlocks at ${definition?.mastered||0} mastered words`);return}selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();const accountAvatar=account?.querySelector('img');if(accountAvatar)accountAvatar.src=avatarImage(selectedAvatar,adapter()?.stats?.().streak);const{error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);if(error){setStatus(describeError(error),'error');return}setStatus(`${definition?.name||'Kaishi character'} saved.`,'ok');await loadLeaderboard()}
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
  async function syncNow(){if(!user){await signIn();return}await initialiseAccount(true)}
  async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Quest cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
