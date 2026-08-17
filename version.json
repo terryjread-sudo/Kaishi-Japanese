@@ -1,8 +1,10 @@
 {
-  "version": "11.8.31",
+  "version": "11.8.32",
   "released": "2026-08-17",
-  "title": "Focused Bonsai Progress",
+  "title": "Clear Reward Screens",
   "changes": [
+    "Prevented Sensei and activity-guide artwork from overlapping post-activity reward text on narrow screens.",
+    "Added a stacked character layout for extra-small phones while keeping the full celebration scene on larger displays.",
     "Corrected bonsai growth so repeated correct reviews no longer inflate the tree's permanent stage.",
     "Based growth primarily on words started, genuine mastery and completed learning topics.",
     "Moved Continue learning and Quick Step directly below today's objective as the dashboard's priority actions.",
