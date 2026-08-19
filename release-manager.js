@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.1
+ * Kaishi Quest release manager — v11.8.34
  *
  * The header version badge is an active "check + refresh" control.
  * Clicking it:
@@ -12,10 +12,10 @@
  *   5. reloads the app from a cache-busted URL.
  *
  * Every real release must increment CURRENT_VERSION and version.json and use
- * the same value in index.html and service-worker.js.
+ * the same value in service-worker.js.
  */
 (() => {
-  const CURRENT_VERSION='11.8.33';
+  const CURRENT_VERSION='11.8.34';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   let refreshing=false;
 
@@ -51,6 +51,86 @@
     }catch{}
     const status=document.getElementById('updateStatus');
     if(status) status.textContent=message;
+  }
+
+  /*
+   * v11.8.34 — Reading-from-Meaning correction review.
+   *
+   * app.js already renders an excellent Sensei correction panel for an
+   * incorrect Reading-from-Meaning answer, but the shared bindChoices()
+   * helper automatically advances after 900 ms. That makes the correct
+   * reading flash green and disappear before the learner can study it.
+   *
+   * Override the helper without changing any other question behaviour:
+   * - correct answers retain the existing short automatic transition;
+   * - all non-reading choice questions retain the existing behaviour;
+   * - an incorrect reading answer is graded immediately without advancing;
+   * - the existing Sensei feedback remains visible until Continue is tapped.
+   *
+   * The call to grade(..., false) still goes through Adaptive Learning's
+   * wrapped grade function, so mistake repair/retesting continues to work.
+   */
+  function installReadingReviewPause(){
+    try{
+      if(typeof bindChoices!=='function' || typeof grade!=='function') return;
+
+      bindChoices=function(answer,skill,onReveal){
+        document.querySelectorAll('.choice').forEach(button=>{
+          button.onclick=()=>{
+            if(revealed) return;
+            revealed=true;
+
+            const value=decodeURIComponent(button.dataset.answer);
+            const ok=value===answer;
+
+            button.classList.add(ok?'correct':'wrong');
+            document.querySelectorAll('.choice').forEach(choice=>{
+              if(decodeURIComponent(choice.dataset.answer)===answer){
+                choice.classList.add('correct');
+              }
+              choice.disabled=true;
+            });
+
+            if(onReveal) onReveal(ok);
+
+            const pauseForReadingReview=
+              skill==='reading' &&
+              !ok &&
+              Boolean(document.getElementById('readingFeedback'));
+
+            if(!pauseForReadingReview){
+              setTimeout(
+                ()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),
+                900
+              );
+              return;
+            }
+
+            // Record the mistake now, but deliberately leave this card open.
+            grade(current.v,skill,1,false,false);
+
+            const feedback=document.getElementById('readingFeedback');
+            if(!feedback) return;
+
+            let continueButton=document.getElementById('readingReviewContinue');
+            if(!continueButton){
+              continueButton=document.createElement('button');
+              continueButton.id='readingReviewContinue';
+              continueButton.type='button';
+              continueButton.className='primary reveal';
+              continueButton.textContent='Continue →';
+              feedback.appendChild(continueButton);
+            }
+
+            continueButton.onclick=()=>next();
+            feedback.scrollIntoView({behavior:'smooth',block:'nearest'});
+            continueButton.focus({preventScroll:true});
+          };
+        });
+      };
+    }catch(error){
+      console.warn('[Kaishi v11.8.34] Reading review pause could not be installed',error);
+    }
   }
 
   async function fetchLatestVersion(){
@@ -120,7 +200,6 @@
       await activateWaitingWorker(registration);
 
       setBadge(newer?`v${latestVersion} ↻`:`v${CURRENT_VERSION} ↻`,true);
-      // Short delay lets status/toast render before navigation.
       setTimeout(reloadFresh,250);
     }catch(error){
       console.error('[Kaishi release check]',error);
@@ -131,6 +210,8 @@
   }
 
   function install(){
+    installReadingReviewPause();
+
     const el=badge();
     if(el){
       el.textContent=`v${CURRENT_VERSION}`;
@@ -148,8 +229,6 @@
       });
     }
 
-    // Make the Settings "Check for updates" button use the same reliable flow,
-    // overriding the older app.js updater if present.
     const settingsButton=document.getElementById('checkUpdateBtn');
     if(settingsButton){
       settingsButton.addEventListener('click',event=>{
@@ -159,12 +238,15 @@
       },true);
     }
 
-    // Correct old hard-coded version text in existing UI.
     document.querySelectorAll('.version-badge').forEach(node=>node.textContent=`v${CURRENT_VERSION}`);
     const versionCard=document.querySelector('.version-card');
     if(versionCard){
       const strong=versionCard.querySelector('strong');
       if(strong) strong.textContent=`Kaishi Quest v${CURRENT_VERSION}`;
+      const title=versionCard.querySelector('span');
+      if(title) title.textContent='Reading Answer Review';
+      const detail=versionCard.querySelector('small');
+      if(detail) detail.textContent='Wrong Reading-from-Meaning answers now stay on screen so you can review and hear the correct Japanese before continuing.';
     }
   }
 

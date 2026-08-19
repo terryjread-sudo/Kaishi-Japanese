@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.33';
+const VERSION='11.8.34';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
@@ -124,7 +124,6 @@ self.addEventListener('fetch',event=>{
   const url=new URL(request.url);
   if(url.origin!==self.location.origin) return;
 
-  // version.json must always be checked against the network first.
   if(url.pathname.endsWith('/version.json')){
     event.respondWith(fetch(request,{cache:'no-store'}).catch(()=>caches.match(request)));
     return;
