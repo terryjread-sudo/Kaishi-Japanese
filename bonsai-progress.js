@@ -85,7 +85,7 @@
  });
 
  // Retain the old trigger listener as a compatibility fallback even though
- // v11.8.38 hides the separate icon.
+ // v11.8.39 hides the separate icon.
  document.querySelector('#bonsaiConditionTrigger')?.addEventListener('click',event=>{
   event.stopPropagation();
   openCondition();

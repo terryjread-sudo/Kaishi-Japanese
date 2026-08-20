@@ -1,4 +1,4 @@
-Kaishi Quest v11.8.38 — Cache & Offline Data
+Kaishi Quest v11.8.39 — Offline Mode
 
 Replace these ROOT files:
 - release-manager.js
@@ -6,33 +6,16 @@ Replace these ROOT files:
 - service-worker.js
 - version.json
 
-NEW SETTINGS PANEL
-Settings now includes "Cache & Offline Data".
+Settings now includes Offline Mode with:
+Essential / Standard / Full learning packs.
 
-It displays:
-- current app release
-- active service-worker status
-- service-worker script/version query
-- number of cached shell files
-- number of cached image files
-- total cached files
-- approximate cache size
-- exact Kaishi cache names
+The pack is stored separately as kaishi-offline-11.8.39. Download progress,
+actual file count, approximate size and remaining browser storage are shown.
 
-CLEAR CACHED FILES
-The button deletes ONLY caches whose names begin:
-- kaishi-shell-
-- kaishi-images-
+Learning progress continues to save locally while offline. Cloud sync and
+Community resume when connectivity returns.
 
-It does NOT clear localStorage and does NOT delete:
-- vocabulary/learning progress
-- mastered words
-- streaks
-- learner settings
-- Japan Ready progress
-- cloud account/progress
+Removing offline content does NOT remove learning progress, streaks, settings,
+Japan Ready progress, cloud data, or the normal Kaishi shell/image caches.
 
-The panel can be refreshed at any time, which should also make future
-service-worker/update debugging much easier.
-
-All v11.8.37 features are retained.
+All v11.8.38 features are retained.

@@ -1,16 +1,16 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.38
+ * Kaishi Quest release manager — v11.8.39
  *
  * Release helpers:
  * - reliable update/cache refresh
  * - v11.8.34 Reading-from-Meaning correction review pause
- * - v11.8.38 Theatre synchronized playback-speed controls
- * - v11.8.38 service-worker version pin + unclipped compact bonsai
+ * - v11.8.39 Theatre synchronized playback-speed controls
+ * - v11.8.39 service-worker version pin + unclipped compact bonsai
  */
 (() => {
-  const CURRENT_VERSION='11.8.38';
+  const CURRENT_VERSION='11.8.39';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -113,11 +113,11 @@
         });
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.38] Reading review pause could not be installed',error);
+      console.warn('[Kaishi v11.8.39] Reading review pause could not be installed',error);
     }
   }
 
-  // ----- v11.8.38: Theatre speed ---------------------------------------
+  // ----- v11.8.39: Theatre speed ---------------------------------------
   function theatreSpeed(){
     try{
       const stored=Number(localStorage.getItem(THEATRE_SPEED_KEY));
@@ -300,7 +300,7 @@
         speeds:THEATRE_SPEEDS.map(item=>({...item}))
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.38] Theatre speed controls could not be installed',error);
+      console.warn('[Kaishi v11.8.39] Theatre speed controls could not be installed',error);
     }
   }
 
@@ -325,7 +325,7 @@
         background:#172554;color:#fff;border-color:#172554
       }
 
-      /* v11.8.38: preserve the sprite's original viewport ratio. */
+      /* v11.8.39: preserve the sprite's original viewport ratio. */
       #bonsaiProgressCard{position:relative;grid-template-columns:118px minmax(0,1fr);gap:7px;margin:8px 0;padding:9px 10px;border-radius:18px;cursor:pointer;overflow:hidden}
       #bonsaiProgressCard:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
       #bonsaiProgressCard .bonsai-visual{min-height:166px;overflow:hidden}
@@ -374,6 +374,17 @@
       .cache-data-actions .danger{background:#fff1f2;color:#be123c;border-color:#fecdd3}
       .cache-data-note{color:#64748b;font-size:.66rem;line-height:1.4}
       @media(max-width:430px){.cache-data-grid{grid-template-columns:1fr 1fr}.cache-data-actions{flex-direction:column}}
+
+      .offline-mode-card{display:grid;gap:12px;margin:14px 0;padding:14px;border:1px solid #a7f3d0;border-radius:17px;background:linear-gradient(145deg,#f0fdf4,#eff6ff)}
+      .offline-mode-heading h3,.offline-mode-heading p{margin:2px 0}.offline-mode-heading p{font-size:.74rem;line-height:1.4;color:#64748b}
+      .offline-pack-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+      .offline-pack-option{display:grid;gap:3px;align-content:start;min-height:96px;padding:10px;text-align:left;border:1px solid #dbe7e0;border-radius:13px;background:#fff}
+      .offline-pack-option strong{font-size:.82rem;color:#0f172a}.offline-pack-option small{font-size:.63rem;line-height:1.35;color:#64748b}.offline-pack-option.active{border-color:#16a34a;box-shadow:0 0 0 2px #16a34a25;background:#f0fdf4}.offline-pack-option b{font-size:.62rem;color:#166534}
+      .offline-pack-progress{display:grid;gap:5px}.offline-pack-progress>div{height:9px;overflow:hidden;border-radius:999px;background:#dbe7dc}.offline-pack-progress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#16a34a,#0d9488);transition:width .18s linear}.offline-pack-progress span{font-size:.67rem;color:#475569}
+      .offline-pack-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.offline-pack-meta span{display:grid;gap:2px;padding:8px;border:1px solid #dbe7e0;border-radius:11px;background:#ffffffbd;color:#64748b;font-size:.6rem}.offline-pack-meta strong{color:#0f172a;font-size:.78rem}
+      .offline-pack-actions{display:flex;gap:8px;flex-wrap:wrap}.offline-pack-actions button{flex:1;min-width:145px}.offline-remove{background:#fff;color:#be123c;border-color:#fecdd3}
+      .offline-status-pill{display:inline-flex;align-items:center;gap:5px;margin-left:5px;padding:4px 7px;border-radius:999px;background:#dcfce7;color:#166534;font-size:.58rem;font-weight:850}.offline-status-pill.offline-now{background:#fef3c7;color:#92400e}
+      @media(max-width:560px){.offline-pack-options{grid-template-columns:1fr}.offline-pack-option{min-height:0}.offline-pack-meta{grid-template-columns:1fr 1fr}}
     `;
     document.head.appendChild(style);
   }
@@ -432,7 +443,153 @@
   }
 
 
-  // ----- v11.8.38: Settings cache/offline diagnostics -------------------
+
+  // ----- v11.8.39: Opt-in Offline Mode -----------------------------------
+  const OFFLINE_CACHE=`kaishi-offline-${CURRENT_VERSION}`;
+  const OFFLINE_STATE_KEY='kq-offline-pack';
+  const OFFLINE_CORE=[
+    './','./index.html','./manifest.webmanifest','./styles.css','./sentence-lab.css',
+    './engagement-layer.css','./pronunciation-coach.css','./bonsai-progress.css','./vms.css',
+    './app.js','./vms.js','./cloud.js','./reporting.js','./japan-ready.js','./supabase-config.js',
+    './release-manager.js','./battle-listen.js','./kotoba-activity.js','./dashboard-clarity.js',
+    './touch-enhancements.js','./learning-ui.js','./carousel-navigation.js','./micro-practice.js',
+    './sentence-lab.js','./adaptive-learning.js','./campfire-recall.js','./word-rain.js','./battle-ui-patch.js',
+    './data/japan-ready-v90.json','./data/sentence-lab.json','./icons/icon-192.png','./icons/icon-512.png',
+    './media/bonsai/bonsai-growth-stages.png','./media/bonsai/bonsai-condition-overlays.png',
+    './media/guides/teacher-guide.webp','./media/guides/sensei/sensei-welcoming.webp',
+    './media/guides/sensei/sensei-explaining.webp','./media/guides/sensei/sensei-celebrating.webp',
+    './media/guides/sensei/sensei-encouraging.webp','./media/guides/sensei/sensei-pointing.webp',
+    './media/guides/sensei/sensei-analysing.webp','./media/guides/aiko-guide-icon.webp',
+    './media/guides/aiko-guide-portrait.webp','./media/guides/aiko-guide-large.webp',
+    './media/profiles/guest-learner.webp','./media/profiles/boy-base.webp','./media/profiles/girl-base.webp',
+    './media/profiles/master-base.webp','./media/profiles/man-base.webp','./media/profiles/woman-base.webp'
+  ];
+
+  function offlineState(){try{return JSON.parse(localStorage.getItem(OFFLINE_STATE_KEY)||'null')}catch{return null}}
+  function saveOfflineState(state){try{state?localStorage.setItem(OFFLINE_STATE_KEY,JSON.stringify(state)):localStorage.removeItem(OFFLINE_STATE_KEY)}catch{}}
+  function localAsset(value){
+    if(typeof value!=='string'||!value)return null;
+    const clean=value.trim();if(!clean||clean.startsWith('data:')||clean.startsWith('blob:'))return null;
+    try{
+      const url=new URL(clean,location.href);if(url.origin!==location.origin)return null;
+      if(!/\.(?:js|css|json|webmanifest|png|jpe?g|webp|gif|svg|mp3|m4a|aac|ogg|wav)(?:$|\?)/i.test(url.pathname+url.search))return null;
+      return url.href;
+    }catch{return null}
+  }
+  function collectAssets(value,out=new Set(),seen=new WeakSet()){
+    if(value==null)return out;
+    if(typeof value==='string'){const asset=localAsset(value);if(asset)out.add(asset);return out}
+    if(typeof value!=='object')return out;if(seen.has(value))return out;seen.add(value);
+    (Array.isArray(value)?value:Object.values(value)).forEach(item=>collectAssets(item,out,seen));return out;
+  }
+  function loadedAssets(){
+    const out=new Set();
+    document.querySelectorAll('[src],[href]').forEach(node=>{const asset=localAsset(node.getAttribute('src')||node.getAttribute('href'));if(asset)out.add(asset)});
+    performance.getEntriesByType?.('resource')?.forEach(entry=>{const asset=localAsset(entry.name);if(asset)out.add(asset)});
+    return out;
+  }
+  function offlinePackUrls(pack){
+    const urls=new Set(OFFLINE_CORE.map(item=>new URL(item,location.href).href));
+    loadedAssets().forEach(item=>urls.add(item));
+    try{collectAssets(currentTopic()?.words||[]).forEach(item=>urls.add(item))}catch{}
+    if(pack==='standard'||pack==='full'){
+      try{collectAssets(vocab.filter(word=>wordIntroduced(word))).forEach(item=>urls.add(item))}catch{}
+      try{collectAssets(theatreScenes).forEach(item=>urls.add(item))}catch{}
+      try{collectAssets(mangaStories).forEach(item=>urls.add(item))}catch{}
+      try{collectAssets(conversations).forEach(item=>urls.add(item))}catch{}
+      try{collectAssets(grammarLessons).forEach(item=>urls.add(item))}catch{}
+      try{collectAssets(memoryScenes).forEach(item=>urls.add(item))}catch{}
+    }
+    if(pack==='full'){
+      for(const source of [()=>vocab,()=>kanaData,()=>componentData,()=>topicData,()=>learningGraph,()=>ankiContent]){
+        try{collectAssets(source()).forEach(item=>urls.add(item))}catch{}
+      }
+    }
+    return [...urls];
+  }
+  async function offlineStorageSummary(){
+    try{const e=await navigator.storage?.estimate?.();return e?{usage:Number(e.usage||0),quota:Number(e.quota||0),free:Math.max(0,Number(e.quota||0)-Number(e.usage||0))}:null}catch{return null}
+  }
+  async function offlineCacheStats(){
+    if(!('caches'in window))return{files:0,bytes:0};
+    const cache=await caches.open(OFFLINE_CACHE),keys=await cache.keys();let bytes=0;
+    for(const request of keys){try{const response=await cache.match(request),length=Number(response?.headers?.get('content-length'));bytes+=Number.isFinite(length)&&length>0?length:(await response?.clone().blob())?.size||0}catch{}}
+    return{files:keys.length,bytes};
+  }
+  function setOfflineProgress(done,total,text=''){
+    const fill=document.getElementById('offlinePackFill'),label=document.getElementById('offlinePackProgressText');
+    if(fill)fill.style.width=`${total?Math.round(done/total*100):0}%`;if(label)label.textContent=text||`${done} / ${total} files`;
+  }
+  async function downloadOfflinePack(pack){
+    if(!navigator.onLine){notify('Connect to the internet before downloading an offline pack.');return}
+    if(!('caches'in window)){notify('Offline packs are not supported by this browser.');return}
+    const button=document.getElementById('downloadOfflinePack');if(button?.dataset.busy==='1')return;
+    const urls=offlinePackUrls(pack),storage=await offlineStorageSummary();
+    if(storage&&storage.free<15*1024*1024&&pack!=='essential'&&!confirm('Browser storage is running low. Download this larger pack anyway?'))return;
+    if(button){button.dataset.busy='1';button.disabled=true;button.textContent='Downloading…'}
+    const cache=await caches.open(OFFLINE_CACHE);let done=0,failed=0;
+    setOfflineProgress(0,urls.length,'Preparing offline pack…');
+    for(const raw of urls){
+      try{
+        const url=new URL(raw);url.searchParams.set('offline-v',CURRENT_VERSION);
+        const response=await fetch(url.toString(),{cache:'no-cache'});if(!response.ok)throw new Error(String(response.status));
+        await cache.put(url.toString(),response.clone());
+      }catch{failed++}
+      done++;setOfflineProgress(done,urls.length,`${done} / ${urls.length} files${failed?` · ${failed} unavailable`:''}`);
+      if(done%10===0)await new Promise(resolve=>setTimeout(resolve,0));
+    }
+    const stats=await offlineCacheStats();
+    saveOfflineState({pack,version:CURRENT_VERSION,downloadedAt:new Date().toISOString(),files:stats.files,bytes:stats.bytes,failed});
+    await renderOfflineMode();
+    if(button){button.disabled=false;button.dataset.busy='0';button.textContent='Update offline content'}
+    notify(failed?`Offline pack ready with ${failed} unavailable file${failed===1?'':'s'}.`:'Offline pack is ready.');
+  }
+  async function removeOfflinePack(){
+    if(!offlineState())return;if(!confirm('Remove downloaded Offline Mode content? Learning progress will be kept.'))return;
+    const names=await caches.keys();await Promise.all(names.filter(name=>name.startsWith('kaishi-offline-')).map(name=>caches.delete(name)));
+    saveOfflineState(null);await renderOfflineMode();notify('Offline pack removed. Learning progress was kept.');
+  }
+  function ensureOfflineIndicator(){
+    let pill=document.getElementById('offlineStatusPill');
+    if(!pill){pill=document.createElement('span');pill.id='offlineStatusPill';pill.className='offline-status-pill';badge()?.insertAdjacentElement('afterend',pill)}
+    const ready=Boolean(offlineState());pill.hidden=!ready&&navigator.onLine;pill.classList.toggle('offline-now',!navigator.onLine);
+    pill.textContent=!navigator.onLine?'● Offline':ready?'✓ Offline ready':'';
+  }
+  async function renderOfflineMode(){
+    const card=document.getElementById('offlineModeCard');if(!card)return;
+    const state=offlineState(),stats=state?await offlineCacheStats():{files:0,bytes:0},storage=await offlineStorageSummary();
+    const selected=card.querySelector('.offline-pack-option.active')?.dataset.pack||state?.pack||'standard';
+    card.querySelectorAll('.offline-pack-option').forEach(option=>option.classList.toggle('active',option.dataset.pack===selected));
+    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+    set('offlinePackState',state?`${state.pack[0].toUpperCase()+state.pack.slice(1)} ready`:'Not downloaded');
+    set('offlinePackFiles',state?String(stats.files):'0');set('offlinePackSize',state?formatBytes(stats.bytes):'0 KB');set('offlineStorageFree',storage?formatBytes(storage.free):'Unknown');
+    const download=document.getElementById('downloadOfflinePack'),remove=document.getElementById('removeOfflinePack');
+    if(download)download.textContent=state?'Update offline content':'Download for offline use';if(remove)remove.hidden=!state;
+    state?setOfflineProgress(stats.files,stats.files,`✓ ${stats.files} files ready offline · ${new Date(state.downloadedAt).toLocaleDateString()}`):setOfflineProgress(0,1,'Choose a pack, then download it while online.');
+    ensureOfflineIndicator();
+  }
+  function installOfflineMode(){
+    const cacheCard=document.getElementById('cacheDataCard'),updateButton=document.getElementById('checkUpdateBtn');
+    if((!cacheCard&&!updateButton)||document.getElementById('offlineModeCard'))return;
+    const card=document.createElement('section');card.id='offlineModeCard';card.className='offline-mode-card';
+    card.innerHTML=`<div class="offline-mode-heading"><div><span class="eyebrow">Travel without a connection</span><h3>Offline Mode</h3><p>Download learning content before a flight, train journey or anywhere data may be unreliable.</p></div></div>
+      <div class="offline-pack-options" role="radiogroup">
+        <button type="button" class="offline-pack-option" data-pack="essential"><strong>🌱 Essential</strong><small>Core app, Japan Ready, current topic and currently used media.</small><b>Smallest</b></button>
+        <button type="button" class="offline-pack-option active" data-pack="standard"><strong>🎒 Standard</strong><small>Essential + introduced words and locally referenced Theatre, Manga, conversation and grammar media.</small><b>Recommended</b></button>
+        <button type="button" class="offline-pack-option" data-pack="full"><strong>🗾 Full learning pack</strong><small>All locally referenced vocabulary and learning media Kaishi currently knows about.</small><b>Largest</b></button>
+      </div>
+      <div class="offline-pack-progress"><div><i id="offlinePackFill"></i></div><span id="offlinePackProgressText">Choose a pack, then download it while online.</span></div>
+      <div class="offline-pack-meta"><span><small>Status</small><strong id="offlinePackState">Not downloaded</strong></span><span><small>Files</small><strong id="offlinePackFiles">0</strong></span><span><small>Pack size</small><strong id="offlinePackSize">0 KB</strong></span><span><small>Storage free</small><strong id="offlineStorageFree">Checking…</strong></span></div>
+      <div class="offline-pack-actions"><button id="downloadOfflinePack" class="primary" type="button">Download for offline use</button><button id="removeOfflinePack" class="offline-remove" type="button" hidden>Remove offline content</button></div>
+      <small class="cache-data-note">Learning progress keeps saving on this device offline. Cloud sync and Community resume when you reconnect.</small>`;
+    (cacheCard||updateButton).before(card);
+    card.querySelectorAll('.offline-pack-option').forEach(option=>option.onclick=()=>card.querySelectorAll('.offline-pack-option').forEach(item=>item.classList.toggle('active',item===option)));
+    document.getElementById('downloadOfflinePack').onclick=()=>downloadOfflinePack(card.querySelector('.offline-pack-option.active')?.dataset.pack||'standard');
+    document.getElementById('removeOfflinePack').onclick=removeOfflinePack;
+    window.addEventListener('online',()=>renderOfflineMode());window.addEventListener('offline',ensureOfflineIndicator);renderOfflineMode();
+  }
+
+  // ----- v11.8.39: Settings cache/offline diagnostics -------------------
   function formatBytes(bytes){
     if(!Number.isFinite(bytes)||bytes<=0) return '0 KB';
     if(bytes<1024*1024) return `${Math.max(1,Math.round(bytes/1024))} KB`;
@@ -682,6 +839,7 @@
     lockVisibleReleaseVersion();
     installJapanReadyQuantitySupport();
     installCacheDataSettings();
+    installOfflineMode();
     enforceCurrentServiceWorker();
 
     const el=badge();

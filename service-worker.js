@@ -1,8 +1,9 @@
 'use strict';
 
-const VERSION='11.8.38';
+const VERSION='11.8.39';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
+const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;
 
 const v=path=>`${path}?v=${VERSION}`;
@@ -74,7 +75,8 @@ self.addEventListener('activate',event=>{
       .then(keys=>Promise.all(
         keys.filter(key=>
           (key.startsWith('kaishi-shell-')&&key!==SHELL_CACHE)||
-          (key.startsWith('kaishi-images-')&&key!==IMAGE_CACHE)
+          (key.startsWith('kaishi-images-')&&key!==IMAGE_CACHE)||
+          (key.startsWith('kaishi-offline-')&&key!==OFFLINE_CACHE)
         ).map(key=>caches.delete(key))
       ))
       .then(()=>self.clients.claim())
@@ -84,6 +86,13 @@ self.addEventListener('activate',event=>{
 self.addEventListener('message',event=>{
   if(event.data?.type==='SKIP_WAITING') self.skipWaiting();
 });
+
+async function offlineMatch(request){
+  try{
+    const cache=await caches.open(OFFLINE_CACHE);
+    return await cache.match(request,{ignoreSearch:true});
+  }catch{return null}
+}
 
 function isImage(request){
   return request.destination==='image'||/\.(?:png|jpe?g|webp|gif|svg)(?:\?|$)/i.test(request.url);
@@ -99,12 +108,16 @@ async function cacheFirstImage(request){
   const cache=await caches.open(IMAGE_CACHE);
   const cached=await cache.match(request);
   if(cached) return cached;
-  const response=await fetch(request,{cache:'no-cache'});
-  if(response&&response.ok&&response.type!=='opaque'){
-    await cache.put(request,response.clone());
-    trimImages(cache);
+  try{
+    const response=await fetch(request,{cache:'no-cache'});
+    if(response&&response.ok&&response.type!=='opaque'){
+      await cache.put(request,response.clone());
+      trimImages(cache);
+    }
+    return response;
+  }catch(error){
+    return (await offlineMatch(request))||Promise.reject(error);
   }
-  return response;
 }
 
 async function networkFirst(request){
@@ -114,8 +127,13 @@ async function networkFirst(request){
     if(response&&response.ok) await cache.put(request,response.clone());
     return response;
   }catch(error){
-    return (await cache.match(request))||Promise.reject(error);
+    return (await cache.match(request))||(await offlineMatch(request))||Promise.reject(error);
   }
+}
+
+async function networkWithOfflineFallback(request){
+  try{return await fetch(request,{cache:'no-cache'})}
+  catch(error){return (await offlineMatch(request))||Promise.reject(error)}
 }
 
 self.addEventListener('fetch',event=>{
@@ -136,5 +154,8 @@ self.addEventListener('fetch',event=>{
 
   if(['script','style','document'].includes(request.destination)){
     event.respondWith(networkFirst(request));
+    return;
   }
+
+  event.respondWith(networkWithOfflineFallback(request));
 });
