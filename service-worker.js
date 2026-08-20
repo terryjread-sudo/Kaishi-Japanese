@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.36';
+const VERSION='11.8.37';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const MAX_RUNTIME_IMAGES=350;

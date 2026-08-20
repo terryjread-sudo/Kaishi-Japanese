@@ -1,16 +1,13 @@
 {
-  "version": "11.8.36",
-  "released": "2026-08-19",
-  "title": "Stable Update & Bonsai Fit",
+  "version": "11.8.37",
+  "released": "2026-08-20",
+  "title": "Bonsai & Japan Ready Quantities",
   "changes": [
-    "Fixed the compact dashboard bonsai artwork being cut off on narrow mobile layouts.",
-    "Gave the bonsai sprite a wider visual frame while keeping the overall progress card compact.",
-    "Removed the stray Tap for status helper text that could appear up in the page header.",
-    "Kept the entire bonsai card tappable to open the existing condition explanation.",
-    "Added a release self-heal that pins the service-worker registration to v11.8.36 after the older app shell registers.",
-    "Updates the visible page title and version badge to the current release on every load.",
-    "Retained Theatre Normal, Slow and Extra slow synchronized playback controls.",
-    "Retained the Reading-from-Meaning wrong-answer review pause.",
-    "Bumped shell and image caches to v11.8.36."
+    "Corrected the compact bonsai sprite viewport so neighbouring bonsai stages no longer appear.",
+    "Locks the visible version badge/title to v11.8.37 after the release manager loads.",
+    "Adds Japanese general item counters 1–10 to the Japan Ready cheat sheet with audio.",
+    "Adds an Essential quantity skill mini-lesson to relevant Japan Ready food and shopping scenarios.",
+    "Includes practical quantity phrases such as これを二つお願いします.",
+    "Retains Theatre speed controls and Reading-from-Meaning review."
   ]
 }

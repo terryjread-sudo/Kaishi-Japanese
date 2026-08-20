@@ -1,16 +1,16 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.36
+ * Kaishi Quest release manager — v11.8.37
  *
  * Release helpers:
  * - reliable update/cache refresh
  * - v11.8.34 Reading-from-Meaning correction review pause
- * - v11.8.36 Theatre synchronized playback-speed controls
- * - v11.8.36 service-worker version pin + unclipped compact bonsai
+ * - v11.8.37 Theatre synchronized playback-speed controls
+ * - v11.8.37 service-worker version pin + unclipped compact bonsai
  */
 (() => {
-  const CURRENT_VERSION='11.8.36';
+  const CURRENT_VERSION='11.8.37';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -113,11 +113,11 @@
         });
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.36] Reading review pause could not be installed',error);
+      console.warn('[Kaishi v11.8.37] Reading review pause could not be installed',error);
     }
   }
 
-  // ----- v11.8.36: Theatre speed ---------------------------------------
+  // ----- v11.8.37: Theatre speed ---------------------------------------
   function theatreSpeed(){
     try{
       const stored=Number(localStorage.getItem(THEATRE_SPEED_KEY));
@@ -300,7 +300,7 @@
         speeds:THEATRE_SPEEDS.map(item=>({...item}))
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.36] Theatre speed controls could not be installed',error);
+      console.warn('[Kaishi v11.8.37] Theatre speed controls could not be installed',error);
     }
   }
 
@@ -325,90 +325,72 @@
         background:#172554;color:#fff;border-color:#172554
       }
 
-      /* v11.8.36 compact bonsai.
-         Keep the visual short, but give the sprite enough width that its
-         stage artwork is never chopped by the narrow mobile column. */
-      #bonsaiProgressCard{
-        position:relative;
-        grid-template-columns:138px minmax(0,1fr);
-        gap:12px;margin:8px 0;padding:10px 14px;border-radius:18px;
-        cursor:pointer
-      }
-      #bonsaiProgressCard:focus-visible{
-        outline:3px solid #60a5fa;outline-offset:3px
-      }
-      #bonsaiProgressCard .bonsai-visual{
-        min-height:180px;
-        overflow:visible
-      }
-      #bonsaiProgressCard .bonsai-tree{
-        width:132px;
-        height:174px;
-        max-width:none
-      }
-      #bonsaiProgressCard .bonsai-condition-aura{
-        width:138px;height:176px
-      }
+      /* v11.8.37: preserve the sprite's original viewport ratio. */
+      #bonsaiProgressCard{position:relative;grid-template-columns:118px minmax(0,1fr);gap:7px;margin:8px 0;padding:9px 10px;border-radius:18px;cursor:pointer;overflow:hidden}
+      #bonsaiProgressCard:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
+      #bonsaiProgressCard .bonsai-visual{min-height:166px;overflow:hidden}
+      #bonsaiProgressCard .bonsai-tree{width:112px;height:210px;max-width:none;transform:scale(.76);transform-origin:center bottom}
+      #bonsaiProgressCard.stage-grown .bonsai-tree{transform:scale(.76)}
+      #bonsaiProgressCard .bonsai-condition-aura{width:131px;height:210px;transform:scale(.76);transform-origin:center bottom}
       #bonsaiProgressCard .bonsai-copy{gap:5px}
-      #bonsaiProgressCard .bonsai-copy h2{
-        font-size:clamp(1.08rem,2.6vw,1.35rem)
-      }
-      #bonsaiProgressCard .bonsai-copy p{
-        font-size:.78rem;line-height:1.3
-      }
-      #bonsaiProgressCard .bonsai-stats span{
-        padding:6px 7px
-      }
+      #bonsaiProgressCard .bonsai-copy h2{font-size:clamp(1.08rem,2.6vw,1.35rem)}
+      #bonsaiProgressCard .bonsai-copy>p{display:none}
+      #bonsaiProgressCard .bonsai-stats{gap:4px}
+      #bonsaiProgressCard .bonsai-stats span{font-size:.55rem;padding:5px}
+      #bonsaiProgressCard .bonsai-stats strong{font-size:.78rem}
       #bonsaiProgressCard #bonsaiConditionTrigger{display:none!important}
-      /* The whole card opens the status dialog, so the floating helper text
-         from v11.8.35 is no longer needed. */
       #bonsaiProgressCard::after{content:none!important}
       .dashboard-priority-actions{margin-top:9px;margin-bottom:6px}
-
-      @media(max-width:620px){
-        #bonsaiProgressCard{
-          grid-template-columns:118px minmax(0,1fr);
-          gap:8px;padding:9px 10px
-        }
-        #bonsaiProgressCard .bonsai-visual{
-          min-height:154px;
-          margin-left:0;
-          overflow:visible
-        }
-        #bonsaiProgressCard .bonsai-tree{
-          width:116px;
-          height:150px;
-          max-width:none
-        }
-        #bonsaiProgressCard .bonsai-condition-aura{
-          width:120px;height:152px
-        }
-        #bonsaiProgressCard .bonsai-copy>p{display:none}
-        #bonsaiProgressCard .bonsai-stats{gap:4px}
-        #bonsaiProgressCard .bonsai-stats span{font-size:.55rem;padding:5px}
-        #bonsaiProgressCard .bonsai-stats strong{font-size:.78rem}
-        .theatre-speed-control{align-items:flex-start;flex-direction:column}
-      }
-
       @media(max-width:390px){
-        #bonsaiProgressCard{
-          grid-template-columns:112px minmax(0,1fr);
-          gap:7px
-        }
-        #bonsaiProgressCard .bonsai-tree{
-          width:110px;
-          height:146px
-        }
-        #bonsaiProgressCard .bonsai-condition-aura{
-          width:114px;
-          height:148px
-        }
+        #bonsaiProgressCard{grid-template-columns:108px minmax(0,1fr);gap:6px}
+        #bonsaiProgressCard .bonsai-visual{min-height:158px}
+        #bonsaiProgressCard .bonsai-tree,#bonsaiProgressCard.stage-grown .bonsai-tree{transform:scale(.72)}
+        #bonsaiProgressCard .bonsai-condition-aura{transform:scale(.72)}
       }
+
+      .jr-quantity-learning{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;padding:12px;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff,#f0fdf4)}
+      .jr-quantity-learning h3,.jr-quantity-learning p{margin:2px 0}.jr-quantity-learning p{font-size:.76rem;color:#475569}
+      .jr-quantity-dialog{width:min(520px,calc(100% - 24px));padding:0;border:0;border-radius:22px;background:transparent}.jr-quantity-dialog::backdrop{background:#0f172a99}
+      .jr-quantity-popup{position:relative;padding:20px;border-radius:22px;background:#fff}.jr-quantity-close{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:50%}
+      .jr-quantity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.jr-quantity-row{display:grid;grid-template-columns:1fr auto;gap:1px 6px;text-align:left;padding:8px 9px;min-height:0}
+      .jr-quantity-row span{font-size:.9rem}.jr-quantity-row small,.jr-quantity-row em{font-size:.62rem;color:#64748b;font-style:normal}.jr-quantity-row i{grid-row:1/3;grid-column:2;font-style:normal}
+      .jr-quantity-popup aside{display:grid;gap:2px;margin:10px 0;padding:10px;border-radius:12px;background:#f8fafc}.jr-quantity-popup aside small,.jr-quantity-popup aside span{font-size:.7rem;color:#64748b}
+      .jr-quantity-cheat{margin-bottom:12px;padding:12px;border:1px solid #bfdbfe;border-radius:16px;background:#f8fbff}.jr-quantity-heading h3,.jr-quantity-heading p{margin:3px 0 8px}.jr-quantity-heading p{font-size:.74rem;color:#475569}
+      .jr-quantity-examples{display:grid;gap:6px;margin-top:8px}.jr-quantity-examples button{display:grid;gap:2px;text-align:left}.jr-quantity-examples small,.jr-quantity-examples em{font-size:.65rem;font-style:normal}
+      @media(max-width:520px){.jr-quantity-learning{align-items:stretch;flex-direction:column}}
     `;
     document.head.appendChild(style);
   }
 
 
+
+  const JAPAN_READY_QUANTITIES=[
+    ['一つ','ひとつ','hitotsu','one thing'],['二つ','ふたつ','futatsu','two things'],
+    ['三つ','みっつ','mittsu','three things'],['四つ','よっつ','yottsu','four things'],
+    ['五つ','いつつ','itsutsu','five things'],['六つ','むっつ','muttsu','six things'],
+    ['七つ','ななつ','nanatsu','seven things'],['八つ','やっつ','yattsu','eight things'],
+    ['九つ','ここのつ','kokonotsu','nine things'],['十','とお','too','ten things']
+  ];
+  function jrQuantitySpeak(text){if(!('speechSynthesis'in window))return;const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.82;speechSynthesis.cancel();speechSynthesis.speak(u)}
+  function jrQuantityRows(){return JAPAN_READY_QUANTITIES.map(([k,h,r,e])=>`<button type="button" class="jr-quantity-row" data-jr-quantity="${h}"><span lang="ja"><b>${k}</b> ${h}</span><small>${r}</small><em>${e}</em><i>🔊</i></button>`).join('')}
+  function installQuantityCheatSheet(){
+    const host=document.getElementById('cheatSheetSections');if(!host||host.querySelector('#jrQuantityCheat'))return;
+    const s=document.createElement('section');s.id='jrQuantityCheat';s.className='cheat-sheet-section jr-quantity-cheat';
+    s.innerHTML=`<div class="jr-quantity-heading"><span class="eyebrow">Ordering & shopping</span><h3>🔢 How many things? · いくつ</h3><p>General counters for asking for a number of items when you do not know a more specific counter.</p></div><div class="jr-quantity-grid">${jrQuantityRows()}</div><div class="jr-quantity-examples"><button type="button" data-jr-quantity="これを二つお願いします"><b lang="ja">これを二つお願いします</b><small>kore o futatsu onegaishimasu</small><em>Two of these, please.</em> 🔊</button><button type="button" data-jr-quantity="いくつですか"><b lang="ja">いくつですか</b><small>ikutsu desu ka</small><em>How many are there?</em> 🔊</button></div>`;
+    host.prepend(s);s.querySelectorAll('[data-jr-quantity]').forEach(x=>x.onclick=()=>jrQuantitySpeak(x.dataset.jrQuantity));
+  }
+  function openQuantityLesson(){
+    let d=document.getElementById('jrQuantityLesson');
+    if(!d){d=document.createElement('dialog');d.id='jrQuantityLesson';d.className='jr-quantity-dialog';d.innerHTML=`<div class="jr-quantity-popup"><button type="button" class="jr-quantity-close">×</button><span class="eyebrow">Japan Ready mini-lesson</span><h2>Ask for a number of things</h2><p>Tap each counter to hear it.</p><div class="jr-quantity-grid">${jrQuantityRows()}</div><aside><b lang="ja">これを三つお願いします。</b><small>kore o mittsu onegaishimasu</small><span>Three of these, please.</span></aside><button type="button" class="primary jr-quantity-done">Got it</button></div>`;document.body.appendChild(d);d.querySelector('.jr-quantity-close').onclick=()=>d.close();d.querySelector('.jr-quantity-done').onclick=()=>d.close();d.querySelectorAll('[data-jr-quantity]').forEach(x=>x.onclick=()=>jrQuantitySpeak(x.dataset.jrQuantity))}
+    d.showModal();
+  }
+  function installQuantityLearningPlan(){
+    const detail=document.querySelector('#japanReadyScenarioList .scenario-detail');if(!detail||detail.querySelector('#jrQuantityLearning'))return;
+    const title=detail.querySelector('h2')?.textContent||'';if(!/Caf|Restaurant|Convenience|Shop|Order|Meal/i.test(title))return;
+    const s=document.createElement('section');s.id='jrQuantityLearning';s.className='jr-quantity-learning';s.innerHTML=`<div><span class="eyebrow">Essential quantity skill</span><h3>🔢 Ask for 1–10 things</h3><p>Learn ひとつ, ふたつ, みっつ … とお for ordering several items.</p></div><button type="button" class="primary">Learn quantities</button>`;
+    (detail.querySelector('.scenario-actions')||detail).before(s);s.querySelector('button').onclick=openQuantityLesson;
+  }
+  function installJapanReadyQuantitySupport(){const o=new MutationObserver(()=>{installQuantityCheatSheet();installQuantityLearningPlan()});o.observe(document.body,{childList:true,subtree:true});installQuantityCheatSheet();installQuantityLearningPlan()}
   function enforceCurrentServiceWorker(){
     if(!('serviceWorker' in navigator) || location.protocol==='file:') return;
     const registerCurrent=()=>navigator.serviceWorker
@@ -420,6 +402,11 @@
     else window.addEventListener('load',()=>setTimeout(registerCurrent,0),{once:true});
   }
 
+
+  function lockVisibleReleaseVersion(){
+    const apply=()=>{const el=badge();if(el&&el.textContent!==`v${CURRENT_VERSION}`){el.textContent=`v${CURRENT_VERSION}`;el.setAttribute('aria-label',`Kaishi Quest version ${CURRENT_VERSION}. Check for updates and refresh the app.`)}const t=`Kaishi Quest • v${CURRENT_VERSION}`;if(document.title!==t)document.title=t};
+    apply();new MutationObserver(apply).observe(document.documentElement,{subtree:true,childList:true,characterData:true});
+  }
   function refreshVisibleReleaseVersion(){
     document.title=`Kaishi Quest • v${CURRENT_VERSION}`;
     document.querySelectorAll('.version-badge').forEach(node=>{
@@ -509,6 +496,8 @@
     installTheatreSpeed();
     installEnhancementStyles();
     refreshVisibleReleaseVersion();
+    lockVisibleReleaseVersion();
+    installJapanReadyQuantitySupport();
     enforceCurrentServiceWorker();
 
     const el=badge();
