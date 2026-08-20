@@ -1,30 +1,36 @@
-Kaishi Quest v11.8.35 — Theatre Speed & Compact Bonsai
+Kaishi Quest v11.8.36 — Stable Update & Bonsai Fit
 
-This drop-in BUILDS ON the previous v11.8.34 reading-review release.
-
+DROP-IN UPDATE
 Replace these files in the ROOT of Kakashi-Web:
 - release-manager.js
 - bonsai-progress.js
 - service-worker.js
 - version.json
 
-THEATRE
-- Adds Normal, Slow and Extra slow controls.
-- Slow changes both speech rate and the Theatre timeline, so camera cuts,
-  character speech animation and the progress bar stay synchronized.
-- The selected speed is remembered locally for later Theatre performances.
-- Other Japanese audio activities keep their normal existing speed.
+WHAT THIS FIXES
 
-BONSAI
-- The separate information icon is hidden.
-- Tap/click the Bonsai card itself to open the existing condition explanation.
-- Keyboard users can press Enter or Space on the card.
-- The card is substantially shorter, particularly on mobile.
-- No learning/growth/streak calculations were changed.
+1. BONSAI IMAGE
+The compact v11.8.35 layout made the sprite viewport too narrow on phones.
+v11.8.36 keeps the card compact but gives the tree artwork enough horizontal
+space so the stage image is not cut off.
 
-READING REVIEW
-- Retains the v11.8.34 fix where an incorrect Reading-from-Meaning answer
-  remains visible until the learner taps Continue.
+2. STRAY "TAP FOR STATUS" TEXT
+The v11.8.35 helper label could escape the card and appear near the page
+header. It has been removed. The entire bonsai card is still tappable/clickable
+(and keyboard accessible) to open the same condition explanation.
 
-CACHE/UPDATE
-- service-worker.js and version.json are bumped to v11.8.35.
+3. VERSION / REFRESH STABILITY
+The repository's older app shell still registers service-worker.js using its
+legacy APP_VERSION query. v11.8.36 now explicitly re-registers the service
+worker with ?v=11.8.36 after the shell's load handler, so the current release
+wins and remains pinned after refresh.
+
+The release manager also rewrites the visible document title and version badge
+to v11.8.36 on every load.
+
+RETAINED FROM PREVIOUS RELEASES
+- Reading-from-Meaning incorrect answers pause for review until Continue.
+- Kaishi Theatre: Normal / Slow / Extra slow synchronized playback.
+- Bonsai card itself opens the condition explanation.
+
+No learner progress, mastery, streak, cloud data or Theatre content is changed.

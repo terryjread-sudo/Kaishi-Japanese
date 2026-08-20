@@ -1,15 +1,16 @@
 {
-  "version": "11.8.35",
+  "version": "11.8.36",
   "released": "2026-08-19",
-  "title": "Theatre Speed & Compact Bonsai",
+  "title": "Stable Update & Bonsai Fit",
   "changes": [
-    "Added Normal, Slow and Extra slow playback controls to Kaishi Theatre.",
-    "Kept Theatre speech, camera cuts, character animation and progress timing synchronized at every playback speed.",
-    "Remembered the learner's chosen Theatre speed between performances.",
-    "Made the dashboard bonsai card itself open the bonsai-condition explanation.",
-    "Removed the need for the separate bonsai information icon.",
-    "Reduced the bonsai card's height and spacing, especially on phones, so the rest of the dashboard appears higher.",
-    "Retained the v11.8.34 Reading-from-Meaning correction review pause.",
-    "Bumped Kaishi Quest caches to v11.8.35 so existing users receive the updated scripts."
+    "Fixed the compact dashboard bonsai artwork being cut off on narrow mobile layouts.",
+    "Gave the bonsai sprite a wider visual frame while keeping the overall progress card compact.",
+    "Removed the stray Tap for status helper text that could appear up in the page header.",
+    "Kept the entire bonsai card tappable to open the existing condition explanation.",
+    "Added a release self-heal that pins the service-worker registration to v11.8.36 after the older app shell registers.",
+    "Updates the visible page title and version badge to the current release on every load.",
+    "Retained Theatre Normal, Slow and Extra slow synchronized playback controls.",
+    "Retained the Reading-from-Meaning wrong-answer review pause.",
+    "Bumped shell and image caches to v11.8.36."
   ]
 }

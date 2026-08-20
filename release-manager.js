@@ -1,15 +1,16 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.35
+ * Kaishi Quest release manager — v11.8.36
  *
  * Release helpers:
  * - reliable update/cache refresh
  * - v11.8.34 Reading-from-Meaning correction review pause
- * - v11.8.35 Theatre synchronized playback-speed controls
+ * - v11.8.36 Theatre synchronized playback-speed controls
+ * - v11.8.36 service-worker version pin + unclipped compact bonsai
  */
 (() => {
-  const CURRENT_VERSION='11.8.35';
+  const CURRENT_VERSION='11.8.36';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -112,11 +113,11 @@
         });
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.35] Reading review pause could not be installed',error);
+      console.warn('[Kaishi v11.8.36] Reading review pause could not be installed',error);
     }
   }
 
-  // ----- v11.8.35: Theatre speed ---------------------------------------
+  // ----- v11.8.36: Theatre speed ---------------------------------------
   function theatreSpeed(){
     try{
       const stored=Number(localStorage.getItem(THEATRE_SPEED_KEY));
@@ -299,7 +300,7 @@
         speeds:THEATRE_SPEEDS.map(item=>({...item}))
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.35] Theatre speed controls could not be installed',error);
+      console.warn('[Kaishi v11.8.36] Theatre speed controls could not be installed',error);
     }
   }
 
@@ -324,21 +325,29 @@
         background:#172554;color:#fff;border-color:#172554
       }
 
-      /* Compact the dashboard bonsai without losing the useful progress data. */
+      /* v11.8.36 compact bonsai.
+         Keep the visual short, but give the sprite enough width that its
+         stage artwork is never chopped by the narrow mobile column. */
       #bonsaiProgressCard{
-        grid-template-columns:125px minmax(0,1fr);
+        position:relative;
+        grid-template-columns:138px minmax(0,1fr);
         gap:12px;margin:8px 0;padding:10px 14px;border-radius:18px;
         cursor:pointer
       }
       #bonsaiProgressCard:focus-visible{
         outline:3px solid #60a5fa;outline-offset:3px
       }
-      #bonsaiProgressCard .bonsai-visual{min-height:178px}
+      #bonsaiProgressCard .bonsai-visual{
+        min-height:180px;
+        overflow:visible
+      }
       #bonsaiProgressCard .bonsai-tree{
-        width:104px;height:174px
+        width:132px;
+        height:174px;
+        max-width:none
       }
       #bonsaiProgressCard .bonsai-condition-aura{
-        width:112px;height:178px
+        width:138px;height:176px
       }
       #bonsaiProgressCard .bonsai-copy{gap:5px}
       #bonsaiProgressCard .bonsai-copy h2{
@@ -351,29 +360,72 @@
         padding:6px 7px
       }
       #bonsaiProgressCard #bonsaiConditionTrigger{display:none!important}
-      #bonsaiProgressCard::after{
-        content:'Tap bonsai for condition';
-        position:absolute;right:12px;top:9px;
-        color:#166534;font-size:.59rem;font-weight:850;opacity:.7
-      }
+      /* The whole card opens the status dialog, so the floating helper text
+         from v11.8.35 is no longer needed. */
+      #bonsaiProgressCard::after{content:none!important}
       .dashboard-priority-actions{margin-top:9px;margin-bottom:6px}
+
       @media(max-width:620px){
         #bonsaiProgressCard{
-          grid-template-columns:92px minmax(0,1fr);
-          gap:9px;padding:9px 10px
+          grid-template-columns:118px minmax(0,1fr);
+          gap:8px;padding:9px 10px
         }
-        #bonsaiProgressCard .bonsai-visual{min-height:142px}
-        #bonsaiProgressCard .bonsai-tree{width:82px;height:140px}
-        #bonsaiProgressCard .bonsai-condition-aura{width:88px;height:142px}
+        #bonsaiProgressCard .bonsai-visual{
+          min-height:154px;
+          margin-left:0;
+          overflow:visible
+        }
+        #bonsaiProgressCard .bonsai-tree{
+          width:116px;
+          height:150px;
+          max-width:none
+        }
+        #bonsaiProgressCard .bonsai-condition-aura{
+          width:120px;height:152px
+        }
         #bonsaiProgressCard .bonsai-copy>p{display:none}
         #bonsaiProgressCard .bonsai-stats{gap:4px}
         #bonsaiProgressCard .bonsai-stats span{font-size:.55rem;padding:5px}
         #bonsaiProgressCard .bonsai-stats strong{font-size:.78rem}
-        #bonsaiProgressCard::after{content:'Tap for status';font-size:.54rem;right:9px;top:7px}
         .theatre-speed-control{align-items:flex-start;flex-direction:column}
+      }
+
+      @media(max-width:390px){
+        #bonsaiProgressCard{
+          grid-template-columns:112px minmax(0,1fr);
+          gap:7px
+        }
+        #bonsaiProgressCard .bonsai-tree{
+          width:110px;
+          height:146px
+        }
+        #bonsaiProgressCard .bonsai-condition-aura{
+          width:114px;
+          height:148px
+        }
       }
     `;
     document.head.appendChild(style);
+  }
+
+
+  function enforceCurrentServiceWorker(){
+    if(!('serviceWorker' in navigator) || location.protocol==='file:') return;
+    const registerCurrent=()=>navigator.serviceWorker
+      .register(`service-worker.js?v=${CURRENT_VERSION}`,{scope:'./'})
+      .then(registration=>registration.update().catch(()=>{}))
+      .catch(error=>console.warn('[Kaishi release] Could not pin current service worker',error));
+
+    if(document.readyState==='complete') registerCurrent();
+    else window.addEventListener('load',()=>setTimeout(registerCurrent,0),{once:true});
+  }
+
+  function refreshVisibleReleaseVersion(){
+    document.title=`Kaishi Quest • v${CURRENT_VERSION}`;
+    document.querySelectorAll('.version-badge').forEach(node=>{
+      node.textContent=`v${CURRENT_VERSION}`;
+      node.setAttribute('aria-label',`Kaishi Quest version ${CURRENT_VERSION}. Check for updates and refresh the app.`);
+    });
   }
 
   async function fetchLatestVersion(){
@@ -456,6 +508,8 @@
     installReadingReviewPause();
     installTheatreSpeed();
     installEnhancementStyles();
+    refreshVisibleReleaseVersion();
+    enforceCurrentServiceWorker();
 
     const el=badge();
     if(el){
@@ -489,9 +543,9 @@
       const strong=versionCard.querySelector('strong');
       if(strong) strong.textContent=`Kaishi Quest v${CURRENT_VERSION}`;
       const title=versionCard.querySelector('span');
-      if(title) title.textContent='Theatre Speed & Compact Bonsai';
+      if(title) title.textContent='Stable Update & Bonsai Fit';
       const detail=versionCard.querySelector('small');
-      if(detail) detail.textContent='Theatre now offers synchronized speech-speed controls, and the dashboard bonsai is smaller and tappable for its condition explanation.';
+      if(detail) detail.textContent='Theatre keeps synchronized speed controls, the release now pins the current service worker, and the compact dashboard bonsai fits fully without clipping.';
     }
   }
 
