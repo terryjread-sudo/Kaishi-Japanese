@@ -1,17 +1,38 @@
-Kaishi Quest v11.8.37
+Kaishi Quest v11.8.38 — Cache & Offline Data
 
-Replace the four ROOT files in this ZIP.
+Replace these ROOT files:
+- release-manager.js
+- bonsai-progress.js
+- service-worker.js
+- version.json
 
-Bonsai: v11.8.36 changed the sprite viewport proportions, exposing parts of
-neighbouring bonsai stages. v11.8.37 restores the original 112x210 sprite
-viewport and scales the complete frame instead.
+NEW SETTINGS PANEL
+Settings now includes "Cache & Offline Data".
 
-Version: once v11.8.37 loads, its badge/title are locked so older app-shell
-rendering cannot change the visible version back.
+It displays:
+- current app release
+- active service-worker status
+- service-worker script/version query
+- number of cached shell files
+- number of cached image files
+- total cached files
+- approximate cache size
+- exact Kaishi cache names
 
-Japan Ready: adds ひとつ / ふたつ / みっつ / よっつ / いつつ / むっつ /
-ななつ / やっつ / ここのつ / とお to both the Travel Cheat Sheet and an
-Essential quantity mini-lesson in relevant food/shopping learning scenarios.
-Each item has Japanese audio and practical ordering examples.
+CLEAR CACHED FILES
+The button deletes ONLY caches whose names begin:
+- kaishi-shell-
+- kaishi-images-
 
-No learner progress is reset.
+It does NOT clear localStorage and does NOT delete:
+- vocabulary/learning progress
+- mastered words
+- streaks
+- learner settings
+- Japan Ready progress
+- cloud account/progress
+
+The panel can be refreshed at any time, which should also make future
+service-worker/update debugging much easier.
+
+All v11.8.37 features are retained.

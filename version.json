@@ -1,13 +1,13 @@
 {
-  "version": "11.8.37",
+  "version": "11.8.38",
   "released": "2026-08-20",
-  "title": "Bonsai & Japan Ready Quantities",
+  "title": "Cache & Offline Data",
   "changes": [
-    "Corrected the compact bonsai sprite viewport so neighbouring bonsai stages no longer appear.",
-    "Locks the visible version badge/title to v11.8.37 after the release manager loads.",
-    "Adds Japanese general item counters 1–10 to the Japan Ready cheat sheet with audio.",
-    "Adds an Essential quantity skill mini-lesson to relevant Japan Ready food and shopping scenarios.",
-    "Includes practical quantity phrases such as これを二つお願いします.",
-    "Retains Theatre speed controls and Reading-from-Meaning review."
+    "Adds a Cache & Offline Data panel to Settings.",
+    "Shows the current Kaishi release, active service-worker state and script, shell cache file count, image cache file count, total cached files and approximate cache size.",
+    "Adds a safe Clear cached files option that removes only Kaishi shell/image caches.",
+    "Clearing cache does not delete vocabulary progress, streaks, settings, Japan Ready progress or cloud account data.",
+    "Adds a Refresh button so cache state can be checked immediately while troubleshooting updates.",
+    "Retains the v11.8.37 bonsai sprite fix, Japan Ready quantity counters, Theatre speed controls and Reading-from-Meaning review."
   ]
 }

@@ -1,16 +1,16 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.37
+ * Kaishi Quest release manager — v11.8.38
  *
  * Release helpers:
  * - reliable update/cache refresh
  * - v11.8.34 Reading-from-Meaning correction review pause
- * - v11.8.37 Theatre synchronized playback-speed controls
- * - v11.8.37 service-worker version pin + unclipped compact bonsai
+ * - v11.8.38 Theatre synchronized playback-speed controls
+ * - v11.8.38 service-worker version pin + unclipped compact bonsai
  */
 (() => {
-  const CURRENT_VERSION='11.8.37';
+  const CURRENT_VERSION='11.8.38';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -113,11 +113,11 @@
         });
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.37] Reading review pause could not be installed',error);
+      console.warn('[Kaishi v11.8.38] Reading review pause could not be installed',error);
     }
   }
 
-  // ----- v11.8.37: Theatre speed ---------------------------------------
+  // ----- v11.8.38: Theatre speed ---------------------------------------
   function theatreSpeed(){
     try{
       const stored=Number(localStorage.getItem(THEATRE_SPEED_KEY));
@@ -300,7 +300,7 @@
         speeds:THEATRE_SPEEDS.map(item=>({...item}))
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.37] Theatre speed controls could not be installed',error);
+      console.warn('[Kaishi v11.8.38] Theatre speed controls could not be installed',error);
     }
   }
 
@@ -325,7 +325,7 @@
         background:#172554;color:#fff;border-color:#172554
       }
 
-      /* v11.8.37: preserve the sprite's original viewport ratio. */
+      /* v11.8.38: preserve the sprite's original viewport ratio. */
       #bonsaiProgressCard{position:relative;grid-template-columns:118px minmax(0,1fr);gap:7px;margin:8px 0;padding:9px 10px;border-radius:18px;cursor:pointer;overflow:hidden}
       #bonsaiProgressCard:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
       #bonsaiProgressCard .bonsai-visual{min-height:166px;overflow:hidden}
@@ -358,6 +358,22 @@
       .jr-quantity-cheat{margin-bottom:12px;padding:12px;border:1px solid #bfdbfe;border-radius:16px;background:#f8fbff}.jr-quantity-heading h3,.jr-quantity-heading p{margin:3px 0 8px}.jr-quantity-heading p{font-size:.74rem;color:#475569}
       .jr-quantity-examples{display:grid;gap:6px;margin-top:8px}.jr-quantity-examples button{display:grid;gap:2px;text-align:left}.jr-quantity-examples small,.jr-quantity-examples em{font-size:.65rem;font-style:normal}
       @media(max-width:520px){.jr-quantity-learning{align-items:stretch;flex-direction:column}}
+
+      .cache-data-card{
+        display:grid;gap:10px;margin:14px 0;padding:14px;
+        border:1px solid #cbd5e1;border-radius:16px;background:#f8fafc
+      }
+      .cache-data-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+      .cache-data-heading h3,.cache-data-heading p{margin:2px 0}
+      .cache-data-heading p{color:#64748b;font-size:.74rem;line-height:1.4}
+      .cache-data-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+      .cache-data-grid span{display:grid;gap:2px;padding:9px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#64748b;font-size:.65rem}
+      .cache-data-grid strong{color:#0f172a;font-size:.88rem;overflow-wrap:anywhere}
+      .cache-data-actions{display:flex;gap:8px;flex-wrap:wrap}
+      .cache-data-actions button{flex:1;min-width:140px}
+      .cache-data-actions .danger{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+      .cache-data-note{color:#64748b;font-size:.66rem;line-height:1.4}
+      @media(max-width:430px){.cache-data-grid{grid-template-columns:1fr 1fr}.cache-data-actions{flex-direction:column}}
     `;
     document.head.appendChild(style);
   }
@@ -413,6 +429,173 @@
       node.textContent=`v${CURRENT_VERSION}`;
       node.setAttribute('aria-label',`Kaishi Quest version ${CURRENT_VERSION}. Check for updates and refresh the app.`);
     });
+  }
+
+
+  // ----- v11.8.38: Settings cache/offline diagnostics -------------------
+  function formatBytes(bytes){
+    if(!Number.isFinite(bytes)||bytes<=0) return '0 KB';
+    if(bytes<1024*1024) return `${Math.max(1,Math.round(bytes/1024))} KB`;
+    return `${(bytes/(1024*1024)).toFixed(1)} MB`;
+  }
+
+  async function cacheStats(){
+    const result={
+      supported:'caches' in window,
+      names:[],
+      files:0,
+      bytes:0,
+      shellFiles:0,
+      imageFiles:0
+    };
+    if(!result.supported) return result;
+
+    const names=(await caches.keys()).filter(name=>
+      CACHE_PREFIXES.some(prefix=>name.startsWith(prefix))
+    );
+    result.names=names;
+
+    for(const name of names){
+      const cache=await caches.open(name);
+      const requests=await cache.keys();
+      result.files+=requests.length;
+      if(name.startsWith('kaishi-shell-')) result.shellFiles+=requests.length;
+      if(name.startsWith('kaishi-images-')) result.imageFiles+=requests.length;
+
+      for(const request of requests){
+        try{
+          const response=await cache.match(request);
+          if(!response) continue;
+          const length=Number(response.headers.get('content-length'));
+          if(Number.isFinite(length)&&length>0){
+            result.bytes+=length;
+          }else{
+            const blob=await response.clone().blob();
+            result.bytes+=blob.size;
+          }
+        }catch{}
+      }
+    }
+    return result;
+  }
+
+  function serviceWorkerSummary(){
+    if(!('serviceWorker' in navigator)) return {state:'Not supported',script:'—'};
+    const controller=navigator.serviceWorker.controller;
+    if(!controller) return {state:'No active controller',script:'—'};
+    const script=controller.scriptURL||'';
+    const file=script.split('/').pop()||script;
+    return {state:controller.state||'active',script:file};
+  }
+
+  async function refreshCacheDataPanel(){
+    const panel=document.getElementById('cacheDataCard');
+    if(!panel) return;
+    const status=document.getElementById('cacheDataStatus');
+    if(status) status.textContent='Checking cached files…';
+
+    try{
+      const stats=await cacheStats();
+      const worker=serviceWorkerSummary();
+      const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+
+      set('cacheAppVersion',`v${CURRENT_VERSION}`);
+      set('cacheWorkerState',worker.state);
+      set('cacheWorkerScript',worker.script);
+      set('cacheShellFiles',String(stats.shellFiles));
+      set('cacheImageFiles',String(stats.imageFiles));
+      set('cacheTotalFiles',String(stats.files));
+      set('cacheTotalSize',formatBytes(stats.bytes));
+      set('cacheNames',stats.names.length?stats.names.join(', '):'No Kaishi caches');
+
+      if(status){
+        status.textContent=stats.supported
+          ?'Only downloaded app/offline files are shown here. Learning progress is stored separately.'
+          :'This browser does not expose the Cache Storage API.';
+      }
+    }catch(error){
+      console.warn('[Kaishi cache diagnostics]',error);
+      if(status) status.textContent='Could not read cache information on this device.';
+    }
+  }
+
+  async function clearCacheFromSettings(){
+    const button=document.getElementById('clearCacheData');
+    if(button?.dataset.busy==='1') return;
+
+    const confirmed=window.confirm(
+      'Clear Kaishi Quest downloaded app files and images?\\n\\n' +
+      'Your learning progress, streak, settings and cloud account will NOT be deleted.'
+    );
+    if(!confirmed) return;
+
+    if(button){
+      button.dataset.busy='1';
+      button.disabled=true;
+      button.textContent='Clearing…';
+    }
+
+    try{
+      await clearKaishiCaches();
+      await refreshCacheDataPanel();
+      notify('Cached app files cleared. Your learning progress was kept.');
+
+      if(button){
+        button.textContent='✓ Cache cleared';
+        setTimeout(()=>{
+          button.disabled=false;
+          button.dataset.busy='0';
+          button.textContent='Clear cached files';
+        },1200);
+      }
+    }catch(error){
+      console.error('[Kaishi clear cache]',error);
+      notify('Could not clear the app cache on this device.');
+      if(button){
+        button.disabled=false;
+        button.dataset.busy='0';
+        button.textContent='Clear cached files';
+      }
+    }
+  }
+
+  function installCacheDataSettings(){
+    const updateButton=document.getElementById('checkUpdateBtn');
+    if(!updateButton || document.getElementById('cacheDataCard')) return;
+
+    const card=document.createElement('section');
+    card.id='cacheDataCard';
+    card.className='cache-data-card';
+    card.innerHTML=`
+      <div class="cache-data-heading">
+        <div>
+          <span class="eyebrow">Storage & updates</span>
+          <h3>Cache & Offline Data</h3>
+          <p>See which downloaded Kaishi files this device is holding.</p>
+        </div>
+        <button id="refreshCacheData" type="button">Refresh</button>
+      </div>
+      <div class="cache-data-grid">
+        <span><small>App release</small><strong id="cacheAppVersion">v${CURRENT_VERSION}</strong></span>
+        <span><small>Service worker</small><strong id="cacheWorkerState">Checking…</strong></span>
+        <span><small>Shell files</small><strong id="cacheShellFiles">—</strong></span>
+        <span><small>Image files</small><strong id="cacheImageFiles">—</strong></span>
+        <span><small>Total cached files</small><strong id="cacheTotalFiles">—</strong></span>
+        <span><small>Approx. cache size</small><strong id="cacheTotalSize">—</strong></span>
+      </div>
+      <span class="cache-data-note">Worker: <strong id="cacheWorkerScript">—</strong></span>
+      <span class="cache-data-note">Caches: <strong id="cacheNames">—</strong></span>
+      <div class="cache-data-actions">
+        <button id="clearCacheData" class="danger" type="button">Clear cached files</button>
+      </div>
+      <small id="cacheDataStatus" class="cache-data-note" aria-live="polite">Checking cached files…</small>`;
+
+    updateButton.before(card);
+    document.getElementById('refreshCacheData')?.addEventListener('click',refreshCacheDataPanel);
+    document.getElementById('clearCacheData')?.addEventListener('click',clearCacheFromSettings);
+
+    refreshCacheDataPanel();
+    navigator.serviceWorker?.addEventListener?.('controllerchange',()=>setTimeout(refreshCacheDataPanel,100));
   }
 
   async function fetchLatestVersion(){
@@ -498,6 +681,7 @@
     refreshVisibleReleaseVersion();
     lockVisibleReleaseVersion();
     installJapanReadyQuantitySupport();
+    installCacheDataSettings();
     enforceCurrentServiceWorker();
 
     const el=badge();
@@ -532,9 +716,9 @@
       const strong=versionCard.querySelector('strong');
       if(strong) strong.textContent=`Kaishi Quest v${CURRENT_VERSION}`;
       const title=versionCard.querySelector('span');
-      if(title) title.textContent='Stable Update & Bonsai Fit';
+      if(title) title.textContent='Cache & Offline Data';
       const detail=versionCard.querySelector('small');
-      if(detail) detail.textContent='Theatre keeps synchronized speed controls, the release now pins the current service worker, and the compact dashboard bonsai fits fully without clipping.';
+      if(detail) detail.textContent='Settings now shows the app cache, offline-file counts and service-worker state, with a safe button to clear cached files without deleting learning progress.';
     }
   }
 
