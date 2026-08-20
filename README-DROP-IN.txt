@@ -1,14 +1,30 @@
-Kaishi Quest v11.8.34 — Reading Answer Review
+Kaishi Quest v11.8.35 — Theatre Speed & Compact Bonsai
 
-Drop these three files into the ROOT of the Kakashi-Web repository, replacing the existing files:
+This drop-in BUILDS ON the previous v11.8.34 reading-review release.
+
+Replace these files in the ROOT of Kakashi-Web:
 - release-manager.js
+- bonsai-progress.js
 - service-worker.js
 - version.json
 
-No app.js or index.html replacement is required.
+THEATRE
+- Adds Normal, Slow and Extra slow controls.
+- Slow changes both speech rate and the Theatre timeline, so camera cuts,
+  character speech animation and the progress bar stay synchronized.
+- The selected speed is remembered locally for later Theatre performances.
+- Other Japanese audio activities keep their normal existing speed.
 
-What changed:
-When a learner gets a "Reading from meaning" multiple-choice question wrong, the existing Sensei correction panel now remains visible. The wrong answer is recorded immediately, the correct pronunciation plays, and the learner must tap Continue before the next card appears.
+BONSAI
+- The separate information icon is hidden.
+- Tap/click the Bonsai card itself to open the existing condition explanation.
+- Keyboard users can press Enter or Space on the card.
+- The card is substantially shorter, particularly on mobile.
+- No learning/growth/streak calculations were changed.
 
-Why this updates existing users:
-service-worker.js is bumped to v11.8.34 and version.json advertises v11.8.34. The existing release-manager is already loaded by index.html and will detect the new release, clear old Kaishi caches and refresh. After refresh, the updated release-manager installs the corrected Reading-from-Meaning behaviour.
+READING REVIEW
+- Retains the v11.8.34 fix where an incorrect Reading-from-Meaning answer
+  remains visible until the learner taps Continue.
+
+CACHE/UPDATE
+- service-worker.js and version.json are bumped to v11.8.35.

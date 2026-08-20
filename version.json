@@ -1,12 +1,15 @@
 {
-  "version": "11.8.34",
+  "version": "11.8.35",
   "released": "2026-08-19",
-  "title": "Reading Answer Review",
+  "title": "Theatre Speed & Compact Bonsai",
   "changes": [
-    "Fixed Reading-from-Meaning questions moving on almost immediately after a wrong answer.",
-    "Incorrect answers now keep Sensei's correction, the correct Japanese reading, written word and English meaning visible until the learner chooses Continue.",
-    "The correct pronunciation is replayed during the review and remains available through the speaker button.",
-    "The mistake is still recorded immediately and Adaptive Learning can still schedule its normal delayed repair question.",
-    "Bumped the Kaishi Quest shell and image cache version so existing users receive the corrected release."
+    "Added Normal, Slow and Extra slow playback controls to Kaishi Theatre.",
+    "Kept Theatre speech, camera cuts, character animation and progress timing synchronized at every playback speed.",
+    "Remembered the learner's chosen Theatre speed between performances.",
+    "Made the dashboard bonsai card itself open the bonsai-condition explanation.",
+    "Removed the need for the separate bonsai information icon.",
+    "Reduced the bonsai card's height and spacing, especially on phones, so the rest of the dashboard appears higher.",
+    "Retained the v11.8.34 Reading-from-Meaning correction review pause.",
+    "Bumped Kaishi Quest caches to v11.8.35 so existing users receive the updated scripts."
   ]
 }

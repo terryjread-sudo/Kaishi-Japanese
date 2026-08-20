@@ -7,6 +7,11 @@
  if(!bridge||!card||!quick)return;
  let lastStage=-1,lastCondition='';
 
+ function openCondition(){
+  const dialog=document.querySelector('#bonsaiConditionDialog');
+  if(dialog&&!dialog.open)dialog.showModal();
+ }
+
  function render(){
   const state=bridge.state();
   const tree=document.querySelector('#bonsaiTree');
@@ -28,7 +33,15 @@
   card.dataset.condition=state.key;
   aura.dataset.condition=state.key;
   condition.dataset.condition=state.key;
-  conditionTrigger.setAttribute('aria-label',`${state.name} bonsai condition. Open explanation`);
+  if(conditionTrigger){
+   conditionTrigger.hidden=true;
+   conditionTrigger.setAttribute('aria-hidden','true');
+   conditionTrigger.tabIndex=-1;
+  }
+  card.setAttribute('role','button');
+  card.setAttribute('tabindex','0');
+  card.setAttribute('aria-label',`${state.stageName} bonsai. ${state.name} condition. Tap for condition details.`);
+  card.setAttribute('title','Tap to see bonsai condition');
   tree.dataset.stage=String(state.stage);
   tree.setAttribute('aria-label',`${state.stageName} bonsai, ${state.name.toLowerCase()}`);
   document.querySelector('#bonsaiStageCount').textContent=`Stage ${state.stage+1}/5`;
@@ -58,7 +71,25 @@
  }
 
  quick.addEventListener('click',()=>bridge.startQuick());
- document.querySelector('#bonsaiConditionTrigger')?.addEventListener('click',()=>document.querySelector('#bonsaiConditionDialog')?.showModal());
+
+ // The entire bonsai card is now the status/explanation control.
+ card.addEventListener('click',event=>{
+  if(event.target.closest('button,a,input,select,textarea'))return;
+  openCondition();
+ });
+ card.addEventListener('keydown',event=>{
+  if(event.key==='Enter'||event.key===' '){
+   event.preventDefault();
+   openCondition();
+  }
+ });
+
+ // Retain the old trigger listener as a compatibility fallback even though
+ // v11.8.35 hides the separate icon.
+ document.querySelector('#bonsaiConditionTrigger')?.addEventListener('click',event=>{
+  event.stopPropagation();
+  openCondition();
+ });
  document.querySelector('#bonsaiConditionClose')?.addEventListener('click',()=>document.querySelector('#bonsaiConditionDialog')?.close());
  document.querySelector('#bonsaiConditionDialog')?.addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});
  window.KaishiBonsai={render};
