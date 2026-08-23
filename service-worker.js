@@ -1,9 +1,10 @@
 'use strict';
 
-const VERSION='11.8.39';
+const VERSION='11.8.40';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
+let FORCE_OFFLINE=false;
 const MAX_RUNTIME_IMAGES=350;
 
 const v=path=>`${path}?v=${VERSION}`;
@@ -136,9 +137,28 @@ async function networkWithOfflineFallback(request){
   catch(error){return (await offlineMatch(request))||Promise.reject(error)}
 }
 
+self.addEventListener('message',event=>{
+  if(event.data?.type==='KAISHI_FORCE_OFFLINE'){
+    FORCE_OFFLINE=Boolean(event.data.enabled);
+  }
+});
+
 self.addEventListener('fetch',event=>{
   const request=event.request;
-  if(request.method!=='GET') return;
+  if(request.method!=='GET')return;
+
+  if(FORCE_OFFLINE){
+    event.respondWith((async()=>{
+      const offline=await offlineMatch(request);
+      if(offline)return offline;
+      const cached=await caches.match(request);
+      if(cached)return cached;
+      return new Response('Kaishi is in forced offline mode. This content has not been downloaded for offline use.',{
+        status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}
+      });
+    })());
+    return;
+  }
   const url=new URL(request.url);
   if(url.origin!==self.location.origin) return;
 

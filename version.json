@@ -1,15 +1,12 @@
 {
-  "version": "11.8.39",
-  "released": "2026-08-20",
-  "title": "Offline Mode",
+  "version": "11.8.40",
+  "released": "2026-08-22",
+  "title": "Offline Detection & Forced Offline Mode",
   "changes": [
-    "Adds opt-in Essential, Standard and Full offline learning packs in Settings.",
-    "Shows live download progress, stored file count, offline-pack size and available browser storage.",
-    "Essential stores the core app, Japan Ready, current topic and currently used local media.",
-    "Standard adds introduced-word media plus locally referenced Theatre, Manga, conversation and grammar content.",
-    "Full adds all locally referenced vocabulary and learning media currently known to Kaishi Quest.",
-    "Adds an Offline ready / Offline status indicator beside the version badge.",
-    "Offline content is stored separately and can be removed without deleting learning progress or normal app caches.",
-    "Service worker now falls back to downloaded offline content for documents, scripts, styles, images, audio and JSON/data."
+    "Adds automatic online/offline detection and a persistent offline status banner.",
+    "Adds Force offline mode to Settings \u2192 Offline Mode.",
+    "Forced offline mode makes the service worker serve only downloaded/local content and prevents network requests.",
+    "Shows Online, Offline, or Forced offline status.",
+    "Keeps the existing Essential, Standard and Full offline packs."
   ]
 }

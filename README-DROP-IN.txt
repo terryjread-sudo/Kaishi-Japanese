@@ -1,21 +1,23 @@
-Kaishi Quest v11.8.39 — Offline Mode
+Kaishi Quest v11.8.40 — Offline Detection & Forced Offline Mode
 
-Replace these ROOT files:
+Replace:
 - release-manager.js
 - bonsai-progress.js
 - service-worker.js
 - version.json
 
-Settings now includes Offline Mode with:
-Essential / Standard / Full learning packs.
+Settings → Offline Mode now includes Force offline mode.
 
-The pack is stored separately as kaishi-offline-11.8.39. Download progress,
-actual file count, approximate size and remaining browser storage are shown.
+When enabled, Kaishi behaves as if there is no internet even if Wi-Fi/mobile
+data is available. The service worker will serve downloaded offline content
+and normal local caches only. Missing content gets a clear offline response
+instead of attempting a network request.
 
-Learning progress continues to save locally while offline. Cloud sync and
-Community resume when connectivity returns.
+Kaishi also detects real connectivity changes and displays an offline banner.
 
-Removing offline content does NOT remove learning progress, streaks, settings,
-Japan Ready progress, cloud data, or the normal Kaishi shell/image caches.
+IMPORTANT: Download an Essential, Standard or Full Offline Pack first if you
+want to use Kaishi with no internet. Forced offline mode does not download
+anything itself.
 
-All v11.8.38 features are retained.
+Learning progress is retained. Cloud sync and online-only features resume
+after connectivity returns and forced offline mode is disabled.

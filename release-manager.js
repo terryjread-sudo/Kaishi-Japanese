@@ -1,16 +1,16 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.39
+ * Kaishi Quest release manager — v11.8.40
  *
  * Release helpers:
  * - reliable update/cache refresh
  * - v11.8.34 Reading-from-Meaning correction review pause
- * - v11.8.39 Theatre synchronized playback-speed controls
- * - v11.8.39 service-worker version pin + unclipped compact bonsai
+ * - v11.8.40 Theatre synchronized playback-speed controls
+ * - v11.8.40 service-worker version pin + unclipped compact bonsai
  */
 (() => {
-  const CURRENT_VERSION='11.8.39';
+  const CURRENT_VERSION='11.8.40';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -113,11 +113,11 @@
         });
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.39] Reading review pause could not be installed',error);
+      console.warn('[Kaishi v11.8.40] Reading review pause could not be installed',error);
     }
   }
 
-  // ----- v11.8.39: Theatre speed ---------------------------------------
+  // ----- v11.8.40: Theatre speed ---------------------------------------
   function theatreSpeed(){
     try{
       const stored=Number(localStorage.getItem(THEATRE_SPEED_KEY));
@@ -300,7 +300,7 @@
         speeds:THEATRE_SPEEDS.map(item=>({...item}))
       };
     }catch(error){
-      console.warn('[Kaishi v11.8.39] Theatre speed controls could not be installed',error);
+      console.warn('[Kaishi v11.8.40] Theatre speed controls could not be installed',error);
     }
   }
 
@@ -325,7 +325,7 @@
         background:#172554;color:#fff;border-color:#172554
       }
 
-      /* v11.8.39: preserve the sprite's original viewport ratio. */
+      /* v11.8.40: preserve the sprite's original viewport ratio. */
       #bonsaiProgressCard{position:relative;grid-template-columns:118px minmax(0,1fr);gap:7px;margin:8px 0;padding:9px 10px;border-radius:18px;cursor:pointer;overflow:hidden}
       #bonsaiProgressCard:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
       #bonsaiProgressCard .bonsai-visual{min-height:166px;overflow:hidden}
@@ -385,6 +385,13 @@
       .offline-pack-actions{display:flex;gap:8px;flex-wrap:wrap}.offline-pack-actions button{flex:1;min-width:145px}.offline-remove{background:#fff;color:#be123c;border-color:#fecdd3}
       .offline-status-pill{display:inline-flex;align-items:center;gap:5px;margin-left:5px;padding:4px 7px;border-radius:999px;background:#dcfce7;color:#166534;font-size:.58rem;font-weight:850}.offline-status-pill.offline-now{background:#fef3c7;color:#92400e}
       @media(max-width:560px){.offline-pack-options{grid-template-columns:1fr}.offline-pack-option{min-height:0}.offline-pack-meta{grid-template-columns:1fr 1fr}}
+
+      #offlineModeBanner{position:fixed;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:7px;padding:8px 12px;max-width:calc(100vw - 24px);border:1px solid #fbbf24;border-radius:999px;background:#fffbeb;color:#92400e;box-shadow:0 5px 18px rgba(15,23,42,.12);font-size:.68rem;font-weight:800;text-align:center}
+      .force-offline-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+      .force-offline-copy{display:grid;gap:3px}.force-offline-copy strong{font-size:.78rem;color:#0f172a}.force-offline-copy small{font-size:.64rem;line-height:1.4;color:#64748b}
+      .force-offline-toggle{position:relative;flex:0 0 auto;width:48px;height:28px;border:0;border-radius:999px;background:#cbd5e1;cursor:pointer;padding:0}
+      .force-offline-toggle::after{content:"";position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(15,23,42,.25);transition:transform .18s ease}
+      .force-offline-toggle[aria-checked="true"]{background:#16a34a}.force-offline-toggle[aria-checked="true"]::after{transform:translateX(20px)}
     `;
     document.head.appendChild(style);
   }
@@ -444,9 +451,78 @@
 
 
 
-  // ----- v11.8.39: Opt-in Offline Mode -----------------------------------
+  // ----- v11.8.40: Opt-in Offline Mode -----------------------------------
   const OFFLINE_CACHE=`kaishi-offline-${CURRENT_VERSION}`;
   const OFFLINE_STATE_KEY='kq-offline-pack';
+  const FORCE_OFFLINE_KEY='kq-force-offline';
+
+  function isForceOffline(){
+    try{return localStorage.getItem(FORCE_OFFLINE_KEY)==='1'}catch{return false}
+  }
+  function isKaishiOffline(){return isForceOffline() || !navigator.onLine}
+  function saveForceOffline(enabled){
+    try{
+      if(enabled)localStorage.setItem(FORCE_OFFLINE_KEY,'1');
+      else localStorage.removeItem(FORCE_OFFLINE_KEY);
+    }catch{}
+  }
+  function offlineModeLabel(){
+    if(isForceOffline()) return 'Forced offline';
+    if(!navigator.onLine) return 'Offline';
+    return 'Online';
+  }
+  function syncForceOfflineWithWorker(){
+    navigator.serviceWorker?.controller?.postMessage({
+      type:'KAISHI_FORCE_OFFLINE', enabled:isForceOffline()
+    });
+  }
+  function updateOfflineStatusUI(){
+    const pill=document.getElementById('offlineStatusPill');
+    const banner=document.getElementById('offlineModeBanner');
+    const forced=isForceOffline(), disconnected=!navigator.onLine, offline=forced||disconnected;
+
+    if(pill){
+      pill.hidden=!offline;
+      pill.classList.toggle('offline-now',offline);
+      pill.textContent=forced?'● Offline mode':disconnected?'● No internet':'';
+      pill.title=forced?'Kaishi is intentionally running in offline mode.':'Kaishi cannot currently reach the internet.';
+    }
+    if(banner){
+      banner.hidden=!offline;
+      const text=banner.querySelector('[data-offline-banner-text]');
+      if(text) text.textContent=forced
+        ?'Offline mode is forced. Online-only features are paused.'
+        :'No internet connection. Kaishi is using your downloaded offline content.';
+    }
+    const toggle=document.getElementById('forceOfflineToggle');
+    if(toggle){
+      toggle.setAttribute('aria-checked',String(forced));
+      toggle.setAttribute('aria-label',forced?'Disable forced offline mode':'Force offline mode');
+    }
+    const status=document.getElementById('forceOfflineStatus');
+    if(status)status.textContent=offlineModeLabel();
+    syncForceOfflineWithWorker();
+  }
+  function installOfflineDetection(){
+    if(!document.getElementById('offlineModeBanner')){
+      const banner=document.createElement('div');
+      banner.id='offlineModeBanner';banner.hidden=true;banner.setAttribute('role','status');
+      banner.innerHTML='<span>✈️</span><span data-offline-banner-text>Kaishi is offline.</span>';
+      document.body.prepend(banner);
+    }
+    window.addEventListener('online',()=>{
+      updateOfflineStatusUI();
+      if(typeof notify==='function')notify('Internet connection restored.');
+    });
+    window.addEventListener('offline',()=>{
+      updateOfflineStatusUI();
+      if(typeof notify==='function')notify('No internet connection. Using offline content.');
+    });
+    navigator.serviceWorker?.addEventListener?.('controllerchange',syncForceOfflineWithWorker);
+    navigator.serviceWorker?.ready?.then(syncForceOfflineWithWorker).catch(()=>{});
+    updateOfflineStatusUI();
+  }
+
   const OFFLINE_CORE=[
     './','./index.html','./manifest.webmanifest','./styles.css','./sentence-lab.css',
     './engagement-layer.css','./pronunciation-coach.css','./bonsai-progress.css','./vms.css',
@@ -581,15 +657,35 @@
       <div class="offline-pack-progress"><div><i id="offlinePackFill"></i></div><span id="offlinePackProgressText">Choose a pack, then download it while online.</span></div>
       <div class="offline-pack-meta"><span><small>Status</small><strong id="offlinePackState">Not downloaded</strong></span><span><small>Files</small><strong id="offlinePackFiles">0</strong></span><span><small>Pack size</small><strong id="offlinePackSize">0 KB</strong></span><span><small>Storage free</small><strong id="offlineStorageFree">Checking…</strong></span></div>
       <div class="offline-pack-actions"><button id="downloadOfflinePack" class="primary" type="button">Download for offline use</button><button id="removeOfflinePack" class="offline-remove" type="button" hidden>Remove offline content</button></div>
+      <div class="force-offline-row">
+        <div class="force-offline-copy">
+          <strong>Force offline mode</strong>
+          <small>Make Kaishi behave as offline even when internet is available. Online-only requests are paused until this is switched off.</small>
+        </div>
+        <button id="forceOfflineToggle" class="force-offline-toggle" type="button" role="switch" aria-checked="false"></button>
+      </div>
+      <small id="forceOfflineStatus" class="cache-data-note">Online</small>
       <small class="cache-data-note">Learning progress keeps saving on this device offline. Cloud sync and Community resume when you reconnect.</small>`;
     (cacheCard||updateButton).before(card);
     card.querySelectorAll('.offline-pack-option').forEach(option=>option.onclick=()=>card.querySelectorAll('.offline-pack-option').forEach(item=>item.classList.toggle('active',item===option)));
     document.getElementById('downloadOfflinePack').onclick=()=>downloadOfflinePack(card.querySelector('.offline-pack-option.active')?.dataset.pack||'standard');
     document.getElementById('removeOfflinePack').onclick=removeOfflinePack;
-    window.addEventListener('online',()=>renderOfflineMode());window.addEventListener('offline',ensureOfflineIndicator);renderOfflineMode();
+    const forceToggle=document.getElementById('forceOfflineToggle');
+    if(forceToggle){
+      forceToggle.addEventListener('click',()=>{
+        saveForceOffline(!isForceOffline());
+        updateOfflineStatusUI();
+        if(typeof notify==='function')notify(isForceOffline()?'Offline mode forced. Online-only features are paused.':'Forced offline mode disabled.');
+      });
+    }
+    installOfflineDetection();
+    window.addEventListener('online',()=>{renderOfflineMode();updateOfflineStatusUI()});
+    window.addEventListener('offline',()=>{ensureOfflineIndicator();updateOfflineStatusUI()});
+    renderOfflineMode();
+    updateOfflineStatusUI();
   }
 
-  // ----- v11.8.39: Settings cache/offline diagnostics -------------------
+  // ----- v11.8.40: Settings cache/offline diagnostics -------------------
   function formatBytes(bytes){
     if(!Number.isFinite(bytes)||bytes<=0) return '0 KB';
     if(bytes<1024*1024) return `${Math.max(1,Math.round(bytes/1024))} KB`;
