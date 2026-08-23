@@ -484,21 +484,29 @@
       try{
         const controller=new AbortController();
         const timer=setTimeout(()=>controller.abort(),5000);
-        // Ping version.json — the service worker is configured to always
-        // try the network first for this endpoint, so if we get any response
-        // (success or http error), the network is reachable. Any fetch error
-        // or timeout means the network is down.
-        const response=await fetch(`version.json?ping=${Date.now()}`,{
+        // Ping a well-known external service (Cloudflare DNS) to check real
+        // internet connectivity, bypassing any local service-worker caching.
+        // This is more reliable than pinging our own origin.
+        await fetch('https://www.cloudflare.com/cdn-cgi/trace',{
+          method:'HEAD',
           cache:'no-store',
           headers:{'Cache-Control':'no-cache, no-store, must-revalidate'},
           signal:controller.signal,
           mode:'cors'
+        }).catch(async()=>{
+          // If HEAD fails, try GET to the same URL
+          return fetch('https://www.cloudflare.com/cdn-cgi/trace',{
+            cache:'no-store',
+            headers:{'Cache-Control':'no-cache, no-store, must-revalidate'},
+            signal:controller.signal,
+            mode:'cors'
+          });
         });
         clearTimeout(timer);
-        // Any response at all (2xx, 4xx, 5xx) means we reached the server
+        // Any response means we have internet connectivity
         netIsOnline=true;
       }catch(error){
-        // Timeout (AbortError), network error, or blocked fetch
+        // Timeout, network error, CORS block, or other fetch failure
         netIsOnline=false;
       }
       return netIsOnline;
