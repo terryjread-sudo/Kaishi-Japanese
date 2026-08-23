@@ -484,16 +484,21 @@
       try{
         const controller=new AbortController();
         const timer=setTimeout(()=>controller.abort(),5000);
-        // Any response at all - even a non-2xx one - proves the network
-        // path to our own origin is actually working.
-        await fetch(`version.json?ping=${Date.now()}`,{
+        // Ping version.json — the service worker is configured to always
+        // try the network first for this endpoint, so if we get any response
+        // (success or http error), the network is reachable. Any fetch error
+        // or timeout means the network is down.
+        const response=await fetch(`version.json?ping=${Date.now()}`,{
           cache:'no-store',
-          headers:{'Cache-Control':'no-cache'},
-          signal:controller.signal
+          headers:{'Cache-Control':'no-cache, no-store, must-revalidate'},
+          signal:controller.signal,
+          mode:'cors'
         });
         clearTimeout(timer);
+        // Any response at all (2xx, 4xx, 5xx) means we reached the server
         netIsOnline=true;
-      }catch{
+      }catch(error){
+        // Timeout (AbortError), network error, or blocked fetch
         netIsOnline=false;
       }
       return netIsOnline;
@@ -575,8 +580,9 @@
     // Confirm real connectivity on load instead of trusting navigator.onLine
     // outright, so a stale/incorrect flag doesn't show a false offline
     // banner as soon as the app opens.
-    verifyConnectivity();
-    updateOfflineStatusUI();
+    (async()=>{
+      await verifyConnectivity();
+    })();
 
     // Self-heal: if we currently believe we're offline, keep re-checking in
     // the background. Some browsers never fire the 'online' event even once
