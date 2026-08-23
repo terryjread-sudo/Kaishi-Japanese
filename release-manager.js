@@ -1,16 +1,20 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.40
+ * Kaishi Quest release manager — v11.8.41
  *
  * Release helpers:
  * - reliable update/cache refresh
  * - v11.8.34 Reading-from-Meaning correction review pause
  * - v11.8.40 Theatre synchronized playback-speed controls
  * - v11.8.40 service-worker version pin + unclipped compact bonsai
+ * - v11.8.41 Settings screen reorganized into tabs (Learning / Character / Account / Data & Offline / About)
+ * - v11.8.41 Offline detection now verified with a real network probe instead of trusting navigator.onLine alone
+ * - v11.8.41 Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data, which
+ *   could prevent the app from starting at all while offline even with a pack downloaded
  */
 (() => {
-  const CURRENT_VERSION='11.8.40';
+  const CURRENT_VERSION='11.8.41';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -589,7 +593,14 @@
     './release-manager.js','./battle-listen.js','./kotoba-activity.js','./dashboard-clarity.js',
     './touch-enhancements.js','./learning-ui.js','./carousel-navigation.js','./micro-practice.js',
     './sentence-lab.js','./adaptive-learning.js','./campfire-recall.js','./word-rain.js','./battle-ui-patch.js',
-    './data/japan-ready-v90.json','./data/sentence-lab.json','./icons/icon-192.png','./icons/icon-512.png',
+    './data/japan-ready-v90.json','./data/sentence-lab.json',
+    // v11.8.41: core learning-content data app.js needs just to boot - must
+    // be in every offline pack tier, not just bundled with per-word media.
+    './data/vocabulary.json','./data/kana.json','./data/manga-stories.json',
+    './data/conversations.json','./data/theatre-scenes.json','./data/grammar-path.json',
+    './data/kanji-components.json','./memory-scenes.json','./data/anki-content-v72.json',
+    './data/topics-v72.json','./data/learning-graph-v82.json','./visual-mnemonics.json',
+    './icons/icon-192.png','./icons/icon-512.png',
     './media/bonsai/bonsai-growth-stages.png','./media/bonsai/bonsai-condition-overlays.png',
     './media/guides/teacher-guide.webp','./media/guides/sensei/sensei-welcoming.webp',
     './media/guides/sensei/sensei-explaining.webp','./media/guides/sensei/sensei-celebrating.webp',
@@ -986,6 +997,81 @@
     }
   }
 
+  // ----- v11.8.41: Tabbed settings screen --------------------------------
+  function installSettingsTabsStyles(){
+    if(document.getElementById('kaishiSettingsTabs11841')) return;
+    const style=document.createElement('style');
+    style.id='kaishiSettingsTabs11841';
+    style.textContent=`
+      .settings-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 10px;margin:0 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+      .settings-tabs::-webkit-scrollbar{display:none}
+      .settings-tab{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:999px;background:#e2e8f0;color:#334155;font-weight:800;font-size:.82rem;white-space:nowrap;border:2px solid transparent}
+      .settings-tab span{white-space:nowrap}
+      .settings-tab.active{background:var(--navy,#172554);color:#fff;box-shadow:0 6px 16px #17255440}
+      .settings-tab:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+      .settings-card{padding-top:18px}
+      .settings-panel{display:grid;gap:18px}
+      .settings-panel[hidden]{display:none}
+      @media(max-width:480px){.settings-tab{padding:9px 11px;font-size:.76rem}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function installSettingsTabs(){
+    const tabBar=document.getElementById('settingsTabs');
+    if(!tabBar||tabBar.dataset.kaishiTabsInit==='1') return;
+    tabBar.dataset.kaishiTabsInit='1';
+    installSettingsTabsStyles();
+
+    const tabs=Array.from(tabBar.querySelectorAll('.settings-tab'));
+    const panels=Array.from(document.querySelectorAll('.settings-panel'));
+    const STORE_KEY='kq-settings-tab';
+
+    function activate(name,{focusTab=false}={}){
+      if(!tabs.some(tab=>tab.dataset.tab===name)) return;
+      tabs.forEach(tab=>{
+        const active=tab.dataset.tab===name;
+        tab.classList.toggle('active',active);
+        tab.setAttribute('aria-selected',String(active));
+        tab.tabIndex=active?0:-1;
+        if(active&&focusTab) tab.focus();
+      });
+      panels.forEach(panel=>{panel.hidden=panel.dataset.tabPanel!==name});
+      try{localStorage.setItem(STORE_KEY,name)}catch{}
+    }
+
+    tabs.forEach((tab,index)=>{
+      tab.addEventListener('click',()=>activate(tab.dataset.tab));
+      tab.addEventListener('keydown',event=>{
+        if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+        event.preventDefault();
+        let nextIndex=index;
+        if(event.key==='ArrowLeft') nextIndex=(index-1+tabs.length)%tabs.length;
+        else if(event.key==='ArrowRight') nextIndex=(index+1)%tabs.length;
+        else if(event.key==='Home') nextIndex=0;
+        else if(event.key==='End') nextIndex=tabs.length-1;
+        activate(tabs[nextIndex].dataset.tab,{focusTab:true});
+      });
+    });
+
+    let initial='learning';
+    try{
+      const saved=localStorage.getItem(STORE_KEY);
+      if(saved&&tabs.some(tab=>tab.dataset.tab===saved)) initial=saved;
+    }catch{}
+    activate(initial);
+
+    // If something elsewhere in the app deep-links into a specific settings
+    // control (e.g. opening Settings and scrolling to offline packs), make
+    // sure the tab containing it is switched in first.
+    document.getElementById('settingsBtn')?.addEventListener('click',()=>{
+      // Re-activate the current tab in case panels were re-rendered while
+      // the settings screen was closed (offline/cache cards render lazily).
+      const current=tabs.find(tab=>tab.classList.contains('active'));
+      if(current) activate(current.dataset.tab);
+    });
+  }
+
   function install(){
     installReadingReviewPause();
     installTheatreSpeed();
@@ -995,6 +1081,7 @@
     installJapanReadyQuantitySupport();
     installCacheDataSettings();
     installOfflineMode();
+    installSettingsTabs();
     enforceCurrentServiceWorker();
 
     const el=badge();

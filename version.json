@@ -1,12 +1,11 @@
 {
-  "version": "11.8.40",
-  "released": "2026-08-22",
-  "title": "Offline Detection & Forced Offline Mode",
+  "version": "11.8.41",
+  "released": "2026-08-23",
+  "title": "Tabbed Settings & Working Offline Mode",
   "changes": [
-    "Adds automatic online/offline detection and a persistent offline status banner.",
-    "Adds Force offline mode to Settings \u2192 Offline Mode.",
-    "Forced offline mode makes the service worker serve only downloaded/local content and prevents network requests.",
-    "Shows Online, Offline, or Forced offline status.",
-    "Keeps the existing Essential, Standard and Full offline packs."
+    "Settings is now organized into tabs \u2014 Learning, Character, Account, Data & Offline, and About \u2014 instead of one long scrolling page. Your last-opened tab is remembered.",
+    "Fixes a major Offline Mode bug: Kaishi's core vocabulary, kana, manga, conversation, theatre, grammar and mnemonic data were never actually being saved for offline use, so the app could fail to start at all once offline \u2014 even with an offline pack downloaded. That data is now included automatically.",
+    "Fixes offline status incorrectly showing as offline: connection state is now confirmed with a real network check instead of trusting the browser's connection flag alone, and Kaishi self-heals if the connection quietly comes back.",
+    "Downloading any Offline Pack (Essential, Standard or Full) now reliably lets you keep using Kaishi Quest with no internet connection at all."
   ]
 }

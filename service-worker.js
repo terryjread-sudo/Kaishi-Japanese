@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.40';
+const VERSION='11.8.41';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
@@ -42,6 +42,21 @@ const SHELL=[
   v('./battle-ui-patch.js'),
   './data/japan-ready-v90.json',
   './data/sentence-lab.json',
+  // v11.8.41: these are the core learning-content files app.js loads on
+  // every startup. Without them cached, Kaishi cannot boot at all while
+  // offline - regardless of whether an offline pack was ever downloaded.
+  './data/vocabulary.json',
+  './data/kana.json',
+  './data/manga-stories.json',
+  './data/conversations.json',
+  './data/theatre-scenes.json',
+  './data/grammar-path.json',
+  './data/kanji-components.json',
+  './memory-scenes.json',
+  './data/anki-content-v72.json',
+  './data/topics-v72.json',
+  './data/learning-graph-v82.json',
+  './visual-mnemonics.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   v('./media/guides/teacher-guide.webp'),
@@ -134,7 +149,18 @@ async function networkFirst(request){
 
 async function networkWithOfflineFallback(request){
   try{return await fetch(request,{cache:'no-cache'})}
-  catch(error){return (await offlineMatch(request))||Promise.reject(error)}
+  catch(error){
+    // v11.8.41: this path handles plain data fetches (JSON, audio, etc.),
+    // which is how app.js loads its core content on every startup. Check
+    // the precached app shell first (ignoring any cache-busting query
+    // string), then the user's downloaded offline pack, before giving up.
+    try{
+      const shell=await caches.open(SHELL_CACHE);
+      const shellMatch=await shell.match(request,{ignoreSearch:true});
+      if(shellMatch) return shellMatch;
+    }catch{}
+    return (await offlineMatch(request))||Promise.reject(error);
+  }
 }
 
 self.addEventListener('message',event=>{
