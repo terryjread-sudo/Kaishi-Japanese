@@ -459,7 +459,50 @@
   function isForceOffline(){
     try{return localStorage.getItem(FORCE_OFFLINE_KEY)==='1'}catch{return false}
   }
-  function isKaishiOffline(){return isForceOffline() || !navigator.onLine}
+
+  // navigator.onLine only reflects whether the OS reports an active network
+  // interface - it does NOT confirm the interface can actually reach the
+  // internet. Browsers (particularly on flaky wifi, VPNs, and some Linux/
+  // Android setups) can leave it stuck at `false`, or fire a spurious
+  // 'offline' event, even though requests succeed fine. To avoid Kaishi
+  // falsely declaring itself offline, we treat navigator.onLine as only a
+  // first guess and confirm any "offline" reading with a real, uncached
+  // network request before trusting it.
+  let netIsOnline=navigator.onLine;
+  let netCheckInFlight=null;
+
+  async function verifyConnectivity(){
+    if(netCheckInFlight) return netCheckInFlight;
+    netCheckInFlight=(async()=>{
+      // If the OS itself reports no network interface at all, there is no
+      // point probing - trust that direction, it's the reliable one.
+      if(!navigator.onLine){netIsOnline=false; return netIsOnline}
+      try{
+        const controller=new AbortController();
+        const timer=setTimeout(()=>controller.abort(),5000);
+        // Any response at all - even a non-2xx one - proves the network
+        // path to our own origin is actually working.
+        await fetch(`version.json?ping=${Date.now()}`,{
+          cache:'no-store',
+          headers:{'Cache-Control':'no-cache'},
+          signal:controller.signal
+        });
+        clearTimeout(timer);
+        netIsOnline=true;
+      }catch{
+        netIsOnline=false;
+      }
+      return netIsOnline;
+    })();
+    try{return await netCheckInFlight}
+    finally{
+      netCheckInFlight=null;
+      updateOfflineStatusUI();
+      ensureOfflineIndicator();
+    }
+  }
+
+  function isKaishiOffline(){return isForceOffline() || !netIsOnline}
   function saveForceOffline(enabled){
     try{
       if(enabled)localStorage.setItem(FORCE_OFFLINE_KEY,'1');
@@ -468,7 +511,7 @@
   }
   function offlineModeLabel(){
     if(isForceOffline()) return 'Forced offline';
-    if(!navigator.onLine) return 'Offline';
+    if(!netIsOnline) return 'Offline';
     return 'Online';
   }
   function syncForceOfflineWithWorker(){
@@ -479,7 +522,7 @@
   function updateOfflineStatusUI(){
     const pill=document.getElementById('offlineStatusPill');
     const banner=document.getElementById('offlineModeBanner');
-    const forced=isForceOffline(), disconnected=!navigator.onLine, offline=forced||disconnected;
+    const forced=isForceOffline(), disconnected=!netIsOnline, offline=forced||disconnected;
 
     if(pill){
       pill.hidden=!offline;
@@ -510,17 +553,33 @@
       banner.innerHTML='<span>✈️</span><span data-offline-banner-text>Kaishi is offline.</span>';
       document.body.prepend(banner);
     }
-    window.addEventListener('online',()=>{
-      updateOfflineStatusUI();
-      if(typeof notify==='function')notify('Internet connection restored.');
+    window.addEventListener('online',async()=>{
+      const wasOffline=!netIsOnline;
+      await verifyConnectivity();
+      if(wasOffline&&netIsOnline&&typeof notify==='function')notify('Internet connection restored.');
     });
-    window.addEventListener('offline',()=>{
-      updateOfflineStatusUI();
-      if(typeof notify==='function')notify('No internet connection. Using offline content.');
+    window.addEventListener('offline',async()=>{
+      // Don't trust the browser's 'offline' event on its own - it can fire
+      // incorrectly. Confirm with a real request before showing the banner.
+      const wasOnline=netIsOnline;
+      await verifyConnectivity();
+      if(wasOnline&&!netIsOnline&&typeof notify==='function')notify('No internet connection. Using offline content.');
     });
     navigator.serviceWorker?.addEventListener?.('controllerchange',syncForceOfflineWithWorker);
     navigator.serviceWorker?.ready?.then(syncForceOfflineWithWorker).catch(()=>{});
+
+    // Confirm real connectivity on load instead of trusting navigator.onLine
+    // outright, so a stale/incorrect flag doesn't show a false offline
+    // banner as soon as the app opens.
+    verifyConnectivity();
     updateOfflineStatusUI();
+
+    // Self-heal: if we currently believe we're offline, keep re-checking in
+    // the background. Some browsers never fire the 'online' event even once
+    // the connection is actually back, so this catches that case too.
+    setInterval(()=>{
+      if(!netIsOnline&&!isForceOffline()) verifyConnectivity();
+    },20000);
   }
 
   const OFFLINE_CORE=[
@@ -597,7 +656,7 @@
     if(fill)fill.style.width=`${total?Math.round(done/total*100):0}%`;if(label)label.textContent=text||`${done} / ${total} files`;
   }
   async function downloadOfflinePack(pack){
-    if(!navigator.onLine){notify('Connect to the internet before downloading an offline pack.');return}
+    if(!(await verifyConnectivity())){notify('Connect to the internet before downloading an offline pack.');return}
     if(!('caches'in window)){notify('Offline packs are not supported by this browser.');return}
     const button=document.getElementById('downloadOfflinePack');if(button?.dataset.busy==='1')return;
     const urls=offlinePackUrls(pack),storage=await offlineStorageSummary();
@@ -628,8 +687,8 @@
   function ensureOfflineIndicator(){
     let pill=document.getElementById('offlineStatusPill');
     if(!pill){pill=document.createElement('span');pill.id='offlineStatusPill';pill.className='offline-status-pill';badge()?.insertAdjacentElement('afterend',pill)}
-    const ready=Boolean(offlineState());pill.hidden=!ready&&navigator.onLine;pill.classList.toggle('offline-now',!navigator.onLine);
-    pill.textContent=!navigator.onLine?'● Offline':ready?'✓ Offline ready':'';
+    const ready=Boolean(offlineState());pill.hidden=!ready&&netIsOnline;pill.classList.toggle('offline-now',!netIsOnline);
+    pill.textContent=!netIsOnline?'● Offline':ready?'✓ Offline ready':'';
   }
   async function renderOfflineMode(){
     const card=document.getElementById('offlineModeCard');if(!card)return;
