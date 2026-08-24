@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.41
+ * Kaishi Quest release manager — v11.8.42
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -12,9 +12,10 @@
  * - v11.8.41 Offline detection now verified with a real network probe instead of trusting navigator.onLine alone
  * - v11.8.41 Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data, which
  *   could prevent the app from starting at all while offline even with a pack downloaded
+ * - v11.8.42 Added admin-area real-time logs for offline detection and system diagnostics
  */
 (() => {
-  const CURRENT_VERSION='11.8.41';
+  const CURRENT_VERSION='11.8.42';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -478,25 +479,25 @@
   async function verifyConnectivity(){
     if(netCheckInFlight) return netCheckInFlight;
     netCheckInFlight=(async()=>{
-      console.log('[Kaishi offline check] Starting connectivity verification');
-      console.log('[Kaishi offline check] navigator.onLine =', navigator.onLine);
+      kaishiLog('offline-check','Starting connectivity verification');
+      kaishiLog('offline-check','navigator.onLine = '+navigator.onLine);
       // If the OS itself reports no network interface at all, there is no
       // point probing - trust that direction, it's the reliable one.
       if(!navigator.onLine){
-        console.log('[Kaishi offline check] OS reports no network, marking offline');
+        kaishiLog('offline-check','OS reports no network, marking offline');
         netIsOnline=false;
         return netIsOnline;
       }
       try{
         const controller=new AbortController();
         const timer=setTimeout(()=>{
-          console.log('[Kaishi offline check] Timeout reached, marking offline');
+          kaishiLog('offline-check','Timeout reached, marking offline');
           controller.abort();
         },5000);
         // Ping a well-known external service (Cloudflare DNS) to check real
         // internet connectivity, bypassing any local service-worker caching.
         // This is more reliable than pinging our own origin.
-        console.log('[Kaishi offline check] Attempting HEAD request to Cloudflare...');
+        kaishiLog('offline-check','Attempting HEAD request to Cloudflare...');
         await fetch('https://www.cloudflare.com/cdn-cgi/trace',{
           method:'HEAD',
           cache:'no-store',
@@ -505,7 +506,7 @@
           mode:'cors'
         }).catch(async(err)=>{
           // If HEAD fails, try GET to the same URL
-          console.log('[Kaishi offline check] HEAD failed, trying GET:', err.message);
+          kaishiLog('offline-check','HEAD failed, trying GET: '+err.message);
           return fetch('https://www.cloudflare.com/cdn-cgi/trace',{
             cache:'no-store',
             headers:{'Cache-Control':'no-cache, no-store, must-revalidate'},
@@ -514,21 +515,21 @@
           });
         });
         clearTimeout(timer);
-        console.log('[Kaishi offline check] Request succeeded, marking online');
+        kaishiLog('offline-check','Request succeeded, marking online');
         // Any response means we have internet connectivity
         netIsOnline=true;
       }catch(error){
         // Timeout, network error, CORS block, or other fetch failure
-        console.log('[Kaishi offline check] Request failed, marking offline:', error.message);
+        kaishiLog('offline-check','Request failed, marking offline: '+error.message);
         netIsOnline=false;
       }
-      console.log('[Kaishi offline check] Final result: netIsOnline =', netIsOnline);
+      kaishiLog('offline-check','Final result: netIsOnline = '+netIsOnline);
       return netIsOnline;
     })();
     try{return await netCheckInFlight}
     finally{
       netCheckInFlight=null;
-      console.log('[Kaishi offline check] Updating UI');
+      kaishiLog('offline-check','Updating UI');
       updateOfflineStatusUI();
       ensureOfflineIndicator();
     }
@@ -578,6 +579,40 @@
     if(status)status.textContent=offlineModeLabel();
     syncForceOfflineWithWorker();
   }
+
+  // ----- v11.8.42: Application logging system for offline diagnostics -----
+  const logs=[];
+  const MAX_LOGS=200;
+  const pageLoadTime=performance.now();
+
+  function kaishiLog(category,message){
+    const timestamp=Math.round(performance.now()-pageLoadTime);
+    const entry=`[${timestamp}ms] [${category}] ${message}`;
+    logs.push(entry);
+    if(logs.length>MAX_LOGS) logs.shift();
+    // Also echo to console
+    console.log(entry);
+    updateAdminLogViewer();
+  }
+
+  function updateAdminLogViewer(){
+    const viewer=document.getElementById('adminLogViewer');
+    if(!viewer) return;
+    viewer.textContent=logs.join('\n');
+    // Auto-scroll to bottom
+    viewer.scrollTop=viewer.scrollHeight;
+  }
+
+  function installAdminLogging(){
+    const clearBtn=document.getElementById('clearAdminLogs');
+    if(clearBtn){
+      clearBtn.addEventListener('click',()=>{
+        logs.length=0;
+        updateAdminLogViewer();
+      });
+    }
+  }
+
   function installOfflineDetection(){
     if(!document.getElementById('offlineModeBanner')){
       const banner=document.createElement('div');
@@ -1111,6 +1146,7 @@
     installCacheDataSettings();
     installOfflineMode();
     installSettingsTabs();
+    installAdminLogging();
     enforceCurrentServiceWorker();
 
     const el=badge();

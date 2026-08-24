@@ -1,11 +1,12 @@
 {
-  "version": "11.8.41",
+  "version": "11.8.42",
   "released": "2026-08-23",
-  "title": "Tabbed Settings & Working Offline Mode",
+  "title": "Admin Logging & Offline Diagnostics",
   "changes": [
-    "Settings is now organized into tabs \u2014 Learning, Character, Account, Data & Offline, and About \u2014 instead of one long scrolling page. Your last-opened tab is remembered.",
-    "Fixes a major Offline Mode bug: Kaishi's core vocabulary, kana, manga, conversation, theatre, grammar and mnemonic data were never actually being saved for offline use, so the app could fail to start at all once offline \u2014 even with an offline pack downloaded. That data is now included automatically.",
-    "Fixes offline status incorrectly showing as offline: connection state is now confirmed with a real network check instead of trusting the browser's connection flag alone, and Kaishi self-heals if the connection quietly comes back.",
-    "Downloading any Offline Pack (Essential, Standard or Full) now reliably lets you keep using Kaishi Quest with no internet connection at all."
+    "Added real-time application logs in the Admin area to diagnose connectivity and system issues without opening the browser console.",
+    "Offline detection now pings an external service (Cloudflare) to verify actual internet connectivity instead of relying solely on Cloudflare's less-reliable browser flag.",
+    "Logs show timestamps, verification attempts, and the final online/offline determination, making it easy to see if connection detection is working correctly.",
+    "Settings is organized into tabs \u2014 Learning, Character, Account, Data & Offline, and About \u2014 with tab choice remembered between visits.",
+    "Fixed offline packs to include all core data (vocabulary, kana, manga, conversations, theatre, grammar, mnemonics) so the app can boot completely offline."
   ]
 }
