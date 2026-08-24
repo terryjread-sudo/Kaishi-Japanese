@@ -562,7 +562,7 @@
       pill.title=forced?'Kaishi is intentionally running in offline mode.':'Kaishi cannot currently reach the internet.';
     }
     if(banner){
-      banner.hidden=!offline;
+      banner.style.display=offline?'block':'none';
       const text=banner.querySelector('[data-offline-banner-text]');
       if(text) text.textContent=forced
         ?'Offline mode is forced. Online-only features are paused.'
@@ -615,12 +615,11 @@
     if(!document.getElementById('offlineModeBanner')){
       const banner=document.createElement('div');
       banner.id='offlineModeBanner';
-      banner.hidden=true; // Keep hidden until first verification completes
       banner.setAttribute('role','status');
       banner.setAttribute('aria-live','polite');
       banner.innerHTML='<span>✈️</span><span data-offline-banner-text>Kaishi is offline.</span>';
-      // Position banner at bottom of screen so it doesn't cover interface
-      banner.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9998;background:rgba(220,53,69,0.95);color:white;padding:12px;text-align:center;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;';
+      // Position banner at bottom of screen as a small notification bar
+      banner.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9998;background:rgba(220,53,69,0.95);color:white;padding:8px 12px;text-align:center;font-weight:bold;font-size:13px;line-height:1.2;display:none;';
       document.body.appendChild(banner);
     }
     window.addEventListener('online',async()=>{
