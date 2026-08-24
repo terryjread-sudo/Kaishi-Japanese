@@ -491,36 +491,30 @@
       try{
         const controller=new AbortController();
         const timer=setTimeout(()=>{
-          kaishiLog('offline-check','Timeout reached, marking offline');
+          kaishiLog('offline-check','Timeout reached, aborting request');
           controller.abort();
         },5000);
-        // Ping a well-known external service (Cloudflare DNS) to check real
-        // internet connectivity, bypassing any local service-worker caching.
-        // This is more reliable than pinging our own origin.
-        kaishiLog('offline-check','Attempting HEAD request to Cloudflare...');
-        await fetch('https://www.cloudflare.com/cdn-cgi/trace',{
-          method:'HEAD',
+        // Attempt to fetch version.json from our own origin with aggressive
+        // cache-busting. The service worker is configured to always try the
+        // network first for this endpoint. If this succeeds (any HTTP response),
+        // we have network connectivity. If it times out or network error, we're offline.
+        kaishiLog('offline-check','Fetching version.json with no-cache headers...');
+        const response=await fetch(`version.json?t=${Date.now()}`,{
           cache:'no-store',
-          headers:{'Cache-Control':'no-cache, no-store, must-revalidate'},
-          signal:controller.signal,
-          mode:'cors'
-        }).catch(async(err)=>{
-          // If HEAD fails, try GET to the same URL
-          kaishiLog('offline-check','HEAD failed, trying GET: '+err.message);
-          return fetch('https://www.cloudflare.com/cdn-cgi/trace',{
-            cache:'no-store',
-            headers:{'Cache-Control':'no-cache, no-store, must-revalidate'},
-            signal:controller.signal,
-            mode:'cors'
-          });
+          method:'GET',
+          headers:{
+            'Cache-Control':'no-cache, no-store, must-revalidate, max-age=0',
+            'Pragma':'no-cache'
+          },
+          signal:controller.signal
         });
         clearTimeout(timer);
-        kaishiLog('offline-check','Request succeeded, marking online');
-        // Any response means we have internet connectivity
+        kaishiLog('offline-check','Fetch succeeded with HTTP '+response.status);
+        // Any HTTP response (2xx, 3xx, 4xx, 5xx) means we reached the server
         netIsOnline=true;
       }catch(error){
-        // Timeout, network error, CORS block, or other fetch failure
-        kaishiLog('offline-check','Request failed, marking offline: '+error.message);
+        // Network unreachable, timeout (AbortError), or other fetch failure
+        kaishiLog('offline-check','Fetch failed: '+error.name+': '+error.message);
         netIsOnline=false;
       }
       kaishiLog('offline-check','Final result: netIsOnline = '+netIsOnline);
