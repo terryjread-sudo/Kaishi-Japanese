@@ -1,65 +1,54 @@
-# Kaishi Quest v11.8.44 — Critical Offline Bug Fixes
+# Kaishi Quest v11.8.45 — Remove Redundant Offline Banner
 
-## What was broken
+## What changed
 
-### 1. **MAJOR BUG: Banner CSS causing huge red circle**
-- Offline notification was using conflicting flex properties
-- Caused it to expand to cover the entire left side of the screen
-- **FIXED**: Simplified to basic block display positioning at bottom
+### Offline indicator simplified
 
-### 2. **CRITICAL BUG: Logging not working for offline detection**
-- `kaishiLog()` was defined AFTER `verifyConnectivity()` tried to use it
-- All offline detection logs were silently failing or going to console only
-- Admin log viewer was showing nothing
-- **FIXED**: Moved logging function definitions to before connectivity checks
+The full-width red offline banner (fixed to the bottom of the screen) has been **removed**.
 
-### 3. **UI Showing Offline When Logs Show Online**
-- Added state logging to `updateOfflineStatusUI()` to show why decisions are made
-- Now logs show: `forced=false disconnected=false (netIsOnline=true) → offline=false`
-- You can now see exactly which state variable is causing the issue
+The title bar already shows a compact **"● Offline"** / **"● No internet"** pill next to the version badge whenever connectivity is lost. That pill is always visible and unobtrusive, making the large bottom banner redundant.
 
-## What's Fixed
+**Before v11.8.45:** two indicators appeared simultaneously — a small title-bar pill AND a large coloured banner covering the bottom of the screen.  
+**After v11.8.45:** only the title-bar pill remains. It turns amber when offline or when Forced offline mode is active.
 
-### Offline Banner Positioning
-- Moved from top (covering interface) to fixed bottom
-- Simple, minimal CSS: `position:fixed;bottom:0;left:0;right:0`
-- No more flex weirdness or sizing conflicts
+### Pill behaviour (unchanged)
 
-### Admin Logging Now Actually Works
-- All offline detection events now log properly to Admin area
-- Timestamps in milliseconds since page load
-- Shows HTTP response codes, URLs, success/failure indicators
-- Includes state changes: what values changed to cause UI updates
+| State | Pill text | Pill colour |
+|---|---|---|
+| Online | *(hidden)* | — |
+| Forced offline mode | ● Offline mode | Amber |
+| No internet connection | ● No internet | Amber |
 
-### Real-Time Diagnostics
-1. Settings → Account → Open Admin area
-2. Scroll to "Application logs" section
-3. Watch logs update in real-time as connectivity checks run
-4. See exact state values causing UI to show offline/online
+## What was removed
 
-## Testing
-
-1. Open Admin area and watch the logs
-2. You'll now see full connectivity check flow:
-   ```
-   [22ms] [offline-check] Starting connectivity verification
-   [24ms] [offline-check] navigator.onLine = true
-   [26ms] [offline-check] Fetching: https://your-domain.com/version.json?t=...
-   [123ms] [offline-check] ✓ Fetch succeeded with HTTP 200
-   [123ms] [offline-check] Final result: netIsOnline = true
-   [124ms] [offline-check] Updating UI
-   [124ms] [ui-update] forced=false disconnected=false (netIsOnline=true) → offline=false
-   ```
-
-3. If UI still shows offline, logs will show exactly why:
-   - If `disconnected=true` but logs show `netIsOnline=true`, there's still a state sync issue
-   - If logs show fetch failure, the version.json endpoint is unreachable
+- `#offlineModeBanner` DOM element and its creation code
+- `#offlineModeBanner` CSS block
+- Banner update logic in `updateOfflineStatusUI()`
 
 ## No database changes required
 
 Deploy these files:
-- `index.html`
-- `app.js`
-- `service-worker.js`
 - `release-manager.js`
 - `version.json`
+
+---
+
+## Previous releases
+
+### v11.8.44 — Banner CSS Fix & Offline State Sync
+- Fixed massive red banner bug — was using flex with conflicting CSS properties causing it to cover the entire left side.
+- Banner now displays as a simple notification bar at the bottom of the screen without covering interface.
+- Fixed critical bug where offline logging wasn't working: logging functions are now defined before connectivity checks so logs actually appear.
+- Added state logging to UI updates so you can see in admin logs why the UI is showing offline/online (what the values are).
+- Offline state now properly syncs: if logs show online but UI shows offline, the bug is fixed and UI will update correctly.
+
+### v11.8.43 — Offline Detection Logging
+- Logs show full URL checked, banner moved to bottom, waits for first verification before showing offline state.
+
+### v11.8.42 — Admin Logging
+- Added admin-area real-time logs for offline detection and system diagnostics.
+
+### v11.8.41 — Settings Tabs & Offline Detection
+- Settings screen reorganized into tabs (Learning / Character / Account / Data & Offline / About).
+- Offline detection now verified with a real network probe instead of trusting `navigator.onLine` alone.
+- Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data.

@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.44
+ * Kaishi Quest release manager — v11.8.45
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -15,9 +15,10 @@
  * - v11.8.43 Logs show full URL checked, banner moved to bottom, waits for first verification
  * - v11.8.44 Fixed banner CSS sizing (was causing huge red circle covering left side)
  * - v11.8.44 Offline state now properly syncs across all UI elements in real-time
+ * - v11.8.45 Removed redundant full-width offline banner — title-bar pill already shows offline state
  */
 (() => {
-  const CURRENT_VERSION='11.8.44';
+  const CURRENT_VERSION='11.8.45';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -393,7 +394,7 @@
       .offline-status-pill{display:inline-flex;align-items:center;gap:5px;margin-left:5px;padding:4px 7px;border-radius:999px;background:#dcfce7;color:#166534;font-size:.58rem;font-weight:850}.offline-status-pill.offline-now{background:#fef3c7;color:#92400e}
       @media(max-width:560px){.offline-pack-options{grid-template-columns:1fr}.offline-pack-option{min-height:0}.offline-pack-meta{grid-template-columns:1fr 1fr}}
 
-      #offlineModeBanner{position:fixed;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:7px;padding:8px 12px;max-width:calc(100vw - 24px);border:1px solid #fbbf24;border-radius:999px;background:#fffbeb;color:#92400e;box-shadow:0 5px 18px rgba(15,23,42,.12);font-size:.68rem;font-weight:800;text-align:center}
+      /* #offlineModeBanner removed v11.8.45 — title-bar pill is sufficient */
       .force-offline-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
       .force-offline-copy{display:grid;gap:3px}.force-offline-copy strong{font-size:.78rem;color:#0f172a}.force-offline-copy small{font-size:.64rem;line-height:1.4;color:#64748b}
       .force-offline-toggle{position:relative;flex:0 0 auto;width:48px;height:28px;border:0;border-radius:999px;background:#cbd5e1;cursor:pointer;padding:0}
@@ -584,7 +585,6 @@
   }
   function updateOfflineStatusUI(){
     const pill=document.getElementById('offlineStatusPill');
-    const banner=document.getElementById('offlineModeBanner');
     const forced=isForceOffline(), disconnected=!netIsOnline, offline=forced||disconnected;
     
     kaishiLog('ui-update',`forced=${forced} disconnected=${disconnected} (netIsOnline=${netIsOnline}) → offline=${offline}`);
@@ -595,13 +595,7 @@
       pill.textContent=forced?'● Offline mode':disconnected?'● No internet':'';
       pill.title=forced?'Kaishi is intentionally running in offline mode.':'Kaishi cannot currently reach the internet.';
     }
-    if(banner){
-      banner.style.display=offline?'block':'none';
-      const text=banner.querySelector('[data-offline-banner-text]');
-      if(text) text.textContent=forced
-        ?'Offline mode is forced. Online-only features are paused.'
-        :'No internet connection. Kaishi is using your downloaded offline content.';
-    }
+    // Banner removed v11.8.45 — offline state is shown by the title-bar pill only.
     const toggle=document.getElementById('forceOfflineToggle');
     if(toggle){
       toggle.setAttribute('aria-checked',String(forced));
@@ -613,16 +607,8 @@
   }
 
   function installOfflineDetection(){
-    if(!document.getElementById('offlineModeBanner')){
-      const banner=document.createElement('div');
-      banner.id='offlineModeBanner';
-      banner.setAttribute('role','status');
-      banner.setAttribute('aria-live','polite');
-      banner.innerHTML='<span>✈️</span><span data-offline-banner-text>Kaishi is offline.</span>';
-      // Position banner at bottom of screen as a small notification bar
-      banner.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9998;background:rgba(220,53,69,0.95);color:white;padding:8px 12px;text-align:center;font-weight:bold;font-size:13px;line-height:1.2;display:none;';
-      document.body.appendChild(banner);
-    }
+    // v11.8.45: Banner removed — offline state is communicated by the
+    // title-bar pill (#offlineStatusPill) which is already visible at all times.
     window.addEventListener('online',async()=>{
       const wasOffline=!netIsOnline;
       await verifyConnectivity();

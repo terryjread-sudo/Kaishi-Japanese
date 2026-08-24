@@ -1,0 +1,25 @@
+UPLOAD INSTRUCTIONS — Kaishi Quest v11.8.45
+Remove Redundant Offline Banner
+===========================================
+
+WHY
+---
+The full-width bottom banner that showed whenever offline was redundant:
+the title-bar pill already shows "● Offline" / "● No internet" at all times.
+The banner has been removed entirely. The pill remains unchanged.
+
+FILES TO UPLOAD (2 files only)
+-------------------------------
+1. release-manager.js
+2. version.json
+
+No changes to index.html, app.js, styles.css or the service worker.
+
+VERIFICATION
+------------
+After upload, reload the app and:
+- Confirm the version badge in the title bar reads v11.8.45
+- Go offline (DevTools → Network → Offline) and confirm:
+  - The title-bar pill shows "● No internet"
+  - NO red/coloured banner appears at the top or bottom of the screen
+- Come back online and confirm the pill disappears
