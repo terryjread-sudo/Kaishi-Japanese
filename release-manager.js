@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.43
+ * Kaishi Quest release manager — v11.8.44
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -10,15 +10,14 @@
  * - v11.8.40 service-worker version pin + unclipped compact bonsai
  * - v11.8.41 Settings screen reorganized into tabs (Learning / Character / Account / Data & Offline / About)
  * - v11.8.41 Offline detection now verified with a real network probe instead of trusting navigator.onLine alone
- * - v11.8.41 Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data, which
- *   could prevent the app from starting at all while offline even with a pack downloaded
+ * - v11.8.41 Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data
  * - v11.8.42 Added admin-area real-time logs for offline detection and system diagnostics
- * - v11.8.43 Logs now show the full URL being checked for connectivity verification
- * - v11.8.43 Moved offline banner from top (covering interface) to fixed bottom position
- * - v11.8.43 Offline banner now stays hidden until first connectivity verification completes
+ * - v11.8.43 Logs show full URL checked, banner moved to bottom, waits for first verification
+ * - v11.8.44 Fixed banner CSS sizing (was causing huge red circle covering left side)
+ * - v11.8.44 Offline state now properly syncs across all UI elements in real-time
  */
 (() => {
-  const CURRENT_VERSION='11.8.43';
+  const CURRENT_VERSION='11.8.44';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -479,6 +478,39 @@
   let netIsOnline=navigator.onLine;
   let netCheckInFlight=null;
 
+  // ----- v11.8.42: Application logging system (defined early for use in offline detection) -----
+  const logs=[];
+  const MAX_LOGS=200;
+  const pageLoadTime=performance.now();
+
+  function kaishiLog(category,message){
+    const timestamp=Math.round(performance.now()-pageLoadTime);
+    const entry=`[${timestamp}ms] [${category}] ${message}`;
+    logs.push(entry);
+    if(logs.length>MAX_LOGS) logs.shift();
+    // Also echo to console
+    console.log(entry);
+    updateAdminLogViewer();
+  }
+
+  function updateAdminLogViewer(){
+    const viewer=document.getElementById('adminLogViewer');
+    if(!viewer) return;
+    viewer.textContent=logs.join('\n');
+    // Auto-scroll to bottom
+    viewer.scrollTop=viewer.scrollHeight;
+  }
+
+  function installAdminLogging(){
+    const clearBtn=document.getElementById('clearAdminLogs');
+    if(clearBtn){
+      clearBtn.addEventListener('click',()=>{
+        logs.length=0;
+        updateAdminLogViewer();
+      });
+    }
+  }
+
   async function verifyConnectivity(){
     if(netCheckInFlight) return netCheckInFlight;
     netCheckInFlight=(async()=>{
@@ -554,6 +586,8 @@
     const pill=document.getElementById('offlineStatusPill');
     const banner=document.getElementById('offlineModeBanner');
     const forced=isForceOffline(), disconnected=!netIsOnline, offline=forced||disconnected;
+    
+    kaishiLog('ui-update',`forced=${forced} disconnected=${disconnected} (netIsOnline=${netIsOnline}) → offline=${offline}`);
 
     if(pill){
       pill.hidden=!offline;
@@ -576,39 +610,6 @@
     const status=document.getElementById('forceOfflineStatus');
     if(status)status.textContent=offlineModeLabel();
     syncForceOfflineWithWorker();
-  }
-
-  // ----- v11.8.42: Application logging system for offline diagnostics -----
-  const logs=[];
-  const MAX_LOGS=200;
-  const pageLoadTime=performance.now();
-
-  function kaishiLog(category,message){
-    const timestamp=Math.round(performance.now()-pageLoadTime);
-    const entry=`[${timestamp}ms] [${category}] ${message}`;
-    logs.push(entry);
-    if(logs.length>MAX_LOGS) logs.shift();
-    // Also echo to console
-    console.log(entry);
-    updateAdminLogViewer();
-  }
-
-  function updateAdminLogViewer(){
-    const viewer=document.getElementById('adminLogViewer');
-    if(!viewer) return;
-    viewer.textContent=logs.join('\n');
-    // Auto-scroll to bottom
-    viewer.scrollTop=viewer.scrollHeight;
-  }
-
-  function installAdminLogging(){
-    const clearBtn=document.getElementById('clearAdminLogs');
-    if(clearBtn){
-      clearBtn.addEventListener('click',()=>{
-        logs.length=0;
-        updateAdminLogViewer();
-      });
-    }
   }
 
   function installOfflineDetection(){

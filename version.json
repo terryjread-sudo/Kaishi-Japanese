@@ -1,12 +1,12 @@
 {
-  "version": "11.8.43",
+  "version": "11.8.44",
   "released": "2026-08-24",
-  "title": "Better Offline Diagnostics & UI Positioning",
+  "title": "Banner CSS Fix & Offline State Sync",
   "changes": [
-    "Admin logs now show the full URL being checked during connectivity verification (e.g., 'Fetching: https://example.com/version.json?t=...').",
-    "Offline notification banner moved from top of screen to fixed bottom position, so it no longer covers important interface elements.",
-    "Offline banner stays hidden during startup until the first connectivity check completes, preventing false 'offline' alerts when you're actually online.",
-    "Connectivity logs include HTTP response codes and clearer success/failure indicators (✓ for success, ✗ for failure).",
-    "Admin logging system captures all offline detection events in real-time for easy troubleshooting."
+    "Fixed massive red banner bug — was using flex with conflicting CSS properties causing it to cover the entire left side.",
+    "Banner now displays as a simple notification bar at the bottom of the screen without covering interface.",
+    "Fixed critical bug where offline logging wasn't working: logging functions are now defined before connectivity checks so logs actually appear.",
+    "Added state logging to UI updates so you can see in admin logs why the UI is showing offline/online (what the values are).",
+    "Offline state now properly syncs: if logs show online but UI shows offline, the bug is fixed and UI will update correctly."
   ]
 }

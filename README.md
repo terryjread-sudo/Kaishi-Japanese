@@ -1,38 +1,63 @@
-# Kaishi Quest v11.8.43 — Offline Diagnostics & UI Positioning
+# Kaishi Quest v11.8.44 — Critical Offline Bug Fixes
 
-## What's fixed
+## What was broken
 
-### Admin Logging for Offline Detection
-- New "Application logs" section in the Admin area (Settings > Account > Open Admin area)
-- Real-time diagnostics showing each connectivity check as it happens
-- Logs now display the full URL being checked: `Fetching: https://your-domain.com/version.json?t=...`
-- See success (✓) or failure (✗) indicators with timestamps
+### 1. **MAJOR BUG: Banner CSS causing huge red circle**
+- Offline notification was using conflicting flex properties
+- Caused it to expand to cover the entire left side of the screen
+- **FIXED**: Simplified to basic block display positioning at bottom
 
-### Offline Banner Repositioning
-- The "Kaishi is offline" notification moved from **top of screen** to a **fixed position at the bottom**
-- No longer covers Settings buttons, Learning tab, or other important interface elements
-- Styled with a dark red background for clarity
+### 2. **CRITICAL BUG: Logging not working for offline detection**
+- `kaishiLog()` was defined AFTER `verifyConnectivity()` tried to use it
+- All offline detection logs were silently failing or going to console only
+- Admin log viewer was showing nothing
+- **FIXED**: Moved logging function definitions to before connectivity checks
 
-### Improved Startup Behavior
-- Offline banner now stays hidden until the first connectivity verification completes
-- Prevents false "offline" alerts when you're actually online but `navigator.onLine` is stuck on `false`
+### 3. **UI Showing Offline When Logs Show Online**
+- Added state logging to `updateOfflineStatusUI()` to show why decisions are made
+- Now logs show: `forced=false disconnected=false (netIsOnline=true) → offline=false`
+- You can now see exactly which state variable is causing the issue
 
-### Core Fixes Carried Forward (v11.8.41-11.8.42)
-- Settings reorganized into 5 tabs: Learning, Character, Account, Data & Offline, About
-- Offline packs now include all core vocabulary/kana/manga/theatre/conversation/grammar/mnemonic data
-- Connectivity verification uses a real network check (pinging your own `/version.json`)
-- Self-healing: re-checks every 20s if stuck showing "offline"
+## What's Fixed
 
-## Testing offline mode
+### Offline Banner Positioning
+- Moved from top (covering interface) to fixed bottom
+- Simple, minimal CSS: `position:fixed;bottom:0;left:0;right:0`
+- No more flex weirdness or sizing conflicts
 
-1. Download an Offline Pack (Data & Offline tab → "Download for offline use")
-2. Open Admin area to watch the connectivity logs
-3. Disconnect internet (airplane mode) or force offline mode (toggle in Settings)
-4. Watch the logs update in real-time showing the offline status
+### Admin Logging Now Actually Works
+- All offline detection events now log properly to Admin area
+- Timestamps in milliseconds since page load
+- Shows HTTP response codes, URLs, success/failure indicators
+- Includes state changes: what values changed to cause UI updates
+
+### Real-Time Diagnostics
+1. Settings → Account → Open Admin area
+2. Scroll to "Application logs" section
+3. Watch logs update in real-time as connectivity checks run
+4. See exact state values causing UI to show offline/online
+
+## Testing
+
+1. Open Admin area and watch the logs
+2. You'll now see full connectivity check flow:
+   ```
+   [22ms] [offline-check] Starting connectivity verification
+   [24ms] [offline-check] navigator.onLine = true
+   [26ms] [offline-check] Fetching: https://your-domain.com/version.json?t=...
+   [123ms] [offline-check] ✓ Fetch succeeded with HTTP 200
+   [123ms] [offline-check] Final result: netIsOnline = true
+   [124ms] [offline-check] Updating UI
+   [124ms] [ui-update] forced=false disconnected=false (netIsOnline=true) → offline=false
+   ```
+
+3. If UI still shows offline, logs will show exactly why:
+   - If `disconnected=true` but logs show `netIsOnline=true`, there's still a state sync issue
+   - If logs show fetch failure, the version.json endpoint is unreachable
 
 ## No database changes required
 
-Drop these files into your repo root and commit:
+Deploy these files:
 - `index.html`
 - `app.js`
 - `service-worker.js`
