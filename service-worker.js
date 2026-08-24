@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.42';
+const VERSION='11.8.43';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
@@ -42,7 +42,7 @@ const SHELL=[
   v('./battle-ui-patch.js'),
   './data/japan-ready-v90.json',
   './data/sentence-lab.json',
-  // v11.8.42: these are the core learning-content files app.js loads on
+  // v11.8.43: these are the core learning-content files app.js loads on
   // every startup. Without them cached, Kaishi cannot boot at all while
   // offline - regardless of whether an offline pack was ever downloaded.
   './data/vocabulary.json',
@@ -150,7 +150,7 @@ async function networkFirst(request){
 async function networkWithOfflineFallback(request){
   try{return await fetch(request,{cache:'no-cache'})}
   catch(error){
-    // v11.8.42: this path handles plain data fetches (JSON, audio, etc.),
+    // v11.8.43: this path handles plain data fetches (JSON, audio, etc.),
     // which is how app.js loads its core content on every startup. Check
     // the precached app shell first (ignoring any cache-busting query
     // string), then the user's downloaded offline pack, before giving up.

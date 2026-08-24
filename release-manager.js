@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.42
+ * Kaishi Quest release manager — v11.8.43
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -13,9 +13,12 @@
  * - v11.8.41 Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data, which
  *   could prevent the app from starting at all while offline even with a pack downloaded
  * - v11.8.42 Added admin-area real-time logs for offline detection and system diagnostics
+ * - v11.8.43 Logs now show the full URL being checked for connectivity verification
+ * - v11.8.43 Moved offline banner from top (covering interface) to fixed bottom position
+ * - v11.8.43 Offline banner now stays hidden until first connectivity verification completes
  */
 (() => {
-  const CURRENT_VERSION='11.8.42';
+  const CURRENT_VERSION='11.8.43';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -491,15 +494,16 @@
       try{
         const controller=new AbortController();
         const timer=setTimeout(()=>{
-          kaishiLog('offline-check','Timeout reached, aborting request');
+          kaishiLog('offline-check','Timeout reached (5s), aborting request');
           controller.abort();
         },5000);
         // Attempt to fetch version.json from our own origin with aggressive
         // cache-busting. The service worker is configured to always try the
         // network first for this endpoint. If this succeeds (any HTTP response),
         // we have network connectivity. If it times out or network error, we're offline.
-        kaishiLog('offline-check','Fetching version.json with no-cache headers...');
-        const response=await fetch(`version.json?t=${Date.now()}`,{
+        const checkUrl=`${location.origin}/version.json?t=${Date.now()}`;
+        kaishiLog('offline-check','Fetching: '+checkUrl);
+        const response=await fetch(checkUrl,{
           cache:'no-store',
           method:'GET',
           headers:{
@@ -509,12 +513,12 @@
           signal:controller.signal
         });
         clearTimeout(timer);
-        kaishiLog('offline-check','Fetch succeeded with HTTP '+response.status);
+        kaishiLog('offline-check','✓ Fetch succeeded with HTTP '+response.status);
         // Any HTTP response (2xx, 3xx, 4xx, 5xx) means we reached the server
         netIsOnline=true;
       }catch(error){
         // Network unreachable, timeout (AbortError), or other fetch failure
-        kaishiLog('offline-check','Fetch failed: '+error.name+': '+error.message);
+        kaishiLog('offline-check','✗ Fetch failed: '+error.name+': '+error.message);
         netIsOnline=false;
       }
       kaishiLog('offline-check','Final result: netIsOnline = '+netIsOnline);
@@ -610,9 +614,14 @@
   function installOfflineDetection(){
     if(!document.getElementById('offlineModeBanner')){
       const banner=document.createElement('div');
-      banner.id='offlineModeBanner';banner.hidden=true;banner.setAttribute('role','status');
+      banner.id='offlineModeBanner';
+      banner.hidden=true; // Keep hidden until first verification completes
+      banner.setAttribute('role','status');
+      banner.setAttribute('aria-live','polite');
       banner.innerHTML='<span>✈️</span><span data-offline-banner-text>Kaishi is offline.</span>';
-      document.body.prepend(banner);
+      // Position banner at bottom of screen so it doesn't cover interface
+      banner.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9998;background:rgba(220,53,69,0.95);color:white;padding:12px;text-align:center;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;';
+      document.body.appendChild(banner);
     }
     window.addEventListener('online',async()=>{
       const wasOffline=!netIsOnline;

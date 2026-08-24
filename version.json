@@ -1,12 +1,12 @@
 {
-  "version": "11.8.42",
-  "released": "2026-08-23",
-  "title": "Admin Logging & Offline Diagnostics",
+  "version": "11.8.43",
+  "released": "2026-08-24",
+  "title": "Better Offline Diagnostics & UI Positioning",
   "changes": [
-    "Added real-time application logs in the Admin area to diagnose connectivity and system issues without opening the browser console.",
-    "Offline detection now pings an external service (Cloudflare) to verify actual internet connectivity instead of relying solely on Cloudflare's less-reliable browser flag.",
-    "Logs show timestamps, verification attempts, and the final online/offline determination, making it easy to see if connection detection is working correctly.",
-    "Settings is organized into tabs \u2014 Learning, Character, Account, Data & Offline, and About \u2014 with tab choice remembered between visits.",
-    "Fixed offline packs to include all core data (vocabulary, kana, manga, conversations, theatre, grammar, mnemonics) so the app can boot completely offline."
+    "Admin logs now show the full URL being checked during connectivity verification (e.g., 'Fetching: https://example.com/version.json?t=...').",
+    "Offline notification banner moved from top of screen to fixed bottom position, so it no longer covers important interface elements.",
+    "Offline banner stays hidden during startup until the first connectivity check completes, preventing false 'offline' alerts when you're actually online.",
+    "Connectivity logs include HTTP response codes and clearer success/failure indicators (✓ for success, ✗ for failure).",
+    "Admin logging system captures all offline detection events in real-time for easy troubleshooting."
   ]
 }

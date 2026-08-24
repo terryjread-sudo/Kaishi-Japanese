@@ -1,30 +1,40 @@
-# Kaishi Quest v11.0.1 — Water and cat correction
+# Kaishi Quest v11.8.43 — Offline Diagnostics & UI Positioning
 
-Upload this package over v11.0.0.
+## What's fixed
 
-## Water correction
+### Admin Logging for Offline Detection
+- New "Application logs" section in the Admin area (Settings > Account > Open Admin area)
+- Real-time diagnostics showing each connectivity check as it happens
+- Logs now display the full URL being checked: `Fetching: https://your-domain.com/version.json?t=...`
+- See success (✓) or failure (✗) indicators with timestamps
 
-The previous mask images contained opaque alpha across their entire canvas. Browsers therefore applied the moving texture to the complete village rather than just the white water shapes.
+### Offline Banner Repositioning
+- The "Kaishi is offline" notification moved from **top of screen** to a **fixed position at the bottom**
+- No longer covers Settings buttons, Learning tab, or other important interface elements
+- Styled with a dark red background for clarity
 
-The four masks are now genuine transparent alpha masks:
+### Improved Startup Behavior
+- Offline banner now stays hidden until the first connectivity verification completes
+- Prevents false "offline" alerts when you're actually online but `navigator.onLine` is stuck on `false`
 
-- rivers and connecting streams;
-- pools and calmer water;
-- castle waterfalls;
-- sea and harbour.
+### Core Fixes Carried Forward (v11.8.41-11.8.42)
+- Settings reorganized into 5 tabs: Learning, Character, Account, Data & Offline, About
+- Offline packs now include all core vocabulary/kana/manga/theatre/conversation/grammar/mnemonic data
+- Connectivity verification uses a real network check (pinging your own `/version.json`)
+- Self-healing: re-checks every 20s if stuck showing "offline"
 
-Movement is now clipped to water only and its opacity has been reduced slightly.
+## Testing offline mode
 
-## Village cat correction
+1. Download an Offline Pack (Data & Offline tab → "Download for offline use")
+2. Open Admin area to watch the connectivity logs
+3. Disconnect internet (airplane mode) or force offline mode (toggle in Settings)
+4. Watch the logs update in real-time showing the offline status
 
-The cat now uses a curated list of clear resting places.
+## No database changes required
 
-A position is rejected when it:
-
-- falls inside an unopened or fog-covered building;
-- overlaps a building panel;
-- is too close to a blocked location.
-
-Building labels render above the cat, so activity information always remains readable.
-
-No Supabase SQL changes are required.
+Drop these files into your repo root and commit:
+- `index.html`
+- `app.js`
+- `service-worker.js`
+- `release-manager.js`
+- `version.json`
