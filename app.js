@@ -542,16 +542,16 @@ function launchVillageActivity(id){
  launchPathMilestone(id,true);
 }
 const VILLAGE_HOTSPOTS=[
- {id:'battle',label:'Castle Keep',x:64,y:3,w:32,h:20},
- {id:'theatre',label:'Kaishi Theatre',x:3,y:17,w:35,h:19},
- {id:'builder',label:'Builder Forge',x:66,y:26,w:32,h:18},
- {id:'kana',label:'Kana Bridge',x:37,y:27,w:27,h:12},
- {id:'grammar',label:'Particle Shrine',x:36,y:39,w:28,h:18},
- {id:'sentenceLab',label:'Sentence Lab',x:2,y:49,w:28,h:16},
- {id:'listening',label:'Audio Dojo',x:68,y:48,w:30,h:17},
- {id:'picture',label:'Picture Meadow',x:31,y:58,w:38,h:17},
- {id:'manga',label:'Manga Library',x:1,y:68,w:34,h:18},
- {id:'vocabulary',label:'Starting Village',x:66,y:70,w:33,h:20}
+ {id:'battle',label:'Castle Keep',x:64,y:2,w:28,h:17},
+ {id:'theatre',label:'Kaishi Theatre',x:4,y:15,w:30,h:16},
+ {id:'builder',label:'Builder Forge',x:67,y:24,w:28,h:16},
+ {id:'kana',label:'Kana Bridge',x:37,y:26,w:25,h:11},
+ {id:'grammar',label:'Particle Shrine',x:36,y:39,w:26,h:15},
+ {id:'sentenceLab',label:'Sentence Lab',x:3,y:48,w:26,h:14},
+ {id:'listening',label:'Audio Dojo',x:68,y:46,w:28,h:15},
+ {id:'picture',label:'Picture Meadow',x:33,y:57,w:33,h:15},
+ {id:'manga',label:'Manga Library',x:2,y:67,w:29,h:15},
+ {id:'vocabulary',label:'Starting Village',x:67,y:71,w:29,h:17}
 ];
 function clearVillageFocus(){const stage=$('.village-map-stage');if(stage){stage.classList.remove('location-focused');stage.style.removeProperty('--focus-x');stage.style.removeProperty('--focus-y')}}
 function focusVillageLocation(id,button){
@@ -688,9 +688,14 @@ function setActivityVillageMode(enabled){
  settings.activityVillageMode=Boolean(enabled);save();renderVillageMap();toast(enabled?'Activity Village enabled':'Classic activity view enabled');
 }
 const ACTIVITY_SKILL_LAYOUT={
- vocabulary:{x:50,y:12},kana:{x:22,y:24},picture:{x:78,y:24},listening:{x:50,y:35},
- karuta:{x:16,y:46},conversation:{x:50,y:47},grammar:{x:84,y:46},kanji:{x:20,y:58},
- sentenceLab:{x:50,y:59},theatre:{x:80,y:62},builder:{x:25,y:70},manga:{x:68,y:73},battle:{x:50,y:84},colosseum:{x:50,y:94}
+ vocabulary:{x:50,y:7},
+ kana:{x:25,y:17},picture:{x:75,y:17},
+ listening:{x:50,y:28},
+ karuta:{x:15,y:39},conversation:{x:50,y:39},grammar:{x:85,y:39},
+ kanji:{x:18,y:52},sentenceLab:{x:50,y:52},theatre:{x:82,y:52},
+ builder:{x:26,y:65},manga:{x:74,y:65},
+ battle:{x:50,y:78},
+ colosseum:{x:50,y:90}
 };
 const ACTIVITY_SKILL_LINKS=[
  ['vocabulary','kana'],['vocabulary','picture'],['kana','listening'],['picture','listening'],

@@ -1,10 +1,10 @@
 {
-  "version": "11.8.45",
-  "released": "2026-08-24",
-  "title": "Remove Redundant Offline Banner",
+  "version": "11.8.46",
+  "released": "2026-08-25",
+  "title": "Optimize Activity Landmark & Skill Web Layout",
   "changes": [
-    "Removed the full-width red offline banner — the title-bar pill already shows offline state clearly.",
-    "Both the banner DOM creation and its CSS have been stripped; only the compact title-bar pill remains.",
-    "No change to offline detection logic or the pill indicator itself."
+    "Redistributed horizontal and vertical tiers across the Activity Skill Web to eliminate card and text overlaps.",
+    "Adjusted Activity Village Map hotspot bounding boxes and enhanced panel label glassmorphism for crisp, non-colliding display.",
+    "Added hover/focus z-index elevation so active landmarks remain visible above SVG lines and neighboring nodes."
   ]
 }

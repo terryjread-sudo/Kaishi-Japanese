@@ -1138,6 +1138,9 @@ body.welcome-open{overflow:hidden}
   border-color:#e2e8f0;
   box-shadow:0 0 0 3px rgba(15,23,42,.55);
 }
+.village-hotspot:focus-visible,.village-hotspot:hover{
+  z-index:20!important;
+}
 .village-hotspot:focus-visible::before,.village-hotspot:hover::before{
   box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(37,99,235,.7);
 }
@@ -1145,12 +1148,16 @@ body.welcome-open{overflow:hidden}
   font-size:clamp(.9rem,2.4vw,1.35rem);
 }
 .village-hotspot b,.village-hotspot small{
-  max-width:88%;
-  background:rgba(15,23,42,.82);
-  backdrop-filter:blur(3px);
+  max-width:96%;
+  background:rgba(15,23,42,.88);
+  backdrop-filter:blur(6px);
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.village-hotspot b{font-size:clamp(.56rem,1.45vw,.8rem)}
-.village-hotspot small{font-size:clamp(.48rem,1.12vw,.64rem)}
+.village-hotspot b{font-size:clamp(.56rem,1.45vw,.8rem);padding:2px 7px;border-radius:6px}
+.village-hotspot small{font-size:clamp(.48rem,1.12vw,.64rem);padding:2px 6px;border-radius:999px}
 @keyframes hotspotReadyDot{
   50%{transform:translateX(-50%) scale(1.22);box-shadow:0 0 0 5px rgba(15,23,42,.55),0 0 18px rgba(245,158,11,1)}
 }

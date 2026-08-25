@@ -489,15 +489,16 @@ function launchVillageActivity(id){
  launchPathMilestone(id,true);
 }
 const VILLAGE_HOTSPOTS=[
- {id:'battle',label:'Castle Keep',x:61,y:5,w:24,h:18},
- {id:'theatre',label:'Kaishi Theatre',x:4,y:23,w:34,h:17},
- {id:'builder',label:'Builder Forge',x:67,y:27,w:30,h:17},
- {id:'picture',label:'Picture Meadow',x:1,y:42,w:28,h:17},
- {id:'listening',label:'Audio Dojo',x:69,y:49,w:29,h:16},
- {id:'grammar',label:'Particle Shrine',x:1,y:65,w:28,h:15},
- {id:'manga',label:'Manga Library',x:48,y:65,w:29,h:15},
- {id:'kana',label:'Kana Bridge',x:31,y:57,w:20,h:12},
- {id:'vocabulary',label:'Starting Village',x:69,y:78,w:30,h:18}
+ {id:'battle',label:'Castle Keep',x:64,y:2,w:28,h:17},
+ {id:'theatre',label:'Kaishi Theatre',x:4,y:15,w:30,h:16},
+ {id:'builder',label:'Builder Forge',x:67,y:24,w:28,h:16},
+ {id:'kana',label:'Kana Bridge',x:37,y:26,w:25,h:11},
+ {id:'grammar',label:'Particle Shrine',x:36,y:39,w:26,h:15},
+ {id:'sentenceLab',label:'Sentence Lab',x:3,y:48,w:26,h:14},
+ {id:'listening',label:'Audio Dojo',x:68,y:46,w:28,h:15},
+ {id:'picture',label:'Picture Meadow',x:33,y:57,w:33,h:15},
+ {id:'manga',label:'Manga Library',x:2,y:67,w:29,h:15},
+ {id:'vocabulary',label:'Starting Village',x:67,y:71,w:29,h:17}
 ];
 function clearVillageFocus(){const stage=$('.village-map-stage');if(stage){stage.classList.remove('location-focused');stage.style.removeProperty('--focus-x');stage.style.removeProperty('--focus-y')}}
 function focusVillageLocation(id,button){

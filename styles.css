@@ -1172,6 +1172,9 @@ body.welcome-open{overflow:hidden}
   border-color:#e2e8f0;
   box-shadow:0 0 0 3px rgba(15,23,42,.55);
 }
+.village-hotspot:focus-visible,.village-hotspot:hover{
+  z-index:20!important;
+}
 .village-hotspot:focus-visible::before,.village-hotspot:hover::before{
   box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(37,99,235,.7);
 }
@@ -1179,12 +1182,16 @@ body.welcome-open{overflow:hidden}
   font-size:clamp(.9rem,2.4vw,1.35rem);
 }
 .village-hotspot b,.village-hotspot small{
-  max-width:88%;
-  background:rgba(15,23,42,.82);
-  backdrop-filter:blur(3px);
+  max-width:96%;
+  background:rgba(15,23,42,.88);
+  backdrop-filter:blur(6px);
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.village-hotspot b{font-size:clamp(.56rem,1.45vw,.8rem)}
-.village-hotspot small{font-size:clamp(.48rem,1.12vw,.64rem)}
+.village-hotspot b{font-size:clamp(.56rem,1.45vw,.8rem);padding:2px 7px;border-radius:6px}
+.village-hotspot small{font-size:clamp(.48rem,1.12vw,.64rem);padding:2px 6px;border-radius:999px}
 @keyframes hotspotReadyDot{
   50%{transform:translateX(-50%) scale(1.22);box-shadow:0 0 0 5px rgba(15,23,42,.55),0 0 18px rgba(245,158,11,1)}
 }
@@ -1705,7 +1712,7 @@ body.welcome-open{overflow:hidden}
 /* v11.8.6 Activity Landmark skill web */
 #classicActivityView{overflow:visible}
 .path-road{
-  display:block!important;position:relative!important;height:850px;margin:22px 0 40px!important;
+  display:block!important;position:relative!important;height:clamp(880px,118vh,1040px);margin:22px 0 40px!important;
   padding:0!important;overflow:hidden!important;border:1px solid #334155!important;border-radius:30px!important;
   background:radial-gradient(circle at 50% 8%,#1e3a8a 0,#111c44 24%,#0b1027 62%,#050816 100%)!important;
   box-shadow:inset 0 0 80px #020617,0 20px 50px #0f172a2e!important;isolation:isolate
@@ -1735,8 +1742,11 @@ body.welcome-open{overflow:hidden}
 .activity-skill-link.available{stroke:#b45309;stroke-dasharray:5 6;animation:skillPathFlow 2.2s linear infinite}
 .activity-skill-link.unlocked{stroke:#22c55e;filter:drop-shadow(0 0 4px #4ade80)}
 .activity-skill-node{
-  position:absolute;z-index:3;left:var(--skill-x);top:var(--skill-y);width:126px;
-  transform:translate(-50%,-50%);text-align:center
+  position:absolute;z-index:3;left:var(--skill-x);top:var(--skill-y);width:130px;
+  transform:translate(-50%,-50%);text-align:center;transition:transform .2s ease,z-index .2s ease
+}
+.activity-skill-node:hover,.activity-skill-node:focus-within{
+  z-index:12!important
 }
 .activity-skill-node button{
   width:100%;min-height:92px;padding:3px!important;display:grid!important;justify-items:center!important;
@@ -1750,8 +1760,15 @@ body.welcome-open{overflow:hidden}
   position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 30%,#475569,#172033 65%,#080d1b);
   border:2px solid #94a3b8;font-size:1.75rem;font-style:normal;filter:saturate(.35)
 }
-.activity-skill-node strong{max-width:126px;color:#e2e8f0;font-size:.76rem;line-height:1.1;text-shadow:0 2px 3px #000}
-.activity-skill-node small{padding:2px 7px;border-radius:999px;background:#0f172acc;color:#94a3b8;font-size:.59rem;font-weight:850}
+.activity-skill-node strong{
+  max-width:130px;color:#f8fafc;font-size:.76rem;line-height:1.15;
+  background:rgba(15,23,42,.88);backdrop-filter:blur(6px);padding:3px 8px;border-radius:8px;
+  box-shadow:0 3px 10px rgba(0,0,0,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.activity-skill-node small{
+  padding:2px 7px;border-radius:999px;background:#0f172ae6;color:#94a3b8;
+  font-size:.59rem;font-weight:850;backdrop-filter:blur(4px);box-shadow:0 2px 6px rgba(0,0,0,.4)
+}
 .activity-skill-node.available .activity-skill-orb{background:conic-gradient(#f59e0b var(--skill-progress),#3f2b13 0);box-shadow:0 0 0 3px #f59e0b,0 0 20px #fbbf2477;animation:skillNodeReady 2s ease-in-out infinite}
 .activity-skill-node.available .activity-skill-orb i{border-color:#fde68a;background:radial-gradient(circle at 38% 30%,#92400e,#451a03 72%);filter:none}
 .activity-skill-node.available small{background:#78350f;color:#fde68a}
@@ -1769,12 +1786,12 @@ body.welcome-open{overflow:hidden}
 @keyframes skillPathFlow{to{stroke-dashoffset:-22}}
 @keyframes skillNodeReady{50%{box-shadow:0 0 0 5px #f59e0b55,0 0 30px #fbbf2499}}
 @media(max-width:600px){
-  .path-road{height:740px!important;border-radius:22px!important;margin-inline:-4px!important}
+  .path-road{height:clamp(800px,120vh,920px)!important;border-radius:22px!important;margin-inline:-4px!important}
   .activity-skill-web-head{top:9px;left:10px;right:10px}.activity-skill-web-head small{display:none}
-  .activity-skill-node{width:88px}.activity-skill-node button{min-height:78px;padding:1px!important;gap:2px!important}
+  .activity-skill-node{width:96px}.activity-skill-node button{min-height:78px;padding:1px!important;gap:2px!important}
   .activity-skill-orb{width:58px;height:58px;padding:4px}.activity-skill-orb i{font-size:1.38rem}
   .activity-skill-boss .activity-skill-orb{width:64px;height:64px}
-  .activity-skill-node strong{max-width:88px;font-size:.65rem}.activity-skill-node small{font-size:.53rem;padding:2px 5px}
+  .activity-skill-node strong{max-width:96px;font-size:.65rem;padding:2px 4px}.activity-skill-node small{font-size:.53rem;padding:2px 5px}
   .activity-skill-link{stroke-width:3}
 }
 @media(prefers-reduced-motion:reduce){.activity-skill-link.available,.activity-skill-node.available .activity-skill-orb{animation:none!important}}
