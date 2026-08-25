@@ -1795,3 +1795,4 @@ body.welcome-open{overflow:hidden}
   .activity-skill-link{stroke-width:3}
 }
 @media(prefers-reduced-motion:reduce){.activity-skill-link.available,.activity-skill-node.available .activity-skill-orb{animation:none!important}}
+.offline-status-pill[hidden]{display:none!important}

@@ -392,7 +392,8 @@
       .offline-pack-progress{display:grid;gap:5px}.offline-pack-progress>div{height:9px;overflow:hidden;border-radius:999px;background:#dbe7dc}.offline-pack-progress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#16a34a,#0d9488);transition:width .18s linear}.offline-pack-progress span{font-size:.67rem;color:#475569}
       .offline-pack-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.offline-pack-meta span{display:grid;gap:2px;padding:8px;border:1px solid #dbe7e0;border-radius:11px;background:#ffffffbd;color:#64748b;font-size:.6rem}.offline-pack-meta strong{color:#0f172a;font-size:.78rem}
       .offline-pack-actions{display:flex;gap:8px;flex-wrap:wrap}.offline-pack-actions button{flex:1;min-width:145px}.offline-remove{background:#fff;color:#be123c;border-color:#fecdd3}
-      .offline-status-pill{display:inline-flex;align-items:center;gap:5px;margin-left:5px;padding:4px 7px;border-radius:999px;background:#dcfce7;color:#166534;font-size:.58rem;font-weight:850}.offline-status-pill.offline-now{background:#fef3c7;color:#92400e}
+       .offline-status-pill[hidden]{display:none!important}
+       .offline-status-pill{display:inline-flex;align-items:center;gap:5px;margin-left:5px;padding:4px 7px;border-radius:999px;background:#fef3c7;color:#92400e;font-size:.58rem;font-weight:850}
       @media(max-width:560px){.offline-pack-options{grid-template-columns:1fr}.offline-pack-option{min-height:0}.offline-pack-meta{grid-template-columns:1fr 1fr}}
 
       /* #offlineModeBanner removed v11.8.45 — title-bar pill is sufficient */
@@ -751,9 +752,8 @@
   }
   function ensureOfflineIndicator(){
     let pill=document.getElementById('offlineStatusPill');
-    if(!pill){pill=document.createElement('span');pill.id='offlineStatusPill';pill.className='offline-status-pill';badge()?.insertAdjacentElement('afterend',pill)}
-    const ready=Boolean(offlineState());pill.hidden=!ready&&netIsOnline;pill.classList.toggle('offline-now',!netIsOnline);
-    pill.textContent=!netIsOnline?'● Offline':ready?'✓ Offline ready':'';
+    if(!pill){pill=document.createElement('span');pill.id='offlineStatusPill';pill.className='offline-status-pill';pill.hidden=true;badge()?.insertAdjacentElement('afterend',pill)}
+    updateOfflineStatusUI();
   }
   async function renderOfflineMode(){
     const card=document.getElementById('offlineModeCard');if(!card)return;
