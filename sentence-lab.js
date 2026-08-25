@@ -22,10 +22,18 @@ function sentenceLessonState(id){
 
 async function ensureSentenceLabData(){
   if(sentenceLabData)return sentenceLabData;
-  const response=await fetch(`data/sentence-lab.json?v=${APP_VERSION}`,{cache:'no-store'});
-  if(!response.ok)throw Error('Sentence Lab content could not be loaded');
-  sentenceLabData=await response.json();
-  return sentenceLabData;
+  const url=`data/sentence-lab.json?v=${APP_VERSION}`;
+  try{
+    const response=await fetch(url);
+    if(response.ok){ sentenceLabData=await response.json(); return sentenceLabData; }
+  }catch(e){}
+  if('caches' in window){
+    try{
+      const match=await caches.match(url,{ignoreSearch:true});
+      if(match&&match.ok){ sentenceLabData=await match.json(); return sentenceLabData; }
+    }catch(e){}
+  }
+  throw Error('Sentence Lab content could not be loaded');
 }
 
 function sentenceLabCompletedCount(){

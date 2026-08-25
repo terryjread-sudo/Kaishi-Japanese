@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.46';
+const VERSION='11.8.47';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
@@ -143,7 +143,7 @@ async function networkFirst(request){
     if(response&&response.ok) await cache.put(request,response.clone());
     return response;
   }catch(error){
-    return (await cache.match(request))||(await offlineMatch(request))||Promise.reject(error);
+    return (await cache.match(request,{ignoreSearch:true}))||(await offlineMatch(request))||Promise.reject(error);
   }
 }
 

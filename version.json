@@ -1,10 +1,10 @@
 {
-  "version": "11.8.46",
+  "version": "11.8.47",
   "released": "2026-08-25",
-  "title": "Optimize Activity Landmark & Skill Web Layout",
+  "title": "Flight Mode & Offline Session Loop Fix",
   "changes": [
-    "Redistributed horizontal and vertical tiers across the Activity Skill Web to eliminate card and text overlaps.",
-    "Adjusted Activity Village Map hotspot bounding boxes and enhanced panel label glassmorphism for crisp, non-colliding display.",
-    "Added hover/focus z-index elevation so active landmarks remain visible above SVG lines and neighboring nodes."
+    "Fixed infinite session recursion loop when accessing learning in flight mode or offline.",
+    "Replaced network-only {cache: 'no-store'} data fetches with resilient Cache API fallbacks so offline startups load data smoothly.",
+    "Updated Service Worker networkFirst fallback with ignoreSearch:true so cached scripts and styles match when offline."
   ]
 }

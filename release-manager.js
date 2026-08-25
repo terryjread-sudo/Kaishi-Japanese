@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.46
+ * Kaishi Quest release manager — v11.8.47
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -17,9 +17,10 @@
  * - v11.8.44 Offline state now properly syncs across all UI elements in real-time
  * - v11.8.45 Removed redundant full-width offline banner — title-bar pill already shows offline state
  * - v11.8.46 Optimized Activity Landmarks and Skill Web spacing — prevented overlapping node cards and map hotspots
+ * - v11.8.47 Fixed flight-mode offline session infinite loop & network-only data fetch failures
  */
 (() => {
-  const CURRENT_VERSION='11.8.46';
+  const CURRENT_VERSION='11.8.47';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[

@@ -1255,22 +1255,35 @@ async function setupServiceWorker(){
   await Promise.all(keys.map(k=>caches.delete(k)));
  }catch(e){}
 }
+async function safeFetchJson(url,fallback={}){
+ try{
+  const r=await fetch(url);
+  if(r.ok) return await r.json();
+ }catch(e){}
+ if('caches' in window){
+  try{
+   const match=await caches.match(url,{ignoreSearch:true});
+   if(match&&match.ok) return await match.json();
+  }catch(e){}
+ }
+ return fallback;
+}
 async function init(){
  $('#updateBanner').hidden=true;
  $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
  try{
   [vocab,kanaData,mangaStories,conversations,theatreScenes,grammarLessons,componentData,memoryScenes,ankiContent,topicData,learningGraph]=await Promise.all([
-   fetch(`data/vocabulary.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data');return r.json()}),
-   fetch(`data/kana.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('kana data');return r.json()}).then(data=>data.entries||[]),
-   fetch(`data/manga-stories.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('manga data');return r.json()}).then(data=>data.stories||[]),
-   fetch(`data/conversations.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('conversation data');return r.json()}).then(data=>data.conversations||[]),
-   fetch(`data/theatre-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('theatre data');return r.json()}).then(data=>data.scenes||[]),
-   fetch(`data/grammar-path.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('grammar data');return r.json()}).then(data=>data.lessons||[]),
-   fetch(`data/kanji-components.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Kanji component data');return r.json()}),
-   fetch(`memory-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})),
-   fetch(`data/anki-content-v72.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{records:[]}).catch(()=>({records:[]})),
-   fetch(`data/topics-v72.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{topics:[]}).catch(()=>({topics:[]})),
-   fetch(`data/learning-graph-v82.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('learning graph');return r.json()})
+   safeFetchJson(`data/vocabulary.json?v=${APP_VERSION}`,[]),
+   safeFetchJson(`data/kana.json?v=${APP_VERSION}`,{entries:[]}).then(data=>data.entries||[]),
+   safeFetchJson(`data/manga-stories.json?v=${APP_VERSION}`,{stories:[]}).then(data=>data.stories||[]),
+   safeFetchJson(`data/conversations.json?v=${APP_VERSION}`,{conversations:[]}).then(data=>data.conversations||[]),
+   safeFetchJson(`data/theatre-scenes.json?v=${APP_VERSION}`,{scenes:[]}).then(data=>data.scenes||[]),
+   safeFetchJson(`data/grammar-path.json?v=${APP_VERSION}`,{lessons:[]}).then(data=>data.lessons||[]),
+   safeFetchJson(`data/kanji-components.json?v=${APP_VERSION}`,{}),
+   safeFetchJson(`memory-scenes.json?v=${APP_VERSION}`,{}),
+   safeFetchJson(`data/anki-content-v72.json?v=${APP_VERSION}`,{records:[]}),
+   safeFetchJson(`data/topics-v72.json?v=${APP_VERSION}`,{topics:[]}),
+   safeFetchJson(`data/learning-graph-v82.json?v=${APP_VERSION}`,{})
   ]);
   enrichVocabularyFromAnki();
   updateHome();

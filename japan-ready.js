@@ -40,4 +40,16 @@ function renderCheatSheet(){
  });
 }
 function openCheatSheet(){renderCheatSheet();b().show('japanReadyCheatSheet')}
-async function init(){data=await fetch('data/japan-ready-v90.json?v=9.0.6',{cache:'no-store'}).then(r=>r.json());$('#chooseJourneyCampaign').onclick=()=>setMode('journey');$('#chooseJapanReadyCampaign').onclick=()=>setMode('japan-ready');$('#continueJapanReadyCampaign').onclick=open;$('#japanReadyBack').onclick=()=>{b().getMeta().activeCampaign='journey';b().save();chooser();b().show('home')};$('#liveConversationBack').onclick=open;$('#openJapanReadyCheatSheet').onclick=openCheatSheet;$('#cheatSheetBack').onclick=open;$('#liveConversationSubmit').onclick=submit;$('#kanaBuilderUndo').onclick=()=>{if(builderIndex>0){builderIndex--;builderKana.pop();renderBuilder()}};chooser();render()}addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true})})();
+async function init(){
+  const url='data/japan-ready-v90.json?v=9.0.6';
+  try{
+    const r=await fetch(url);
+    if(r.ok) data=await r.json();
+    else throw 1;
+  }catch(e){
+    if('caches' in window){
+      try{ const m=await caches.match(url,{ignoreSearch:true}); if(m&&m.ok) data=await m.json(); }catch(err){}
+    }
+  }
+  if(!data) data={scenarios:[],cheatSheet:[]};
+  $('#chooseJourneyCampaign').onclick=()=>setMode('journey');$('#chooseJapanReadyCampaign').onclick=()=>setMode('japan-ready');$('#continueJapanReadyCampaign').onclick=open;$('#japanReadyBack').onclick={()=>{b().getMeta().activeCampaign='journey';b().save();chooser();b().show('home')};$('#liveConversationBack').onclick=open;$('#openJapanReadyCheatSheet').onclick=openCheatSheet;$('#cheatSheetBack').onclick=open;$('#liveConversationSubmit').onclick=submit;$('#kanaBuilderUndo').onclick={()=>{if(builderIndex>0){builderIndex--;builderKana.pop();renderBuilder()}};chooser();render()}addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true})})();

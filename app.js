@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.46';
+const APP_VERSION='11.8.47';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -786,6 +786,7 @@ function makeSession(chapterIndex=null){
  if(resumeSavedMission())return;
  pictureGameActive=false;session=[];index=0;current=null;introGuidanceCount=0;
  const chapterMode=Number.isInteger(chapterIndex),pool=chapterMode?chapterWords(chapterIndex):vocab;
+ if(!pool.length){toast('Learning content is unavailable. Download an offline pack in Settings.');return}
  const due=(chapterMode?pool.filter(v=>progress[v.id]&&Number(progress[v.id].stage||0)>=1&&Number(progress[v.id].due||0)<=Date.now()):dailyDueWords()).sort((a,b)=>pFor(a.id).due-pFor(b.id).due).slice(0,DAILY_REVIEW_TARGET);
  const unseen=pool.filter(v=>!progress[v.id]||Number(progress[v.id].stage||0)===0).slice(0,NEW_WORDS_PER_MISSION);
  let selected=[...new Map([...due,...unseen].map(word=>[word.id,word])).values()];
@@ -793,10 +794,12 @@ function makeSession(chapterIndex=null){
  const queue=selected.map(v=>{const p=pFor(v.id),unknownKana=unknownKanaFor(v).slice(0,1);let skills=p.stage===0?[...(unknownKana.length?['kanaUnlock']:[]),'firstEncounter','intro',...(ankiRecordFor(v)?.sentence?['example']:[]),'meaning']:[chooseSkill(v)];skills=skills.filter(s=>s!=='kanji'||v.word!==v.reading).filter(s=>s!=='picture'||memoryScenes[sceneKey(v)]);return{v,skills}});
  while(queue.some(item=>item.skills.length)&&session.length<MISSION_CARD_LIMIT){const active=queue.filter(item=>item.skills.length).slice(0,ACTIVE_WORD_MIX);active.forEach(item=>{if(item.skills.length&&session.length<MISSION_CARD_LIMIT)session.push({v:item.v,skill:item.skills.shift()})});queue.push(...queue.splice(0,Math.min(ACTIVE_WORD_MIX,queue.length)))}
  for(let i=1;i<session.length;i++)if(session[i].v.id===session[i-1].v.id){const swap=session.findIndex((item,j)=>j>i&&item.v.id!==session[i-1].v.id);if(swap>i)[session[i],session[swap]]=[session[swap],session[i]]}
+ if(!session.length){toast('No cards available for this session.');return}
  clearMissionResume();show('study');renderCurrent()
 }
 function makeTargetedMasterySession(ids,skill){
- pictureGameActive=false;introGuidanceCount=0;const byId=new Map(vocab.map(word=>[word.id,word])),words=(ids||[]).map(id=>byId.get(id)).filter(Boolean);if(!words.length){makeSession();return}
+ pictureGameActive=false;introGuidanceCount=0;const byId=new Map(vocab.map(word=>[word.id,word])),words=(ids||[]).map(id=>byId.get(id)).filter(Boolean);
+ if(!words.length){if(vocab.length)makeSession();else toast('Learning content is loading or unavailable offline.');return}
  session=words.map(v=>({v,skill:skill==='retain'?chooseSkill(v):skill}));index=0;current=null;show('study');renderCurrent();
 }
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
@@ -1475,22 +1478,35 @@ async function setupServiceWorker(){
   await Promise.all(keys.map(k=>caches.delete(k)));
  }catch(e){}
 }
+async function safeFetchJson(url,fallback={}){
+ try{
+  const r=await fetch(url);
+  if(r.ok) return await r.json();
+ }catch(e){}
+ if('caches' in window){
+  try{
+   const match=await caches.match(url,{ignoreSearch:true});
+   if(match&&match.ok) return await match.json();
+  }catch(e){}
+ }
+ return fallback;
+}
 async function init(){
  $('#updateBanner').hidden=true;
  $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
  try{
   [vocab,kanaData,mangaStories,conversations,theatreScenes,grammarLessons,componentData,memoryScenes,ankiContent,topicData,learningGraph]=await Promise.all([
-   fetch(`data/vocabulary.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data');return r.json()}),
-   fetch(`data/kana.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('kana data');return r.json()}).then(data=>data.entries||[]),
-   fetch(`data/manga-stories.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('manga data');return r.json()}).then(data=>data.stories||[]),
-   fetch(`data/conversations.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('conversation data');return r.json()}).then(data=>data.conversations||[]),
-   fetch(`data/theatre-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('theatre data');return r.json()}).then(data=>data.scenes||[]),
-   fetch(`data/grammar-path.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('grammar data');return r.json()}).then(data=>data.lessons||[]),
-   fetch(`data/kanji-components.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Kanji component data');return r.json()}),
-   fetch(`memory-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})),
-   fetch(`data/anki-content-v72.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{records:[]}).catch(()=>({records:[]})),
-   fetch(`data/topics-v72.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{topics:[]}).catch(()=>({topics:[]})),
-   fetch(`data/learning-graph-v82.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('learning graph');return r.json()})
+   safeFetchJson(`data/vocabulary.json?v=${APP_VERSION}`,[]),
+   safeFetchJson(`data/kana.json?v=${APP_VERSION}`,{entries:[]}).then(data=>data.entries||[]),
+   safeFetchJson(`data/manga-stories.json?v=${APP_VERSION}`,{stories:[]}).then(data=>data.stories||[]),
+   safeFetchJson(`data/conversations.json?v=${APP_VERSION}`,{conversations:[]}).then(data=>data.conversations||[]),
+   safeFetchJson(`data/theatre-scenes.json?v=${APP_VERSION}`,{scenes:[]}).then(data=>data.scenes||[]),
+   safeFetchJson(`data/grammar-path.json?v=${APP_VERSION}`,{lessons:[]}).then(data=>data.lessons||[]),
+   safeFetchJson(`data/kanji-components.json?v=${APP_VERSION}`,{}),
+   safeFetchJson(`memory-scenes.json?v=${APP_VERSION}`,{}),
+   safeFetchJson(`data/anki-content-v72.json?v=${APP_VERSION}`,{records:[]}),
+   safeFetchJson(`data/topics-v72.json?v=${APP_VERSION}`,{topics:[]}),
+   safeFetchJson(`data/learning-graph-v82.json?v=${APP_VERSION}`,{})
   ]);
   enrichVocabularyFromAnki();
   updateHome();
