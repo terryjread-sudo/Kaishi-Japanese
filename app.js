@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.47';
+const APP_VERSION='11.8.48';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -197,6 +197,7 @@ function kanjiCharacters(v){return [...new Set([...String(v.kanji||v.word||'')].
 function kanjiCatalogue(){const map=new Map();vocab.forEach(v=>kanjiCharacters(v).forEach(character=>{if(!map.has(character))map.set(character,[]);map.get(character).push(v)}));return [...map].map(([character,words])=>{const statuses=words.map(wordLearningStatus);const status=statuses.includes('mastered')?'mastered':statuses.includes('practised')?'practised':statuses.includes('introduced')?'introduced':'locked';return{character,words,status}})}
 function kanjiMasteredCount(){return kanjiCatalogue().filter(item=>item.status==='mastered').length}
 function componentRecord(character){return (componentData.kanji||[]).find(item=>item.kanji===character)}
+function wordComponentRecords(v){return kanjiCharacters(v).map(componentRecord).filter(record=>record&&record.parts&&record.parts.length)}
 function componentInfo(part){return componentData.components?.[part]||{name:'visual component'}}
 function componentBreakdownHTML(record,{compact=false}={}){
  if(!record)return`<p class="kanji-component-pending">A curated component lesson has not been added for this Kanji yet.</p>`;
@@ -757,13 +758,13 @@ function similarity(a='',b=''){a=String(a);b=String(b);let score=0;if(a.length==
 function distractors(v,key,n=3){const pool=vocab.filter(x=>x.id!==v.id&&x[key]&&x[key]!==v[key]);const target=v[key]||'';return shuffle(pool.map(x=>({x,score:similarity(target,x[key])+(Math.abs((x.frequency||9999)-(v.frequency||9999))<250?2:0)})).sort((a,b)=>b.score-a.score).slice(0,35)).slice(0,n).map(o=>o.x[key])}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function chooseSkill(v){
- const p=pFor(v.id),allowed=skills=>skills.filter(skill=>skill!=='kanji'||v.word!==v.reading).filter(skill=>skill!=='picture'||memoryScenes[sceneKey(v)]);
+ const p=pFor(v.id),allowed=skills=>skills.filter(skill=>skill!=='kanji'||v.word!==v.reading).filter(skill=>skill!=='picture'||memoryScenes[sceneKey(v)]).filter(skill=>skill!=='components'||wordComponentRecords(v).length);
  if(p.stage===0)return'intro';
  const early=allowed(['meaning','listening','reading','picture']);
  if(Number(p.reps||0)<4||Number(p.interval||0)<3)return early.map(skill=>({skill,priority:skillPreferenceWeight(skill)/(1+Number(p.skills[skill]?.attempts||0))*(.9+Math.random()*.2)})).sort((a,b)=>b.priority-a.priority)[0].skill;
- const developing=allowed(['meaning','listening','reading','sentence','kanji','production','picture']);
+ const developing=allowed(['meaning','listening','reading','sentence','kanji','components','production','picture']);
  if(Number(p.interval||0)<21)return developing.map(skill=>({skill,priority:(1-(p.skills[skill]?.strength||0))*(skill==='meaning'||skill==='listening'?1.2:1)*skillPreferenceWeight(skill)*(.85+Math.random()*.3)})).sort((a,b)=>b.priority-a.priority)[0].skill;
- const independent=allowed(['meaning','listening','reading','sentence','kanji','production']);
+ const independent=allowed(['meaning','listening','reading','sentence','kanji','components','production']);
  return independent.map(skill=>({skill,priority:(1-(p.skills[skill]?.strength||0))*skillPreferenceWeight(skill)*(.85+Math.random()*.3)})).sort((a,b)=>b.priority-a.priority)[0].skill;
 }
 function abortSession(destination='home'){
@@ -1169,7 +1170,8 @@ if(skill==='listening'){const choices=shuffle([v.meaning,...distractors(v,'meani
 if(skill==='reading'){const mature=pFor(v.id).interval>=21;if(mature){recallCard(v,'Recall the Japanese reading',v.meaning,`<div class="reading">${v.reading}</div><div class="jp small-jp">${v.word}</div>`,skill)}else{const choices=shuffle([v.reading,...distractors(v,'reading')]);c.innerHTML=`<div class="eyebrow">Reading from meaning</div><div class="meaning prompt-meaning">${v.meaning}</div><h2>Which Japanese reading matches?</h2><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="hintBtn" class="hint">Show memory hint</button><section id="readingFeedback" class="teacher-answer-feedback" hidden aria-live="polite"></section>`;bindChoices(v.reading,skill,(ok)=>{const hint=$('#hintBtn');if(hint)hint.remove();if(ok)return;const feedback=$('#readingFeedback');feedback.innerHTML=`${senseiBlock(`Not quite. The correct reading for ${v.meaning} is ${v.reading}.`,true)}<div class="teacher-correct-answer"><strong lang="ja">${esc(v.reading)}</strong><span>${esc(v.word)} · ${esc(v.meaning)}</span><button id="readingAnswerAudio" class="audio" aria-label="Replay correct pronunciation" title="Replay correct pronunciation">🔊</button></div>`;feedback.hidden=false;$('#readingAnswerAudio').onclick=()=>play(v.wordAudio);play(v.wordAudio);feedback.scrollIntoView({behavior:'smooth',block:'nearest'})});$('#hintBtn').onclick=()=>showHint(v)}}
 if(skill==='kanji'){const mature=pFor(v.id).interval>=21;if(mature){recallCard(v,'Recall the written Japanese word',`${v.reading}<div class="meaning">${v.meaning}</div>`,`<div class="jp">${v.word}</div>`,skill)}else{const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Kanji recognition</div><div class="reading large-reading">${v.reading}</div><div class="meaning prompt-meaning">${v.meaning}</div><h2>Choose the correct written form</h2><div class="choices kanji-choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="hintBtn" class="hint">Show memory hint</button>`;bindChoices(v.word,skill);$('#hintBtn').onclick=()=>showHint(v)}}
 if(skill==='picture'){renderPictureQuestion(v,current.pictureMode||'picture-word');}
-if(skill==='sentence'){let sentence=v.sentence||`「${v.word}」 means ____.`;let prompt=sentence.includes(v.word)?sentence.replace(v.word,'＿＿＿'):sentence.replace(/<b>|<\/b>/g,'');const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Sentence context</div><div class="sentence">${prompt}</div><p class="meaning">${v.sentenceMeaning||v.meaning}</p><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="sentenceAudio" class="audio">🔊 Full sentence</button>`;bindChoices(v.word,skill);$('#sentenceAudio').onclick=()=>play(v.sentenceAudio)}}
+if(skill==='sentence'){let sentence=v.sentence||`「${v.word}」 means ____.`;let prompt=sentence.includes(v.word)?sentence.replace(v.word,'＿＿＿'):sentence.replace(/<b>|<\/b>/g,'');const choices=shuffle([v.word,...distractors(v,'word')]);c.innerHTML=`<div class="eyebrow">Sentence context</div><div class="sentence">${prompt}</div><p class="meaning">${v.sentenceMeaning||v.meaning}</p><div class="choices">${choices.map(x=>`<button class="choice" data-answer="${encodeURIComponent(x)}">${x}</button>`).join('')}</div><button id="sentenceAudio" class="audio">🔊 Full sentence</button>`;bindChoices(v.word,skill);$('#sentenceAudio').onclick=()=>play(v.sentenceAudio)}
+if(skill==='components'){renderComponentBuild(v)}}
 function currentLearningReportContext(){
  const item=current||{},v=item.v||{};
  return {
@@ -1274,6 +1276,54 @@ function resolveKanjiBuilder(){
 }
 function nextKanjiBuilder(){kanjiBuilder.index++;if(kanjiBuilder.index<kanjiBuilder.rounds.length){renderKanjiBuilderRound();return}showKanjiBuilderSummary()}
 function showKanjiBuilderSummary(){const total=kanjiBuilder.rounds.length,correct=kanjiBuilder.correct,percent=Math.round(correct/Math.max(1,total)*100);$('#kanjiBuilderFill').style.width='100%';$('#kanjiBuilderCard').innerHTML=`<section class="kanji-builder-summary"><span class="eyebrow">Workshop complete</span><div class="kanji-summary-medal">${percent>=80?'🏆':percent>=50?'🧩':'🌱'}</div><h2>${correct} of ${total} Kanji built correctly</h2><p>${percent>=80?'Excellent component recognition.':percent>=50?'A strong start—another build will strengthen the shapes.':'Review the interactive breakdowns, then try again.'}</p><div class="kanji-builder-actions"><button id="builderAgain" class="primary">Build another set</button><button id="builderFinish">Finish</button></div></section>`;$('#builderAgain').onclick=startKanjiBuilder;$('#builderFinish').onclick=closeKanjiBuilder}
+
+/*
+ * v11.8.48 — Inline Kanji Component Build card.
+ * A single, interactive "build the kanji from its parts" screen shown as an
+ * ordinary card inside the normal mission flow (skill==='components'), for
+ * words that already have a kanji component record. This reuses the same
+ * tap-to-place interaction and CSS as the standalone Kanji Builder activity,
+ * but runs as one word/one build/one grade — no separate screen, rounds, or
+ * summary. Uses its own state object (inlineBuild) so it never collides with
+ * the multi-round Kanji Builder's `kanjiBuilder` state.
+ */
+let inlineBuild=null;
+function renderComponentBuild(v){
+ const records=wordComponentRecords(v);
+ if(!records.length){current.skill='meaning';renderCurrent();return}
+ const record=records[Math.floor(Math.random()*records.length)];
+ inlineBuild={v,record,selected:[],answered:false};
+ const c=$('#card');
+ c.innerHTML=`${senseiBlock('Build the Kanji from its parts to reinforce how it is written.')}<section class="kanji-builder-question"><span class="eyebrow">Component build</span><h2>${esc(v.meaning)}</h2><p class="kanji-builder-reading">Reading: <strong>${esc(v.reading)}</strong></p>${v.wordAudio?'<button id="inlineBuildAudio" class="audio primary">🔊 Hear the Japanese word</button>':''}<p>Select ${record.parts.length} component${record.parts.length===1?'':'s'} in the lesson’s visual order.</p><div id="inlineAssemblyStage">${inlineBuildStageHTML()}</div><div class="kanji-component-options">${builderOptionParts(record).map(part=>`<button data-inline-part="${encodeURIComponent(part)}"><span lang="ja">${esc(part)}</span><b>${esc(componentInfo(part).name)}</b><small>tap to add</small></button>`).join('')}</div><button id="lockInlineKanji" class="primary kanji-lock" disabled>Lock in Kanji</button><section id="inlineBuildFeedback" class="game-feedback" hidden aria-live="polite"></section></section>`;
+ if($('#inlineBuildAudio')){$('#inlineBuildAudio').onclick=()=>play(v.wordAudio);if(settings.autoAudio)play(v.wordAudio)}
+ document.querySelectorAll('[data-inline-part]').forEach(button=>button.onclick=()=>{if(inlineBuild.answered||inlineBuild.selected.length>=record.parts.length)return;inlineBuild.selected.push(decodeURIComponent(button.dataset.inlinePart));updateInlineBuildSelection()});
+ $('#lockInlineKanji').onclick=resolveComponentBuild;
+ updateInlineBuildSelection();
+}
+function inlineBuildStageHTML(){const record=inlineBuild.record,selected=inlineBuild.selected,slots=Array.from({length:record.parts.length},(_,itemIndex)=>selected[itemIndex]?`<button data-inline-remove="${itemIndex}" class="filled" lang="ja" aria-label="Remove ${esc(selected[itemIndex])}">${esc(selected[itemIndex])}</button>`:`<span aria-label="Empty component slot">?</span>`).join('<i>+</i>');return `<div class="kanji-assembly layout-${esc(record.layout)}">${slots}</div>`}
+function updateInlineBuildSelection(){
+ const stage=$('#inlineAssemblyStage');if(!stage)return;
+ stage.innerHTML=inlineBuildStageHTML();
+ stage.querySelectorAll('[data-inline-remove]').forEach(button=>button.onclick=()=>{if(inlineBuild.answered)return;inlineBuild.selected.splice(+button.dataset.inlineRemove,1);updateInlineBuildSelection()});
+ const counts=inlineBuild.selected.reduce((map,part)=>(map[part]=(map[part]||0)+1,map),{});
+ document.querySelectorAll('[data-inline-part]').forEach(button=>{const used=counts[decodeURIComponent(button.dataset.inlinePart)]||0;button.querySelector('small').textContent=used?`selected ×${used}`:'tap to add'});
+ $('#lockInlineKanji').disabled=inlineBuild.selected.length!==inlineBuild.record.parts.length;
+}
+function resolveComponentBuild(){
+ if(!inlineBuild||inlineBuild.answered)return;
+ const {v,record,selected}=inlineBuild,ok=record.parts.every((part,itemIndex)=>selected[itemIndex]===part);
+ inlineBuild.answered=true;
+ document.querySelectorAll('[data-inline-part], [data-inline-remove]').forEach(button=>button.disabled=true);
+ $('#lockInlineKanji').disabled=true;
+ const parts=record.parts.map(part=>{const info=componentInfo(part);return `<li><b lang="ja">${esc(part)}</b><span>${esc(info.name)}${info.source?` — component form of ${esc(info.source)}`:''}</span></li>`}).join('');
+ const feedback=$('#inlineBuildFeedback');
+ feedback.innerHTML=`<p class="game-result ${ok?'game-result-correct':'game-result-wrong'}">${ok?'Correct — the components fit!':'Not quite — compare the correct writing order.'}</p><div class="kanji-builder-reveal"><div class="kanji-final" lang="ja">${esc(record.kanji)}</div><div><strong lang="ja">${esc(v.word)}</strong><span>${esc(v.reading)} · ${esc(v.meaning)}</span></div></div><ol class="kanji-explanation-list">${parts}</ol><p class="kanji-component-story">${esc(record.story)}</p>${v.wordAudio?'<button id="inlineBuildAnswerAudio" class="audio">🔊 Play Japanese audio</button>':''}<button id="inlineBuildNext" class="primary reveal">Continue →</button>`;
+ feedback.hidden=false;
+ if($('#inlineBuildAnswerAudio'))$('#inlineBuildAnswerAudio').onclick=()=>play(v.wordAudio);
+ $('#inlineBuildNext').onclick=next;
+ feedback.scrollIntoView({behavior:'smooth',block:'nearest'});
+ grade(v,'components',ok?3:1,ok,false);
+}
 
 function illustratedWords(){return vocab.filter(v=>memoryScenes[sceneKey(v)]?.file)}
 function pictureChoices(v,n){

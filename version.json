@@ -1,10 +1,12 @@
 {
-  "version": "11.8.47",
-  "released": "2026-08-25",
-  "title": "Flight Mode & Offline Session Loop Fix",
+  "version": "11.8.48",
+  "released": "2026-08-26",
+  "title": "Interactive Kanji Component Cards in Learning Path",
   "changes": [
-    "Fixed infinite session recursion loop when accessing learning in flight mode or offline.",
-    "Replaced network-only {cache: 'no-store'} data fetches with resilient Cache API fallbacks so offline startups load data smoothly.",
-    "Updated Service Worker networkFirst fallback with ignoreSearch:true so cached scripts and styles match when offline."
+    "Added a new interactive card that appears occasionally during normal missions: tap the correct components to build a word's Kanji, right there in the lesson flow.",
+    "This reinforces a word using real interaction (tap-to-place, not just a reveal) without leaving the mission or opening a separate mini-game.",
+    "Only appears for words that already have a Kanji component breakdown, and only once a word is a little established (not on first encounter).",
+    "Feeds the same spaced-repetition scheduling as every other question type — no separate progress tracking.",
+    "The full multi-round Kanji Builder activity (Kanji Gate) is unchanged and still available for deeper practice."
   ]
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.47
+ * Kaishi Quest release manager — v11.8.48
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -18,9 +18,12 @@
  * - v11.8.45 Removed redundant full-width offline banner — title-bar pill already shows offline state
  * - v11.8.46 Optimized Activity Landmarks and Skill Web spacing — prevented overlapping node cards and map hotspots
  * - v11.8.47 Fixed flight-mode offline session infinite loop & network-only data fetch failures
+ * - v11.8.48 Added inline Kanji Component Build card: an interactive tap-to-place kanji
+ *   breakdown now appears occasionally as a normal mission card (skill "components") for
+ *   words with kanji, reinforcing the word in place instead of launching a separate mini-game
  */
 (() => {
-  const CURRENT_VERSION='11.8.47';
+  const CURRENT_VERSION='11.8.48';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
