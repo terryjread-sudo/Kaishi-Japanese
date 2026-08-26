@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.9.2';
+const APP_VERSION='11.9.3';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -1669,6 +1669,10 @@ journeySessionPreview.addEventListener('cancel',event=>{event.preventDefault();c
 function playChapterCelebration(){const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass)return;try{const context=new AudioContextClass(),start=context.currentTime;[523.25,659.25,783.99,1046.5].forEach((frequency,index)=>{const oscillator=context.createOscillator(),gain=context.createGain();oscillator.type='triangle';oscillator.frequency.value=frequency;gain.gain.setValueAtTime(.0001,start+index*.12);gain.gain.exponentialRampToValueAtTime(.16,start+index*.12+.02);gain.gain.exponentialRampToValueAtTime(.0001,start+index*.12+.25);oscillator.connect(gain).connect(context.destination);oscillator.start(start+index*.12);oscillator.stop(start+index*.12+.28)});setTimeout(()=>context.close(),900)}catch{}}
 function celebrateCompletedChapter(){const chapter=activeVocabularyChapter;if(!Number.isInteger(chapter)||index<session.length||!chapterStats(chapter).complete)return;meta.chapterCelebrations=Array.isArray(meta.chapterCelebrations)?meta.chapterCelebrations:[];if(meta.chapterCelebrations.includes(chapter))return;meta.chapterCelebrations.push(chapter);save();playChapterCelebration();toast(`🎉 ${WORD_CHAPTER_NAMES[chapter]||`Chapter ${chapter+1}`} complete!`)}
 const chapterCelebrationObserver=new MutationObserver(()=>requestAnimationFrame(celebrateCompletedChapter));chapterCelebrationObserver.observe($('#card'),{childList:true,subtree:true});
+function strokeAsset(character){return componentRecord(character)?`media/kanji-strokes/${character.codePointAt(0).toString(16).padStart(5,'0')}.svg?v=${APP_VERSION}`:''}
+function attachKanjiStrokePlayer(){const panel=$('#kanjiWords'),character=panel?.querySelector('.kanji-detail-heading>span')?.textContent,asset=character&&strokeAsset(character);if(!panel||!asset||panel.querySelector('[data-kanji-strokes]'))return;const tools=document.createElement('div');tools.className='kanji-stroke-tools';tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">✍️ Watch stroke order</button><small>Animated strokes from KanjiVG</small>`;panel.querySelector('.kanji-detail-heading')?.after(tools)}
+const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());kanjiStrokeObserver.observe($('#kanjiWords'),{childList:true,subtree:true});
+document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
 init();
 
 

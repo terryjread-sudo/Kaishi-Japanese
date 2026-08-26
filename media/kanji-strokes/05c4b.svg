@@ -1,0 +1,83 @@
+<?xml version="1.0" ?><!--
+Copyright (C) 2009/2010/2011 Ulrich Apel.
+This work is distributed under the conditions of the Creative Commons
+Attribution-Share Alike 3.0 Licence. This means you are free:
+* to Share - to copy, distribute and transmit the work
+* to Remix - to adapt the work
+
+Under the following conditions:
+* Attribution. You must attribute the work by stating your use of KanjiVG in
+  your own copyright header and linking to KanjiVG's website
+  (http://kanjivg.tagaini.net)
+* Share Alike. If you alter, transform, or build upon this work, you may
+  distribute the resulting work only under the same or similar license to this
+  one.
+
+See http://creativecommons.org/licenses/by-sa/3.0/ for more details.
+--><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.0//EN'  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd' [
+<!ATTLIST g
+xmlns:kvg CDATA #FIXED "http://kanjivg.tagaini.net"
+kvg:element CDATA #IMPLIED
+kvg:variant CDATA #IMPLIED
+kvg:partial CDATA #IMPLIED
+kvg:original CDATA #IMPLIED
+kvg:part CDATA #IMPLIED
+kvg:number CDATA #IMPLIED
+kvg:tradForm CDATA #IMPLIED
+kvg:radicalForm CDATA #IMPLIED
+kvg:position CDATA #IMPLIED
+kvg:radical CDATA #IMPLIED
+kvg:phon CDATA #IMPLIED >
+<!ATTLIST path
+xmlns:kvg CDATA #FIXED "http://kanjivg.tagaini.net"
+kvg:type CDATA #IMPLIED >
+]><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109 109" id="aid05c4b">
+<g stroke="#8080a0" stroke-width="0.5" opacity="0.7"><line x1="0" y1="0" x2="109" y2="0"/><line x1="109" y1="0" x2="109" y2="109"/><line x1="0" y1="109" x2="109" y2="109"/><line x1="0" y1="0" x2="0" y2="109"/><line x1="0" y1="54.5" x2="109" y2="54.5"/><line x1="54.5" y1="0" x2="54.5" y2="109"/></g><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="#808080" opacity="0.5" stroke-width="3">
+<g kvg:element="屋">
+	<g kvg:element="尸">
+		<path d="M26.66,20.23c1.78,0.56,3.23,0.59,5.11,0.45c10.72-0.8,40.99-3.82,45.07-4.27c2.66-0.29,4.29,1.12,3.91,3.07c-0.29,1.46-1.84,6.27-2.84,9.41c-0.41,1.29-0.73,2.3-0.83,2.68"/>
+		<path d="M30.94,35.74c4.26-0.16,31.44-2.36,43.94-3.55c2.47-0.23,3.62-0.19,5.26,0.06"/>
+		<path d="M29.13,21.17c0.54,0.52,1.43,1.91,1.41,3.96C30.25,60,24,80.12,13.25,92.73"/>
+	</g>
+	<g kvg:element="至">
+		<path d="M37.26,46.35c1.84,0.26,4.73,0.21,6.56,0.01c10.55-1.11,19.85-1.86,33.26-2.99c3.05-0.26,4.91-0.12,6.45,0.01"/>
+		<path d="M56.93,48.43c0.32,1.44-0.3,2.57-1.2,3.46c-4.7,4.65-5.6,5.7-11.59,10.52c-1.93,1.55-1.55,3.22,1.53,2.64c8.21-1.55,17.84-3.3,29.32-5.69"/>
+		<path d="M70.5,52.62C74.6,54.81,81.1,61.6,82.12,65"/>
+		<g kvg:element="土">
+			<path d="M39.25,78.38c1.28,0.22,3.64,0.31,4.9,0.22C52.5,78,67.38,76,77.18,75.76c2.13-0.05,3.41,0.1,4.47,0.21"/>
+			<path d="M58.08,64.24c1.17,0.76,1.46,2.13,1.46,3.92c0,6.03-0.04,21-0.04,22.72"/>
+			<path d="M28.97,93.1c2.56,0.65,5.48,0.73,7.45,0.65c19.63-0.87,31.17-2.62,51.31-2.77c3.24-0.02,5.18,0.31,6.81,0.63"/>
+		</g>
+	</g>
+</g>
+</g>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="#c04080" stroke-width="2">
+<g kvg:element="屋">
+	<g kvg:element="尸">
+		<path d="M26.66,20.23c1.78,0.56,3.23,0.59,5.11,0.45c10.72-0.8,40.99-3.82,45.07-4.27c2.66-0.29,4.29,1.12,3.91,3.07c-0.29,1.46-1.84,6.27-2.84,9.41c-0.41,1.29-0.73,2.3-0.83,2.68" stroke-dasharray="68.9858" stroke-dashoffset="68.9858"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.0229;0.0229;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="68.9858;68.9858;0;0" keyTimes="0;0.0229;0.0967;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+		<path d="M30.94,35.74c4.26-0.16,31.44-2.36,43.94-3.55c2.47-0.23,3.62-0.19,5.26,0.06" stroke-dasharray="49.3714" stroke-dashoffset="49.3714"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.1196;0.1196;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="49.3714;49.3714;0;0" keyTimes="0;0.1196;0.1822;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+		<path d="M29.13,21.17c0.54,0.52,1.43,1.91,1.41,3.96C30.25,60,24,80.12,13.25,92.73" stroke-dasharray="75.4632" stroke-dashoffset="75.4632"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.2050;0.2050;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="75.4632;75.4632;0;0" keyTimes="0;0.2050;0.2826;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+	</g>
+	<g kvg:element="至">
+		<path d="M37.26,46.35c1.84,0.26,4.73,0.21,6.56,0.01c10.55-1.11,19.85-1.86,33.26-2.99c3.05-0.26,4.91-0.12,6.45,0.01" stroke-dasharray="46.4370" stroke-dashoffset="46.4370"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3054;0.3054;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="46.4370;46.4370;0;0" keyTimes="0;0.3054;0.3663;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+		<path d="M56.93,48.43c0.32,1.44-0.3,2.57-1.2,3.46c-4.7,4.65-5.6,5.7-11.59,10.52c-1.93,1.55-1.55,3.22,1.53,2.64c8.21-1.55,17.84-3.3,29.32-5.69" stroke-dasharray="54.8014" stroke-dashoffset="54.8014"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3892;0.3892;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="54.8014;54.8014;0;0" keyTimes="0;0.3892;0.4549;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+		<path d="M70.5,52.62C74.6,54.81,81.1,61.6,82.12,65" stroke-dasharray="17.2339" stroke-dashoffset="17.2339"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.4778;0.4778;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="17.2339;17.2339;0;0" keyTimes="0;0.4778;0.5220;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+		<g kvg:element="土">
+			<path d="M39.25,78.38c1.28,0.22,3.64,0.31,4.9,0.22C52.5,78,67.38,76,77.18,75.76c2.13-0.05,3.41,0.1,4.47,0.21" stroke-dasharray="42.5600" stroke-dashoffset="42.5600"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.5449;0.5449;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="42.5600;42.5600;0;0" keyTimes="0;0.5449;0.6036;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+			<path d="M58.08,64.24c1.17,0.76,1.46,2.13,1.46,3.92c0,6.03-0.04,21-0.04,22.72" stroke-dasharray="27.1044" stroke-dashoffset="27.1044"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.6264;0.6264;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="27.1044;27.1044;0;0" keyTimes="0;0.6264;0.6763;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+			<path d="M28.97,93.1c2.56,0.65,5.48,0.73,7.45,0.65c19.63-0.87,31.17-2.62,51.31-2.77c3.24-0.02,5.18,0.31,6.81,0.63" stroke-dasharray="65.7586" stroke-dashoffset="65.7586"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.6992;0.6992;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="65.7586;65.7586;0;0" keyTimes="0;0.6992;0.7711;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></path>
+		</g>
+	</g>
+</g>
+</g><g font-size="8" fill="#808080">
+	<text transform="matrix(1 0 0 1 29.50 17.50)">1<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.0000;0.0000;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 36.75 32.50)">2<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.0967;0.0967;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 23.50 30.13)">3<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.1822;0.1822;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 35.25 44.50)">4<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.2826;0.2826;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 45.75 55.63)">5<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.3663;0.3663;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 77.50 54.13)">6<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.4549;0.4549;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 33.50 78.13)">7<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.5220;0.5220;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 52.50 72.50)">8<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.6036;0.6036;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+	<text transform="matrix(1 0 0 1 21.75 93.13)">9<animate attributeName="opacity" values="0.2;0.2;1.0;1.0" keyTimes="0;0.6763;0.6763;1" dur="8.7386s" begin="0s;aid05c4b.click" fill="freeze" repeatCount="indefinite"/></text>
+</g>
+</svg>

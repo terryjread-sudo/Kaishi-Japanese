@@ -14,6 +14,11 @@ Files updated: `app.js` and `styles.css`.
 - **Chapter completion celebration:** completing a vocabulary chapter now plays a short, cheerful chime the first time its learning thresholds are reached.
 - **Guessing control on multiple-choice cards:** select **“I’m guessing”** before answering to show that a correct selection was a guess. The answer is shown as correct, but it is scheduled for further practice rather than counted as known.
 
+### v11.9.3 — Animated Kanji stroke order
+
+- **Watch stroke order:** the Kanji detail panel now offers an animated stroke-order replay for the 105 Kanji taught by the component lessons. Assets are cached when first viewed, so the animation remains available offline afterwards.
+- **Attribution:** stroke-order SVGs are adapted from [KanjiVG](https://kanjivg.tagaini.net/) by Ulrich Apel, licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
+
 ### Answer selection now has visual feedback
 
 Selecting an answer anywhere in the core learning path now feels more alive:

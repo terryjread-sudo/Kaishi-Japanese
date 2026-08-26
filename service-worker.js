@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.9.2';
+const VERSION='11.9.3';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
@@ -194,7 +194,7 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  if(isImage(request)){
+  if(isImage(request)||url.pathname.includes('/media/kanji-strokes/')){
     event.respondWith(cacheFirstImage(request));
     return;
   }
