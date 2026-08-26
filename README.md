@@ -1,10 +1,42 @@
-# Kaishi Quest v11.8.48 — Interactive Kanji Component Cards in Learning Path
+# Kaishi Quest v11.8.49 — Answer Animation for the Learning Path
 
 ## What's new
 
-### Kanji reinforcement, built into the normal lesson flow
+### Answer selection now has visual feedback
 
-A new card type — **Component build** — now appears occasionally as an ordinary card inside regular missions, for words that have a Kanji component breakdown available.
+Selecting an answer anywhere in the core learning path now feels more alive:
+
+- **Tap feedback** — every choice button gives a quick, subtle press response the instant you tap it
+- **Correct answer** — a satisfying pop + green glow when you get it right
+- **Wrong answer** — a short shake so a miss reads clearly, without feeling punishing
+- **Answer reveal** — on recall cards (meaning/production/mature reading/mature kanji), the revealed answer now fades and slides in smoothly instead of snapping into view
+- **Self-grade buttons** (Again / Hard / Good / Easy) get the same tap feedback
+
+**Where this applies:** meaning, listening, reading, kanji, sentence, kana, and self-graded recall — anywhere the shared choice/rating buttons are used across the core learning path.
+
+**Accessibility:** all of this respects `prefers-reduced-motion`. If a person's device has reduced motion enabled, animations and shake/pop effects are skipped automatically in favour of a plain colour change — nothing for anyone to configure.
+
+## Files changed
+
+- `styles.css` only — this is a pure CSS change. No JS logic, scoring, or session flow was touched. Works automatically everywhere `.choice`, `.ratings button`, `.reveal`, and `#answer` are already used (which is everywhere in the core learning path today).
+
+## No database changes required
+
+Deploy these files:
+- `index.html`
+- `app.js`
+- `service-worker.js`
+- `release-manager.js`
+- `version.json`
+- `styles.css`
+
+---
+
+## Previous releases
+
+### v11.8.48 — Interactive Kanji Component Cards in Learning Path
+
+A new card type — **Component build** — appears occasionally as an ordinary card inside regular missions, for words that have a Kanji component breakdown available.
 
 Instead of a passive reveal, it's genuinely interactive: you tap the correct components in order to assemble the word's Kanji, the same tap-to-place interaction as the standalone Kanji Builder activity, just scoped to a single word and a single build.
 
@@ -24,6 +56,7 @@ Instead of a passive reveal, it's genuinely interactive: you tap the correct com
 - Only for words that already have at least one Kanji with a component record
 - Only once a word is past first encounter (same restriction as other optional skills like Picture or Kanji recognition)
 - Woven into the same adaptive weighting as every other skill type, so it shows up occasionally without crowding out core meaning/listening/reading review
+
 
 ## Files changed
 

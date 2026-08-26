@@ -1,12 +1,12 @@
 {
-  "version": "11.8.48",
+  "version": "11.8.49",
   "released": "2026-08-26",
-  "title": "Interactive Kanji Component Cards in Learning Path",
+  "title": "Answer Animation for the Learning Path",
   "changes": [
-    "Added a new interactive card that appears occasionally during normal missions: tap the correct components to build a word's Kanji, right there in the lesson flow.",
-    "This reinforces a word using real interaction (tap-to-place, not just a reveal) without leaving the mission or opening a separate mini-game.",
-    "Only appears for words that already have a Kanji component breakdown, and only once a word is a little established (not on first encounter).",
-    "Feeds the same spaced-repetition scheduling as every other question type — no separate progress tracking.",
-    "The full multi-round Kanji Builder activity (Kanji Gate) is unchanged and still available for deeper practice."
+    "Selecting an answer now feels more responsive: a quick press effect on tap, a satisfying pop when you're right, and a gentle shake when you're not.",
+    "The answer reveal on recall cards now fades and slides in smoothly instead of snapping into place.",
+    "Covers every core learning-path answer type: meaning, listening, reading, kanji, sentence, kana, and self-graded recall (Again/Hard/Good/Easy).",
+    "All animation respects your device's reduced-motion setting — nothing new to turn off, it's automatic.",
+    "CSS-only change: no new screens, no changes to scoring or session flow."
   ]
 }

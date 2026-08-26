@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.8.48';
+const APP_VERSION='11.8.49';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -1278,7 +1278,7 @@ function nextKanjiBuilder(){kanjiBuilder.index++;if(kanjiBuilder.index<kanjiBuil
 function showKanjiBuilderSummary(){const total=kanjiBuilder.rounds.length,correct=kanjiBuilder.correct,percent=Math.round(correct/Math.max(1,total)*100);$('#kanjiBuilderFill').style.width='100%';$('#kanjiBuilderCard').innerHTML=`<section class="kanji-builder-summary"><span class="eyebrow">Workshop complete</span><div class="kanji-summary-medal">${percent>=80?'🏆':percent>=50?'🧩':'🌱'}</div><h2>${correct} of ${total} Kanji built correctly</h2><p>${percent>=80?'Excellent component recognition.':percent>=50?'A strong start—another build will strengthen the shapes.':'Review the interactive breakdowns, then try again.'}</p><div class="kanji-builder-actions"><button id="builderAgain" class="primary">Build another set</button><button id="builderFinish">Finish</button></div></section>`;$('#builderAgain').onclick=startKanjiBuilder;$('#builderFinish').onclick=closeKanjiBuilder}
 
 /*
- * v11.8.48 — Inline Kanji Component Build card.
+ * v11.8.49 — Inline Kanji Component Build card.
  * A single, interactive "build the kanji from its parts" screen shown as an
  * ordinary card inside the normal mission flow (skill==='components'), for
  * words that already have a kanji component record. This reuses the same

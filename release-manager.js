@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.48
+ * Kaishi Quest release manager — v11.8.49
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -21,9 +21,12 @@
  * - v11.8.48 Added inline Kanji Component Build card: an interactive tap-to-place kanji
  *   breakdown now appears occasionally as a normal mission card (skill "components") for
  *   words with kanji, reinforcing the word in place instead of launching a separate mini-game
+ * - v11.8.49 Added answer-selection animation across the core learning path: tap feedback,
+ *   a correct-answer pop, a wrong-answer shake, and a gentle reveal fade, all respecting
+ *   prefers-reduced-motion
  */
 (() => {
-  const CURRENT_VERSION='11.8.48';
+  const CURRENT_VERSION='11.8.49';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
