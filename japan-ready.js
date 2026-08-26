@@ -52,4 +52,16 @@ async function init(){
     }
   }
   if(!data) data={scenarios:[],cheatSheet:[]};
-  $('#chooseJourneyCampaign').onclick=()=>setMode('journey');$('#chooseJapanReadyCampaign').onclick=()=>setMode('japan-ready');$('#continueJapanReadyCampaign').onclick=open;$('#japanReadyBack').onclick={()=>{b().getMeta().activeCampaign='journey';b().save();chooser();b().show('home')};$('#liveConversationBack').onclick=open;$('#openJapanReadyCheatSheet').onclick=openCheatSheet;$('#cheatSheetBack').onclick=open;$('#liveConversationSubmit').onclick=submit;$('#kanaBuilderUndo').onclick={()=>{if(builderIndex>0){builderIndex--;builderKana.pop();renderBuilder()}};chooser();render()}addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true})})();
+  $('#chooseJourneyCampaign').onclick=()=>setMode('journey');
+  $('#chooseJapanReadyCampaign').onclick=()=>setMode('japan-ready');
+  $('#continueJapanReadyCampaign').onclick=open;
+  $('#japanReadyBack').onclick=()=>{b().getMeta().activeCampaign='journey';b().save();chooser();b().show('home')};
+  $('#liveConversationBack').onclick=open;
+  $('#openJapanReadyCheatSheet').onclick=openCheatSheet;
+  $('#cheatSheetBack').onclick=open;
+  $('#liveConversationSubmit').onclick=submit;
+  $('#kanaBuilderUndo').onclick=()=>{if(builderIndex>0){builderIndex--;builderKana.pop();renderBuilder()}};
+  chooser();render()
+}
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true});else init().catch(console.error)
+})();

@@ -1,6 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.9.0';
+const APP_VERSION='11.9.1';
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
@@ -96,7 +96,7 @@ function startTopicSession(topicId=currentTopic().id){
  const queue=selected.map(v=>{const p=pFor(v.id),unknownKana=unknownKanaFor(v).slice(0,1);let skills=p.stage===0?[...(unknownKana.length?['kanaUnlock']:[]),'firstEncounter','intro',...(ankiRecordFor(v)?.sentence?['example']:[]),'meaning']:[chooseSkill(v)];skills=skills.filter(skill=>skill!=='picture'||memoryScenes[sceneKey(v)]);return{v,skills}});
  session=[];
  while(queue.some(item=>item.skills.length)&&session.length<MISSION_CARD_LIMIT){const active=queue.filter(item=>item.skills.length).slice(0,ACTIVE_WORD_MIX);active.forEach(item=>{if(item.skills.length&&session.length<MISSION_CARD_LIMIT)session.push({v:item.v,skill:item.skills.shift()})});queue.push(...queue.splice(0,Math.min(ACTIVE_WORD_MIX,queue.length)))}
- clearMissionResume();index=0;current=null;show('study');renderCurrent()
+ clearMissionResume();index=0;current=null;showJourneySessionPreview(`${topic.icon||'🗾'} ${topic.title}`)
 }
 function senseiRecommendation(topic){const stats=topicStats(topic),weak=topicWeakestSkill(topic),labels={meaning:'meaning recall',listening:'listening',reading:'reading',picture:'picture memory',sentence:'sentence understanding',production:'active recall',kanji:'written Japanese'};if(stats.bossReady&&!stats.complete)return`You are ready to challenge the ${topic.title} boss.`;if(stats.introduced<stats.target)return`Continue ${topic.title}. Foundational skills will return naturally when this topic needs them.`;return`Your weakest skill in ${topic.title} is ${labels[weak]||weak}. Let’s train it through a relevant game.`}
 function achievementList(){const achievements=[];const learned=started(),masteredCount=Object.values(progress).filter(mastery).length;if(learned>=1)achievements.push(['🌱','First Word']);if(learned>=100)achievements.push(['🧠','100 Words']);if(masteredCount>=25)achievements.push(['⭐','25 Mastered']);if(Number(meta.streak||0)>=7)achievements.push(['🌿','7-Day Rhythm']);if(journeyTopics().some(topic=>topicStats(topic).complete))achievements.push(['🏆','First Topic Boss']);return achievements}
@@ -796,8 +796,20 @@ function makeSession(chapterIndex=null){
  while(queue.some(item=>item.skills.length)&&session.length<MISSION_CARD_LIMIT){const active=queue.filter(item=>item.skills.length).slice(0,ACTIVE_WORD_MIX);active.forEach(item=>{if(item.skills.length&&session.length<MISSION_CARD_LIMIT)session.push({v:item.v,skill:item.skills.shift()})});queue.push(...queue.splice(0,Math.min(ACTIVE_WORD_MIX,queue.length)))}
  for(let i=1;i<session.length;i++)if(session[i].v.id===session[i-1].v.id){const swap=session.findIndex((item,j)=>j>i&&item.v.id!==session[i-1].v.id);if(swap>i)[session[i],session[swap]]=[session[swap],session[i]]}
  if(!session.length){toast('No cards available for this session.');return}
- clearMissionResume();show('study');renderCurrent()
+ clearMissionResume();showJourneySessionPreview(chapterMode?'Your topic learning session':'Your Japanese learning session')
 }
+function ensureJourneySessionPreview(){let dialog=$('#journeySessionPreviewDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend','<dialog id="journeySessionPreviewDialog" class="journey-session-preview-dialog"><div class="journey-session-preview"><span class="eyebrow">Session preview</span><h2 id="journeySessionPreviewTitle">Your Japanese learning session</h2><div id="journeySessionPreviewContent"></div><div class="journey-session-preview-actions"><button id="journeySessionPreviewCancel" type="button">Not now</button><button id="journeySessionPreviewStart" class="primary" type="button">Start session</button></div></div></dialog>');return $('#journeySessionPreviewDialog')}
+function showJourneySessionPreview(title='Your Japanese learning session'){
+ const dialog=ensureJourneySessionPreview();
+ const words=[...new Map(session.map(item=>[item.v.id,item.v])).values()];
+ const newWords=words.filter(word=>Number(pFor(word.id).stage||0)===0),reviewWords=words.filter(word=>Number(pFor(word.id).stage||0)>0);
+ const renderWords=list=>list.length?`<div class="journey-session-words">${list.map(word=>`<span><b lang="ja">${esc(word.word)}</b><small>${esc(word.meaning)}</small></span>`).join('')}</div>`:'<p class="muted">None in this session.</p>';
+ $('#journeySessionPreviewTitle').textContent=title;
+ $('#journeySessionPreviewContent').innerHTML=`<p>Here is the small set Sensei selected for this session.</p><section><h3>New words <b>${newWords.length}</b></h3>${renderWords(newWords)}</section><section><h3>Reviews <b>${reviewWords.length}</b></h3>${renderWords(reviewWords)}</section>`;
+ if(!dialog.open)dialog.showModal();
+}
+function beginJourneySession(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();show('study');renderCurrent()}
+function cancelJourneySessionPreview(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();session=[];index=0;current=null;openJourney('missions')}
 function makeTargetedMasterySession(ids,skill){
  pictureGameActive=false;introGuidanceCount=0;const byId=new Map(vocab.map(word=>[word.id,word])),words=(ids||[]).map(id=>byId.get(id)).filter(Boolean);
  if(!words.length){if(vocab.length)makeSession();else toast('Learning content is loading or unavailable offline.');return}
@@ -1642,6 +1654,17 @@ $('#shareAchievement').onclick=()=>{$('#shareDialog').close();shareAchievement()
 $('#shareClose').onclick=()=>$('#shareDialog').close();
 $('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};
 $('#missionSummaryShare').onclick=()=>{$('#missionSummaryDialog').close();openInviteDialog()};
+const japanReadyContinue=$('#continueJapanReadyCampaign');
+if(japanReadyContinue)japanReadyContinue.addEventListener('click',event=>{
+ if(japanReadyContinue.onclick)return;
+ event.preventDefault();event.stopImmediatePropagation();
+ japanReadyContinue.disabled=true;const original=japanReadyContinue.innerHTML; japanReadyContinue.textContent='Loading Japan Ready…';
+ const retry=attempt=>{if(japanReadyContinue.onclick){japanReadyContinue.disabled=false;japanReadyContinue.innerHTML=original;japanReadyContinue.click();return}if(attempt<100){setTimeout(()=>retry(attempt+1),100);return}japanReadyContinue.disabled=false;japanReadyContinue.innerHTML=original;toast('Japan Ready is still loading — please try again shortly.')};retry(0);
+},true);
+const journeySessionPreview=ensureJourneySessionPreview();
+$('#journeySessionPreviewStart').onclick=beginJourneySession;
+$('#journeySessionPreviewCancel').onclick=cancelJourneySessionPreview;
+journeySessionPreview.addEventListener('cancel',event=>{event.preventDefault();cancelJourneySessionPreview()});
 init();
 
 

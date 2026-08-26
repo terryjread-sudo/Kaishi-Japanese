@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.9.0';
+const VERSION='11.9.1';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;

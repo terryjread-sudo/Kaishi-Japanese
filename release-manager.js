@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.9.0
+ * Kaishi Quest release manager — v11.9.1
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -24,13 +24,13 @@
  * - v11.8.49 Added answer-selection animation across the core learning path: tap feedback,
  *   a correct-answer pop, a wrong-answer shake, and a gentle reveal fade, all respecting
  *   prefers-reduced-motion
- * - v11.9.0 Adaptive Reinforcement update: skill-profile activity selection, one-word-many-ways
+ * - v11.9.1 Adaptive Reinforcement update: skill-profile activity selection, one-word-many-ways
  *   introduction flow, recognition→recall→context→production progression, surprise reviews,
  *   delayed within-session spacing, forgotten-word rescue sequences, mistake-driven reinforcement,
  *   and Today's Journey stats (new / reviewed / strengthened / rescued / recall %)
  */
 (() => {
-  const CURRENT_VERSION='11.9.0';
+  const CURRENT_VERSION='11.9.1';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[

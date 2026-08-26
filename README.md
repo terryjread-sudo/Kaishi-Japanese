@@ -2,6 +2,13 @@
 
 ## What's new
 
+### v11.9.1 — Japan Ready reliability & Journey session preview
+
+- **Japan Ready opens reliably:** Continue Japan Ready now waits for its campaign data and opens automatically once it is ready, rather than ignoring an early tap during startup or a cache refresh.
+- **Session preview for the full Japanese Journey:** before a regular Journey or topic session begins, Sensei shows the exact words selected, clearly separated into **New words** and **Reviews**. Choose **Start session** to begin or **Not now** to return to the journey.
+
+Files updated: `app.js` and `styles.css`.
+
 ### Answer selection now has visual feedback
 
 Selecting an answer anywhere in the core learning path now feels more alive:
