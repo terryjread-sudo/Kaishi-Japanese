@@ -9,6 +9,11 @@
 
 Files updated: `app.js` and `styles.css`.
 
+### v11.9.2 — Chapter celebrations & honest guesses
+
+- **Chapter completion celebration:** completing a vocabulary chapter now plays a short, cheerful chime the first time its learning thresholds are reached.
+- **Guessing control on multiple-choice cards:** select **“I’m guessing”** before answering to show that a correct selection was a guess. The answer is shown as correct, but it is scheduled for further practice rather than counted as known.
+
 ### Answer selection now has visual feedback
 
 Selecting an answer anywhere in the core learning path now feels more alive:
