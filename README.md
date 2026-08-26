@@ -19,6 +19,12 @@ Files updated: `app.js` and `styles.css`.
 - **Watch stroke order:** the Kanji detail panel now offers an animated stroke-order replay for the 105 Kanji taught by the component lessons. Assets are cached when first viewed, so the animation remains available offline afterwards.
 - **Attribution:** stroke-order SVGs are adapted from [KanjiVG](https://kanjivg.tagaini.net/) by Ulrich Apel, licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
 
+### v11.9.4 — Meaning-first Journey sentence bridges
+
+- **Connect new words in context:** when two new session words occur together in an existing natural example sentence, the normal Journey adds a short meaning-first sentence-building card.
+- **Learn the glue:** the card explicitly calls out connector words such as **です**, helping learners understand how Kanji vocabulary becomes a complete, polite Japanese thought.
+- **No invented sentences:** bridges only use the app’s existing, human-authored example sentences, so the Japanese remains natural.
+
 ### Answer selection now has visual feedback
 
 Selecting an answer anywhere in the core learning path now feels more alive:
