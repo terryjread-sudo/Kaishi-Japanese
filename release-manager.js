@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.8.49
+ * Kaishi Quest release manager — v11.9.0
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -24,9 +24,13 @@
  * - v11.8.49 Added answer-selection animation across the core learning path: tap feedback,
  *   a correct-answer pop, a wrong-answer shake, and a gentle reveal fade, all respecting
  *   prefers-reduced-motion
+ * - v11.9.0 Adaptive Reinforcement update: skill-profile activity selection, one-word-many-ways
+ *   introduction flow, recognition→recall→context→production progression, surprise reviews,
+ *   delayed within-session spacing, forgotten-word rescue sequences, mistake-driven reinforcement,
+ *   and Today's Journey stats (new / reviewed / strengthened / rescued / recall %)
  */
 (() => {
-  const CURRENT_VERSION='11.8.49';
+  const CURRENT_VERSION='11.9.0';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
@@ -654,7 +658,7 @@
     './app.js','./vms.js','./cloud.js','./reporting.js','./japan-ready.js','./supabase-config.js',
     './release-manager.js','./battle-listen.js','./kotoba-activity.js','./dashboard-clarity.js',
     './touch-enhancements.js','./learning-ui.js','./carousel-navigation.js','./micro-practice.js',
-    './sentence-lab.js','./adaptive-learning.js','./campfire-recall.js','./word-rain.js','./battle-ui-patch.js',
+    './sentence-lab.js','./adaptive-learning.js','./adaptive-reinforcement.js','./campfire-recall.js','./word-rain.js','./battle-ui-patch.js',
     './data/japan-ready-v90.json','./data/sentence-lab.json',
     // v11.8.41: core learning-content data app.js needs just to boot - must
     // be in every offline pack tier, not just bundled with per-word media.

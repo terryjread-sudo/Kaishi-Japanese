@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION='11.8.49';
+const VERSION='11.9.0';
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
@@ -37,6 +37,7 @@ const SHELL=[
   v('./pronunciation-coach.js'),
   v('./bonsai-progress.js'),
   v('./adaptive-learning.js'),
+  v('./adaptive-reinforcement.js'),
   v('./campfire-recall.js'),
   v('./word-rain.js'),
   v('./battle-ui-patch.js'),

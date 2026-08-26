@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.8.1 — Learning UI & Daily Summary
+ * Kaishi Quest v11.9.0 — Learning UI & Daily Summary
  *
  * Adds:
  * - persistent Today summary available after activities are closed
@@ -9,9 +9,10 @@
  * - visible touch affordances on touch devices
  * - Japanese script colour cues (Kanji / Hiragana / Katakana)
  * - Kana correct/wrong feedback as a modal overlay, with manual Continue only
+ * - v11.9.0 Today's Journey: new vs reviewed vs strengthened vs rescued stats
  */
 (() => {
-  const RELEASE='11.8.33';
+  const RELEASE='11.9.0';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 
@@ -63,7 +64,13 @@
         kana:{total:0,correct:0},
         missions:0,
         activities:[],
-        events:[]
+        events:[],
+        reinforcement:{
+          newWordIds:[],
+          reviewedWordIds:[],
+          strengthenedWordIds:[],
+          rescuedWordIds:[]
+        }
       };
       saveDaily(data);
     }
@@ -86,10 +93,57 @@
     });
   }
 
+  function ensureReinforcement(data){
+    data.reinforcement=data.reinforcement||{
+      newWordIds:[],reviewedWordIds:[],strengthenedWordIds:[],rescuedWordIds:[]
+    };
+    return data.reinforcement;
+  }
+
+  function trackWordAnswer(wordId){
+    if(!wordId) return;
+    updateDaily(data=>{
+      const r=ensureReinforcement(data);
+      const before=new Set(data.baseline?.introducedIds||[]);
+      if(!before.has(wordId) && !r.newWordIds.includes(wordId)){
+        r.newWordIds.push(wordId);
+      }else if(before.has(wordId) && !r.reviewedWordIds.includes(wordId)){
+        r.reviewedWordIds.push(wordId);
+      }
+    });
+  }
+
+  function trackReinforcementEvent(type,wordId){
+    if(!wordId) return;
+    updateDaily(data=>{
+      const r=ensureReinforcement(data);
+      const list=type==='strengthened'?r.strengthenedWordIds:type==='rescued'?r.rescuedWordIds:null;
+      if(list && !list.includes(wordId)) list.push(wordId);
+    });
+  }
+
+  function recallAccuracy(data){
+    const tested=Number(data.answers?.total||0);
+    const correct=Number(data.answers?.correct||0);
+    return tested?Math.round(correct/tested*100):null;
+  }
+
+  function reinforcementStats(data){
+    const r=ensureReinforcement(data);
+    return {
+      newWords:r.newWordIds.length,
+      reviewed:r.reviewedWordIds.length,
+      strengthened:r.strengthenedWordIds.length,
+      rescued:r.rescuedWordIds.length,
+      recall:recallAccuracy(data)
+    };
+  }
+
   window.KaishiDailySummary={
     recordActivity,
     get:()=>ensureDaily(),
-    refresh:()=>refreshTodaySummary()
+    refresh:()=>refreshTodaySummary(),
+    reinforcementStats
   };
 
   // Record learning answers while preserving every existing grade wrapper.
@@ -104,9 +158,17 @@
         row.total++;
         if(ok)row.correct++;
       });
+      if(v?.id) trackWordAnswer(v.id);
       return result;
     };
   }
+
+  document.addEventListener('kaishi:reinforcement-strengthened',event=>{
+    trackReinforcementEvent('strengthened',event.detail?.wordId);
+  });
+  document.addEventListener('kaishi:reinforcement-rescue-complete',event=>{
+    trackReinforcementEvent('rescued',event.detail?.wordId);
+  });
 
   function newWordsToday(data){
     const before=new Set(data.baseline?.introducedIds||[]);
@@ -170,6 +232,7 @@
       .daily-summary-grid span{font-size:.72rem;color:#64748b;margin-top:3px}
       .daily-summary-section{padding:13px;border-radius:15px;background:#f8fafc}
       .daily-summary-section p{margin:.35rem 0 0}
+      .daily-summary-note{font-size:.78rem;color:#64748b;margin-top:6px!important}
       .daily-summary-words{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
       .daily-summary-words span{padding:6px 9px;border-radius:10px;background:#fff;border:1px solid #e2e8f0}
       .daily-progress-deltas{display:grid;gap:7px;margin-top:9px}
@@ -347,14 +410,15 @@
     const accuracy=todayAccuracy(data);
     const activities=activityNames(data);
     const delta=learningDelta(data);
+    const stats=reinforcementStats(data);
 
     const mini=$('#todaySummaryMini');
     if(mini){
       mini.innerHTML=`
-        <span>📚 ${words.length} new word${words.length===1?'':'s'}</span>
-        <span>✓ ${accuracy===null?'—':accuracy+'%'} accuracy</span>
-        <span>🎮 ${activities.length} activit${activities.length===1?'y':'ies'}</span>
-        <span>🧠 +${Math.max(0,delta.recall)} recall</span>
+        <span>🆕 ${stats.newWords} new</span>
+        <span>🔄 ${stats.reviewed} reviewed</span>
+        <span>🧠 ${stats.strengthened} strengthened</span>
+        <span>🎯 ${stats.recall===null?'—':stats.recall+'%'} recall</span>
       `;
     }
 
@@ -368,16 +432,25 @@
     const accuracy=todayAccuracy(data);
     const activities=activityNames(data);
     const delta=learningDelta(data);
+    const stats=reinforcementStats(data);
     const content=$('#todaySummaryContent');
 
     content.innerHTML=`
       <div>
-        <span class="eyebrow">Today's learning summary</span>
+        <span class="eyebrow">Today's Journey</span>
         <h2>What you accomplished</h2>
       </div>
 
+      <div class="today-journey-grid">
+        <article><strong>${stats.newWords}</strong><span>🆕 New words</span></article>
+        <article><strong>${stats.reviewed}</strong><span>🔄 Words reviewed</span></article>
+        <article><strong>${stats.strengthened}</strong><span>🧠 Words strengthened</span></article>
+        <article><strong>${stats.rescued}</strong><span>💪 Words rescued</span></article>
+        <article><strong>${stats.recall===null?'—':stats.recall+'%'}</strong><span>🎯 Recall</span></article>
+      </div>
+
       <div class="daily-summary-grid">
-        <article><strong>${words.length}</strong><span>New words</span></article>
+        <article><strong>${words.length}</strong><span>New words started</span></article>
         <article><strong>${data.answers.total+data.kana.total}</strong><span>Answers</span></article>
         <article><strong>${accuracy===null?'—':accuracy+'%'}</strong><span>Accuracy</span></article>
         <article><strong>${data.missions||0}</strong><span>Missions</span></article>
@@ -386,7 +459,8 @@
       </div>
 
       <section class="daily-summary-section">
-        <h3>📚 What you learned</h3>
+        <h3>📚 New words started today</h3>
+        <p class="daily-summary-note">A new word is one that had never previously been started, regardless of how many activities you did with it today.</p>
         ${
           words.length
             ? `<div class="daily-summary-words">${words.slice(0,12).map(w=>`<span><b lang="ja">${esc(w.word)}</b> · ${esc(w.meaning)}</span>`).join('')}</div>`

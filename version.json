@@ -1,12 +1,15 @@
 {
-  "version": "11.8.49",
+  "version": "11.9.0",
   "released": "2026-08-26",
-  "title": "Answer Animation for the Learning Path",
+  "title": "Adaptive Reinforcement Update",
   "changes": [
-    "Selecting an answer now feels more responsive: a quick press effect on tap, a satisfying pop when you're right, and a gentle shake when you're not.",
-    "The answer reveal on recall cards now fades and slides in smoothly instead of snapping into place.",
-    "Covers every core learning-path answer type: meaning, listening, reading, kanji, sentence, kana, and self-graded recall (Again/Hard/Good/Easy).",
-    "All animation respects your device's reduced-motion setting — nothing new to turn off, it's automatic.",
-    "CSS-only change: no new screens, no changes to scoring or session flow."
+    "One word, many ways: new vocabulary now flows through see → hear → recognise → read → context → recall → use instead of repeating the same meaning question.",
+    "Skill-profile selection: Kaishi tracks meaning, listening, reading, recall, and context strength per word and chooses the activity you actually need — not another easy question on a skill you already know.",
+    "Recognition → recall → context → production progression: a single correct answer no longer marks a word as fully known.",
+    "Surprise reviews: older vocabulary is woven into missions without labelling it as a review, closer to real retrieval from context.",
+    "Delayed within-session reinforcement: the same word is spaced across other words instead of appearing three times in sixty seconds.",
+    "Forgotten-word rescue: words that slip from strong to forgotten get a guided rebuild sequence — meaning, audio, recognition, context, recall.",
+    "Mistake-driven reinforcement: wrong answers schedule a different skill retest later in the mission, not just the same question again.",
+    "Today's Journey dashboard: new vs reviewed vs strengthened vs rescued word counts, plus recall accuracy — eight new words means eight words never started before, not raw activity counts."
   ]
 }
