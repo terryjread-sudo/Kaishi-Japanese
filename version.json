@@ -1,10 +1,10 @@
 {
-  "version": "11.10.0",
+  "version": "11.11.0",
   "released": "2026-08-27",
-  "title": "Session Preview Everywhere & Real Sentence Links",
+  "title": "Sentences That Cement New Words — And Their Connecting Words",
   "changes": [
-    "Session preview now appears before every mission kind — mastery-skill practice and topic boss challenges now show which words are new and which are review, not just chapter and topic sessions.",
-    "New-word selection now actively looks for a genuinely linked pair — two new words where one's example sentence contains the other — so you learn them together and then see them combined in a sentence-bridge card.",
-    "Fixed a matching bug where a word could be wrongly flagged as \"linked\" just because its kanji happened to appear inside a longer, unrelated word (e.g. 日 inside 日本)."
+    "Sentence-bridge word matching now recognises conjugated and inflected forms of a companion word, not just an exact text match, so far more genuine sentence pairs are found among the words in a session.",
+    "When no two brand-new words share a real sentence, the sentence bridge now falls back to pairing a new word with one you already know from the same session, so a freshly learned word is cemented inside a real sentence far more often instead of being skipped.",
+    "The sentence-bridge card now lists every connecting word (particle or grammar ending) in the sentence with a plain-English explanation of its job, instead of a single hard-coded です note."
   ]
 }

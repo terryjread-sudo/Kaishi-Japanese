@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.10.0
+ * Kaishi Quest release manager — v11.11.0
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -35,9 +35,18 @@
  *   the same sentence-bridge card
  * - v11.10.0 Fixed sentence-link matching so it no longer false-positives on a word that is
  *   merely a kanji substring of a longer, unrelated word (e.g. 日 inside 日本)
+ * - v11.11.0 Sentence-bridge matching now recognises conjugated/inflected forms of a
+ *   companion word (not just an exact text match), so far more genuine word pairs are
+ *   found for the same-session sentence bridge
+ * - v11.11.0 When no two brand-new words in a session share a real sentence, the bridge now
+ *   falls back to pairing the new word with a word already known from this session, so a
+ *   newly learned word is still cemented inside a real sentence far more often
+ * - v11.11.0 The sentence-bridge card now explicitly lists every connecting word (particle
+ *   or grammar ending) found in the sentence, with a plain-English explanation of what it
+ *   does, instead of a single hard-coded です note
  */
 (() => {
-  const CURRENT_VERSION='11.10.0';
+  const CURRENT_VERSION='11.11.0';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
