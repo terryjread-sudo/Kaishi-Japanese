@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.9.4
+ * Kaishi Quest release manager — v11.10.0
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -28,9 +28,16 @@
  *   introduction flow, recognition→recall→context→production progression, surprise reviews,
  *   delayed within-session spacing, forgotten-word rescue sequences, mistake-driven reinforcement,
  *   and Today's Journey stats (new / reviewed / strengthened / rescued / recall %)
+ * - v11.10.0 Session preview now shown before mastery-skill missions and topic boss challenges,
+ *   not just chapter/topic sessions
+ * - v11.10.0 New-word selection now proactively favours a genuinely linked pair (a sentence
+ *   containing the companion word) so two words can be learned together and reinforced in
+ *   the same sentence-bridge card
+ * - v11.10.0 Fixed sentence-link matching so it no longer false-positives on a word that is
+ *   merely a kanji substring of a longer, unrelated word (e.g. 日 inside 日本)
  */
 (() => {
-  const CURRENT_VERSION='11.9.4';
+  const CURRENT_VERSION='11.10.0';
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[

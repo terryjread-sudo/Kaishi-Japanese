@@ -1,15 +1,10 @@
 {
-  "version": "11.9.4",
-  "released": "2026-08-26",
-  "title": "Meaning-first Journey Sentence Bridges",
+  "version": "11.10.0",
+  "released": "2026-08-27",
+  "title": "Session Preview Everywhere & Real Sentence Links",
   "changes": [
-    "One word, many ways: new vocabulary now flows through see → hear → recognise → read → context → recall → use instead of repeating the same meaning question.",
-    "Skill-profile selection: Kaishi tracks meaning, listening, reading, recall, and context strength per word and chooses the activity you actually need — not another easy question on a skill you already know.",
-    "Recognition → recall → context → production progression: a single correct answer no longer marks a word as fully known.",
-    "Surprise reviews: older vocabulary is woven into missions without labelling it as a review, closer to real retrieval from context.",
-    "Delayed within-session reinforcement: the same word is spaced across other words instead of appearing three times in sixty seconds.",
-    "Forgotten-word rescue: words that slip from strong to forgotten get a guided rebuild sequence — meaning, audio, recognition, context, recall.",
-    "Mistake-driven reinforcement: wrong answers schedule a different skill retest later in the mission, not just the same question again.",
-    "Today's Journey dashboard: new vs reviewed vs strengthened vs rescued word counts, plus recall accuracy — eight new words means eight words never started before, not raw activity counts."
+    "Session preview now appears before every mission kind — mastery-skill practice and topic boss challenges now show which words are new and which are review, not just chapter and topic sessions.",
+    "New-word selection now actively looks for a genuinely linked pair — two new words where one's example sentence contains the other — so you learn them together and then see them combined in a sentence-bridge card.",
+    "Fixed a matching bug where a word could be wrongly flagged as \"linked\" just because its kanji happened to appear inside a longer, unrelated word (e.g. 日 inside 日本)."
   ]
 }

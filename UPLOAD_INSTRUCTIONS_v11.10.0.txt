@@ -1,0 +1,64 @@
+KAISHI QUEST v11.10.0 — SESSION PREVIEW EVERYWHERE & REAL SENTENCE LINKS
+
+WHAT CHANGED
+
+1. Session preview was only ever wired into the two most common mission
+   paths (a plain daily/chapter session and a topic session). Two other
+   mission kinds jumped straight into the study screen and skipped it:
+     - Mastery-skill practice sessions (makeTargetedMasterySession)
+     - Topic boss challenges (startTopicBoss)
+   Both now clear any stale saved mission and open the same "Session
+   preview" dialog (new words / review words) before the cards start.
+
+   NOTE: the mini-games (Picture Match, Karuta, Battle) were intentionally
+   left as instant-start — they use a different active-game state that
+   bypasses the daily resume system entirely, and wiring them in would
+   need deeper changes to beginJourneySession(). Happy to do that as a
+   follow-up if you want the preview there too.
+
+2. New-word selection (in makeSession and startTopicSession) now calls a
+   new pickLinkedNewWords() helper. Instead of just taking the next N
+   unseen words in list order, it first checks whether any two unseen
+   words are already genuinely linked — one word's existing `sentence`
+   field contains the other word's exact text — and puts that pair into
+   the session together if so. No new data field is required; it reuses
+   the `sentence` field every word already has.
+
+3. Fixed a matching bug: the old check used a plain substring test, so a
+   single-kanji entry like 日 would be wrongly flagged as "found" inside
+   an unrelated word like 日本 (which contains that kanji). The new
+   wordBoundaryMatch() rejects a match if either side of it is another
+   kanji character, so it only counts real, standalone occurrences of the
+   word. Tested against the current 1,500-word vocabulary.json: this
+   removed about 120 false-positive matches (1,405 -> 1,285 words with a
+   real linked companion) without needing any new content.
+
+FILES IN THIS PACKAGE (all replace existing files at the repo root)
+  - app.js
+  - release-manager.js
+  - service-worker.js
+  - version.json
+  - index.html
+
+UPLOAD
+1. Extract this ZIP.
+2. Open the Kaishi_Quest_v11.10.0_session_preview_and_sentence_links folder.
+3. Upload every file inside it to the repository root, replacing the
+   existing files.
+4. Commit and wait for GitHub Pages to publish.
+5. Confirm the header shows v11.10.0.
+
+TEST
+1. Start a normal vocabulary/topic session -> Session preview dialog
+   should appear listing new + review words before cards begin.
+2. From the Journey screen, start a mastery-skill mission (a mission
+   whose kind is "mastery") -> Session preview dialog should now appear
+   too, titled "Your focused practice session".
+3. Start a topic boss challenge -> Session preview dialog should appear,
+   titled "<topic> — Boss Challenge".
+4. Keep starting sessions across a topic with several unseen words —
+   watch for a "sentence bridge" card pairing two new words that were
+   just introduced together (this is more likely now, since the picker
+   actively looks for a real link instead of relying on luck).
+
+This is a partial replacement package — only the 5 files above changed.
