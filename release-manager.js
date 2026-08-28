@@ -52,6 +52,9 @@
  * - v11.11.1 Resetting local progress while signed in now also immediately erases the synced
  *   cloud copy (instead of relying on the normal debounced sync), so old progress can no
  *   longer come back from the cloud after a reset; the reset button locks while this runs
+ * - v11.12.0 New Learning history screen (Settings → Data & Offline) lists every completed
+ *   lesson with its date and the words it covered, with a Redo button that replays that same
+ *   set of words as a focused review session
  */
 (() => {
   // CURRENT_VERSION is read from the single source of truth in version.js
