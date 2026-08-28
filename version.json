@@ -1,8 +1,9 @@
 {
-  "version": "11.14.0",
+  "version": "11.14.1",
   "released": "2026-08-28",
   "title": "Learning History Enhancements",
   "changes": [
+    "Fixed learning history sessions not logging for Journey missions.",
     "Fixed learning history timeline not showing in GUI.",
     "Ensured learning history sessions are logged at actual completion point for three-step route lessons.",
     "Learning history now appears as a horizontally swipeable timeline of lesson tiles, right above Activity landmarks on the Journey screen — swipe on touch, or click-and-drag with a mouse on desktop.",

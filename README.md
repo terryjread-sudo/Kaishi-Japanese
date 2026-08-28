@@ -140,3 +140,13 @@ The title bar already shows a compact **"● Offline"** / **"● No internet"** 
 - Offline detection now verified with a real network probe instead of trusting `navigator.onLine` alone.
 - Fixed offline packs missing core vocabulary/kana/manga/theatre/grammar/mnemonic data.
 
+### v11.14.1 — Learning History Fixes
+- Fixed learning history sessions not logging for Journey missions.
+- Fixed learning history timeline not showing in GUI.
+- Ensured learning history sessions are logged at actual completion point for three-step route lessons.
+
+### v11.14.0 — Learning History Enhancements
+- Learning history now appears as a horizontally swipeable timeline of lesson tiles, right above Activity landmarks on the Journey screen — swipe on touch, or click-and-drag with a mouse on desktop.
+- Tap or click a tile to see a popup with what was learned, how well you did (accuracy and attempts), and a Redo button.
+- Redoing a lesson updates that same history entry's date instead of creating a duplicate, so the timeline always reflects when you most recently practiced it.
+
