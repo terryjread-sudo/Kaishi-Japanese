@@ -290,6 +290,20 @@ header{
 .journey-history-tile time{font-size:.68rem;font-weight:800;letter-spacing:.02em;color:#64748b;text-transform:uppercase}
 .journey-history-tile strong{font-size:.92rem;color:#172554;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .journey-history-tile span{font-size:.75rem;color:#475569}
+.journey-path-ahead{margin:0 0 24px}
+.path-ahead-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.path-ahead-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:#fff;border:1px solid #e2e8f0}
+.path-ahead-item.current{border-color:#93c5fd;background:#eff6ff}
+.path-ahead-item.more{justify-content:center;color:#94a3b8;border-style:dashed}
+.path-ahead-icon{font-size:1.3rem;flex:0 0 auto}
+.path-ahead-title{flex:1;font-weight:700;color:#172554;font-size:.92rem}
+.path-ahead-status{font-size:.75rem;color:#64748b;white-space:nowrap}
+.path-ahead-item.current .path-ahead-status{color:#1d4ed8;font-weight:700}
+.practice-hub-details{margin-top:10px}
+.practice-hub-details>summary{cursor:pointer;font-weight:700;color:#334155;padding:10px 0;list-style:none}
+.practice-hub-details>summary::-webkit-details-marker{display:none}
+.practice-hub-details>summary::before{content:'▸ ';color:#94a3b8}
+.practice-hub-details[open]>summary::before{content:'▾ '}
 .history-entry-dialog{border:none;border-radius:20px;padding:0;max-width:420px;width:92vw}
 .history-entry-dialog::backdrop{background:rgba(15,23,42,.45)}
 .history-entry-dialog-inner{padding:22px 22px 20px;display:grid;gap:10px}

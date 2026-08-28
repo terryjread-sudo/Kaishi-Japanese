@@ -59,6 +59,16 @@
  *   above Activity landmarks on the Journey screen; tapping a tile opens a popup with what was
  *   learned, accuracy, and a Redo button; redoing a lesson updates its existing history entry's
  *   date instead of creating a duplicate
+ * - v11.15.0 Journey mastery gate: a topic lesson or side-quest activity finished under 75%
+ *   accuracy (with a real sample of answers) is now repeated — up to two extra tries — before
+ *   the route advances; a repeated topic lesson reuses the exact same words rather than a fresh
+ *   pick, using the same history entry the attempt just logged
+ * - v11.15.0 Activity landmarks are now clearly framed as automatic side quests that join the
+ *   main journey when ready, not a separate menu to browse; the old "Activity Skills" grid is
+ *   now a collapsed, explicitly optional "Free practice" section instead of sitting next to the
+ *   main path as an equal choice
+ * - v11.15.0 New "Your journey ahead" list on the Journey screen shows upcoming topics in order,
+ *   alongside the existing "Learning history" timeline of topics already completed
  */
 (() => {
   // CURRENT_VERSION is read from the single source of truth in version.js

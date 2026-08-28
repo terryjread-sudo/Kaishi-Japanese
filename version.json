@@ -1,13 +1,12 @@
 {
-  "version": "11.14.1",
+  "version": "11.15.0",
   "released": "2026-08-28",
-  "title": "Learning History Enhancements",
+  "title": "One Journey, With Side Quests Built In",
   "changes": [
-    "Fixed learning history sessions not logging for Journey missions.",
-    "Fixed learning history timeline not showing in GUI.",
-    "Ensured learning history sessions are logged at actual completion point for three-step route lessons.",
-    "Learning history now appears as a horizontally swipeable timeline of lesson tiles, right above Activity landmarks on the Journey screen — swipe on touch, or click-and-drag with a mouse on desktop.",
-    "Tap or click a tile to see a popup with what was learned, how well you did (accuracy and attempts), and a Redo button.",
-    "Redoing a lesson updates that same history entry's date instead of creating a duplicate, so the timeline always reflects when you most recently practiced it."
+    "Lessons and side-quest activities that go shakily (under 75% accuracy, with a real sample of answers) are now automatically repeated — up to two extra tries — before the journey advances, instead of moving on regardless.",
+    "A repeated topic lesson reuses the exact same words as the attempt that needed another pass, so it's genuinely the same lesson again, not a new pick of words.",
+    "Activity landmarks now clearly explain that they join your main journey automatically as side quests when you're ready — no separate browsing or unlocking needed.",
+    "The old 'Activity Skills' grid is now a collapsed, clearly optional 'Free practice' section for extra reps outside your main path, instead of sitting alongside it as an equal, separate choice.",
+    "A new 'Your journey ahead' list on the Journey screen shows the upcoming topics in order, alongside the existing 'Learning history' timeline of where you've already been."
   ]
 }
