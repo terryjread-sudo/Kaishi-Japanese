@@ -27,6 +27,7 @@ let grammarLesson=null,grammarQuestionIndex=0,grammarRun=null;
 let waitingWorker=null, latestVersionInfo=null, pictureGameActive=false, karutaActive=false, karuta=null, battleActive=false, battle=null;
 let activityReturnScreen='home';
 let pendingSessionRecord=null;
+let redoingHistoryId=null;
 let activeVocabularyChapter=null;
 let activeJourneyMission=null,activeQuickStep=false,activeFirstLesson=false;
 let introGuidanceCount=0;
@@ -214,17 +215,19 @@ function renderSkillScores(){
  list.innerHTML=SKILLS.map(skill=>{let attempts=0,correct=0,words=0,strength=0;Object.values(progress).forEach(p=>{const metric=p.skills?.[skill];if(!metric||!Number(metric.attempts))return;attempts+=Number(metric.attempts);correct+=Number(metric.correct||0);strength+=Number(metric.strength||0);words++});const score=words?Math.round(strength/words*100):0,accuracy=attempts?Math.round(correct/attempts*100):0,sample=words===0?'Not tested yet':words<5?'Early signal':words<20?'Developing signal':'Established signal';return `<div class="skill-score-row" tabindex="0" role="group" aria-label="${esc(LABELS[skill])}: ${score}% current strength, ${accuracy}% accuracy across ${attempts} attempts and ${words} words. ${esc(SKILL_HELP[skill])}"><div class="skill-score-heading"><b>${esc(LABELS[skill])}</b><strong>${score}%</strong></div><div class="bar" aria-hidden="true"><i style="width:${score}%"></i></div><p>${esc(SKILL_HELP[skill])}</p><div class="skill-score-details"><span><b>${accuracy}%</b> accuracy</span><span><b>${attempts}</b> attempts</span><span><b>${words}</b> words</span><small>${sample}</small></div></div>`}).join('');
 }
 function historyEntries(){return[...(Array.isArray(meta.sessionHistory)?meta.sessionHistory:[])].sort((a,b)=>b.completedAt-a.completedAt)}
+function historyEntryWords(entry){return(entry?.wordIds||[]).map(id=>vocab.find(v=>v.id===id)).filter(Boolean)}
+function historyEntryAccuracy(entry){const attempts=Number(entry?.attempts||0),correct=Number(entry?.correct||0);return attempts?Math.round(correct/attempts*100):null}
 function renderHistory(){
  const list=$('#historyList');if(!list)return;
  const entries=historyEntries();
  if(!entries.length){list.innerHTML='<p class="muted">Completed lessons will appear here after your next session.</p>';return}
  list.innerHTML=entries.map(entry=>{
-  const words=(entry.wordIds||[]).map(id=>vocab.find(v=>v.id===id)).filter(Boolean);
+  const words=historyEntryWords(entry),accuracy=historyEntryAccuracy(entry);
   const dateLabel=new Date(entry.completedAt).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
   const timeLabel=new Date(entry.completedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
   const preview=words.slice(0,5).map(word=>`<span lang="ja">${esc(word.word)}</span>`).join('');
   const missing=(entry.wordIds||[]).length-words.length;
-  return `<article class="history-entry"><div class="history-entry-head"><strong>${esc(entry.title||'Learning session')}</strong><time datetime="${new Date(entry.completedAt).toISOString()}">${esc(dateLabel)} · ${esc(timeLabel)}</time></div><p class="muted">${(entry.wordIds||[]).length} word${(entry.wordIds||[]).length===1?'':'s'} covered</p>${preview?`<div class="history-entry-words">${preview}</div>`:''}${missing>0?`<p class="muted history-entry-missing">${missing} word${missing===1?' is':'s are'} no longer available.</p>`:''}<button type="button" class="history-redo" data-redo-history="${esc(entry.id)}"${words.length?'':' disabled'}>Redo this lesson</button></article>`;
+  return `<article class="history-entry"><div class="history-entry-head"><strong>${esc(entry.title||'Learning session')}</strong><time datetime="${new Date(entry.completedAt).toISOString()}">${esc(dateLabel)} · ${esc(timeLabel)}</time></div><p class="muted">${(entry.wordIds||[]).length} word${(entry.wordIds||[]).length===1?'':'s'} covered${accuracy!==null?` · ${accuracy}% accuracy`:''}</p>${preview?`<div class="history-entry-words">${preview}</div>`:''}${missing>0?`<p class="muted history-entry-missing">${missing} word${missing===1?' is':'s are'} no longer available.</p>`:''}<button type="button" class="history-redo" data-redo-history="${esc(entry.id)}"${words.length?'':' disabled'}>Redo this lesson</button></article>`;
  }).join('');
  document.querySelectorAll('[data-redo-history]').forEach(button=>button.onclick=()=>redoHistoryEntry(button.dataset.redoHistory));
 }
@@ -232,9 +235,50 @@ function redoHistoryEntry(id){
  const entry=historyEntries().find(item=>item.id===id);
  const ids=(entry?.wordIds||[]).filter(wordId=>vocab.some(v=>v.id===wordId));
  if(!ids.length){toast('None of these words are available to redo right now.');return}
- makeTargetedMasterySession(ids,'retain');
+ closeHistoryEntryDialog();
+ redoingHistoryId=entry.id;
+ activityReturnScreen='journey';
+ makeTargetedMasterySession(ids,'retain',entry.title||'Your focused practice session');
 }
 function openHistory(){renderHistory();show('history')}
+
+function renderHistoryTimeline(){
+ const section=$('#journeyHistoryTimeline'),track=$('#journeyHistoryTrack');if(!section||!track)return;
+ const entries=historyEntries().slice(0,20);
+ section.hidden=!entries.length;
+ if(!entries.length){track.innerHTML='';return}
+ track.innerHTML=entries.map(entry=>{
+  const words=historyEntryWords(entry),accuracy=historyEntryAccuracy(entry);
+  const dateLabel=new Date(entry.completedAt).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  return `<button type="button" class="journey-history-tile" data-history-tile="${esc(entry.id)}"><time>${esc(dateLabel)}</time><strong>${esc(entry.title||'Lesson')}</strong><span>${words.length} word${words.length===1?'':'s'}${accuracy!==null?` · ${accuracy}%`:''}</span></button>`;
+ }).join('');
+ bindHistoryTimelineDrag(track);
+ track.querySelectorAll('[data-history-tile]').forEach(tile=>tile.onclick=()=>{if(tile.dataset.dragSuppressed==='1'){tile.dataset.dragSuppressed='0';return}openHistoryEntryDialog(tile.dataset.historyTile)});
+}
+const historyTimelineDragBound=new WeakSet();
+function bindHistoryTimelineDrag(track){
+ if(historyTimelineDragBound.has(track))return;historyTimelineDragBound.add(track);
+ let dragging=false,startX=0,startScroll=0,moved=false;
+ track.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')return;dragging=true;moved=false;startX=event.clientX;startScroll=track.scrollLeft;try{track.setPointerCapture(event.pointerId)}catch{}track.classList.add('dragging')});
+ track.addEventListener('pointermove',event=>{if(!dragging)return;const dx=event.clientX-startX;if(Math.abs(dx)>4)moved=true;track.scrollLeft=startScroll-dx});
+ const end=event=>{if(!dragging)return;dragging=false;track.classList.remove('dragging');if(moved){const tile=event.target.closest('[data-history-tile]');if(tile)tile.dataset.dragSuppressed='1'}};
+ track.addEventListener('pointerup',end);track.addEventListener('pointercancel',end);track.addEventListener('pointerleave',end);
+}
+function ensureHistoryEntryDialog(){let dialog=$('#historyEntryDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend','<dialog id="historyEntryDialog" class="history-entry-dialog"><div class="history-entry-dialog-inner"><span class="eyebrow" id="historyEntryDialogDate"></span><h2 id="historyEntryDialogTitle"></h2><div id="historyEntryDialogStats" class="history-entry-dialog-stats"></div><div id="historyEntryDialogWords" class="history-entry-words"></div><div class="history-entry-dialog-actions"><button id="historyEntryDialogClose" type="button">Close</button><button id="historyEntryDialogRedo" class="primary" type="button">Redo this lesson</button></div></div></dialog>');$('#historyEntryDialogClose').onclick=closeHistoryEntryDialog;return $('#historyEntryDialog')}
+function openHistoryEntryDialog(id){
+ const entry=historyEntries().find(item=>item.id===id);if(!entry)return;
+ const dialog=ensureHistoryEntryDialog();
+ const words=historyEntryWords(entry),accuracy=historyEntryAccuracy(entry),attempts=Number(entry.attempts||0);
+ const dateLabel=new Date(entry.completedAt).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+ const timeLabel=new Date(entry.completedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+ $('#historyEntryDialogDate').textContent=`${dateLabel} · ${timeLabel}`;
+ $('#historyEntryDialogTitle').textContent=entry.title||'Learning session';
+ $('#historyEntryDialogStats').innerHTML=`<span><b>${words.length}</b> word${words.length===1?'':'s'}</span>${attempts?`<span><b>${accuracy}%</b> accuracy</span><span><b>${attempts}</b> attempt${attempts===1?'':'s'}</span>`:'<span>No graded attempts recorded</span>'}`;
+ $('#historyEntryDialogWords').innerHTML=words.length?words.map(word=>`<span lang="ja">${esc(word.word)}<small>${esc(word.meaning)}</small></span>`).join(''):'<p class="muted">These words are no longer available.</p>';
+ const redoBtn=$('#historyEntryDialogRedo');redoBtn.disabled=!words.length;redoBtn.onclick=()=>redoHistoryEntry(entry.id);
+ if(!dialog.open)dialog.showModal();
+}
+function closeHistoryEntryDialog(){const dialog=$('#historyEntryDialog');if(dialog?.open)dialog.close()}
 const ACTIVITY_VILLAGE_CONFIG={
  vocabulary:{cost:0,words:0,action:'Enter Village',theme:'village'},
  kana:{cost:0,words:0,action:'Cross the Bridge',theme:'bridge'},
@@ -743,6 +787,7 @@ function activitySkillWebHtml(){
 function renderJourney(){
  refreshPathUnlocks();const currentIndex=pathCurrentIndex(),unlocked=PATH_MILESTONES.filter(item=>pathUnlocked(item.id)).length,wordPosition=wordJourneyPosition(),masteryState=masterySnapshot();$('#journeyStats').innerHTML=`<article><strong>${unlocked}/${PATH_MILESTONES.length}</strong><span>Activities unlocked</span></article><article><strong>${wordPosition.explored}/${vocab.length}</strong><span>Words introduced</span></article><article><strong>${masteryState.mastered}</strong><span>Full mastery journeys</span></article><article><strong>${wordPosition.completed}/${wordPosition.total}</strong><span>Chapters completed</span></article>`;
  renderDailyRoute();
+ renderHistoryTimeline();
  renderVillageMap();
  $('#pathRoad').innerHTML=activitySkillWebHtml();
  $('#practiceHub').innerHTML=PATH_MILESTONES.filter(item=>activityReadiness(item.id).purchased).map(item=>`<button data-village-activity="${esc(item.id)}"><span>${esc(item.icon)}</span><strong>${esc(item.title)}</strong><small>${item.id==='sentenceLab'?'Guided phrase lessons':'Practice with introduced words'}</small></button>`).join('');
@@ -833,7 +878,8 @@ function ensureJourneySessionPreview(){let dialog=$('#journeySessionPreviewDialo
 function showJourneySessionPreview(title='Your Japanese learning session'){
  const dialog=ensureJourneySessionPreview();
  const words=[...new Map(session.map(item=>[item.v.id,item.v])).values()];
- pendingSessionRecord=words.length?{title,wordIds:words.map(word=>word.id)}:null;
+ pendingSessionRecord=words.length?{title,wordIds:words.map(word=>word.id),startAnswers:Number(meta.totalAnswers||0),startCorrect:Number(meta.totalCorrect||0),redoOf:redoingHistoryId}:null;
+ redoingHistoryId=null;
  const newWords=words.filter(word=>Number(pFor(word.id).stage||0)===0),reviewWords=words.filter(word=>Number(pFor(word.id).stage||0)>0);
  const renderWords=list=>list.length?`<div class="journey-session-words">${list.map(word=>`<span><b lang="ja">${esc(word.word)}</b><small>${esc(word.meaning)}</small></span>`).join('')}</div>`:'<p class="muted">None in this session.</p>';
  $('#journeySessionPreviewTitle').textContent=title;
@@ -841,11 +887,11 @@ function showJourneySessionPreview(title='Your Japanese learning session'){
  if(!dialog.open)dialog.showModal();
 }
 function beginJourneySession(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();show('study');renderCurrent()}
-function cancelJourneySessionPreview(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();pendingSessionRecord=null;session=[];index=0;current=null;openJourney('missions')}
-function makeTargetedMasterySession(ids,skill){
+function cancelJourneySessionPreview(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();pendingSessionRecord=null;redoingHistoryId=null;session=[];index=0;current=null;openJourney('missions')}
+function makeTargetedMasterySession(ids,skill,title='Your focused practice session'){
  pictureGameActive=false;introGuidanceCount=0;const byId=new Map(vocab.map(word=>[word.id,word])),words=(ids||[]).map(id=>byId.get(id)).filter(Boolean);
  if(!words.length){if(vocab.length)makeSession();else toast('Learning content is loading or unavailable offline.');return}
- session=words.map(v=>({v,skill:skill==='retain'?chooseSkill(v):skill}));index=0;current=null;clearMissionResume();showJourneySessionPreview('Your focused practice session');
+ session=words.map(v=>({v,skill:skill==='retain'?chooseSkill(v):skill}));index=0;current=null;clearMissionResume();showJourneySessionPreview(title);
 }
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
 function play(name){if(!name)return;new Audio(media(name)).play().catch(()=>{})}
@@ -1281,7 +1327,19 @@ function showMissionCheckpoint(){saveMissionResume();const dialog=$('#missionChe
 function continueAfterCheckpoint(){clearMissionResume();$('#missionCheckpointDialog')?.close();index++;renderCurrent()}
 function finishAtCheckpoint(){saveMissionResume();$('#missionCheckpointDialog')?.close();session=[];index=0;current=null;revealed=false;hintUsed=false;updateHome();show('home');toast('Progress saved — Continue Adventure will resume here')}
 function next(){if(activeQuickStep&&Math.max(0,todayActivity().tested-Number(todayActivity().quickStartTested||0))>=3){session=session.slice(0,3);index=session.length;renderCurrent();return}saveMissionResume();const completed=index+1;if(completed<session.length&&completed%CHECKPOINT_INTERVAL===0&&!pictureGameActive&&!karutaActive&&!battleActive&&!activeFirstLesson){showMissionCheckpoint();return}index++;renderCurrent()}
-function recordSessionHistory(){if(!pendingSessionRecord||!pendingSessionRecord.wordIds?.length){pendingSessionRecord=null;return}meta.sessionHistory=Array.isArray(meta.sessionHistory)?meta.sessionHistory:[];meta.sessionHistory.push({id:`${Date.now().toString(36)}${Math.random().toString(36).slice(2,7)}`,title:pendingSessionRecord.title,wordIds:[...pendingSessionRecord.wordIds],completedAt:Date.now()});if(meta.sessionHistory.length>SESSION_HISTORY_LIMIT)meta.sessionHistory=meta.sessionHistory.slice(-SESSION_HISTORY_LIMIT);pendingSessionRecord=null}
+function recordSessionHistory(){
+ if(!pendingSessionRecord||!pendingSessionRecord.wordIds?.length){pendingSessionRecord=null;return}
+ meta.sessionHistory=Array.isArray(meta.sessionHistory)?meta.sessionHistory:[];
+ const attempts=Math.max(0,Number(meta.totalAnswers||0)-Number(pendingSessionRecord.startAnswers||0));
+ const correct=Math.max(0,Number(meta.totalCorrect||0)-Number(pendingSessionRecord.startCorrect||0));
+ const existing=pendingSessionRecord.redoOf?meta.sessionHistory.find(item=>item.id===pendingSessionRecord.redoOf):null;
+ if(existing){existing.completedAt=Date.now();existing.wordIds=[...pendingSessionRecord.wordIds];existing.attempts=attempts;existing.correct=correct}
+ else{
+  meta.sessionHistory.push({id:`${Date.now().toString(36)}${Math.random().toString(36).slice(2,7)}`,title:pendingSessionRecord.title,wordIds:[...pendingSessionRecord.wordIds],completedAt:Date.now(),attempts,correct});
+  if(meta.sessionHistory.length>SESSION_HISTORY_LIMIT)meta.sessionHistory=meta.sessionHistory.slice(-SESSION_HISTORY_LIMIT);
+ }
+ pendingSessionRecord=null;
+}
 function finishSession(){clearMissionResume();recordSessionHistory();const quickCompleted=activeQuickStep,firstLessonCompleted=activeFirstLesson;activeQuickStep=false;activeFirstLesson=false;const completedJourneyMission=Boolean(activeJourneyMission)&&finishActiveJourneyMission();if(battleActive){showBattleSummary();return}if(karutaActive){showKarutaSummary();return}if(pictureGameActive){abortSession('games');toast('Game complete 🎉');return}save();updateHome();if(completedJourneyMission)renderJourney();const c=$('#card');$('#sessionCounter').textContent='Complete';$('#progressFill').style.width='100%';if(firstLessonCompleted){c.innerHTML=`${senseiBlock('You learned and recalled your first two Japanese words. That is a real beginning.',true,'celebrating')}<div class="eyebrow">First lesson complete</div><h2>Your bonsai has new branches.</h2><p>You can now recognise two useful words. Its size records lasting learning progress, while its condition will brighten as your learning rhythm grows.</p><div class="mission-complete-actions"><button id="finishMissionNow" class="primary">See my progress</button><button id="keepLearningMission">Learn a little more</button></div>`;$('#finishMissionNow').onclick=()=>{show('home');setTimeout(()=>$('#bonsaiProgressCard')?.scrollIntoView({behavior:'smooth',block:'center'}),60)};$('#keepLearningMission').onclick=()=>{session=[];index=0;current=null;startTopicSession(currentTopic().id)};return}if(quickCompleted){c.innerHTML=`${senseiBlock('Quick Step complete. Even a short, focused practice keeps your learning rhythm moving.',true,'celebrating')}<div class="eyebrow">Rhythm protected</div><h2>A small step still counts.</h2><p>Three genuine review attempts protected today without turning practice into a chore.</p><div class="mission-complete-actions"><button id="finishMissionNow" class="primary">Back to dashboard</button><button id="keepLearningMission">Keep learning</button></div>`;$('#finishMissionNow').onclick=()=>show('home');$('#keepLearningMission').onclick=()=>{session=[];index=0;current=null;startTopicSession(currentTopic().id)};return}c.innerHTML=`${senseiBlock('Mandatory mission complete. Your progress is safely saved.')}<div class="eyebrow">Mission complete</div><h2>Great work — you reached today’s save point.</h2><p>You can finish now, or continue with another short optional mission.</p><div class="mission-complete-actions"><button id="finishMissionNow" class="primary">Finish for now</button><button id="keepLearningMission">Keep learning</button></div>`;$('#finishMissionNow').onclick=()=>{activityReturnScreen=activityReturnScreen==='journey'?'home':activityReturnScreen;returnToActivitySource('home');toast(todayActivity().qualified?'Mission complete — today’s rhythm is protected 🎉':'Mission complete — progress saved')};$('#keepLearningMission').onclick=()=>{session=[];index=0;current=null;startTopicSession(currentTopic().id)}}
 function editMnemonic(v){const p=pFor(v.id);const text=prompt('Edit your personal mnemonic:',p.mnemonic||mnemonic(v));if(text!==null){p.mnemonic=text.trim();save();renderCurrent()}}
 

@@ -55,6 +55,10 @@
  * - v11.12.0 New Learning history screen (Settings → Data & Offline) lists every completed
  *   lesson with its date and the words it covered, with a Redo button that replays that same
  *   set of words as a focused review session
+ * - v11.13.0 Learning history is now also a horizontally swipeable/draggable timeline of tiles
+ *   above Activity landmarks on the Journey screen; tapping a tile opens a popup with what was
+ *   learned, accuracy, and a Redo button; redoing a lesson updates its existing history entry's
+ *   date instead of creating a duplicate
  */
 (() => {
   // CURRENT_VERSION is read from the single source of truth in version.js

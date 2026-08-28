@@ -1,10 +1,10 @@
 {
-  "version": "11.12.0",
+  "version": "11.13.0",
   "released": "2026-08-28",
-  "title": "Learning History",
+  "title": "Learning History Timeline",
   "changes": [
-    "New Learning history screen (Settings → Data & Offline → View learning history) lists every completed lesson with its date and the words it covered.",
-    "Each history entry has a Redo button that replays that exact set of words as a focused review session.",
-    "No account changes needed — history is stored alongside your existing progress and syncs the same way for signed-in learners."
+    "Learning history now appears as a horizontally swipeable timeline of lesson tiles, right above Activity landmarks on the Journey screen — swipe on touch, or click-and-drag with a mouse on desktop.",
+    "Tap or click a tile to see a popup with what was learned, how well you did (accuracy and attempts), and a Redo button.",
+    "Redoing a lesson updates that same history entry's date instead of creating a duplicate, so the timeline always reflects when you most recently practiced it."
   ]
 }
