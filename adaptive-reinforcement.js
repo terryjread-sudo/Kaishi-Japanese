@@ -13,7 +13,7 @@
  * - Mission cap preserved; existing card renderers reused
  */
 (() => {
-  const RELEASE_VERSION='11.9.0';
+  const RELEASE_VERSION=window.APP_VERSION;
   const MIN_WORD_GAP=3;
   const REPAIR_DELAY=5;
   const MISSION_CAP=15;

@@ -12,7 +12,6 @@
  * - v11.9.0 Today's Journey: new vs reviewed vs strengthened vs rescued stats
  */
 (() => {
-  const RELEASE='11.9.0';
   const DAY_KEY=()=>`kq-daily-summary-${typeof day==='function'?day():new Date().toISOString().slice(0,10)}`;
   let suppressColorObserver=false;
 

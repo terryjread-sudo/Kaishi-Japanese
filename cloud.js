@@ -3,7 +3,7 @@
  const config=window.KAISHI_SUPABASE_CONFIG,sdk=window.supabase;
  const account=$('#cloudAccount'),status=$('#cloudStatus'),join=$('#leaderboardOptIn');
  const leaderboard=$('#leaderboardList'),leaderboardMessage=$('#leaderboardMessage');
- const RELEASE='11.8.33',OWNER_LOGIN='terryjread-sudo',GUEST_IMAGE=`media/profiles/guest-learner.webp?v=${RELEASE}`;
+ const OWNER_LOGIN='terryjread-sudo',GUEST_IMAGE=`media/profiles/guest-learner.webp?v=${APP_VERSION}`;
  const AVATARS=[
   {key:'boy',name:'Boy',mastered:0},{key:'girl',name:'Girl',mastered:0},{key:'master',name:'Master',mastered:0},{key:'man',name:'Man',mastered:0},{key:'woman',name:'Woman',mastered:0},
   {key:'harajuku-girl',name:'Harajuku Girl',mastered:10},{key:'harajuku-guy',name:'Harajuku Guy',mastered:25},{key:'izakaya-cook',name:'Izakaya Cook',mastered:50}
@@ -18,7 +18,7 @@
  const avatarDefinition=value=>AVATARS.find(avatar=>avatar.key===value);
  const avatarKey=value=>avatarDefinition(value)?.key||'boy';
  const avatarState=(streak=0)=>{streak=Number(streak)||0;return streak>=60?'superhero':streak>=30?'double-flex':streak>=14?'flex':streak>=7?'double-thumbs':streak>=3?'thumbs-up':'base'};
- const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=${RELEASE}`;
+ const avatarImage=(key=selectedAvatar,streak=0)=>`media/profiles/${avatarKey(key)}-${avatarState(streak)}.webp?v=${APP_VERSION}`;
  const avatarUnlocked=(key,stats=adapter()?.stats?.()||{})=>Boolean(adapter()?.isTestMode?.()||Number(stats.mastered||0)>=Number(avatarDefinition(key)?.mastered||0));
  const nextAvatarUnlock=(stats=adapter()?.stats?.()||{})=>AVATARS.find(avatar=>avatar.mastered&&!avatarUnlocked(avatar.key,stats));
 
@@ -108,7 +108,7 @@
 
  async function initialiseAccount(forceChoice=false){
   if(adapter()?.isTestMode?.()){setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}
-  if(!user||syncing)return;syncing=true;setStatus('Checking cloud progress…','working');
+  if(!user||syncing||resetLock)return;syncing=true;setStatus('Checking cloud progress…','working');
   try{
    const entry=await ensureLeaderboardEntry();renderSignedIn(entry);
    const{data,error}=await client.from('user_progress').select('payload,updated_at').eq('user_id',user.id).maybeSingle();
@@ -134,8 +134,35 @@
   if(error)throw error;
   remember(payload);await ensureLeaderboardEntry();
  }
- function scheduleSync(){if(adapter()?.isTestMode?.()||!user||!client)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
- async function flush(){clearTimeout(syncTimer);if(adapter()?.isTestMode?.())return;if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
+ function scheduleSync(){if(adapter()?.isTestMode?.()||!user||!client||resetLock)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
+ async function flush(){clearTimeout(syncTimer);if(adapter()?.isTestMode?.()||resetLock)return;if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
+
+ // resetLock blocks any in-flight or newly scheduled sync (and the
+ // sign-in reconcile flow) for the moment between a local reset and its
+ // matching cloud write landing, so a stale queued sync or a reconcile on
+ // reload can never restore the pre-reset progress out from under the user.
+ let resetLock=false;
+ async function resetProgress(){
+  clearTimeout(syncTimer);
+  if(!user||!client){remember({});return{ok:true,synced:false}}
+  resetLock=true;syncing=true;setStatus('Resetting cloud progress…','working');
+  try{
+   const payload=adapter()?.snapshot?.()||{progress:{},meta:{},settings:{}};
+   const{error}=await client.from('user_progress').upsert({user_id:user.id,schema_version:2,payload},{onConflict:'user_id'});
+   if(error)throw error;
+   remember(payload);
+   await ensureLeaderboardEntry();
+   setStatus('Progress reset and synced.','ok');
+   await loadLeaderboard();
+   return{ok:true,synced:true};
+  }catch(error){
+   console.error('Cloud reset failed',error);
+   setStatus(describeError(error),'error');
+   return{ok:false,synced:false,error};
+  }finally{
+   syncing=false;resetLock=false;
+  }
+ }
 
  
  async function friendRpc(name,args={}){if(!client||!user)throw new Error('Sign in with GitHub to use friends.');const{data,error}=await client.rpc(name,args);if(error)throw error;return data}
@@ -393,6 +420,6 @@ async function loadLeaderboard(){
   addEventListener('online',()=>user&&scheduleSync());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
  }
- window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,createFriendInviteLink,flush,avatarImage,renderDashboardAvatar,isOwner,currentAvatar:()=>selectedAvatar};
+ window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,createFriendInviteLink,flush,avatarImage,renderDashboardAvatar,isOwner,isSignedIn:()=>Boolean(user),resetProgress,currentAvatar:()=>selectedAvatar};
  init();
 })();

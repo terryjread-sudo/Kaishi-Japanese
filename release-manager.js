@@ -1,7 +1,8 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager — v11.11.0
+ * Kaishi Quest release manager
+ * (version number lives in version.js — see APP_VERSION below)
  *
  * Release helpers:
  * - reliable update/cache refresh
@@ -44,9 +45,18 @@
  * - v11.11.0 The sentence-bridge card now explicitly lists every connecting word (particle
  *   or grammar ending) found in the sentence, with a plain-English explanation of what it
  *   does, instead of a single hard-coded です note
+ * - v11.11.1 The app version now lives in exactly one place (version.js, loaded before every
+ *   other script) instead of being duplicated across app.js, service-worker.js,
+ *   release-manager.js and every script tag in index.html — a release only needs that one
+ *   file edited for the app to pick up and announce the new version
+ * - v11.11.1 Resetting local progress while signed in now also immediately erases the synced
+ *   cloud copy (instead of relying on the normal debounced sync), so old progress can no
+ *   longer come back from the cloud after a reset; the reset button locks while this runs
  */
 (() => {
-  const CURRENT_VERSION='11.11.0';
+  // CURRENT_VERSION is read from the single source of truth in version.js
+  // (loaded before this script in index.html), not duplicated here.
+  const CURRENT_VERSION=window.APP_VERSION;
   const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[

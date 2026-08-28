@@ -1,6 +1,9 @@
 'use strict';
 
-const VERSION='11.11.0';
+// The version number is defined once, in version.js, and pulled in here so
+// it never has to be edited in this file directly.
+importScripts('./version.js');
+const VERSION=APP_VERSION;
 const SHELL_CACHE=`kaishi-shell-${VERSION}`;
 const IMAGE_CACHE=`kaishi-images-${VERSION}`;
 const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;

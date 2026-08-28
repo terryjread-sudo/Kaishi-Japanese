@@ -1,10 +1,12 @@
 {
-  "version": "11.11.0",
+  "version": "11.11.1",
   "released": "2026-08-27",
-  "title": "Sentences That Cement New Words — And Their Connecting Words",
+  "title": "Cloud-Safe Reset & A Single Version File",
   "changes": [
     "Sentence-bridge word matching now recognises conjugated and inflected forms of a companion word, not just an exact text match, so far more genuine sentence pairs are found among the words in a session.",
     "When no two brand-new words share a real sentence, the sentence bridge now falls back to pairing a new word with one you already know from the same session, so a freshly learned word is cemented inside a real sentence far more often instead of being skipped.",
-    "The sentence-bridge card now lists every connecting word (particle or grammar ending) in the sentence with a plain-English explanation of its job, instead of a single hard-coded です note."
+    "The sentence-bridge card now lists every connecting word (particle or grammar ending) in the sentence with a plain-English explanation of its job, instead of a single hard-coded です note.",
+    "Resetting local progress while signed in now also erases the synced cloud copy immediately, so old progress can no longer reappear from the cloud after a reset. The reset button locks while this happens so it can't be triggered twice mid-reset.",
+    "The app version now lives in exactly one file (version.js) instead of five, so a release only needs that one number changed for every part of the app — and the offline install banner — to pick it up."
   ]
 }
