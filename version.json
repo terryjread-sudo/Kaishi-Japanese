@@ -1,9 +1,12 @@
 {
-  "version": "11.15.0",
+  "version": "11.16.0",
   "released": "2026-08-28",
-  "title": "One Journey, With Side Quests Built In",
+  "title": "A True Step-by-Step Journey",
   "changes": [
-    "Lessons and side-quest activities that go shakily (under 75% accuracy, with a real sample of answers) are now automatically repeated — up to two extra tries — before the journey advances, instead of moving on regardless.",
+    "The Journey now advances through small, sequential lessons of three words at a time, with a clear path of hundreds of gradual steps.",
+    "The daily route is now one next lesson instead of a fixed three-step routine, so each lesson can introduce connected words and sentence-building naturally.",
+    "Ordinary activities are available as optional practice without unlock gates; the boss-style Memory Dojo remains gated.",
+    "Removed the regional journey panel so the step-by-step lesson path is the main view.",
     "A repeated topic lesson reuses the exact same words as the attempt that needed another pass, so it's genuinely the same lesson again, not a new pick of words.",
     "Activity landmarks now clearly explain that they join your main journey automatically as side quests when you're ready — no separate browsing or unlocking needed.",
     "The old 'Activity Skills' grid is now a collapsed, clearly optional 'Free practice' section for extra reps outside your main path, instead of sitting alongside it as an equal, separate choice.",

@@ -32,7 +32,7 @@ let activeVocabularyChapter=null;
 let activeJourneyMission=null,activeQuickStep=false,activeFirstLesson=false;
 let introGuidanceCount=0;
 const MISSION_CARD_LIMIT=15,NEW_WORDS_PER_MISSION=3,DAILY_REVIEW_TARGET=6,ACTIVE_WORD_MIX=3,CHECKPOINT_INTERVAL=5;
-const defaults={sessionSize:10,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true,activityVillageMode:true,learningBalance:0,learningBalanceAdaptive:true};
+const defaults={sessionSize:10,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true,learningBalance:0,learningBalanceAdaptive:true};
 let settings={...defaults,...loadJSON(profileStorageKey('kq-settings'),{})};
 settings.playMode='journey';
 settings.learningBalance=Math.max(-2,Math.min(2,Math.round(Number(settings.learningBalance)||0)));
@@ -85,7 +85,7 @@ function journeyTopics(){const source=learningGraph.topics?.length?learningGraph
 function topicStats(topic){const words=topic.words||vocab.filter(word=>topicForWord(word).id===topic.id),introduced=words.filter(wordIntroduced).length,tested=words.filter(word=>wordPracticeCount(progress[word.id])>=2).length,mastered=words.filter(word=>mastery(progress[word.id])).length,target=Math.min(20,Math.max(5,words.length)),bossReady=isAdminTestMode()||introduced>=Math.min(target,words.length)&&tested>=Math.min(10,Math.ceil(words.length*.35)),complete=Boolean(meta.topicProgress?.[topic.id]?.bossPassed);return{words,introduced,tested,mastered,target,bossReady,complete,percent:words.length?Math.round((introduced/words.length*.55+tested/words.length*.3+mastered/words.length*.15)*100):0}}
 function topicUnlocked(index){if(isAdminTestMode()||index===0)return true;const topics=journeyTopics();return Boolean(topicStats(topics[index-1]).complete||meta.topicProgress?.[topics[index]?.id]?.unlocked)}
 function currentTopicIndex(){const topics=journeyTopics();for(let i=0;i<topics.length;i++){if(!topicUnlocked(i))return Math.max(0,i-1);if(!topicStats(topics[i]).complete)return i}return Math.max(0,topics.length-1)}
-function currentTopic(){return journeyTopics()[currentTopicIndex()]||{id:'greetings-politeness',title:'Greetings & Politeness',icon:'👋',words:vocab}}
+function currentTopic(){const lesson=chapterWords(currentWordChapterIndex()),first=lesson[0];return first?topicForWord(first):(journeyTopics()[currentTopicIndex()]||{id:'greetings-politeness',title:'Greetings & Politeness',icon:'👋',words:vocab})}
 function topicWeakestSkill(topic){const skills=['meaning','listening','reading','picture','sentence','production','kanji'];let best={skill:'meaning',score:1};for(const skill of skills){let attempts=0,strength=0;topic.words.forEach(word=>{const metric=progress[word.id]?.skills?.[skill];if(metric?.attempts){attempts++;strength+=Number(metric.strength||0)}});const score=attempts?strength/attempts:0;if(score<best.score)best={skill,score}}return best.skill}
 function topicSupportWords(topic,limit=4){const tags=[...new Set(topic.words.flatMap(wordFoundationTags))];return shuffle(vocab.filter(word=>wordIntroduced(word)&&wordFoundationTags(word).some(tag=>tags.includes(tag))&&!topic.words.includes(word))).slice(0,limit)}
 function startTopicSession(topicId=currentTopic().id){
@@ -281,13 +281,13 @@ function openHistoryEntryDialog(id){
 function closeHistoryEntryDialog(){const dialog=$('#historyEntryDialog');if(dialog?.open)dialog.close()}
 function renderJourneyPathAhead(){
  const list=$('#journeyPathAhead');if(!list)return;
- const topics=journeyTopics(),index=currentTopicIndex();
- const upcoming=topics.slice(index,index+6);
- list.innerHTML=upcoming.map((topic,offset)=>{
-  const isCurrent=offset===0,stats=topicStats(topic);
-  const state=isCurrent?'current':'ahead';
-  return `<li class="path-ahead-item ${state}"><span class="path-ahead-icon">${esc(topic.icon||'🗾')}</span><span class="path-ahead-title">${esc(topic.title)}</span><span class="path-ahead-status">${isCurrent?`${stats.percent}% underway`:'🔒 Up next'}</span></li>`;
- }).join('')+(topics.length>index+6?'<li class="path-ahead-item more">⋯</li>':'');
+ const current=currentWordChapterIndex(),total=wordChapterCount();
+ const upcoming=Array.from({length:Math.min(8,total-current)},(_,offset)=>current+offset);
+ list.innerHTML=upcoming.map((lessonIndex,offset)=>{
+  const words=chapterWords(lessonIndex),topic=topicForWord(words[0]),stats=chapterStats(lessonIndex),isCurrent=offset===0;
+  const title=words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title;
+  return `<li class="path-ahead-item ${isCurrent?'current':'ahead'}"><span class="path-ahead-icon">${esc(topic.icon||'🗺️')}</span><span class="path-ahead-title">Lesson ${lessonIndex+1}: ${esc(title)}</span><span class="path-ahead-status">${isCurrent?`${stats.percent}% underway`:'Up next'}</span></li>`;
+ }).join('')+(total>current+8?'<li class="path-ahead-item more">More lessons ahead</li>':'');
 }
 const ACTIVITY_VILLAGE_CONFIG={
  vocabulary:{cost:0,words:0,action:'Enter Village',theme:'village'},
@@ -374,13 +374,13 @@ function activitySupportedWords(id){
  return introduced;
 }
 function activityReadiness(id){
- const cfg=ACTIVITY_VILLAGE_CONFIG[id]||{cost:0,words:0};
+ const cfg=id==='battle'?(ACTIVITY_VILLAGE_CONFIG[id]||{cost:0,words:0}):{cost:0,words:0,action:'Practice',theme:'village'};
  const supported=activitySupportedWords(id).length;
  return{cfg,supported,wordReady:isAdminTestMode()||supported>=cfg.words,apReady:isAdminTestMode()||adventurePoints()>=cfg.cost,purchased:pathUnlocked(id)};
 }
-function pathUnlocked(id){return isAdminTestMode()||id==='sentenceLab'||(id==='theatre'&&theatreScenes.some(scene=>scene.featured))||meta.activityPurchases.includes(id)||meta.pathOverrides.includes(id)}
+function pathUnlocked(id){return isAdminTestMode()||id!=='battle'||meta.activityPurchases.includes(id)||meta.pathOverrides.includes(id)}
 function pathCurrentIndex(){const firstUnvisited=PATH_MILESTONES.findIndex(item=>pathUnlocked(item.id)&&!meta.pathVisits[item.id]);if(firstUnvisited>=0)return firstUnvisited;let current=0;PATH_MILESTONES.forEach((item,itemIndex)=>{if(pathUnlocked(item.id))current=itemIndex});return current}
-const WORD_CHAPTER_SIZE=50,WORD_CHAPTER_NAMES=['First Steps','Riverside Path','Bamboo Trail','Lantern Market','Tea Garden','Green Hill','Cedar Crossing','Crane Lake','Festival Street','Moonlit Terrace','Torii Pass','Maple Valley','Coastal Road','Snowy Hamlet','Castle Approach','Artisan Quarter','Mountain Shrine','Firefly Marsh','Orchard Lane','Scholar’s Court','Cloud Pass','Silver Waterfall','Sunflower Plain','Old Post Town','Red Maple Ridge','Starry Plateau','Dragonfly Coast','Summit Trail','Dawn Sanctuary','Kaishi Summit'];
+const WORD_CHAPTER_SIZE=3,WORD_CHAPTER_NAMES=['First Steps','Riverside Path','Bamboo Trail','Lantern Market','Tea Garden','Green Hill','Cedar Crossing','Crane Lake','Festival Street','Moonlit Terrace','Torii Pass','Maple Valley','Coastal Road','Snowy Hamlet','Castle Approach','Artisan Quarter','Mountain Shrine','Firefly Marsh','Orchard Lane','Scholar’s Court','Cloud Pass','Silver Waterfall','Sunflower Plain','Old Post Town','Red Maple Ridge','Starry Plateau','Dragonfly Coast','Summit Trail','Dawn Sanctuary','Kaishi Summit'];
 function wordChapterCount(){return Math.max(1,Math.ceil(vocab.length/WORD_CHAPTER_SIZE))}
 function chapterWords(itemIndex){return vocab.slice(itemIndex*WORD_CHAPTER_SIZE,Math.min(vocab.length,(itemIndex+1)*WORD_CHAPTER_SIZE))}
 function wordIntroduced(item){if(isAdminTestMode())return true;const p=progress[item.id];return Boolean(p&&(Number(p.stage||0)>=1||wordPracticeCount(p)>0))}
@@ -428,7 +428,7 @@ function masteryFocus(){
  const groups={};candidates.forEach(item=>(groups[item.step.id]||(groups[item.step.id]=[])).push(item));const preferred=['listening','meaning','reading','components','production','sentence','kanji'];const skill=preferred.filter(id=>groups[id]?.length).sort((a,b)=>groups[b].length*skillPreferenceWeight(b)-groups[a].length*skillPreferenceWeight(a)||preferred.indexOf(a)-preferred.indexOf(b))[0],items=groups[skill]||candidates,step=items[0].step,words=items.sort((a,b)=>Number(progress[a.word.id]?.skills?.[skill]?.strength||0)-Number(progress[b.word.id]?.skills?.[skill]?.strength||0)).slice(0,8).map(item=>item.word);
  return{skill,label:step.label,reason:`${words.length} word${words.length===1?'':'s'} need to ${step.reason}.`,words};
 }
-function chapterStats(itemIndex){const words=chapterWords(itemIndex),introduced=words.filter(wordIntroduced).length,reviewed=words.filter(item=>wordPracticeCount(progress[item.id])>=2).length,introTarget=Math.min(40,words.length),reviewTarget=Math.min(25,Math.ceil(words.length/2)),complete=introduced>=introTarget&&reviewed>=reviewTarget;return{words,introduced,reviewed,introTarget,reviewTarget,complete,percent:Math.round((Math.min(1,introduced/Math.max(1,introTarget))*.6+Math.min(1,reviewed/Math.max(1,reviewTarget))*.4)*100)}}
+function chapterStats(itemIndex){const words=chapterWords(itemIndex),introduced=words.filter(wordIntroduced).length,reviewed=words.filter(item=>wordPracticeCount(progress[item.id])>=2).length,introTarget=words.length,reviewTarget=words.length,complete=introduced>=introTarget&&reviewed>=reviewTarget;return{words,introduced,reviewed,introTarget,reviewTarget,complete,percent:Math.round((Math.min(1,introduced/Math.max(1,introTarget))*.6+Math.min(1,reviewed/Math.max(1,reviewTarget))*.4)*100)}}
 function chapterNaturallyUnlocked(itemIndex){if(itemIndex===0)return true;for(let previous=0;previous<itemIndex;previous++)if(!chapterStats(previous).complete)return false;return true}
 function chapterUnlocked(itemIndex){return isAdminTestMode()||chapterNaturallyUnlocked(itemIndex)||meta.chapterOverrides.includes(itemIndex)}
 function currentWordChapterIndex(){let lastUnlocked=0;for(let itemIndex=0;itemIndex<wordChapterCount();itemIndex++){if(!chapterUnlocked(itemIndex))break;lastUnlocked=itemIndex;if(!chapterStats(itemIndex).complete)return itemIndex}return lastUnlocked}
@@ -439,17 +439,9 @@ function ensureDailyJourneyRoute(){
  const balanceKey=`${settings.learningBalanceAdaptive!==false?'adaptive':'manual'}:${storedLearningBalance()}:${effectiveLearningBalance()}`;
  if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===4&&meta.dailyJourneyRoute.balanceKey===balanceKey&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
  const previousCompleted=meta.dailyJourneyRoute?.date===day()?meta.dailyJourneyRoute.completed||[]:[];
- const due=dailyDueWords().length,chapter=currentWordChapterIndex(),topic=currentTopic();
- const activityId=missionActivityId(),activity=PATH_MILESTONES.find(item=>item.id===activityId);
- const discover=activity&&!meta.pathVisits[activityId],focus=masteryFocus();
- const useStep=discover
-  ?{id:'activity',kind:'activity',activityId,icon:activity.icon,title:`Discover ${activity.activity}`,detail:`Use what you know in ${activity.title}. The teacher will introduce this newly available activity.`}
-  :{id:'mastery',kind:'mastery',skill:focus.skill,targetIds:focus.words.map(word=>word.id),activityId:focus.skill==='components'?'builder':'vocabulary',icon:focus.skill==='listening'?'🎧':focus.skill==='components'?'🧩':'🎯',title:`${focus.label} practice`,detail:focus.reason};
- const reviewStep={id:'warmup',kind:'review',optional:true,icon:'🧠',title:due?`Review ${Math.min(due,DAILY_REVIEW_TARGET)} due words`:'Memory warm-up',detail:due?'Finish with memories that are due now or nearing their forgetting threshold.':'Finish with a short optional refresher to keep established memories flexible.'};
- meta.dailyJourneyRoute={schemaVersion:4,date:day(),balanceKey,completed:previousCompleted,explanation:{due,chapter,focus:useStep.detail,sequence:'Learn → Use → Reinforce'},steps:[
-  {id:'topic',kind:'topic',topicId:topic.id,icon:topic.icon||'🗺️',title:`Continue ${topic.title}`,detail:'Move your main Japanese journey forward with connected vocabulary and practice.'},
-  useStep,
-  reviewStep
+ const chapter=currentWordChapterIndex(),words=chapterWords(chapter),topic=currentTopic();
+ meta.dailyJourneyRoute={schemaVersion:5,date:day(),balanceKey,completed:previousCompleted,explanation:{chapter,sequence:'One lesson at a time'},steps:[
+  {id:`lesson-${chapter}`,kind:'chapter',chapter,topicId:topic.id,icon:topic.icon||'🗺️',title:`Lesson ${chapter+1}: ${words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title}`,detail:`Learn ${words.length} connected word${words.length===1?'':'s'} from ${topic.title}, then strengthen them before the next lesson.`}
  ]};
  save();
  return meta.dailyJourneyRoute;
@@ -832,7 +824,6 @@ function renderJourney(){
  renderDailyRoute();
  renderHistoryTimeline();
  renderJourneyPathAhead();
- renderVillageMap();
  $('#pathRoad').innerHTML=activitySkillWebHtml();
  $('#practiceHub').innerHTML=PATH_MILESTONES.filter(item=>activityReadiness(item.id).purchased).map(item=>`<button data-village-activity="${esc(item.id)}"><span>${esc(item.icon)}</span><strong>${esc(item.title)}</strong><small>${item.id==='sentenceLab'?'Guided phrase lessons':'Practice with introduced words'}</small></button>`).join('');
  document.querySelectorAll('[data-village-activity]').forEach(button=>button.onclick=()=>openActivityUnlock(button.dataset.villageActivity));

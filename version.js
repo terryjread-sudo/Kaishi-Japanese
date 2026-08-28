@@ -10,4 +10,4 @@
 // global object (window in the page, self in the service worker) so every
 // other script can read it, whether as a bare identifier or as
 // window.APP_VERSION / self.APP_VERSION.
-var APP_VERSION='11.15.0';
+var APP_VERSION='11.16.0';
