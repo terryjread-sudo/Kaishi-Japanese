@@ -1,9 +1,11 @@
 {
-  "version": "11.16.0",
+  "version": "11.16.1",
   "released": "2026-08-28",
-  "title": "A True Step-by-Step Journey",
+  "title": "One Path, One Lesson at a Time",
   "changes": [
-    "The Journey now advances through small, sequential lessons of three words at a time, with a clear path of hundreds of gradual steps.",
+    "The Journey dashboard now presents one guided path with a clearly identified current lesson and the next steps ahead.",
+    "Lesson progress now refreshes immediately so completing one individual lesson reveals the next lesson in sequence.",
+    "Removed the Activity Skills map and free-practice surface from the main Journey; activities can be introduced contextually when they reinforce learning.",
     "The daily route is now one next lesson instead of a fixed three-step routine, so each lesson can introduce connected words and sentence-building naturally.",
     "Ordinary activities are available as optional practice without unlock gates; the boss-style Memory Dojo remains gated.",
     "Removed the regional journey panel so the step-by-step lesson path is the main view.",
