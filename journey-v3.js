@@ -1,6 +1,6 @@
 'use strict';
 /*
-  Kaishi Quest Journey 11.16.6
+  Kaishi Quest Journey 11.16.7
   This is an additive compatibility layer. It keeps the large app.js learning
   engine intact while changing the Journey presentation and adding the
   required side-quest/retry flow around its existing route objects.
@@ -84,6 +84,33 @@
     return true;
   }
 
+  // Side quests are also used for variety, not only remediation. Roughly every
+  // third completed lesson gets an optional challenge when no required side quest
+  // is pending. This keeps the Journey playful without interrupting mastery.
+  function addVarietySideQuest(){
+    const m=meta(),r=m.dailyJourneyRoute;
+    if(!r||!Array.isArray(r.steps))return false;
+    const completed=new Set(Array.isArray(r.completed)?r.completed:[]);
+    const lessons=r.steps.filter(s=>s.kind==='chapter'&&!s.retryOf&&completed.has(s.id));
+    if(!lessons.length || lessons.length%3!==0)return false;
+    const lesson=lessons[lessons.length-1];
+    if(r.steps.some(s=>s.kind==='activity'&&s.sideQuestFor===lesson.id))return false;
+    const options=[
+      {id:'conversation',title:'Conversation Quest',icon:'💬',detail:'Use this lesson’s Japanese in a short real-world conversation.'},
+      {id:'listening',title:'Listening Challenge',icon:'🎧',detail:'Hear familiar Japanese in a different context.'},
+      {id:'picture',title:'Picture Recall',icon:'🖼️',detail:'Connect the Japanese you know to a quick visual challenge.'},
+      {id:'grammar',title:'Grammar Challenge',icon:'📐',detail:'Spot how this lesson’s Japanese works in a sentence.'}
+    ];
+    const hash=[...String(lesson.id||'')].reduce((n,c)=>n+c.charCodeAt(0),0);
+    const choice=options[hash%options.length];
+    const side={id:`variety-${lesson.id}`,kind:'activity',activityId:choice.id,topicId:lesson.topicId,icon:choice.icon,title:`Side Quest · ${choice.title}`,detail:choice.detail,required:false,varietySideQuest:true,sideQuestFor:lesson.id};
+    const at=r.steps.findIndex(s=>s.id===lesson.id);
+    if(at<0)return false;
+    r.steps.splice(at+1,0,side);
+    saveMeta(m);
+    return true;
+  }
+
   function timelineItems(){
     const r=route()||{steps:[],completed:[]};
     const completed=new Set(r.completed||[]);
@@ -132,8 +159,8 @@
       const currentIndex=items.findIndex(x=>x.current);
       track.innerHTML=`<div class="kq-timeline-spine" aria-hidden="true"></div>`+items.map(x=>{
         const cls=`kq-timeline-item ${x.done?'done':''} ${x.current?'current':''} ${x.type==='side'?'side-quest':''} ${x.type==='retry'?'retry':''} ${x.future?'future':''}`;
-        const eyebrow=x.type==='past'?'Completed':x.type==='side'?'Required side quest':x.type==='retry'?'Retry this lesson':x.current?'Current lesson':'Coming up';
-        return `<article class="${cls}" data-timeline-id="${esc(x.id)}"><div class="kq-timeline-marker">${esc(x.icon||'•')}</div><div class="kq-timeline-card"><span class="eyebrow">${eyebrow}</span><strong>${esc(x.title||'Lesson')}</strong><p>${esc(x.detail||'')}</p>${x.type==='side'&&!x.done?'<small class="side-quest-required">Required before you continue</small>':''}</div></article>`;
+        const eyebrow=x.type==='past'?'Completed':x.type==='side'?(x.required?'Required side quest':'Side quest') :x.type==='retry'?'Retry this lesson':x.current?'Current lesson':'Coming up';
+        return `<article class="${cls}" data-timeline-id="${esc(x.id)}"><div class="kq-timeline-marker">${esc(x.icon||'•')}</div><div class="kq-timeline-card"><span class="eyebrow">${eyebrow}</span><strong>${esc(x.title||'Lesson')}</strong><p>${esc(x.detail||'')}</p>${x.type==='side'&&!x.done?(x.required?'<small class="side-quest-required">Required before you continue</small>':'<small class="side-quest-required">Optional challenge</small>'):''}</div></article>`;
       }).join('');
       if(currentIndex>=0){
         requestAnimationFrame(()=>{
@@ -150,6 +177,8 @@
       [/Today's route complete!/g,'Lesson complete'],
       [/today’s recommended route/gi,'guided lesson path'],
       [/today's recommended route/gi,'guided lesson path'],
+      [/your one guided path/gi,'your Journey'],
+      [/one guided path/gi,'Journey'],
       [/mandatory mission/gi,'required lesson'],
       [/mission complete/gi,'lesson complete'],
       [/mission/gi,'lesson'],
@@ -208,9 +237,12 @@
           if(btn){btn.textContent='See side quest';btn.onclick=()=>{dialog.close();renderUnifiedTimeline();setTimeout(()=>$('#startNextMission')?.click(),30)}}
         }
         renderUnifiedTimeline();
-      } else if(/route complete|mission complete|today/i.test(title)) {
+      } else if(/route complete|mission complete|today|lesson complete/i.test(title)) {
         $('#missionSummaryTitle').textContent='Lesson complete';
-        if(content)content.innerHTML='<p>Nice work. This lesson is now part of your learning history. Your next lesson is waiting on the Journey timeline.</p>';
+        const added=addVarietySideQuest();
+        if(content)content.innerHTML=added
+          ? '<p>Nice work. This lesson is now part of your learning history.</p><div class="kq-v3-sidequest-note">✨ <strong>A side quest has appeared on your Journey</strong><br><span>It’s a change of pace to keep your learning varied.</span></div>'
+          : '<p>Nice work. This lesson is now part of your learning history. Your next lesson is waiting on the Journey timeline.</p>';
       }
       cleanJourneyCopy();
     });
@@ -281,13 +313,24 @@
     setTimeout(stabiliseDashboardCampaign,0);
   }
 
+  function installTimelinePointerScroll(){
+    const track=$('#journeyHistoryTrack'); if(!track || track.dataset.kqPointerScroll)return;
+    track.dataset.kqPointerScroll='1';
+    let down=false,startY=0,startTop=0;
+    track.addEventListener('pointerdown',e=>{if(e.button!==0)return;down=true;startY=e.clientY;startTop=track.scrollTop;track.classList.add('dragging');track.setPointerCapture?.(e.pointerId);});
+    track.addEventListener('pointermove',e=>{if(!down)return;track.scrollTop=startTop-(e.clientY-startY);});
+    const end=e=>{down=false;track.classList.remove('dragging');try{track.releasePointerCapture?.(e.pointerId)}catch{}};
+    track.addEventListener('pointerup',end); track.addEventListener('pointercancel',end);
+    track.addEventListener('scroll',()=>{track.dataset.kqAutoCenter='1';},{passive:true});
+  }
+
   function init(){
     normaliseLegacyHistory();
     installDashboardCampaignGuard();
     observe();
     watchCheckpoint();
     hideRedundantJourneyControls();
-    const refresh=()=>{if($('#journey')?.classList.contains('active')){cleanJourneyCopy();hideRedundantJourneyControls();normaliseLegacyHistory();renderUnifiedTimeline();renameTimelineHeading();}};
+    const refresh=()=>{if($('#journey')?.classList.contains('active')){cleanJourneyCopy();hideRedundantJourneyControls();normaliseLegacyHistory();renderUnifiedTimeline();renameTimelineHeading();installTimelinePointerScroll();}};
     document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission,[data-continue-journey]'))setTimeout(refresh,80);},{capture:true});
     window.addEventListener('pageshow',refresh);
     refresh();
