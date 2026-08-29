@@ -1,0 +1,39 @@
+Kaishi Quest v11.19.5 — stable Journey fix
+
+Replace ONLY:
+  - version.js
+  - journey-v4.js
+
+Why this release:
+  v11.19.4 made journey-v4 the sole renderer. That was the wrong boundary:
+  it removed the known-stable journey-v3 renderer and also stopped updating
+  the visible version badge. This release restores v3 as the single DOM
+  owner and returns v4 to an enhancement-only role.
+
+Stability rules:
+  - journey-v3 renders the timeline.
+  - journey-v4 never renders/rebuilds the timeline.
+  - no MutationObserver on the Journey subtree.
+  - bounded boot retry only until the existing timeline appears.
+  - controls are added once and then left alone.
+  - current Continue uses startJourneyChapter().
+  - completed lessons retain retry + expandable results.
+  - future lessons retain preview.
+  - milestones are added without rebuilding the timeline.
+
+Important:
+  The GitHub integration currently returns HTTP 403 for write operations,
+  so this package is provided instead of pretending the repository was pushed.
+  The repository's existing service-worker.js already imports version.js and
+  derives its cache version from APP_VERSION, so no service-worker file is
+  included in this release.
+
+Test in this order:
+  1. Confirm the header says v11.19.5.
+  2. Open Kaishi Adventure / Your Journey.
+  3. Scroll the timeline repeatedly — no flashing/jumping.
+  4. Confirm exactly one Continue lesson button on the current lesson.
+  5. Tap Continue — lesson should open.
+  6. Expand an old lesson — results should stay open.
+  7. Tap Retry — retry should launch.
+  8. Preview a future lesson — timeline should stay in place.
