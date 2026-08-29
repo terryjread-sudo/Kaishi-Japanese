@@ -1,6 +1,6 @@
 'use strict';
 /*
-  Kaishi Quest Journey 11.16.4
+  Kaishi Quest Journey 11.16.6
   This is an additive compatibility layer. It keeps the large app.js learning
   engine intact while changing the Journey presentation and adding the
   required side-quest/retry flow around its existing route objects.
@@ -217,8 +217,73 @@
     obs.observe(dialog,{subtree:true,childList:true,characterData:true,attributes:true});
   }
 
+  function hideLegacyPracticeEntry(){
+    // The single-path Journey owns practice selection now. Older builds may still
+    // leave a visible Activity Village / Practice entry on the dashboard.
+    document.querySelectorAll('#home #openPracticeHub,#home .open-practice-hub,[data-open-practice-hub]').forEach(el=>{
+      el.hidden=true;
+      el.setAttribute('aria-hidden','true');
+    });
+  }
+
+  function campaignMeta(){
+    try{
+      const m=meta();
+      m.activeCampaign=m.activeCampaign||'journey';
+      return m;
+    }catch{return {activeCampaign:'journey'}}
+  }
+
+  function setCampaign(id,explicit=true){
+    const m=campaignMeta();
+    m.activeCampaign=id==='japan-ready'?'japan-ready':'journey';
+    if(explicit) m.campaignSelectionExplicit=true;
+    saveMeta(m);
+    return m.activeCampaign;
+  }
+
+  function stabiliseDashboardCampaign(){
+    const home=$('#home');
+    if(!home?.classList.contains('active'))return;
+    const m=campaignMeta();
+    // Journey is the safe/default dashboard state. Japan Ready may remain selected
+    // only after the learner has explicitly chosen it.
+    if(m.activeCampaign!=='japan-ready' || !m.campaignSelectionExplicit){
+      if(m.activeCampaign!=='japan-ready') setCampaign('journey',false);
+      const journey=$('#journeyCampaignPreview'),japan=$('#japanReadyCampaignPreview');
+      if(journey)journey.hidden=false;
+      if(japan)japan.hidden=true;
+      const title=$('#campaignChooserTitle');
+      if(title)title.textContent='Full Japanese Journey';
+      const text=$('#campaignChooserText');
+      if(text)text.textContent='Follow one gradual path of small lessons. Practice activities appear when they help reinforce what you have learned.';
+    }
+    hideLegacyPracticeEntry();
+  }
+
+  function installDashboardCampaignGuard(){
+    hideLegacyPracticeEntry();
+    const home=$('#home');
+    if(home){
+      const obs=new MutationObserver(()=>{
+        clearTimeout(window.__kqCampaignGuardTimer);
+        window.__kqCampaignGuardTimer=setTimeout(stabiliseDashboardCampaign,0);
+      });
+      obs.observe(home,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden']});
+    }
+    document.addEventListener('click',event=>{
+      const target=event.target.closest?.('#chooseJourneyCampaign,#chooseJapanReadyCampaign');
+      if(!target)return;
+      const id=target.id==='chooseJapanReadyCampaign'?'japan-ready':'journey';
+      setCampaign(id,true);
+    },true);
+    window.addEventListener('pageshow',stabiliseDashboardCampaign);
+    setTimeout(stabiliseDashboardCampaign,0);
+  }
+
   function init(){
     normaliseLegacyHistory();
+    installDashboardCampaignGuard();
     observe();
     watchCheckpoint();
     hideRedundantJourneyControls();

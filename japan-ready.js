@@ -1,6 +1,6 @@
 'use strict';
 /*
-  Japan Ready compatibility/audio patch for Kaishi Quest 11.16.4.
+  Japan Ready compatibility/audio patch for Kaishi Quest 11.16.6.
   The existing 11.16.2 loader remains responsible for loading the established
   Japan Ready implementation. This version additionally makes its cheat-sheet
   speech reliable when the browser has not populated Japanese voices yet.
@@ -18,38 +18,31 @@
     heading.appendChild(actions);
   }
 
-  let voicesReady=false;
-  const loadVoices=()=>{
-    try { speechSynthesis.getVoices(); } catch {}
-    voicesReady=true;
-  };
-  if('speechSynthesis' in window){
-    loadVoices();
-    speechSynthesis.addEventListener?.('voiceschanged',loadVoices);
-  }
-
   function speakCheatSheet(text){
     const value=String(text||'').trim();
     if(!value || !('speechSynthesis' in window) || typeof SpeechSynthesisUtterance==='undefined') return false;
     try{
       const synth=window.speechSynthesis;
-      // Do this synchronously from the user's click. Android Chrome can reject
-      // speech that is deferred with setTimeout, even when the original click
-      // was a valid user gesture.
-      synth.cancel();
-      const u=new SpeechSynthesisUtterance(value);
-      u.lang='ja-JP'; u.rate=.84; u.pitch=1;
+      // Keep the first speak() call directly inside the user's click handler.
+      // This is important on Android Chrome where deferred speech can lose the
+      // user-activation token.
+      const utterance=new SpeechSynthesisUtterance(value);
+      utterance.lang='ja-JP';
+      utterance.rate=.88;
+      utterance.pitch=1;
       const voices=synth.getVoices();
-      const jp=voices.find(v=>/^ja(?:-|_|$)/i.test(String(v.lang||'')))
-        || voices.find(v=>/japanese|kyoko|haruka|nanami|ichiro|otoya|takumi/i.test(String(v.name||'')));
-      if(jp) u.voice=jp;
+      const japanese=voices.find(v=>/^ja(?:-|_|$)/i.test(String(v.lang||'')))
+        || voices.find(v=>/japanese|kyoko|haruka|nanami|sayaka|ayumi|ichiro|otoya|takumi/i.test(String(v.name||'')));
+      if(japanese)utterance.voice=japanese;
       synth.resume?.();
-      synth.speak(u);
-      // A second resume is useful on Android when the engine has been paused,
-      // but it must not delay the initial speak call.
-      setTimeout(()=>{try{if(synth.paused)synth.resume()}catch{}},80);
+      if(synth.speaking)synth.cancel();
+      synth.resume?.();
+      synth.speak(utterance);
       return true;
-    }catch(err){console.warn('Japan Ready speech failed',err);return false}
+    }catch(error){
+      console.warn('Japan Ready cheat-sheet speech failed',error);
+      return false;
+    }
   }
 
   function japaneseFromButton(button){
@@ -66,19 +59,36 @@
   }
 
   function installCheatAudio(){
-    if(document.documentElement.dataset.kqCheatAudio==='2')return;
-    document.documentElement.dataset.kqCheatAudio='2';
-    document.addEventListener('click',event=>{
-      const button=event.target.closest?.('.cheat-audio,[data-cheat-audio],[data-japanese],[aria-label*="audio" i],[aria-label*="hear" i],[aria-label*="listen" i],[title*="audio" i],[title*="hear" i],[title*="listen" i]');
-      if(!button)return;
-      // Only take over Japan Ready controls. This prevents the compatibility
-      // layer from interfering with Journey's other speech controls.
-      try{if(window.KaishiJapanReadyBridge?.getMeta?.().activeCampaign!=='japan-ready')return}catch{return}
-      const text=japaneseFromButton(button);
+    if(document.documentElement.dataset.kqCheatAudio==='3')return;
+    document.documentElement.dataset.kqCheatAudio='3';
+    const playButton=button=>{
+      if(!button?.classList?.contains('cheat-audio'))return;
+      const text=button.getAttribute('data-cheat-audio')||'';
       if(!text)return;
+      speakCheatSheet(text);
+    };
+    // Capture the exact Japan Ready cheat-sheet control. Do not depend on the
+    // campaign bridge state: the cheat sheet can be opened before that state
+    // has finished initialising.
+    let lastPointerButton=null,lastPointerAt=0;
+    document.addEventListener('click',event=>{
+      const button=event.target.closest?.('.cheat-audio');
+      if(!button)return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      speakCheatSheet(text);
+      const now=Date.now();
+      if(lastPointerButton===button&&now-lastPointerAt<600)return;
+      playButton(button);
+    },true);
+    // Some Android builds dispatch pointerup reliably even when click is delayed.
+    // Guard against double-speaking the same gesture.
+    document.addEventListener('pointerup',event=>{
+      const button=event.target.closest?.('.cheat-audio');
+      if(!button)return;
+      const now=Date.now();
+      if(lastPointerButton===button&&now-lastPointerAt<450)return;
+      lastPointerButton=button;lastPointerAt=now;
+      playButton(button);
     },true);
   }
 
