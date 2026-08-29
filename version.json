@@ -1,17 +1,12 @@
 {
-  "version": "11.16.3",
+  "version": "11.16.4",
   "released": "2026-08-29",
-  "title": "Journey Timeline & Adaptive Side Quests",
+  "title": "Journey stability & Japan Ready audio",
   "changes": [
-    "Reworked Journey into a single vertical learning timeline showing recent lessons, the current lesson, required side quests and upcoming lessons together.",
-    "The timeline supports touch swiping and mouse wheel/drag scrolling.",
-    "Required side quests are inserted only when a lesson checkpoint shows that extra practice is needed, then the same lesson is queued for retry.",
-    "Side quests are visually shown in the Journey timeline and are not treated as a separate learning path.",
-    "Removed Quick Reviews from the main Journey presentation; normal spaced review remains part of lessons and the underlying learning system.",
-    "Cleaned up Journey wording so Sensei no longer talks about the old village/activity-first structure.",
-    "Replaced the old Today's route complete messaging with lesson-focused completion language.",
-    "Added migration/normalisation for oversized legacy Journey history entries so history does not claim an entire lesson's catalogue was learned in one session.",
-    "Improved Japan Ready cheat-sheet speech playback, including delayed voice loading and speechSynthesis resume handling.",
-    "Japan Ready remains a separate path and its existing scenario system is preserved."
+    "Fixed a Journey rendering loop that could freeze or crash the app when Continue Journey was pressed.",
+    "Stopped the Journey timeline observer from reacting to its own DOM updates.",
+    "Made Journey storage use the app's profile storage key, including admin/test mode.",
+    "Made Japan Ready cheat-sheet speech more reliable on Android/Chrome by handling delayed voices and the cancel/resume speech race.",
+    "Japan Ready remains a separate path."
   ]
 }

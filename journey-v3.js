@@ -1,19 +1,20 @@
 'use strict';
 /*
-  Kaishi Quest Journey 11.16.3
+  Kaishi Quest Journey 11.16.4
   This is an additive compatibility layer. It keeps the large app.js learning
   engine intact while changing the Journey presentation and adding the
   required side-quest/retry flow around its existing route objects.
 */
 (() => {
   const $=s=>document.querySelector(s);
+  const storageKey=k=>{try{return typeof profileStorageKey==='function'?profileStorageKey(k):k}catch{return k}};
   const meta=()=>{
-    try{return JSON.parse(localStorage.getItem('kq-meta')||'{}')}catch{return {}}
+    try{return JSON.parse(localStorage.getItem(storageKey('kq-meta'))||'{}')}catch{return {}}
   };
   const progress=()=>{
-    try{return JSON.parse(localStorage.getItem('kq-progress')||'{}')}catch{return {}}
+    try{return JSON.parse(localStorage.getItem(storageKey('kq-progress'))||'{}')}catch{return {}}
   };
-  const saveMeta=m=>{try{localStorage.setItem('kq-meta',JSON.stringify(m))}catch{}};
+  const saveMeta=m=>{try{localStorage.setItem(storageKey('kq-meta'),JSON.stringify(m))}catch{}};
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const route=()=>meta().dailyJourneyRoute;
   const history=()=>{const m=meta();return(Array.isArray(m.sessionHistory)?m.sessionHistory:[]).slice().sort((a,b)=>Number(b.completedAt||0)-Number(a.completedAt||0));};
@@ -86,24 +87,33 @@
   function timelineItems(){
     const r=route()||{steps:[],completed:[]};
     const completed=new Set(r.completed||[]);
-    const past=history().slice(0,3).map((entry,i)=>({type:'past',id:`history-${entry.id}`,icon:'✓',title:entry.title||'Completed lesson',detail:`${(entry.wordIds||[]).length} lesson words recorded · ${entry.attempts||0} tested answers${entry.attempts?` · ${Math.round((entry.correct||0)/entry.attempts*100)}%`:''}`,done:true,date:entry.completedAt}));
-    const routeRows=r.steps.map(s=>({type:s.kind==='activity'?'side':(s.retryOf?'retry':'lesson'),id:s.id,icon:s.icon,title:s.title,detail:s.detail,done:completed.has(s.id),current:!completed.has(s.id)}));
-    const future=[...document.querySelectorAll('#journeyPathAhead .path-ahead-item')].slice(0,4).map((el,i)=>({type:'future',id:`future-${i}`,icon:el.querySelector('.path-ahead-icon')?.textContent||'→',title:el.querySelector('.path-ahead-title')?.textContent||'Upcoming lesson',detail:'On your guided learning path',future:true}));
+    const past=history().slice(0,3).map(entry=>({type:'past',id:`history-${entry.id}`,icon:'✓',title:entry.title||'Completed lesson',detail:`${(entry.wordIds||[]).length} words recorded · ${entry.attempts||0} tested answers${entry.attempts?` · ${Math.round((entry.correct||0)/entry.attempts*100)}%`:''}`,done:true,date:entry.completedAt}));
+    const nextIndex=r.steps.findIndex(s=>!completed.has(s.id));
+    const routeRows=r.steps.map((s,i)=>({type:s.kind==='activity'?'side':(s.retryOf?'retry':i===nextIndex?'lesson':'future'),id:s.id,icon:s.icon,title:s.title,detail:s.detail,done:completed.has(s.id),current:i===nextIndex&&!completed.has(s.id),future:i>nextIndex&&!completed.has(s.id)}));
     const seen=new Set();
-    return [...past,...routeRows,...future].filter(x=>{if(seen.has(x.id))return false;seen.add(x.id);return true}).slice(0,12);
+    return [...past,...routeRows].filter(x=>{if(seen.has(x.id))return false;seen.add(x.id);return true}).slice(0,15);
   }
 
+  let renderingTimeline=false;
   function renderUnifiedTimeline(){
     const track=$('#journeyHistoryTrack');if(!track)return;
     const items=timelineItems();
-    if(!items.length){track.innerHTML='<p class="muted">Your lessons will appear here as you progress.</p>';return;}
-    const currentIndex=items.findIndex(x=>x.current&&!x.done);
-    track.innerHTML=`<div class="kq-timeline-spine" aria-hidden="true"></div>`+items.map((x,i)=>{
-      const cls=`kq-timeline-item ${x.done?'done':''} ${x.current?'current':''} ${x.type==='side'?'side-quest':''} ${x.type==='retry'?'retry':''} ${x.future?'future':''}`;
-      const eyebrow=x.type==='past'?'Completed':x.type==='side'?'Required side quest':x.type==='retry'?'Retry this lesson':x.current?'Current lesson':'Coming up';
-      return `<article class="${cls}" data-timeline-id="${esc(x.id)}"><div class="kq-timeline-marker">${esc(x.icon||'•')}</div><div class="kq-timeline-card"><span class="eyebrow">${eyebrow}</span><strong>${esc(x.title||'Lesson')}</strong><p>${esc(x.detail||'')}</p>${x.type==='side'&&!x.done?'<small class="side-quest-required">Required before you continue</small>':''}</div></article>`;
-    }).join('');
-    if(currentIndex>=0)requestAnimationFrame(()=>{const cur=track.querySelector('.kq-timeline-item.current');if(cur&&track.dataset.kqAutoCenter!=='1'){track.dataset.kqAutoCenter='1';track.scrollTo({top:Math.max(0,cur.offsetTop-track.clientHeight*.35),behavior:'auto'})}});
+    renderingTimeline=true;
+    try{
+      if(!items.length){track.innerHTML='<p class="muted">Your lessons will appear here as you progress.</p>';return;}
+      const currentIndex=items.findIndex(x=>x.current);
+      track.innerHTML=`<div class="kq-timeline-spine" aria-hidden="true"></div>`+items.map(x=>{
+        const cls=`kq-timeline-item ${x.done?'done':''} ${x.current?'current':''} ${x.type==='side'?'side-quest':''} ${x.type==='retry'?'retry':''} ${x.future?'future':''}`;
+        const eyebrow=x.type==='past'?'Completed':x.type==='side'?'Required side quest':x.type==='retry'?'Retry this lesson':x.current?'Current lesson':'Coming up';
+        return `<article class="${cls}" data-timeline-id="${esc(x.id)}"><div class="kq-timeline-marker">${esc(x.icon||'•')}</div><div class="kq-timeline-card"><span class="eyebrow">${eyebrow}</span><strong>${esc(x.title||'Lesson')}</strong><p>${esc(x.detail||'')}</p>${x.type==='side'&&!x.done?'<small class="side-quest-required">Required before you continue</small>':''}</div></article>`;
+      }).join('');
+      if(currentIndex>=0){
+        requestAnimationFrame(()=>{
+          const cur=track.querySelector('.kq-timeline-item.current');
+          if(cur && !track.dataset.kqAutoCenter){track.dataset.kqAutoCenter='1';track.scrollTo({top:Math.max(0,cur.offsetTop-track.clientHeight*.35),behavior:'auto'});}
+        });
+      }
+    }finally{renderingTimeline=false;}
   }
 
   function cleanJourneyCopy(){
@@ -137,15 +147,23 @@
 
   function observe(){
     const target=$('#journey')||document.body;
-    const obs=new MutationObserver(()=>{
+    const obs=new MutationObserver(mutations=>{
+      if(renderingTimeline)return;
+      if(mutations.length && mutations.every(m=>{
+        const t=m.target?.nodeType===1?m.target:m.target?.parentElement;
+        return t && t.closest?.('#journeyHistoryTrack');
+      }))return;
       if($('#journey')?.classList.contains('active')){
-        cleanJourneyCopy();
-        hideRedundantJourneyControls();
-        normaliseLegacyHistory();
-        renderUnifiedTimeline();
+        clearTimeout(window.__kqJourneyRefreshTimer);
+        window.__kqJourneyRefreshTimer=setTimeout(()=>{
+          cleanJourneyCopy();
+          hideRedundantJourneyControls();
+          normaliseLegacyHistory();
+          renderUnifiedTimeline();
+        },30);
       }
     });
-    obs.observe(target,{subtree:true,childList:true,characterData:true});
+    obs.observe(target,{subtree:true,childList:true});
   }
 
   function watchCheckpoint(){
@@ -175,14 +193,10 @@
     observe();
     watchCheckpoint();
     hideRedundantJourneyControls();
-    setInterval(()=>{
-      normaliseLegacyHistory();
-      if($('#journey')?.classList.contains('active')){
-        cleanJourneyCopy();
-        hideRedundantJourneyControls();
-        renderUnifiedTimeline();
-      }
-    },1200);
+    const refresh=()=>{if($('#journey')?.classList.contains('active')){cleanJourneyCopy();hideRedundantJourneyControls();normaliseLegacyHistory();renderUnifiedTimeline();}};
+    document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission,[data-continue-journey]'))setTimeout(refresh,80);},{capture:true});
+    window.addEventListener('pageshow',refresh);
+    refresh();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

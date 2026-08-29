@@ -1,6 +1,6 @@
 'use strict';
 /*
-  Japan Ready compatibility/audio patch for Kaishi Quest 11.16.3.
+  Japan Ready compatibility/audio patch for Kaishi Quest 11.16.4.
   The existing 11.16.2 loader remains responsible for loading the established
   Japan Ready implementation. This version additionally makes its cheat-sheet
   speech reliable when the browser has not populated Japanese voices yet.
@@ -29,39 +29,48 @@
   }
 
   function speakCheatSheet(text){
-    if(!text || !('speechSynthesis' in window)) return;
-    const speak=()=>{
-      try{
-        const u=new SpeechSynthesisUtterance(String(text));
-        u.lang='ja-JP';
-        u.rate=.88;
-        const voices=speechSynthesis.getVoices().filter(v=>String(v.lang||'').toLowerCase().startsWith('ja'));
-        if(voices[0]) u.voice=voices[0];
-        speechSynthesis.cancel();
-        speechSynthesis.resume();
-        speechSynthesis.speak(u);
-      }catch(err){ console.warn('Japan Ready speech failed',err); }
-    };
-    // Android/Chrome can populate voices asynchronously. Give it one short
-    // opportunity to do so, but still speak immediately if none are returned.
-    const voices=speechSynthesis.getVoices();
-    if(!voices.length && !voicesReady){
-      let done=false;
-      const once=()=>{if(done)return;done=true;speechSynthesis.removeEventListener?.('voiceschanged',once);speak()};
-      speechSynthesis.addEventListener?.('voiceschanged',once);
-      setTimeout(once,120);
-    } else speak();
+    const value=String(text||'').trim();
+    if(!value || !('speechSynthesis' in window) || typeof SpeechSynthesisUtterance==='undefined') return false;
+    try{
+      const synth=window.speechSynthesis;
+      const speak=()=>{
+        try{
+          synth.cancel();
+          const u=new SpeechSynthesisUtterance(value);
+          u.lang='ja-JP';
+          u.rate=.84;
+          u.pitch=1;
+          const voices=synth.getVoices();
+          const jp=voices.find(v=>/^ja(-|_|$)/i.test(String(v.lang||'')))||voices.find(v=>/japanese|kyoko|haruka|nanami/i.test(String(v.name||'')));
+          if(jp)u.voice=jp;
+          synth.resume?.();
+          // Chrome on Android can ignore a speech call made immediately after
+          // cancel(). A tiny delay keeps the call within the original click flow
+          // while avoiding that race.
+          setTimeout(()=>{try{synth.resume?.();synth.speak(u)}catch(err){console.warn('Japan Ready speech failed',err)}},40);
+        }catch(err){console.warn('Japan Ready speech setup failed',err)}
+      };
+      const voices=synth.getVoices();
+      if(!voices.length){
+        const once=()=>{synth.removeEventListener?.('voiceschanged',once);speak()};
+        synth.addEventListener?.('voiceschanged',once,{once:true});
+        setTimeout(()=>{try{synth.removeEventListener?.('voiceschanged',once)}catch{};speak()},250);
+      }else speak();
+      return true;
+    }catch(err){console.warn('Japan Ready speech unavailable',err);return false}
   }
 
   function installCheatAudio(){
     if(document.documentElement.dataset.kqCheatAudio==='1')return;
     document.documentElement.dataset.kqCheatAudio='1';
     document.addEventListener('click',event=>{
-      const button=event.target.closest?.('[data-cheat-audio]');
+      const button=event.target.closest?.('.cheat-audio,[data-cheat-audio]');
       if(!button)return;
+      const text=button.dataset.cheatAudio||button.getAttribute('data-cheat-audio');
+      if(!text)return;
       event.preventDefault();
-      event.stopImmediatePropagation();
-      speakCheatSheet(button.dataset.cheatAudio||'');
+      event.stopPropagation();
+      speakCheatSheet(text);
     },true);
   }
 

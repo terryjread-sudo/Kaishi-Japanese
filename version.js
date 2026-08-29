@@ -1,6 +1,6 @@
 'use strict';
-// Kaishi Quest v11.16.3 — Journey timeline, side-quest and cleanup patch.
-var APP_VERSION='11.16.3';
+// Kaishi Quest v11.16.4 — Journey crash/audio reliability patch.
+var APP_VERSION='11.16.4';
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
     const load = (src) => {
@@ -8,6 +8,7 @@ if (typeof document !== 'undefined') {
       const s=document.createElement('script'); s.src=src+'?v='+APP_VERSION; s.dataset.kqPatch=src; document.body.appendChild(s);
     };
     load('journey-v3.js');
+    load('japan-ready.js');
     const css=document.createElement('link'); css.rel='stylesheet'; css.href='journey-v3.css?v='+APP_VERSION; document.head.appendChild(css);
   }, {once:true});
 }
