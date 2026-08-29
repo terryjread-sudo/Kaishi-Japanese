@@ -1,0 +1,4 @@
+/* Kaishi Quest Journey V3 — adaptive required side quests */
+.daily-route-step.side-quest{border-left:4px solid currentColor;background:color-mix(in srgb,currentColor 7%,transparent)}
+.side-quest-required{display:inline-block;margin-top:6px;font-weight:800}
+.kq-v3-sidequest-note{margin-top:14px;padding:14px;border-radius:14px;background:rgba(37,99,235,.08)}

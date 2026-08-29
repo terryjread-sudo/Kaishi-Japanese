@@ -1,13 +1,13 @@
 'use strict';
-// Kaishi Quest — single source of truth for the app version.
-// This is the ONLY file that needs editing to release a new version number.
-// It must load before every other script (see index.html) and, for the
-// service worker, is pulled in with importScripts() at the top of
-// service-worker.js. Release-note content (title/changes) still lives in
-// version.json — update that too when you want the "What's new" dialog to
-// describe the release, but the version number itself only lives here.
-// `var` (not const/let) is deliberate: it attaches APP_VERSION to the shared
-// global object (window in the page, self in the service worker) so every
-// other script can read it, whether as a bare identifier or as
-// window.APP_VERSION / self.APP_VERSION.
-var APP_VERSION='11.16.1';
+// Kaishi Quest v11.16.2 — V3 Journey patch.
+// The version remains the single source of truth. The small V3 compatibility
+// layer is loaded after the page has initialised so the existing app.js,
+// Japan Ready and Journey code remain intact.
+var APP_VERSION='11.16.2';
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    const load = (src) => { if (document.querySelector(`script[data-kq-v3="${src}"]`)) return; const s=document.createElement('script'); s.src=src+'?v='+APP_VERSION; s.dataset.kqV3=src; document.body.appendChild(s); };
+    load('journey-v3.js');
+    const css=document.createElement('link'); css.rel='stylesheet'; css.href='journey-v3.css?v='+APP_VERSION; document.head.appendChild(css);
+  }, {once:true});
+}

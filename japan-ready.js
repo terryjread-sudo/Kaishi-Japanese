@@ -1,67 +1,39 @@
-'use strict';(()=>{const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let data,active,turn=0,score,builderKana=[],builderIndex=0,builderMistakes=0;const b=()=>window.KaishiJapanReadyBridge;function campaign(){const m=b().getMeta();m.campaignProgress=m.campaignProgress||{};return m.campaignProgress['japan-ready']||(m.campaignProgress['japan-ready']={currentScenarioId:'polite-basics',unlockedScenarioIds:['polite-basics'],scenarioProgress:{}})}function state(id){const c=campaign();return c.scenarioProgress[id]||(c.scenarioProgress[id]={completedActivities:[],conversationAttempts:0,confidence:0,completedAt:null})}function norm(v=''){return String(v).toLowerCase().replace(/[ー\s・。、！？!?]/g,'').replace(/ou/g,'o').replace(/oo/g,'o')}const KANA_ROMAJI={'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko','さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to','な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho','ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo','ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro','わ':'wa','を':'o','ん':'n','が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go','ざ':'za','じ':'ji','ず':'zu','ぜ':'ze','ぞ':'zo','だ':'da','で':'de','ど':'do','ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo','ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po','ゃ':'small ya','ゅ':'small yu','ょ':'small yo','っ':'small tsu','ー':'long sound','ア':'a','イ':'i','ウ':'u','エ':'e','オ':'o','カ':'ka','キ':'ki','ク':'ku','ケ':'ke','コ':'ko','サ':'sa','シ':'shi','ス':'su','セ':'se','ソ':'so','タ':'ta','チ':'chi','ツ':'tsu','テ':'te','ト':'to','ナ':'na','ニ':'ni','ヌ':'nu','ネ':'ne','ノ':'no','ハ':'ha','ヒ':'hi','フ':'fu','ヘ':'he','ホ':'ho','マ':'ma','ミ':'mi','ム':'mu','メ':'me','モ':'mo','ヤ':'ya','ユ':'yu','ヨ':'yo','ラ':'ra','リ':'ri','ル':'ru','レ':'re','ロ':'ro','ワ':'wa','ヲ':'o','ン':'n','ガ':'ga','ギ':'gi','グ':'gu','ゲ':'ge','ゴ':'go','ザ':'za','ジ':'ji','ズ':'zu','ゼ':'ze','ゾ':'zo','ダ':'da','デ':'de','ド':'do','バ':'ba','ビ':'bi','ブ':'bu','ベ':'be','ボ':'bo','パ':'pa','ピ':'pi','プ':'pu','ペ':'pe','ポ':'po','ャ':'small ya','ュ':'small yu','ョ':'small yo','ッ':'small tsu'};function kanaRomaji(kana){return KANA_ROMAJI[kana]||kana}
-const KANA_DISTRACTORS=['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','な','に','ぬ','ね','の','は','ひ','ふ','へ','ほ','ま','み','む','め','も','や','ゆ','よ','ら','り','る','れ','ろ','わ','を','ん','が','ぎ','ぐ','げ','ご','ざ','じ','ず','ぜ','ぞ','だ','で','ど','ば','び','ぶ','べ','ぼ','ぱ','ぴ','ぷ','ぺ','ぽ','ゃ','ゅ','ょ','っ','ー'];function splitKana(t=''){return [...String(t).replace(/[。、！？!?「」『』\s]/g,'')]}function shuffled(a){a=[...a];for(let i=a.length-1;i;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function targetKana(){return splitKana(active?.phrases?.[turn]?.accepted?.[0]||'')}function resetBuilder(){builderKana=[];builderIndex=0;builderMistakes=0;renderBuilder()}function renderBuilder(){const t=targetKana(),c=t[builderIndex];$('#kanaBuilderAnswer').innerHTML=builderKana.length?builderKana.map(k=>`<span class="built-kana"><b lang="ja">${esc(k)}</b><small>${esc(kanaRomaji(k))}</small></span>`).join(''):'<span class="kana-builder-placeholder">Build the spoken response here</span>';$('#kanaBuilderTarget').textContent=builderIndex>=t.length?'Response complete':'Choose the next kana';$('#liveConversationSubmit').disabled=builderIndex<t.length;if(builderIndex>=t.length){$('#kanaBuilderChoices').innerHTML='';return}const choices=shuffled([c,...shuffled(KANA_DISTRACTORS.filter(k=>k!==c)).slice(0,3)]);$('#kanaBuilderChoices').innerHTML=choices.map(k=>`<button type="button" data-kana="${esc(k)}"><span lang="ja">${esc(k)}</span><small>${esc(kanaRomaji(k))}</small></button>`).join('');document.querySelectorAll('[data-kana]').forEach(b=>b.onclick=()=>{if(b.dataset.kana===c){builderKana.push(c);builderIndex++;$('#liveConversationPrompt').textContent='';renderBuilder()}else{b.classList.add('wrong');$('#liveConversationPrompt').innerHTML=`Not quite. <strong>A suitable next kana would be:</strong> ${esc(c)}`}})}function avatarImage(){const key=window.KaishiCloud?.currentAvatar?.()||'boy';return window.KaishiCloud?.avatarImage?.(key,0)||`media/profiles/${key}-base.webp?v=9.0.6`}function speakJapanese(text,role='npc'){if(!('speechSynthesis'in window)||!text)return;const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';const voices=speechSynthesis.getVoices().filter(v=>v.lang?.toLowerCase().startsWith('ja'));const avatar=window.KaishiCloud?.currentAvatar?.()||'boy',female=['girl','woman'].includes(avatar),male=['boy','man','master'].includes(avatar);u.voice=voices.find(v=>female&&/female|kyoko|haruka|nanami/i.test(v.name))||voices.find(v=>male&&/male|otoya|ichiro|takumi/i.test(v.name))||voices[0]||null;u.pitch=role==='user'?(female?1.1:.9):1;u.rate=.92;speechSynthesis.cancel();speechSynthesis.speak(u)}function bubble(role,japanese,english='',romaji=''){const user=role==='user',img=user?avatarImage():'media/guides/aiko-guide-icon.webp?v=9.0.6';return `<article class="wa-message-row ${user?'wa-user':'wa-npc'}"><img class="wa-avatar" src="${img}" alt=""><div class="wa-bubble"><strong>${user?'You':'Aiko'}</strong><span lang="ja">${esc(japanese)}</span>${romaji?`<small>${esc(romaji)}</small>`:''}${english?`<em>${esc(english)}</em>`:''}</div></article>`}function words(s){const h=s.wordHints.map(x=>x.toLowerCase());return b().getVocab().filter(w=>h.some(x=>(`${w.meaning||''} ${w.topic||''}`).toLowerCase().includes(x))).slice(0,24)}function current(){const c=campaign();return data.scenarios.find(s=>s.id===c.currentScenarioId)||data.scenarios[0]}function chooser(){
- const ready=b().getMeta().activeCampaign==='japan-ready';
- $('#chooseJourneyCampaign')?.classList.toggle('active',!ready);
- $('#chooseJapanReadyCampaign')?.classList.toggle('active',ready);
- $('#journeyCampaignPreview').hidden=ready;
- $('#japanReadyCampaignPreview').hidden=!ready;
- $('#campaignChooserTitle').textContent=ready?'Japan Ready':'Full Japanese Journey';
- $('#campaignChooserText').textContent=ready
-  ?'Focused practical Japanese for common situations during a trip to Japan.'
-  :'Your complete topic-based Japanese adventure with reviews, games and boss battles.';
-}
-function setMode(id){b().getMeta().activeCampaign=id;b().save();chooser()}function render(){const c=campaign(),done=data.scenarios.filter(s=>state(s.id).completedAt).length,avg=data.scenarios.reduce((n,s)=>n+state(s.id).confidence,0)/data.scenarios.length;$('#japanReadyStats').innerHTML=`<span><strong>${done}/${data.scenarios.length}</strong> scenarios</span><span><strong>${avg.toFixed(1)}/5</strong> confidence</span><span><strong>${b().stats().started}</strong> shared words</span>`;const n=current();
- const homeProgress=state(n.id),unlockedCount=c.unlockedScenarioIds.length;
- if($('#japanReadyHomeTitle'))$('#japanReadyHomeTitle').textContent=homeProgress.completedAt?'Revisit this situation to strengthen your confidence.':`Next: ${n.title}`;
- if($('#japanReadyHomeActivity'))$('#japanReadyHomeActivity').textContent=n.description;
- if($('#japanReadyHomeScenario'))$('#japanReadyHomeScenario').textContent=`${n.icon} ${n.title}`;
- if($('#japanReadyHomeStatus'))$('#japanReadyHomeStatus').textContent=`${homeProgress.confidence}/5 confidence · ${homeProgress.completedAt?'Scenario completed':'In progress'}`;
- if($('#japanReadyHomeProgress'))$('#japanReadyHomeProgress').textContent=`${done}/${data.scenarios.length} scenarios complete · ${unlockedCount}/${data.scenarios.length} unlocked`;
- if($('#japanReadyHomeFill'))$('#japanReadyHomeFill').style.width=`${Math.round(done/data.scenarios.length*100)}%`;$('#japanReadyScenarioList').innerHTML=data.scenarios.map(s=>{const p=state(s.id),u=c.unlockedScenarioIds.includes(s.id),ws=words(s),i=ws.filter(b().wordIntroduced).length;return`<article class="japan-scenario ${u?'':'locked'} ${s.id===n.id?'recommended':''}">${s.id===n.id?'<span class="recommended-ribbon">Recommended next</span>':''}<div class="japan-scenario-number">${u?s.icon:'🔒'}</div><div><span class="eyebrow">${esc(s.region)}</span><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p><small>${i}/${ws.length} relevant words · ${'★'.repeat(p.confidence)}${'☆'.repeat(5-p.confidence)}</small></div><button data-s="${s.id}" ${u?'':'disabled'}>${p.completedAt?'Revisit':s.id===n.id?'Continue':'Open'}</button></article>`}).join('');document.querySelectorAll('[data-s]').forEach(x=>x.onclick=()=>detail(x.dataset.s))}function open(){b().getMeta().activeCampaign='japan-ready';b().save();chooser();render();b().show('japanReady')}function detail(id){const s=data.scenarios.find(x=>x.id===id),ws=words(s),p=state(id);$('#japanReadyScenarioList').innerHTML=`<section class="scenario-detail"><button id="scenarioListBack">← All scenarios</button><div class="scenario-detail-hero"><img src="media/guides/aiko-guide-portrait.webp?v=9.0.6"><div><span class="eyebrow">${esc(s.region)}</span><h2>${s.icon} ${esc(s.title)}</h2><p>${esc(s.description)}</p><strong>${esc(s.confidenceGoal)}</strong></div></div><aside class="aiko-cultural-tip"><img src="media/guides/aiko-guide-icon.webp?v=9.0.6"><div><strong>Aiko’s travel tip</strong><p>${esc(s.cultureTip)}</p></div></aside><div class="scenario-word-preview">${ws.slice(0,12).map(w=>`<span lang="ja">${esc(w.word)}<small>${esc(w.meaning)}</small></span>`).join('')}</div><div class="scenario-actions"><button id="focused" class="primary">1. Focused study</button><button id="live">2. Live Conversation</button></div><p class="muted">Confidence: ${'★'.repeat(p.confidence)}${'☆'.repeat(5-p.confidence)} · Progress is shared with Journey.</p></section>`;$('#scenarioListBack').onclick=render;$('#focused').onclick=()=>{p.completedActivities=[...new Set([...p.completedActivities,'focused-study'])];b().save();b().startFocusedStudy(ws.map(w=>w.id))};$('#live').onclick=()=>start(id)}function start(id){active=data.scenarios.find(x=>x.id===id);turn=0;score={hints:0,tries:0};state(id).conversationAttempts++;b().save();$('#liveConversationTitle').textContent=active.title;$('#liveConversationGoal').textContent=active.confidenceGoal;$('#liveConversationTranscript').innerHTML='';$('#liveConversationComplete').hidden=true;$('#liveConversationInputArea').hidden=false;b().show('liveConversation');nextTurn()}function suggestions(q=''){const t=active.phrases[turn],n=norm(q),learned=words(active).filter(b().wordIntroduced).map(w=>w.word),all=[...new Set([...(t.suggestions||[]),...learned])].filter(x=>!n||norm(x).includes(n)||t.romaji.some(r=>norm(r).startsWith(n))).slice(0,6);$('#liveConversationSuggestions').innerHTML=all.map(x=>`<button type="button" data-x="${esc(x)}">${esc(x)}</button>`).join('');document.querySelectorAll('[data-x]').forEach(x=>x.onclick=()=>{$('#liveConversationInput').value=x.dataset.x;score.hints++})}function nextTurn(){const t=active.phrases[turn];if(!t)return complete();$('#liveConversationTranscript').insertAdjacentHTML('beforeend',bubble('npc',t.npc,t.npcEnglish||'',t.npcRomaji));$('#liveConversationPrompt').textContent=t.prompt;resetBuilder();speakJapanese(t.npc,'npc')}function submit(){const t=active.phrases[turn],target=targetKana();if(builderIndex<target.length)return;const japanese=t.accepted[0],english=t.acceptedEnglish?.[0]||'';$('#liveConversationTranscript').insertAdjacentHTML('beforeend',bubble('user',japanese,english));speakJapanese(japanese,'user');turn++;nextTurn()}function complete(){const p=state(active.id);p.completedActivities=[...new Set([...p.completedActivities,'live-conversation'])];const mistakes=Number(score.wrongKana||0);const earned=mistakes===0&&score.hints===0?5:mistakes<=2&&score.hints<=2?4:mistakes<=5?3:2;p.confidence=Math.max(p.confidence,earned);p.lastWrongKana=mistakes;p.bestWrongKana=Number.isFinite(p.bestWrongKana)?Math.min(p.bestWrongKana,mistakes):mistakes;p.completedAt=new Date().toISOString();const c=campaign(),i=data.scenarios.findIndex(s=>s.id===active.id),n=data.scenarios[i+1];if(n&&!c.unlockedScenarioIds.includes(n.id))c.unlockedScenarioIds.push(n.id);if(n)c.currentScenarioId=n.id;b().save();$('#liveConversationInputArea').hidden=true;$('#liveConversationComplete').hidden=false;$('#liveConversationComplete').innerHTML=`<img src="media/guides/aiko-guide-portrait.webp?v=9.0.6"><h2>Scenario complete!</h2><p>You actively completed ${esc(active.title)}.</p><strong>${'★'.repeat(earned)}${'☆'.repeat(5-earned)}</strong><small>${mistakes===0?'Perfect kana build':`${mistakes} incorrect kana choice${mistakes===1?'':'s'}`}</small><div><button id="return" class="primary">Return to scenarios</button><button id="repeat">Practise again</button></div>`;$('#return').onclick=open;$('#repeat').onclick=()=>start(active.id)}
-function speakCheatPhrase(text){
- if(!('speechSynthesis'in window))return;
- const utterance=new SpeechSynthesisUtterance(text);utterance.lang='ja-JP';utterance.rate=.88;
- const voices=speechSynthesis.getVoices().filter(v=>v.lang?.toLowerCase().startsWith('ja'));
- if(voices[0])utterance.voice=voices[0];
- speechSynthesis.cancel();speechSynthesis.speak(utterance);
-}
-function renderCheatSheet(){
- const groups=data.cheatSheet||[];
- $('#cheatSheetSections').innerHTML=groups.map(group=>`<section class="cheat-sheet-group">
-  <button class="cheat-sheet-group-heading" type="button" aria-expanded="true"><span>${group.icon}</span><strong>${esc(group.title)}</strong><b>⌄</b></button>
-  <div class="cheat-sheet-phrases">${group.phrases.map(phrase=>`<article class="cheat-phrase">
-   <button class="cheat-audio" type="button" data-cheat-audio="${esc(phrase.jp)}" aria-label="Play ${esc(phrase.en)}">🔊</button>
-   <div><strong lang="ja">${esc(phrase.jp)}</strong><small>${esc(phrase.romaji)}</small><span>${esc(phrase.en)}</span></div>
-  </article>`).join('')}</div>
- </section>`).join('');
- document.querySelectorAll('[data-cheat-audio]').forEach(button=>button.onclick=()=>speakCheatPhrase(button.dataset.cheatAudio));
- document.querySelectorAll('.cheat-sheet-group-heading').forEach(button=>button.onclick=()=>{
-  const body=button.nextElementSibling,open=!body.hidden;body.hidden=open;button.setAttribute('aria-expanded',String(!open));
- });
-}
-function openCheatSheet(){renderCheatSheet();b().show('japanReadyCheatSheet')}
-async function init(){
-  const url='data/japan-ready-v90.json?v=9.0.6';
-  try{
-    const r=await fetch(url);
-    if(r.ok) data=await r.json();
-    else throw 1;
-  }catch(e){
-    if('caches' in window){
-      try{ const m=await caches.match(url,{ignoreSearch:true}); if(m&&m.ok) data=await m.json(); }catch(err){}
+'use strict';
+/*
+  Japan Ready compatibility loader for Kaishi Quest 11.16.2.
+  11.16.1 removed the two campaign chooser buttons from index.html while
+  japan-ready.js still binds them directly. That null dereference stops its
+  init() before the Japan Ready data is rendered.
+
+  This loader restores those controls, then evaluates the exact 11.16.1
+  Japan Ready implementation from the live commit after making its bindings
+  null-safe. This keeps Japan Ready's existing behaviour intact while allowing
+  the main Journey to remain a single path.
+*/
+(() => {
+  const COMMIT='2148988b621f01af1f0f808e2e0b6631bdf6e11f';
+  const SOURCE=`https://raw.githubusercontent.com/terryjread-sudo/Kakashi-Web/${COMMIT}/japan-ready.js`;
+  const addChooserButtons=()=>{
+    const heading=document.querySelector('#campaignChooser .campaign-chooser-heading');
+    if(!heading || document.querySelector('#chooseJapanReadyCampaign')) return;
+    const actions=document.createElement('div');
+    actions.className='campaign-choice-actions';
+    actions.innerHTML='<button id="chooseJourneyCampaign" type="button">📖 Journey</button><button id="chooseJapanReadyCampaign" type="button">✈️ Japan Ready</button>';
+    heading.appendChild(actions);
+  };
+  const run=async()=>{
+    addChooserButtons();
+    try{
+      let src=await (await fetch(SOURCE,{cache:'no-store'})).text();
+      src=src.replace("$('#chooseJourneyCampaign').onclick=()=>setMode('journey');", "$('#chooseJourneyCampaign')?.addEventListener('click',()=>setMode('journey'));")
+             .replace("$('#chooseJapanReadyCampaign').onclick=()=>setMode('japan-ready');", "$('#chooseJapanReadyCampaign')?.addEventListener('click',()=>setMode('japan-ready'));");
+      const script=document.createElement('script');
+      script.textContent=src;
+      document.head.appendChild(script);
+    }catch(e){
+      console.error('Japan Ready compatibility loader failed',e);
+      const t=document.querySelector('#campaignChooserText'); if(t)t.textContent='Japan Ready is temporarily unavailable. Please refresh once the app has loaded.';
     }
-  }
-  if(!data) data={scenarios:[],cheatSheet:[]};
-  $('#chooseJourneyCampaign').onclick=()=>setMode('journey');
-  $('#chooseJapanReadyCampaign').onclick=()=>setMode('japan-ready');
-  $('#continueJapanReadyCampaign').onclick=open;
-  $('#japanReadyBack').onclick=()=>{b().getMeta().activeCampaign='journey';b().save();chooser();b().show('home')};
-  $('#liveConversationBack').onclick=open;
-  $('#openJapanReadyCheatSheet').onclick=openCheatSheet;
-  $('#cheatSheetBack').onclick=open;
-  $('#liveConversationSubmit').onclick=submit;
-  $('#kanaBuilderUndo').onclick=()=>{if(builderIndex>0){builderIndex--;builderKana.pop();renderBuilder()}};
-  chooser();render()
-}
-if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true});else init().catch(console.error)
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
 })();

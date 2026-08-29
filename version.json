@@ -1,17 +1,14 @@
 {
-  "version": "11.16.1",
-  "released": "2026-08-28",
-  "title": "One Path, One Lesson at a Time",
+  "version": "11.16.2",
+  "released": "2026-08-29",
+  "title": "Adaptive Journey Side Quests",
   "changes": [
-    "The Journey dashboard now presents one guided path with a clearly identified current lesson and the next steps ahead.",
-    "Lesson progress now refreshes immediately so completing one individual lesson reveals the next lesson in sequence.",
-    "Removed the Activity Skills map and free-practice surface from the main Journey; activities can be introduced contextually when they reinforce learning.",
-    "The daily route is now one next lesson instead of a fixed three-step routine, so each lesson can introduce connected words and sentence-building naturally.",
-    "Ordinary activities are available as optional practice without unlock gates; the boss-style Memory Dojo remains gated.",
-    "Removed the regional journey panel so the step-by-step lesson path is the main view.",
-    "A repeated topic lesson reuses the exact same words as the attempt that needed another pass, so it's genuinely the same lesson again, not a new pick of words.",
-    "Activity landmarks now clearly explain that they join your main journey automatically as side quests when you're ready — no separate browsing or unlocking needed.",
-    "The old 'Activity Skills' grid is now a collapsed, clearly optional 'Free practice' section for extra reps outside your main path, instead of sitting alongside it as an equal, separate choice.",
-    "A new 'Your journey ahead' list on the Journey screen shows the upcoming topics in order, alongside the existing 'Learning history' timeline of where you've already been."
+    "Fixed Japan Ready loading after the single-path Journey change removed its campaign chooser buttons.",
+    "Japan Ready remains a separate path with its existing scenarios, conversations and cheat sheet.",
+    "Journey remains a single guided lesson path with the current lesson, learning history and upcoming path visible together.",
+    "A lesson that falls below the existing mastery checkpoint now inserts a required side quest before the same lesson is retried.",
+    "The side quest is selected from the learner's weakest recent skill where enough evidence is available.",
+    "Side quests are represented as required Journey steps rather than separate destinations; completing the side quest returns the learner to the repeated lesson.",
+    "Completed Journey lessons continue to contribute to learning history, while completed lessons remain reviewable."
   ]
 }
