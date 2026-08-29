@@ -1,0 +1,52 @@
+Kaishi Quest v11.21.0 — Unified learning path + delayed mastery
+
+Replace ONLY:
+  - version.js
+  - journey.js
+
+Main-screen:
+  - Removes the duplicate dashboard priority action strip so the Bonsai
+    section moves up.
+  - The dashboard's primary Continue action remains the direct lesson route.
+
+Journey:
+  - Keeps the v11.20.x single-owner Journey architecture.
+  - Completed lessons retain results + Practice lesson.
+  - Current lesson has one Continue lesson action.
+  - Future lessons retain previews without changing the renderer architecture.
+  - No new MutationObserver, polling loop, or Journey renderer is introduced.
+
+Activity path:
+  - Existing lesson execution/adaptive-learning remains responsible for
+    selecting activities. The Journey does not force a fixed activity mix.
+  - Rich activities can therefore remain optional/content-dependent:
+    picture/matching, listening, conversation, manga/story, reading and
+    production are used when the existing lesson engine has suitable
+    content. Activity Village is not part of this learning path.
+
+Delayed Mastery Challenge:
+  - A lesson becomes eligible only when all of its words have reached the
+    existing Usable learning state and have at least two repetitions.
+  - Eligibility creates a pending challenge with a 24-hour recall gap.
+  - Journey shows the pending state and then a Take mastery challenge action.
+  - The challenge uses the existing targeted learning/session infrastructure
+    with production as the deliberate retrieval mechanic.
+  - The challenge stores a baseline of production attempts/correct answers.
+  - On return to Journey, a challenge is considered demonstrated only when
+    the new production evidence is complete and at least 80% of those new
+    attempts are correct.
+  - Partial/failed attempts do not reset the lesson; normal adaptive practice
+    remains responsible for strengthening weak words.
+  - Mastery is evidence layered on top of the existing New -> Recognising ->
+    Recall -> Usable model; it is NOT a second mastery algorithm.
+
+Important:
+  - Activity Village is intentionally not used by this release.
+  - Profile metrics are not changed in this release.
+  - Community is not redesigned in this release.
+  - The GitHub connector rejected direct writes with HTTP 403, so this is
+    packaged for drop-in installation.
+
+Validation:
+  - node --check journey.js: PASS
+  - node --check version.js: PASS

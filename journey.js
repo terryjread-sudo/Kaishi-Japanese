@@ -2,7 +2,7 @@
 
 /*
  * Kaishi Quest — Unified Journey
- * v11.20.0
+ * v11.21.0
  *
  * Single-owner Journey surface.
  *
@@ -579,6 +579,201 @@
     return false;
   }
 
+
+  const MASTERY_KEY = 'kq-mastery-challenges-v1';
+  const MASTERY_GAP_MS = 24 * 60 * 60 * 1000;
+
+  function masteryStore() {
+    try {
+      const key = typeof profileStorageKey === 'function'
+        ? profileStorageKey(MASTERY_KEY)
+        : MASTERY_KEY;
+      const value = JSON.parse(localStorage.getItem(key) || '{}');
+      return value && typeof value === 'object' ? value : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveMasteryStore(store) {
+    try {
+      const key = typeof profileStorageKey === 'function'
+        ? profileStorageKey(MASTERY_KEY)
+        : MASTERY_KEY;
+      localStorage.setItem(key, JSON.stringify(store));
+    } catch (_) {}
+  }
+
+  function wordStateSafe(word) {
+    try {
+      if (window.KaishiLearning?.wordState) return window.KaishiLearning.wordState(word);
+    } catch (_) {}
+    return null;
+  }
+
+  function masteryEligible(chapter) {
+    const stats = lessonStats(chapter);
+    if (!stats.complete || !stats.words.length) return false;
+
+    // The challenge is earned from the existing learning model, not from a
+    // second percentage/mastery algorithm. Requiring Usable evidence for every
+    // word plus repeated exposure prevents an immediate post-lesson exam.
+    const allUsable = stats.words.every(word => wordStateSafe(word) === 'Usable');
+    const repeated = stats.words.every(word => {
+      const p = progressSafe()[word?.id] || {};
+      return Number(p.reps || 0) >= 2;
+    });
+    return allUsable && repeated;
+  }
+
+  function masteryState(chapter) {
+    const store = masteryStore();
+    const id = String(chapter);
+    const existing = masteryResult(chapter) || store[id];
+    if (existing?.passedAt) return {status:'passed', ...existing};
+
+    if (!masteryEligible(chapter)) return {status:'locked'};
+
+    if (!existing?.earnedAt) {
+      const earnedAt = Date.now();
+      store[id] = {
+        earnedAt,
+        availableAt: earnedAt + MASTERY_GAP_MS,
+        attempts: 0
+      };
+      saveMasteryStore(store);
+      return {status:'pending', ...store[id]};
+    }
+
+    return Date.now() >= Number(existing.availableAt || 0)
+      ? {status:'ready', ...existing}
+      : {status:'pending', ...existing};
+  }
+
+
+  function masteryResult(chapter) {
+    const store = masteryStore();
+    const state = store[String(chapter)];
+    if (!state || !state.lastStartedAt || state.passedAt) return state;
+
+    const words = lessonWords(chapter).filter(Boolean);
+    if (!words.length) return state;
+    const baseline = state.baseline || {};
+    let attempted = 0;
+    let correct = 0;
+    let complete = true;
+
+    words.forEach(word => {
+      const before = baseline[word.id] || {attempts:0, correct:0};
+      const metric = progressSafe()[word.id]?.skills?.production || {};
+      const da = Math.max(0, Number(metric.attempts || 0) - Number(before.attempts || 0));
+      const dc = Math.max(0, Number(metric.correct || 0) - Number(before.correct || 0));
+      if (da < 1) complete = false;
+      attempted += da;
+      correct += Math.min(da, dc);
+    });
+
+    if (!complete || attempted < Math.min(words.length, 3)) return state;
+
+    // A delayed production challenge passes only when the learner shows strong
+    // recall across the new production attempts. The existing skill model remains
+    // authoritative; this is merely a challenge-level interpretation of evidence.
+    const ratio = attempted ? correct / attempted : 0;
+    if (ratio >= 0.8) {
+      store[String(chapter)] = {...state, passedAt: Date.now(), result: {attempted, correct, ratio}};
+      saveMasteryStore(store);
+      return store[String(chapter)];
+    }
+
+    return state;
+  }
+
+  function masteryHTML(chapter) {
+    const state = masteryState(chapter);
+    if (state.status === 'locked') return '';
+
+    if (state.status === 'passed') {
+      return `
+        <div class="kq-mastery-card passed">
+          <div class="kq-mastery-icon">🏆</div>
+          <div><strong>Mastery demonstrated</strong><p>Your delayed recall challenge has been completed. Normal review will keep these words strong.</p></div>
+        </div>
+      `;
+    }
+
+    if (state.status === 'pending') {
+      const remaining = Math.max(0, Number(state.availableAt || 0) - Date.now());
+      const hours = Math.max(1, Math.ceil(remaining / (60 * 60 * 1000)));
+      return `
+        <div class="kq-mastery-card pending">
+          <div class="kq-mastery-icon">⏳</div>
+          <div><strong>Mastery Challenge earned</strong><p>Come back after a recall gap. It will be ready in about ${hours} hour${hours === 1 ? '' : 's'}.</p></div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="kq-mastery-card ready">
+        <div class="kq-mastery-icon">🏆</div>
+        <div class="kq-mastery-copy"><strong>Mastery Challenge ready</strong><p>Prove you can still retrieve these words without the lesson prompts.</p></div>
+        <button type="button" class="primary" data-kq-action="mastery" data-kq-chapter="${chapter}">Take mastery challenge</button>
+      </div>
+    `;
+  }
+
+  function startMasteryChallenge(chapter) {
+    const state = masteryState(chapter);
+    if (state.status !== 'ready') return false;
+
+    const ids = lessonWords(chapter).map(word => word?.id).filter(Boolean);
+    if (!ids.length || typeof makeTargetedMasterySession !== 'function') return false;
+
+    const store = masteryStore();
+    const key = String(chapter);
+    const baseline = {};
+    ids.forEach(id => {
+      const metric = progressSafe()[id]?.skills?.production || {};
+      baseline[id] = {
+        attempts: Number(metric.attempts || 0),
+        correct: Number(metric.correct || 0)
+      };
+    });
+    store[key] = {
+      ...store[key],
+      attempts: Number(store[key]?.attempts || 0) + 1,
+      lastStartedAt: Date.now(),
+      baseline
+    };
+    saveMasteryStore(store);
+    markJourneyReturn();
+
+    try {
+      window.activityReturnScreen = 'journey';
+      // Production is intentionally used for the challenge: it asks the
+      // learner to retrieve Japanese rather than recognise an answer.
+      makeTargetedMasterySession(ids, 'production');
+      window.activityReturnScreen = 'journey';
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function addMasteryStyles() {
+    if ($('#kqMasteryStyles')) return;
+    const style = document.createElement('style');
+    style.id = 'kqMasteryStyles';
+    style.textContent = `
+      #home .dashboard-priority-actions{display:none!important}
+      .kq-mastery-card{display:flex;gap:10px;align-items:center;margin-top:12px;padding:12px 13px;border-radius:14px;border:1px solid rgba(234,179,8,.4);background:rgba(234,179,8,.07)}
+      .kq-mastery-card.pending{border-color:rgba(100,116,139,.28);background:rgba(100,116,139,.06)}
+      .kq-mastery-card.passed{border-color:rgba(22,163,74,.32);background:rgba(22,163,74,.06)}
+      .kq-mastery-icon{font-size:1.5rem;flex:0 0 auto}.kq-mastery-copy{flex:1;min-width:0}.kq-mastery-card strong{display:block}.kq-mastery-card p{margin:.2rem 0 0;opacity:.78;font-size:.86rem}.kq-mastery-card button{margin-left:auto;white-space:nowrap}
+      @media(max-width:560px){.kq-mastery-card{align-items:flex-start;flex-wrap:wrap}.kq-mastery-card button{width:100%;margin-left:0}}
+    `;
+    document.head.appendChild(style);
+  }
+
   function resultsHTML(chapter) {
     const stats = lessonStats(chapter);
     const percent = stats.percent || (stats.complete ? 100 : 0);
@@ -650,6 +845,7 @@
         <div class="kq-unified-expand"
              data-kq-details="${item.chapter}"
              hidden></div>
+        ${masteryHTML(item.chapter)}
       `;
     } else if (item.type === 'current') {
       actions = `
@@ -799,6 +995,11 @@
         return;
       }
 
+      if (action === 'mastery') {
+        startMasteryChallenge(chapter);
+        return;
+      }
+
       if (action === 'results' || action === 'preview') {
         const details = track.querySelector(`[data-kq-details="${chapter}"]`);
         if (!details) return;
@@ -824,6 +1025,7 @@
 
   function init() {
     addStyles();
+    addMasteryStyles();
     installRedoReturnGuard();
     bind();
 
