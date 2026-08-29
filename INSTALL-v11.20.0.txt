@@ -1,0 +1,64 @@
+Kaishi Quest v11.20.0 — Unified Journey
+
+IMPORTANT
+This release deliberately removes the layered Journey architecture.
+
+Replace:
+  - version.js
+  - add journey.js
+
+Do NOT load journey-v3.js or journey-v4.js.
+They can remain in the repository as historical files, but v11.20.0 no longer
+loads them. The new version.js loads journey.js only.
+
+Why this release
+----------------
+The previous Journey versions were competing renderers. journey-v3 rendered
+the timeline, then journey-v4 tried to enhance it, while v3 itself contained
+multiple observers and duplicate renderer code. That caused the missing-button,
+flashing and jumping problems.
+
+v11.20.0 has one owner:
+  app.js     -> learning engine, progress, lesson execution
+  journey.js -> Journey UI only
+
+journey.js does NOT:
+  - use a MutationObserver
+  - poll the Journey DOM
+  - watch its own DOM mutations
+  - rebuild the timeline in response to its own changes
+  - depend on journey-v3.js or journey-v4.js
+
+Journey features
+----------------
+- One Past / Present / Future timeline.
+- Current lesson has exactly one Continue lesson button.
+- Completed lessons have View lesson results + Retry lesson.
+- Results expand in place and show covered words + per-word strength.
+- Future lessons have an in-place Preview lesson expansion.
+- Existing side quests/retries in dailyJourneyRoute are shown beneath their lesson.
+- Milestones appear every five lessons.
+- User scroll position is preserved after a Journey render.
+- Current lesson is only auto-positioned before the learner manually scrolls.
+
+Caching note
+------------
+The current service-worker.js still has the old Journey files in its shell list.
+v11.20.0 stops loading those files, so they are harmless online. If offline
+Journey support is required, update the service-worker shell list separately to
+cache journey.js. This release intentionally avoids replacing the whole service
+worker because that would be an unrelated/high-risk change.
+
+After upload
+------------
+1. Hard refresh / clear the site's cached version if necessary.
+2. Confirm the header shows v11.20.0.
+3. Open Kaishi Adventure.
+4. Confirm one Continue button on the current lesson.
+5. Confirm completed lessons have View lesson results and Retry lesson.
+6. Expand results; leave them open and scroll.
+7. Preview a future lesson; verify the page does not jump.
+8. Scroll the Journey repeatedly; verify no flashing.
+
+Repository cleanup can happen later:
+  journey-v3.js and journey-v4.js may be deleted once v11.20.0 is confirmed stable.
