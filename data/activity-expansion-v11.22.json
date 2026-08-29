@@ -1,0 +1,1198 @@
+{
+  "version": 1,
+  "release": "11.22.0",
+  "conversations": [
+    {
+      "id": "library-after-school",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "Library After School",
+      "japaneseTitle": "放課後の図書館",
+      "level": 2,
+      "setting": "After school in the library",
+      "summary": "Choose a book, find a seat and plan a short study session.",
+      "turns": [
+        {
+          "line": "今日はLibrary After Schoolについて話しましょう。",
+          "reading": "きょうは Library After Schoolについて はなしましょう。",
+          "meaning": "Let's talk about Library After School today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "At the Market",
+      "japaneseTitle": "市場で",
+      "level": 2,
+      "setting": "Shopping at a local market",
+      "summary": "Choose fruit, ask the price and decide what to buy.",
+      "turns": [
+        {
+          "line": "今日はAt the Marketについて話しましょう。",
+          "reading": "きょうは At the Marketについて はなしましょう。",
+          "meaning": "Let's talk about At the Market today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "morning-weather",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "Morning Weather",
+      "japaneseTitle": "朝の天気",
+      "level": 2,
+      "setting": "Checking the weather before leaving",
+      "summary": "Talk about the weather and decide what to bring.",
+      "turns": [
+        {
+          "line": "今日はMorning Weatherについて話しましょう。",
+          "reading": "きょうは Morning Weatherについて はなしましょう。",
+          "meaning": "Let's talk about Morning Weather today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "classroom-help",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "A Classroom Question",
+      "japaneseTitle": "教室で質問",
+      "level": 2,
+      "setting": "Working together in class",
+      "summary": "Ask for help, borrow an item and confirm the next task.",
+      "turns": [
+        {
+          "line": "今日はA Classroom Questionについて話しましょう。",
+          "reading": "きょうは A Classroom Questionについて はなしましょう。",
+          "meaning": "Let's talk about A Classroom Question today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "weekend-walk",
+      "character": "master",
+      "characterName": "Master",
+      "title": "A Weekend Walk",
+      "japaneseTitle": "週末の散歩",
+      "level": 2,
+      "setting": "Planning a walk",
+      "summary": "Discuss a route, timing and what to see.",
+      "turns": [
+        {
+          "line": "今日はA Weekend Walkについて話しましょう。",
+          "reading": "きょうは A Weekend Walkについて はなしましょう。",
+          "meaning": "Let's talk about A Weekend Walk today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "train-station-help",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "Finding the Platform",
+      "japaneseTitle": "ホームを探す",
+      "level": 2,
+      "setting": "Helping at the station",
+      "summary": "Check a platform, confirm the departure and guide a friend.",
+      "turns": [
+        {
+          "line": "今日はFinding the Platformについて話しましょう。",
+          "reading": "きょうは Finding the Platformについて はなしましょう。",
+          "meaning": "Let's talk about Finding the Platform today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "cooking-together",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "Cooking Together",
+      "japaneseTitle": "一緒に料理",
+      "level": 2,
+      "setting": "Preparing dinner",
+      "summary": "Choose ingredients, describe quantities and cook together.",
+      "turns": [
+        {
+          "line": "今日はCooking Togetherについて話しましょう。",
+          "reading": "きょうは Cooking Togetherについて はなしましょう。",
+          "meaning": "Let's talk about Cooking Together today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "photo-day",
+      "character": "boy",
+      "characterName": "Kai",
+      "title": "A Day for Photos",
+      "japaneseTitle": "写真の日",
+      "level": 2,
+      "setting": "Taking photographs",
+      "summary": "Choose a place, ask permission and talk about the pictures.",
+      "turns": [
+        {
+          "line": "今日はA Day for Photosについて話しましょう。",
+          "reading": "きょうは A Day for Photosについて はなしましょう。",
+          "meaning": "Let's talk about A Day for Photos today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "study-break",
+      "character": "girl",
+      "characterName": "Mia",
+      "title": "Taking a Study Break",
+      "japaneseTitle": "勉強の休憩",
+      "level": 2,
+      "setting": "A short break from study",
+      "summary": "Suggest a break, choose a drink and decide when to continue.",
+      "turns": [
+        {
+          "line": "今日はTaking a Study Breakについて話しましょう。",
+          "reading": "きょうは Taking a Study Breakについて はなしましょう。",
+          "meaning": "Let's talk about Taking a Study Break today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    },
+    {
+      "id": "evening-plan",
+      "character": "master",
+      "characterName": "Master",
+      "title": "An Evening Plan",
+      "japaneseTitle": "夕方の予定",
+      "level": 2,
+      "setting": "Planning the evening",
+      "summary": "Discuss dinner, timing and a final study goal.",
+      "turns": [
+        {
+          "line": "今日はAn Evening Planについて話しましょう。",
+          "reading": "きょうは An Evening Planについて はなしましょう。",
+          "meaning": "Let's talk about An Evening Plan today.",
+          "response": "はい、お願いします。",
+          "responseReading": "はい、おねがいします。",
+          "responseMeaning": "Yes, please.",
+          "reaction": "では、ゆっくり始めましょう。",
+          "reactionReading": "では、ゆっくり はじめましょう。",
+          "reactionMeaning": "Then let's begin slowly.",
+          "explanation": "お願いします is a polite way to accept the proposed activity.",
+          "targetWord": "今日"
+        },
+        {
+          "line": "何を先にしますか。",
+          "reading": "なにを さきに しますか。",
+          "meaning": "What shall we do first?",
+          "response": "これを先にします。",
+          "responseReading": "これを さきに します。",
+          "responseMeaning": "We will do this first.",
+          "reaction": "いいですね。順番が分かりました。",
+          "reactionReading": "いいですね。じゅんばんが わかりました。",
+          "reactionMeaning": "Good. Now we know the order.",
+          "explanation": "これを marks the thing chosen for the first action.",
+          "targetWord": "先"
+        },
+        {
+          "line": "いつまでに終わりますか。",
+          "reading": "いつまでに おわりますか。",
+          "meaning": "By when will we finish?",
+          "response": "五時までに終わります。",
+          "responseReading": "ごじまでに おわります。",
+          "responseMeaning": "We will finish by five.",
+          "reaction": "それなら、時間は十分ありますね。",
+          "reactionReading": "それなら、じかんは じゅうぶん ありますね。",
+          "reactionMeaning": "Then we have enough time.",
+          "explanation": "までに marks a deadline by which an action will be completed.",
+          "targetWord": "時間"
+        },
+        {
+          "line": "終わったら何をしますか。",
+          "reading": "おわったら なにを しますか。",
+          "meaning": "What will we do when we finish?",
+          "response": "家に帰って休みます。",
+          "responseReading": "いえに かえって やすみます。",
+          "responseMeaning": "I will go home and rest.",
+          "reaction": "今日もよく頑張りましたね。",
+          "reactionReading": "きょうも よく がんばりましたね。",
+          "reactionMeaning": "You worked hard today too.",
+          "explanation": "帰って links the first action to the following action naturally.",
+          "targetWord": "帰る"
+        }
+      ]
+    }
+  ],
+  "grammarLessons": [
+    {
+      "id": "te-form-connection",
+      "title": "Connecting actions with て",
+      "japanese": "て · Connection",
+      "summary": "Use て-form to connect related actions in a sequence.",
+      "examples": [
+        {
+          "japanese": "朝ご飯を食べて、学校へ行きます。",
+          "reading": "あさごはんを たべて、がっこうへ いきます。",
+          "english": "I eat breakfast and go to school.",
+          "chunks": [
+            "食べて = focus form",
+            "学校へ行きます。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which form connects 食べる to the next action?",
+          "sentence": "学校へ行きます。",
+          "choices": [
+            "食べて",
+            "食べます",
+            "食べた",
+            "食べない"
+          ],
+          "answer": "食べて",
+          "explanation": "The て-form connects the first action to the next one."
+        },
+        {
+          "prompt": "What happens first?",
+          "sentence": "学校へ行きます。",
+          "choices": [
+            "Breakfast is eaten",
+            "School is reached",
+            "The speaker sleeps",
+            "The speaker studies"
+          ],
+          "answer": "Breakfast is eaten",
+          "explanation": "食べて comes before 学校へ行きます."
+        },
+        {
+          "prompt": "Choose the natural sentence.",
+          "sentence": "学校へ行きます。",
+          "choices": [
+            "本を読んで、寝ます。",
+            "本を読みますて、寝ます。",
+            "本を読んだ、寝ます。",
+            "本を読まない、寝ます。"
+          ],
+          "answer": "本を読んで、寝ます。",
+          "explanation": "The て-form links the two actions."
+        }
+      ]
+    },
+    {
+      "id": "tai-want",
+      "title": "Expressing desire with たい",
+      "japanese": "たい · Want",
+      "summary": "たい expresses what the speaker wants to do.",
+      "examples": [
+        {
+          "japanese": "日本語を話したいです。",
+          "reading": "にほんごを はなしたいです。",
+          "english": "I want to speak Japanese.",
+          "chunks": [
+            "話したい = focus form",
+            "日本語を話します。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which form expresses wanting to speak?",
+          "sentence": "日本語を話します。",
+          "choices": [
+            "話したいです",
+            "話します",
+            "話しました",
+            "話しません"
+          ],
+          "answer": "話したいです",
+          "explanation": "たい attaches to the verb stem to express desire."
+        },
+        {
+          "prompt": "What does 話したいです mean?",
+          "sentence": "日本語を話します。",
+          "choices": [
+            "I want to speak",
+            "I spoke",
+            "I cannot speak",
+            "I will not speak"
+          ],
+          "answer": "I want to speak",
+          "explanation": "The たい form expresses the speaker’s desire."
+        },
+        {
+          "prompt": "Choose the natural sentence.",
+          "sentence": "日本語を話します。",
+          "choices": [
+            "映画を見たいです。",
+            "映画を見てです。",
+            "映画を見ましたいです。",
+            "映画を見ないたいです。"
+          ],
+          "answer": "映画を見たいです。",
+          "explanation": "見たい is the correct たい form of 見る."
+        }
+      ]
+    },
+    {
+      "id": "mashou-suggestion",
+      "title": "Making suggestions with ましょう",
+      "japanese": "ましょう · Let’s",
+      "summary": "ましょう makes a polite suggestion to do something together.",
+      "examples": [
+        {
+          "japanese": "一緒に勉強しましょう。",
+          "reading": "いっしょに べんきょうしましょう。",
+          "english": "Let’s study together.",
+          "chunks": [
+            "勉強しましょう = focus form",
+            "一緒に勉強します。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which ending suggests “let’s”?",
+          "sentence": "一緒に勉強します。",
+          "choices": [
+            "ましょう",
+            "ません",
+            "ました",
+            "たいです"
+          ],
+          "answer": "ましょう",
+          "explanation": "ましょう is a polite joint suggestion."
+        },
+        {
+          "prompt": "What does 勉強しましょう mean?",
+          "sentence": "一緒に勉強します。",
+          "choices": [
+            "Let’s study",
+            "We studied",
+            "Do not study",
+            "I want to study"
+          ],
+          "answer": "Let’s study",
+          "explanation": "ましょう invites the listener to join the action."
+        },
+        {
+          "prompt": "Choose the natural suggestion.",
+          "sentence": "一緒に勉強します。",
+          "choices": [
+            "一緒に行きましょう。",
+            "一緒に行きました。",
+            "一緒に行きませんでした。",
+            "一緒に行きたいでした。"
+          ],
+          "answer": "一緒に行きましょう。",
+          "explanation": "行きましょう is the polite suggestion form."
+        }
+      ]
+    },
+    {
+      "id": "nai-negative",
+      "title": "Making polite negative statements",
+      "japanese": "ません · Negative",
+      "summary": "ません makes a polite negative statement.",
+      "examples": [
+        {
+          "japanese": "今日は行きません。",
+          "reading": "きょうは いきません。",
+          "english": "I am not going today.",
+          "chunks": [
+            "行きません = focus form",
+            "今日は行きます。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which ending makes 行きます negative?",
+          "sentence": "今日は行きます。",
+          "choices": [
+            "行きません",
+            "行きました",
+            "行きたいです",
+            "行きましょう"
+          ],
+          "answer": "行きません",
+          "explanation": "ません makes a polite negative statement."
+        },
+        {
+          "prompt": "What does 今日は行きません mean?",
+          "sentence": "今日は行きます。",
+          "choices": [
+            "I am not going today",
+            "I went today",
+            "I want to go today",
+            "Let’s go today"
+          ],
+          "answer": "I am not going today",
+          "explanation": "行きません is the polite negative of 行きます."
+        },
+        {
+          "prompt": "Choose the negative sentence.",
+          "sentence": "今日は行きます。",
+          "choices": [
+            "水を飲みません。",
+            "水を飲みました。",
+            "水を飲みたいです。",
+            "水を飲みましょう。"
+          ],
+          "answer": "水を飲みません。",
+          "explanation": "飲みません is the polite negative form."
+        }
+      ]
+    },
+    {
+      "id": "past-mashita",
+      "title": "Polite past with ました",
+      "japanese": "ました · Past",
+      "summary": "ました describes a completed action in polite Japanese.",
+      "examples": [
+        {
+          "japanese": "昨日、本を読みました。",
+          "reading": "きのう、ほんを よみました。",
+          "english": "I read a book yesterday.",
+          "chunks": [
+            "読みました = focus form",
+            "昨日、本を読みます。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which ending marks polite past?",
+          "sentence": "昨日、本を読みます。",
+          "choices": [
+            "ました",
+            "ません",
+            "たいです",
+            "ましょう"
+          ],
+          "answer": "ました",
+          "explanation": "ました marks a completed action in polite Japanese."
+        },
+        {
+          "prompt": "What happened in 昨日、本を読みました。?",
+          "sentence": "昨日、本を読みます。",
+          "choices": [
+            "The speaker read a book",
+            "The speaker will read a book",
+            "The speaker will not read",
+            "The speaker wants to read"
+          ],
+          "answer": "The speaker read a book",
+          "explanation": "読みました is the past form of 読みます."
+        },
+        {
+          "prompt": "Choose the past sentence.",
+          "sentence": "昨日、本を読みます。",
+          "choices": [
+            "昨日、学校へ行きました。",
+            "昨日、学校へ行きません。",
+            "昨日、学校へ行きたいです。",
+            "昨日、学校へ行きましょう。"
+          ],
+          "answer": "昨日、学校へ行きました。",
+          "explanation": "行きました is the polite past form."
+        }
+      ]
+    },
+    {
+      "id": "negative-past",
+      "title": "Polite negative past ませんでした",
+      "japanese": "ませんでした · Negative past",
+      "summary": "ませんでした says that an action did not happen in the past.",
+      "examples": [
+        {
+          "japanese": "昨日は勉強しませんでした。",
+          "reading": "きのうは べんきょうしませんでした。",
+          "english": "I did not study yesterday.",
+          "chunks": [
+            "勉強しませんでした = focus form",
+            "昨日は勉強しました。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which form means “did not study”?",
+          "sentence": "昨日は勉強しました。",
+          "choices": [
+            "勉強しませんでした",
+            "勉強しました",
+            "勉強しません",
+            "勉強したいです"
+          ],
+          "answer": "勉強しませんでした",
+          "explanation": "ませんでした is polite negative past."
+        },
+        {
+          "prompt": "What does 昨日は勉強しませんでした mean?",
+          "sentence": "昨日は勉強しました。",
+          "choices": [
+            "I did not study yesterday",
+            "I study every day",
+            "I want to study yesterday",
+            "Let’s study yesterday"
+          ],
+          "answer": "I did not study yesterday",
+          "explanation": "The negative past describes an action that did not happen."
+        },
+        {
+          "prompt": "Choose the negative-past sentence.",
+          "sentence": "昨日は勉強しました。",
+          "choices": [
+            "昨日、行きませんでした。",
+            "昨日、行きません。",
+            "昨日、行きました。",
+            "昨日、行きたいです。"
+          ],
+          "answer": "昨日、行きませんでした。",
+          "explanation": "行きませんでした is the negative past of 行きます."
+        }
+      ]
+    },
+    {
+      "id": "because-node",
+      "title": "Giving a reason with ので",
+      "japanese": "ので · Because",
+      "summary": "ので gives a reason in a relatively soft, explanatory way.",
+      "examples": [
+        {
+          "japanese": "雨なので、家にいます。",
+          "reading": "あめなので、いえに います。",
+          "english": "Because it is raining, I am at home.",
+          "chunks": [
+            "雨なので = focus form",
+            "雨ですが、家にいます。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which expression gives a reason?",
+          "sentence": "雨ですが、家にいます。",
+          "choices": [
+            "ので",
+            "まで",
+            "だけ",
+            "より"
+          ],
+          "answer": "ので",
+          "explanation": "ので links a reason to a result."
+        },
+        {
+          "prompt": "Why is the speaker at home?",
+          "sentence": "雨ですが、家にいます。",
+          "choices": [
+            "Because it is raining",
+            "Because school is open",
+            "Because they are hungry",
+            "Because they are travelling"
+          ],
+          "answer": "Because it is raining",
+          "explanation": "雨なので provides the reason."
+        },
+        {
+          "prompt": "Choose the natural reason sentence.",
+          "sentence": "雨ですが、家にいます。",
+          "choices": [
+            "疲れたので、休みます。",
+            "疲れたまで、休みます。",
+            "疲れたより、休みます。",
+            "疲れただけ、休みます。"
+          ],
+          "answer": "疲れたので、休みます。",
+          "explanation": "ので naturally introduces the reason for resting."
+        }
+      ]
+    },
+    {
+      "id": "but-kedo",
+      "title": "Connecting contrast with けど",
+      "japanese": "けど · But",
+      "summary": "けど connects two thoughts while signalling a contrast.",
+      "examples": [
+        {
+          "japanese": "行きたいけど、時間がありません。",
+          "reading": "いきたいけど、じかんが ありません。",
+          "english": "I want to go, but I do not have time.",
+          "chunks": [
+            "行きたい = focus form",
+            "行きたいです。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which expression introduces a contrast?",
+          "sentence": "行きたいです。",
+          "choices": [
+            "けど",
+            "ので",
+            "まで",
+            "から"
+          ],
+          "answer": "けど",
+          "explanation": "けど means but and links contrasting thoughts."
+        },
+        {
+          "prompt": "What is the contrast in 行きたいけど、時間がありません。?",
+          "sentence": "行きたいです。",
+          "choices": [
+            "Wanting to go vs not having time",
+            "Going vs sleeping",
+            "Eating vs drinking",
+            "Morning vs evening"
+          ],
+          "answer": "Wanting to go vs not having time",
+          "explanation": "けど signals the contrast between the two clauses."
+        },
+        {
+          "prompt": "Choose the natural contrast.",
+          "sentence": "行きたいです。",
+          "choices": [
+            "安いけど、少し古いです。",
+            "安いので、少し古いけど。",
+            "安いまで、古いです。",
+            "安いません、古いです。"
+          ],
+          "answer": "安いけど、少し古いです。",
+          "explanation": "けど joins the two contrasting descriptions."
+        }
+      ]
+    },
+    {
+      "id": "too-mata",
+      "title": "Saying again with また",
+      "japanese": "また · Again",
+      "summary": "また means again or another time.",
+      "examples": [
+        {
+          "japanese": "また明日話しましょう。",
+          "reading": "また あした はなしましょう。",
+          "english": "Let’s talk again tomorrow.",
+          "chunks": [
+            "また = focus form",
+            "明日話します。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does また mean?",
+          "sentence": "明日話します。",
+          "choices": [
+            "Again",
+            "Only",
+            "Never",
+            "Before"
+          ],
+          "answer": "Again",
+          "explanation": "また indicates repetition."
+        },
+        {
+          "prompt": "What does また明日話しましょう mean?",
+          "sentence": "明日話します。",
+          "choices": [
+            "Let’s talk again tomorrow",
+            "We talked yesterday",
+            "Do not talk tomorrow",
+            "I cannot talk tomorrow"
+          ],
+          "answer": "Let’s talk again tomorrow",
+          "explanation": "また modifies the future suggestion to mean again."
+        },
+        {
+          "prompt": "Choose the natural sentence.",
+          "sentence": "明日話します。",
+          "choices": [
+            "また来週会いましょう。",
+            "また来週会いました。",
+            "また来週会いませんでした。",
+            "また来週会いたかったです。"
+          ],
+          "answer": "また来週会いましょう。",
+          "explanation": "また combines naturally with a future suggestion."
+        }
+      ]
+    },
+    {
+      "id": "can-dekiru",
+      "title": "Ability with できる",
+      "japanese": "できる · Can",
+      "summary": "できる expresses ability or possibility.",
+      "examples": [
+        {
+          "japanese": "日本語が少しできます。",
+          "reading": "にほんごが すこし できます。",
+          "english": "I can use a little Japanese.",
+          "chunks": [
+            "できます = focus form",
+            "日本語を勉強します。 = context"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which form expresses ability?",
+          "sentence": "日本語を勉強します。",
+          "choices": [
+            "できます",
+            "しました",
+            "しません",
+            "したいです"
+          ],
+          "answer": "できます",
+          "explanation": "できる expresses ability or possibility."
+        },
+        {
+          "prompt": "What does 日本語が少しできます mean?",
+          "sentence": "日本語を勉強します。",
+          "choices": [
+            "I can use a little Japanese",
+            "I studied Japanese yesterday",
+            "I do not study Japanese",
+            "Let’s study Japanese"
+          ],
+          "answer": "I can use a little Japanese",
+          "explanation": "できる describes what the speaker can do."
+        },
+        {
+          "prompt": "Choose the natural ability sentence.",
+          "sentence": "日本語を勉強します。",
+          "choices": [
+            "漢字が読めます。",
+            "漢字を読みませんでした。",
+            "漢字が読みたいです。",
+            "漢字を読みましょう。"
+          ],
+          "answer": "漢字が読めます。",
+          "explanation": "読めます is the potential form expressing ability."
+        }
+      ]
+    }
+  ]
+}
