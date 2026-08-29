@@ -1,0 +1,32 @@
+Kaishi Quest v11.20.1 — Journey redo return fix
+
+Replace ONLY:
+  - version.js
+  - journey.js
+
+Changes:
+  1. Completed-lesson action is labelled "Practice lesson" and uses the
+     Journey practice/retry path.
+  2. Starting a redo/practice records Journey as the originating screen.
+  3. The return destination is explicitly restored to Journey after the
+     practice session, including when the learning engine overwrites it.
+  4. Choosing "Not now" or "Cancel" in the redo/practice flow returns to
+     Journey instead of dropping into Learning History.
+  5. The return marker is session-scoped and cleared when Journey is restored.
+
+Stability:
+  - No new Journey renderer.
+  - No MutationObserver.
+  - No DOM polling loop.
+  - No timeline rebuild on button clicks.
+  - Existing v11.20.0 unified Journey architecture is retained.
+
+Test:
+  A. Completed lesson -> Practice lesson -> finish -> Journey.
+  B. Completed lesson -> Practice lesson -> Not now -> Journey.
+  C. View lesson results -> remains expanded.
+  D. Current lesson -> Continue lesson -> normal lesson flow.
+
+Note:
+  GitHub currently exposes no accessible repositories through the connector,
+  so this is packaged rather than pushed directly.

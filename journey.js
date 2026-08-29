@@ -466,6 +466,74 @@
     if (heading) heading.textContent = 'Your Journey';
   }
 
+  const JOURNEY_RETURN_KEY = 'kq-journey-return-v1';
+
+  function markJourneyReturn() {
+    try {
+      sessionStorage.setItem(JOURNEY_RETURN_KEY, JSON.stringify({
+        returnScreen: 'journey',
+        at: Date.now()
+      }));
+    } catch (_) {}
+    try { window.activityReturnScreen = 'journey'; } catch (_) {}
+  }
+
+  function clearJourneyReturn() {
+    try { sessionStorage.removeItem(JOURNEY_RETURN_KEY); } catch (_) {}
+  }
+
+  function journeyReturnPending() {
+    try {
+      const value = JSON.parse(sessionStorage.getItem(JOURNEY_RETURN_KEY) || 'null');
+      return Boolean(value && value.returnScreen === 'journey');
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function returnToJourneySoon() {
+    clearJourneyReturn();
+    try { window.activityReturnScreen = 'journey'; } catch (_) {}
+    try {
+      const button = $('#continueJourney');
+      if (button) {
+        button.click();
+        return true;
+      }
+    } catch (_) {}
+    try {
+      if (typeof showScreen === 'function') {
+        showScreen('journey');
+        renderAfterNavigation();
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  function installRedoReturnGuard() {
+    if (document.documentElement.dataset.kqRedoReturnGuard === '1') return;
+    document.documentElement.dataset.kqRedoReturnGuard = '1';
+
+    document.addEventListener('click', event => {
+      if (!journeyReturnPending()) return;
+      const target = event.target.closest?.('button,[role="button"],a');
+      if (!target) return;
+      const text = String(target.textContent || '').trim().toLowerCase();
+      if (!text) return;
+
+      // Cancelling a redo/practice flow must return to the Journey, not the
+      // generic Learning History screen from which the flow was implemented.
+      if (text === 'not now' || text === 'cancel') {
+        setTimeout(returnToJourneySoon, 0);
+      }
+    }, true);
+
+    window.addEventListener('pageshow', () => {
+      if (journeyReturnPending()) setTimeout(returnToJourneySoon, 0);
+    });
+  }
+
   function launchCurrentLesson() {
     try {
       if (typeof resumeSavedMission === 'function' && resumeSavedMission()) return true;
@@ -495,10 +563,15 @@
     const ids = words.map(word => word?.id).filter(Boolean);
     if (!ids.length) return false;
 
+    markJourneyReturn();
+
     try {
-      activityReturnScreen = 'journey';
       if (typeof makeTargetedMasterySession === 'function') {
+        // Some versions of the learning engine reset activityReturnScreen while
+        // constructing a session, so set it both before and after the call.
+        window.activityReturnScreen = 'journey';
         makeTargetedMasterySession(ids, 'meaning');
+        window.activityReturnScreen = 'journey';
         return true;
       }
     } catch (_) {}
@@ -571,7 +644,7 @@
                   class="primary"
                   data-kq-action="retry"
                   data-kq-chapter="${item.chapter}">
-            Retry lesson
+            Practice lesson
           </button>
         </div>
         <div class="kq-unified-expand"
@@ -610,7 +683,7 @@
                   class="primary"
                   data-kq-action="retry"
                   data-kq-chapter="${item.chapter}">
-            Retry lesson
+            Practice lesson
           </button>
         </div>
       `;
@@ -751,6 +824,7 @@
 
   function init() {
     addStyles();
+    installRedoReturnGuard();
     bind();
 
     /*
