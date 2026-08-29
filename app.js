@@ -1244,9 +1244,26 @@ function preloadUpcomingCardImages(count=3){
 }
 function registerKaishiServiceWorker(){
  if(!('serviceWorker' in navigator)||location.protocol==='file:')return;
- addEventListener('load',()=>navigator.serviceWorker
-  .register(`service-worker.js?v=${APP_VERSION}`,{scope:'./'})
-  .catch(error=>console.warn('Image cache unavailable',error)),{once:true});
+ addEventListener('load',()=>{
+  navigator.serviceWorker.register(`service-worker.js?v=${APP_VERSION}`,{scope:'./'})
+   .then(reg=>{
+    reg.addEventListener('updatefound',()=>{
+     const installing=reg.installing;
+     installing?.addEventListener('statechange',()=>{
+      if(installing.state==='redundant'){
+       console.warn('Service worker became redundant/failed.');
+       localStorage.setItem('kaishi-sw-broken','1');
+       window.dispatchEvent(new Event('kaishi-sw-status'));
+      }
+     });
+    });
+   })
+   .catch(error=>{
+    console.warn('Service worker registration failed',error);
+    localStorage.setItem('kaishi-sw-broken','1');
+    window.dispatchEvent(new Event('kaishi-sw-status'));
+   });
+ }, {once:true});
 }
 registerKaishiServiceWorker();
 function wireSceneImages(root=document){
