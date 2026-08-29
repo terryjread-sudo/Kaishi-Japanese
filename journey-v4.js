@@ -1,13 +1,16 @@
 'use strict';
 /*
- Kaishi Quest Journey 11.19.0
- Interaction/enhancement layer for the unified Journey timeline.
+ Kaishi Quest Journey 11.19.1
+ Journey interaction layer.
 
- - Completed lessons can be retried using the app's real history redo engine.
- - Completed lessons expand inline to show words and results.
- - Future lessons expand to a useful preview.
- - Five-lesson milestones and topic-boundary boss gates appear in the same timeline.
- - Only childList changes are observed; no class/hidden feedback loop.
+ Important stability rules:
+ - journey-v3 owns the base timeline rendering.
+ - this file adds interactions only once; it does NOT attach a second click
+   listener to the same buttons (that previously caused expand/close in one tap).
+ - the old v3 current-lesson button is replaced by one v4 button so there is
+   exactly one Continue lesson CTA.
+ - previewing a future lesson marks the timeline as user-scrolled, preventing
+   v3's automatic current-lesson centering from jumping the viewport.
 */
 (() => {
   const $=s=>document.querySelector(s);
@@ -19,7 +22,8 @@
 
   function chapterHistory(chapter){
     let words=[];try{words=typeof chapterWords==='function'?(chapterWords(Number(chapter))||[]):[]}catch{}
-    const ids=new Set(words.map(w=>w?.id).filter(Boolean));if(!ids.size)return null;
+    const ids=new Set(words.map(w=>w?.id).filter(Boolean));
+    if(!ids.size)return null;
     let best=null,bestOverlap=0;
     for(const entry of getHistory()){
       const ew=getHistoryWords(entry);
@@ -46,7 +50,7 @@
         return true;
       }
     }catch{}
-    try{if(typeof toast==='function')toast('This lesson cannot be retried because its words are no longer available.')}catch{}
+    try{if(typeof toast==='function')toast('This lesson cannot be retried because its words are unavailable.')}catch{}
     return false;
   }
 
@@ -63,9 +67,8 @@
       .kq1710-action-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
       .kq1710-action-row .kq1710-action{margin-top:0}
       .kq1710-action.secondary{background:transparent}
-      .kq1710-expand{width:100%;margin-top:10px;border:0;background:transparent;text-align:left;padding:0;color:inherit;cursor:pointer;font-weight:700}
       .kq1710-detail{margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1)}
-      .kq1710-detail[hidden]{display:none}
+      .kq1710-detail[hidden]{display:none!important}
       .kq1710-detail-stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
       .kq1710-detail-stats span{padding:6px 9px;border-radius:999px;background:rgba(37,99,235,.08);font-size:.82rem;font-weight:700}
       .kq1710-word-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}
@@ -75,7 +78,6 @@
       .kq1710-milestone{display:flex;gap:14px;align-items:center;margin:10px 4px 14px 50px;padding:13px 15px;border:2px solid rgba(234,179,8,.45);border-radius:16px;background:rgba(234,179,8,.07)}
       .kq1710-milestone strong{display:block}.kq1710-milestone p{margin:3px 0 0;opacity:.75}
       .kq1710-milestone .boss-badge{font-size:.72rem;font-weight:800;letter-spacing:.04em}
-      .kq1710-node.future{cursor:pointer}
       @media(max-width:560px){
         .kq1710-action-row{display:grid}.kq1710-action-row button{width:100%}
         .kq1710-word-list{grid-template-columns:1fr}
@@ -102,10 +104,13 @@
         let words=[];try{words=typeof chapterWords==='function'?(chapterWords(chapter)||[]):[]}catch{}
         detail.innerHTML=`<div class="kq1710-detail-stats"><span>${words.length} word${words.length===1?'':'s'} in this lesson</span></div><div class="kq1710-word-list">${words.map(w=>`<span class="kq1710-word"><b lang="ja">${esc(w.word)}</b><small>${esc(w.meaning)}</small></span>`).join('')}</div><div class="kq1710-action-row"><button type="button" class="primary kq1710-action" data-kq-v4="retry">Retry lesson</button></div>`;
       }
-    }else if(kind==='future'){
+    }else{
       let words=[],topic=null;
-      try{words=typeof chapterWords==='function'?(chapterWords(chapter)||[]):[];topic=words[0]&&typeof topicForWord==='function'?topicForWord(words[0]):null}catch{}
-      detail.innerHTML=`<div class="kq1710-preview"><strong>Coming next</strong>${topic?.title?`<p>${esc(topic.title)}${topic?.regionId?' · a new step in your Journey':''}</p>`:''}<p>${words.length?`You’ll meet ${words.slice(0,3).map(w=>`<b lang="ja">${esc(w.word)}</b> <span>${esc(w.meaning)}</span>`).join(' · ')}${words.length>3?' · and more':''}`:'The lesson content will be revealed when you reach it.'}</p><p><b>Why it’s next:</b> it builds on the Japanese you’ve just been learning.</p></div>`;
+      try{
+        words=typeof chapterWords==='function'?(chapterWords(chapter)||[]):[];
+        topic=words[0]&&typeof topicForWord==='function'?topicForWord(words[0]):null;
+      }catch{}
+      detail.innerHTML=`<div class="kq1710-preview"><strong>Coming next</strong>${topic?.title?`<p>${esc(topic.title)}</p>`:''}<p>${words.length?`You’ll meet ${words.slice(0,3).map(w=>`<b lang="ja">${esc(w.word)}</b> <span>${esc(w.meaning)}</span>`).join(' · ')}${words.length>3?' · and more':''}`:'The lesson content will be revealed when you reach it.'}</p><p><b>Why it’s next:</b> it builds naturally on the Japanese you’ve just learned.</p></div>`;
     }
     node.querySelector('.kq1710-card')?.appendChild(detail);
     return detail;
@@ -114,20 +119,39 @@
   function addLessonControls(node){
     const chapter=lessonNumber(node);if(chapter===null)return;
     const card=node.querySelector('.kq1710-card');if(!card)return;
-    const current=node.classList.contains('current'),past=node.classList.contains('done')&&!current,future=node.classList.contains('future');
-    if(node.querySelector('.kq1710-v4-controls'))return;
-    const controls=document.createElement('div');controls.className='kq1710-action-row kq1710-v4-controls';
-    if(current)controls.innerHTML='<button type="button" class="primary kq1710-action" data-kq-v4="continue">Continue lesson</button>';
-    else if(past)controls.innerHTML='<button type="button" class="kq1710-action secondary" data-kq-v4="expand">View lesson results</button><button type="button" class="primary kq1710-action" data-kq-v4="retry">Retry lesson</button>';
-    else if(future)controls.innerHTML='<button type="button" class="kq1710-action secondary" data-kq-v4="preview">Preview lesson</button>';
+
+    // v3 already renders its own current button. Remove it and replace it with
+    // one v4-controlled button so there is never a duplicate and v3's legacy
+    // click delegate cannot swallow the action.
+    node.querySelectorAll('[data-kq1710="continue"]').forEach(b=>b.remove());
+
+    const current=node.classList.contains('current');
+    const past=node.classList.contains('done')&&!current;
+    const future=node.classList.contains('future');
+
+    const existing=node.querySelector('.kq1710-v4-controls');
+    if(existing){
+      existing.hidden=false;
+      return;
+    }
+
+    const controls=document.createElement('div');
+    controls.className='kq1710-action-row kq1710-v4-controls';
+
+    if(current)
+      controls.innerHTML='<button type="button" class="primary kq1710-action" data-kq-v4="continue">Continue lesson</button>';
+    else if(past)
+      controls.innerHTML='<button type="button" class="kq1710-action secondary" data-kq-v4="expand">View lesson results</button><button type="button" class="primary kq1710-action" data-kq-v4="retry">Retry lesson</button>';
+    else if(future)
+      controls.innerHTML='<button type="button" class="kq1710-action secondary" data-kq-v4="preview">Preview lesson</button>';
     else return;
+
     card.appendChild(controls);
   }
 
   function insertMilestones(track){
     track.querySelectorAll('.kq1710-milestone').forEach(el=>el.remove());
     const lessons=[...track.querySelectorAll('.kq1710-node')].filter(n=>lessonNumber(n)!==null);
-    const used=new Set();
     lessons.forEach((node,i)=>{
       const chapter=lessonNumber(node);if(chapter===null)return;
       let label='',title='',copy='',icon='🏆';
@@ -145,8 +169,7 @@
       if(boundary){
         label='CHAPTER BOSS';title='Boss challenge ahead';copy='Complete the lessons above, then prove what you know with a topic challenge.';icon='⚔️';
       }
-      if(!label||used.has(`${chapter}:${label}`))return;
-      used.add(`${chapter}:${label}`);
+      if(!label)return;
       const m=document.createElement('div');m.className='kq1710-milestone';m.dataset.afterChapter=String(chapter);
       m.innerHTML=`<div aria-hidden="true" style="font-size:1.5rem">${icon}</div><div><span class="boss-badge">${label}</span><strong>${esc(title)}</strong><p>${esc(copy)}</p></div>`;
       node.after(m);
@@ -156,39 +179,71 @@
   function enhance(){
     const track=$('#journeyHistoryTrack');if(!track)return;
     addStyles();
+
     track.querySelectorAll('.kq1710-node').forEach(node=>{
       addLessonControls(node);
       const chapter=lessonNumber(node);if(chapter===null)return;
-      const current=node.classList.contains('current'),past=node.classList.contains('done')&&!current,future=node.classList.contains('future');
+      const current=node.classList.contains('current');
+      const past=node.classList.contains('done')&&!current;
+      const future=node.classList.contains('future');
       if(past&&!node.querySelector('.kq1710-detail'))makeDetails(node,chapter,'past');
       if(future&&!node.querySelector('.kq1710-detail'))makeDetails(node,chapter,'future');
     });
+
     insertMilestones(track);
   }
 
+  function continueLesson(){
+    try{
+      const btn=$('#continueJourney');
+      if(btn){btn.click();return true;}
+    }catch{}
+    try{
+      const chapter=Number((document.querySelector('.kq1710-node.current')?.dataset.kq1710Id||'').replace('lesson-',''));
+      if(Number.isFinite(chapter)&&typeof startTopicSession==='function'){
+        startTopicSession();
+        return true;
+      }
+    }catch{}
+    try{if(typeof toast==='function')toast('The next lesson is still loading. Please try again.')}catch{}
+    return false;
+  }
+
   function action(button){
-    const node=button.closest('.kq1710-node');const chapter=lessonNumber(node);if(chapter===null)return;
+    const node=button.closest('.kq1710-node');
+    const chapter=lessonNumber(node);if(chapter===null)return;
+    const track=$('#journeyHistoryTrack');
     const a=button.dataset.kqV4;
+
     if(a==='expand'||a==='preview'){
+      // Once the learner intentionally opens a timeline card, never let the
+      // base renderer auto-center the current lesson over their interaction.
+      if(track)track.dataset.kq1710UserScrolled='1';
       const kind=a==='expand'?'past':'future';
-      const d=makeDetails(node,chapter,kind);const opening=d.hidden;d.hidden=!opening;
+      const d=makeDetails(node,chapter,kind);
+      const opening=d.hidden;
+      d.hidden=!opening;
       button.textContent=opening?(kind==='past'?'Hide lesson results':'Hide preview'):(kind==='past'?'View lesson results':'Preview lesson');
-    }else if(a==='retry'){
-      retryChapter(chapter);
-    }else if(a==='details-dialog'){
+      return;
+    }
+    if(a==='retry'){retryChapter(chapter);return}
+    if(a==='details-dialog'){
       const info=historyDetails(chapter);
       if(info?.entry?.id&&typeof openHistoryEntryDialog==='function')openHistoryEntryDialog(info.entry.id);
-    }else if(a==='continue'){
-      $('#startNextMission')?.click();
+      return;
     }
+    if(a==='continue'){continueLesson()}
   }
 
   function installGuard(){
     if(window.__kqJourneyV4Guard)return;
     window.__kqJourneyV4Guard=true;
     document.addEventListener('click',e=>{
-      const b=e.target.closest?.('[data-kq-v4]');if(!b)return;
-      e.preventDefault();e.stopImmediatePropagation();action(b);
+      const b=e.target.closest?.('[data-kq-v4]');
+      if(!b)return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      action(b);
     },true);
   }
 

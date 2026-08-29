@@ -1,24 +1,21 @@
 'use strict';
 
-/* Kaishi Quest v11.17.3 — fail-safe Service Worker. */
-var VERSION = '11.17.3';
+/* Kaishi Quest Service Worker — 11.19.1. */
+var VERSION = '11.19.1';
 try {
   importScripts('./version.js');
   if (typeof APP_VERSION === 'string' && APP_VERSION.trim()) VERSION = APP_VERSION.trim();
-} catch (e) {
-  try { console.warn('[Kaishi SW] version.js failed; using fallback version', e); } catch (_) {}
-}
+} catch (e) {}
 
 var SHELL_CACHE = 'kaishi-shell-' + VERSION;
 var IMAGE_CACHE = 'kaishi-images-' + VERSION;
 var OFFLINE_CACHE = 'kaishi-offline-' + VERSION;
 var FORCE_OFFLINE = false;
-var MAX_RUNTIME_IMAGES = 350;
 
 function v(path) { return path + '?v=' + encodeURIComponent(VERSION); }
 
 var SHELL = [
-  './','./index.html',
+  './','./index.html',v('./version.js'),v('./journey-v3.js'),v('./journey-v4.js'),
   v('./styles.css'),v('./sentence-lab.css'),v('./engagement-layer.css'),
   v('./pronunciation-coach.css'),v('./bonsai-progress.css'),v('./vms.css'),
   v('./app.js'),v('./vms.js'),v('./cloud.js'),v('./reporting.js'),
@@ -29,11 +26,11 @@ var SHELL = [
   v('./pronunciation-coach.js'),v('./bonsai-progress.js'),v('./adaptive-learning.js'),
   v('./adaptive-reinforcement.js'),v('./campfire-recall.js'),v('./word-rain.js'),
   v('./battle-ui-patch.js'),
-  './data/japan-ready-v90.json','./data/sentence-lab.json',
-  './data/vocabulary.json','./data/kana.json','./data/manga-stories.json',
-  './data/conversations.json','./data/theatre-scenes.json','./data/grammar-path.json',
-  './data/kanji-components.json','./memory-scenes.json','./data/anki-content-v72.json',
-  './data/topics-v72.json','./data/learning-graph-v82.json','./visual-mnemonics.json',
+  './data/japan-ready-v90.json','./data/sentence-lab.json','./data/vocabulary.json',
+  './data/kana.json','./data/manga-stories.json','./data/conversations.json',
+  './data/theatre-scenes.json','./data/grammar-path.json','./data/kanji-components.json',
+  './memory-scenes.json','./data/anki-content-v72.json','./data/topics-v72.json',
+  './data/learning-graph-v82.json','./visual-mnemonics.json',
   './icons/icon-192.png','./icons/icon-512.png',
   v('./media/guides/teacher-guide.webp'),v('./media/guides/sensei/sensei-welcoming.webp'),
   v('./media/guides/sensei/sensei-explaining.webp'),v('./media/guides/sensei/sensei-celebrating.webp'),
@@ -49,9 +46,7 @@ self.addEventListener('install', function(event) {
   event.waitUntil((async function() {
     try {
       var cache = await caches.open(SHELL_CACHE);
-      await Promise.all(SHELL.map(function(url) {
-        return cache.add(url).catch(function() { return null; });
-      }));
+      await Promise.all(SHELL.map(function(url) { return cache.add(url).catch(function(){return null;}); }));
     } catch (e) {}
     try { await self.skipWaiting(); } catch (e) {}
   })());
@@ -74,8 +69,7 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('message', function(event) {
   try {
     if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
-    if (event.data && event.data.type === 'KAISHI_FORCE_OFFLINE')
-      FORCE_OFFLINE = Boolean(event.data.enabled);
+    if (event.data && event.data.type === 'KAISHI_FORCE_OFFLINE') FORCE_OFFLINE = Boolean(event.data.enabled);
   } catch (e) {}
 });
 
@@ -94,8 +88,7 @@ async function networkFirst(request) {
       if (response && response.ok) { try { await cache.put(request,response.clone()); } catch(e) {} }
       return response;
     } catch (e) {
-      return (await cache.match(request,{ignoreSearch:true})) ||
-             (await offlineMatch(request)) || fetch(request);
+      return (await cache.match(request,{ignoreSearch:true})) || (await offlineMatch(request)) || fetch(request);
     }
   } catch (e) { return fetch(request); }
 }
@@ -109,9 +102,7 @@ async function cacheImage(request) {
       try { await cache.put(request,response.clone()); } catch(e) {}
     }
     return response;
-  } catch (e) {
-    return (await offlineMatch(request)) || fetch(request);
-  }
+  } catch (e) { return (await offlineMatch(request)) || fetch(request); }
 }
 async function networkOffline(request) {
   try { return await fetch(request,{cache:'no-cache'}); }
@@ -127,9 +118,7 @@ self.addEventListener('fetch', function(event) {
       var offline = await offlineMatch(request);
       if (offline) return offline;
       try { var cached = await caches.match(request); if (cached) return cached; } catch(e) {}
-      return new Response('Kaishi is in forced offline mode.', {
-        status:503, headers:{'Content-Type':'text/plain; charset=utf-8'}
-      });
+      return new Response('Kaishi is in forced offline mode.', {status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});
     })());
     return;
   }
@@ -141,9 +130,7 @@ self.addEventListener('fetch', function(event) {
   if (url.pathname.endsWith('/version.json')) {
     event.respondWith(fetch(request,{cache:'no-store'}).catch(function() {
       return caches.match(request).then(function(r) {
-        return r || new Response(JSON.stringify({version:VERSION}), {
-          headers:{'Content-Type':'application/json'}
-        });
+        return r || new Response(JSON.stringify({version:VERSION}), {headers:{'Content-Type':'application/json'}});
       });
     }));
     return;
