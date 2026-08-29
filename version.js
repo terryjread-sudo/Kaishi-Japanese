@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.21.0';
+var APP_VERSION = '11.22.0';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -14,7 +14,8 @@ try {
  *   app.js      = learning engine / data / lesson execution
  *   journey.js = the ONLY Journey UI renderer
  *
- * The former journey-v3.js and journey-v4.js are intentionally not loaded.
+ * v11.22 keeps the stable Journey renderer from v11.21 and adds
+ * content-aware activity integration in the learning-session preview.
  */
 try {
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
