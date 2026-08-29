@@ -111,29 +111,81 @@
     return true;
   }
 
-  function timelineItems(){
+  function fullJourneyTimelineItems(){
+    // The old dailyJourneyRoute deliberately contains only today's/current lesson.
+    // That is useful for launching a lesson, but it is NOT the Journey timeline.
+    // Build the timeline from the persistent chapter curriculum instead.
+    const total=typeof wordChapterCount==='function'?Number(wordChapterCount()||0):0;
+    const current=typeof currentWordChapterIndex==='function'?Number(currentWordChapterIndex()||0):0;
+    const from=Math.max(0,current-3);
+    const to=Math.min(total,current+5); // current + four lessons ahead
     const r=route()||{steps:[],completed:[]};
-    const completed=new Set(r.completed||[]);
-    const steps=Array.isArray(r.steps)?r.steps:[];
-    let nextIndex=steps.findIndex(s=>!completed.has(s.id));
-    if(nextIndex<0) nextIndex=Math.max(0,steps.length-1);
-    // The Journey view is a window onto the route: three lessons/steps behind,
-    // the current point, and four ahead. Side quests occupy a normal position
-    // in that same route, so they naturally appear when they are inserted.
-    const from=Math.max(0,nextIndex-3),to=Math.min(steps.length,nextIndex+5);
-    const rows=steps.slice(from,to).map((s,i)=>{
-      const realIndex=from+i;
-      return {
-        type:s.kind==='activity'?'side':(s.retryOf?'retry':realIndex===nextIndex?'lesson':'future'),
-        id:s.id,icon:s.icon,title:s.title,detail:s.detail,done:completed.has(s.id),
-        current:realIndex===nextIndex&&!completed.has(s.id),future:realIndex>nextIndex&&!completed.has(s.id)
-      };
-    });
-    // If the current route has no enough completed lesson objects yet, retain a
-    // few completed history entries above it so the screen doesn't look empty.
-    if(from===0){
-      const past=history().slice(0,Math.min(3,3-rows.filter(x=>x.done).length)).reverse().map(entry=>({type:'past',id:`history-${entry.id}`,icon:'✓',title:entry.title||'Completed lesson',detail:'Lesson completed',done:true,date:entry.completedAt}));
-      return [...past,...rows];
+    const routeSteps=Array.isArray(r.steps)?r.steps:[];
+    const routeCompleted=new Set(Array.isArray(r.completed)?r.completed:[]);
+    const rows=[];
+
+    for(let chapter=from;chapter<to;chapter++){
+      let words=[];
+      let topic=null;
+      try{
+        words=typeof chapterWords==='function'?(chapterWords(chapter)||[]):[];
+        topic=typeof topicForWord==='function'&&words[0]?topicForWord(words[0]):null;
+      }catch{}
+      let stats={complete:false,percent:0};
+      try{stats=typeof chapterStats==='function'?(chapterStats(chapter)||stats):stats}catch{}
+      const isCurrent=chapter===current&&!stats.complete;
+      const complete=Boolean(stats.complete);
+      const title=`Lesson ${chapter+1}: ${words.slice(0,2).map(w=>w.meaning).filter(Boolean).join(' + ')||topic?.title||`Lesson ${chapter+1}`}`;
+      const detail=complete
+        ? `Completed • ${Number(stats.percent||100)}% lesson progress`
+        : isCurrent
+          ? `Current lesson • ${words.length} connected word${words.length===1?'':'s'}${topic?.title?` from ${topic.title}`:''}`
+          : `Upcoming lesson${topic?.title?` • ${topic.title}`:''}`;
+      rows.push({
+        type:isCurrent?'lesson':complete?'past':'future',
+        id:`lesson-${chapter}`,
+        chapter,
+        icon:topic?.icon||'📖',
+        title,detail,
+        done:complete,
+        current:isCurrent,
+        future:chapter>current,
+        locked:chapter>current
+      });
+
+      // Side quests and retries belong to the lesson they were inserted for.
+      // They are read from the live route so a newly-triggered quest appears
+      // immediately without creating a second Journey screen.
+      const lessonId=`lesson-${chapter}`;
+      routeSteps.filter(step=>{
+        const target=String(step.sideQuestFor||step.retryOf||'');
+        return target===lessonId;
+      }).forEach(step=>{
+        if(step.retryOf){
+          rows.push({type:'retry',id:step.id,chapter,icon:step.icon||'🔄',title:step.title||`Retry · Lesson ${chapter+1}`,detail:step.detail||'Return to the same lesson and try again.',done:routeCompleted.has(step.id),current:false,future:chapter>current});
+        }else if(step.kind==='activity'){
+          rows.push({type:'side',id:step.id,chapter,icon:step.icon||'⚔️',title:step.title||'Side Quest',detail:step.detail||'A challenge added to your Journey.',done:routeCompleted.has(step.id),current:chapter===current&&!complete&&!routeCompleted.has(step.id),future:chapter>current,required:Boolean(step.required)});
+        }
+      });
+    }
+
+    // If the learner is on the first lesson there is no history node to invent.
+    // Completed chapters above are the authoritative past; sessionHistory is
+    // deliberately not used to manufacture lessons that the curriculum says
+    // have not been completed.
+    return rows;
+  }
+
+  function timelineItems(){
+    const rows=fullJourneyTimelineItems();
+    if(!rows.length){
+      // Safe fallback for an early startup before vocabulary/chapter data exists.
+      const r=route()||{steps:[],completed:[]};
+      const completed=new Set(r.completed||[]);
+      return (r.steps||[]).slice(0,8).map(s=>({
+        type:s.kind==='activity'?'side':(s.retryOf?'retry':'lesson'),id:s.id,icon:s.icon,title:s.title,detail:s.detail,
+        done:completed.has(s.id),current:false,future:false,required:Boolean(s.required)
+      }));
     }
     return rows;
   }
