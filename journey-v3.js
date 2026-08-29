@@ -379,38 +379,57 @@
   function init(){
     normaliseLegacyHistory();
     installDashboardCampaignGuard();
-    observe();
     watchCheckpoint();
     hideRedundantJourneyControls();
-    const refresh=()=>{if($('#journey')?.classList.contains('active')){cleanJourneyCopy();hideRedundantJourneyControls();normaliseLegacyHistory();renderUnifiedTimeline();renameTimelineHeading();installTimelinePointerScroll();}};
-    document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission,[data-continue-journey]'))setTimeout(refresh,80);},{capture:true});
-    window.addEventListener('pageshow',refresh);
-    refresh();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-/* 11.16.9 canonical timeline */
-(() => {
-const q=s=>document.querySelector(s); const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c])); let busy=false;
-function collapse(){const r=q('#journey'),sec=r?.querySelector('.journey-section');if(!sec)return;sec.querySelectorAll(':scope > .eyebrow,:scope > h2,:scope > p,:scope > #journeyStats,:scope > #journeyUnlockNotice,:scope > .daily-route,:scope > .journey-path-ahead').forEach(e=>{e.hidden=true;e.setAttribute('aria-hidden','true')});const h=q('#journeyHistoryTimelineTitle');if(h)h.textContent='Your Journey';const e=h?.parentElement?.querySelector('.eyebrow');if(e)e.textContent='Past · Present · Future';const t=q('#journeyHistoryTimeline');if(t){t.hidden=false;t.style.display='block'}}
-function rows(){try{return typeof fullJourneyTimelineItems==='function'?fullJourneyTimelineItems():timelineItems()}catch{return[]}}
-function render(){const t=q('#journeyHistoryTrack');if(!t||busy)return;const a=rows();if(!a.length)return;busy=true;try{const ci=a.findIndex(x=>x.current);t.innerHTML='<div class="kq-timeline-spine" aria-hidden="true"></div>'+a.map((x,i)=>{const cls=['kq-timeline-item',x.done?'done':'',x.current?'current':'',x.future?'future':'',x.type==='side'?'side-quest':'',x.type==='retry'?'retry':''].filter(Boolean).join(' ');const lab=x.type==='past'?'Completed':x.type==='side'?(x.required?'Required side quest':'Optional side quest'):x.type==='retry'?'Retry':x.current?'Current lesson':'Coming up';const act=x.current&&!x.done?'<button type="button" class="primary kq-timeline-action" data-kq-action="continue">Continue</button>':x.type==='side'&&!x.done?'<button type="button" class="kq-timeline-action" data-kq-action="side">Start side quest</button>':'';return `<article class="${cls}" data-timeline-id="${esc(x.id)}"><div class="kq-timeline-marker">${esc(x.icon||'•')}</div><div class="kq-timeline-card"><span class="eyebrow">${lab}</span><strong>${esc(x.title||'Lesson')}</strong><p>${esc(x.detail||'')}</p>${x.type==='side'&&!x.done?`<small class="side-quest-required">${x.required?'Required before you continue':'A change of pace on your Journey'}</small>`:''}${act}</div></article>`}).join('');if(ci>=0&&!t.dataset.userScrolled)requestAnimationFrame(()=>{const e=t.querySelector('.current');if(e)t.scrollTop=Math.max(0,e.offsetTop-t.clientHeight*.34)})}finally{busy=false}}
-function bind(){collapse();render();const t=q('#journeyHistoryTrack');if(t&&!t.dataset.canonical){t.dataset.canonical='1';t.addEventListener('scroll',()=>t.dataset.userScrolled='1',{passive:true});t.addEventListener('click',e=>{const b=e.target.closest?.('[data-kq-action]');if(b){e.preventDefault();q('#startNextMission')?.click()}})}}
-function init(){bind();const r=q('#journey');if(r){new MutationObserver(()=>{if(!busy){clearTimeout(window.__kqCanonTimer);window.__kqCanonTimer=setTimeout(bind,50)}}).observe(r,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden']})}document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission,[data-continue-journey]'))setTimeout(bind,100)},true)}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 
-/* 11.16.9 canonical Journey timeline: one surface for past, present and future. */
+/* v11.17.0 — single canonical Journey renderer. Past, present and future use one surface. */
 (() => {
   const q=s=>document.querySelector(s);
-  const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
-  let busy=false;
-  function installStyle(){if(q('#kq-11169-style'))return;const st=document.createElement('style');st.id='kq-11169-style';st.textContent=`#journey > .journey-section > .eyebrow,#journey > .journey-section > h2,#journey > .journey-section > p,#journey > .journey-section > #journeyStats,#journey > .journey-section > #journeyUnlockNotice,#journey > .journey-section > .daily-route,#journey > .journey-section > .journey-path-ahead{display:none!important}#journeyHistoryTimeline{display:block!important;margin-top:0}#journeyHistoryTimeline .journey-history-timeline-heading{position:sticky;top:0;z-index:4;padding:10px 0 12px;background:var(--card-bg,#fff)}#journeyHistoryTrack{min-height:420px;max-height:min(72vh,760px)}.kq-timeline-action{margin-top:9px}`;document.head.appendChild(st)}
-  function collapse(){const r=q('#journey'),sec=r?.querySelector('.journey-section');if(!sec)return;sec.querySelectorAll(':scope > .eyebrow,:scope > h2,:scope > p,:scope > #journeyStats,:scope > #journeyUnlockNotice,:scope > .daily-route,:scope > .journey-path-ahead').forEach(e=>{e.hidden=true;e.setAttribute('aria-hidden','true')});const h=q('#journeyHistoryTimelineTitle');if(h)h.textContent='Your Journey';const e=h?.parentElement?.querySelector('.eyebrow');if(e)e.textContent='Past · Present · Future';const t=q('#journeyHistoryTimeline');if(t){t.hidden=false;t.style.display='block'}}
-  function getRows(){try{return typeof fullJourneyTimelineItems==='function'?fullJourneyTimelineItems():typeof timelineItems==='function'?timelineItems():[]}catch{return[]}}
-  function render(){const t=q('#journeyHistoryTrack');if(!t||busy)return;const rows=getRows();if(!rows.length)return;busy=true;try{const ci=rows.findIndex(x=>x.current);t.innerHTML='<div class="kq-timeline-spine" aria-hidden="true"></div>'+rows.map(x=>{const cls=['kq-timeline-item',x.done?'done':'',x.current?'current':'',x.future?'future':'',x.type==='side'?'side-quest':'',x.type==='retry'?'retry':''].filter(Boolean).join(' ');const label=x.type==='past'?'Completed':x.type==='side'?(x.required?'Required side quest':'Optional side quest'):x.type==='retry'?'Retry':x.current?'Current lesson':'Coming up';const action=x.current&&!x.done?'<button type="button" class="primary kq-timeline-action" data-kq-action="continue">Continue</button>':x.type==='side'&&!x.done?'<button type="button" class="kq-timeline-action" data-kq-action="side">Start side quest</button>':'';return `<article class="${cls}" data-timeline-id="${esc(x.id)}"><div class="kq-timeline-marker">${esc(x.icon||'•')}</div><div class="kq-timeline-card"><span class="eyebrow">${label}</span><strong>${esc(x.title||'Lesson')}</strong><p>${esc(x.detail||'')}</p>${x.type==='side'&&!x.done?`<small class="side-quest-required">${x.required?'Required before you continue':'A change of pace on your Journey'}</small>`:''}${action}</div></article>`}).join('');if(ci>=0&&!t.dataset.kqUserScrolled)requestAnimationFrame(()=>{const e=t.querySelector('.current');if(e)t.scrollTop=Math.max(0,e.offsetTop-t.clientHeight*.34)})}finally{busy=false}}
-  function bind(){installStyle();collapse();render();const t=q('#journeyHistoryTrack');if(t&&!t.dataset.kqCanonicalBound2){t.dataset.kqCanonicalBound2='1';t.addEventListener('scroll',()=>t.dataset.kqUserScrolled='1',{passive:true});t.addEventListener('click',e=>{const b=e.target.closest?.('[data-kq-action]');if(!b)return;e.preventDefault();q('#startNextMission')?.click()})}}
-  function init(){bind();const r=q('#journey');if(r)new MutationObserver(()=>{if(!busy){clearTimeout(window.__kq11169);window.__kq11169=setTimeout(bind,60)}}).observe(r,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden']});document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission,[data-continue-journey]'))setTimeout(bind,120)},true)}
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let rendering=false;
+  const count=()=>{try{return Number(typeof wordChapterCount==='function'?wordChapterCount():0)||0}catch{return 0}};
+  const current=()=>{try{return Math.max(0,Number(typeof currentWordChapterIndex==='function'?currentWordChapterIndex():0)||0)}catch{return 0}};
+  const words=i=>{try{return typeof chapterWords==='function'?(chapterWords(i)||[]):[]}catch{return []}};
+  const stats=i=>{try{return typeof chapterStats==='function'?(chapterStats(i)||{}):{}}catch{return {}}};
+  const topic=w=>{try{return typeof topicForWord==='function'&&w?topicForWord(w):null}catch{return null}};
+  function store(){try{const k=typeof profileStorageKey==='function'?profileStorageKey('kq-meta'):'kq-meta';return JSON.parse(localStorage.getItem(k)||'{}')}catch{return {}}}
+  function route(){return store().dailyJourneyRoute||{steps:[],completed:[]}}
+  function doneSet(){const r=route();return new Set(Array.isArray(r.completed)?r.completed:[])}
+  function lessonRows(){
+    const total=count(); if(!total)return [];
+    const cur=Math.min(current(),total-1), from=Math.max(0,cur-3), to=Math.min(total,cur+5), rows=[];
+    for(let i=from;i<to;i++){
+      const ws=words(i), st=stats(i), tp=topic(ws[0]);
+      const done=Boolean(st.complete||st.completed||st.isComplete||Number(st.percent)>=100), isCurrent=i===cur&&!done;
+      const names=ws.slice(0,2).map(w=>w?.meaning).filter(Boolean);
+      rows.push({type:done?'past':isCurrent?'current':'future',chapter:i,id:`lesson-${i}`,icon:tp?.icon||'📖',title:`Lesson ${i+1}${names.length?`: ${names.join(' + ')}`:''}`,detail:done?`Completed${st.percent!=null?` · ${Math.round(Number(st.percent)||100)}%`:''}`:isCurrent?`Current lesson${tp?.title?` · ${tp.title}`:''}`:`Upcoming${tp?.title?` · ${tp.title}`:''}`,done,current:isCurrent,future:i>cur});
+    }
+    return rows;
+  }
+  function sideRows(chapter,completed){
+    const r=route(),steps=Array.isArray(r.steps)?r.steps:[];
+    return steps.filter(s=>{
+      const target=String(s.sideQuestFor||s.retryOf||'');
+      return target===`lesson-${chapter}`||target===`journey-lesson-${chapter}`||Number(s.chapter??s.chapterIndex??-1)===chapter;
+    }).map(s=>({type:s.retryOf?'retry':'side',id:s.id,chapter,icon:s.icon||(s.retryOf?'🔄':'✨'),title:s.title||(s.retryOf?`Retry · Lesson ${chapter+1}`:'Side Quest'),detail:s.detail||(s.required?'Required before you continue':'A change of pace on your Journey'),done:completed.has(s.id),future:chapter>current(),required:Boolean(s.required)}));
+  }
+  function rows(){const completed=doneSet(),out=[];lessonRows().forEach(x=>{out.push(x);out.push(...sideRows(x.chapter,completed))});return out}
+  function style(){if(q('#kq1710-style'))return;const s=document.createElement('style');s.id='kq1710-style';s.textContent=`
+#journey > .journey-section > .eyebrow,#journey > .journey-section > h2,#journey > .journey-section > p,#journey > .journey-section > #journeyStats,#journey > .journey-section > #journeyUnlockNotice,#journey > .journey-section > .daily-route,#journey > .journey-section > .journey-path-ahead{display:none!important}
+#journeyHistoryTimeline{display:block!important;margin-top:0!important}
+#journeyHistoryTimeline .journey-history-timeline-heading{position:sticky;top:0;z-index:5;padding:10px 0 14px;background:var(--card-bg,#fff)}
+#journeyHistoryTrack{max-height:min(74vh,760px);min-height:500px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;cursor:grab}
+#journeyHistoryTrack.dragging{cursor:grabbing;user-select:none}
+.kq1710-timeline{position:relative;padding:12px 8px 36px}.kq1710-timeline:before{content:"";position:absolute;left:29px;top:32px;bottom:32px;width:3px;border-radius:3px;background:currentColor;opacity:.12}
+.kq1710-node{position:relative;display:flex;gap:14px;align-items:flex-start;padding:8px 4px 18px}.kq1710-marker{position:relative;z-index:1;flex:0 0 46px;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--card-bg,#fff);border:2px solid currentColor;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.kq1710-card{flex:1;border:1px solid rgba(0,0,0,.1);border-radius:16px;padding:13px 15px;background:var(--card-bg,#fff);box-shadow:0 2px 7px rgba(0,0,0,.04)}.kq1710-node.current .kq1710-card{border-width:2px}.kq1710-node.future{opacity:.7}.kq1710-node.side{margin-left:16px}.kq1710-node.side .kq1710-marker{border-style:dashed}.kq1710-card strong{display:block;font-size:1.02rem;margin:.18rem 0}.kq1710-card p{margin:.25rem 0 0;opacity:.78}.kq1710-label{font-size:.75rem;font-weight:700;letter-spacing:.03em;opacity:.78}.kq1710-action{margin-top:10px}.kq1710-note{display:block;margin-top:7px;font-size:.78rem;font-weight:700}
+`;document.head.appendChild(s)}
+  function hideOld(){const r=q('#journey');if(!r)return;style();r.querySelectorAll('.journey-section > .eyebrow,.journey-section > h2,.journey-section > p,.journey-section > #journeyStats,.journey-section > #journeyUnlockNotice,.journey-section > .daily-route,.journey-section > .journey-path-ahead').forEach(e=>{e.hidden=true;e.setAttribute('aria-hidden','true')});const t=q('#journeyHistoryTimeline');if(t){t.hidden=false;t.style.display='block'}const h=q('#journeyHistoryTimelineTitle');if(h)h.textContent='Your Journey';const e=h?.parentElement?.querySelector('.eyebrow');if(e)e.textContent='Past · Present · Future'}
+  function render(){const t=q('#journeyHistoryTrack');if(!t||rendering)return;const data=rows();if(!data.length)return;rendering=true;try{const html=data.map(x=>{const cls=['kq1710-node',x.done?'done':'',x.current?'current':'',x.future?'future':'',x.type==='side'?'side':''].filter(Boolean).join(' ');const label=x.type==='past'?'Completed':x.type==='current'?'Current lesson':x.type==='side'?(x.required?'Required side quest':'Optional side quest'):x.type==='retry'?'Retry':'Coming up';const action=x.current&&!x.done?'<button type="button" class="primary kq1710-action" data-kq1710="continue">Continue lesson</button>':x.type==='side'&&!x.done?'<button type="button" class="kq1710-action" data-kq1710="side">Start side quest</button>':x.type==='past'?'<small class="kq1710-note">Review available</small>':'';return `<article class="${cls}" data-kq1710-id="${esc(x.id)}"><div class="kq1710-marker">${x.done?'✓':esc(x.icon||'•')}</div><div class="kq1710-card"><span class="kq1710-label">${label}</span><strong>${esc(x.title)}</strong><p>${esc(x.detail)}</p>${action}</div></article>`}).join('');t.innerHTML=`<div class="kq1710-timeline">${html}</div>`;if(!t.dataset.kq1710UserScrolled){requestAnimationFrame(()=>{const c=t.querySelector('.current');if(c)t.scrollTop=Math.max(0,c.offsetTop-t.clientHeight*.28)})}}finally{rendering=false}}
+  function bind(){if(!q('#journey')?.classList.contains('active'))return;hideOld();render();const t=q('#journeyHistoryTrack');if(t&&!t.dataset.kq1710Bound){t.dataset.kq1710Bound='1';t.addEventListener('scroll',()=>t.dataset.kq1710UserScrolled='1',{passive:true});let down=false,y=0,top=0;t.addEventListener('pointerdown',e=>{if(e.button!==0)return;down=true;y=e.clientY;top=t.scrollTop;t.classList.add('dragging');t.setPointerCapture?.(e.pointerId)});t.addEventListener('pointermove',e=>{if(down)t.scrollTop=top-(e.clientY-y)});const end=e=>{down=false;t.classList.remove('dragging');try{t.releasePointerCapture?.(e.pointerId)}catch{}};t.addEventListener('pointerup',end);t.addEventListener('pointercancel',end);t.addEventListener('click',e=>{const b=e.target.closest?.('[data-kq1710]');if(!b)return;e.preventDefault();e.stopPropagation();q('#startNextMission')?.click()},{capture:true})}}
+  function init(){bind();const r=q('#journey');if(r)new MutationObserver(()=>{clearTimeout(window.__kq1710Timer);window.__kq1710Timer=setTimeout(bind,100)}).observe(r,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden']});document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission'))setTimeout(bind,150)},true);window.addEventListener('pageshow',bind)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-})();
-
 })();

@@ -1,2 +1,6 @@
-/* Kaishi Quest — single source of truth */
-(() => { const RELEASE_VERSION='11.16.9'; try { window.APP_VERSION=RELEASE_VERSION; window.KAISHI_VERSION=RELEASE_VERSION; } catch { try { window.APP_VERSION='11.16.9'; } catch {} } })();
+'use strict';
+/* Single source of truth for Kaishi Quest releases. */
+(function(){
+  var VERSION='11.17.0';
+  try { window.APP_VERSION=VERSION; window.KAISHI_VERSION=VERSION; } catch(e) {}
+})();
