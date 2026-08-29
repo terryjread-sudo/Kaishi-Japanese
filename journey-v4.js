@@ -1,271 +1,137 @@
 'use strict';
-/*
- Kaishi Quest Journey 11.19.1
- Journey interaction layer.
-
- Important stability rules:
- - journey-v3 owns the base timeline rendering.
- - this file adds interactions only once; it does NOT attach a second click
-   listener to the same buttons (that previously caused expand/close in one tap).
- - the old v3 current-lesson button is replaced by one v4 button so there is
-   exactly one Continue lesson CTA.
- - previewing a future lesson marks the timeline as user-scrolled, preventing
-   v3's automatic current-lesson centering from jumping the viewport.
-*/
+/* Kaishi Quest Journey 11.19.2 — stable Journey interaction layer. */
 (() => {
   const $=s=>document.querySelector(s);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const getHistory=()=>{try{return typeof historyEntries==='function'?historyEntries():[]}catch{return[]}};
+  const getWords=e=>{try{return typeof historyEntryWords==='function'?historyEntryWords(e):[]}catch{return[]}};
+  const getAccuracy=e=>{try{return typeof historyEntryAccuracy==='function'?historyEntryAccuracy(e):null}catch{return null}};
+  const lessonNumber=n=>{const m=String(n?.dataset?.kq1710Id||'').match(/^lesson-(\d+)$/);return m?Number(m[1]):null};
+  const chapterWordsSafe=c=>{try{return typeof chapterWords==='function'?(chapterWords(c)||[]):[]}catch{return[]}};
 
-  const getHistory=()=>{try{return typeof historyEntries==='function'?historyEntries():[]}catch{return []}};
-  const getHistoryWords=e=>{try{return typeof historyEntryWords==='function'?historyEntryWords(e):[]}catch{return []}};
-  const getHistoryAccuracy=e=>{try{return typeof historyEntryAccuracy==='function'?historyEntryAccuracy(e):null}catch{return null}};
-
-  function chapterHistory(chapter){
-    let words=[];try{words=typeof chapterWords==='function'?(chapterWords(Number(chapter))||[]):[]}catch{}
-    const ids=new Set(words.map(w=>w?.id).filter(Boolean));
+  function historyForChapter(chapter){
+    const words=chapterWordsSafe(chapter), ids=new Set(words.map(w=>w?.id).filter(Boolean));
     if(!ids.size)return null;
-    let best=null,bestOverlap=0;
-    for(const entry of getHistory()){
-      const ew=getHistoryWords(entry);
-      const overlap=ew.reduce((n,w)=>n+(ids.has(w.id)?1:0),0);
-      if(overlap>bestOverlap||(overlap===bestOverlap&&overlap&&Number(entry.completedAt||0)>Number(best?.completedAt||0))){
-        best=entry;bestOverlap=overlap;
-      }
+    let best=null,score=0;
+    for(const e of getHistory()){
+      const overlap=getWords(e).reduce((n,w)=>n+(ids.has(w?.id)?1:0),0);
+      if(overlap>score || (overlap===score&&overlap&&Number(e.completedAt||0)>Number(best?.completedAt||0))){best=e;score=overlap}
     }
     return best;
   }
 
-  function retryChapter(chapter){
-    const entry=chapterHistory(chapter);
-    if(entry?.id&&typeof redoHistoryEntry==='function'){
-      redoHistoryEntry(entry.id);
-      return true;
-    }
-    try{
-      const words=typeof chapterWords==='function'?(chapterWords(Number(chapter))||[]):[];
-      const ids=words.map(w=>w?.id).filter(Boolean);
-      if(ids.length&&typeof makeTargetedMasterySession==='function'){
-        activityReturnScreen='journey';
-        makeTargetedMasterySession(ids,'retain',`Retry · Lesson ${Number(chapter)+1}`);
-        return true;
-      }
-    }catch{}
-    try{if(typeof toast==='function')toast('This lesson cannot be retried because its words are unavailable.')}catch{}
-    return false;
+  function restorePosition(track,top,pageY){
+    if(!track)return;
+    const restore=()=>{
+      try{track.scrollTop=top}catch{}
+      try{window.scrollTo({top:pageY,behavior:'auto'})}catch{}
+    };
+    [0,1,2,4,8,16,32,64,120,250,500].forEach(ms=>setTimeout(restore,ms));
   }
 
-  function historyDetails(chapter){
-    const entry=chapterHistory(chapter);
-    if(!entry)return null;
-    return {entry,words:getHistoryWords(entry),accuracy:getHistoryAccuracy(entry)};
+  function openPanel(kind,node,chapter){
+    document.querySelectorAll('.kq1710-panel-backdrop').forEach(x=>x.remove());
+    const track=$('#journeyHistoryTrack'), top=track?.scrollTop||0, pageY=window.scrollY||window.pageYOffset||0;
+    if(track)track.dataset.kq1710UserInteracting='1';
+    const panel=document.createElement('div');
+    panel.className='kq1710-panel-backdrop';
+    panel.innerHTML=`<section class="kq1710-panel" role="dialog" aria-modal="true" aria-labelledby="kq1710PanelTitle"><button class="kq1710-panel-close" type="button" aria-label="Close">×</button><span class="eyebrow">${kind==='past'?'Lesson results':'Upcoming lesson'}</span><h3 id="kq1710PanelTitle"></h3><div class="kq1710-panel-body"></div></section>`;
+    document.body.appendChild(panel);
+    const title=panel.querySelector('#kq1710PanelTitle'), body=panel.querySelector('.kq1710-panel-body');
+    title.textContent=node?.querySelector('.kq-timeline-card strong,.kq1710-card strong')?.textContent||`Lesson ${chapter+1}`;
+    if(kind==='past'){
+      const entry=historyForChapter(chapter), words=entry?getWords(entry):chapterWordsSafe(chapter), acc=entry?getAccuracy(entry):null;
+      body.innerHTML=`<div class="kq1710-detail-stats"><span>${words.length} word${words.length===1?'':'s'}</span>${acc!==null&&acc!==undefined?`<span>${esc(acc)}% accuracy</span>`:''}</div><div class="kq1710-word-list">${words.map(w=>`<div class="kq1710-word"><b lang="ja">${esc(w.word)}</b><small>${esc(w.meaning)}</small></div>`).join('')||'<p class="muted">No word-level results are available for this lesson.</p>'}</div><div class="kq1710-action-row"><button type="button" class="primary" data-kq-panel="retry">Retry lesson</button>${entry?.id?'<button type="button" data-kq-panel="full">Open full results</button>':''}</div>`;
+      panel.querySelector('[data-kq-panel="retry"]')?.addEventListener('click',()=>{if(entry?.id&&typeof redoHistoryEntry==='function'){redoHistoryEntry(entry.id)}else{try{const ids=words.map(w=>w?.id).filter(Boolean);if(ids.length&&typeof makeTargetedMasterySession==='function'){activityReturnScreen='journey';makeTargetedMasterySession(ids,'retain',`Retry · Lesson ${chapter+1}`)}}catch{}}});
+      panel.querySelector('[data-kq-panel="full"]')?.addEventListener('click',()=>{if(entry?.id&&typeof openHistoryEntryDialog==='function')openHistoryEntryDialog(entry.id)});
+    }else{
+      const words=chapterWordsSafe(chapter); let topic=null;try{topic=words[0]&&typeof topicForWord==='function'?topicForWord(words[0]):null}catch{}
+      body.innerHTML=`<p><b>What you’ll learn:</b> ${words.slice(0,4).map(w=>`<b lang="ja">${esc(w.word)}</b> ${esc(w.meaning)}`).join(' · ')||'The lesson content will be revealed when you reach it.'}</p>${topic?.title?`<p><b>Topic:</b> ${esc(topic.title)}</p>`:''}<p><b>Why it’s next:</b> it builds on the Japanese you’ve just learned.</p>`;
+    }
+    const close=()=>{panel.remove();restorePosition(track,top,pageY)};
+    panel.querySelector('.kq1710-panel-close').addEventListener('click',close);
+    panel.addEventListener('click',e=>{if(e.target===panel)close()});
+    restorePosition(track,top,pageY);
   }
 
   function addStyles(){
     if($('#kqJourneyV4Styles'))return;
-    const s=document.createElement('style');s.id='kqJourneyV4Styles';
-    s.textContent=`
-      .kq1710-action-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-      .kq1710-action-row .kq1710-action{margin-top:0}
-      .kq1710-action.secondary{background:transparent}
-      .kq1710-detail{margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1)}
-      .kq1710-detail[hidden]{display:none!important}
-      .kq1710-detail-stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-      .kq1710-detail-stats span{padding:6px 9px;border-radius:999px;background:rgba(37,99,235,.08);font-size:.82rem;font-weight:700}
-      .kq1710-word-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}
-      .kq1710-word{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.035)}
-      .kq1710-word small{opacity:.7;text-align:right}
-      .kq1710-preview{font-size:.9rem}
-      .kq1710-milestone{display:flex;gap:14px;align-items:center;margin:10px 4px 14px 50px;padding:13px 15px;border:2px solid rgba(234,179,8,.45);border-radius:16px;background:rgba(234,179,8,.07)}
-      .kq1710-milestone strong{display:block}.kq1710-milestone p{margin:3px 0 0;opacity:.75}
-      .kq1710-milestone .boss-badge{font-size:.72rem;font-weight:800;letter-spacing:.04em}
-      @media(max-width:560px){
-        .kq1710-action-row{display:grid}.kq1710-action-row button{width:100%}
-        .kq1710-word-list{grid-template-columns:1fr}
-        .kq1710-milestone{margin-left:48px}
-      }
-    `;
-    document.head.appendChild(s);
+    const s=document.createElement('style');s.id='kqJourneyV4Styles';s.textContent=`
+      .kq1710-action-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+      .kq1710-panel-backdrop{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.42);display:flex;align-items:flex-end;justify-content:center;padding:18px}
+      .kq1710-panel{width:min(680px,100%);max-height:min(78vh,720px);overflow:auto;background:#fff;border-radius:24px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative}
+      .kq1710-panel-close{position:absolute;right:14px;top:12px;border:0;background:transparent;font-size:28px;line-height:1;cursor:pointer}
+      .kq1710-panel h3{margin:6px 42px 14px 0}.kq1710-detail-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.kq1710-detail-stats span{padding:6px 10px;border-radius:999px;background:rgba(37,99,235,.08);font-weight:700;font-size:.85rem}
+      .kq1710-word-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.kq1710-word{display:flex;justify-content:space-between;gap:8px;padding:9px 10px;border-radius:10px;background:rgba(0,0,0,.04)}.kq1710-word small{opacity:.7;text-align:right}
+      @media(max-width:560px){.kq1710-word-list{grid-template-columns:1fr}.kq1710-panel-backdrop{padding:10px}.kq1710-panel{border-radius:20px}}
+    `;document.head.appendChild(s);
   }
 
-  function lessonNumber(node){
-    const m=String(node?.dataset.kq1710Id||'').match(/^lesson-(\d+)$/);
-    return m?Number(m[1]):null;
-  }
-
-  function makeDetails(node,chapter,kind){
-    const old=node.querySelector('.kq1710-detail');if(old)return old;
-    const detail=document.createElement('div');detail.className='kq1710-detail';detail.hidden=true;
-    if(kind==='past'){
-      const info=historyDetails(chapter);
-      if(info){
-        const {words,accuracy}=info;
-        detail.innerHTML=`<div class="kq1710-detail-stats"><span>${words.length} word${words.length===1?'':'s'}</span>${accuracy!==null&&accuracy!==undefined?`<span>${esc(accuracy)}% accuracy</span>`:''}</div><div class="kq1710-word-list">${words.length?words.map(w=>`<span class="kq1710-word"><b lang="ja">${esc(w.word)}</b><small>${esc(w.meaning)}</small></span>`).join(''):'<p class="muted">The original words are no longer available.</p>'}</div><div class="kq1710-action-row"><button type="button" class="kq1710-action secondary" data-kq-v4="details-dialog">Open full results</button><button type="button" class="primary kq1710-action" data-kq-v4="retry">Retry lesson</button></div>`;
-      }else{
-        let words=[];try{words=typeof chapterWords==='function'?(chapterWords(chapter)||[]):[]}catch{}
-        detail.innerHTML=`<div class="kq1710-detail-stats"><span>${words.length} word${words.length===1?'':'s'} in this lesson</span></div><div class="kq1710-word-list">${words.map(w=>`<span class="kq1710-word"><b lang="ja">${esc(w.word)}</b><small>${esc(w.meaning)}</small></span>`).join('')}</div><div class="kq1710-action-row"><button type="button" class="primary kq1710-action" data-kq-v4="retry">Retry lesson</button></div>`;
-      }
-    }else{
-      let words=[],topic=null;
-      try{
-        words=typeof chapterWords==='function'?(chapterWords(chapter)||[]):[];
-        topic=words[0]&&typeof topicForWord==='function'?topicForWord(words[0]):null;
-      }catch{}
-      detail.innerHTML=`<div class="kq1710-preview"><strong>Coming next</strong>${topic?.title?`<p>${esc(topic.title)}</p>`:''}<p>${words.length?`You’ll meet ${words.slice(0,3).map(w=>`<b lang="ja">${esc(w.word)}</b> <span>${esc(w.meaning)}</span>`).join(' · ')}${words.length>3?' · and more':''}`:'The lesson content will be revealed when you reach it.'}</p><p><b>Why it’s next:</b> it builds naturally on the Japanese you’ve just learned.</p></div>`;
-    }
-    node.querySelector('.kq1710-card')?.appendChild(detail);
-    return detail;
-  }
-
-  function addLessonControls(node){
-    const chapter=lessonNumber(node);if(chapter===null)return;
-    const card=node.querySelector('.kq1710-card');if(!card)return;
-
-    // v3 already renders its own current button. Remove it and replace it with
-    // one v4-controlled button so there is never a duplicate and v3's legacy
-    // click delegate cannot swallow the action.
-    node.querySelectorAll('[data-kq1710="continue"]').forEach(b=>b.remove());
-
-    const current=node.classList.contains('current');
-    const past=node.classList.contains('done')&&!current;
-    const future=node.classList.contains('future');
-
-    const existing=node.querySelector('.kq1710-v4-controls');
-    if(existing){
-      existing.hidden=false;
-      return;
-    }
-
-    const controls=document.createElement('div');
-    controls.className='kq1710-action-row kq1710-v4-controls';
-
-    if(current)
-      controls.innerHTML='<button type="button" class="primary kq1710-action" data-kq-v4="continue">Continue lesson</button>';
-    else if(past)
-      controls.innerHTML='<button type="button" class="kq1710-action secondary" data-kq-v4="expand">View lesson results</button><button type="button" class="primary kq1710-action" data-kq-v4="retry">Retry lesson</button>';
-    else if(future)
-      controls.innerHTML='<button type="button" class="kq1710-action secondary" data-kq-v4="preview">Preview lesson</button>';
-    else return;
-
-    card.appendChild(controls);
-  }
-
-  function insertMilestones(track){
-    track.querySelectorAll('.kq1710-milestone').forEach(el=>el.remove());
-    const lessons=[...track.querySelectorAll('.kq1710-node')].filter(n=>lessonNumber(n)!==null);
-    lessons.forEach((node,i)=>{
-      const chapter=lessonNumber(node);if(chapter===null)return;
-      let label='',title='',copy='',icon='🏆';
-      if((chapter+1)%5===0){
-        label='MILESTONE';title=`${chapter+1} lessons on your Journey`;copy='You’ve reached a meaningful checkpoint. Keep the rhythm going.';
-      }
-      const next=lessons[i+1];const nextChapter=lessonNumber(next);let boundary=false;
-      try{
-        if(nextChapter!==null){
-          const a=chapterWords(chapter)||[],b=chapterWords(nextChapter)||[];
-          const ta=a[0]&&topicForWord(a[0])?.id,tb=b[0]&&topicForWord(b[0])?.id;
-          boundary=Boolean(ta&&tb&&ta!==tb);
-        }
-      }catch{}
-      if(boundary){
-        label='CHAPTER BOSS';title='Boss challenge ahead';copy='Complete the lessons above, then prove what you know with a topic challenge.';icon='⚔️';
-      }
-      if(!label)return;
-      const m=document.createElement('div');m.className='kq1710-milestone';m.dataset.afterChapter=String(chapter);
-      m.innerHTML=`<div aria-hidden="true" style="font-size:1.5rem">${icon}</div><div><span class="boss-badge">${label}</span><strong>${esc(title)}</strong><p>${esc(copy)}</p></div>`;
-      node.after(m);
-    });
-  }
-
-  function enhance(){
-    const track=$('#journeyHistoryTrack');if(!track)return;
-    addStyles();
-
-    track.querySelectorAll('.kq1710-node').forEach(node=>{
-      addLessonControls(node);
-      const chapter=lessonNumber(node);if(chapter===null)return;
-      const current=node.classList.contains('current');
-      const past=node.classList.contains('done')&&!current;
-      const future=node.classList.contains('future');
-      if(past&&!node.querySelector('.kq1710-detail'))makeDetails(node,chapter,'past');
-      if(future&&!node.querySelector('.kq1710-detail'))makeDetails(node,chapter,'future');
-    });
-
-    insertMilestones(track);
-  }
+  function currentLesson(){return document.querySelector('.kq1710-node.current')}
 
   function continueLesson(){
+    const node=currentLesson();
+    let topicId=null;try{const c=lessonNumber(node),w=chapterWordsSafe(c);topicId=w[0]&&typeof topicForWord==='function'?topicForWord(w[0])?.id:null}catch{}
     try{
-      const btn=$('#continueJourney');
-      if(btn){btn.click();return true;}
-    }catch{}
-    try{
-      const chapter=Number((document.querySelector('.kq1710-node.current')?.dataset.kq1710Id||'').replace('lesson-',''));
-      if(Number.isFinite(chapter)&&typeof startTopicSession==='function'){
-        startTopicSession();
+      if(typeof startTopicSession==='function'){
+        startTopicSession(topicId||undefined);
         return true;
       }
+    }catch(e){console.error('Journey continue failed',e)}
+    try{
+      const legacy=$('#continueJourney');
+      if(legacy){legacy.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:window}));return true}
     }catch{}
-    try{if(typeof toast==='function')toast('The next lesson is still loading. Please try again.')}catch{}
+    try{if(typeof toast==='function')toast('The lesson is still loading. Please try again.')}catch{}
     return false;
   }
 
-  function action(button){
-    const node=button.closest('.kq1710-node');
-    const chapter=lessonNumber(node);if(chapter===null)return;
-    const track=$('#journeyHistoryTrack');
-    const a=button.dataset.kqV4;
-
-    if(a==='expand'||a==='preview'){
-      // Once the learner intentionally opens a timeline card, never let the
-      // base renderer auto-center the current lesson over their interaction.
-      if(track)track.dataset.kq1710UserScrolled='1';
-      const kind=a==='expand'?'past':'future';
-      const d=makeDetails(node,chapter,kind);
-      const opening=d.hidden;
-      d.hidden=!opening;
-      button.textContent=opening?(kind==='past'?'Hide lesson results':'Hide preview'):(kind==='past'?'View lesson results':'Preview lesson');
-      return;
-    }
-    if(a==='retry'){retryChapter(chapter);return}
-    if(a==='details-dialog'){
-      const info=historyDetails(chapter);
-      if(info?.entry?.id&&typeof openHistoryEntryDialog==='function')openHistoryEntryDialog(info.entry.id);
-      return;
-    }
-    if(a==='continue'){continueLesson()}
-  }
-
-  function installGuard(){
-    if(window.__kqJourneyV4Guard)return;
-    window.__kqJourneyV4Guard=true;
-    document.addEventListener('click',e=>{
-      const b=e.target.closest?.('[data-kq-v4]');
-      if(!b)return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      action(b);
-    },true);
-  }
-
-  function observeTrack(){
-    const track=$('#journeyHistoryTrack');if(!track||track.dataset.kqV4Observed)return;
-    track.dataset.kqV4Observed='1';
-    let enhancing=false;
-    const obs=new MutationObserver(mutations=>{
-      if(enhancing)return;
-      const relevant=mutations.some(m=>m.type==='childList'&&[...m.addedNodes].some(n=>n.nodeType===1&&!n.classList?.contains('kq1710-detail')&&!n.classList?.contains('kq1710-action-row')&&!n.classList?.contains('kq1710-milestone')));
-      if(!relevant)return;
-      enhancing=true;
-      requestAnimationFrame(()=>{try{enhance()}finally{enhancing=false}});
+  function ensureControls(){
+    const track=$('#journeyHistoryTrack');if(!track)return;
+    // Do not append expansion content into the track: the legacy renderer watches
+    // that subtree and will immediately rebuild it. Controls are lightweight and
+    // are safe to add once; delegated handling below owns their clicks.
+    track.querySelectorAll('.kq1710-v4-controls').forEach(x=>x.remove());
+    track.querySelectorAll('.kq1710-node').forEach(node=>{
+      const chapter=lessonNumber(node);if(chapter===null)return;
+      const card=node.querySelector('.kq1710-card,.kq-timeline-card');if(!card)return;
+      const current=node.classList.contains('current'), past=node.classList.contains('done')&&!current, future=node.classList.contains('future');
+      const row=document.createElement('div');row.className='kq1710-action-row kq1710-v4-controls';
+      if(current)row.innerHTML='<button type="button" class="primary" data-kq-v4="continue">Continue lesson</button>';
+      else if(past)row.innerHTML='<button type="button" data-kq-v4="results">View lesson results</button><button type="button" class="primary" data-kq-v4="retry">Retry lesson</button>';
+      else if(future)row.innerHTML='<button type="button" data-kq-v4="preview">Preview lesson</button>';
+      else return;
+      card.appendChild(row);
     });
-    obs.observe(track,{childList:true});
   }
 
-  function init(){
-    installGuard();
-    const run=()=>{enhance();observeTrack()};
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,0),{once:true});
-    else setTimeout(run,0);
+  function handle(button){
+    const node=button.closest('.kq1710-node'), chapter=lessonNumber(node);if(chapter===null)return;
+    const track=$('#journeyHistoryTrack'), top=track?.scrollTop||0, pageY=window.scrollY||window.pageYOffset||0;
+    if(track){track.dataset.kqAutoCenter='1';track.dataset.kq1710UserInteracting='1'}
+    if(button.dataset.kqV4==='continue'){continueLesson();restorePosition(track,top,pageY);return}
+    if(button.dataset.kqV4==='retry'){
+      const entry=historyForChapter(chapter);if(entry?.id&&typeof redoHistoryEntry==='function')redoHistoryEntry(entry.id);else{try{const ids=chapterWordsSafe(chapter).map(w=>w?.id).filter(Boolean);if(ids.length&&typeof makeTargetedMasterySession==='function'){activityReturnScreen='journey';makeTargetedMasterySession(ids,'retain',`Retry · Lesson ${chapter+1}`)}}catch{}}
+      return;
+    }
+    if(button.dataset.kqV4==='results'){openPanel('past',node,chapter);return}
+    if(button.dataset.kqV4==='preview'){openPanel('future',node,chapter);return}
   }
-  init();
+
+  function install(){
+    addStyles();
+    if(window.__kqJourneyV4Installed)return;window.__kqJourneyV4Installed=true;
+    document.addEventListener('click',e=>{
+      const b=e.target.closest?.('[data-kq-v4]');if(!b)return;
+      e.preventDefault();e.stopImmediatePropagation();handle(b);
+    },true);
+    const run=()=>{try{ensureControls()}catch(e){console.error('Journey controls failed',e)}};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,0),{once:true});else setTimeout(run,0);
+    const target=$('#journeyHistoryTrack');
+    if(target){
+      const obs=new MutationObserver(()=>{setTimeout(run,0)});
+      obs.observe(target,{childList:true,subtree:false});
+    }
+  }
+  install();
 })();
