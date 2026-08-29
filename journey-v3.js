@@ -87,11 +87,39 @@
   function timelineItems(){
     const r=route()||{steps:[],completed:[]};
     const completed=new Set(r.completed||[]);
-    const past=history().slice(0,3).map(entry=>({type:'past',id:`history-${entry.id}`,icon:'✓',title:entry.title||'Completed lesson',detail:`${(entry.wordIds||[]).length} words recorded · ${entry.attempts||0} tested answers${entry.attempts?` · ${Math.round((entry.correct||0)/entry.attempts*100)}%`:''}`,done:true,date:entry.completedAt}));
-    const nextIndex=r.steps.findIndex(s=>!completed.has(s.id));
-    const routeRows=r.steps.map((s,i)=>({type:s.kind==='activity'?'side':(s.retryOf?'retry':i===nextIndex?'lesson':'future'),id:s.id,icon:s.icon,title:s.title,detail:s.detail,done:completed.has(s.id),current:i===nextIndex&&!completed.has(s.id),future:i>nextIndex&&!completed.has(s.id)}));
-    const seen=new Set();
-    return [...past,...routeRows].filter(x=>{if(seen.has(x.id))return false;seen.add(x.id);return true}).slice(0,15);
+    const steps=Array.isArray(r.steps)?r.steps:[];
+    let nextIndex=steps.findIndex(s=>!completed.has(s.id));
+    if(nextIndex<0) nextIndex=Math.max(0,steps.length-1);
+    // The Journey view is a window onto the route: three lessons/steps behind,
+    // the current point, and four ahead. Side quests occupy a normal position
+    // in that same route, so they naturally appear when they are inserted.
+    const from=Math.max(0,nextIndex-3),to=Math.min(steps.length,nextIndex+5);
+    const rows=steps.slice(from,to).map((s,i)=>{
+      const realIndex=from+i;
+      return {
+        type:s.kind==='activity'?'side':(s.retryOf?'retry':realIndex===nextIndex?'lesson':'future'),
+        id:s.id,icon:s.icon,title:s.title,detail:s.detail,done:completed.has(s.id),
+        current:realIndex===nextIndex&&!completed.has(s.id),future:realIndex>nextIndex&&!completed.has(s.id)
+      };
+    });
+    // If the current route has no enough completed lesson objects yet, retain a
+    // few completed history entries above it so the screen doesn't look empty.
+    if(from===0){
+      const past=history().slice(0,Math.min(3,3-rows.filter(x=>x.done).length)).reverse().map(entry=>({type:'past',id:`history-${entry.id}`,icon:'✓',title:entry.title||'Completed lesson',detail:'Lesson completed',done:true,date:entry.completedAt}));
+      return [...past,...rows];
+    }
+    return rows;
+  }
+
+  function renameTimelineHeading(){
+    const track=$('#journeyHistoryTrack');
+    const section=track?.closest('section,article,div');
+    const roots=[section,$('#journeyHistoryTimeline'),$('#journey')].filter(Boolean);
+    for(const root of roots){
+      root.querySelectorAll('h1,h2,h3,h4,.eyebrow,strong').forEach(el=>{
+        if(/your recent lessons|recent lessons/i.test(el.textContent||''))el.textContent='Your Journey';
+      });
+    }
   }
 
   let renderingTimeline=false;
@@ -160,6 +188,7 @@
           hideRedundantJourneyControls();
           normaliseLegacyHistory();
           renderUnifiedTimeline();
+          renameTimelineHeading();
         },30);
       }
     });
@@ -193,7 +222,7 @@
     observe();
     watchCheckpoint();
     hideRedundantJourneyControls();
-    const refresh=()=>{if($('#journey')?.classList.contains('active')){cleanJourneyCopy();hideRedundantJourneyControls();normaliseLegacyHistory();renderUnifiedTimeline();}};
+    const refresh=()=>{if($('#journey')?.classList.contains('active')){cleanJourneyCopy();hideRedundantJourneyControls();normaliseLegacyHistory();renderUnifiedTimeline();renameTimelineHeading();}};
     document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission,[data-continue-journey]'))setTimeout(refresh,80);},{capture:true});
     window.addEventListener('pageshow',refresh);
     refresh();

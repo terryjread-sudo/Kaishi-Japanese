@@ -1,12 +1,11 @@
 {
-  "version": "11.16.4",
-  "released": "2026-08-29",
-  "title": "Journey stability & Japan Ready audio",
-  "changes": [
-    "Fixed a Journey rendering loop that could freeze or crash the app when Continue Journey was pressed.",
-    "Stopped the Journey timeline observer from reacting to its own DOM updates.",
-    "Made Journey storage use the app's profile storage key, including admin/test mode.",
-    "Made Japan Ready cheat-sheet speech more reliable on Android/Chrome by handling delayed voices and the cancel/resume speech race.",
-    "Japan Ready remains a separate path."
+  "version":"11.16.5",
+  "title":"Journey timeline & Japan Ready audio fix",
+  "changes":[
+    "Renamed the Journey timeline heading from Recent Lessons to Your Journey.",
+    "Shows three route steps behind and four ahead of the current point.",
+    "Side quests are inserted into the same timeline when triggered, followed by the retry lesson.",
+    "Japan Ready cheat-sheet audio now speaks synchronously from the user gesture and extracts Japanese text from the actual cheat-sheet control/card.",
+    "Keeps Japan Ready separate from the Journey path."
   ]
 }

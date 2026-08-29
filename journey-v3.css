@@ -21,3 +21,16 @@
 .side-quest-required{display:inline-block;margin-top:6px;font-weight:800;font-size:.8rem}
 .kq-v3-sidequest-note{margin-top:14px;padding:14px;border-radius:14px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2)}
 @media (min-width:760px){#journeyHistoryTrack{max-height:720px;padding-right:18px}.kq-timeline-item{grid-template-columns:64px minmax(0,760px);justify-content:center}.kq-timeline-marker{width:46px;height:46px}.kq-timeline-spine{left:calc(50% - 380px + 26px)}}
+
+
+/* 11.16.5: Journey timeline window */
+#journeyHistoryTimeline{overflow:hidden}
+#journeyHistoryTrack{position:relative;max-height:min(72vh,760px);overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;touch-action:pan-y;cursor:default;padding:28px 14px 36px 42px}
+#journeyHistoryTrack::-webkit-scrollbar{width:9px}
+#journeyHistoryTrack .kq-timeline-item{position:relative;margin:0 0 18px 0;transition:transform .18s ease,opacity .18s ease}
+#journeyHistoryTrack .kq-timeline-item.future{opacity:.72}
+#journeyHistoryTrack .kq-timeline-item.current{transform:scale(1.015)}
+#journeyHistoryTrack .kq-timeline-item.side-quest .kq-timeline-card{border-style:dashed}
+#journeyHistoryTrack .kq-timeline-item.retry .kq-timeline-card{border-style:dotted}
+#journeyHistoryTrack .kq-timeline-card{position:relative}
+#journeyHistoryTrack .side-quest-required{display:block;margin-top:7px;font-weight:700}
