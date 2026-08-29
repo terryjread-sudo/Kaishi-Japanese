@@ -1,211 +1,158 @@
 'use strict';
 
-// The version number is defined once, in version.js, and pulled in here so
-// it never has to be edited in this file directly.
-importScripts('./version.js');
-const VERSION=APP_VERSION;
-const SHELL_CACHE=`kaishi-shell-${VERSION}`;
-const IMAGE_CACHE=`kaishi-images-${VERSION}`;
-const OFFLINE_CACHE=`kaishi-offline-${VERSION}`;
-let FORCE_OFFLINE=false;
-const MAX_RUNTIME_IMAGES=350;
+/* Kaishi Quest v11.17.3 — fail-safe Service Worker. */
+var VERSION = '11.17.3';
+try {
+  importScripts('./version.js');
+  if (typeof APP_VERSION === 'string' && APP_VERSION.trim()) VERSION = APP_VERSION.trim();
+} catch (e) {
+  try { console.warn('[Kaishi SW] version.js failed; using fallback version', e); } catch (_) {}
+}
 
-const v=path=>`${path}?v=${VERSION}`;
+var SHELL_CACHE = 'kaishi-shell-' + VERSION;
+var IMAGE_CACHE = 'kaishi-images-' + VERSION;
+var OFFLINE_CACHE = 'kaishi-offline-' + VERSION;
+var FORCE_OFFLINE = false;
+var MAX_RUNTIME_IMAGES = 350;
 
-const SHELL=[
-  './',
-  './index.html',
-  v('./styles.css'),
-  v('./sentence-lab.css'),
-  v('./engagement-layer.css'),
-  v('./pronunciation-coach.css'),
-  v('./bonsai-progress.css'),
-  v('./vms.css'),
-  v('./app.js'),
-  v('./vms.js'),
-  v('./cloud.js'),
-  v('./reporting.js'),
-  v('./japan-ready.js'),
-  v('./supabase-config.js'),
-  v('./release-manager.js'),
-  v('./battle-listen.js'),
-  v('./kotoba-activity.js'),
-  v('./dashboard-clarity.js'),
-  v('./touch-enhancements.js'),
-  v('./learning-ui.js'),
-  v('./carousel-navigation.js'),
-  v('./micro-practice.js'),
-  v('./sentence-lab.js'),
-  v('./engagement-layer.js'),
-  v('./pronunciation-coach.js'),
-  v('./bonsai-progress.js'),
-  v('./adaptive-learning.js'),
-  v('./adaptive-reinforcement.js'),
-  v('./campfire-recall.js'),
-  v('./word-rain.js'),
+function v(path) { return path + '?v=' + encodeURIComponent(VERSION); }
+
+var SHELL = [
+  './','./index.html',
+  v('./styles.css'),v('./sentence-lab.css'),v('./engagement-layer.css'),
+  v('./pronunciation-coach.css'),v('./bonsai-progress.css'),v('./vms.css'),
+  v('./app.js'),v('./vms.js'),v('./cloud.js'),v('./reporting.js'),
+  v('./japan-ready.js'),v('./supabase-config.js'),v('./release-manager.js'),
+  v('./battle-listen.js'),v('./kotoba-activity.js'),v('./dashboard-clarity.js'),
+  v('./touch-enhancements.js'),v('./learning-ui.js'),v('./carousel-navigation.js'),
+  v('./micro-practice.js'),v('./sentence-lab.js'),v('./engagement-layer.js'),
+  v('./pronunciation-coach.js'),v('./bonsai-progress.js'),v('./adaptive-learning.js'),
+  v('./adaptive-reinforcement.js'),v('./campfire-recall.js'),v('./word-rain.js'),
   v('./battle-ui-patch.js'),
-  './data/japan-ready-v90.json',
-  './data/sentence-lab.json',
-  // v11.8.44: these are the core learning-content files app.js loads on
-  // every startup. Without them cached, Kaishi cannot boot at all while
-  // offline - regardless of whether an offline pack was ever downloaded.
-  './data/vocabulary.json',
-  './data/kana.json',
-  './data/manga-stories.json',
-  './data/conversations.json',
-  './data/theatre-scenes.json',
-  './data/grammar-path.json',
-  './data/kanji-components.json',
-  './memory-scenes.json',
-  './data/anki-content-v72.json',
-  './data/topics-v72.json',
-  './data/learning-graph-v82.json',
-  './visual-mnemonics.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  v('./media/guides/teacher-guide.webp'),
-  v('./media/guides/sensei/sensei-welcoming.webp'),
-  v('./media/guides/sensei/sensei-explaining.webp'),
-  v('./media/guides/sensei/sensei-celebrating.webp'),
-  v('./media/guides/sensei/sensei-encouraging.webp'),
-  v('./media/guides/sensei/sensei-pointing.webp'),
-  v('./media/guides/sensei/sensei-analysing.webp'),
-  v('./media/sentence-lab/sentence-lab-hero.webp'),
-  v('./media/bonsai/bonsai-growth-stages.png'),
-  v('./media/bonsai/bonsai-condition-overlays.png'),
-  v('./media/profiles/guest-learner.webp'),
-  v('./media/profiles/boy-base.webp'),
-  v('./media/profiles/girl-base.webp'),
-  v('./media/profiles/master-base.webp'),
-  v('./media/profiles/man-base.webp'),
-  v('./media/profiles/woman-base.webp')
+  './data/japan-ready-v90.json','./data/sentence-lab.json',
+  './data/vocabulary.json','./data/kana.json','./data/manga-stories.json',
+  './data/conversations.json','./data/theatre-scenes.json','./data/grammar-path.json',
+  './data/kanji-components.json','./memory-scenes.json','./data/anki-content-v72.json',
+  './data/topics-v72.json','./data/learning-graph-v82.json','./visual-mnemonics.json',
+  './icons/icon-192.png','./icons/icon-512.png',
+  v('./media/guides/teacher-guide.webp'),v('./media/guides/sensei/sensei-welcoming.webp'),
+  v('./media/guides/sensei/sensei-explaining.webp'),v('./media/guides/sensei/sensei-celebrating.webp'),
+  v('./media/guides/sensei/sensei-encouraging.webp'),v('./media/guides/sensei/sensei-pointing.webp'),
+  v('./media/guides/sensei/sensei-analysing.webp'),v('./media/sentence-lab/sentence-lab-hero.webp'),
+  v('./media/bonsai/bonsai-growth-stages.png'),v('./media/bonsai/bonsai-condition-overlays.png'),
+  v('./media/profiles/guest-learner.webp'),v('./media/profiles/boy-base.webp'),
+  v('./media/profiles/girl-base.webp'),v('./media/profiles/master-base.webp'),
+  v('./media/profiles/man-base.webp'),v('./media/profiles/woman-base.webp')
 ];
 
-self.addEventListener('install',event=>{
-  event.waitUntil(
-    caches.open(SHELL_CACHE)
-      .then(cache=>Promise.allSettled(SHELL.map(url=>cache.add(url))))
-      .then(()=>self.skipWaiting())
-  );
+self.addEventListener('install', function(event) {
+  event.waitUntil((async function() {
+    try {
+      var cache = await caches.open(SHELL_CACHE);
+      await Promise.all(SHELL.map(function(url) {
+        return cache.add(url).catch(function() { return null; });
+      }));
+    } catch (e) {}
+    try { await self.skipWaiting(); } catch (e) {}
+  })());
 });
 
-self.addEventListener('activate',event=>{
-  event.waitUntil(
-    caches.keys()
-      .then(keys=>Promise.all(
-        keys.filter(key=>
-          (key.startsWith('kaishi-shell-')&&key!==SHELL_CACHE)||
-          (key.startsWith('kaishi-images-')&&key!==IMAGE_CACHE)||
-          (key.startsWith('kaishi-offline-')&&key!==OFFLINE_CACHE)
-        ).map(key=>caches.delete(key))
-      ))
-      .then(()=>self.clients.claim())
-  );
+self.addEventListener('activate', function(event) {
+  event.waitUntil((async function() {
+    try {
+      var keys = await caches.keys();
+      await Promise.all(keys.filter(function(key) {
+        return (key.indexOf('kaishi-shell-') === 0 && key !== SHELL_CACHE) ||
+               (key.indexOf('kaishi-images-') === 0 && key !== IMAGE_CACHE) ||
+               (key.indexOf('kaishi-offline-') === 0 && key !== OFFLINE_CACHE);
+      }).map(function(key) { return caches.delete(key).catch(function(){return false;}); }));
+    } catch (e) {}
+    try { await self.clients.claim(); } catch (e) {}
+  })());
 });
 
-self.addEventListener('message',event=>{
-  if(event.data?.type==='SKIP_WAITING') self.skipWaiting();
+self.addEventListener('message', function(event) {
+  try {
+    if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+    if (event.data && event.data.type === 'KAISHI_FORCE_OFFLINE')
+      FORCE_OFFLINE = Boolean(event.data.enabled);
+  } catch (e) {}
 });
 
-async function offlineMatch(request){
-  try{
-    const cache=await caches.open(OFFLINE_CACHE);
-    return await cache.match(request,{ignoreSearch:true});
-  }catch{return null}
+async function offlineMatch(request) {
+  try { return await (await caches.open(OFFLINE_CACHE)).match(request,{ignoreSearch:true}); }
+  catch (e) { return null; }
 }
-
-function isImage(request){
-  return request.destination==='image'||/\.(?:png|jpe?g|webp|gif|svg)(?:\?|$)/i.test(request.url);
+function isImage(request) {
+  return request.destination === 'image' || /\.(?:png|jpe?g|webp|gif|svg)(?:\?|$)/i.test(request.url);
 }
-
-async function trimImages(cache){
-  const keys=await cache.keys();
-  if(keys.length<=MAX_RUNTIME_IMAGES) return;
-  await Promise.all(keys.slice(0,keys.length-MAX_RUNTIME_IMAGES).map(key=>cache.delete(key)));
+async function networkFirst(request) {
+  try {
+    var cache = await caches.open(SHELL_CACHE);
+    try {
+      var response = await fetch(request,{cache:'no-cache'});
+      if (response && response.ok) { try { await cache.put(request,response.clone()); } catch(e) {} }
+      return response;
+    } catch (e) {
+      return (await cache.match(request,{ignoreSearch:true})) ||
+             (await offlineMatch(request)) || fetch(request);
+    }
+  } catch (e) { return fetch(request); }
 }
-
-async function cacheFirstImage(request){
-  const cache=await caches.open(IMAGE_CACHE);
-  const cached=await cache.match(request);
-  if(cached) return cached;
-  try{
-    const response=await fetch(request,{cache:'no-cache'});
-    if(response&&response.ok&&response.type!=='opaque'){
-      await cache.put(request,response.clone());
-      trimImages(cache);
+async function cacheImage(request) {
+  try {
+    var cache = await caches.open(IMAGE_CACHE);
+    var hit = await cache.match(request);
+    if (hit) return hit;
+    var response = await fetch(request,{cache:'no-cache'});
+    if (response && response.ok && response.type !== 'opaque') {
+      try { await cache.put(request,response.clone()); } catch(e) {}
     }
     return response;
-  }catch(error){
-    return (await offlineMatch(request))||Promise.reject(error);
+  } catch (e) {
+    return (await offlineMatch(request)) || fetch(request);
   }
 }
-
-async function networkFirst(request){
-  const cache=await caches.open(SHELL_CACHE);
-  try{
-    const response=await fetch(request,{cache:'no-cache'});
-    if(response&&response.ok) await cache.put(request,response.clone());
-    return response;
-  }catch(error){
-    return (await cache.match(request,{ignoreSearch:true}))||(await offlineMatch(request))||Promise.reject(error);
-  }
+async function networkOffline(request) {
+  try { return await fetch(request,{cache:'no-cache'}); }
+  catch (e) { return (await offlineMatch(request)) || fetch(request); }
 }
 
-async function networkWithOfflineFallback(request){
-  try{return await fetch(request,{cache:'no-cache'})}
-  catch(error){
-    // v11.8.44: this path handles plain data fetches (JSON, audio, etc.),
-    // which is how app.js loads its core content on every startup. Check
-    // the precached app shell first (ignoring any cache-busting query
-    // string), then the user's downloaded offline pack, before giving up.
-    try{
-      const shell=await caches.open(SHELL_CACHE);
-      const shellMatch=await shell.match(request,{ignoreSearch:true});
-      if(shellMatch) return shellMatch;
-    }catch{}
-    return (await offlineMatch(request))||Promise.reject(error);
-  }
-}
+self.addEventListener('fetch', function(event) {
+  var request = event.request;
+  if (!request || request.method !== 'GET') return;
 
-self.addEventListener('message',event=>{
-  if(event.data?.type==='KAISHI_FORCE_OFFLINE'){
-    FORCE_OFFLINE=Boolean(event.data.enabled);
-  }
-});
-
-self.addEventListener('fetch',event=>{
-  const request=event.request;
-  if(request.method!=='GET')return;
-
-  if(FORCE_OFFLINE){
-    event.respondWith((async()=>{
-      const offline=await offlineMatch(request);
-      if(offline)return offline;
-      const cached=await caches.match(request);
-      if(cached)return cached;
-      return new Response('Kaishi is in forced offline mode. This content has not been downloaded for offline use.',{
-        status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}
+  if (FORCE_OFFLINE) {
+    event.respondWith((async function() {
+      var offline = await offlineMatch(request);
+      if (offline) return offline;
+      try { var cached = await caches.match(request); if (cached) return cached; } catch(e) {}
+      return new Response('Kaishi is in forced offline mode.', {
+        status:503, headers:{'Content-Type':'text/plain; charset=utf-8'}
       });
     })());
     return;
   }
-  const url=new URL(request.url);
-  if(url.origin!==self.location.origin) return;
 
-  if(url.pathname.endsWith('/version.json')){
-    event.respondWith(fetch(request,{cache:'no-store'}).catch(()=>caches.match(request)));
+  var url;
+  try { url = new URL(request.url); } catch(e) { return; }
+  if (url.origin !== self.location.origin) return;
+
+  if (url.pathname.endsWith('/version.json')) {
+    event.respondWith(fetch(request,{cache:'no-store'}).catch(function() {
+      return caches.match(request).then(function(r) {
+        return r || new Response(JSON.stringify({version:VERSION}), {
+          headers:{'Content-Type':'application/json'}
+        });
+      });
+    }));
     return;
   }
-
-  if(isImage(request)||url.pathname.includes('/media/kanji-strokes/')){
-    event.respondWith(cacheFirstImage(request));
-    return;
+  if (isImage(request) || url.pathname.indexOf('/media/kanji-strokes/') !== -1) {
+    event.respondWith(cacheImage(request)); return;
   }
-
-  if(['script','style','document'].includes(request.destination)){
-    event.respondWith(networkFirst(request));
-    return;
+  if (['script','style','document'].indexOf(request.destination) !== -1) {
+    event.respondWith(networkFirst(request)); return;
   }
-
-  event.respondWith(networkWithOfflineFallback(request));
+  event.respondWith(networkOffline(request));
 });
