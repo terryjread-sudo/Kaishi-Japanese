@@ -25,6 +25,9 @@
  * - v11.8.49 Added answer-selection animation across the core learning path: tap feedback,
  *   a correct-answer pop, a wrong-answer shake, and a gentle reveal fade, all respecting
  *   prefers-reduced-motion
+ * - v11.25.0 Admin Centre logs gained a category filter (All / Offline / Roadmap /
+ *   Lesson mapping / Activities / Journey / System) backed by structured log entries;
+ *   kaishiLog is now exposed on window for roadmap-engine.js and road-ahead.js to use
  * - v11.9.4 Adaptive Reinforcement update: skill-profile activity selection, one-word-many-ways
  *   introduction flow, recognition→recall→context→production progression, surprise reviews,
  *   delayed within-session spacing, forgotten-word rescue sequences, mistake-driven reinforcement,
@@ -536,14 +539,28 @@
   let netCheckInFlight=null;
 
   // ----- v11.8.42: Application logging system (defined early for use in offline detection) -----
+  // ----- v11.25.0: log entries now carry a filterable category group -----
   const logs=[];
   const MAX_LOGS=200;
   const pageLoadTime=performance.now();
 
+  // Maps a free-form log category (e.g. 'offline-check', 'roadmap',
+  // 'lesson-mapping', 'activity-reject') to one of the dropdown groups.
+  // Unrecognised categories fall back to 'system' rather than being lost.
+  function kaishiLogGroup(category){
+    const c=String(category||'').toLowerCase();
+    if(c.startsWith('offline')||c==='ui-update')return'offline';
+    if(c.startsWith('roadmap'))return'roadmap';
+    if(c.startsWith('lesson'))return'lesson-mapping';
+    if(c.startsWith('activity'))return'activities';
+    if(c.startsWith('journey'))return'journey';
+    return'system';
+  }
+
   function kaishiLog(category,message){
     const timestamp=Math.round(performance.now()-pageLoadTime);
     const entry=`[${timestamp}ms] [${category}] ${message}`;
-    logs.push(entry);
+    logs.push({category:String(category||''),group:kaishiLogGroup(category),entry});
     if(logs.length>MAX_LOGS) logs.shift();
     // Also echo to console
     console.log(entry);
@@ -553,7 +570,10 @@
   function updateAdminLogViewer(){
     const viewer=document.getElementById('adminLogViewer');
     if(!viewer) return;
-    viewer.textContent=logs.join('\n');
+    const filter=document.getElementById('adminLogFilter');
+    const selected=filter?filter.value:'all';
+    const visible=selected&&selected!=='all'?logs.filter(item=>item.group===selected):logs;
+    viewer.textContent=visible.map(item=>item.entry).join('\n');
     // Auto-scroll to bottom
     viewer.scrollTop=viewer.scrollHeight;
   }
@@ -566,7 +586,18 @@
         updateAdminLogViewer();
       });
     }
+    const filter=document.getElementById('adminLogFilter');
+    if(filter&&!filter.dataset.kqLogFilterBound){
+      filter.dataset.kqLogFilterBound='1';
+      filter.addEventListener('change',updateAdminLogViewer);
+    }
   }
+
+  // Exposed so other feature scripts (roadmap-engine.js, road-ahead.js)
+  // can log to the same Admin Centre viewer without redefining it.
+  try{
+    window.kaishiLog=kaishiLog;
+  }catch(_){}
 
   async function verifyConnectivity(){
     if(netCheckInFlight) return netCheckInFlight;

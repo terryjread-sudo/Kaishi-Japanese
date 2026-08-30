@@ -15,7 +15,7 @@ var FORCE_OFFLINE = false;
 function v(path) { return path + '?v=' + encodeURIComponent(VERSION); }
 
 var SHELL = [
-  './','./index.html',v('./version.js'),v('./journey-v3.js'),v('./journey-v4.js'),
+  './','./index.html',v('./version.js'),v('./journey.js'),v('./roadmap-engine.js'),v('./road-ahead.js'),
   v('./styles.css'),v('./sentence-lab.css'),v('./engagement-layer.css'),
   v('./pronunciation-coach.css'),v('./bonsai-progress.css'),v('./vms.css'),
   v('./app.js'),v('./vms.js'),v('./cloud.js'),v('./reporting.js'),

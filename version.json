@@ -1,11 +1,12 @@
 {
-  "version":"11.16.5",
-  "title":"Journey timeline & Japan Ready audio fix",
+  "version":"11.25.0",
+  "released":"2026-08-30",
+  "title":"Rolling roadmap, floating Road Ahead & Admin log filters",
   "changes":[
-    "Renamed the Journey timeline heading from Recent Lessons to Your Journey.",
-    "Shows three route steps behind and four ahead of the current point.",
-    "Side quests are inserted into the same timeline when triggered, followed by the retry lesson.",
-    "Japan Ready cheat-sheet audio now speaks synchronously from the user gesture and extracts Japanese text from the actual cheat-sheet control/card.",
-    "Keeps Japan Ready separate from the Journey path."
+    "The Journey ahead list now looks 10 lessons ahead (up from 8) and shows a mapped milestone, activity, or topic-change badge where one genuinely applies.",
+    "Road Ahead is now a floating bubble in the bottom-left corner of the Journey screen, plus a floating Dashboard button top-left — both overlays only, the Journey screen itself is unchanged.",
+    "Immersive activities (Picture Matching, Listening, Karuta, Kanji Gate) are only mapped to a future lesson when that lesson's actual words have the audio/art/kanji data the activity needs.",
+    "Admin Centre logs gained a category filter: All, Offline, Roadmap, Lesson mapping, Activities, Journey, System.",
+    "Roadmap and activity-mapping decisions are now logged to Admin Centre for diagnostics."
   ]
 }

@@ -299,6 +299,7 @@ header{
 .path-ahead-title{flex:1;font-weight:700;color:#172554;font-size:.92rem}
 .path-ahead-status{font-size:.75rem;color:#64748b;white-space:nowrap}
 .path-ahead-item.current .path-ahead-status{color:#1d4ed8;font-weight:700}
+.path-ahead-event{flex:0 0 auto;font-size:.72rem;font-weight:800;padding:4px 9px;border-radius:999px;background:rgba(234,179,8,.14);color:#92400e;white-space:nowrap}
 .practice-hub-details{margin-top:10px}
 .practice-hub-details>summary{cursor:pointer;font-weight:700;color:#334155;padding:10px 0;list-style:none}
 .practice-hub-details>summary::-webkit-details-marker{display:none}
@@ -697,8 +698,10 @@ header{
 .admin-settings-link{width:100%;margin-top:10px}
 .admin-page{display:grid;gap:18px}
 .admin-tool-section{border:1px solid #dbe3f0;border-radius:18px;padding:14px;background:#fff}
-.admin-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.admin-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .admin-section-heading h3{margin:2px 0 0}
+.admin-log-filter-label{display:flex;align-items:center;gap:6px;font-size:.78rem;color:#64748b;font-weight:700}
+.admin-log-filter-label select{padding:4px 8px;border-radius:8px;border:1px solid #cbd5e1;font-size:.78rem;font-weight:700;background:#fff}
 .admin-report-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
 .admin-report-controls label{display:grid;gap:5px;font-size:.75rem;font-weight:750}
 .admin-report-controls .admin-search{grid-column:1/-1}

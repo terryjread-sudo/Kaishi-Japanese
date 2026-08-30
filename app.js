@@ -285,12 +285,27 @@ function closeHistoryEntryDialog(){const dialog=$('#historyEntryDialog');if(dial
 function renderJourneyPathAhead(){
  const list=$('#journeyPathAhead');if(!list)return;
  const current=currentWordChapterIndex(),total=wordChapterCount();
- const upcoming=Array.from({length:Math.min(8,total-current)},(_,offset)=>current+offset);
+ // v11.25.0: horizon widened from 8 to 10 future lessons (plus the current
+ // one) to match the rolling roadmap computed by roadmap-engine.js. This
+ // list stays read-only — it does not affect completion, retry, ordering
+ // or the daily Journey route.
+ const HORIZON=10;
+ const upcoming=Array.from({length:Math.min(HORIZON+1,total-current)},(_,offset)=>current+offset);
+ // Optional: mapped events (milestone/activity/topic) from the roadmap
+ // engine, keyed by chapter index. Purely additive — if the engine hasn't
+ // loaded yet, this list renders exactly as it did before.
+ let eventByChapter={};
+ try{
+  const roadmap=window.KaishiRoadmap?.get?.();
+  if(roadmap)roadmap.lessons.forEach(lesson=>{if(lesson.event)eventByChapter[lesson.chapterIndex]=lesson.event});
+ }catch(_){}
  list.innerHTML=upcoming.map((lessonIndex,offset)=>{
   const words=chapterWords(lessonIndex),topic=topicForWord(words[0]),stats=chapterStats(lessonIndex),isCurrent=offset===0;
   const title=words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title;
-  return `<li class="path-ahead-item ${isCurrent?'current':'ahead'}"><span class="path-ahead-icon">${esc(topic.icon||'🗺️')}</span><span class="path-ahead-title">Lesson ${lessonIndex+1}: ${esc(title)}</span><span class="path-ahead-status">${isCurrent?`${stats.percent}% underway`:'Up next'}</span></li>`;
- }).join('')+(total>current+8?'<li class="path-ahead-item more">More lessons ahead</li>':'');
+  const event=eventByChapter[lessonIndex];
+  const eventBadge=event?`<span class="path-ahead-event">${esc(event.icon||'✨')} ${esc(event.label)}</span>`:'';
+  return `<li class="path-ahead-item ${isCurrent?'current':'ahead'}"><span class="path-ahead-icon">${esc(topic.icon||'🗺️')}</span><span class="path-ahead-title">Lesson ${lessonIndex+1}: ${esc(title)}</span><span class="path-ahead-status">${isCurrent?`${stats.percent}% underway`:'Up next'}</span>${eventBadge}</li>`;
+ }).join('')+(total>current+HORIZON?'<li class="path-ahead-item more">More lessons ahead</li>':'');
 }
 const ACTIVITY_VILLAGE_CONFIG={
  vocabulary:{cost:0,words:0,action:'Enter Village',theme:'village'},
