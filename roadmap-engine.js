@@ -248,6 +248,12 @@
     } catch (_) {}
   };
 
+  const refreshPathAheadList = () => {
+    try {
+      if (typeof window.renderJourneyPathAhead === 'function') window.renderJourneyPathAhead();
+    } catch (_) {}
+  };
+
   let cached = null;
 
   const refresh = () => {
@@ -259,6 +265,11 @@
       logDiagnostics(roadmap);
       persist(roadmap);
     }
+    // Always resync the "Your journey ahead" list, not just on change: the
+    // list may have rendered earlier with no roadmap available yet (e.g.
+    // Journey opened before this script finished loading) and nothing
+    // else re-triggers it once the data shows up.
+    refreshPathAheadList();
     return roadmap;
   };
 
