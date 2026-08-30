@@ -1,9 +1,8 @@
 {
-  "version":"11.25.2",
+  "version":"11.25.3",
   "released":"2026-08-30",
-  "title":"Journey-ahead list wasn't resyncing with the Road Ahead bubble",
+  "title":"Duplicate Dashboard button on the Journey screen",
   "changes":[
-    "Fixed the \"Your journey ahead\" timeline sometimes not showing an upcoming event (e.g. Picture Matching) that the Road Ahead bubble already knew about. Root cause: the timeline list renders once when you open Journey, and that can happen before the roadmap engine has finished loading — nothing then re-triggered it once the data arrived. The Road Ahead bubble never had this problem because it's the last script in the load chain, so it always computes with fresh data by construction.",
-    "The roadmap engine now proactively refreshes the journey-ahead list the moment it finishes its first computation, so the two can no longer drift apart."
+    "The floating Dashboard button was rendering directly on top of the Journey screen's own inline \u2190 Dashboard button, making it look like there were two. The original inline button is now hidden once the floating overlay installs (it still works as a fallback if that script ever fails to load)."
   ]
 }
