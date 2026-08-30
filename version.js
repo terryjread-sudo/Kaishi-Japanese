@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.22.0';
+var APP_VERSION = '11.23.0';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -9,25 +9,30 @@ try {
   window.KAISHI_VERSION = KAISHI_VERSION;
 } catch (e) {}
 
-/*
- * Journey architecture:
- *   app.js      = learning engine / data / lesson execution
- *   journey.js = the ONLY Journey UI renderer
- *
- * v11.22 keeps the stable Journey renderer from v11.21 and adds
- * content-aware activity integration in the learning-session preview.
- */
 try {
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     const loadJourney = () => {
       if (window.__kaishiUnifiedJourneyLoaded || document.querySelector('script[data-kaishi-unified-journey]')) return;
       window.__kaishiUnifiedJourneyLoaded = true;
+
       const script = document.createElement('script');
       script.src = './journey.js?v=' + encodeURIComponent(APP_VERSION);
       script.setAttribute('data-kaishi-unified-journey', 'true');
+
+      script.onload = () => {
+        if (window.__kaishiRoadAheadLoaded || document.querySelector('script[data-kaishi-road-ahead]')) return;
+        window.__kaishiRoadAheadLoaded = true;
+        const roadAhead = document.createElement('script');
+        roadAhead.src = './road-ahead.js?v=' + encodeURIComponent(APP_VERSION);
+        roadAhead.setAttribute('data-kaishi-road-ahead', 'true');
+        roadAhead.onerror = () => { window.__kaishiRoadAheadLoaded = false; };
+        document.head.appendChild(roadAhead);
+      };
+
       script.onerror = () => { window.__kaishiUnifiedJourneyLoaded = false; };
       document.head.appendChild(script);
     };
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', loadJourney, {once:true});
     } else {
@@ -43,7 +48,11 @@ try {
         });
       } catch (_) {}
     };
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setBadge, {once:true});
-    else setBadge();
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setBadge, {once:true});
+    } else {
+      setBadge();
+    }
   }
 } catch (_) {}
