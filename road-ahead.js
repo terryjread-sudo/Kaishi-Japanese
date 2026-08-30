@@ -54,6 +54,13 @@
       #${DASHBOARD_BTN_ID}[hidden]{display:none}
       #${DASHBOARD_BTN_ID}:active{transform:scale(.97)}
 
+      /* The Journey screen's own inline "← Dashboard" button (#journeyBack)
+         is now redundant with the floating one above it and was rendering
+         directly underneath, looking like two stacked buttons. Hide it
+         only once this overlay has actually installed, so it still works
+         as a fallback if this script fails to load. */
+      .kq-road-ahead-active #journeyBack{display:none}
+
       @media(max-width:380px){
         #${BUBBLE_ID}{max-width:70vw;padding:8px 12px}
         #${DASHBOARD_BTN_ID}{padding:7px 11px;font-size:.78rem}
@@ -166,6 +173,7 @@
   const install = () => {
     if (document.documentElement.dataset.kqRoadAheadInstalled === '1') return;
     document.documentElement.dataset.kqRoadAheadInstalled = '1';
+    document.documentElement.classList.add('kq-road-ahead-active');
     addStyles();
     schedule();
     log('journey', 'Road Ahead floating overlays installed (bubble + dashboard button)');
