@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.8';
+var APP_VERSION = '11.25.10';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -11,11 +11,6 @@ try {
 
 try {
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-    const patch = document.createElement('script');
-    patch.src = './patch-11.25.8.js?v=' + encodeURIComponent(APP_VERSION);
-    patch.setAttribute('data-kaishi-11258-patch', 'true');
-    document.head.appendChild(patch);
-
     const loadJourney = () => {
       if (window.__kaishiUnifiedJourneyLoaded || document.querySelector('script[data-kaishi-unified-journey]')) return;
       window.__kaishiUnifiedJourneyLoaded = true;
