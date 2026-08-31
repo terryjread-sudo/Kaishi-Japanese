@@ -1,17 +1,25 @@
 'use strict';
-
 /*
  * Kaishi Quest — Road Ahead
- * v11.25.11
+ * v11.25.14
  *
- * The Road Ahead headline deliberately excludes routine activities such
- * as Listening. Key milestones take priority, followed by distinctive
- * immersive activities, then the general learning path.
+ * Headline priority tiers:
+ *   0 – immersive side quests (karuta, theatre, manga)
+ *   1 – distinctive lesson activities (picture, sentence-understanding, …)
+ *   2 – milestones
+ *   3 – topic changes
+ *
+ * Variety protection: the last-highlighted activity ID is persisted in
+ * localStorage so the same type is skipped when an alternative exists.
  */
 (() => {
   const BUBBLE_ID = 'kqRoadAheadBubble';
   const DASHBOARD_BTN_ID = 'kqJourneyDashboardBtn';
   const STYLE_ID = 'kqRoadAheadFloatingStyles';
+  const VARIETY_KEY = 'kqRoadAheadLastHighlight';
+
+  // Priority tier: lower = more interesting
+  const TIER = { sideQuest: 0, activity: 1, milestone: 2, topic: 3 };
 
   const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -43,26 +51,66 @@
     document.head.appendChild(style);
   };
 
+  const readLastHighlight = () => {
+    try { return JSON.parse(localStorage.getItem(VARIETY_KEY)) || null; } catch (_) { return null; }
+  };
+
+  const saveLastHighlight = (id, lessonNumber) => {
+    try { localStorage.setItem(VARIETY_KEY, JSON.stringify({ id, lessonNumber })); } catch (_) {}
+  };
+
   const headlineFor = roadmap => {
     if (!roadmap || !roadmap.lessons?.length) return null;
 
-    const withEvent = roadmap.lessons.find(lesson => lesson.event);
-    if (withEvent) {
-      const offset = Math.max(1, withEvent.chapterIndex - roadmap.currentLesson);
+    // Collect all lessons that carry an interesting event (not topic-change only)
+    const candidates = roadmap.lessons
+      // The current lesson may already show an arrived badge. The indicator is
+      // deliberately about the next event still ahead on the path.
+      .filter(l => l.chapterIndex > roadmap.currentLesson && l.event && l.event.type !== 'topic')
+      .sort((a, b) => {
+        // Primary: tier (lower = better)
+        const ta = TIER[a.event.type] ?? 99;
+        const tb = TIER[b.event.type] ?? 99;
+        if (ta !== tb) return ta - tb;
+        // Secondary: proximity (closer = better)
+        return a.chapterIndex - b.chapterIndex;
+      });
+
+    // Also keep any topic events as a last-resort fallback
+    const topicFallback = roadmap.lessons.find(l => l.chapterIndex > roadmap.currentLesson && l.event?.type === 'topic');
+
+    if (!candidates.length && !topicFallback) {
+      // Nothing interesting in horizon — show generic path message
+      const last = roadmap.lessons[roadmap.lessons.length - 1];
       return {
-        icon: withEvent.event.icon || '✨',
-        label: withEvent.event.label,
-        offset,
-        hasEvent: true,
+        icon: '🌱',
+        label: 'Learning path continues',
+        offset: Math.max(1, last.chapterIndex - roadmap.currentLesson),
+        hasEvent: false,
+        eventId: null
       };
     }
 
-    const last = roadmap.lessons[roadmap.lessons.length - 1];
+    // Variety protection: skip last-highlighted ID when an alternative exists
+    const last = readLastHighlight();
+    let chosen = candidates[0] || topicFallback;
+
+    if (last?.id && candidates.length > 1) {
+      const alternative = candidates.find(l => l.event.id !== last.id);
+      if (alternative) chosen = alternative;
+    } else if (last?.id && candidates.length === 1 && candidates[0]?.event?.id === last.id && topicFallback) {
+      // Only one candidate and it's the same as last time — try topic as break
+      chosen = topicFallback;
+    }
+
+    const offset = Math.max(1, chosen.chapterIndex - roadmap.currentLesson);
     return {
-      icon: '🌱',
-      label: 'Learning path continues',
-      offset: Math.max(1, last.chapterIndex - roadmap.currentLesson),
-      hasEvent: false,
+      icon: chosen.event.icon || '✨',
+      label: chosen.event.label,
+      offset,
+      hasEvent: true,
+      eventId: chosen.event.id,
+      currentLesson: roadmap.currentLesson
     };
   };
 
@@ -97,7 +145,13 @@
         <span class="kq-ra-count">${headline.hasEvent ? `in ${count}` : `${count} mapped ahead`}</span>
       </span>
     `;
+
+    // Persist variety selection so next render rotates to a different activity
+    if (headline.hasEvent && headline.eventId) {
+      saveLastHighlight(headline.eventId, (headline.currentLesson || 0) + headline.offset);
+    }
   };
+
 
   const ensureDashboardButton = () => {
     let btn = document.getElementById(DASHBOARD_BTN_ID);

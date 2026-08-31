@@ -2,11 +2,10 @@
 
 /*
  * Kaishi Quest — Roadmap Engine
- * v11.25.13
+ * v11.25.14
  *
  * The roadmap is read-only and reports the actual lesson schedule.
- * Key Events (including SRS Battle) remain independent first-class timeline
- * items and are never replaced by ordinary lesson activities.
+ * Scheduled side quests and milestones are first-class timeline items.
  */
 (() => {
   const HORIZON = 10;
@@ -96,7 +95,7 @@
     const total=Math.max(1,safeNum(wordChapterCount(),1));
     const end=Math.min(total-1,current+HORIZON);
 
-    const milestoneEstimates=estimateMilestones(chapterSize,current+1,end);
+    const milestoneEstimates=estimateMilestones(chapterSize,current,end);
     const milestoneByChapter={};
     Object.values(milestoneEstimates).forEach(e=>{
       milestoneByChapter[e.chapterIndex]=e;
@@ -110,7 +109,7 @@
 
     const lessons=[];
 
-    for(let chapter=current+1;chapter<=end;chapter++){
+    for(let chapter=current;chapter<=end;chapter++){
       const words=chapterWords(chapter);
       if(!words.length) break;
 
@@ -120,6 +119,7 @@
 
       const s=schedule(chapter,current,words);
       const distinctive=(s.core||[]).find(id=>rule(id)?.roadmap);
+      const sideQuestEvent=(s.sideQuests||[]).find(id=>rule(id)?.roadmap);
       const milestone=milestoneByChapter[chapter];
 
       let event=null;
@@ -144,6 +144,18 @@
           estimated:false,
           separateTimelineItem:false,
           source:'lesson-scheduler'
+        };
+      } else if(sideQuestEvent){
+        const r=rule(sideQuestEvent);
+        event={
+          type:'sideQuest',
+          id:sideQuestEvent,
+          icon:r?.icon||'🎮',
+          label:r?.label||sideQuestEvent,
+          estimated:true,
+          separateTimelineItem:false,
+          source:'side-quest',
+          note:r?.note||null
         };
       } else if(topic && previousTopicId!==null && topic.id!==previousTopicId){
         event={

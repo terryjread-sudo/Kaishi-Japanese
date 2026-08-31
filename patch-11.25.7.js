@@ -1,6 +1,6 @@
 'use strict';
 /*
- * Kaishi Quest v11.25.13
+ * Kaishi Quest v11.25.14
  *
  * This intentionally updates the existing lesson patch source file
  * (patch-11.25.7.js) rather than adding another overlay patch.
@@ -16,7 +16,7 @@
  *    and no function is left waiting for a dialog result.
  */
 (() => {
-  const PATCH = '11.25.13';
+  const PATCH = '11.25.14';
   const log = message => {
     try { window.kaishiLog?.('patch', `[${PATCH}] ${message}`); } catch (_) {}
   };
@@ -86,15 +86,69 @@
     {
       id:'karuta', icon:'🎴', label:'Karuta Challenge',
       core:false, roadmap:true, unlockWords:12,
-      eligible: words => words.some(w => audioAvailable(w) && sceneAvailable(w))
+      position:'exit', lessonFit:true, cadence:4, phase:1,
+      // 4a: Widened — needs 2+ words with audio OR scene (was: both on same word)
+      eligible: words => words.filter(w => audioAvailable(w) || sceneAvailable(w)).length >= 2,
+      // 4c: Rich side-quest description using actual lesson words
+      sideQuestDetail: words => {
+        const examples = words.slice(0,2).map(w=>w.meaning).filter(Boolean);
+        return examples.length
+          ? `Race to match ${examples.join(' and ')} — karuta-style flashcard challenge.`
+          : 'Race to match Japanese words in a karuta-style flashcard challenge.';
+      }
     },
     {
       id:'theatre', icon:'🎭', label:'Theatre',
-      core:false, roadmap:true, unlockWords:12, eligible: () => true
+      core:false, roadmap:true,
+      unlockWords:8,    // 4a: lowered from 12 — available sooner
+      position:'entry', lessonFit:true, cadence:5, phase:2,
+      eligible: words => words.length >= 2,
+      // 4c: Scene-setting description
+      sideQuestDetail: words => {
+        const examples = words.slice(0,2).map(w=>w.meaning).filter(Boolean);
+        return examples.length
+          ? `Step into a scene where ${examples.join(' and ')} come to life.`
+          : 'Step into an immersive Japanese scene before your lesson.';
+      }
     },
     {
       id:'manga', icon:'📖', label:'Manga Stories',
-      core:false, roadmap:true, unlockWords:25, eligible: () => true
+      core:false, roadmap:true, unlockWords:25,
+      position:'exit', lessonFit:true, cadence:7, phase:3,
+      eligible: words => words.length >= 3,  // 4a: guard against tiny chapters
+      // 4c: Story-reward description
+      sideQuestDetail: words => {
+        const examples = words.slice(0,2).map(w=>w.meaning).filter(Boolean);
+        return examples.length
+          ? `Read a manga story featuring ${examples.join(' and ')} in context.`
+          : 'Read a short manga story using your new Japanese.';
+      }
+    },
+    {
+      id:'conversation', icon:'💬', label:'Conversation Quest',
+      core:false, roadmap:true, unlockWords:12,
+      position:'entry', lessonFit:true, cadence:5, phase:0,
+      eligible: words => words.length >= 2,
+      sideQuestDetail: words => {
+        const examples=words.slice(0,2).map(w=>w.meaning).filter(Boolean);
+        return examples.length
+          ? `Choose natural replies while using ${examples.join(' and ')} in context.`
+          : 'Choose natural Japanese replies in a short conversation.';
+      }
+    },
+    {
+      id:'grammar', icon:'助', label:'Grammar & Particles',
+      core:false, roadmap:true, unlockWords:15,
+      position:'entry', lessonFit:true, cadence:6, phase:4,
+      eligible: words => words.length >= 2,
+      sideQuestDetail: () => 'Take a focused particle detour, then return to your lesson path.'
+    },
+    {
+      id:'battle', icon:'⚔️', label:'SRS Battle',
+      core:false, roadmap:true, unlockWords:20,
+      position:'exit', lessonFit:true, cadence:6, phase:1,
+      eligible: words => words.length >= 2,
+      sideQuestDetail: () => 'Defend the Memory Dojo with a short, scheduled SRS review battle.'
     }
   ];
 
@@ -128,7 +182,9 @@
         const relative = chapterIndex - (currentChapterIndex + 1);
         if (relative % cadence === 0 || opts.forceFirst) result.core.push(rule.id);
       } else {
-        result.sideQuests.push(rule.id);
+        const cadence = Math.max(1, Number(rule.cadence || 1));
+        const relative = Math.max(0, chapterIndex - (currentChapterIndex + 1));
+        if ((relative % cadence) === Number(rule.phase || 0)) result.sideQuests.push(rule.id);
       }
     });
 
@@ -140,6 +196,13 @@
     if (distinctive.length > 1) {
       const keep = distinctive[0];
       result.core = result.core.filter(id => id === keep || id === 'listening');
+    }
+
+    // A lesson gets one immersive detour at most. This keeps the path focused
+    // and makes every scheduled activity feel like an event rather than a grid.
+    if (result.sideQuests.length > 1) {
+      const pick = Math.abs(chapterIndex) % result.sideQuests.length;
+      result.sideQuests = [result.sideQuests[pick]];
     }
 
     return result;
@@ -178,6 +241,11 @@
           chapter, currentWordChapterIndex(), lessonWords,
           { introduced, forceFirst: false }
         );
+        const sideQuestId = schedule.sideQuests[0] || null;
+        const sideQuestRule = sideQuestId && window.KaishiActivitySchedule.ruleFor(sideQuestId);
+        window.__kaishiScheduledSideQuest = sideQuestId && sideQuestRule?.position === 'exit'
+          ? { id: sideQuestId, wordIds: lessonWords.map(word => word.id) }
+          : null;
 
         const existing = new Set(session.map(item => item?.activityScheduleId || item?.skill));
         const additions = [];
@@ -266,7 +334,7 @@
             else if (ch===quote) quote=null;
             continue;
           }
-          if (ch==='\"'||ch===\"'\"||ch==='`') { quote=ch; continue; }
+          if (ch === '"' || ch === "'" || ch === '`') { quote=ch; continue; }
           if (ch==='(') depth++;
           else if (ch===')' && --depth===0) { close=i; break; }
         }
@@ -285,7 +353,7 @@
                 else if(ch===q) q=null;
                 continue;
               }
-              if(ch==='\"'||ch===\"'\"||ch==='`'){q=ch;continue;}
+              if(ch === '"' || ch === "'" || ch === '`'){q=ch;continue;}
               if(ch==='{') bdepth++;
               else if(ch==='}' && --bdepth===0){bodyEnd=i;break;}
             }
@@ -341,8 +409,45 @@
     rules: ACTIVITY_RULES,
     ruleFor,
     scheduleForLesson,
-    buildCard
+    buildCard,
+    // Returns a personalised side-quest description for the given activity using
+    // the actual lesson words. Falls back to the rule's generic note.
+    sideQuestDetail: (id, words) => {
+      const rule = ruleFor(id);
+      if (!rule) return '';
+      if (typeof rule.sideQuestDetail === 'function') {
+        try { return rule.sideQuestDetail(words || []); } catch (_) {}
+      }
+      return rule.note || '';
+    }
   };
+
+  function patchFinishSession() {
+    if (window.__kaishi114FinishSessionPatched || typeof window.finishSession !== 'function') return;
+    const original = window.finishSession;
+    window.finishSession = function () {
+      const scheduled = window.__kaishiScheduledSideQuest;
+      window.__kaishiScheduledSideQuest = null;
+      const result = original.apply(this, arguments);
+      if (!scheduled || !window.KaishiActivitySchedule?.ruleFor(scheduled.id)) return result;
+      const rule = window.KaishiActivitySchedule.ruleFor(scheduled.id);
+      const card = document.getElementById('card');
+      if (!card || !card.querySelector('.mission-complete-actions')) return result;
+      const words = (scheduled.wordIds || []).map(id => (window.vocab || []).find(word => word.id === id)).filter(Boolean);
+      const detail = window.KaishiActivitySchedule.sideQuestDetail(scheduled.id, words);
+      const aside = document.createElement('aside');
+      aside.className = 'lesson-side-quest-arrived';
+      aside.innerHTML = `<span>${rule.icon}</span><div><b>Side quest has arrived: ${rule.label}</b><small>${detail}</small></div><button type="button">Start side quest</button>`;
+      aside.querySelector('button').onclick = () => {
+        window.activeLessonImmersive = { id: scheduled.id, returnScreen: 'journey' };
+        window.activityReturnScreen = 'journey';
+        if (typeof window.launchPathMilestone === 'function') window.launchPathMilestone(scheduled.id, true);
+      };
+      card.querySelector('.mission-complete-actions').before(aside);
+      return result;
+    };
+    window.__kaishi114FinishSessionPatched = true;
+  }
 
   function start() {
     if (window.__kaishi113Started) return;
@@ -353,6 +458,11 @@
       attempts++;
       const lesson=patchMakeSession();
       const checkpoint=patchCheckpointInNext();
+      patchFinishSession();
+
+      if (lesson) {
+        try { window.KaishiRoadmap?.refresh?.(); } catch (_) {}
+      }
 
       if ((lesson && checkpoint) || attempts>120) clearInterval(timer);
     },50);

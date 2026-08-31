@@ -308,7 +308,7 @@ function renderJourneyPathAhead(){
  }).join('')+(total>current+HORIZON?'<li class="path-ahead-item more">More lessons ahead</li>':'');
 }
 const ACTIVITY_VILLAGE_CONFIG={
- vocabulary:{cost:0,words:0,action:'Enter Village',theme:'village'},
+ vocabulary:{cost:0,words:0,action:'Start path',theme:'path'},
  kana:{cost:0,words:0,action:'Cross the Bridge',theme:'bridge'},
  picture:{cost:100,words:8,action:'Restore Meadow',theme:'meadow'},
  listening:{cost:150,words:12,action:'Open Listening Station',theme:'station'},
@@ -323,7 +323,7 @@ const ACTIVITY_VILLAGE_CONFIG={
  battle:{cost:650,words:55,action:'Open Memory Dojo',theme:'dojo'}
 };
 const PATH_MILESTONES=[
- {id:'vocabulary',icon:'🌱',title:'Starting Village',activity:'Vocabulary Study',japanese:'単語学習',description:'Meet your first words and build the memory links that power every later activity.',requirement:'Available from the beginning.'},
+ {id:'vocabulary',icon:'🌱',title:'First Steps',activity:'Vocabulary Study',japanese:'単語学習',description:'Meet your first words and build the memory links that power every later activity.',requirement:'Available from the beginning.'},
  {id:'kana',icon:'あ',title:'Kana Bridge',activity:'Hiragana & Katakana',japanese:'かな学習',description:'Strengthen the sounds and scripts that make Japanese easier to read.',requirement:'Available from the beginning.'},
  {id:'picture',icon:'🌄',title:'Picture Meadow',activity:'Picture Matching',japanese:'絵合わせ',description:'Connect complete mnemonic scenes to the words they represent.',requirement:'Introduce 5 vocabulary words.'},
  {id:'listening',icon:'🎧',title:'Listening Station',activity:'Listen → Meaning',japanese:'聞き取り',description:'Recognise familiar Japanese by sound before seeing the answer.',requirement:'Practise listening with 8 words.'},
@@ -945,11 +945,16 @@ function showJourneySessionPreview(title='Your Japanese learning session'){
  const newWords=words.filter(word=>Number(pFor(word.id).stage||0)===0),reviewWords=words.filter(word=>Number(pFor(word.id).stage||0)>0);
  const renderWords=list=>list.length?`<div class="journey-session-words">${list.map(word=>`<span><b lang="ja">${esc(word.word)}</b><small>${esc(word.meaning)}</small></span>`).join('')}</div>`:'<p class="muted">None in this session.</p>';
  $('#journeySessionPreviewTitle').textContent=title;
- const matchingConversation=conversations.find((item,itemIndex)=>conversationUnlocked(itemIndex)&&item.turns?.some(turn=>words.some(word=>word.word===turn.targetWord||word.reading===turn.targetWord)));
- const matchingManga=mangaStories.find(story=>story.panels?.some(panel=>words.some(word=>`${word.word}|${word.reading}`===panel.targetKey)));
- const contextHtml=(matchingConversation||matchingManga)?`<section class="journey-context-options"><h3>Use these words in context</h3><p>Immersive activities are optional and only appear when the current lesson has suitable content.</p><div class="journey-context-actions">${matchingConversation?`<button type="button" data-lesson-immersive="conversation">💬 Conversation · ${esc(matchingConversation.title)}</button>`:''}${matchingManga?`<button type="button" data-lesson-immersive="manga">📖 Manga · choose a story</button>`:''}</div></section>`:'';
+ const chapter=activeVocabularyChapter??currentWordChapterIndex();
+ let scheduledSideQuest=null;
+ try{
+  const schedule=window.KaishiActivitySchedule?.scheduleForLesson?.(chapter,currentWordChapterIndex(),chapterWords(chapter),{introduced:Number(vocab.filter(wordIntroduced).length)});
+  const id=schedule?.sideQuests?.[0],rule=window.KaishiActivitySchedule?.ruleFor?.(id);
+  if(id&&rule?.position==='entry')scheduledSideQuest={id,rule,detail:window.KaishiActivitySchedule.sideQuestDetail(id,words)};
+ }catch(_){}
+ const contextHtml=scheduledSideQuest?`<section class="journey-context-options lesson-side-quest-preview"><h3>${esc(scheduledSideQuest.rule.icon)} Scheduled side quest</h3><p>${esc(scheduledSideQuest.detail||'A short immersive detour fitted to this lesson.')}</p><div class="journey-context-actions"><button type="button" data-lesson-immersive="${esc(scheduledSideQuest.id)}">Start ${esc(scheduledSideQuest.rule.label)}</button></div></section>`:'';
  $('#journeySessionPreviewContent').innerHTML=`<p>Here is the small set Sensei selected for this session.</p><section><h3>New words <b>${newWords.length}</b></h3>${renderWords(newWords)}</section><section><h3>Reviews <b>${reviewWords.length}</b></h3>${renderWords(reviewWords)}</section>${contextHtml}`;
- document.querySelectorAll('[data-lesson-immersive]').forEach(button=>button.onclick=()=>{const id=button.dataset.lessonImmersive;activeLessonImmersive={id,returnScreen:'journey'};activityReturnScreen='journey';dialog.close();if(id==='conversation'&&matchingConversation)startConversation(matchingConversation);else if(id==='manga')openMangaLibrary();});
+ document.querySelectorAll('[data-lesson-immersive]').forEach(button=>button.onclick=()=>{const id=button.dataset.lessonImmersive;activeLessonImmersive={id,returnScreen:'journey'};activityReturnScreen='journey';dialog.close();launchPathMilestone(id,true);});
  if(!dialog.open)dialog.showModal();
 }
 function beginJourneySession(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();show('study');renderCurrent()}

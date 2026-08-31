@@ -1,9 +1,9 @@
 {
-  "version":"11.25.6",
+  "version":"11.25.14",
   "released":"2026-08-31",
-  "title":"Next lesson now unlocks immediately, not the following day",
+  "title":"Immersive side quests now follow the learning path",
   "changes":[
-    "ensureDailyJourneyRoute() used to only regenerate the daily route when the calendar date changed, so even after a lesson was fully completed the next one wouldn't appear until the next day. That was never the intended design: only per-word mastery review is meant to be paced day-to-day (via normal spaced-repetition scheduling). Lesson unlock now happens the moment the current lesson is complete, same day, by also regenerating whenever the underlying current chapter has advanced \u2014 not just on a date change.",
-    "This also resolves the last inconsistency from v11.25.5: journey.js's timeline and the app's own daily-mission route now agree on which lesson is current, in every case, not just the day-rollover case."
+    "The roadmap indicator now selects the next distinctive immersive event and states how many lessons remain. It avoids repeatedly promoting the same activity when another event is available.",
+    "Roadmap lessons now display an arrived event badge. Conversation, Grammar, Manga, Karuta, Theatre, and SRS Battle are scheduled as single path side quests with lesson entry or exit hand-offs instead of relying on the retired free-practice village grid."
   ]
 }
