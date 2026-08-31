@@ -347,6 +347,19 @@
         opacity:.78;
       }
 
+      .kq-unified-event {
+        display:inline-flex;
+        align-items:center;
+        gap:5px;
+        margin-top:9px;
+        padding:4px 10px;
+        border-radius:999px;
+        font-size:.74rem;
+        font-weight:800;
+        background:rgba(234,179,8,.14);
+        color:#92400e;
+      }
+
       .kq-unified-actions {
         display:flex;
         flex-wrap:wrap;
@@ -826,6 +839,23 @@
 
     let actions = '';
 
+    // v11.25.4: additive-only. Looks up a mapped roadmap event (milestone /
+    // activity / topic change) for this future lesson's chapter and shows
+    // it as a small badge. Reads window.KaishiRoadmap.get(), which is
+    // already-computed/cached by the time this runs in the vast majority
+    // of cases — no new render loop, no observer, no extra state, nothing
+    // that touches Continue/retry/completion or the card's own buttons.
+    let eventBadge = '';
+    if (item.type === 'future') {
+      try {
+        const roadmap = window.KaishiRoadmap?.get?.();
+        const match = roadmap?.lessons?.find(lesson => lesson.chapterIndex === item.chapter);
+        if (match?.event) {
+          eventBadge = `<span class="kq-unified-event">${esc(match.event.icon || '✨')} ${esc(match.event.label)}</span>`;
+        }
+      } catch (_) {}
+    }
+
     if (item.type === 'past') {
       actions = `
         <div class="kq-unified-actions">
@@ -892,6 +922,7 @@
           <span class="kq-unified-label">${label}</span>
           <strong class="kq-unified-title">${esc(item.title)}</strong>
           <p class="kq-unified-detail">${esc(item.detail)}</p>
+          ${eventBadge}
           ${actions}
         </div>
       </article>
@@ -1022,6 +1053,11 @@
   function renderAfterNavigation() {
     requestAnimationFrame(() => requestAnimationFrame(render));
   }
+
+  // Exposed so roadmap-engine.js can ask for a resync after it finishes
+  // its first computation (render() itself is a safe no-op when the
+  // Journey screen isn't the active one — see the guard at its top).
+  window.KaishiJourneyRender = render;
 
   function init() {
     addStyles();

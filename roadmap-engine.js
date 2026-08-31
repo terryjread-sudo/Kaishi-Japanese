@@ -252,6 +252,9 @@
     try {
       if (typeof window.renderJourneyPathAhead === 'function') window.renderJourneyPathAhead();
     } catch (_) {}
+    try {
+      if (typeof window.KaishiJourneyRender === 'function') window.KaishiJourneyRender();
+    } catch (_) {}
   };
 
   let cached = null;
