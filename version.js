@@ -1,7 +1,7 @@
- 'use strict';
+'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.21';
+var APP_VERSION = '11.25.22';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -41,10 +41,29 @@ try {
       document.head.appendChild(script);
     };
 
+    const loadJourneySourceFixes = () => {
+      if (window.__kaishiJourneySourceFixesLoaded ||
+          document.querySelector('script[data-kaishi-journey-source-fixes]')) {
+        loadLearningPlanSettings();
+        return;
+      }
+
+      window.__kaishiJourneySourceFixesLoaded = true;
+      const script = document.createElement('script');
+      script.src = './journey-source-fixes.js?v=' + encodeURIComponent(APP_VERSION);
+      script.setAttribute('data-kaishi-journey-source-fixes', 'true');
+      script.onload = loadLearningPlanSettings;
+      script.onerror = () => {
+        window.__kaishiJourneySourceFixesLoaded = false;
+        loadLearningPlanSettings();
+      };
+      document.head.appendChild(script);
+    };
+
     const loadKeyEvents = () => {
       if (window.__kaishiJourneyKeyEventsLoaded ||
           document.querySelector('script[data-kaishi-journey-key-events]')) {
-        loadLearningPlanSettings();
+        loadJourneySourceFixes();
         return;
       }
 
@@ -52,8 +71,8 @@ try {
       const script = document.createElement('script');
       script.src = './journey-key-events.js?v=' + encodeURIComponent(APP_VERSION);
       script.setAttribute('data-kaishi-key-events', 'true');
-      script.onload = loadLearningPlanSettings;
-      script.onerror = loadLearningPlanSettings;
+      script.onload = loadJourneySourceFixes;
+      script.onerror = loadJourneySourceFixes;
       document.head.appendChild(script);
     };
 
