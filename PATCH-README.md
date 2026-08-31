@@ -1,31 +1,29 @@
-# Kaishi Quest v11.25.8 patch
+# Kakashi Web v11.25.9 patch
 
-**Base:** v11.25.7
+Base: v11.25.8
+
+## Purpose
+Adjust lesson completeness so a strong lesson does not require a long tail of
+tiny percentage increases before reaching mastery pending.
+
+A learner who performs strongly in the lesson, especially on lesson recognition
+and active recall, is treated as ready for consolidation and can reach 100%
+after roughly two strong spaced reviews.
+
+Learners with weaker lesson evidence can take up to roughly four good reviews.
+
+## Behaviour
+- Does not change SRS scheduling.
+- Does not change individual word mastery rules.
+- Does not add a second review counter.
+- Uses the existing `progress[*].reps` and skill metrics.
+- Keeps optional immersive activities from becoming an artificial completion
+  blocker.
+- Refreshes Journey/roadmap rendering after progress saves.
 
 ## Install
+Drop `patch-11.25.9.js` and this README into the repository alongside the
+existing 11.25.7/11.25.8 patches, following the repo's existing patch-loader
+convention.
 
-Drop these two files into the repository root, replacing the existing `version.js` and adding/replacing `patch-11.25.8.js`:
-
-- `version.js`
-- `patch-11.25.8.js`
-
-Keep the existing v11.25.7 files in place unless `patch-11.25.8.js` is replacing the patch file you were using for the checkpoint UX.
-
-## Checkpoint UX fix
-
-The v11.25.7 approach tried to suppress the checkpoint dialog after it had been opened. v11.25.8 does **not** do that.
-
-Instead, it patches the lesson's `next()` checkpoint branch itself:
-
-1. The existing checkpoint condition is still reached.
-2. `saveMissionResume()` runs automatically.
-3. A small, non-blocking **Saving progress** bubble appears for about 1.6 seconds.
-4. The checkpoint decision dialog is never opened.
-5. The lesson continues immediately.
-6. Normal exit/resume protection remains unchanged.
-
-The patch searches the runtime `next()` function for the actual `CHECKPOINT_INTERVAL` branch and replaces only that branch's UI action with automatic save + notification. It fails closed if that expected checkpoint branch cannot be identified.
-
-## Version
-
-`11.25.8`
+This patch is intended to sit on top of v11.25.8.
