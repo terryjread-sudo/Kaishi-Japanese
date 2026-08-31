@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.16';
+var APP_VERSION = '11.25.17';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -62,12 +62,12 @@ try {
     };
 
     const loadLessonPatch = () => {
-      if (window.__kaishi112513Loaded || document.querySelector('script[data-kaishi-lesson-source]')) return;
-      window.__kaishi112513Loaded = true;
+      if (window.__kaishi112517Loaded || document.querySelector('script[data-kaishi-112517]')) return;
+      window.__kaishi112517Loaded = true;
       const patch = document.createElement('script');
-      patch.src = './patch-11.25.7.js?v=' + encodeURIComponent(APP_VERSION);
-      patch.setAttribute('data-kaishi-lesson-source', 'true');
-      patch.onerror = () => { window.__kaishi112513Loaded = false; };
+      patch.src = './patch-11.25.17.js?v=' + encodeURIComponent(APP_VERSION);
+      patch.setAttribute('data-kaishi-112517', 'true');
+      patch.onerror = () => { window.__kaishi112517Loaded = false; };
       document.head.appendChild(patch);
     };
 
