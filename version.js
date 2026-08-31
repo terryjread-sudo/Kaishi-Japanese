@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.12';
+var APP_VERSION = '11.25.13';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -41,60 +41,34 @@ try {
 
             const keyEvents = document.createElement('script');
             keyEvents.src = './journey-key-events.js?v=' + encodeURIComponent(APP_VERSION);
-            keyEvents.setAttribute('data-kaishi-journey-key-events', 'true');
+            keyEvents.setAttribute('data-kaishi-key-events', 'true');
 
-            keyEvents.onload = () => {
-              if (window.__kaishi112512Loaded || document.querySelector('script[data-kaishi-112512]')) return;
-              window.__kaishi112512Loaded = true;
-
-              const patch = document.createElement('script');
-              patch.src = './patch-11.25.12.js?v=' + encodeURIComponent(APP_VERSION);
-              patch.setAttribute('data-kaishi-112512', 'true');
-              patch.onerror = () => { window.__kaishi112512Loaded = false; };
-              document.head.appendChild(patch);
-            };
-
-            keyEvents.onerror = () => {
-              window.__kaishiJourneyKeyEventsLoaded = false;
-              if (window.__kaishi112512Loaded) return;
-              window.__kaishi112512Loaded = true;
-
-              const patch = document.createElement('script');
-              patch.src = './patch-11.25.12.js?v=' + encodeURIComponent(APP_VERSION);
-              patch.setAttribute('data-kaishi-112512', 'true');
-              patch.onerror = () => { window.__kaishi112512Loaded = false; };
-              document.head.appendChild(patch);
-            };
-
+            keyEvents.onload = loadLessonPatch;
+            keyEvents.onerror = loadLessonPatch;
             document.head.appendChild(keyEvents);
           };
 
-          roadAhead.onerror = () => {
-            window.__kaishiRoadAheadLoaded = false;
-            if (window.__kaishi112512Loaded) return;
-            window.__kaishi112512Loaded = true;
-
-            const patch = document.createElement('script');
-            patch.src = './patch-11.25.12.js?v=' + encodeURIComponent(APP_VERSION);
-            patch.setAttribute('data-kaishi-112512', 'true');
-            patch.onerror = () => { window.__kaishi112512Loaded = false; };
-            document.head.appendChild(patch);
-          };
-
+          roadAhead.onerror = loadLessonPatch;
           document.head.appendChild(roadAhead);
         };
 
         roadmapEngine.onload = loadRoadAhead;
-        roadmapEngine.onerror = () => {
-          window.__kaishiRoadmapEngineLoaded = false;
-          loadRoadAhead();
-        };
-
+        roadmapEngine.onerror = loadRoadAhead;
         document.head.appendChild(roadmapEngine);
       };
 
       script.onerror = () => { window.__kaishiUnifiedJourneyLoaded = false; };
       document.head.appendChild(script);
+    };
+
+    const loadLessonPatch = () => {
+      if (window.__kaishi112513Loaded || document.querySelector('script[data-kaishi-lesson-source]')) return;
+      window.__kaishi112513Loaded = true;
+      const patch = document.createElement('script');
+      patch.src = './patch-11.25.7.js?v=' + encodeURIComponent(APP_VERSION);
+      patch.setAttribute('data-kaishi-lesson-source', 'true');
+      patch.onerror = () => { window.__kaishi112513Loaded = false; };
+      document.head.appendChild(patch);
     };
 
     if (document.readyState === 'loading') {

@@ -1,132 +1,209 @@
 'use strict';
 /*
- * Kaishi Quest v11.25.7
- * Journey activity scheduling + automatic lesson checkpoint feedback.
- * Designed as a drop-in patch for v11.25.6.
+ * Kaishi Quest v11.25.13
+ *
+ * This intentionally updates the existing lesson patch source file
+ * (patch-11.25.7.js) rather than adding another overlay patch.
+ *
+ * 1. Lesson activities and roadmap use the same scheduler.
+ * 2. Picture Matching is not injected into every lesson.
+ * 3. Listening remains routine and is not the roadmap headline.
+ * 4. Sentence Understanding / Audio Reflex are opt-in only when a real
+ *    lesson adapter exists; no unsupported skill is fabricated.
+ * 5. SRS Battle remains a Journey Key Event, not a lesson activity.
+ * 6. The fifth-card checkpoint saves silently and continues normally.
+ *    The checkpoint branch is changed at next(), so no dialog is opened
+ *    and no function is left waiting for a dialog result.
  */
 (() => {
-  const PATCH = '11.25.7';
-  const log = (message) => { try { window.kaishiLog?.('patch', `[${PATCH}] ${message}`); } catch (_) {} };
+  const PATCH = '11.25.13';
+  const log = message => {
+    try { window.kaishiLog?.('patch', `[${PATCH}] ${message}`); } catch (_) {}
+  };
 
-  function sceneAvailable(word) {
-    try { return Boolean(word && typeof memoryScenes === 'object' && memoryScenes[sceneKey(word)]?.file); }
-    catch (_) { return false; }
-  }
+  const sceneAvailable = word => {
+    try {
+      return Boolean(word && typeof memoryScenes === 'object' &&
+        memoryScenes[sceneKey(word)]?.file);
+    } catch (_) { return false; }
+  };
 
-  function introducedCountAtChapter(chapterIndex, currentChapterIndex) {
-    const base = Math.max(0, Number(vocab?.filter?.(wordIntroduced)?.length || 0));
-    const currentWords = typeof chapterWords === 'function' ? chapterWords(currentChapterIndex).length : 3;
-    const futureOffset = Math.max(0, chapterIndex - currentChapterIndex);
-    return base + futureOffset * currentWords;
-  }
+  const audioAvailable = word => Boolean(word?.wordAudio);
+
+  const hasAdapter = id => {
+    try {
+      const a = window.KaishiLessonActivities;
+      if (!a) return false;
+      if (id === 'sentence-understanding') return typeof a.sentenceUnderstanding === 'function';
+      if (id === 'audio-reflex') return typeof a.audioReflex === 'function';
+      if (id === 'kanji-gate') return typeof a.kanjiGate === 'function';
+    } catch (_) {}
+    return false;
+  };
 
   /*
-   * Single activity policy. The same registry is used by lesson scheduling
-   * and the roadmap, so an activity cannot be advertised in a different
-   * lesson from the one in which the lesson engine actually places it.
-   *
-   * Core integration is intentionally conservative: picture matching is a
-   * lesson activity because it directly reinforces the lesson's words.
-   * Full immersive experiences remain side quests unless a future activity
-   * explicitly opts into core integration here.
+   * Only activities that have a real lesson renderer can be inserted.
+   * Picture/listening use the application's existing card renderer.
    */
   const ACTIVITY_RULES = [
     {
-      id: 'picture', icon: '🌄', label: 'Picture Matching', unlockWords: 5,
-      core: true, cadence: 1,
+      id:'picture', icon:'🌄', label:'Picture Matching',
+      core:true, roadmap:true, unlockWords:5, cadence:3,
       eligible: words => words.some(sceneAvailable),
-      note: 'uses mnemonic scene art from this lesson',
+      build: (words) => {
+        const target = words.find(sceneAvailable);
+        return target ? {v:target, skill:'picture', pictureMode:'picture-word',
+          activityScheduleId:'picture'} : null;
+      }
     },
     {
-      id: 'listening', icon: '🎧', label: 'Listening', unlockWords: 8,
-      core: true, cadence: 1,
-      eligible: words => words.some(word => Boolean(word?.wordAudio)),
-      note: 'uses audio from this lesson',
+      id:'listening', icon:'🎧', label:'Listening',
+      core:true, roadmap:false, unlockWords:8, cadence:1,
+      eligible: words => words.some(audioAvailable),
+      build: words => {
+        const target = words.find(audioAvailable);
+        return target ? {v:target, skill:'listening', activityScheduleId:'listening'} : null;
+      }
     },
     {
-      id: 'karuta', icon: '🎴', label: 'Karuta Challenge', unlockWords: 12,
-      core: false,
-      eligible: words => words.some(word => Boolean(word?.wordAudio) && sceneAvailable(word)),
-      note: 'available as an optional immersive side quest',
+      id:'sentence-understanding', icon:'📝', label:'Sentence Understanding',
+      core:true, roadmap:true, unlockWords:5, cadence:3,
+      eligible: words => words.length > 0 && hasAdapter('sentence-understanding'),
+      build: words => {
+        try { return window.KaishiLessonActivities.sentenceUnderstanding(words[0], words); }
+        catch (_) { return null; }
+      }
     },
     {
-      id: 'theatre', icon: '🎭', label: 'Theatre', unlockWords: 12,
-      core: false,
-      eligible: () => true,
-      note: 'available as an optional immersive side quest',
+      id:'audio-reflex', icon:'🔊', label:'Audio Reflex Match',
+      core:true, roadmap:true, unlockWords:8, cadence:3,
+      eligible: words => words.some(audioAvailable) && hasAdapter('audio-reflex'),
+      build: words => {
+        try { return window.KaishiLessonActivities.audioReflex(words.find(audioAvailable) || words[0], words); }
+        catch (_) { return null; }
+      }
     },
     {
-      id: 'manga', icon: '📖', label: 'Manga Stories', unlockWords: 25,
-      core: false,
-      eligible: () => true,
-      note: 'available as an optional immersive side quest',
+      id:'karuta', icon:'🎴', label:'Karuta Challenge',
+      core:false, roadmap:true, unlockWords:12,
+      eligible: words => words.some(w => audioAvailable(w) && sceneAvailable(w))
     },
     {
-      id: 'battle', icon: '⚔️', label: 'Kotoba Colosseum', unlockWords: 20,
-      core: false,
-      eligible: () => true,
-      note: 'available as an optional immersive side quest',
+      id:'theatre', icon:'🎭', label:'Theatre',
+      core:false, roadmap:true, unlockWords:12, eligible: () => true
     },
+    {
+      id:'manga', icon:'📖', label:'Manga Stories',
+      core:false, roadmap:true, unlockWords:25, eligible: () => true
+    }
   ];
 
-  function ruleFor(id) { return ACTIVITY_RULES.find(rule => rule.id === id) || null; }
+  const ruleFor = id => ACTIVITY_RULES.find(r => r.id === id) || null;
 
-  function scheduleForLesson(chapterIndex, currentChapterIndex, words, opts = {}) {
-    const introduced = opts.introduced ?? introducedCountAtChapter(chapterIndex, currentChapterIndex);
-    const result = { chapterIndex, lessonNumber: chapterIndex + 1, core: [], sideQuests: [], available: [] };
+  const introducedCountAtChapter = (chapterIndex, currentChapterIndex) => {
+    const base = Math.max(0, Number(vocab?.filter?.(wordIntroduced)?.length || 0));
+    const currentWords = typeof chapterWords === 'function'
+      ? chapterWords(currentChapterIndex).length : 3;
+    return base + Math.max(0, chapterIndex - currentChapterIndex) * currentWords;
+  };
+
+  const scheduleForLesson = (chapterIndex, currentChapterIndex, words, opts = {}) => {
+    const introduced = opts.introduced ??
+      introducedCountAtChapter(chapterIndex, currentChapterIndex);
+
+    const result = {
+      chapterIndex,
+      lessonNumber: chapterIndex + 1,
+      core: [],
+      sideQuests: [],
+      available: []
+    };
+
     ACTIVITY_RULES.forEach(rule => {
-      if (introduced < rule.unlockWords) return;
-      if (!rule.eligible(words)) return;
+      if (introduced < rule.unlockWords || !rule.eligible(words)) return;
       result.available.push(rule.id);
+
       if (rule.core) {
-        /* Core activities recur deterministically. */
         const cadence = Math.max(1, Number(rule.cadence || 1));
-        if ((chapterIndex - (currentChapterIndex + 1)) % cadence === 0 || opts.forceFirst) result.core.push(rule.id);
+        const relative = chapterIndex - (currentChapterIndex + 1);
+        if (relative % cadence === 0 || opts.forceFirst) result.core.push(rule.id);
       } else {
         result.sideQuests.push(rule.id);
       }
     });
+
+    /*
+     * Keep lessons focused. Select at most one distinctive immersive activity.
+     * Listening may accompany it.
+     */
+    const distinctive = result.core.filter(id => ruleFor(id)?.roadmap);
+    if (distinctive.length > 1) {
+      const keep = distinctive[0];
+      result.core = result.core.filter(id => id === keep || id === 'listening');
+    }
+
     return result;
-  }
+  };
 
-  const CORE_INJECTION = `(() => {
-    const chapter = chapterMode ? chapterIndex : currentWordChapterIndex();
-    const lessonWords = typeof chapterWords === 'function' ? chapterWords(chapter) : [];
-    const hasScene = word => { try { return Boolean(word && memoryScenes[sceneKey(word)]?.file); } catch (_) { return false; } };
-    const hasAudio = word => Boolean(word?.wordAudio);
-    const existing = new Set(session.map(item => item?.skill));
-    const additions = [];
-    if (lessonWords.some(hasScene) && !existing.has('picture') && vocab.filter(wordIntroduced).length >= 5) {
-      const target = lessonWords.find(hasScene);
-      if (target) additions.push({ v: target, skill: 'picture', pictureMode: 'picture-word', activityScheduleId: 'picture' });
-    }
-    if (lessonWords.some(hasAudio) && !existing.has('listening') && vocab.filter(wordIntroduced).length >= 8) {
-      const target = lessonWords.find(hasAudio);
-      if (target) additions.push({ v: target, skill: 'listening', activityScheduleId: 'listening' });
-    }
-    const limit = typeof MISSION_CARD_LIMIT === 'number' ? MISSION_CARD_LIMIT : 15;
-    additions.forEach(item => {
-      if (session.length >= limit) session.pop();
-      const position = Math.min(session.length, Math.max(0, Math.floor(session.length * .65)));
-      session.splice(position, 0, item);
-    });
-  })();${marker}`;
+  const buildCard = (id, words) => {
+    const rule = ruleFor(id);
+    if (!rule?.build) return null;
+    try { return rule.build(words); } catch (_) { return null; }
+  };
 
-  /* Patch makeSession at runtime so the patch remains drop-in and doesn't
-     duplicate the large single-file application. */
+  /*
+   * Lesson insertion uses the same schedule as the roadmap.
+   * It never injects Picture Matching solely because scene assets exist.
+   */
   function patchMakeSession() {
-    if (window.__kaishi11257MakeSessionPatched || typeof window.makeSession !== 'function') return Boolean(window.__kaishi11257MakeSessionPatched);
+    if (window.__kaishi113MakeSessionPatched || typeof window.makeSession !== 'function') {
+      return Boolean(window.__kaishi113MakeSessionPatched);
+    }
+
     const original = window.makeSession;
     const source = Function.prototype.toString.call(original);
     const marker = 'clearMissionResume();index=0;current=null;showJourneySessionPreview';
-    if (!source.includes(marker)) { log('makeSession marker not found; lesson scheduler not installed'); return false; }
-    const injection = CORE_INJECTION;
-    const patchedSource = source.replace(marker, injection);
+
+    if (!source.includes(marker)) {
+      log('makeSession marker not found; leaving original lesson builder untouched');
+      return false;
+    }
+
+    const injection = `(() => {
+      try {
+        const chapter = chapterMode ? chapterIndex : currentWordChapterIndex();
+        const lessonWords = typeof chapterWords === 'function' ? chapterWords(chapter) : [];
+        const introduced = Number(vocab?.filter?.(wordIntroduced)?.length || 0);
+        const schedule = window.KaishiActivitySchedule.scheduleForLesson(
+          chapter, currentWordChapterIndex(), lessonWords,
+          { introduced, forceFirst: false }
+        );
+
+        const existing = new Set(session.map(item => item?.activityScheduleId || item?.skill));
+        const additions = [];
+
+        for (const id of schedule.core) {
+          if (existing.has(id)) continue;
+          const card = window.KaishiActivitySchedule.buildCard(id, lessonWords);
+          if (card) additions.push(card);
+        }
+
+        additions.forEach(item => {
+          const limit = typeof MISSION_CARD_LIMIT === 'number' ? MISSION_CARD_LIMIT : 15;
+          if (session.length >= limit) session.pop();
+          const position = Math.min(session.length, Math.max(0, Math.floor(session.length * .65)));
+          session.splice(position, 0, item);
+        });
+      } catch (error) {
+        try { window.kaishiLog?.('patch','[11.25.13] activity insertion failed: '+(error?.message||error)); } catch (_) {}
+      }
+    })();${marker}`;
+
     try {
-      const patched = (0, eval)(`(${patchedSource})`);
+      const patched = (0, eval)(`(${source.replace(marker, injection)})`);
       window.makeSession = patched;
-      window.__kaishi11257MakeSessionPatched = true;
-      log('makeSession patched');
+      window.__kaishi113MakeSessionPatched = true;
+      log('lesson scheduler updated');
       return true;
     } catch (error) {
       log(`makeSession patch failed: ${error?.message || error}`);
@@ -134,81 +211,26 @@
     }
   }
 
-  function patchRoadmap() {
-    const roadmap = window.KaishiRoadmap;
-    if (!roadmap || roadmap.__kaishi11257Patched || typeof roadmap.refresh !== 'function') return false;
-    const originalGet = roadmap.get;
-    function build() {
-      try {
-        const current = Math.max(0, Number(currentWordChapterIndex?.() || 0));
-        const total = Math.max(1, Number(wordChapterCount?.() || 1));
-        const horizon = 10;
-        const lessons = [];
-        let previousTopicId = null;
-        for (let chapter = current + 1; chapter < Math.min(total, current + 1 + horizon); chapter++) {
-          const words = chapterWords(chapter);
-          if (!words.length) break;
-          const introduced = introducedCountAtChapter(chapter, current);
-          const schedule = scheduleForLesson(chapter, current, words, { introduced });
-          const topic = words[0] ? topicForWord(words[0]) : null;
-          const stats = chapterStats(chapter);
-          let event = null;
-          if (schedule.core.length) {
-            const id = schedule.core[0], rule = ruleFor(id);
-            event = { type: 'activity', id, icon: rule.icon, label: rule.label, selectionBased: false, estimated: false };
-          } else if (schedule.sideQuests.length) {
-            const id = schedule.sideQuests[0], rule = ruleFor(id);
-            event = { type: 'sideQuest', id, icon: rule.icon, label: rule.label, selectionBased: true, estimated: true, note: rule.note };
-          } else if (topic && previousTopicId !== null && topic.id !== previousTopicId) {
-            event = { type: 'topic', id: topic.id, icon: topic.icon || '🗺️', label: topic.title, selectionBased: false, estimated: false };
-          }
-          lessons.push({
-            lessonNumber: chapter + 1, chapterIndex: chapter,
-            topicId: topic?.id || null, topicTitle: topic?.title || null, topicIcon: topic?.icon || null,
-            wordCount: words.length, wordMeanings: words.slice(0, 2).map(w => w.meaning).filter(Boolean),
-            completed: Boolean(stats?.complete), contentActivities: schedule.available.map(id => ({
-              id, icon: ruleFor(id)?.icon || '✨', label: ruleFor(id)?.label || id,
-              eligible: true, core: ruleFor(id)?.core === true, reason: ruleFor(id)?.note || ''
-            })), event,
-            coreActivities: schedule.core, sideQuests: schedule.sideQuests,
-          });
-          if (topic) previousTopicId = topic.id;
-        }
-        return { schemaVersion: 2, horizon, currentLesson: current, totalLessons: total, lessons,
-          events: lessons.filter(l => l.event).map(l => ({ lessonNumber: l.lessonNumber, ...l.event })), generatedAt: Date.now() };
-      } catch (error) {
-        log(`roadmap build failed: ${error?.message || error}`);
-        return null;
-      }
-    }
-    roadmap.get = () => roadmap.__kaishi11257Cache || build() || (typeof originalGet === 'function' ? originalGet() : null);
-    roadmap.refresh = () => {
-      const built = build();
-      if (!built) return typeof originalGet === 'function' ? originalGet() : null;
-      roadmap.__kaishi11257Cache = built;
-      try { meta.journeyRoadmap = { schemaVersion: built.schemaVersion, horizon: built.horizon, currentLesson: built.currentLesson, totalLessons: built.totalLessons, events: built.events, generatedAt: built.generatedAt }; save(false); } catch (_) {}
-      try { window.renderJourneyPathAhead?.(); } catch (_) {}
-      return built;
-    };
-    roadmap.__kaishi11257Patched = true;
-    roadmap.refresh();
-    log('roadmap scheduler patched');
-    return true;
-  }
-
-  function savingBubble() {
+  /*
+   * Fifth-card checkpoint.
+   * Patch the checkpoint branch itself rather than suppressing dialog.showModal().
+   * This is the critical freeze fix.
+   */
+  const savingBubble = () => {
     let bubble = document.getElementById('kaishiSavingProgress');
     if (!bubble) {
       bubble = document.createElement('div');
       bubble.id = 'kaishiSavingProgress';
-      bubble.setAttribute('role', 'status');
-      bubble.setAttribute('aria-live', 'polite');
-      bubble.textContent = 'Saving progress';
+      bubble.setAttribute('role','status');
+      bubble.setAttribute('aria-live','polite');
       Object.assign(bubble.style, {
-        position:'fixed', left:'50%', bottom:'24px', transform:'translateX(-50%)',
-        zIndex:'2147483647', padding:'10px 16px', borderRadius:'999px',
-        background:'rgba(15,23,42,.94)', color:'#fff', font:'600 14px system-ui,sans-serif',
-        boxShadow:'0 8px 30px rgba(0,0,0,.22)', opacity:'0', transition:'opacity .18s ease',
+        position:'fixed', left:'50%', bottom:'24px',
+        transform:'translateX(-50%)', zIndex:'2147483647',
+        padding:'10px 16px', borderRadius:'999px',
+        background:'rgba(15,23,42,.94)', color:'#fff',
+        font:'600 14px system-ui,sans-serif',
+        boxShadow:'0 8px 30px rgba(0,0,0,.22)',
+        opacity:'0', transition:'opacity .18s ease',
         pointerEvents:'none'
       });
       document.body.appendChild(bubble);
@@ -216,46 +238,129 @@
     bubble.textContent = 'Saving progress';
     bubble.style.opacity = '1';
     clearTimeout(bubble.__timer);
-    bubble.__timer = setTimeout(() => { bubble.style.opacity = '0'; }, 1600);
-  }
+    bubble.__timer = setTimeout(() => bubble.style.opacity='0', 1500);
+  };
 
-  function patchCheckpointDialog() {
-    if (window.__kaishi11257CheckpointPatched) return true;
-    if (!window.HTMLDialogElement?.prototype?.showModal) return false;
-    const native = HTMLDialogElement.prototype.showModal;
-    HTMLDialogElement.prototype.showModal = function(...args) {
-      if (this.id === 'missionCheckpointDialog') {
-        try { savingBubble(); } catch (_) {}
-        /* saveMissionResume() has already run in next() immediately before
-           this dialog is requested, so suppressing the dialog is safe. */
-        return;
+  function findCheckpointBlocks(source) {
+    const hits = [];
+    let from = 0;
+
+    while (true) {
+      const idx = source.indexOf('CHECKPOINT_INTERVAL', from);
+      if (idx < 0) break;
+
+      let pos = idx;
+      while (pos >= 0) {
+        const ifIdx = source.lastIndexOf('if', pos);
+        if (ifIdx < 0) break;
+
+        const open = source.indexOf('(', ifIdx + 2);
+        if (open < 0 || open > idx) { pos = ifIdx - 1; continue; }
+
+        let depth = 0, close = -1, quote = null, escaped = false;
+        for (let i=open; i<source.length; i++) {
+          const ch=source[i];
+          if (quote) {
+            if (escaped) escaped=false;
+            else if (ch==='\\\\') escaped=true;
+            else if (ch===quote) quote=null;
+            continue;
+          }
+          if (ch==='\"'||ch===\"'\"||ch==='`') { quote=ch; continue; }
+          if (ch==='(') depth++;
+          else if (ch===')' && --depth===0) { close=i; break; }
+        }
+
+        if (close > idx && source.slice(open+1,close).includes('CHECKPOINT_INTERVAL')) {
+          let bodyStart=close+1;
+          while (/\\s/.test(source[bodyStart]||'')) bodyStart++;
+
+          if (source[bodyStart]==='{') {
+            let bdepth=0, bodyEnd=-1, q=null, esc=false;
+            for (let i=bodyStart;i<source.length;i++) {
+              const ch=source[i];
+              if(q){
+                if(esc) esc=false;
+                else if(ch==='\\\\') esc=true;
+                else if(ch===q) q=null;
+                continue;
+              }
+              if(ch==='\"'||ch===\"'\"||ch==='`'){q=ch;continue;}
+              if(ch==='{') bdepth++;
+              else if(ch==='}' && --bdepth===0){bodyEnd=i;break;}
+            }
+            if(bodyEnd>bodyStart) hits.push({bodyStart,bodyEnd});
+          }
+          break;
+        }
+        pos=ifIdx-1;
       }
-      return native.apply(this, args);
-    };
-    window.__kaishi11257CheckpointPatched = true;
-    return true;
+      from=idx+'CHECKPOINT_INTERVAL'.length;
+    }
+    return [...new Map(hits.map(h=>[h.bodyStart,h])).values()];
   }
 
-  function start() {
-    if (window.__kaishi11257Started) return;
-    window.__kaishi11257Started = true;
-    patchCheckpointDialog();
-    let attempts = 0;
-    const timer = setInterval(() => {
-      attempts++;
-      const made = patchMakeSession();
-      patchRoadmap();
-      if ((made && window.KaishiRoadmap?.__kaishi11257Patched) || attempts > 120) clearInterval(timer);
-    }, 50);
-  }
+  function patchCheckpointInNext() {
+    if (window.__kaishi113CheckpointPatched || typeof window.next !== 'function') {
+      return Boolean(window.__kaishi113CheckpointPatched);
+    }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
-  else start();
+    const source = Function.prototype.toString.call(window.next);
+    if (!source.includes('CHECKPOINT_INTERVAL')) {
+      log('next() has no checkpoint interval; checkpoint patch not installed');
+      return false;
+    }
+
+    const hits = findCheckpointBlocks(source);
+    if (!hits.length) {
+      log('checkpoint condition found but checkpoint block could not be located');
+      return false;
+    }
+
+    let patchedSource = source;
+    hits.sort((a,b)=>b.bodyStart-a.bodyStart).forEach(hit => {
+      patchedSource =
+        patchedSource.slice(0,hit.bodyStart) +
+        '{ saveMissionResume(); savingBubble(); }' +
+        patchedSource.slice(hit.bodyEnd+1);
+    });
+
+    try {
+      window.next = (0,eval)(`(${patchedSource})`);
+      window.__kaishi113CheckpointPatched = true;
+      log(`checkpoint branch updated: ${hits.length} save point(s) now save silently`);
+      return true;
+    } catch(error) {
+      log(`checkpoint source update failed: ${error?.message||error}`);
+      return false;
+    }
+  }
 
   window.KaishiActivitySchedule = {
     version: PATCH,
     rules: ACTIVITY_RULES,
-    scheduleForLesson,
     ruleFor,
+    scheduleForLesson,
+    buildCard
   };
+
+  function start() {
+    if (window.__kaishi113Started) return;
+    window.__kaishi113Started = true;
+
+    let attempts=0;
+    const timer=setInterval(()=>{
+      attempts++;
+      const lesson=patchMakeSession();
+      const checkpoint=patchCheckpointInNext();
+
+      if ((lesson && checkpoint) || attempts>120) clearInterval(timer);
+    },50);
+  }
+
+  if(document.readyState==='loading') {
+    document.addEventListener('DOMContentLoaded',start,{once:true});
+  } else {
+    start();
+  }
 })();
