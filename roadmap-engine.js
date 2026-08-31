@@ -2,7 +2,7 @@
 
 /*
  * Kaishi Quest — Roadmap Engine
- * v11.25.15
+ * v11.25.16
  *
  * The roadmap is read-only and reports the actual lesson schedule.
  * Scheduled side quests and milestones are first-class timeline items.
@@ -43,8 +43,10 @@
   const schedule = (chapterIndex,current,words) => {
     try {
       if (window.KaishiActivitySchedule?.scheduleForLesson) {
+        // Do not freeze the count at zero: the roadmap is a forecast, so the
+        // scheduler must project introductions into each future lesson.
         return window.KaishiActivitySchedule.scheduleForLesson(
-          chapterIndex,current,words,{introduced:0,forceFirst:false}
+          chapterIndex,current,words,{forceFirst:false}
         );
       }
     } catch (_) {}

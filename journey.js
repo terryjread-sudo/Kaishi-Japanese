@@ -985,32 +985,13 @@
     }
 
     const nextEvent = nextImmersiveEvent();
-    let previousChapter = null;
     let markup = '<div class="kq-unified-timeline">';
     if (nextEvent) {
       markup += `<aside class="kq-unified-event kq-unified-next-event" aria-live="polite">${esc(nextEvent.icon || '✨')} <b>Next immersive event: ${esc(nextEvent.label)}</b> · ${nextEvent.steps} lesson${nextEvent.steps === 1 ? '' : 's'} away</aside>`;
     }
 
     data.forEach(item => {
-      if (
-        item.type === 'past' &&
-        item.chapter !== previousChapter &&
-        item.chapter > 0 &&
-        (item.chapter + 1) % 5 === 0
-      ) {
-        markup += `
-          <div class="kq-milestone" data-kq-milestone="milestone-${item.chapter}">
-            <div style="font-size:1.6rem">🏆</div>
-            <div>
-              <strong>Milestone · Lesson ${item.chapter + 1}</strong>
-              <small>Chapter checkpoint reached.</small>
-            </div>
-          </div>
-        `;
-      }
-
       markup += nodeHTML(item);
-      previousChapter = item.chapter;
     });
 
     markup += '</div>';

@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.15';
+var APP_VERSION = '11.25.16';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
