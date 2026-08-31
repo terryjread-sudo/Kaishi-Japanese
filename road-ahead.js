@@ -2,32 +2,19 @@
 
 /*
  * Kaishi Quest — Road Ahead
- * v11.25.0
+ * v11.25.11
  *
- * Two independent floating overlays on the Journey screen:
- *  - Road Ahead bubble (bottom-left): what's coming up, from the rolling
- *    roadmap computed by roadmap-engine.js
- *  - Dashboard button (top-left): returns to the dashboard using the
- *    app's existing show('home') navigation
- *
- * Both are pure overlays. Neither touches the Journey renderer, the DOM
- * structure it owns, or the Continue/retry/completion logic. Neither
- * uses a MutationObserver or polling — visibility is driven by wrapping
- * the existing global show() function once.
+ * The Road Ahead headline deliberately excludes routine activities such
+ * as Listening. Key milestones take priority, followed by distinctive
+ * immersive activities, then the general learning path.
  */
 (() => {
   const BUBBLE_ID = 'kqRoadAheadBubble';
   const DASHBOARD_BTN_ID = 'kqJourneyDashboardBtn';
   const STYLE_ID = 'kqRoadAheadFloatingStyles';
 
-  const log = (category, message) => {
-    try {
-      if (typeof window.kaishiLog === 'function') window.kaishiLog(category, message);
-    } catch (_) {}
-  };
-
-  const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[c]));
 
   const addStyles = () => {
@@ -46,40 +33,22 @@
       #${BUBBLE_ID} .kq-ra-title{font-weight:800;font-size:.82rem;white-space:nowrap;
         overflow:hidden;text-overflow:ellipsis}
       #${BUBBLE_ID} .kq-ra-count{font-size:.72rem;opacity:.68;white-space:nowrap}
-
       #${DASHBOARD_BTN_ID}{position:fixed;left:12px;top:calc(12px + env(safe-area-inset-top,0px));
         z-index:60;padding:8px 13px;border-radius:999px;border:1px solid rgba(0,0,0,.10);
         background:var(--card-bg,#fff);box-shadow:0 4px 14px rgba(0,0,0,.14);
-        font-weight:800;font-size:.82rem;cursor:pointer;pointer-events:auto}
+        font-weight:800;font-size:.82rem;cursor:pointer}
       #${DASHBOARD_BTN_ID}[hidden]{display:none}
-      #${DASHBOARD_BTN_ID}:active{transform:scale(.97)}
-
-      /* The Journey screen's own inline "← Dashboard" button (#journeyBack)
-         is now redundant with the floating one above it and was rendering
-         directly underneath, looking like two stacked buttons. Hide it
-         only once this overlay has actually installed, so it still works
-         as a fallback if this script fails to load. */
       .kq-road-ahead-active #journeyBack{display:none}
-
-      @media(max-width:380px){
-        #${BUBBLE_ID}{max-width:70vw;padding:8px 12px}
-        #${DASHBOARD_BTN_ID}{padding:7px 11px;font-size:.78rem}
-      }
     `;
     document.head.appendChild(style);
   };
 
-  // ---- Road Ahead bubble ----
-  const headlineFor = (roadmap) => {
-    if (!roadmap || !roadmap.lessons.length) return null;
-    const withEvent = roadmap.lessons.find((l) => l.event);
+  const headlineFor = roadmap => {
+    if (!roadmap || !roadmap.lessons?.length) return null;
+
+    const withEvent = roadmap.lessons.find(lesson => lesson.event);
     if (withEvent) {
-      // Both currentLesson and chapterIndex are 0-indexed chapter
-      // positions, so their difference is exactly "lessons from now" —
-      // lessonNumber is 1-indexed display text and must not be mixed in
-      // here (that produced an off-by-one: a lesson 1 away was reported
-      // as "in 2 lessons").
-      const offset = withEvent.chapterIndex - roadmap.currentLesson;
+      const offset = Math.max(1, withEvent.chapterIndex - roadmap.currentLesson);
       return {
         icon: withEvent.event.icon || '✨',
         label: withEvent.event.label,
@@ -87,11 +56,12 @@
         hasEvent: true,
       };
     }
+
     const last = roadmap.lessons[roadmap.lessons.length - 1];
     return {
       icon: '🌱',
       label: 'Learning path continues',
-      offset: last.chapterIndex - roadmap.currentLesson,
+      offset: Math.max(1, last.chapterIndex - roadmap.currentLesson),
       hasEvent: false,
     };
   };
@@ -109,7 +79,7 @@
   };
 
   const renderBubble = () => {
-    const roadmap = typeof window.KaishiRoadmap?.get === 'function' ? window.KaishiRoadmap.get() : null;
+    const roadmap = window.KaishiRoadmap?.get?.();
     const headline = headlineFor(roadmap);
     const bubble = ensureBubble();
 
@@ -129,7 +99,6 @@
     `;
   };
 
-  // ---- Dashboard button ----
   const ensureDashboardButton = () => {
     let btn = document.getElementById(DASHBOARD_BTN_ID);
     if (!btn) {
@@ -149,8 +118,7 @@
     return btn;
   };
 
-  // ---- shared visibility + scheduling ----
-  const setVisible = (visible) => {
+  const setVisible = visible => {
     addStyles();
     const bubble = ensureBubble();
     const btn = ensureDashboardButton();
@@ -176,21 +144,14 @@
     document.documentElement.classList.add('kq-road-ahead-active');
     addStyles();
     schedule();
-    log('journey', 'Road Ahead floating overlays installed (bubble + dashboard button)');
 
-    // Re-render on any click that plausibly changes screen/journey state,
-    // same lightweight delegation pattern used elsewhere in the app —
-    // no MutationObserver, no animation-frame polling loop.
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', event => {
       const target = event.target?.closest?.(
         '#continueJourney,[data-screen="journey"],[data-target="journey"],.journey-nav,#journey button,#journeyBack'
       );
       if (target) schedule();
     }, { passive: true });
 
-    // The single source of truth for "which screen is active" is the
-    // existing global show() function. Wrap it once so both overlays stay
-    // in sync without touching anything it does.
     try {
       if (typeof window.show === 'function' && !window.show.__kqRoadAheadWrapped) {
         const original = window.show;
@@ -206,7 +167,7 @@
   };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', install, { once: true });
+    document.addEventListener('DOMContentLoaded', install, { once:true });
   } else {
     install();
   }
