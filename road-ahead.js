@@ -1,16 +1,16 @@
 'use strict';
 /*
  * Kaishi Quest — Road Ahead
- * v11.25.15
+ * v11.25.19
  *
- * Headline priority tiers:
- *   0 – immersive side quests (karuta, theatre, manga)
- *   1 – distinctive lesson activities (picture, sentence-understanding, …)
- *   2 – milestones
+ * Road Ahead considers:
+ *   0 – immersive side quests
+ *   1 – distinctive lesson activities
+ *   2 – independent Journey Key Events / milestones
  *   3 – topic changes
  *
- * Variety protection: the last-highlighted activity ID is persisted in
- * localStorage so the same type is skipped when an alternative exists.
+ * Key Events are NOT lesson children. Their afterLessonNumber is an
+ * ordering anchor only.
  */
 (() => {
   const BUBBLE_ID = 'kqRoadAheadBubble';
@@ -18,11 +18,10 @@
   const STYLE_ID = 'kqRoadAheadFloatingStyles';
   const VARIETY_KEY = 'kqRoadAheadLastHighlight';
 
-  // Priority tier: lower = more interesting
   const TIER = { sideQuest: 0, activity: 1, milestone: 2, topic: 3 };
 
-  const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  const escapeHTML = value => String(value ?? '').replace(/[&<>\"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'
   }[c]));
 
   const addStyles = () => {
@@ -59,58 +58,131 @@
     try { localStorage.setItem(VARIETY_KEY, JSON.stringify({ id, lessonNumber })); } catch (_) {}
   };
 
+  const lessonCandidates = roadmap => {
+    return (roadmap.lessons || [])
+      .filter(l =>
+        l.chapterIndex > roadmap.currentLesson &&
+        l.event &&
+        l.event.type !== 'topic'
+      )
+      .map(l => ({
+        kind: l.event.type,
+        id: l.event.id,
+        icon: l.event.icon || '✨',
+        label: l.event.label,
+        chapterIndex: l.chapterIndex,
+        lessonNumber: l.lessonNumber,
+        source: 'lesson'
+      }));
+  };
+
+  const keyEventCandidates = roadmap => {
+    return (roadmap.keyEvents || [])
+      .filter(e => {
+        const afterLesson = Number(e.afterLessonNumber);
+        const afterChapter = Number(e.afterChapterIndex);
+        return (Number.isFinite(afterChapter) && afterChapter >= roadmap.currentLesson) ||
+               (Number.isFinite(afterLesson) && afterLesson > roadmap.currentLesson + 0);
+      })
+      .map(e => {
+        const afterLesson = Number.isFinite(Number(e.afterLessonNumber))
+          ? Number(e.afterLessonNumber)
+          : Number(e.afterChapterIndex) + 1;
+        return {
+          kind: 'milestone',
+          id: e.id,
+          icon: e.icon || '⭐',
+          label: e.label || 'Key Event',
+          chapterIndex: Number(e.afterChapterIndex),
+          lessonNumber: afterLesson,
+          source: 'keyEvent'
+        };
+      })
+      .filter(e => Number.isFinite(e.lessonNumber) && e.lessonNumber > roadmap.currentLesson);
+  };
+
+  const topicFallback = roadmap => {
+    const lesson = (roadmap.lessons || []).find(
+      l => l.chapterIndex > roadmap.currentLesson && l.event?.type === 'topic'
+    );
+    if (!lesson) return null;
+    return {
+      kind: 'topic',
+      id: lesson.event.id,
+      icon: lesson.event.icon || '🗺️',
+      label: lesson.event.label,
+      chapterIndex: lesson.chapterIndex,
+      lessonNumber: lesson.lessonNumber,
+      source: 'lesson'
+    };
+  };
+
   const headlineFor = roadmap => {
     if (!roadmap || !roadmap.lessons?.length) return null;
 
-    // Collect all lessons that carry an interesting event (not topic-change only)
-    const candidates = roadmap.lessons
-      // The current lesson may already show an arrived badge. The indicator is
-      // deliberately about the next event still ahead on the path.
-      .filter(l => l.chapterIndex > roadmap.currentLesson && l.event && l.event.type !== 'topic')
-      .sort((a, b) => {
-        // Primary: tier (lower = better)
-        const ta = TIER[a.event.type] ?? 99;
-        const tb = TIER[b.event.type] ?? 99;
-        if (ta !== tb) return ta - tb;
-        // Secondary: proximity (closer = better)
-        return a.chapterIndex - b.chapterIndex;
-      });
+    /*
+     * A Key Event is independent of lessons, but its lesson number is used
+     * solely to express where it sits in the path. This fixes the old Road
+     * Ahead implementation which only inspected lessons[].event.
+     */
+    const candidates = [
+      ...lessonCandidates(roadmap),
+      ...keyEventCandidates(roadmap)
+    ];
 
-    // Also keep any topic events as a last-resort fallback
-    const topicFallback = roadmap.lessons.find(l => l.chapterIndex > roadmap.currentLesson && l.event?.type === 'topic');
+    candidates.sort((a, b) => {
+      const ta = TIER[a.kind] ?? 99;
+      const tb = TIER[b.kind] ?? 99;
+      if (ta !== tb) return ta - tb;
+      return a.lessonNumber - b.lessonNumber;
+    });
 
-    if (!candidates.length && !topicFallback) {
-      // Nothing interesting in horizon — show generic path message
+    const fallback = topicFallback(roadmap);
+
+    if (!candidates.length && !fallback) {
       const last = roadmap.lessons[roadmap.lessons.length - 1];
       return {
         icon: '🌱',
         label: 'Learning path continues',
-        offset: Math.max(1, last.chapterIndex - roadmap.currentLesson),
+        offset: Math.max(1, last.lessonNumber - (roadmap.currentLesson + 1)),
         hasEvent: false,
         eventId: null
       };
     }
 
-    // Variety protection: skip last-highlighted ID when an alternative exists
     const last = readLastHighlight();
-    let chosen = candidates[0] || topicFallback;
+    let chosen = candidates[0] || fallback;
 
     if (last?.id && candidates.length > 1) {
-      const alternative = candidates.find(l => l.event.id !== last.id);
+      const alternative = candidates.find(c => c.id !== last.id);
       if (alternative) chosen = alternative;
-    } else if (last?.id && candidates.length === 1 && candidates[0]?.event?.id === last.id && topicFallback) {
-      // Only one candidate and it's the same as last time — try topic as break
-      chosen = topicFallback;
+    } else if (
+      last?.id &&
+      candidates.length === 1 &&
+      candidates[0]?.id === last.id &&
+      fallback
+    ) {
+      chosen = fallback;
     }
 
-    const offset = Math.max(1, chosen.chapterIndex - roadmap.currentLesson);
+    /*
+     * currentLesson is a zero-based chapter index; candidate lessonNumber is
+     * one-based. Therefore Lesson N+1 is one lesson ahead of chapter N.
+     */
+    const offset = Math.max(
+      1,
+      chosen.lessonNumber - (roadmap.currentLesson + 1) + 1
+    );
+
     return {
-      icon: chosen.event.icon || '✨',
-      label: chosen.event.label,
+      icon: chosen.icon,
+      label: chosen.label,
       offset,
       hasEvent: true,
-      eventId: chosen.event.id,
-      currentLesson: roadmap.currentLesson
+      eventId: chosen.id,
+      currentLesson: roadmap.currentLesson,
+      source: chosen.source,
+      eventType: chosen.kind
     };
   };
 
@@ -146,12 +218,13 @@
       </span>
     `;
 
-    // Persist variety selection so next render rotates to a different activity
     if (headline.hasEvent && headline.eventId) {
-      saveLastHighlight(headline.eventId, (headline.currentLesson || 0) + headline.offset);
+      saveLastHighlight(
+        headline.eventId,
+        (headline.currentLesson || 0) + headline.offset
+      );
     }
   };
-
 
   const ensureDashboardButton = () => {
     let btn = document.getElementById(DASHBOARD_BTN_ID);
@@ -190,7 +263,10 @@
     return Boolean(journey && journey.classList.contains('active'));
   };
 
-  const schedule = () => requestAnimationFrame(() => requestAnimationFrame(() => setVisible(isJourneyActive())));
+  const schedule = () =>
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => setVisible(isJourneyActive()))
+    );
 
   const install = () => {
     if (document.documentElement.dataset.kqRoadAheadInstalled === '1') return;
@@ -205,6 +281,7 @@
       );
       if (target) schedule();
     }, { passive: true });
+
     window.addEventListener('kaishi-roadmap-updated', schedule);
 
     try {
