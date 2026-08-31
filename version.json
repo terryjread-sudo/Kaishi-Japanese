@@ -1,9 +1,9 @@
 {
-  "version":"11.25.14",
+  "version":"11.25.15",
   "released":"2026-08-31",
-  "title":"Immersive side quests now follow the learning path",
+  "title":"Roadmap now foregrounds the next immersive event",
   "changes":[
-    "The roadmap indicator now selects the next distinctive immersive event and states how many lessons remain. It avoids repeatedly promoting the same activity when another event is available.",
-    "Roadmap lessons now display an arrived event badge. Conversation, Grammar, Manga, Karuta, Theatre, and SRS Battle are scheduled as single path side quests with lesson entry or exit hand-offs instead of relying on the retired free-practice village grid."
+    "The canonical Journey timeline now has an explicit next-event indicator, so a topic title such as Introductions & People cannot be mistaken for the upcoming immersive activity.",
+    "The roadmap, floating indicator, and Journey timeline now refresh together whenever the scheduler becomes available or the path changes."
   ]
 }

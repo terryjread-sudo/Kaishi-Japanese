@@ -1,7 +1,7 @@
 'use strict';
 /*
  * Kaishi Quest — Road Ahead
- * v11.25.14
+ * v11.25.15
  *
  * Headline priority tiers:
  *   0 – immersive side quests (karuta, theatre, manga)
@@ -205,6 +205,7 @@
       );
       if (target) schedule();
     }, { passive: true });
+    window.addEventListener('kaishi-roadmap-updated', schedule);
 
     try {
       if (typeof window.show === 'function' && !window.show.__kqRoadAheadWrapped) {

@@ -258,6 +258,24 @@
     return output;
   }
 
+  function nextImmersiveEvent() {
+    try {
+      const roadmap = window.KaishiRoadmap?.get?.();
+      const current = Number(roadmap?.currentLesson);
+      const candidates = (roadmap?.lessons || [])
+        .filter(lesson => lesson.chapterIndex > current && lesson.event && lesson.event.type !== 'topic')
+        .sort((a, b) => a.chapterIndex - b.chapterIndex);
+      const match = candidates[0];
+      if (!match) return null;
+      return {
+        ...match.event,
+        steps: Math.max(1, match.chapterIndex - current)
+      };
+    } catch (_) {
+      return null;
+    }
+  }
+
   function addStyles() {
     if ($('#kqUnifiedJourneyStyles')) return;
 
@@ -858,19 +876,21 @@
 
     let actions = '';
 
-    // v11.25.4: additive-only. Looks up a mapped roadmap event (milestone /
+    // v11.25.14: additive-only. Looks up a mapped roadmap event (milestone /
     // activity / topic change) for this future lesson's chapter and shows
     // it as a small badge. Reads window.KaishiRoadmap.get(), which is
     // already-computed/cached by the time this runs in the vast majority
     // of cases — no new render loop, no observer, no extra state, nothing
     // that touches Continue/retry/completion or the card's own buttons.
     let eventBadge = '';
-    if (item.type === 'future') {
+    if (item.type === 'future' || item.current) {
       try {
         const roadmap = window.KaishiRoadmap?.get?.();
         const match = roadmap?.lessons?.find(lesson => lesson.chapterIndex === item.chapter);
         if (match?.event) {
-          eventBadge = `<span class="kq-unified-event">${esc(match.event.icon || '✨')} ${esc(match.event.label)}</span>`;
+          const steps = Math.max(0, item.chapter - Number(roadmap.currentLesson || 0));
+          const distance = item.current ? 'arrived' : `in ${steps} lesson${steps === 1 ? '' : 's'}`;
+          eventBadge = `<span class="kq-unified-event">${esc(match.event.icon || '✨')} ${esc(match.event.label)} · ${distance}</span>`;
         }
       } catch (_) {}
     }
@@ -964,8 +984,12 @@
       return;
     }
 
+    const nextEvent = nextImmersiveEvent();
     let previousChapter = null;
     let markup = '<div class="kq-unified-timeline">';
+    if (nextEvent) {
+      markup += `<aside class="kq-unified-event kq-unified-next-event" aria-live="polite">${esc(nextEvent.icon || '✨')} <b>Next immersive event: ${esc(nextEvent.label)}</b> · ${nextEvent.steps} lesson${nextEvent.steps === 1 ? '' : 's'} away</aside>`;
+    }
 
     data.forEach(item => {
       if (
@@ -1095,6 +1119,7 @@
     }, true);
 
     window.addEventListener('pageshow', renderAfterNavigation);
+    window.addEventListener('kaishi-roadmap-updated', renderAfterNavigation);
 
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) renderAfterNavigation();
