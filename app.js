@@ -455,8 +455,20 @@ function missionActivityId(){const available=['kana','picture','listening','karu
 function ensureDailyJourneyRoute(){
  refreshPathUnlocks();
  const balanceKey=`${settings.learningBalanceAdaptive!==false?'adaptive':'manual'}:${storedLearningBalance()}:${effectiveLearningBalance()}`;
- if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===5&&meta.dailyJourneyRoute.balanceKey===balanceKey&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
- const chapter=currentWordChapterIndex(),words=chapterWords(chapter),topic=currentTopic();
+ const liveChapter=currentWordChapterIndex();
+ // v11.25.6: the cache used to be keyed on date alone, so once the
+ // current lesson was fully completed (chapterStats().complete — a
+ // same-day-achievable bar, just introduce + review each word twice)
+ // the next lesson still wouldn't appear until the calendar date
+ // rolled over. That was never the intent: only the deeper per-word
+ // mastery track is meant to be paced day-to-day (via each word's own
+ // SRS `due` timestamp in grade() — untouched here). Lesson unlock
+ // should happen as soon as the current one is complete, same day.
+ // Requiring the cached chapter to match the live one closes that gap:
+ // any time chapterUnlocked() has naturally advanced, this regenerates
+ // immediately instead of waiting for a new day.
+ if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===5&&meta.dailyJourneyRoute.balanceKey===balanceKey&&meta.dailyJourneyRoute.chapter===liveChapter&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
+ const chapter=liveChapter,words=chapterWords(chapter),topic=currentTopic();
  const previousCompleted=meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.chapter===chapter?meta.dailyJourneyRoute.completed||[]:[];
  meta.dailyJourneyRoute={schemaVersion:5,date:day(),balanceKey,chapter,completed:previousCompleted,explanation:{chapter,sequence:'One lesson at a time'},steps:[
   {id:`lesson-${chapter}`,kind:'chapter',chapter,topicId:topic.id,icon:topic.icon||'🗺️',title:`Lesson ${chapter+1}: ${words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title}`,detail:`Learn ${words.length} connected word${words.length===1?'':'s'} from ${topic.title}, then strengthen them before the next lesson.`}
