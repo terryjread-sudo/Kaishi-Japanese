@@ -1,68 +1,70 @@
-Kaishi Quest v11.25.5 — Lesson 2 stuck locked, and a silent-do-nothing Conversation chip
-==========================================================================================
+Kaishi Quest v11.25.6 — Next lesson now unlocks immediately, not the following day
+======================================================================================
 
-BASE VERSION: 11.25.4
+BASE VERSION: 11.25.5
 
-Drop these 4 files into the repo root, overwriting the existing ones.
-
-Both bugs fixed here are PRE-EXISTING app logic, unrelated to the Road
-Ahead / roadmap feature work from v11.25.0-11.25.4. Neither is touched
-by anything the roadmap engine or floating overlays do.
+Drop these 3 files into the repo root, overwriting the existing ones.
 
 FILES IN THIS ZIP
 ------------------
-  journey.js     (replace)
   app.js         (replace)
-  version.js     (replace) — version bump to 11.25.5
+  version.js     (replace) — version bump to 11.25.6
   version.json   (replace) — changelog entry
 
-BUG 1: Lesson 2 stays greyed out after finishing lesson 1
-------------------------------------------------------------
-Root cause: journey.js's currentChapter() determines the current lesson
-two ways: (a) look at the daily route's steps for one that isn't
-completed yet, or (b) if none is found (e.g. right after the route's
-single lesson step was just marked complete, before a new one is
-generated), fall back to scanning progress data directly to guess which
-chapter is "current."
+CONFIRMED INTENDED DESIGN (from discussion)
+---------------------------------------------
+- Once a lesson has been completed at least once, the NEXT lesson
+  should be available straight away, same day.
+- Mastery of a lesson's words (repeated practice, spaced review) is
+  meant to pace out day-to-day. That's already how it works, via each
+  word's own SRS `due` timestamp set in grade() — nothing needed there.
 
-That fallback checked `Number(p.reps || 0) > 0` — but the real progress
-model doesn't have a `reps` field anywhere. The app actually tracks
-practice attempts under `p.skills[skill].attempts` (see
-wordPracticeCount in app.js). So the fallback was almost entirely
-relying on `p.stage > 0`, which apparently wasn't enough to reliably
-detect "this chapter's words have been introduced," causing it to get
-stuck reporting the same chapter as current indefinitely.
+WHAT WAS ACTUALLY WRONG
+-------------------------
+ensureDailyJourneyRoute() cached the daily route keyed only on
+`date === day()` (plus a couple of other invalidation keys unrelated to
+progress). So even though currentWordChapterIndex() correctly flips to
+the next chapter the moment the current one hits chapterStats().complete
+(introduce + review each word twice — achievable in one sitting), the
+CACHED route object kept serving the old, now-fully-completed lesson
+until the calendar date actually rolled over. That's what was making
+lesson 2 (and beyond) look unavailable same-day, and it's separate from
+(and was masking/conflicting with) the v11.25.5 journey.js fix, which
+only corrected journey.js's own timeline, not this underlying route
+generator that the rest of the app (the daily-mission UI) still reads.
 
-Fix: the fallback now calls the app's own authoritative
-currentWordChapterIndex() (already used everywhere else — chapterStats,
-chapterUnlocked, the daily route generator all agree with it) instead
-of maintaining a second, independently-drifting implementation. The old
-scan is kept as a last-resort fallback only if that function is
-somehow unavailable.
+THE FIX
+--------
+ensureDailyJourneyRoute()'s cache-hit condition now also requires
+`meta.dailyJourneyRoute.chapter === currentWordChapterIndex()`. Any
+time the live current chapter has moved past what's cached, it
+regenerates immediately — same day, no waiting for `day()` to change.
+Date is still tracked and still triggers regeneration on its own (e.g.
+first open of a new day), this just adds progress advancement as an
+equally valid trigger.
 
-BUG 2: "Conversation · <title>" chip in the session preview does nothing
----------------------------------------------------------------------------
-Root cause: showJourneySessionPreview() in app.js finds a matching
-conversation purely by content — "does any turn in this conversation
-use one of this session's words" — with no check for whether that
-conversation is actually unlocked. startConversation() correctly
-refuses to open a locked conversation (conversations unlock in order,
-each requiring the previous one completed) — but it does so by
-silently returning, with no feedback to the person who tapped it.
+This also means journey.js's v11.25.5 fix and this route generator now
+agree in every case, not just after a day rolls over — the "Your
+Journey" timeline and the app's own daily-mission UI will both reflect
+the new current lesson the moment it's actually unlocked.
 
-Fix: the matching search (conversations.find(...)) now also requires
-conversationUnlocked(itemIndex) to be true, so only a conversation that
-can actually be opened is ever offered as a clickable chip.
+NOTED FOR A FUTURE PATCH (not in this zip)
+---------------------------------------------
+Per the same conversation: conversation/listening-style immersive
+activities should unlock based on vocabulary readiness (most/all of an
+activity's target words already introduced), not purely sequential
+completion of earlier activities as conversationUnlocked() currently
+requires. Not implemented here — flagged for the next patch.
 
 TESTING DONE
 -------------
-- node --check on journey.js and app.js: clean.
+- node --check on app.js: clean.
 - version.json validated as JSON.
-- Traced both root causes by reading the actual functions involved
-  (currentChapter/chapterFromId in journey.js; showJourneySessionPreview/
-  startConversation/conversationUnlocked in app.js) rather than guessing.
+- Traced the exact cache-key logic in ensureDailyJourneyRoute() and
+  confirmed chapterStats()/chapterNaturallyUnlocked()/
+  currentWordChapterIndex() have no date dependency of their own — the
+  date-only cache key was the sole source of the day-delay.
 - NOT tested in an actual browser / against real save data. Please
-  confirm: (1) lesson 2 becomes the current/selectable lesson right
-  after fully completing lesson 1's words+reviews, and (2) a
-  Conversation chip only ever appears when it's actually unlocked, and
-  opens correctly when tapped.
+  confirm: completing a lesson's words+reviews makes the next lesson
+  available immediately, in the same session, without needing to wait
+  until the next day.
