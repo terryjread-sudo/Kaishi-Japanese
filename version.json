@@ -1,10 +1,9 @@
 {
-  "version":"11.25.4",
+  "version":"11.25.5",
   "released":"2026-08-30",
-  "title":"Roadmap events now show on the actual Journey card timeline",
+  "title":"Lesson 2 stuck locked, and a silent-do-nothing Conversation chip",
   "changes":[
-    "The event the Road Ahead bubble reports (e.g. \"Picture Matching in 1 lesson\") now also shows as a badge on that lesson's own card in the \"Your Journey\" timeline — the card-based list with Continue/Preview buttons. Previously the event badge only appeared in a separate, less visible compact list, which is why it looked like the bubble and the timeline disagreed.",
-    "The addition is purely a small badge inside each future lesson's existing card — no changes to Continue/Preview/retry buttons, card structure, or the timeline's render/scroll logic.",
-    "journey.js now exposes window.KaishiJourneyRender so the roadmap engine can ask it to resync after its first computation, the same way it already does for the compact list — so a lesson opened before the roadmap finished loading no longer gets stuck without the badge."
+    "Fixed lesson 2 (and beyond) staying greyed out after finishing lesson 1. journey.js had its own fallback for \"which chapter is current\" that checked a p.reps progress field that isn't part of the real data model, so it under-counted introduced words and could get stuck. It now defers to the app's own authoritative currentWordChapterIndex() instead of maintaining a second, drifting implementation.",
+    "Fixed the session-preview \"Conversation · <title>\" chip sometimes doing nothing when tapped. It was matched purely by whether the conversation used one of the session's words, with no check for whether that conversation was actually unlocked yet — so a locked conversation could be offered as a clickable option that silently no-opped when tapped. It now only offers conversations that are actually unlocked."
   ]
 }

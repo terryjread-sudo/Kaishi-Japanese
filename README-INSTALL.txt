@@ -1,57 +1,68 @@
-Kaishi Quest v11.25.4 — Roadmap events now show on the actual Journey card timeline
-=====================================================================================
+Kaishi Quest v11.25.5 — Lesson 2 stuck locked, and a silent-do-nothing Conversation chip
+==========================================================================================
 
-BASE VERSION: 11.25.3
+BASE VERSION: 11.25.4
 
 Drop these 4 files into the repo root, overwriting the existing ones.
 
+Both bugs fixed here are PRE-EXISTING app logic, unrelated to the Road
+Ahead / roadmap feature work from v11.25.0-11.25.4. Neither is touched
+by anything the roadmap engine or floating overlays do.
+
 FILES IN THIS ZIP
 ------------------
-  journey.js          (replace)
-  roadmap-engine.js   (replace)
-  version.js          (replace) — version bump to 11.25.4
-  version.json        (replace) — changelog entry
+  journey.js     (replace)
+  app.js         (replace)
+  version.js     (replace) — version bump to 11.25.5
+  version.json   (replace) — changelog entry
 
-WHAT WAS FIXED
----------------
-Reported: the Road Ahead bubble says "Picture Matching in 1 lesson," but
-the same event doesn't appear on the timeline.
+BUG 1: Lesson 2 stays greyed out after finishing lesson 1
+------------------------------------------------------------
+Root cause: journey.js's currentChapter() determines the current lesson
+two ways: (a) look at the daily route's steps for one that isn't
+completed yet, or (b) if none is found (e.g. right after the route's
+single lesson step was just marked complete, before a new one is
+generated), fall back to scanning progress data directly to guess which
+chapter is "current."
 
-Root cause: there are two different "future lessons" UI elements in
-this app —
-  1. journey.js's card-based "Your Journey" timeline (Continue/Preview
-     buttons, the one visible in the screenshot) — this is what the
-     user actually looks at and calls "the timeline."
-  2. app.js's separate, less visible "#journeyPathAhead" compact list.
+That fallback checked `Number(p.reps || 0) > 0` — but the real progress
+model doesn't have a `reps` field anywhere. The app actually tracks
+practice attempts under `p.skills[skill].attempts` (see
+wordPracticeCount in app.js). So the fallback was almost entirely
+relying on `p.stage > 0`, which apparently wasn't enough to reliably
+detect "this chapter's words have been introduced," causing it to get
+stuck reporting the same chapter as current indefinitely.
 
-The v11.25.0 patch only added the event badge to #2. journey.js's own
-renderer (#1) was deliberately left untouched at the time, per the
-original implementation plan's instruction not to rewrite the existing
-Journey renderer. That was the right call for anything structural, but
-it also meant the one list people actually look at never got the badge.
+Fix: the fallback now calls the app's own authoritative
+currentWordChapterIndex() (already used everywhere else — chapterStats,
+chapterUnlocked, the daily route generator all agree with it) instead
+of maintaining a second, independently-drifting implementation. The old
+scan is kept as a last-resort fallback only if that function is
+somehow unavailable.
 
-Fix: nodeHTML() in journey.js — the function that builds each lesson's
-card — now looks up window.KaishiRoadmap.get() for future-lesson cards
-only, and if that chapter has a mapped event, renders a small badge
-inside the card (after the existing title/detail, before the existing
-action buttons). Nothing about the card's classes, buttons, retry
-logic, or the timeline's single-DOM-write render() function changed —
-this is the same category of change as the original #journeyPathAhead
-badge: additive only, no new render loop, no observer.
+BUG 2: "Conversation · <title>" chip in the session preview does nothing
+---------------------------------------------------------------------------
+Root cause: showJourneySessionPreview() in app.js finds a matching
+conversation purely by content — "does any turn in this conversation
+use one of this session's words" — with no check for whether that
+conversation is actually unlocked. startConversation() correctly
+refuses to open a locked conversation (conversations unlock in order,
+each requiring the previous one completed) — but it does so by
+silently returning, with no feedback to the person who tapped it.
 
-journey.js also now exposes window.KaishiJourneyRender (its internal
-render function) so roadmap-engine.js can trigger a resync of this
-timeline too, the same way it already does for the compact list — this
-covers the case where Journey was opened before the roadmap had
-finished its first computation.
+Fix: the matching search (conversations.find(...)) now also requires
+conversationUnlocked(itemIndex) to be true, so only a conversation that
+can actually be opened is ever offered as a clickable chip.
 
 TESTING DONE
 -------------
-- node --check on journey.js and roadmap-engine.js: clean.
+- node --check on journey.js and app.js: clean.
 - version.json validated as JSON.
-- Re-ran the Node vm harness for roadmap-engine.js: unaffected (the new
-  window.KaishiJourneyRender call is a defensive no-op when undefined,
-  confirmed in the mock environment where it isn't defined).
-- NOT tested in an actual browser. Please confirm the badge now shows
-  on the correct future lesson's card in "Your Journey," matching what
-  the Road Ahead bubble reports.
+- Traced both root causes by reading the actual functions involved
+  (currentChapter/chapterFromId in journey.js; showJourneySessionPreview/
+  startConversation/conversationUnlocked in app.js) rather than guessing.
+- NOT tested in an actual browser / against real save data. Please
+  confirm: (1) lesson 2 becomes the current/selectable lesson right
+  after fully completing lesson 1's words+reviews, and (2) a
+  Conversation chip only ever appears when it's actually unlocked, and
+  opens correctly when tapped.

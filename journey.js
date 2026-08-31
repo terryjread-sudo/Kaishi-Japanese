@@ -95,6 +95,25 @@
     const fromRoute = chapterFromId(currentStep?.id);
     if (fromRoute != null) return Math.max(0, fromRoute);
 
+    // v11.25.5: this fallback used to re-derive "which chapter is
+    // current" from progress data directly, checking a p.reps field
+    // that isn't actually part of the progress model (the app tracks
+    // practice attempts under p.skills[skill].attempts — see
+    // wordPracticeCount in app.js). That mismatch under-counted
+    // "introduced" words and could get permanently stuck on the same
+    // chapter right after the daily route's single lesson step was
+    // completed (before a new one is generated) — exactly the "lesson
+    // 2 stays greyed out after finishing lesson 1" symptom. Deferring
+    // to the app's own authoritative currentWordChapterIndex() (which
+    // chapterUnlocked()/chapterStats() already agree with everywhere
+    // else in the app) fixes the mismatch at the source instead of
+    // maintaining a second, drifting implementation here.
+    try {
+      if (typeof currentWordChapterIndex === 'function') {
+        return Math.max(0, Math.min(currentWordChapterIndex(), Math.max(0, lessonCount() - 1)));
+      }
+    } catch (_) {}
+
     const allProgress = progressSafe();
     for (let chapter = 0; chapter < lessonCount(); chapter++) {
       const words = lessonWords(chapter);
