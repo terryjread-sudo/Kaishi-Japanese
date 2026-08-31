@@ -1,36 +1,31 @@
-# Kaishi Quest v11.25.7 patch
+# Kaishi Quest v11.25.8 patch
 
-Base: **v11.25.6**
+**Base:** v11.25.7
 
 ## Install
-Drop these files into the repository root and replace the existing `version.js`:
+
+Drop these two files into the repository root, replacing the existing `version.js` and adding/replacing `patch-11.25.8.js`:
 
 - `version.js`
-- `patch-11.25.7.js`
+- `patch-11.25.8.js`
 
-Do not delete or replace `app.js`, `roadmap-engine.js`, or `journey.js`.
+Keep the existing v11.25.7 files in place unless `patch-11.25.8.js` is replacing the patch file you were using for the checkpoint UX.
 
-## Changes
+## Checkpoint UX fix
 
-### Journey activity scheduling
-A shared activity registry now drives both lesson integration and the roadmap. This prevents the roadmap from advertising an activity in a different lesson from the one in which the lesson engine schedules it.
+The v11.25.7 approach tried to suppress the checkpoint dialog after it had been opened. v11.25.8 does **not** do that.
 
-- Picture Matching is a core lesson activity once its unlock requirement is reached and the lesson has mnemonic scene art.
-- Listening can be integrated when the lesson has audio-backed words.
-- Karuta, Theatre, Manga and Battle are treated as optional immersive side quests rather than silently forced into the core lesson.
-- The scheduling rules apply across the journey, not only Lesson 2.
-- The roadmap reports the same scheduled activity/side-quest state.
+Instead, it patches the lesson's `next()` checkpoint branch itself:
 
-### Automatic progress saving
-The existing checkpoint save remains in place, but the checkpoint confirmation dialog is suppressed.
+1. The existing checkpoint condition is still reached.
+2. `saveMissionResume()` runs automatically.
+3. A small, non-blocking **Saving progress** bubble appears for about 1.6 seconds.
+4. The checkpoint decision dialog is never opened.
+5. The lesson continues immediately.
+6. Normal exit/resume protection remains unchanged.
 
-- Progress is saved automatically at the existing checkpoint.
-- A temporary **Saving progress** bubble is shown.
-- The learner is not asked whether to continue or save.
-- Existing exit/resume saving remains intact.
+The patch searches the runtime `next()` function for the actual `CHECKPOINT_INTERVAL` branch and replaces only that branch's UI action with automatic save + notification. It fails closed if that expected checkpoint branch cannot be identified.
 
-### Version
-`11.25.7`
+## Version
 
-## Safety
-The patch is additive and runtime-based so the existing large `app.js` remains untouched. If the runtime patch cannot find the expected v11.25.6 `makeSession` marker, it fails closed for lesson scheduling rather than rewriting unrelated code.
+`11.25.8`
