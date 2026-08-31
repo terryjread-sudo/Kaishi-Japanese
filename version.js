@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.11';
+var APP_VERSION = '11.25.12';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -42,19 +42,43 @@ try {
             const keyEvents = document.createElement('script');
             keyEvents.src = './journey-key-events.js?v=' + encodeURIComponent(APP_VERSION);
             keyEvents.setAttribute('data-kaishi-journey-key-events', 'true');
-            keyEvents.onerror = () => { window.__kaishiJourneyKeyEventsLoaded = false; };
+
+            keyEvents.onload = () => {
+              if (window.__kaishi112512Loaded || document.querySelector('script[data-kaishi-112512]')) return;
+              window.__kaishi112512Loaded = true;
+
+              const patch = document.createElement('script');
+              patch.src = './patch-11.25.12.js?v=' + encodeURIComponent(APP_VERSION);
+              patch.setAttribute('data-kaishi-112512', 'true');
+              patch.onerror = () => { window.__kaishi112512Loaded = false; };
+              document.head.appendChild(patch);
+            };
+
+            keyEvents.onerror = () => {
+              window.__kaishiJourneyKeyEventsLoaded = false;
+              if (window.__kaishi112512Loaded) return;
+              window.__kaishi112512Loaded = true;
+
+              const patch = document.createElement('script');
+              patch.src = './patch-11.25.12.js?v=' + encodeURIComponent(APP_VERSION);
+              patch.setAttribute('data-kaishi-112512', 'true');
+              patch.onerror = () => { window.__kaishi112512Loaded = false; };
+              document.head.appendChild(patch);
+            };
+
             document.head.appendChild(keyEvents);
           };
 
           roadAhead.onerror = () => {
             window.__kaishiRoadAheadLoaded = false;
-            if (window.__kaishiJourneyKeyEventsLoaded || document.querySelector('script[data-kaishi-journey-key-events]')) return;
-            window.__kaishiJourneyKeyEventsLoaded = true;
-            const keyEvents = document.createElement('script');
-            keyEvents.src = './journey-key-events.js?v=' + encodeURIComponent(APP_VERSION);
-            keyEvents.setAttribute('data-kaishi-journey-key-events', 'true');
-            keyEvents.onerror = () => { window.__kaishiJourneyKeyEventsLoaded = false; };
-            document.head.appendChild(keyEvents);
+            if (window.__kaishi112512Loaded) return;
+            window.__kaishi112512Loaded = true;
+
+            const patch = document.createElement('script');
+            patch.src = './patch-11.25.12.js?v=' + encodeURIComponent(APP_VERSION);
+            patch.setAttribute('data-kaishi-112512', 'true');
+            patch.onerror = () => { window.__kaishi112512Loaded = false; };
+            document.head.appendChild(patch);
           };
 
           document.head.appendChild(roadAhead);
