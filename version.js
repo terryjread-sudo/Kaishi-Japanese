@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.6';
+var APP_VERSION = '11.25.7';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -11,6 +11,11 @@ try {
 
 try {
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    const patch = document.createElement('script');
+    patch.src = './patch-11.25.7.js?v=' + encodeURIComponent(APP_VERSION);
+    patch.setAttribute('data-kaishi-11257-patch', 'true');
+    document.head.appendChild(patch);
+
     const loadJourney = () => {
       if (window.__kaishiUnifiedJourneyLoaded || document.querySelector('script[data-kaishi-unified-journey]')) return;
       window.__kaishiUnifiedJourneyLoaded = true;
@@ -36,8 +41,6 @@ try {
           document.head.appendChild(roadAhead);
         };
 
-        // road-ahead.js reads from window.KaishiRoadmap, so it must load
-        // after roadmap-engine.js regardless of success/failure.
         roadmapEngine.onload = loadRoadAhead;
         roadmapEngine.onerror = () => { window.__kaishiRoadmapEngineLoaded = false; loadRoadAhead(); };
         document.head.appendChild(roadmapEngine);
@@ -47,11 +50,8 @@ try {
       document.head.appendChild(script);
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadJourney, {once:true});
-    } else {
-      loadJourney();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadJourney, {once:true});
+    else loadJourney();
 
     const setBadge = () => {
       try {
@@ -63,10 +63,7 @@ try {
       } catch (_) {}
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setBadge, {once:true});
-    } else {
-      setBadge();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setBadge, {once:true});
+    else setBadge();
   }
 } catch (_) {}
