@@ -2,14 +2,19 @@
 
 /*
  * Kaishi Quest — Roadmap Engine
- * v11.25.16
+ * v11.25.18
  *
  * The roadmap is read-only and reports the actual lesson schedule.
  * Scheduled side quests and milestones are first-class timeline items.
+ *
+ * v11.25.18:
+ * - Key Events are independent Journey timeline objects.
+ * - SRS Battle remains a Key Event and is never attached to a lesson.
+ * - Lesson immersive activities remain lesson content.
  */
 (() => {
   const HORIZON = 10;
-  const SCHEMA_VERSION = 3;
+  const SCHEMA_VERSION = 4;
 
   const safeNum = (v,f=0) => {
     const n=Number(v); return Number.isFinite(n)?n:f;
@@ -34,8 +39,8 @@
       core,
       sideQuests: [],
       available: [
-        ...(scenes?['picture']:[]),
-        ...(audio?['listening']:[])
+        ...(scenes ? ['picture'] : []),
+        ...(audio ? ['listening'] : [])
       ]
     };
   };
@@ -43,8 +48,6 @@
   const schedule = (chapterIndex,current,words) => {
     try {
       if (window.KaishiActivitySchedule?.scheduleForLesson) {
-        // Do not freeze the count at zero: the roadmap is a forecast, so the
-        // scheduler must project introductions into each future lesson.
         return window.KaishiActivitySchedule.scheduleForLesson(
           chapterIndex,current,words,{forceFirst:false}
         );
@@ -110,6 +113,7 @@
     } catch (_) {}
 
     const lessons=[];
+    const keyEvents=[];
 
     for(let chapter=current;chapter<=end;chapter++){
       const words=chapterWords(chapter);
@@ -124,21 +128,16 @@
       const sideQuestEvent=(s.sideQuests||[]).find(id=>rule(id)?.roadmap);
       const milestone=milestoneByChapter[chapter];
 
-      let event=null;
+      /*
+       * Lesson events and Key Events are deliberately separate concepts.
+       * A milestone never becomes `lesson.event`: it becomes an independent
+       * timeline item anchored AFTER this lesson.
+       */
+      let lessonEvent=null;
 
-      if(milestone){
-        event={
-          type:'milestone',
-          id:milestone.milestone.id,
-          icon:milestone.milestone.icon||'🏆',
-          label:milestone.milestone.activity||milestone.milestone.title,
-          estimated:true,
-          note:milestone.note,
-          separateTimelineItem:true
-        };
-      } else if(distinctive){
+      if(distinctive){
         const r=rule(distinctive);
-        event={
+        lessonEvent={
           type:'activity',
           id:distinctive,
           icon:r?.icon||'✨',
@@ -149,7 +148,7 @@
         };
       } else if(sideQuestEvent){
         const r=rule(sideQuestEvent);
-        event={
+        lessonEvent={
           type:'sideQuest',
           id:sideQuestEvent,
           icon:r?.icon||'🎮',
@@ -160,7 +159,7 @@
           note:r?.note||null
         };
       } else if(topic && previousTopicId!==null && topic.id!==previousTopicId){
-        event={
+        lessonEvent={
           type:'topic',
           id:topic.id,
           icon:topic.icon||'🗺️',
@@ -170,7 +169,7 @@
         };
       }
 
-      lessons.push({
+      const lesson={
         lessonNumber:chapter+1,
         chapterIndex:chapter,
         topicId:topic?.id||null,
@@ -193,24 +192,31 @@
         }),
         coreActivities:s.core||[],
         sideQuests:s.sideQuests||[],
-        event
-      });
+        event:lessonEvent
+      };
+
+      lessons.push(lesson);
+
+      if(milestone){
+        keyEvents.push({
+          id:milestone.milestone.id,
+          type:'milestone',
+          icon:milestone.milestone.icon||'🏆',
+          label:milestone.milestone.activity||milestone.milestone.title,
+          estimated:true,
+          note:milestone.note||null,
+          separateTimelineItem:true,
+          /*
+           * This is an ordering anchor only. It does NOT mean the event is
+           * part of the lesson.
+           */
+          afterChapterIndex:chapter,
+          afterLessonNumber:chapter+1
+        });
+      }
 
       if(topic) previousTopicId=topic.id;
     }
-
-    /*
-     * Only actual milestone events become Key Events. This preserves SRS Battle
-     * from PATH_MILESTONES while preventing a lesson activity such as Picture
-     * Matching from masquerading as a Journey Key Event.
-     */
-    const keyEvents=lessons
-      .filter(l=>l.event?.type==='milestone')
-      .map(l=>({
-        lessonNumber:l.lessonNumber,
-        chapterIndex:l.chapterIndex,
-        ...l.event
-      }));
 
     return {
       schemaVersion:SCHEMA_VERSION,
@@ -218,9 +224,16 @@
       currentLesson:current,
       totalLessons:total,
       lessons,
-      events:lessons.filter(l=>l.event).map(l=>({
-        lessonNumber:l.lessonNumber,...l.event
-      })),
+      events:[
+        ...lessons.filter(l=>l.event).map(l=>({
+          lessonNumber:l.lessonNumber,
+          ...l.event
+        })),
+        ...keyEvents.map(e=>({
+          ...e,
+          lessonNumber:e.afterLessonNumber
+        }))
+      ],
       keyEvents,
       generatedAt:Date.now()
     };

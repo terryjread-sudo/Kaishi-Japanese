@@ -2,19 +2,16 @@
 
 /*
  * Kaishi Quest — Journey Key Events
- * v11.25.11
+ * v11.25.18
  *
- * Adds first-class milestone cards to the existing Journey timeline.
- * These are deliberately separate from lessons and side quests.
- *
- * This small source module owns only milestone presentation. It does not
- * create a second Journey renderer and does not alter lesson completion.
+ * Key Events are independent timeline objects.
+ * They are ordered around lessons, but are never children of a lesson.
  */
 (() => {
   const STYLE_ID = 'kqJourneyKeyEventStyles';
 
-  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  const esc = value => String(value ?? '').replace(/[&<>\"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'
   }[c]));
 
   const addStyles = () => {
@@ -63,7 +60,6 @@
     if (!timeline || !roadmap?.keyEvents?.length) return;
 
     addStyles();
-
     timeline.querySelectorAll('.kq-journey-key-event').forEach(el => el.remove());
 
     const lessonNodes = Array.from(
@@ -71,14 +67,21 @@
     );
 
     roadmap.keyEvents.slice().reverse().forEach(event => {
+      /*
+       * `afterChapterIndex` is purely an ordering anchor. Insert the event
+       * AFTER the corresponding lesson node, not before/inside it.
+       */
       const target = lessonNodes.find(node => {
         const chapter = Number(node.dataset.kqChapter ?? node.dataset.chapter);
-        return Number.isFinite(chapter) && chapter === event.chapterIndex;
+        return Number.isFinite(chapter) &&
+          chapter === Number(event.afterChapterIndex);
       });
 
       const item = document.createElement('div');
       item.className = 'kq-journey-key-event';
       item.dataset.kqKeyEvent = event.id;
+      item.dataset.kqAfterChapter = String(event.afterChapterIndex ?? '');
+
       item.innerHTML = `
         <span class="kq-journey-key-event-icon" aria-hidden="true">${esc(event.icon || '⭐')}</span>
         <span class="kq-journey-key-event-copy">
@@ -89,7 +92,19 @@
       `;
 
       if (target?.parentNode) {
-        target.parentNode.insertBefore(item, target);
+        /*
+         * Unified timeline nodes are sibling elements. Insert after the
+         * lesson node so the visual sequence is:
+         *
+         * Lesson N
+         * Key Event
+         * Lesson N+1
+         */
+        if (target.nextSibling) {
+          target.parentNode.insertBefore(item, target.nextSibling);
+        } else {
+          target.parentNode.appendChild(item);
+        }
       } else {
         timeline.appendChild(item);
       }
@@ -103,6 +118,8 @@
     document.documentElement.dataset.kqJourneyKeyEventsInstalled = '1';
     schedule();
 
+    window.addEventListener('kaishi-roadmap-updated', schedule, { passive:true });
+
     document.addEventListener('click', event => {
       if (event.target?.closest?.('#journey button,.journey-nav,[data-screen="journey"]')) {
         schedule();
@@ -115,4 +132,6 @@
   } else {
     install();
   }
+
+  window.KaishiJourneyKeyEvents = { render };
 })();

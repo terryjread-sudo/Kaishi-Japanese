@@ -1,19 +1,18 @@
 'use strict';
 
 /*
- * Kaishi Quest v11.25.17
+ * Kaishi Quest v11.25.18
  *
- * Stability fixes:
- * 1. Checkpoint 5 is a silent automatic save, not a dialog.
- * 2. Only the Road Ahead floating notification is shown for upcoming
- *    immersive activities; the duplicate Journey timeline badge is hidden.
- * 3. A learning card reaches 100% after three successful reviews of a skill.
+ * Existing lesson stability patch retained from v11.25.17.
+ * The checkpoint handler is deliberately left as the known-good
+ * save-and-continue implementation:
+ *   checkpoint -> save -> bubble -> normal lesson continuation.
  *
- * This deliberately replaces the checkpoint handler itself rather than
- * waiting for a dialog to open and trying to suppress it afterwards.
+ * v11.25.18 moves roadmap/timeline responsibility into the original source
+ * files (roadmap-engine.js and journey-key-events.js).
  */
 (() => {
-  const VERSION = '11.25.17';
+  const VERSION = '11.25.18';
 
   function savingBubble() {
     let bubble = document.getElementById('kaishiSavingProgress');
@@ -55,12 +54,6 @@
     if (typeof window.showMissionCheckpoint !== 'function') return false;
     if (window.__kaishi112517CheckpointInstalled) return true;
 
-    /*
-     * next() calls showMissionCheckpoint() when the checkpoint is reached.
-     * Replacing that function means the dialog is never created/opened.
-     * The normal lesson advances exactly as it would after choosing
-     * "continue" in the old dialog.
-     */
     window.showMissionCheckpoint = function () {
       try {
         saveMissionResume();
@@ -72,7 +65,12 @@
         index++;
         renderCurrent();
       } catch (error) {
-        try { window.kaishiLog?.('patch', `[${VERSION}] checkpoint advance failed: ${error?.message || error}`); } catch (_) {}
+        try {
+          window.kaishiLog?.(
+            'patch',
+            `[${VERSION}] checkpoint advance failed: ${error?.message || error}`
+          );
+        } catch (_) {}
       }
     };
 
@@ -85,8 +83,6 @@
       const style = document.createElement('style');
       style.id = 'kaishi112517NoticeStyle';
       style.textContent = `
-        /* Road Ahead owns the floating upcoming-activity notification.
-           The Journey timeline must not show a second copy. */
         .kq-unified-next-event {
           display: none !important;
         }
@@ -96,14 +92,6 @@
   }
 
   function accelerateThreeSuccessfulReviews() {
-    /*
-     * The Journey's wordScore() averages the stored skill strengths.
-     * Once a skill has been successfully reviewed three times, treat that
-     * skill as mastered for the learner-facing progression meter.
-     *
-     * We only promote metrics that already have three attempts and three
-     * correct answers. Failed reviews therefore cannot trigger this.
-     */
     try {
       const adminMode = (() => {
         try { return sessionStorage.getItem('kq-admin-test-mode') === '1'; }
@@ -134,9 +122,7 @@
         });
       });
 
-      if (changed) {
-        localStorage.setItem(key, JSON.stringify(data));
-      }
+      if (changed) localStorage.setItem(key, JSON.stringify(data));
     } catch (_) {}
   }
 
@@ -157,11 +143,6 @@
       }
     }, 50);
 
-    /*
-     * The Journey can be re-rendered after lesson completion. Keep the
-     * progression promotion lightweight and ensure the duplicate notice
-     * remains hidden without repeatedly changing the DOM.
-     */
     setInterval(() => {
       accelerateThreeSuccessfulReviews();
       hideDuplicateImmersiveNotice();
@@ -174,7 +155,7 @@
     start();
   }
 
-  window.KaishiPatch112517 = {
+  window.KaishiPatch112518 = {
     version: VERSION,
     checkpoint: 'automatic-save-and-continue',
     immersiveNotice: 'road-ahead-only',
