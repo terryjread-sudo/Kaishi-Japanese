@@ -1,7 +1,6 @@
-/* 11.25.26 core-ready marker */
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.25.26';
+const APP_VERSION=window.KAISHI_VERSION;
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -1095,5 +1094,3 @@ $('#shareClose').onclick=()=>$('#shareDialog').close();
 $('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};
 $('#missionSummaryShare').onclick=()=>{$('#missionSummaryDialog').close();openInviteDialog()};
 init();
-
-try{window.__KAISHI_CORE_READY__=true;window.dispatchEvent(new CustomEvent('kaishi:core-ready'));}catch(_){}
