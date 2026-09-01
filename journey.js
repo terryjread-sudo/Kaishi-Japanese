@@ -590,17 +590,19 @@
     } catch (_) {}
 
     try {
-      const topic = typeof currentTopic === 'function' ? currentTopic() : null;
-      if (topic && typeof startTopicSession === 'function') {
-        startTopicSession(topic.id);
+      // The route owns the next lesson. Starting a whole topic here can select
+      // a different lesson (and made the Continue button appear unresponsive).
+      const routeButton = $('#startNextMission');
+      if (routeButton && !routeButton.disabled && !routeButton.hidden) {
+        routeButton.click();
         return true;
       }
     } catch (_) {}
 
     try {
-      const legacyButton = $('#startNextMission');
-      if (legacyButton) {
-        legacyButton.click();
+      const chapter = currentChapter();
+      if (typeof startJourneyChapter === 'function' && Number.isInteger(chapter)) {
+        startJourneyChapter(chapter);
         return true;
       }
     } catch (_) {}
