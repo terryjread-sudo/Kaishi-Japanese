@@ -1,6 +1,7 @@
+/* 11.25.26 core-ready marker */
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
-const APP_VERSION='11.25.25';
+const APP_VERSION='11.25.26';
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -988,9 +989,7 @@ async function setupServiceWorker(){
   await Promise.all(keys.map(k=>caches.delete(k)));
  }catch(e){}
 }
-let coreInitialised=false;
 async function init(){
- if(coreInitialised)return;
  $('#updateBanner').hidden=true;
  $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
  try{
@@ -1004,10 +1003,6 @@ async function init(){
    fetch(`data/kanji-components.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Kanji component data');return r.json()}),
    fetch(`memory-scenes.json?v=${APP_VERSION}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))
   ]);
-  // Core deck data is now ready. Only after this point do Journey/roadmap
-  // renderers and other derived UI state get a chance to initialise.
-  coreInitialised=true;
-  window.dispatchEvent(new CustomEvent('kaishi:core-ready', {detail:{version:APP_VERSION}}));
   updateHome();
  }catch(e){
   console.error('Initialisation failed',e);
@@ -1100,3 +1095,5 @@ $('#shareClose').onclick=()=>$('#shareDialog').close();
 $('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};
 $('#missionSummaryShare').onclick=()=>{$('#missionSummaryDialog').close();openInviteDialog()};
 init();
+
+try{window.__KAISHI_CORE_READY__=true;window.dispatchEvent(new CustomEvent('kaishi:core-ready'));}catch(_){}
