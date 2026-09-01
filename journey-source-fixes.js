@@ -2,19 +2,14 @@
 
 /*
  * Kaishi Quest — Journey source fixes
- * v11.25.22
+ * v11.25.23
  *
  * Normal source module (not a numbered patch overlay).
- *
- * Fixes three Journey issues that can otherwise disagree with the learning
- * engine after a lesson is completed:
- *  - lesson strength can remain visually stuck below 100%;
- *  - the next lesson can remain unavailable when the daily route has not yet
- *    generated its next chapter step;
- *  - standalone Key Events must not create a second mobile column.
+ * Fixes Journey timeline scrolling and prevents a locked SRS Battle key event
+ * from falling through to the lesson-history navigation handler.
  */
 (() => {
-  const VERSION = '11.25.22';
+  const VERSION = '11.25.23';
   const META_KEY = 'kq-meta';
   const PROGRESS_KEY = 'kq-progress';
 
@@ -22,12 +17,10 @@
     try { return typeof profileStorageKey === 'function' ? profileStorageKey(key) : key; }
     catch (_) { return key; }
   };
-
   const read = (key, fallback) => {
     try { return JSON.parse(localStorage.getItem(storageKey(key)) || 'null') ?? fallback; }
     catch (_) { return fallback; }
   };
-
   const write = (key, value) => {
     try { localStorage.setItem(storageKey(key), JSON.stringify(value)); return true; }
     catch (_) { return false; }
@@ -64,57 +57,41 @@
   };
 
   const chapterTitle = chapter => {
-    const words = wordsFor(chapter);
-    const meanings = words.slice(0, 2).map(word => word?.meaning).filter(Boolean);
-    return meanings.length
-      ? `Lesson ${chapter + 1}: ${meanings.join(' + ')}`
-      : `Lesson ${chapter + 1}`;
+    const meanings = wordsFor(chapter).slice(0, 2).map(word => word?.meaning).filter(Boolean);
+    return meanings.length ? `Lesson ${chapter + 1}: ${meanings.join(' + ')}` : `Lesson ${chapter + 1}`;
   };
 
-  /*
-   * The Journey renderer normally follows dailyJourneyRoute. Immediately after
-   * completing a lesson there can be a short window where the route still only
-   * contains the completed lesson. Add the next chapter as a derived route step
-   * so the existing renderer can promote it to the current lesson naturally.
-   */
   const ensureNextChapterRoute = () => {
     const meta = read(META_KEY, {});
     const route = meta.dailyJourneyRoute;
     if (!route || !Array.isArray(route.steps)) return false;
 
     const completed = new Set(Array.isArray(route.completed) ? route.completed : []);
-    let changed = false;
     let highestCompleted = -1;
-
     for (let chapter = 0; chapter < countLessons(); chapter++) {
       if (completed.has(`lesson-${chapter}`) || lessonComplete(chapter)) highestCompleted = chapter;
       else break;
     }
 
-    if (highestCompleted < 0) return false;
     const next = highestCompleted + 1;
-    if (next >= countLessons()) return false;
+    if (highestCompleted < 0 || next >= countLessons()) return false;
 
     const already = route.steps.some(step =>
       step && step.kind === 'chapter' && String(step.id) === `lesson-${next}`
     );
-    if (!already) {
-      route.steps.push({
-        id: `lesson-${next}`,
-        kind: 'chapter',
-        title: chapterTitle(next),
-        required: true,
-        generatedBy: 'journey-source-fixes-11.25.22'
-      });
-      changed = true;
-    }
+    if (already) return false;
 
-    if (changed) {
-      meta.dailyJourneyRoute = route;
-      write(META_KEY, meta);
-      try { window.dispatchEvent(new Event('kaishi-roadmap-updated')); } catch (_) {}
-    }
-    return changed;
+    route.steps.push({
+      id: `lesson-${next}`,
+      kind: 'chapter',
+      title: chapterTitle(next),
+      required: true,
+      generatedBy: `journey-source-fixes-${VERSION}`
+    });
+    meta.dailyJourneyRoute = route;
+    write(META_KEY, meta);
+    try { window.dispatchEvent(new Event('kaishi-roadmap-updated')); } catch (_) {}
+    return true;
   };
 
   const normaliseTimelineLayout = () => {
@@ -142,24 +119,20 @@
   const repairDisplayedCompletion = () => {
     const track = document.getElementById('journeyHistoryTrack');
     if (!track) return;
-
     for (let chapter = 0; chapter < countLessons(); chapter++) {
       if (!lessonComplete(chapter)) continue;
       const node = track.querySelector(`[data-kq-id="lesson-${chapter}"]`);
       if (!node) continue;
       const detail = node.querySelector('.kq-unified-detail');
-      if (!detail) continue;
-      if (/^Completed\s*[·•]/.test(detail.textContent || '')) {
+      if (detail && /^Completed\s*[·•]/.test(detail.textContent || '')) {
         detail.textContent = 'Completed · 100%';
       }
     }
   };
 
   const startExactLesson = chapter => {
-    const words = wordsFor(chapter);
-    const ids = words.map(word => word?.id).filter(Boolean);
+    const ids = wordsFor(chapter).map(word => word?.id).filter(Boolean);
     if (!ids.length) return false;
-
     try { window.activityReturnScreen = 'journey'; } catch (_) {}
 
     try {
@@ -169,18 +142,12 @@
       }
     } catch (_) {}
 
-    /*
-     * Current learning engine fallback. It targets exactly this lesson's word
-     * IDs rather than jumping to the broader topic queue, so tapping Lesson 2
-     * cannot accidentally start Lesson 1 again.
-     */
     try {
       if (typeof makeTargetedMasterySession === 'function') {
         makeTargetedMasterySession(ids, 'retain', `Lesson ${Number(chapter) + 1}`);
         return true;
       }
     } catch (_) {}
-
     return false;
   };
 
@@ -199,13 +166,11 @@
     if (next >= countLessons()) return;
 
     const node = track.querySelector(`[data-kq-id="lesson-${next}"]`);
-    if (!node) return;
-
-    /* If the unified renderer has already promoted it, leave its native button. */
-    if (node.classList.contains('current')) return;
+    if (!node || node.classList.contains('current')) return;
 
     node.classList.remove('future');
     node.classList.add('current');
+
     const label = node.querySelector('.kq-unified-label');
     if (label) label.textContent = 'Current lesson';
     const detail = node.querySelector('.kq-unified-detail');
@@ -214,6 +179,7 @@
     const actions = node.querySelector('.kq-unified-actions');
     if (!actions) return;
     actions.innerHTML = '';
+
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'primary';
@@ -226,11 +192,112 @@
     actions.appendChild(button);
   };
 
+  /*
+   * journey-v3 has a compatibility renderer which can rebuild the timeline
+   * through its MutationObserver. Rebuilding the DOM resets scrollTop to the
+   * current lesson. Preserve the learner's position once they start scrolling
+   * and restore it after any renderer mutation.
+   */
+  const installTimelineScrollGuard = () => {
+    const track = document.getElementById('journeyHistoryTrack');
+    if (!track || track.dataset.kqScrollGuardInstalled === '1') return;
+    track.dataset.kqScrollGuardInstalled = '1';
+
+    let savedTop = track.scrollTop;
+    let userHasScrolled = false;
+    let pointerActive = false;
+    let restoreTimer = 0;
+
+    const remember = () => {
+      if (track.dataset.kqTimelineRestoring === '1') return;
+      userHasScrolled = true;
+      track.dataset.kq1710UserScrolled = '1';
+      savedTop = track.scrollTop;
+    };
+
+    track.addEventListener('pointerdown', () => {
+      pointerActive = true;
+      userHasScrolled = true;
+      track.dataset.kq1710UserScrolled = '1';
+      savedTop = track.scrollTop;
+    }, {capture:true, passive:true});
+
+    track.addEventListener('pointermove', () => {
+      if (!pointerActive) return;
+      savedTop = track.scrollTop;
+      userHasScrolled = true;
+      track.dataset.kq1710UserScrolled = '1';
+    }, {capture:true, passive:true});
+
+    track.addEventListener('pointerup', () => {
+      pointerActive = false;
+      savedTop = track.scrollTop;
+    }, {capture:true, passive:true});
+    track.addEventListener('pointercancel', () => {
+      pointerActive = false;
+      savedTop = track.scrollTop;
+    }, {capture:true, passive:true});
+    track.addEventListener('scroll', remember, {passive:true});
+
+    const restore = () => {
+      if (!userHasScrolled || !document.body.contains(track)) return;
+      clearTimeout(restoreTimer);
+
+      const apply = () => {
+        if (!document.body.contains(track)) return;
+        track.dataset.kqTimelineRestoring = '1';
+        const max = Math.max(0, track.scrollHeight - track.clientHeight);
+        track.scrollTop = Math.min(Math.max(0, savedTop), max);
+        requestAnimationFrame(() => { track.dataset.kqTimelineRestoring = '0'; });
+      };
+
+      requestAnimationFrame(() => requestAnimationFrame(apply));
+      restoreTimer = setTimeout(apply, 80);
+    };
+
+    const observer = new MutationObserver(mutations => {
+      if (!userHasScrolled) return;
+      if (mutations.some(m => m.type === 'childList' || m.type === 'characterData')) restore();
+    });
+    observer.observe(track, {subtree:true, childList:true, characterData:true});
+  };
+
+  /*
+   * SRS Battle is a roadmap Key Event. Before its unlock threshold it must be
+   * inert; otherwise a click can bubble into the generic Journey/history click
+   * handlers and briefly open Learning History.
+   */
+  const installLockedKeyEventGuard = () => {
+    if (document.documentElement.dataset.kqLockedKeyEventGuard === '1') return;
+    document.documentElement.dataset.kqLockedKeyEventGuard = '1';
+
+    document.addEventListener('click', event => {
+      const card = event.target?.closest?.('.kq-journey-key-event');
+      if (!card) return;
+
+      const title = card.querySelector('.kq-journey-key-event-title')?.textContent || '';
+      if (!/srs\s+battle/i.test(title)) return;
+
+      let unlocked = false;
+      try {
+        if (typeof pathUnlocked === 'function') unlocked = Boolean(pathUnlocked('battle'));
+      } catch (_) {}
+
+      if (!unlocked) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+      }
+    }, {capture:true});
+  };
+
   const repair = () => {
     ensureNextChapterRoute();
     normaliseTimelineLayout();
     repairDisplayedCompletion();
     repairCurrentLessonButton();
+    installTimelineScrollGuard();
+    installLockedKeyEventGuard();
   };
 
   const install = () => {
@@ -241,11 +308,11 @@
     run();
     window.addEventListener('kaishi-roadmap-updated', run, {passive:true});
     document.addEventListener('visibilitychange', () => { if (!document.hidden) run(); }, {passive:true});
+
     document.addEventListener('click', event => {
       if (event.target?.closest?.('#continueJourney,#journeyBack,#journey button')) run();
     }, {capture:true, passive:true});
 
-    /* Bounded boot retries cover the initial async Journey/module load. */
     let tries = 0;
     const boot = () => {
       repair();

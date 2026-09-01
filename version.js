@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.22';
+var APP_VERSION = '11.25.23';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -11,7 +11,6 @@ try {
 
 try {
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-
     const loadLessonPatch = () => {
       if (window.__kaishi112517Loaded || document.querySelector('script[data-kaishi-112517]')) return;
       window.__kaishi112517Loaded = true;
@@ -28,7 +27,6 @@ try {
         loadLessonPatch();
         return;
       }
-
       window.__kaishiLearningPlanSettingsLoaded = true;
       const script = document.createElement('script');
       script.src = './learning-plan-settings.js?v=' + encodeURIComponent(APP_VERSION);
@@ -47,7 +45,6 @@ try {
         loadLearningPlanSettings();
         return;
       }
-
       window.__kaishiJourneySourceFixesLoaded = true;
       const script = document.createElement('script');
       script.src = './journey-source-fixes.js?v=' + encodeURIComponent(APP_VERSION);
@@ -66,7 +63,6 @@ try {
         loadJourneySourceFixes();
         return;
       }
-
       window.__kaishiJourneyKeyEventsLoaded = true;
       const script = document.createElement('script');
       script.src = './journey-key-events.js?v=' + encodeURIComponent(APP_VERSION);
@@ -82,7 +78,6 @@ try {
         loadKeyEvents();
         return;
       }
-
       window.__kaishiRoadAheadLoaded = true;
       const script = document.createElement('script');
       script.src = './road-ahead.js?v=' + encodeURIComponent(APP_VERSION);
@@ -98,7 +93,6 @@ try {
         loadRoadAhead();
         return;
       }
-
       window.__kaishiRoadmapEngineLoaded = true;
       const script = document.createElement('script');
       script.src = './roadmap-engine.js?v=' + encodeURIComponent(APP_VERSION);
@@ -114,15 +108,12 @@ try {
         loadRoadmapEngine();
         return;
       }
-
       window.__kaishiUnifiedJourneyLoaded = true;
       const script = document.createElement('script');
       script.src = './journey.js?v=' + encodeURIComponent(APP_VERSION);
       script.setAttribute('data-kaishi-unified-journey', 'true');
       script.onload = loadRoadmapEngine;
-      script.onerror = () => {
-        window.__kaishiUnifiedJourneyLoaded = false;
-      };
+      script.onerror = () => { window.__kaishiUnifiedJourneyLoaded = false; };
       document.head.appendChild(script);
     };
 
