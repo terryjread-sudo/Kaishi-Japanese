@@ -1,6 +1,10 @@
 'use strict';
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
 // APP_VERSION is defined once, in version.js, which loads before this file (see index.html).
+const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
+const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
+const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
+window.isAdminTestMode=isAdminTestMode;
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -83,6 +87,7 @@ function updateStreakRescue(){
 }
 window.KaishiQuestCloudAdapter={
  snapshot:()=>({version:2,progress,meta,settings}),
+ isTestMode:isAdminTestMode,
  restore:data=>{progress=data?.progress||{};meta={...META_DEFAULTS,...(data?.meta||{})};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];delete meta.dailyReviewPlan;settings={...defaults,...(data?.settings||{}),playMode:'journey'};save(false);if($('#newLimit')){$('#newLimit').value=settings.newLimit;$('#sessionSize').value=settings.sessionSize;$('#activeWords').value=settings.activeWords;$('#pictureDifficulty').value=settings.pictureDifficulty;$('#mnemonicStyle').value=settings.mnemonicStyle;$('#autoAudio').checked=settings.autoAudio}updateHome();toast('Cloud progress restored')},
  stats:()=>{const mastered=Object.values(progress).filter(mastery).length,reviews=Number(meta.totalAnswers||0),correct=Number(meta.totalCorrect||0),monsters=Number(meta.totalMonsterVictories||meta.monsterVictories?.length||0),streak=Number(meta.streak||0);return{xp:Math.max(0,correct*10+mastered*50+monsters*100+streak*20),mastered,accuracy:reviews?Math.round(correct/reviews*100):0,reviews,monsters_defeated:monsters,streak}}
 };
@@ -1018,7 +1023,59 @@ async function init(){
  await setupServiceWorker();
  $('#updateBanner').hidden=true;
 }
-$('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').onclick=openKanaPath;$('#kanaBack').onclick=()=>show('home');$('#kanaLessonExit').onclick=openKanaPath;document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));$('#mangaBtn').onclick=openMangaLibrary;$('#mangaBack').onclick=()=>show('home');$('#mangaLibraryBack').onclick=openMangaLibrary;$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>abortSession('home');document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>abortSession(pictureGameActive?'games':'home');$('#settingsBtn').onclick=()=>show('settings');$('#settingsBack').onclick=()=>{settings.playMode=['journey','classic'].includes($('#playMode').value)?$('#playMode').value:'journey';settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];delete meta.dailyReviewPlan;settings={...defaults,...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=()=>{
+function bind(selector, event, handler){
+ const el=$(selector);
+ if(el)el[event]=handler;
+}
+bind('#studyBtn','onclick',()=>{activityReturnScreen='home';abortSession('home');makeSession()});
+bind('#kanaBtn','onclick',()=>{activityReturnScreen='home';openKanaPath()});
+bind('#mangaBtn','onclick',()=>{activityReturnScreen='home';openMangaLibrary()});
+bind('#communityBtn','onclick',()=>{activityReturnScreen='home';show('community');window.KaishiCloud?.loadLeaderboard?.()});
+bind('#kanjiOverviewBtn','onclick',()=>{activityReturnScreen='home';if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')});
+bind('#skillsBtn','onclick',()=>{activityReturnScreen='home';renderSkillScores();show('skillsOverview')});
+document.querySelectorAll('.gameMode').forEach(button=>button.onclick=()=>{activityReturnScreen='games';settings.pictureDifficulty=+$('#pictureDifficulty')?.value||4;save();startPictureGame(button.dataset.mode)});
+document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));
+bind('#conversationMode','onclick',()=>{activityReturnScreen='games';openConversationLibrary()});
+bind('#grammarMode','onclick',()=>{activityReturnScreen='games';openGrammarPath()});
+bind('#theatreMode','onclick',()=>{activityReturnScreen='games';openTheatreLibrary()});
+bind('#karutaMode','onclick',()=>{activityReturnScreen='games';settings.pictureDifficulty=+$('#pictureDifficulty')?.value||4;save();startKarutaGame()});
+bind('#kanjiBuilderMode','onclick',()=>{activityReturnScreen='games';openKanjiBuilder()});
+bind('#decayBattleMode','onclick',()=>{activityReturnScreen='games';startDecayBattle()});
+bind('#streakRescueMode','onclick',()=>{activityReturnScreen='games';startStreakRescue()});
+bind('#conversationContinue','onclick',()=>{activityReturnScreen='home';const item=conversations.find(candidate=>candidate.id===$('#conversationContinue')?.dataset?.conversationId);if(item)startConversation(item);else openConversationLibrary()});
+bind('#dashboardAvatarButton','onclick',openCharacterSettings);
+bind('#continueJourney','onclick',continueJourney);
+bind('#openPracticeHub','onclick',()=>openJourney('practice'));
+bind('#journeyCommunity','onclick',()=>{activityReturnScreen='journey';show('community');window.KaishiCloud?.loadLeaderboard?.()});
+bind('#journeySkills','onclick',()=>{activityReturnScreen='journey';renderSkillScores();show('skillsOverview')});
+bind('#journeyBack','onclick',()=>{activityReturnScreen='home';show('home')});
+bind('#kanaBack','onclick',()=>returnToActivitySource('home'));
+bind('#kanaLessonExit','onclick',openKanaPath);
+bind('#mangaBack','onclick',()=>returnToActivitySource('home'));
+bind('#mangaLibraryBack','onclick',openMangaLibrary);
+bind('#theatreBack','onclick',()=>{clearTheatrePlayback();returnToActivitySource('games')});
+bind('#theatreLibraryBack','onclick',openTheatreLibrary);
+bind('#communityBack','onclick',()=>returnToActivitySource('home'));
+bind('#kanjiOverviewBack','onclick',()=>returnToActivitySource('home'));
+bind('#kanjiBuilderFromOverview','onclick',()=>openKanjiBuilder());
+bind('#kanjiBuilderBack','onclick',closeKanjiBuilder);
+bind('#startKanjiBuilder','onclick',startKanjiBuilder);
+bind('#browseKanjiComponents','onclick',()=>{const library=$('#kanjiComponentLibrary'),open=library?.hidden;if(library){library.hidden=!open;const btn=$('#browseKanjiComponents');if(btn)btn.textContent=open?'Hide breakdowns':'Browse breakdowns';if(open)library.scrollIntoView({behavior:'smooth',block:'start'})}});
+bind('#skillsBack','onclick',()=>returnToActivitySource('home'));
+bind('#conversationBack','onclick',()=>returnToActivitySource('games'));
+bind('#conversationLibraryBack','onclick',openConversationLibrary);
+bind('#grammarBack','onclick',()=>returnToActivitySource('games'));
+bind('#grammarLibraryBack','onclick',openGrammarPath);
+bind('#gamesBack','onclick',()=>abortSession('home'));
+bind('#exitBtn','onclick',()=>exitActivitySession(pictureGameActive||karutaActive||battleActive?'games':'home'));
+bind('#settingsBtn','onclick',()=>show('settings'));
+bind('#settingsBack','onclick',()=>{settings.playMode='journey';settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit')?.value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize')?.value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords')?.value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty')?.value||4));settings.mnemonicStyle=$('#mnemonicStyle')?.value||'clear';settings.autoAudio=$('#autoAudio')?.checked!==false;save();updateHome();show('home')});
+bind('#checkUpdateBtn','onclick',()=>checkForUpdates(true));
+bind('#applyUpdate','onclick',applyUpdate);
+bind('#laterUpdate','onclick',()=>{if($('#updateBanner'))$('#updateBanner').hidden=true});
+bind('#exportBtn','onclick',exportProgress);
+bind('#importInput','onchange',async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];delete meta.dailyReviewPlan;settings={...defaults,...settings,...d.settings};save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}});
+bind('#resetBtn','onclick',()=>{
  const proceedReset=()=>{
   progress={};meta={...META_DEFAULTS,kanaProgress:{},grammarProgress:{},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null};
   save();updateHome();toast('Progress reset');
@@ -1026,71 +1083,36 @@ $('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').on
  if(!confirm('Delete all learning progress? Kaishi Quest can export a backup first. Continue?'))return;
  if(confirm('Would you like to export a backup of your progress before resetting?')){exportProgress();setTimeout(()=>{if(confirm('Backup export started. Reset your learning progress now?'))proceedReset()},150)}
  else if(confirm('Reset now without exporting a backup? This cannot be undone.'))proceedReset();
+});
+const ownerEventGrid=$('#ownerEventGrid')||$('#ownerPathGrid');
+if(ownerEventGrid)ownerEventGrid.onclick=event=>{
+ const button=event.target.closest('[data-owner-event],[data-owner-path]');
+ if(!button)return;
+ const eventId=button.dataset.ownerEvent;
+ if(eventId){
+  const index=PATH_MILESTONES.findIndex(item=>item.id===eventId);
+  if(index>=0)unlockOwnerPathThrough(index);
+ }else if(button.dataset.ownerPath!=null){
+  unlockOwnerPathThrough(+button.dataset.ownerPath);
+ }
 };
-$('#dashboardAvatarButton').onclick=openCharacterSettings;
-$('#kanjiOverviewBtn').onclick=()=>{if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')};
-$('#kanjiOverviewBack').onclick=()=>show('home');
-$('#skillsBtn').onclick=()=>{renderSkillScores();show('skillsOverview')};
-$('#skillsBack').onclick=()=>show('home');
-$('#continueJourney').onclick=continueJourney;
-$('#openPracticeHub').onclick=()=>openJourney('practice');
-$('#journeyBack').onclick=()=>show('home');
-$('#journeyCommunity').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};
-$('#journeySkills').onclick=()=>{renderSkillScores();show('skillsOverview')};
-$('#conversationMode').onclick=openConversationLibrary;
-$('#conversationBack').onclick=()=>show('games');
-$('#conversationLibraryBack').onclick=openConversationLibrary;
-$('#theatreMode').onclick=openTheatreLibrary;
-$('#theatreBack').onclick=()=>{clearTheatrePlayback();show('games')};
-$('#theatreLibraryBack').onclick=openTheatreLibrary;
-$('#conversationContinue').onclick=()=>{const item=conversations.find(candidate=>candidate.id===$('#conversationContinue').dataset.conversationId);if(item)startConversation(item);else openConversationLibrary()};
-$('#karutaMode').onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startKarutaGame()};
-$('#decayBattleMode').onclick=startDecayBattle;
-$('#streakRescueMode').onclick=startStreakRescue;
-$('#ownerPathGrid').onclick=event=>{const button=event.target.closest('[data-owner-path]');if(button)unlockOwnerPathThrough(+button.dataset.ownerPath)};
-$('#ownerChapterGrid').onclick=event=>{const button=event.target.closest('[data-owner-chapter]');if(button)unlockOwnerChapterThrough(+button.dataset.ownerChapter)};
-$('#ownerUnlockAll').onclick=()=>{unlockOwnerPathThrough(PATH_MILESTONES.length-1);unlockOwnerChapterThrough(wordChapterCount()-1)};
-$('#ownerResetPath').onclick=()=>{if(!window.KaishiCloud?.isOwner?.())return;meta.pathOverrides=[];meta.chapterOverrides=[];save();renderOwnerPathControls(true);renderJourneyHome();toast('Journey test overrides reset')};
-$('#studyBtn').onclick=()=>{activityReturnScreen='home';abortSession('home');makeSession()};
-$('#kanaBtn').onclick=()=>{activityReturnScreen='home';openKanaPath()};
-$('#mangaBtn').onclick=()=>{activityReturnScreen='home';openMangaLibrary()};
-$('#communityBtn').onclick=()=>{activityReturnScreen='home';show('community');window.KaishiCloud?.loadLeaderboard?.()};
-$('#kanjiOverviewBtn').onclick=()=>{activityReturnScreen='home';if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')};
-$('#skillsBtn').onclick=()=>{activityReturnScreen='home';renderSkillScores();show('skillsOverview')};
-document.querySelectorAll('.gameMode').forEach(button=>button.onclick=()=>{activityReturnScreen='games';settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(button.dataset.mode)});
-$('#conversationMode').onclick=()=>{activityReturnScreen='games';openConversationLibrary()};
-$('#grammarMode').onclick=()=>{activityReturnScreen='games';openGrammarPath()};
-$('#theatreMode').onclick=()=>{activityReturnScreen='games';openTheatreLibrary()};
-$('#karutaMode').onclick=()=>{activityReturnScreen='games';settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startKarutaGame()};
-$('#kanjiBuilderMode').onclick=()=>{activityReturnScreen='games';openKanjiBuilder()};
-$('#decayBattleMode').onclick=()=>{activityReturnScreen='games';startDecayBattle()};
-$('#streakRescueMode').onclick=()=>{activityReturnScreen='games';startStreakRescue()};
-$('#conversationContinue').onclick=()=>{activityReturnScreen='home';const item=conversations.find(candidate=>candidate.id===$('#conversationContinue').dataset.conversationId);if(item)startConversation(item);else openConversationLibrary()};
-$('#journeyCommunity').onclick=()=>{activityReturnScreen='journey';show('community');window.KaishiCloud?.loadLeaderboard?.()};
-$('#journeySkills').onclick=()=>{activityReturnScreen='journey';renderSkillScores();show('skillsOverview')};
-$('#journeyBack').onclick=()=>{activityReturnScreen='home';show('home')};
-$('#kanaBack').onclick=()=>returnToActivitySource('home');
-$('#mangaBack').onclick=()=>returnToActivitySource('home');
-$('#theatreBack').onclick=()=>{clearTheatrePlayback();returnToActivitySource('games')};
-$('#communityBack').onclick=()=>returnToActivitySource('home');
-$('#kanjiOverviewBack').onclick=()=>returnToActivitySource('home');
-$('#kanjiBuilderFromOverview').onclick=()=>openKanjiBuilder();
-$('#kanjiBuilderBack').onclick=closeKanjiBuilder;
-$('#startKanjiBuilder').onclick=startKanjiBuilder;
-$('#browseKanjiComponents').onclick=()=>{const library=$('#kanjiComponentLibrary'),open=library.hidden;library.hidden=!open;$('#browseKanjiComponents').textContent=open?'Hide breakdowns':'Browse breakdowns';if(open)library.scrollIntoView({behavior:'smooth',block:'start'})};
-$('#skillsBack').onclick=()=>returnToActivitySource('home');
-$('#conversationBack').onclick=()=>returnToActivitySource('games');
-$('#grammarBack').onclick=()=>returnToActivitySource('games');
-$('#grammarLibraryBack').onclick=openGrammarPath;
-$('#exitBtn').onclick=()=>exitActivitySession(pictureGameActive||karutaActive||battleActive?'games':'home');
-$('#settingsBack').onclick=()=>{settings.playMode='journey';settings.newLimit=Math.max(1,Math.min(20,+$('#newLimit').value||5));settings.sessionSize=Math.max(5,Math.min(50,+$('#sessionSize').value||15));settings.activeWords=Math.max(2,Math.min(4,+$('#activeWords').value||4));settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;save();updateHome();show('home')};
-$('#journeyInvite').onclick=openInviteDialog;
-$('#communityInvite').onclick=openInviteDialog;
-$('#journeyShareProgress').onclick=openInviteDialog;
-$('#shareNative').onclick=()=>{$('#shareDialog').close();nativeShareInvite()};
-$('#shareCopy').onclick=()=>{copyInviteLink();$('#shareDialog').close()};
-$('#shareAchievement').onclick=()=>{$('#shareDialog').close();shareAchievement()};
-$('#shareClose').onclick=()=>$('#shareDialog').close();
-$('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};
-$('#missionSummaryShare').onclick=()=>{$('#missionSummaryDialog').close();openInviteDialog()};
+const ownerLessonGrid=$('#ownerLessonGrid')||$('#ownerChapterGrid');
+if(ownerLessonGrid)ownerLessonGrid.onclick=event=>{
+ const button=event.target.closest('[data-owner-lesson],[data-owner-chapter]');
+ if(button){
+  const idx=button.dataset.ownerLesson!=null?+button.dataset.ownerLesson:+button.dataset.ownerChapter;
+  unlockOwnerChapterThrough(idx);
+ }
+};
+bind('#ownerUnlockAll','onclick',()=>{unlockOwnerPathThrough(PATH_MILESTONES.length-1);unlockOwnerChapterThrough(wordChapterCount()-1)});
+bind('#ownerResetPath','onclick',()=>{if(!window.KaishiCloud?.isOwner?.())return;meta.pathOverrides=[];meta.chapterOverrides=[];save();renderOwnerPathControls(true);renderJourneyHome();toast('Journey test overrides reset')});
+bind('#journeyInvite','onclick',openInviteDialog);
+bind('#communityInvite','onclick',openInviteDialog);
+bind('#journeyShareProgress','onclick',openInviteDialog);
+bind('#shareNative','onclick',()=>{if($('#shareDialog'))$('#shareDialog').close();nativeShareInvite()});
+bind('#shareCopy','onclick',()=>{copyInviteLink();if($('#shareDialog'))$('#shareDialog').close()});
+bind('#shareAchievement','onclick',()=>{if($('#shareDialog'))$('#shareDialog').close();shareAchievement()});
+bind('#shareClose','onclick',()=>{if($('#shareDialog'))$('#shareDialog').close()});
+bind('#missionSummaryContinue','onclick',()=>{if($('#missionSummaryDialog'))$('#missionSummaryDialog').close();openJourney()});
+bind('#missionSummaryShare','onclick',()=>{if($('#missionSummaryDialog'))$('#missionSummaryDialog').close();openInviteDialog()});
 init();

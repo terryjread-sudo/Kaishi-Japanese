@@ -1,9 +1,9 @@
 {
-  "version":"11.25.29",
+  "version":"11.25.30",
   "released":"2026-09-01",
-  "title":"Fix startup script loading and version declaration",
+  "title":"Fix startup bindings and admin test mode",
   "changes":[
-    "Resolved a duplicate APP_VERSION declaration error in app.js that was preventing deck scripts and cloud integration from initializing.",
-    "Restored global APP_VERSION resolution from version.js."
+    "Guarded all startup DOM event listeners against missing elements.",
+    "Restored isAdminTestMode helper used by cloud adapter and test controls."
   ]
 }
