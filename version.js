@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.23';
+var APP_VERSION = '11.25.24';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -11,70 +11,34 @@ try {
 
 try {
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-    const loadLessonPatch = () => {
-      if (window.__kaishi112517Loaded || document.querySelector('script[data-kaishi-112517]')) return;
-      window.__kaishi112517Loaded = true;
-      const patch = document.createElement('script');
-      patch.src = './patch-11.25.17.js?v=' + encodeURIComponent(APP_VERSION);
-      patch.setAttribute('data-kaishi-112517', 'true');
-      patch.onerror = () => { window.__kaishi112517Loaded = false; };
-      document.head.appendChild(patch);
-    };
-
     const loadLearningPlanSettings = () => {
-      if (window.__kaishiLearningPlanSettingsLoaded ||
-          document.querySelector('script[data-kaishi-learning-plan-settings]')) {
-        loadLessonPatch();
+      if (window.__kaishiLearningPlanSettingsLoaded || document.querySelector('script[data-kaishi-learning-plan-settings]')) {
         return;
       }
       window.__kaishiLearningPlanSettingsLoaded = true;
       const script = document.createElement('script');
       script.src = './learning-plan-settings.js?v=' + encodeURIComponent(APP_VERSION);
       script.setAttribute('data-kaishi-learning-plan-settings', 'true');
-      script.onload = loadLessonPatch;
-      script.onerror = () => {
-        window.__kaishiLearningPlanSettingsLoaded = false;
-        loadLessonPatch();
-      };
-      document.head.appendChild(script);
-    };
-
-    const loadJourneySourceFixes = () => {
-      if (window.__kaishiJourneySourceFixesLoaded ||
-          document.querySelector('script[data-kaishi-journey-source-fixes]')) {
-        loadLearningPlanSettings();
-        return;
-      }
-      window.__kaishiJourneySourceFixesLoaded = true;
-      const script = document.createElement('script');
-      script.src = './journey-source-fixes.js?v=' + encodeURIComponent(APP_VERSION);
-      script.setAttribute('data-kaishi-journey-source-fixes', 'true');
-      script.onload = loadLearningPlanSettings;
-      script.onerror = () => {
-        window.__kaishiJourneySourceFixesLoaded = false;
-        loadLearningPlanSettings();
-      };
+      script.onerror = () => { window.__kaishiLearningPlanSettingsLoaded = false; };
       document.head.appendChild(script);
     };
 
     const loadKeyEvents = () => {
-      if (window.__kaishiJourneyKeyEventsLoaded ||
-          document.querySelector('script[data-kaishi-journey-key-events]')) {
-        loadJourneySourceFixes();
+      if (window.__kaishiJourneyKeyEventsLoaded || document.querySelector('script[data-kaishi-journey-key-events]')) {
+        loadLearningPlanSettings();
         return;
       }
       window.__kaishiJourneyKeyEventsLoaded = true;
       const script = document.createElement('script');
       script.src = './journey-key-events.js?v=' + encodeURIComponent(APP_VERSION);
-      script.setAttribute('data-kaishi-key-events', 'true');
-      script.onload = loadJourneySourceFixes;
-      script.onerror = loadJourneySourceFixes;
+      script.setAttribute('data-kaishi-journey-key-events', 'true');
+      script.onload = loadLearningPlanSettings;
+      script.onerror = loadLearningPlanSettings;
       document.head.appendChild(script);
     };
 
     const loadRoadAhead = () => {
-      if (window.__kaishiRoadAheadLoaded ||
-          document.querySelector('script[data-kaishi-road-ahead]')) {
+      if (window.__kaishiRoadAheadLoaded || document.querySelector('script[data-kaishi-road-ahead]')) {
         loadKeyEvents();
         return;
       }
@@ -88,8 +52,7 @@ try {
     };
 
     const loadRoadmapEngine = () => {
-      if (window.__kaishiRoadmapEngineLoaded ||
-          document.querySelector('script[data-kaishi-roadmap-engine]')) {
+      if (window.__kaishiRoadmapEngineLoaded || document.querySelector('script[data-kaishi-roadmap-engine]')) {
         loadRoadAhead();
         return;
       }
@@ -103,8 +66,7 @@ try {
     };
 
     const loadJourney = () => {
-      if (window.__kaishiUnifiedJourneyLoaded ||
-          document.querySelector('script[data-kaishi-unified-journey]')) {
+      if (window.__kaishiUnifiedJourneyLoaded || document.querySelector('script[data-kaishi-unified-journey]')) {
         loadRoadmapEngine();
         return;
       }
@@ -117,30 +79,19 @@ try {
       document.head.appendChild(script);
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadJourney, {once:true});
-    } else {
-      loadJourney();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadJourney, {once:true});
+    else loadJourney();
 
     const setBadge = () => {
       try {
         document.title = document.title.replace(/v\d+\.\d+\.\d+/i, 'v' + APP_VERSION);
         document.querySelectorAll('#versionBadge,.version-badge').forEach(el => {
           el.textContent = 'v' + APP_VERSION;
-          el.setAttribute(
-            'aria-label',
-            'Kaishi Quest version ' + APP_VERSION +
-            '. Check for updates and refresh the app.'
-          );
+          el.setAttribute('aria-label', 'Kaishi Quest version ' + APP_VERSION + '.');
         });
       } catch (_) {}
     };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setBadge, {once:true});
-    } else {
-      setBadge();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setBadge, {once:true});
+    else setBadge();
   }
 } catch (_) {}
