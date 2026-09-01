@@ -1,0 +1,9 @@
+{
+  "name": "kaishi-quest",
+  "version": "11.25.30",
+  "description": "Japanese vocabulary learner with visual mnemonics, speech, and games",
+  "scripts": {
+    "test": "node scripts/test.js",
+    "bump": "node scripts/bump.js"
+  }
+}

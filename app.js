@@ -85,6 +85,22 @@ function updateStreakRescue(){
  const active=activeStreakRescue();button.hidden=!active;message.hidden=!active;
  if(active){const days=Math.max(1,Math.ceil((meta.streakRescue.expiresAt-Date.now())/86400000));message.textContent=`One attempt available for ${days} more day${days===1?'':'s'}: defeat Kaidōra with 10 correct answers and no mistakes to restore your ${meta.streakRescue.lostStreak}-day streak.`}
 }
+window.$=$;
+window.KaishiJapanReadyBridge={
+ version:3,
+ getVocab:()=>vocab,
+ getProgress:()=>progress,
+ getMeta:()=>meta,
+ save:()=>save(),
+ show,
+ updateHome,
+ isTestMode:isAdminTestMode,
+ playWord:word=>speak(word?.word||word?.reading||''),
+ startFocusedStudy:wordIds=>{const ids=[...new Set(wordIds)].filter(Boolean);if(!ids.length){toast('No matching study words were found yet');return}activityReturnScreen='japanReady';makeTargetedMasterySession(ids,'meaning')},
+ wordIntroduced,
+ wordMastery:word=>mastery(progress[word.id]),
+ stats:()=>({started:started(),accuracy:accuracy(),mastered:Object.values(progress).filter(mastery).length})
+};
 window.KaishiQuestCloudAdapter={
  snapshot:()=>({version:2,progress,meta,settings}),
  isTestMode:isAdminTestMode,
