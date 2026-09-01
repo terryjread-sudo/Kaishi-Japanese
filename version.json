@@ -1,9 +1,11 @@
 {
-  "version":"11.25.30",
-  "released":"2026-09-01",
-  "title":"Fix startup bindings and admin test mode",
-  "changes":[
-    "Guarded all startup DOM event listeners against missing elements.",
-    "Restored isAdminTestMode helper used by cloud adapter and test controls."
+  "version": "11.25.31",
+  "released": "2026-09-01",
+  "title": "Restore verified-good 11.25.0 base + Journey/service-worker recovery",
+  "changes": [
+    "Restores app.js and index.html to verified-good commit 11.25.0 (db97018), recovering the missing Journey, mission-resume, word-linking, history/roadmap, and immersive learning subsystems.",
+    "Retains the legitimate 11.25.28 service-worker simplification.",
+    "Retains the legitimate 11.25.29 Journey Continue-route fix.",
+    "Does not carry forward the 11.25.25–11.25.27 and 11.25.30 startup patching changes that were compensating for the stale/corrupted base."
   ]
 }

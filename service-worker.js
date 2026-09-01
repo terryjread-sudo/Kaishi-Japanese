@@ -1,7 +1,7 @@
 'use strict';
 
-/* Kaishi Quest Service Worker — 11.25.30. */
-var VERSION = '11.25.30';
+/* Kaishi Quest Service Worker — 11.25.31. */
+var VERSION = '11.25.31';
 try {
   importScripts('./version.js');
   if (typeof APP_VERSION === 'string' && APP_VERSION.trim()) VERSION = APP_VERSION.trim();
