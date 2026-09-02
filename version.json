@@ -1,10 +1,10 @@
 {
-  "version": "11.25.33",
+  "version": "11.25.34",
   "released": "2026-09-02",
-  "title": "Fix: daily journey route ignored the admin lesson-jump override",
+  "title": "Fix: Admin Test Mode broke every button on the main screen",
   "changes": [
-    "ensureDailyJourneyRoute() cached the day's journey route by date/balance settings only, never checking whether the current chapter had changed. In Admin Test Mode this meant setting 'Test as if at lesson N' didn't actually update the Journey screen's 'Start next lesson' step — it kept showing (and could show as already-complete-so-hidden) whatever chapter the route was first generated for that day.",
-    "The route cache now also requires the chapter to match while Admin Test Mode is active, so switching the lesson override correctly regenerates the route and re-enables the button.",
-    "Outside Admin Test Mode this is unchanged: the route intentionally stays pinned to the chapter it was generated for, preserving the 'one lesson at a time' daily pacing for real learners."
+    "renderAdminTestMode() was called at script load time, before WORD_CHAPTER_SIZE (a const used by wordChapterCount()) was initialised. While in Admin Test Mode, the lesson-jump control's setup code called wordChapterCount(), which threw 'Cannot access WORD_CHAPTER_SIZE before initialization' — an uncaught error that silently aborted the rest of the script, including every button click handler defined later in the file (Continue Adventure, Start next lesson, Study, Settings, everything).",
+    "Outside Admin Test Mode this branch never ran, so the bug was invisible until the test-learner banner was active — matching the reported symptom of nothing working until exiting test mode.",
+    "Fix: moved the renderAdminTestMode() call to after WORD_CHAPTER_SIZE/wordChapterCount/chapterWords are declared. No other behavior changed."
   ]
 }
