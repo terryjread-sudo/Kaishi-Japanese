@@ -72,6 +72,11 @@
  *   main path as an equal choice
  * - v11.15.0 New "Your journey ahead" list on the Journey screen shows upcoming topics in order,
  *   alongside the existing "Learning history" timeline of topics already completed
+ * - v11.25.32 Admin Test Mode banner gained a "Test as if at lesson N" control — lets the
+ *   admin reposition the whole journey (topic list, path-ahead widget, journey stats, daily
+ *   route) to any lesson index without completing prior lessons; setting/clearing it also
+ *   clears any saved mid-session resume state so lesson jumps aren't overridden by a stale
+ *   in-progress mission
  */
 (() => {
   // CURRENT_VERSION is read from the single source of truth in version.js
