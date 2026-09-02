@@ -486,8 +486,15 @@ function missionActivityId(){const available=['kana','picture','listening','karu
 function ensureDailyJourneyRoute(){
  refreshPathUnlocks();
  const balanceKey=`${settings.learningBalanceAdaptive!==false?'adaptive':'manual'}:${storedLearningBalance()}:${effectiveLearningBalance()}`;
- if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===5&&meta.dailyJourneyRoute.balanceKey===balanceKey&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
- const chapter=currentWordChapterIndex(),words=chapterWords(chapter),topic=currentTopic();
+ const chapter=currentWordChapterIndex();
+ // Outside Admin Test Mode, the route intentionally stays pinned to whichever
+ // chapter it was generated for today, even if chapterIndex naturally moves
+ // on (e.g. right after finishing today's lesson) — that's what keeps the
+ // "one lesson at a time" daily pacing honest. Admin Test Mode is exempted
+ // so the "Test as if at lesson N" control can actually switch the route.
+ const chapterMatches=!isAdminTestMode()||meta.dailyJourneyRoute?.chapter===chapter;
+ if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===5&&meta.dailyJourneyRoute.balanceKey===balanceKey&&chapterMatches&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
+ const words=chapterWords(chapter),topic=currentTopic();
  const previousCompleted=meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.chapter===chapter?meta.dailyJourneyRoute.completed||[]:[];
  meta.dailyJourneyRoute={schemaVersion:5,date:day(),balanceKey,chapter,completed:previousCompleted,explanation:{chapter,sequence:'One lesson at a time'},steps:[
   {id:`lesson-${chapter}`,kind:'chapter',chapter,topicId:topic.id,icon:topic.icon||'🗺️',title:`Lesson ${chapter+1}: ${words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title}`,detail:`Learn ${words.length} connected word${words.length===1?'':'s'} from ${topic.title}, then strengthen them before the next lesson.`}
