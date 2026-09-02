@@ -1,1 +1,95 @@
 
+name: Automatic minor version bump
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  bump-version:
+    name: Bump minor version
+    runs-on: ubuntu-latest
+
+    # Prevent the workflow from processing its own version commit.
+    if: ${{ !contains(github.event.head_commit.message, '[auto-version]') }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Calculate next minor version
+        id: version
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const data = JSON.parse(
+            fs.readFileSync('version.json', 'utf8')
+          );
+
+          const current = String(data.version || '').trim();
+
+          const match = current.match(/^(\d+)\.(\d+)\.(\d+)$/);
+
+          if (!match) {
+            throw new Error(
+              `Invalid version in version.json: ${current}`
+            );
+          }
+
+          const next =
+            `${match[1]}.${Number(match[2]) + 1}.0`;
+
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `version=${next}\n`
+          );
+
+          console.log(`${current} -> ${next}`);
+          NODE
+
+      - name: Run repository bump script
+        run: |
+          node scripts/bump.js \
+            "${{ steps.version.outputs.version }}" \
+            "Automatic minor version bump" \
+            "Automated by GitHub Actions after changes were pushed to main. [auto-version]"
+
+      - name: Run repository tests
+        run: node scripts/test.js
+
+      - name: Commit and push version update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@github.com"
+
+          git add \
+            version.js \
+            version.json \
+            service-worker.js \
+            index.html \
+            README-*.txt
+
+          if git diff --cached --quiet; then
+            echo "No version changes to commit."
+            exit 0
+          fi
+
+          git commit \
+            -m "chore: bump version to ${{ steps.version.outputs.version }} [auto-version]"
+
+          git push origin HEAD:main
