@@ -69,7 +69,7 @@ const indexHtml = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
 
 const vJsMatch = versionJs.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
 const vSwMatch = swJs.match(/VERSION\s*=\s*['"]([^'"]+)['"]/);
-const vBadgeMatch = indexHtml.match(/class="version-badge">v([^<]+)</);
+const vBadgeMatch = indexHtml.match(/class="version-badge"[^>]*>v([^<]+)</);
 
 const expectedVersion = versionJson.version;
 assert(Boolean(vJsMatch && vJsMatch[1] === expectedVersion), `version.js APP_VERSION (${vJsMatch?.[1]}) matches version.json (${expectedVersion})`);
@@ -138,11 +138,18 @@ try {
     vm.runInContext(code, ctx);
   }
 
+  // app.js (and the rest of the app) declares its top-level bindings with
+  // const/let, matching how real classic <script> tags share one global
+  // scope in a browser. Those bindings are correctly visible to code
+  // evaluated inside this vm context, but — same as in a real browser —
+  // they do NOT become enumerable properties of the context/global object,
+  // so `ctx.$` is always undefined even when $ works perfectly fine.
+  // Query them as live expressions in the context instead of as properties.
   assert(Boolean(ctx.APP_VERSION === expectedVersion), `Global APP_VERSION is defined as ${expectedVersion}`);
-  assert(typeof ctx.$ === 'function', 'Global $ selector is defined');
+  assert(vm.runInContext('typeof $', ctx) === 'function', 'Global $ selector is defined');
   assert(Boolean(ctx.window.KaishiJapanReadyBridge), 'window.KaishiJapanReadyBridge is attached');
   assert(Boolean(ctx.window.KaishiQuestCloudAdapter), 'window.KaishiQuestCloudAdapter is attached');
-  assert(typeof ctx.window.isAdminTestMode === 'function', 'window.isAdminTestMode is available');
+  assert(vm.runInContext('typeof isAdminTestMode', ctx) === 'function', 'isAdminTestMode is available');
   assert(true, 'All core scripts loaded in sequence without unhandled exceptions');
 } catch (err) {
   assert(false, `Script execution simulation failed: ${err.stack || err.message}`);

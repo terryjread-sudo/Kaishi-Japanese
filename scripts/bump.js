@@ -32,7 +32,7 @@ const versionJsPath = path.join(rootDir, 'version.js');
 let versionJs = fs.readFileSync(versionJsPath, 'utf8');
 versionJs = versionJs.replace(
   /\/\* Kaishi Quest [^*]+ \*\//,
-  `/* Kaishi Quest ${newVersion} — single source of truth for application version. */`
+  `/* Kaishi Quest ${newVersion} â€” single source of truth for application version. */`
 );
 versionJs = versionJs.replace(
   /var APP_VERSION = '[^']+';/,
@@ -45,8 +45,8 @@ console.log('? Updated version.js');
 const swJsPath = path.join(rootDir, 'service-worker.js');
 let swJs = fs.readFileSync(swJsPath, 'utf8');
 swJs = swJs.replace(
-  /\/\* Kaishi Quest Service Worker — [^*]+ \*\//,
-  `/* Kaishi Quest Service Worker — ${newVersion}. */`
+  /\/\* Kaishi Quest Service Worker â€” [^*]+ \*\//,
+  `/* Kaishi Quest Service Worker â€” ${newVersion}. */`
 );
 swJs = swJs.replace(
   /var VERSION = '[^']+';/,
@@ -70,6 +70,22 @@ console.log('? Updated version.json');
 const indexHtmlPath = path.join(rootDir, 'index.html');
 let indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 indexHtml = indexHtml.replaceAll(oldVersion, newVersion);
+// The replaceAll above only catches cache-busters that already contained
+// oldVersion. It does NOT fix the visible version badge if that text has
+// ever drifted out of sync with version.json (which it had â€” the badge
+// was stuck on a stale version for a long time). Update the badge directly
+// by targeting its element, regardless of what version string it currently
+// shows or what attributes surround it.
+const badgePattern = /(<span id="versionBadge"[^>]*>)v[^<]*(<)/;
+if (badgePattern.test(indexHtml)) {
+  indexHtml = indexHtml.replace(badgePattern, `$1v${newVersion}$2`);
+} else {
+  console.warn('??  Could not find #versionBadge element in index.html to update.');
+}
+const badgeAriaLabelPattern = /(aria-label="Kaishi Quest version )\d+\.\d+\.\d+(\. Check for updates)/;
+if (badgeAriaLabelPattern.test(indexHtml)) {
+  indexHtml = indexHtml.replace(badgeAriaLabelPattern, `$1${newVersion}$2`);
+}
 fs.writeFileSync(indexHtmlPath, indexHtml, 'utf8');
 console.log('? Updated index.html cache-busters and version badge');
 
