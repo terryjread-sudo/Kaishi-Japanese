@@ -1,10 +1,10 @@
 {
-  "version": "11.25.32",
+  "version": "11.25.33",
   "released": "2026-09-02",
-  "title": "Admin test mode: jump to any lesson",
+  "title": "Fix: daily journey route ignored the admin lesson-jump override",
   "changes": [
-    "Added a 'Test as if at lesson N' control to the test-learner banner in Admin Test Mode, letting the admin reposition the journey (topic list, path-ahead widget, journey stats, daily route) to any lesson without needing to actually complete prior lessons.",
-    "Setting or clearing the lesson override now also clears any saved mid-session resume state, so jumping between lessons for testing doesn't get overridden by a stale in-progress mission.",
-    "The override is scoped to Admin Test Mode only and resets automatically when the admin exits test mode."
+    "ensureDailyJourneyRoute() cached the day's journey route by date/balance settings only, never checking whether the current chapter had changed. In Admin Test Mode this meant setting 'Test as if at lesson N' didn't actually update the Journey screen's 'Start next lesson' step — it kept showing (and could show as already-complete-so-hidden) whatever chapter the route was first generated for that day.",
+    "The route cache now also requires the chapter to match while Admin Test Mode is active, so switching the lesson override correctly regenerates the route and re-enables the button.",
+    "Outside Admin Test Mode this is unchanged: the route intentionally stays pinned to the chapter it was generated for, preserving the 'one lesson at a time' daily pacing for real learners."
   ]
 }

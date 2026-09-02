@@ -77,6 +77,12 @@
  *   route) to any lesson index without completing prior lessons; setting/clearing it also
  *   clears any saved mid-session resume state so lesson jumps aren't overridden by a stale
  *   in-progress mission
+ * - v11.25.33 Fixed ensureDailyJourneyRoute() caching by date/balance-settings only, which
+ *   left the Journey screen's "Start next lesson" button stuck on whatever chapter the route
+ *   was first generated for that day — invisible to normal users (route intentionally pins to
+ *   one lesson/day) but broke the new Admin Test Mode lesson-jump control, since the cached
+ *   route never re-checked the chapter. Cache now also requires the chapter to match while
+ *   Admin Test Mode is active.
  */
 (() => {
   // CURRENT_VERSION is read from the single source of truth in version.js
