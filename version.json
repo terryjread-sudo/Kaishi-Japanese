@@ -1,11 +1,10 @@
 {
-  "version": "11.25.31",
-  "released": "2026-09-01",
-  "title": "Restore verified-good 11.25.0 base + Journey/service-worker recovery",
+  "version": "11.25.32",
+  "released": "2026-09-02",
+  "title": "Admin test mode: jump to any lesson",
   "changes": [
-    "Restores app.js and index.html to verified-good commit 11.25.0 (db97018), recovering the missing Journey, mission-resume, word-linking, history/roadmap, and immersive learning subsystems.",
-    "Retains the legitimate 11.25.28 service-worker simplification.",
-    "Retains the legitimate 11.25.29 Journey Continue-route fix.",
-    "Does not carry forward the 11.25.25–11.25.27 and 11.25.30 startup patching changes that were compensating for the stale/corrupted base."
+    "Added a 'Test as if at lesson N' control to the test-learner banner in Admin Test Mode, letting the admin reposition the journey (topic list, path-ahead widget, journey stats, daily route) to any lesson without needing to actually complete prior lessons.",
+    "Setting or clearing the lesson override now also clears any saved mid-session resume state, so jumping between lessons for testing doesn't get overridden by a stale in-progress mission.",
+    "The override is scoped to Admin Test Mode only and resets automatically when the admin exits test mode."
   ]
 }

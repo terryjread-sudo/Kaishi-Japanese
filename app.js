@@ -4,6 +4,27 @@ const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.sc
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
+const ADMIN_TEST_CHAPTER_KEY='kq-admin-test-chapter';
+function adminTestChapterOverride(){
+ if(!isAdminTestMode())return null;
+ let raw;try{raw=sessionStorage.getItem(ADMIN_TEST_CHAPTER_KEY)}catch{return null}
+ if(raw===null)return null;
+ const n=Number(raw);
+ if(!Number.isFinite(n)||n<0)return null;
+ return Math.min(n,Math.max(0,wordChapterCount()-1));
+}
+function setAdminTestChapter(lessonNumber){
+ if(!isAdminTestMode())return false;
+ const index=Math.max(0,Math.min(wordChapterCount()-1,Math.round(Number(lessonNumber))-1));
+ if(!Number.isFinite(index))return false;
+ try{sessionStorage.setItem(ADMIN_TEST_CHAPTER_KEY,String(index))}catch{return false}
+ clearMissionResume();
+ return true;
+}
+function clearAdminTestChapter(){
+ try{sessionStorage.removeItem(ADMIN_TEST_CHAPTER_KEY)}catch{}
+ clearMissionResume();
+}
 const SKILLS=['meaning','production','listening','reading','kanji','components','sentence','picture'];
 const BATTLE_MONSTERS=[{id:'kappa',name:'Kappa'},{id:'tanuki',name:'Tanuki'},{id:'kitsune',name:'Kitsune'},{id:'karakasa',name:'Karakasa-obake'}];
 const LABELS={meaning:'Meaning',production:'English → Japanese',listening:'Listening',reading:'Reading',kanji:'Kanji recognition',components:'Kanji components',sentence:'Sentence',picture:'Picture match'};
@@ -184,9 +205,19 @@ function renderAdminTestMode(){
  if(isAdminTestMode()){
   const expose=()=>document.querySelectorAll('#japanReadyScenarioList [data-s]').forEach(button=>{button.disabled=false;button.closest('.japan-scenario')?.classList.remove('locked')});
   expose();new MutationObserver(expose).observe(document.body,{childList:true,subtree:true});
+  const input=$('#adminTestLessonInput'),goButton=$('#adminTestLessonGo'),clearButton=$('#adminTestLessonClear');
+  if(input)input.max=String(wordChapterCount());
+  const current=adminTestChapterOverride();
+  if(input)input.value=current!==null?String(current+1):'';
+  goButton?.addEventListener('click',()=>{
+   const value=Number(input?.value);
+   if(!input?.value||!Number.isFinite(value)||value<1){toast('Enter a lesson number to jump to');return}
+   setAdminTestChapter(value);updateHome();if($('#journey')?.classList.contains('active'))renderJourney();toast(`Test learner set to lesson ${Math.min(Math.round(value),wordChapterCount())}`)
+  });
+  clearButton?.addEventListener('click',()=>{clearAdminTestChapter();if(input)input.value='';updateHome();if($('#journey')?.classList.contains('active'))renderJourney();toast('Test learner back to natural progress')});
  }
 }
-window.KaishiAdminTest={enter:enterAdminTestMode,exit:exitAdminTestMode,active:isAdminTestMode};
+window.KaishiAdminTest={enter:enterAdminTestMode,exit:exitAdminTestMode,active:isAdminTestMode,setLesson:setAdminTestChapter,clearLesson:clearAdminTestChapter,currentLessonOverride:adminTestChapterOverride};
 renderAdminTestMode();
 window.KaishiJapanReadyBridge={version:3,getVocab:()=>vocab,getProgress:()=>progress,getMeta:()=>meta,save:()=>save(),show,updateHome,isTestMode:isAdminTestMode,playWord:word=>speak(word?.word||word?.reading||''),startFocusedStudy:wordIds=>{const ids=[...new Set(wordIds)].filter(Boolean);if(!ids.length){toast('No matching study words were found yet');return}activityReturnScreen='japanReady';makeTargetedMasterySession(ids,'meaning')},wordIntroduced,wordMastery:word=>mastery(progress[word.id]),stats:()=>({started:started(),accuracy:accuracy(),mastered:Object.values(progress).filter(mastery).length})};
 function bonsaiGrowthState(){const words=started(),mastered=Object.values(progress).filter(mastery).length,topics=journeyTopics().filter(topic=>topicStats(topic).complete).length,score=words+mastered*7+topics*35,thresholds=[0,2,60,240,700],stages=[['First Sprout','Your first useful Japanese is taking root.'],['New Branches','Recognition is becoming a reliable learning habit.'],['Shaped Sapling','Recall and listening are giving your Japanese structure.'],['Strong Bonsai','A broad base of Japanese is becoming usable.'],['Mastery in Bloom','Long-term recall is flowering across your learning.']];let stage=0;thresholds.forEach((threshold,index)=>{if(score>=threshold)stage=index});const next=thresholds[stage+1]??score,base=thresholds[stage],percent=stage===thresholds.length-1?100:Math.round((score-base)/Math.max(1,next-base)*100);return{stage,stageName:stages[stage][0],nextStageName:stages[stage+1]?.[0]||'',description:stages[stage][1],score,nextScore:next,progress:Math.max(0,Math.min(100,percent)),words,mastered,topics,newLearner:Number(meta.totalAnswers||0)===0&&words===0}}
@@ -449,7 +480,7 @@ function masteryFocus(){
 function chapterStats(itemIndex){const words=chapterWords(itemIndex),introduced=words.filter(wordIntroduced).length,reviewed=words.filter(item=>wordPracticeCount(progress[item.id])>=2).length,introTarget=words.length,reviewTarget=words.length,complete=introduced>=introTarget&&reviewed>=reviewTarget;return{words,introduced,reviewed,introTarget,reviewTarget,complete,percent:Math.round((Math.min(1,introduced/Math.max(1,introTarget))*.6+Math.min(1,reviewed/Math.max(1,reviewTarget))*.4)*100)}}
 function chapterNaturallyUnlocked(itemIndex){if(itemIndex===0)return true;for(let previous=0;previous<itemIndex;previous++)if(!chapterStats(previous).complete)return false;return true}
 function chapterUnlocked(itemIndex){return isAdminTestMode()||chapterNaturallyUnlocked(itemIndex)||meta.chapterOverrides.includes(itemIndex)}
-function currentWordChapterIndex(){let lastUnlocked=0;for(let itemIndex=0;itemIndex<wordChapterCount();itemIndex++){if(!chapterUnlocked(itemIndex))break;lastUnlocked=itemIndex;if(!chapterStats(itemIndex).complete)return itemIndex}return lastUnlocked}
+function currentWordChapterIndex(){const override=adminTestChapterOverride();if(override!==null)return override;let lastUnlocked=0;for(let itemIndex=0;itemIndex<wordChapterCount();itemIndex++){if(!chapterUnlocked(itemIndex))break;lastUnlocked=itemIndex;if(!chapterStats(itemIndex).complete)return itemIndex}return lastUnlocked}
 function wordJourneyPosition(){const total=wordChapterCount(),explored=vocab.filter(wordIntroduced).length,chapter=currentWordChapterIndex()+1,completed=Array.from({length:total},(_,itemIndex)=>chapterStats(itemIndex).complete).filter(Boolean).length;return{explored,chapter,total,completed}}
 function missionActivityId(){const available=['kana','picture','listening','karuta','conversation','grammar','sentenceLab','theatre','builder','manga','battle'].filter(id=>pathUnlocked(id)),newActivity=available.find(id=>!meta.pathVisits[id]);if(newActivity)return newActivity;const weighted=available.flatMap(id=>Array.from({length:Math.max(1,Math.round(activityPreferenceWeight(id)*4))},()=>id)),seed=day().split('-').reduce((sum,value)=>sum+Number(value||0),0);return weighted[seed%Math.max(1,weighted.length)]||available[0]||'kana'}
 function ensureDailyJourneyRoute(){
