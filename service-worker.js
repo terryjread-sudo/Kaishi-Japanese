@@ -1,7 +1,7 @@
 'use strict';
 
-/* Kaishi Quest Service Worker — 11.25.31. */
-var VERSION = '11.25.31';
+/* Kaishi Quest Service Worker — 11.25.35. */
+var VERSION = '11.25.35';
 try {
   importScripts('./version.js');
   if (typeof APP_VERSION === 'string' && APP_VERSION.trim()) VERSION = APP_VERSION.trim();
@@ -18,6 +18,7 @@ var SHELL = [
   './','./index.html',v('./version.js'),v('./journey.js'),v('./roadmap-engine.js'),v('./road-ahead.js'),
   v('./styles.css'),v('./sentence-lab.css'),v('./engagement-layer.css'),
   v('./pronunciation-coach.css'),v('./bonsai-progress.css'),v('./vms.css'),v('./app.js'),
+  v('./journey-activities.js'),
   v('./vms.js'),v('./cloud.js'),v('./reporting.js'),v('./japan-ready.js'),v('./supabase-config.js'),
   v('./release-manager.js'),v('./battle-listen.js'),v('./kotoba-activity.js'),v('./dashboard-clarity.js'),
   v('./touch-enhancements.js'),v('./learning-ui.js'),v('./carousel-navigation.js'),v('./micro-practice.js'),

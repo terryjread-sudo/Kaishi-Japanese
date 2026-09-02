@@ -1,7 +1,7 @@
 'use strict';
 
 /* Kaishi Quest — single source of truth. */
-var APP_VERSION = '11.25.34';
+var APP_VERSION = '11.25.35';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
@@ -19,6 +19,16 @@ try {
       script.src = './journey.js?v=' + encodeURIComponent(APP_VERSION);
       script.setAttribute('data-kaishi-unified-journey', 'true');
 
+      const loadActivityPolicy = () => {
+        if (window.__kaishiActivityPolicyLoaded || document.querySelector('script[data-kaishi-activity-policy]')) return;
+        window.__kaishiActivityPolicyLoaded = true;
+        const activityPolicy = document.createElement('script');
+        activityPolicy.src = './journey-activities.js?v=' + encodeURIComponent(APP_VERSION);
+        activityPolicy.setAttribute('data-kaishi-activity-policy', 'true');
+        activityPolicy.onerror = () => { window.__kaishiActivityPolicyLoaded = false; };
+        document.head.appendChild(activityPolicy);
+      };
+
       script.onload = () => {
         if (window.__kaishiRoadmapEngineLoaded || document.querySelector('script[data-kaishi-roadmap-engine]')) return;
         window.__kaishiRoadmapEngineLoaded = true;
@@ -27,17 +37,19 @@ try {
         roadmapEngine.setAttribute('data-kaishi-roadmap-engine', 'true');
 
         const loadRoadAhead = () => {
-          if (window.__kaishiRoadAheadLoaded || document.querySelector('script[data-kaishi-road-ahead]')) return;
+          if (window.__kaishiRoadAheadLoaded || document.querySelector('script[data-kaishi-road-ahead]')) {
+            loadActivityPolicy();
+            return;
+          }
           window.__kaishiRoadAheadLoaded = true;
           const roadAhead = document.createElement('script');
           roadAhead.src = './road-ahead.js?v=' + encodeURIComponent(APP_VERSION);
           roadAhead.setAttribute('data-kaishi-road-ahead', 'true');
-          roadAhead.onerror = () => { window.__kaishiRoadAheadLoaded = false; };
+          roadAhead.onload = loadActivityPolicy;
+          roadAhead.onerror = () => { window.__kaishiRoadAheadLoaded = false; loadActivityPolicy(); };
           document.head.appendChild(roadAhead);
         };
 
-        // road-ahead.js reads from window.KaishiRoadmap, so it must load
-        // after roadmap-engine.js regardless of success/failure.
         roadmapEngine.onload = loadRoadAhead;
         roadmapEngine.onerror = () => { window.__kaishiRoadmapEngineLoaded = false; loadRoadAhead(); };
         document.head.appendChild(roadmapEngine);
