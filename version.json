@@ -1,12 +1,8 @@
 {
-  "version": "11.25.35",
+  "version": "11.26.0",
   "released": "2026-09-02",
-  "title": "Vocabulary-gated Journey activities and lesson reinforcement",
+  "title": "Automatic minor version bump",
   "changes": [
-    "Immersive lesson reinforcement is now vocabulary-led: Picture Matching is scheduled inside lessons when the lesson has suitable mnemonic scenes, rather than being treated as a separate XP-gated unlock.",
-    "Special activities such as Karuta, Conversation, Theatre, Manga and SRS Battle are treated as optional Journey side quests. SRS Battle remains separate from lesson content.",
-    "Removed XP / Adventure Point requirements from activity readiness. Activities are gated by the learner's available, relevant vocabulary instead.",
-    "The Journey timeline now carries appropriate optional side quests after lessons without making them blockers for the next required lesson.",
-    "The same activity policy is exposed to the roadmap so upcoming activities and side quests reflect vocabulary readiness rather than old XP/AP progression."
+    "Automated by GitHub Actions after changes were pushed to main. [auto-version]"
   ]
 }
