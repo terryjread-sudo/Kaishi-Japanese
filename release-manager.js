@@ -83,6 +83,11 @@
  *   one lesson/day) but broke the new Admin Test Mode lesson-jump control, since the cached
  *   route never re-checked the chapter. Cache now also requires the chapter to match while
  *   Admin Test Mode is active.
+ * - v11.25.34 Fixed a regression from v11.25.32: renderAdminTestMode() ran at script load
+ *   time, before the WORD_CHAPTER_SIZE const it now depends on (via wordChapterCount()) was
+ *   initialised — throwing an uncaught ReferenceError in Admin Test Mode that silently
+ *   aborted every button click handler defined later in app.js. Moved the call to after
+ *   WORD_CHAPTER_SIZE/wordChapterCount/chapterWords are declared.
  */
 (() => {
   // CURRENT_VERSION is read from the single source of truth in version.js
