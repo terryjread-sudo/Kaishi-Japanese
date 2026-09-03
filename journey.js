@@ -242,6 +242,7 @@
             output.push({
               type: 'side',
               id: step.id,
+              activityId: step.activityId,
               chapter,
               icon: step.icon || '⚔️',
               title: step.title || 'Side Quest',
@@ -954,6 +955,18 @@
           </button>
         </div>
       `;
+    } else if (item.type === 'side' && !item.done && item.activityId) {
+      actions = `
+        <div class="kq-unified-actions">
+          <button type="button"
+                  class="primary"
+                  data-kq-action="activity"
+                  data-kq-activity="${esc(item.activityId)}"
+                  data-kq-chapter="${item.chapter}">
+            Start side quest
+          </button>
+        </div>
+      `;
     }
 
     return `
@@ -1043,12 +1056,24 @@
       if (!Number.isFinite(chapter)) return;
 
       if (action === 'continue') {
-        launchCurrentLesson();
+        if (!launchCurrentLesson()) alertUnavailable('The next lesson is still loading. Please try again in a moment.');
         return;
       }
 
       if (action === 'retry') {
-        retryLesson(chapter);
+        if (!retryLesson(chapter)) alertUnavailable('That lesson could not be prepared. Please try again.');
+        return;
+      }
+
+      if (action === 'activity') {
+        const activityId = String(button.dataset.kqActivity || '');
+        try {
+          if (typeof launchPathMilestone === 'function' && activityId) {
+            launchPathMilestone(activityId, true);
+            return;
+          }
+        } catch (_) {}
+        alertUnavailable('That side quest is still loading. Please try again in a moment.');
         return;
       }
 
@@ -1085,11 +1110,17 @@
   // Journey screen isn't the active one — see the guard at its top).
   window.KaishiJourneyRender = render;
 
+  function alertUnavailable(message) {
+    try { if (typeof toast === 'function') { toast(message); return; } } catch (_) {}
+    console.warn(message);
+  }
+
   function init() {
     addStyles();
     addMasteryStyles();
     installRedoReturnGuard();
     bind();
+    window.dispatchEvent(new Event('kaishi-journey-ready'));
 
     /*
      * Capture-phase navigation hook: app.js handles the same buttons, then our

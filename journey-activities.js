@@ -187,7 +187,7 @@
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;
-    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 6 && Array.isArray(previous.steps)) return previous;
+    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 7 && Array.isArray(previous.steps)) return previous;
 
     const schedule = lessonSchedule(chapter, chapter, words, {forceFirst:true});
     const lessonId = `lesson-${chapter}`;
@@ -206,7 +206,10 @@
     // coherent and makes special activities feel earned through vocabulary.
     const lessonRelevant = id => {
       if (id === 'karuta') return lesson.some(word => Boolean(word?.wordAudio && memoryScenes?.[sceneKey(word)]?.file));
-      if (id === 'conversation') return safeArray(conversations).some(item => item.turns?.some(turn => lesson.some(word => word.word === turn.targetWord || word.reading === turn.targetWord)));
+      if (id === 'conversation') return safeArray(conversations).some((item,index) => {
+        const targets=typeof conversationTargets==='function'?conversationTargets(item):[];
+        return Boolean(typeof conversationUnlocked==='function'&&conversationUnlocked(index)&&targets.length&&targets.every(word=>wordIntroduced(word))&&targets.some(word=>lesson.includes(word)));
+      });
       if (id === 'theatre') return safeArray(theatreScenes).some(scene => scene.timeline?.some(line => lesson.some(word => word.word === line.targetWord || word.reading === line.targetWord)));
       if (id === 'manga') return safeArray(mangaStories).some(story => story.panels?.some(panel => lesson.some(word => `${word.word}|${word.reading}` === panel.targetKey)));
       if (id === 'battle') return dueWords().some(word => lesson.includes(word)) || lesson.some(word => wordIntroduced(word));
@@ -240,7 +243,7 @@
     }
 
     meta.dailyJourneyRoute={
-      schemaVersion:6,
+      schemaVersion:7,
       date:today,
       chapter,
       balanceKey:'vocabulary-gated',

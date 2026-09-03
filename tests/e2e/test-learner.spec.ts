@@ -25,4 +25,21 @@ test('test learner can launch an immersive activity after app initialization', a
   expect(runtimeErrors).toEqual([]);
   await expect(page.locator('#sentenceLab')).toHaveClass(/active/);
   await expect(page.locator('#sentenceLabHome')).toContainText('Sentence Lab');
+
+  await page.locator('#adminTestActivity').selectOption('colosseum');
+  await launch.click();
+  await expect(page.locator('#listenBattle')).toHaveClass(/active/);
+});
+
+test('test learner lesson jump renders the Journey timeline immediately', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem('kq-admin-test-mode', '1');
+  });
+  await page.goto('/');
+  await page.locator('#adminTestLessonInput').fill('20');
+  await page.locator('#adminTestLessonGo').click();
+
+  await expect(page.locator('#journey')).toHaveClass(/active/);
+  await expect(page.locator('#journeyHistoryTrack .kq-unified-timeline')).toBeVisible();
+  await expect(page.locator('#journeyHistoryTrack')).not.toContainText('Your lessons will appear here as you progress.');
 });
