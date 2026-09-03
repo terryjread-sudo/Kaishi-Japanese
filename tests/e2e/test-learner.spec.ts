@@ -54,7 +54,10 @@ test('Journey shows a scheduled immersive mission within its chapter scene', asy
   await page.locator('#adminTestLessonInput').fill('20');
   await page.locator('#adminTestLessonGo').click();
 
-  await expect(page.locator('#journeyHistoryTrack [data-kq-scene]').first()).toBeVisible();
+  await expect(page.locator('#journeyHistoryTrack')).toBeVisible();
+  const journeyBackground = await page.locator('#journeyHistoryTrack').evaluate(element => getComputedStyle(element).backgroundImage);
+  expect(journeyBackground).toContain('bamboo-scroll-tile.png');
+  await expect(page.locator('#journeyHistoryTrack .kq-chapter-scene')).toHaveCount(0);
   await expect(page.locator('#journeyHistoryTrack .kq-activity-badge').first()).toBeVisible();
   await page.getByRole('button', { name: 'Why this route?' }).click();
   await expect(page.locator('#journeyHistoryTrack .kq-mission-detail').first()).toContainText('Reinforces');
