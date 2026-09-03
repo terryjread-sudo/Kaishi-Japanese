@@ -34,6 +34,8 @@ export const OFFLINE_CORE_FILES = [
   './media/guides/sensei/sensei-analysing.webp', './media/guides/aiko-guide-icon.webp',
   './media/guides/aiko-guide-portrait.webp', './media/guides/aiko-guide-large.webp',
   './media/sentence-lab/sentence-lab-hero.webp',
+  './media/journey-scenes/riverside-path.png', './media/journey-scenes/lantern-market.png',
+  './media/journey-scenes/shrine-forest.png', './media/journey-scenes/coastal-path.png',
   './media/profiles/guest-learner.webp', './media/profiles/boy-base.webp',
   './media/profiles/girl-base.webp', './media/profiles/master-base.webp',
   './media/profiles/man-base.webp', './media/profiles/woman-base.webp',

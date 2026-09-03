@@ -20,7 +20,7 @@
  * vocabulary-readiness policy.
  */
 (() => {
-  const VERSION = '11.25.35';
+  const VERSION = '11.26.0';
   const log = message => { try { window.kaishiLog?.('activity-policy', `[${VERSION}] ${message}`); } catch (_) {} };
 
   const safeArray = value => Array.isArray(value) ? value : [];
@@ -79,6 +79,21 @@
   ];
 
   const ruleFor = id => rules.find(rule => rule.id === id) || null;
+  const missionBrief = (id, words=[]) => {
+    const rule = ruleFor(id);
+    const vocabulary = safeArray(words).slice(0, 2).map(word => word?.meaning).filter(Boolean).join(' and ');
+    const briefs = {
+      picture: {objective:'Recognise the lesson words from their visual memory scenes.', purpose:'Picture memory mission'},
+      karuta: {objective:'Catch familiar Japanese by sound before the cards disappear.', purpose:'Listening reflex mission'},
+      conversation: {objective:'Choose a natural reply in a short Japanese exchange.', purpose:'Conversation mission'},
+      theatre: {objective:'Follow a real-world scene and show what you understood.', purpose:'Listening scene mission'},
+      builder: {objective:'Rebuild the Kanji components behind familiar lesson words.', purpose:'Kanji construction mission'},
+      manga: {objective:'Read familiar Japanese in an illustrated story.', purpose:'Reading story mission'},
+      colosseum: {objective:'Use familiar Japanese in a tactical listening battle.', purpose:'Battle mission'}
+    };
+    const brief = briefs[id] || {objective:rule?.note || 'Use these new words in a different kind of practice.', purpose:'Immersive practice mission'};
+    return {...brief, activityId:id, icon:rule?.icon || '🗺️', label:rule?.label || 'Immersive activity', vocabulary};
+  };
   const wordCount = id => id === 'picture' || id === 'listening' || id === 'karuta' || id === 'sentenceLab' || id === 'kanji' || id === 'builder'
     ? supported(id).length
     : introduced().length;
@@ -194,7 +209,7 @@
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;
-    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 9 && Array.isArray(previous.steps)) return previous;
+    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 10 && Array.isArray(previous.steps)) return previous;
 
     const schedule = lessonSchedule(chapter, chapter, words, {forceFirst:true});
     const lessonId = `lesson-${chapter}`;
@@ -225,8 +240,9 @@
       if (id === 'kanji' || id === 'builder') return lesson.some(word => typeof kanjiCharacters === 'function' && kanjiCharacters(word).length);
       return true;
     };
-    const sideQuestIds=new Set(['karuta','conversation','theatre','builder','manga','battle','colosseum']);
-    const candidates=schedule.sideQuests.filter(id => sideQuestIds.has(id) && activityReadiness(id).wordReady && lessonRelevant(id));
+    const sideQuestIds=new Set(['picture','karuta','conversation','theatre','builder','manga','battle','colosseum']);
+    const candidates=[...new Set([...schedule.core.filter(id=>ruleFor(id)?.immersive),...schedule.sideQuests])]
+      .filter(id => sideQuestIds.has(id) && activityReadiness(id).wordReady && lessonRelevant(id));
     const ranked=candidates.sort((a,b) => {
       const score=id => (meta.pathVisits?.[id] ? 0 : 6) + (id==='battle' ? 1 : 0) + (id==='colosseum' ? 2 : 0) + (id==='karuta' && lesson.some(word => word.wordAudio && memoryScenes?.[sceneKey(word)]?.file) ? 5 : 0);
       return score(b)-score(a);
@@ -243,15 +259,17 @@
           sideQuestFor:lessonId,
           optional:true,
           icon:rule.icon,
-          title:`Side Quest · ${rule.label}`,
-          detail:rule.note,
+          title:`Real-world mission · ${rule.label}`,
+          detail:missionBrief(side,lesson).objective,
+          mission:missionBrief(side,lesson),
           required:false
         });
+        steps[0].immersiveMission=missionBrief(side,lesson);
       }
     }
 
     meta.dailyJourneyRoute={
-      schemaVersion:9,
+      schemaVersion:10,
       date:today,
       chapter,
       balanceKey:'vocabulary-gated',
