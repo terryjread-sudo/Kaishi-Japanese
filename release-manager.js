@@ -769,6 +769,8 @@
 
   function offlineState(){try{return JSON.parse(localStorage.getItem(OFFLINE_STATE_KEY)||'null')}catch{return null}}
   function saveOfflineState(state){try{state?localStorage.setItem(OFFLINE_STATE_KEY,JSON.stringify(state)):localStorage.removeItem(OFFLINE_STATE_KEY)}catch{}}
+  function offlinePackOutdated(){const state=offlineState();return Boolean(state?.version&&state.version!==CURRENT_VERSION)}
+  function publishOfflineState(){window.dispatchEvent(new Event('kaishi-offline-status'))}
   function localAsset(value){
     if(typeof value!=='string'||!value)return null;
     const clean=value.trim();if(!clean||clean.startsWith('data:')||clean.startsWith('blob:'))return null;
@@ -841,7 +843,7 @@
       if(done%10===0)await new Promise(resolve=>setTimeout(resolve,0));
     }
     const stats=await offlineCacheStats();
-    saveOfflineState({pack,version:CURRENT_VERSION,downloadedAt:new Date().toISOString(),files:stats.files,bytes:stats.bytes,failed});
+    saveOfflineState({pack,version:CURRENT_VERSION,downloadedAt:new Date().toISOString(),files:stats.files,bytes:stats.bytes,failed});publishOfflineState();
     await renderOfflineMode();
     if(button){button.disabled=false;button.dataset.busy='0';button.textContent='Update offline content'}
     notify(failed?`Offline pack ready with ${failed} unavailable file${failed===1?'':'s'}.`:'Offline pack is ready.');
@@ -849,7 +851,7 @@
   async function removeOfflinePack(){
     if(!offlineState())return;if(!confirm('Remove downloaded Offline Mode content? Learning progress will be kept.'))return;
     const names=await caches.keys();await Promise.all(names.filter(name=>name.startsWith('kaishi-offline-')).map(name=>caches.delete(name)));
-    saveOfflineState(null);await renderOfflineMode();notify('Offline pack removed. Learning progress was kept.');
+    saveOfflineState(null);publishOfflineState();await renderOfflineMode();notify('Offline pack removed. Learning progress was kept.');
   }
   function ensureOfflineIndicator(){
     let pill=document.getElementById('offlineStatusPill');
@@ -1239,6 +1241,8 @@
     installSettingsTabs();
     installAdminLogging();
     enforceCurrentServiceWorker();
+    window.KaishiOffline={isOutdated:offlinePackOutdated,update:()=>downloadOfflinePack(offlineState()?.pack||'standard'),remove:removeOfflinePack};
+    publishOfflineState();
 
     const el=badge();
     if(el){

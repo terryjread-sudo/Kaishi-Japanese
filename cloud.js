@@ -230,22 +230,24 @@
   const items=rows.filter(r=>r.relationship_status==='pending_incoming').map(r=>({id:`req:${r.request_id}`,type:'request',row:r,title:`${r.display_name||r.github_login} sent a friend request`}));
   rows.filter(r=>r.relationship_status==='accepted'&&r.accepted_at).forEach(r=>{const id=`accepted:${r.request_id}:${r.accepted_at}`;if(!read[id])items.push({id,type:'accepted',row:r,title:`${r.display_name||r.github_login} accepted your request`})});
 
-  if(localStorage.getItem('kaishi-sw-broken')){
+  let offlinePack=null;try{offlinePack=JSON.parse(localStorage.getItem('kq-offline-pack')||'null')}catch{}
+  if(offlinePack?.version&&offlinePack.version!==APP_VERSION){
     items.push({
-      id:'sw-broken',
+      id:'offline-pack-outdated',
       type:'system',
       title:'Offline features unavailable',
-      body:'A new version of Kaishi Quest is available, but offline features are temporarily unavailable. Close and reopen the app to fix.',
+      body:'Your downloaded offline content is from an older version. Update it to use offline features again.',
     });
   }
 
   if(isOwner()){try{const{data}=await client.rpc('get_kaishi_admin_notification_counts');if(Number(data?.unreviewed_reports||0)>0)items.push({id:'admin-reports',type:'admin',title:`${data.unreviewed_reports} learning-card report${Number(data.unreviewed_reports)===1?'':'s'} need review`})}catch{}}
   button.hidden=!items.length;const notificationCount=$('#socialNotificationCount');if(notificationCount){notificationCount.textContent=String(items.length);notificationCount.hidden=!items.length;}
-  list.innerHTML=items.length?items.map(i=>`<article class="social-notification-item"><strong>${esc(i.title)}</strong>${i.body?`<p class="muted">${esc(i.body)}</p>`:''}<div class="social-notification-actions">${i.type==='request'?`<button data-na="${i.row.request_id}" class="primary">Accept</button><button data-nd="${i.row.request_id}">Decline</button>`:''}${i.type==='accepted'?`<button data-np="${i.row.user_id}">View</button><button data-nx="${esc(i.id)}">Dismiss</button>`:''}${i.type==='admin'?'<button id="openAdminNotice" class="primary">Open Admin</button>':''}${i.type==='system'?`<button data-nx="${esc(i.id)}" class="primary">Dismiss</button>`:''}</div></article>`).join(''):'<p class="muted">No new notifications.</p>';
+  list.innerHTML=items.length?items.map(i=>`<article class="social-notification-item"><strong>${esc(i.title)}</strong>${i.body?`<p class="muted">${esc(i.body)}</p>`:''}<div class="social-notification-actions">${i.type==='request'?`<button data-na="${i.row.request_id}" class="primary">Accept</button><button data-nd="${i.row.request_id}">Decline</button>`:''}${i.type==='accepted'?`<button data-np="${i.row.user_id}">View</button><button data-nx="${esc(i.id)}">Dismiss</button>`:''}${i.type==='admin'?'<button id="openAdminNotice" class="primary">Open Admin</button>':''}${i.type==='system'?'<button data-offline-update class="primary">Update offline version</button>':''}</div></article>`).join(''):'<p class="muted">No new notifications.</p>';
   document.querySelectorAll('[data-na]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.na,accept_request:true});await loadFriends();await loadLeaderboard()});
   document.querySelectorAll('[data-nd]').forEach(b=>b.onclick=async()=>{await friendRpc('respond_kaishi_friend_request',{request_id:b.dataset.nd,accept_request:false});await loadFriends();await loadLeaderboard()});
   document.querySelectorAll('[data-np]').forEach(b=>b.onclick=()=>openCommunityProfile(b.dataset.np));
   $('#openAdminNotice')?.addEventListener('click',()=>{$('#adminEntry')?.click();panel.hidden=true});
+  document.querySelectorAll('[data-offline-update]').forEach(button=>button.onclick=()=>window.KaishiOffline?.update?.());
  }
  async function loadAdminUsers(){
   const list=$('#adminUsersList'),summary=$('#adminUsersSummary');if(!list||!summary||!isOwner())return;
@@ -429,6 +431,7 @@ async function loadLeaderboard(){
   const{data,error}=await client.auth.getSession();if(error){renderSignedOut();setStatus(describeError(error),'error')}else await handleSession(data.session);
   
   window.addEventListener('kaishi-sw-status',()=>renderSocialNotifications(lastFriendRows||[]));
+  window.addEventListener('kaishi-offline-status',()=>renderSocialNotifications(lastFriendRows||[]));
   addEventListener('online',()=>user&&scheduleSync());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
  }

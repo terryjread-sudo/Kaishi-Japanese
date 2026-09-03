@@ -2,6 +2,8 @@
 const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.screen')];
 // APP_VERSION is defined once, in version.js, which loads before this file (see index.html).
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
+const ADMIN_TEST_ENTRY_KEY='kq-admin-test-entry';
+const RESTORE_POINTS_LIMIT=3;
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
 const ADMIN_TEST_CHAPTER_KEY='kq-admin-test-chapter';
@@ -136,6 +138,15 @@ function enrichVocabularyFromAnki(){
 function senseiBlock(message,compact=true,pose='auto'){const lower=String(message).toLowerCase(),inferred=/not quite|mistake|try again|almost/.test(lower)?'encouraging':/complete|great work|excellent|mastered/.test(lower)?'celebrating':/first|welcome|meet this/.test(lower)?'welcoming':/notice|look|select|tap|use the/.test(lower)?'pointing':/review|compare|why|understand/.test(lower)?'analysing':'explaining',safePose=['welcoming','explaining','celebrating','encouraging','pointing','analysing'].includes(pose)?pose:inferred;return `<aside class="sensei-guide teacher-guide sensei-${safePose} ${compact?'compact':''}"><div class="sensei-avatar teacher-guide-avatar"><img src="media/guides/sensei/sensei-${safePose}.webp?v=${APP_VERSION}" alt="Sensei ${safePose}"></div><div><strong>Sensei’s guidance</strong><p>${esc(message)}</p></div></aside>`}
 function markKanaIntroduced(character){const entry=kanaData.find(item=>item.kana===character);if(!entry)return;const state=kanaState(entry.id);state.stage=Math.max(1,Number(state.stage||0));state.due=Date.now();save(false)}
 function save(sync=true){if(sync)meta.updatedAt=Date.now();localStorage.setItem(profileStorageKey('kq-progress'),JSON.stringify(progress));localStorage.setItem(profileStorageKey('kq-settings'),JSON.stringify(settings));localStorage.setItem(profileStorageKey('kq-meta'),JSON.stringify(meta));if(sync&&!isAdminTestMode())window.KaishiCloud?.scheduleSync?.()}
+function cloneLocalState(value){return JSON.parse(JSON.stringify(value))}
+function restorePoints(){const points=loadJSON(profileStorageKey('kq-restore-points'),[]);return Array.isArray(points)?points.filter(point=>point&&point.progress&&point.meta&&point.settings):[]}
+function saveRestorePoints(points){localStorage.setItem(profileStorageKey('kq-restore-points'),JSON.stringify(points.slice(-RESTORE_POINTS_LIMIT)))}
+function restorePointSummary(snapshot){const records=Object.values(snapshot.progress||{}),startedCount=records.filter(item=>Number(item?.stage||0)>=1||Object.values(item?.skills||{}).some(skill=>Number(skill?.attempts||0)>0)).length,masteredCount=records.filter(item=>Number(item?.interval||0)>=21).length;return{started:startedCount,mastered:masteredCount,answers:Number(snapshot.meta?.totalAnswers||0),streak:Number(snapshot.meta?.streak||0),lesson:Math.max(1,Math.ceil(startedCount/WORD_CHAPTER_SIZE))}}
+function createRestorePoint(reason){const point={id:`${Date.now()}-${Math.random().toString(36).slice(2,8)}`,takenAt:Date.now(),reason,progress:cloneLocalState(progress),meta:cloneLocalState(meta),settings:cloneLocalState(settings)};saveRestorePoints([...restorePoints(),point]);return point}
+function resetLocalProgressState(){progress={};meta={...META_DEFAULTS,rhythm:{...META_DEFAULTS.rhythm},kanaProgress:{},grammarProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[]}}
+function applyRestorePoint(point){if(!point)return;createRestorePoint('Before restoring a restore point');progress=cloneLocalState(point.progress);meta={...META_DEFAULTS,...cloneLocalState(point.meta)};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.sentenceLabProgress={lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0,...(meta.sentenceLabProgress||{})};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?meta.pathUnlocks:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?meta.pathOverrides:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?meta.chapterOverrides:[];settings={...defaults,...cloneLocalState(point.settings),playMode:'journey'};save();renderLearningBalanceSettings();updateHome();$('#restorePointsDialog')?.close();toast('Restore point applied')}
+function renderRestorePoints(){const list=$('#restorePointsList');if(!list)return;const points=[...restorePoints()].reverse();list.innerHTML=points.length?points.map(point=>{const summary=restorePointSummary(point);return `<article class="restore-point"><div><strong>${esc(new Date(point.takenAt).toLocaleString())}</strong><small>${esc(point.reason||'Saved progress')}</small><p>Lesson ${summary.lesson} · ${summary.started} words started · ${summary.mastered} mastered · ${summary.answers} answers · ${summary.streak}-day rhythm</p></div><button type="button" data-restore-point="${esc(point.id)}" class="primary">Restore</button></article>`}).join(''):'<p class="muted">No restore points yet. One is created before you reset progress or restore a point.</p>';list.querySelectorAll('[data-restore-point]').forEach(button=>button.onclick=()=>{const point=restorePoints().find(item=>item.id===button.dataset.restorePoint);if(point&&confirm('Restore this point? Your current progress will first be saved as a new restore point.'))applyRestorePoint(point)})}
+function openRestorePoints(){renderRestorePoints();const dialog=$('#restorePointsDialog');if(dialog&&!dialog.open)dialog.showModal()}
 function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0)}
 function openCharacterSettings(){show('settings');requestAnimationFrame(()=>{const picker=$('#avatarPicker');if(!picker)return;picker.scrollIntoView({behavior:'smooth',block:'center'});picker.classList.add('profile-target');setTimeout(()=>picker.classList.remove('profile-target'),1600)})}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
@@ -195,7 +206,7 @@ function updateStreakRescue(){
 }
 function enterAdminTestMode(){
  if(!window.KaishiReports?.isAdmin?.()){toast('Administrator access is required');return false}
- save(false);sessionStorage.setItem(ADMIN_TEST_MODE_KEY,'1');location.reload();return true
+ save(false);sessionStorage.setItem(ADMIN_TEST_MODE_KEY,'1');sessionStorage.setItem(ADMIN_TEST_ENTRY_KEY,'1');location.reload();return true
 }
 function exitAdminTestMode(){sessionStorage.removeItem(ADMIN_TEST_MODE_KEY);location.reload()}
 function renderAdminTestMode(){
@@ -205,16 +216,17 @@ function renderAdminTestMode(){
  if(isAdminTestMode()){
   const expose=()=>document.querySelectorAll('#japanReadyScenarioList [data-s]').forEach(button=>{button.disabled=false;button.closest('.japan-scenario')?.classList.remove('locked')});
   expose();new MutationObserver(expose).observe(document.body,{childList:true,subtree:true});
-  const input=$('#adminTestLessonInput'),goButton=$('#adminTestLessonGo'),clearButton=$('#adminTestLessonClear');
+  const input=$('#adminTestLessonInput'),goButton=$('#adminTestLessonGo'),clearButton=$('#adminTestLessonClear'),activity=$('#adminTestActivity'),activityButton=$('#adminTestActivityGo');
   if(input)input.max=String(wordChapterCount());
   const current=adminTestChapterOverride();
   if(input)input.value=current!==null?String(current+1):'';
   goButton?.addEventListener('click',()=>{
    const value=Number(input?.value);
    if(!input?.value||!Number.isFinite(value)||value<1){toast('Enter a lesson number to jump to');return}
-   setAdminTestChapter(value);updateHome();if($('#journey')?.classList.contains('active'))renderJourney();toast(`Test learner set to lesson ${Math.min(Math.round(value),wordChapterCount())}`)
+   setAdminTestChapter(value);updateHome();openJourney('current');toast(`Test learner set to lesson ${Math.min(Math.round(value),wordChapterCount())}`)
   });
-  clearButton?.addEventListener('click',()=>{clearAdminTestChapter();if(input)input.value='';updateHome();if($('#journey')?.classList.contains('active'))renderJourney();toast('Test learner back to natural progress')});
+  clearButton?.addEventListener('click',()=>{clearAdminTestChapter();if(input)input.value='';updateHome();openJourney('current');toast('Test learner back to natural progress')});
+  activityButton?.addEventListener('click',()=>{const id=activity?.value;if(id)launchPathMilestone(id,true)});
  }
 }
 window.KaishiAdminTest={enter:enterAdminTestMode,exit:exitAdminTestMode,active:isAdminTestMode,setLesson:setAdminTestChapter,clearLesson:clearAdminTestChapter,currentLessonOverride:adminTestChapterOverride};
@@ -1780,6 +1792,10 @@ async function init(){
   ]);
   enrichVocabularyFromAnki();
   updateHome();
+  if(isAdminTestMode()&&sessionStorage.getItem(ADMIN_TEST_ENTRY_KEY)==='1'){
+   sessionStorage.removeItem(ADMIN_TEST_ENTRY_KEY);
+   openJourney('current');
+  }
  }catch(e){
   console.error('Initialisation failed',e);
   $('#summary').textContent='Could not load app data.';
@@ -1793,6 +1809,9 @@ async function init(){
 }
 $('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').onclick=openKanaPath;$('#kanaBack').onclick=()=>show('home');$('#kanaLessonExit').onclick=openKanaPath;document.querySelectorAll('.kanaStart').forEach(button=>button.onclick=()=>startKanaStudy(button.dataset.script));$('#mangaBtn').onclick=openMangaLibrary;$('#mangaBack').onclick=()=>show('home');$('#mangaLibraryBack').onclick=()=>activeLessonImmersive?finishLessonImmersive():openMangaLibrary();$('#gamesBtn').onclick=()=>abortSession('games');$('#communityBtn').onclick=()=>{show('community');window.KaishiCloud?.loadLeaderboard?.()};$('#communityBack').onclick=()=>show('home');$('#gamesBack').onclick=()=>{abortSession('journey');openJourney('practice')};document.querySelectorAll('.gameMode').forEach(b=>b.onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startPictureGame(b.dataset.mode)});$('#exitBtn').onclick=()=>{if(pictureGameActive){abortSession('journey');openJourney('practice')}else abortSession('home')};$('#settingsBtn').onclick=()=>{if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}else{renderLearningBalanceSettings();show('settings')}};$('#checkpointContinue').onclick=continueAfterCheckpoint;$('#checkpointFinish').onclick=finishAtCheckpoint;$('#quickSettingsSave').onclick=()=>{settings.autoAudio=$('#quickAutoAudio').checked;settings.mnemonicStyle=$('#quickMnemonicStyle').value;save();$('#quickSettingsDialog').close();toast('Quick settings applied')};$('#quickSettingsCancel').onclick=()=>$('#quickSettingsDialog').close();$('#quickFullSettings').onclick=()=>{saveMissionResume();$('#quickSettingsDialog').close();renderLearningBalanceSettings();show('settings')};$('#settingsBack').onclick=saveSettingsAndExit;$('#activityViewToggle').onclick=()=>setActivityVillageMode(settings.activityVillageMode===false);$('#activityVillageMode').onchange=event=>setActivityVillageMode(event.target.checked);$('#checkUpdateBtn').onclick=()=>checkForUpdates(true);$('#historyBtn').onclick=openHistory;$('#historyBack').onclick=()=>{renderLearningBalanceSettings();show('settings')};$('#applyUpdate').onclick=applyUpdate;$('#laterUpdate').onclick=()=>{$('#updateBanner').hidden=true};$('#exportBtn').onclick=exportProgress;$('#importInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());progress=d.progress||{};meta={...META_DEFAULTS,...(d.meta||{})};meta.kanaProgress=meta.kanaProgress||{};meta.grammarProgress=meta.grammarProgress||{};meta.sentenceLabProgress={lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0,...(meta.sentenceLabProgress||{})};meta.mangaProgress=meta.mangaProgress||{};meta.conversationProgress=meta.conversationProgress||{};meta.theatreProgress=meta.theatreProgress||{};meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];meta.pathVisits={...(meta.pathVisits||{})};meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];const legacyRhythm=meta.rhythm||meta.garden||{};meta.rhythm={...META_DEFAULTS.rhythm,behind:Number(legacyRhythm.behind||0),lastChecked:String(legacyRhythm.lastChecked||''),quickWeek:String(legacyRhythm.quickWeek||''),quickUsed:Number(legacyRhythm.quickUsed||0),cycles:Number(legacyRhythm.cycles||0)};delete meta.garden;delete meta.gardenApSpent;rhythmState();if(meta.dailyReviewPlan?.date!==day())delete meta.dailyReviewPlan;settings={...defaults,...settings,...d.settings};renderLearningBalanceSettings();save();updateHome();toast('Progress imported')}catch{toast('Invalid backup file')}};$('#resetBtn').onclick=async()=>{const signedIn=Boolean(window.KaishiCloud?.isSignedIn?.());const message=signedIn?'Delete all learning progress? This also erases your synced cloud progress on every device.':'Delete all learning progress?';if(!confirm(message))return;const resetBtn=$('#resetBtn');progress={};meta={...META_DEFAULTS,rhythm:{...META_DEFAULTS.rhythm},kanaProgress:{},grammarProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[]};save(false);updateHome();if(!signedIn){toast('Progress reset');return}resetBtn.disabled=true;resetBtn.textContent='Resetting cloud progress…';toast('Resetting local and cloud progress…');const result=await window.KaishiCloud?.resetProgress?.();resetBtn.disabled=false;resetBtn.textContent='Reset local progress';toast(result?.ok?'Local and cloud progress reset':'Local progress reset, but the cloud reset failed — try again while online')};
 $('#dashboardAvatarButton').onclick=openCharacterSettings;
+$('#restorePointsBtn').onclick=openRestorePoints;
+$('#restorePointsClose').onclick=()=>$('#restorePointsDialog').close();
+$('#resetBtn').onclick=async()=>{const signedIn=Boolean(window.KaishiCloud?.isSignedIn?.());const message=signedIn?'Delete all learning progress? This also erases your synced cloud progress on every device.':'Delete all learning progress?';if(!confirm(message))return;createRestorePoint('Before resetting local progress');const resetBtn=$('#resetBtn');resetLocalProgressState();save(false);updateHome();if(!signedIn){toast('Progress reset. A restore point was saved.');return}resetBtn.disabled=true;resetBtn.textContent='Resetting cloud progress…';toast('Resetting local and cloud progress…');const result=await window.KaishiCloud?.resetProgress?.();resetBtn.disabled=false;resetBtn.textContent='Reset local progress';toast(result?.ok?'Local and cloud progress reset. A restore point was saved.':'Local progress reset, but the cloud reset failed — try again while online')};
 $('#kanjiOverviewBtn').onclick=()=>{if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')};
 $('#kanjiOverviewBack').onclick=()=>show('home');
 $('#skillsBtn').onclick=()=>{renderSkillScores();show('skillsOverview')};
@@ -1812,10 +1831,10 @@ $('#conversationContinue').onclick=()=>{const item=conversations.find(candidate=
 $('#karutaMode').onclick=()=>{settings.pictureDifficulty=+$('#pictureDifficulty').value||4;save();startKarutaGame()};
 $('#decayBattleMode').onclick=startDecayBattle;
 $('#streakRescueMode').onclick=startStreakRescue;
-$('#ownerPathGrid').onclick=event=>{const button=event.target.closest('[data-owner-path]');if(button)unlockOwnerPathThrough(+button.dataset.ownerPath)};
-$('#ownerChapterGrid').onclick=event=>{const button=event.target.closest('[data-owner-chapter]');if(button)unlockOwnerChapterThrough(+button.dataset.ownerChapter)};
-$('#ownerUnlockAll').onclick=()=>{unlockOwnerPathThrough(PATH_MILESTONES.length-1);unlockOwnerChapterThrough(wordChapterCount()-1)};
-$('#ownerResetPath').onclick=()=>{if(!window.KaishiCloud?.isOwner?.())return;meta.pathOverrides=[];meta.chapterOverrides=[];save();renderOwnerPathControls(true);renderJourneyHome();toast('Journey test overrides reset')};
+$('#ownerPathGrid')?.addEventListener('click',event=>{const button=event.target.closest('[data-owner-path]');if(button)unlockOwnerPathThrough(+button.dataset.ownerPath)});
+$('#ownerChapterGrid')?.addEventListener('click',event=>{const button=event.target.closest('[data-owner-chapter]');if(button)unlockOwnerChapterThrough(+button.dataset.ownerChapter)});
+$('#ownerUnlockAll')?.addEventListener('click',()=>{unlockOwnerPathThrough(PATH_MILESTONES.length-1);unlockOwnerChapterThrough(wordChapterCount()-1)});
+$('#ownerResetPath')?.addEventListener('click',()=>{if(!window.KaishiCloud?.isOwner?.())return;meta.pathOverrides=[];meta.chapterOverrides=[];save();renderOwnerPathControls(true);renderJourneyHome();toast('Journey test overrides reset')});
 $('#studyBtn').onclick=()=>{activityReturnScreen='home';abortSession('home');makeSession()};
 $('#kanaBtn').onclick=()=>{activityReturnScreen='home';openKanaPath()};
 $('#mangaBtn').onclick=()=>{activityReturnScreen='home';openMangaLibrary()};
