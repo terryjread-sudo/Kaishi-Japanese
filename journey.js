@@ -44,6 +44,7 @@
   };
 
   const CHAPTER_SIZE = 3;
+  const FUTURE_HORIZON = 10;
 
   function lessonWords(chapter) {
     try {
@@ -185,13 +186,25 @@
     return routeStep?.title || `Lesson ${chapter + 1}`;
   }
 
+  function futureMissionForChapter(chapter, current) {
+    try {
+      return window.KaishiActivitySchedule?.previewMissionForLesson?.(
+        chapter,
+        current,
+        lessonWords(chapter)
+      ) || null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   function journeyRows() {
     const total = lessonCount();
     if (!total) return [];
 
     const current = Math.min(currentChapter(), total - 1);
     const from = Math.max(0, current - 4);
-    const to = Math.min(total, current + 5);
+    const to = Math.min(total, current + FUTURE_HORIZON + 1);
     const route = routeSafe();
     const completed = new Set(Array.isArray(route.completed) ? route.completed : []);
     const output = [];
@@ -203,6 +216,7 @@
       const isCurrent = chapter === current && !done;
       const future = chapter > current;
       const immersiveStep = route.steps.find(step => step?.kind === 'activity' && String(step?.sideQuestFor || '') === `lesson-${chapter}`);
+      const immersivePreview = future ? futureMissionForChapter(chapter, current) : null;
 
       output.push({
         type: done ? 'past' : isCurrent ? 'current' : 'future',
@@ -218,7 +232,8 @@
         done,
         current: isCurrent,
         future,
-        immersiveMission: immersiveStep?.mission || null
+        immersiveMission: immersiveStep?.mission || immersivePreview,
+        missionPreview: Boolean(!immersiveStep?.mission && immersivePreview)
       });
 
       route.steps
@@ -256,6 +271,16 @@
             });
           }
         });
+    }
+
+    if (to < total) {
+      output.push({
+        type: 'horizon',
+        id: 'journey-horizon',
+        icon: '⛩️',
+        title: 'The path continues',
+        detail: 'Complete lessons to reveal more of your Journey ahead.'
+      });
     }
 
     return output;
@@ -352,6 +377,29 @@
         background-attachment:local;
       }
 
+      #journey .study-top {
+        display:grid;
+        grid-template-columns:minmax(0,1fr) auto;
+        align-items:center;
+      }
+
+      #journey .study-top h2 { margin:0; }
+      #journey #journeyBack {
+        grid-column:2;
+        grid-row:1;
+        padding:9px 12px;
+        border-radius:999px;
+        background:rgba(255,255,255,.92);
+        box-shadow:0 3px 10px rgba(15,23,42,.12);
+      }
+
+      #journey #journeyBack.kq-floating-dashboard {
+        position:fixed;
+        top:var(--kq-journey-back-origin-top,12px);
+        right:max(18px,calc((100vw - 720px) / 2 + 18px));
+        z-index:30;
+      }
+
       .kq-activity-badge { display:inline-flex; align-items:center; gap:6px; width:max-content; max-width:100%; margin-top:9px; padding:5px 9px; border:1px solid rgba(14,116,144,.28); border-radius:999px; background:rgba(236,254,255,.88); color:#155e75; font-size:.75rem; font-weight:800; }
       .kq-activity-badge span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
       .kq-mission-detail { margin:10px 0 0; padding:10px; border-radius:12px; background:rgba(255,255,255,.78); font-size:.84rem; }
@@ -364,6 +412,10 @@
       .kq-unified-node.future {
         opacity:.72;
       }
+
+      .kq-unified-node.horizon { color:#64748b; }
+      .kq-unified-node.horizon .kq-unified-marker { border-style:dashed; background:rgba(255,255,255,.82); }
+      .kq-unified-node.horizon .kq-unified-card { border-style:dashed; background:rgba(255,255,255,.78); }
 
       .kq-unified-label {
         font-size:.76rem;
@@ -472,6 +524,8 @@
       }
 
       @media(max-width:560px) {
+        #journey .study-top h2 { font-size:1rem; }
+        #journey #journeyBack { font-size:.76rem; padding:8px 10px; }
         .kq-unified-actions {
           display:grid;
         }
@@ -845,7 +899,11 @@
   }
 
   function missionForChapter(chapter) {
-    return routeSafe().steps.find(step => step?.kind === 'activity' && String(step?.sideQuestFor || '') === `lesson-${chapter}`)?.mission || null;
+    const scheduled = routeSafe().steps.find(step =>
+      step?.kind === 'activity' && String(step?.sideQuestFor || '') === `lesson-${chapter}`
+    )?.mission;
+    if (scheduled) return scheduled;
+    return chapter > currentChapter() ? futureMissionForChapter(chapter, currentChapter()) : null;
   }
 
   function lessonExplanationHTML(chapter) {
@@ -873,18 +931,19 @@
       </ul>
       ${topic?.title ? `<p><b>Topic:</b> ${esc(topic.title)}</p>` : ''}
       <p><b>Why it’s next:</b> complete the previous lesson first; this lesson then introduces its connected words before they return for spaced practice.</p>
-      ${missionDetail(missionForChapter(chapter))}
+      ${missionDetail(missionForChapter(chapter), chapter > currentChapter())}
     `;
   }
 
-  function missionBadge(mission) {
+  function missionBadge(mission, preview = false) {
     if (!mission) return '';
-    return `<div class="kq-activity-badge" title="${esc(mission.objective)}"><b>${esc(mission.icon)}</b><span>${esc(mission.purpose)} · ${esc(mission.label)}</span></div>`;
+    const label = preview ? `Immersive mission ahead · ${mission.label}` : `${mission.purpose} · ${mission.label}`;
+    return `<div class="kq-activity-badge" title="${esc(mission.objective)}"><b>${esc(mission.icon)}</b><span>${esc(label)}</span></div>`;
   }
 
-  function missionDetail(mission) {
+  function missionDetail(mission, preview = false) {
     if (!mission) return '';
-    return `<div class="kq-mission-detail"><strong>${esc(mission.icon)} ${esc(mission.label)}</strong><p>${esc(mission.objective)}${mission.vocabulary ? ` Reinforces ${esc(mission.vocabulary)}.` : ''}</p></div>`;
+    return `<div class="kq-mission-detail"><strong>${esc(mission.icon)} ${esc(mission.label)}</strong><p>${esc(mission.objective)}${mission.vocabulary ? ` Reinforces ${esc(mission.vocabulary)}.` : ''}${preview ? ' Available when you reach this lesson.' : ''}</p></div>`;
   }
 
   function nodeHTML(item) {
@@ -893,6 +952,7 @@
       item.done ? 'done' : '',
       item.current ? 'current' : '',
       item.future ? 'future' : '',
+      item.type === 'horizon' ? 'horizon' : '',
       item.type === 'side' ? 'side' : ''
     ].filter(Boolean).join(' ');
 
@@ -900,6 +960,7 @@
       item.type === 'past' ? 'Completed' :
       item.type === 'retry' ? 'Retry this lesson' :
       item.type === 'side' ? (item.required ? 'Required side quest' : 'Optional side quest') :
+      item.type === 'horizon' ? 'Journey horizon' :
       item.current ? 'Current lesson' :
       'Coming up';
 
@@ -992,7 +1053,7 @@
           <span class="kq-unified-label">${label}</span>
           <strong class="kq-unified-title">${esc(item.title)}</strong>
           <p class="kq-unified-detail">${esc(item.detail)}</p>
-          ${missionBadge(item.immersiveMission)}
+          ${missionBadge(item.immersiveMission, item.missionPreview)}
           ${actions}
         </div>
       </article>
@@ -1122,8 +1183,69 @@
     }, true);
   }
 
+  let journeyBackBubble = null;
+
+  function bindJourneyBackBubble() {
+    const root = $('#journey');
+    const button = $('#journeyBack');
+    if (!root || !button || button.dataset.kqBubbleBound === '1') return;
+    button.dataset.kqBubbleBound = '1';
+
+    const reset = () => {
+      button.classList.remove('kq-floating-dashboard');
+      root.style.removeProperty('--kq-journey-back-origin-top');
+    };
+
+    const captureOrigin = (fromDocumentOrigin = false) => {
+      if (!root.classList.contains('active')) {
+        journeyBackBubble = null;
+        reset();
+        return;
+      }
+      reset();
+      const rect = button.getBoundingClientRect();
+      journeyBackBubble = fromDocumentOrigin
+        ? {scrollY: 0, top: Math.max(0, rect.top + window.scrollY)}
+        : {scrollY: window.scrollY, top: Math.max(0, rect.top)};
+      root.style.setProperty('--kq-journey-back-origin-top', `${journeyBackBubble.top}px`);
+    };
+
+    const sync = () => {
+      if (!root.classList.contains('active')) {
+        journeyBackBubble = null;
+        reset();
+        return;
+      }
+      if (!journeyBackBubble) {
+        // A fast scroll can happen before the navigation refresh has measured
+        // the title row. Recover its original on-page position in that case.
+        captureOrigin(true);
+      }
+      button.classList.toggle(
+        'kq-floating-dashboard',
+        window.scrollY > journeyBackBubble.scrollY + 4
+      );
+    };
+
+    const refresh = () => requestAnimationFrame(() => {
+      captureOrigin();
+      sync();
+    });
+
+    window.addEventListener('scroll', sync, {passive:true});
+    window.addEventListener('resize', refresh, {passive:true});
+    document.addEventListener('click', event => {
+      if (event.target.closest?.('#continueJourney')) refresh();
+      if (event.target.closest?.('#journeyBack')) reset();
+    }, true);
+    window.KaishiJourneyBackBubbleRefresh = refresh;
+  }
+
   function renderAfterNavigation() {
-    requestAnimationFrame(() => requestAnimationFrame(render));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      render();
+      window.KaishiJourneyBackBubbleRefresh?.();
+    }));
   }
 
   // Exposed so roadmap-engine.js can ask for a resync after it finishes
@@ -1140,6 +1262,7 @@
     addStyles();
     addMasteryStyles();
     installRedoReturnGuard();
+    bindJourneyBackBubble();
     bind();
     window.dispatchEvent(new Event('kaishi-journey-ready'));
 

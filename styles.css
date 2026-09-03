@@ -467,8 +467,10 @@ header{
 .meet-word-guidance ol{padding:0 15px 12px 32px}
 .sticky-study-action{position:sticky;z-index:8;bottom:max(0px,env(safe-area-inset-bottom));margin:0 -18px -18px;padding:9px 18px calc(9px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#fffffff0,#fff 35%);border-top:1px solid #dbe3f0;box-shadow:0 -8px 20px #17255414}
 .sticky-study-action .reveal{margin:0}
+.word-pronunciation-card{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:18px 0 10px;padding:16px;border:1px solid #99f6e4;border-radius:18px;background:linear-gradient(135deg,#ecfeff,#eff6ff);text-align:left}.word-pronunciation-card>div{display:grid;gap:4px}.word-pronunciation-card span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#0f766e}.word-pronunciation-card strong{font-size:clamp(2.3rem,9vw,4rem);line-height:1.05;color:#172554}.word-pronunciation-card small{color:#475569}.word-pronunciation-card .audio{margin:0;white-space:nowrap}.word-pronunciation-note{margin:0 0 14px;color:#475569;font-size:.9rem;line-height:1.45}.word-pronunciation-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:78px}.word-pronunciation-actions button{min-height:48px}.word-pronunciation-actions button:disabled{cursor:not-allowed;opacity:.55}
 
 @media(max-width:560px){
+ .word-pronunciation-card{align-items:flex-start;flex-direction:column}.word-pronunciation-card .audio{width:100%}.word-pronunciation-actions{grid-template-columns:1fr}
  .daily-route-heading{display:flex!important;grid-template-columns:none!important;align-items:flex-start}
  .daily-route-heading>button{width:auto!important}
  .daily-mission{grid-template-columns:30px minmax(0,1fr) auto}

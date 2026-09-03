@@ -77,6 +77,7 @@
     {id:'battle', icon:'⚔️', label:'SRS Battle', core:false, immersive:true, roadmap:false, minWords:20, note:'Separate review side quest. It is never part of a lesson.'},
     {id:'colosseum', icon:'⚔️', label:'Kotoba Colosseum', core:false, immersive:true, roadmap:true, minWords:8, note:'Optional listening battle using familiar words. It never replaces a lesson.'}
   ];
+  const JOURNEY_IMMERSIVE_ACTIVITY_IDS = new Set(['picture','karuta','conversation','theatre','builder','manga','battle','colosseum']);
 
   const ruleFor = id => rules.find(rule => rule.id === id) || null;
   const missionBrief = (id, words=[]) => {
@@ -169,6 +170,19 @@
     return result;
   }
 
+  // Future lesson cards use this same scheduler so previews cannot promise
+  // an activity that the Journey would not be able to offer.
+  function previewMissionForLesson(chapterIndex, currentChapterIndex, words) {
+    const schedule = lessonSchedule(chapterIndex, currentChapterIndex, words);
+    const candidates = [...new Set([...schedule.core, ...schedule.sideQuests])];
+    const activityId = candidates.find(id =>
+      JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(id) &&
+      Boolean(ruleFor(id)?.immersive) &&
+      activityReadiness(id).wordReady
+    );
+    return activityId ? missionBrief(activityId, words) : null;
+  }
+
   function activityCard(id, words) {
     const candidates = safeArray(words);
     if (id === 'picture') {
@@ -182,7 +196,7 @@
     return null;
   }
 
-  window.KaishiActivitySchedule = {VERSION, rules, ruleFor, scheduleForLesson:lessonSchedule, buildCard:activityCard, activityReadiness, supported};
+  window.KaishiActivitySchedule = {VERSION, rules, ruleFor, scheduleForLesson:lessonSchedule, previewMissionForLesson, buildCard:activityCard, activityReadiness, supported};
 
   // Neutralise the legacy AP prices in the shared config so no remaining
   // village renderer can accidentally reintroduce an XP/AP gate.
@@ -240,9 +254,8 @@
       if (id === 'kanji' || id === 'builder') return lesson.some(word => typeof kanjiCharacters === 'function' && kanjiCharacters(word).length);
       return true;
     };
-    const sideQuestIds=new Set(['picture','karuta','conversation','theatre','builder','manga','battle','colosseum']);
     const candidates=[...new Set([...schedule.core.filter(id=>ruleFor(id)?.immersive),...schedule.sideQuests])]
-      .filter(id => sideQuestIds.has(id) && activityReadiness(id).wordReady && lessonRelevant(id));
+      .filter(id => JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(id) && activityReadiness(id).wordReady && lessonRelevant(id));
     const ranked=candidates.sort((a,b) => {
       const score=id => (meta.pathVisits?.[id] ? 0 : 6) + (id==='battle' ? 1 : 0) + (id==='colosseum' ? 2 : 0) + (id==='karuta' && lesson.some(word => word.wordAudio && memoryScenes?.[sceneKey(word)]?.file) ? 5 : 0);
       return score(b)-score(a);
