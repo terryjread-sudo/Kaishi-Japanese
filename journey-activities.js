@@ -183,6 +183,7 @@
     const chapter = currentWordChapterIndex();
     const topic = currentTopic();
     const words = chapterWords(chapter);
+    const lesson = safeArray(words);
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;

@@ -4,25 +4,19 @@ Welcome! When making changes to this codebase, follow these rules to maintain st
 
 ## 1. Version Bumping & Releases
 - **Never edit version numbers across files by hand.**
-- Use the automated bump tool:
-  ```bash
-  node scripts/bump.js <version> "Release title" "Change description"
-  ```
-  Or to bump, test, commit and push in one step:
-  ```bash
-  node scripts/bump.js <version> "Release title" "Change description" --commit --push
-  ```
+- GitHub Actions bumps the version after a pull request merges to `main`.
+- Feature pull requests must not include version-only changes.
 
 ## 2. Testing Before Committing
 - Always run the test suite before submitting any change:
   ```bash
-  node scripts/test.js
+  npm run check
   ```
   This validates:
-  - All JSON files
-  - JavaScript syntax across all files
-  - In-order browser execution simulation
-  - Global variable definitions and bridge availability
+  - Legacy JSON, syntax, script-order, and bridge checks
+  - TypeScript type checking and ESLint boundaries
+  - Vitest domain and platform tests
+  - A complete Vite production build
 
 ## 3. Global Scope & Script Loading Rules
 - **Never declare `const APP_VERSION` or `let APP_VERSION`**. `APP_VERSION` is defined globally once in `version.js` using `var`.
@@ -44,3 +38,11 @@ Welcome! When making changes to this codebase, follow these rules to maintain st
   - `window.isAdminTestMode`: Admin test mode predicate
   - `window.KaishiQuestCloudAdapter`: Sync and profile adapter
   - `window.KaishiJapanReadyBridge`: Japan Ready campaign bridge
+
+## 4. New Code
+- Put new application code under `src/` and use TypeScript ES modules.
+- Organize code by `domains/`, `platform/`, and `core/`; do not add new root-level feature scripts.
+- Access browser storage through `src/platform/storage.ts` and validate persisted data with schemas.
+- Do not add new `window.*` globals. Extend an existing compatibility bridge only while migrating legacy code.
+- Edit `src/platform/content-manifest.ts`, then run `npm run generate:manifest`; never edit `content-manifest.generated.js` directly.
+- See `docs/architecture.md` for ownership, migration order, and feature workflow.

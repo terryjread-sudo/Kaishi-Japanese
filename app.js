@@ -4,6 +4,7 @@ const $=s=>document.querySelector(s), screens=[...document.querySelectorAll('.sc
 const ADMIN_TEST_MODE_KEY='kq-admin-test-mode';
 const ADMIN_TEST_ENTRY_KEY='kq-admin-test-entry';
 const RESTORE_POINTS_LIMIT=3;
+let appReady=false;
 const isAdminTestMode=()=>{try{return sessionStorage.getItem(ADMIN_TEST_MODE_KEY)==='1'}catch{return false}};
 const profileStorageKey=key=>isAdminTestMode()?key.replace(/^kq-/,'kq-admin-test-'):key;
 const ADMIN_TEST_CHAPTER_KEY='kq-admin-test-chapter';
@@ -226,10 +227,34 @@ function renderAdminTestMode(){
    setAdminTestChapter(value);updateHome();openJourney('current');toast(`Test learner set to lesson ${Math.min(Math.round(value),wordChapterCount())}`)
   });
   clearButton?.addEventListener('click',()=>{clearAdminTestChapter();if(input)input.value='';updateHome();openJourney('current');toast('Test learner back to natural progress')});
-  activityButton?.addEventListener('click',()=>{const id=activity?.value;if(id)launchPathMilestone(id,true)});
+  if(activityButton){
+   activityButton.disabled=!appReady;
+   activityButton.textContent=appReady?'Launch':'Loading activities...';
+   activityButton.onclick=()=>launchAdminTestActivity(activity?.value||'');
+  }
  }
 }
-window.KaishiAdminTest={enter:enterAdminTestMode,exit:exitAdminTestMode,active:isAdminTestMode,setLesson:setAdminTestChapter,clearLesson:clearAdminTestChapter,currentLessonOverride:adminTestChapterOverride};
+function setAdminTestActivityReady(ready){
+ const button=$('#adminTestActivityGo');if(!button)return;
+ button.disabled=!ready;button.textContent=ready?'Launch':'Loading activities...';
+}
+async function launchAdminTestActivity(id){
+ const button=$('#adminTestActivityGo');
+ if(!appReady){toast('Activities are still loading. Please try again in a moment.');return false}
+ if(!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
+ if(button){button.disabled=true;button.textContent='Launching...'}
+ try{
+  await launchPathMilestone(id,true);
+  return true;
+ }catch(error){
+  console.error('Test learner activity failed to launch',error);
+  toast('That activity could not be launched. Please try another activity.');
+  return false;
+ }finally{
+  if(button){button.disabled=false;button.textContent='Launch'}
+ }
+}
+window.KaishiAdminTest={enter:enterAdminTestMode,exit:exitAdminTestMode,active:isAdminTestMode,setLesson:setAdminTestChapter,clearLesson:clearAdminTestChapter,currentLessonOverride:adminTestChapterOverride,isReady:()=>appReady,launchActivity:launchAdminTestActivity};
 window.KaishiJapanReadyBridge={version:3,getVocab:()=>vocab,getProgress:()=>progress,getMeta:()=>meta,save:()=>save(),show,updateHome,isTestMode:isAdminTestMode,playWord:word=>speak(word?.word||word?.reading||''),startFocusedStudy:wordIds=>{const ids=[...new Set(wordIds)].filter(Boolean);if(!ids.length){toast('No matching study words were found yet');return}activityReturnScreen='japanReady';makeTargetedMasterySession(ids,'meaning')},wordIntroduced,wordMastery:word=>mastery(progress[word.id]),stats:()=>({started:started(),accuracy:accuracy(),mastered:Object.values(progress).filter(mastery).length})};
 function bonsaiGrowthState(){const words=started(),mastered=Object.values(progress).filter(mastery).length,topics=journeyTopics().filter(topic=>topicStats(topic).complete).length,score=words+mastered*7+topics*35,thresholds=[0,2,60,240,700],stages=[['First Sprout','Your first useful Japanese is taking root.'],['New Branches','Recognition is becoming a reliable learning habit.'],['Shaped Sapling','Recall and listening are giving your Japanese structure.'],['Strong Bonsai','A broad base of Japanese is becoming usable.'],['Mastery in Bloom','Long-term recall is flowering across your learning.']];let stage=0;thresholds.forEach((threshold,index)=>{if(score>=threshold)stage=index});const next=thresholds[stage+1]??score,base=thresholds[stage],percent=stage===thresholds.length-1?100:Math.round((score-base)/Math.max(1,next-base)*100);return{stage,stageName:stages[stage][0],nextStageName:stages[stage+1]?.[0]||'',description:stages[stage][1],score,nextScore:next,progress:Math.max(0,Math.min(100,percent)),words,mastered,topics,newLearner:Number(meta.totalAnswers||0)===0&&words===0}}
 function bonsaiConditionState(streak,behind,newLearner){const baseLevel=streak>=30?3:streak>=7?2:streak>0?1:0,level=Math.max(0,baseLevel-Math.min(3,Number(behind||0))),states=[{key:'resting',name:newLearner?'Ready to grow':'Resting',note:newLearner?'Complete your first learning rhythm to wake your bonsai gently.':behind?'A missed day has quietened it. A full daily objective restores one condition step.':'Complete today’s learning rhythm to begin caring for it.'},{key:'steady',name:'Steady',note:behind?'Your established rhythm is helping the bonsai recover.':`${Math.max(0,7-streak)} more rhythm day${7-streak===1?'':'s'} until it flourishes.`},{key:'flourishing',name:'Flourishing',note:behind?'Your long rhythm keeps the bonsai healthy while it recovers.':`${Math.max(0,30-streak)} more rhythm day${30-streak===1?'':'s'} until it becomes radiant.`},{key:'radiant',name:'Radiant',note:'A 30-day learning rhythm surrounds your bonsai with lasting energy.'}];return{...states[level],level,baseLevel}}
@@ -1792,6 +1817,8 @@ async function init(){
   ]);
   enrichVocabularyFromAnki();
   updateHome();
+  appReady=true;
+  setAdminTestActivityReady(true);
   if(isAdminTestMode()&&sessionStorage.getItem(ADMIN_TEST_ENTRY_KEY)==='1'){
    sessionStorage.removeItem(ADMIN_TEST_ENTRY_KEY);
    openJourney('current');
@@ -1926,6 +1953,11 @@ function dismissFirstLaunch(){
 function initialiseFirstLaunchWelcome(){
   const overlay=document.getElementById('firstLaunchOverlay');
   if(!overlay)return;
+  if(isAdminTestMode()){
+    overlay.hidden=true;
+    document.body.classList.remove('welcome-open');
+    return;
+  }
   let seen=false;
   try{seen=localStorage.getItem('kaishi_first_launch_seen')==='1'}catch(error){}
   if(!seen&&!hasAnyKaishiLocalData()){
