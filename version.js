@@ -1,7 +1,7 @@
 'use strict';
 
-/* Kaishi Quest 11.28.0 — single source of truth for application version. */
-var APP_VERSION = '11.28.0';
+/* Kaishi Quest 11.29.0 — single source of truth for application version. */
+var APP_VERSION = '11.29.0';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
