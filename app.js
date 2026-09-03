@@ -244,9 +244,15 @@ function setAdminTestActivityReady(ready){
 async function launchAdminTestActivity(id){
  const button=$('#adminTestActivityGo');
  if(!appReady){toast('Activities are still loading. Please try again in a moment.');return false}
- if(!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
+ if(id!=='colosseum'&&!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
  if(button){button.disabled=true;button.textContent='Launching...'}
  try{
+  if(id==='colosseum'){
+   const launch=$('#kotobaColosseumMode');
+   if(typeof launch?.onclick!=='function')throw new Error('Kotoba Colosseum is still loading');
+   launch.onclick();
+   return true;
+  }
   await launchPathMilestone(id,true);
   return true;
  }catch(error){
@@ -930,7 +936,9 @@ function startTopicBoss(topicId){const topic=journeyTopics().find(item=>item.id=
 function completeTopicBoss(topicId,passed=true){meta.topicProgress=meta.topicProgress||{};meta.topicProgress[topicId]={...(meta.topicProgress[topicId]||{}),bossPassed:passed,bossCompletedAt:Date.now()};const topics=journeyTopics(),index=topics.findIndex(topic=>topic.id===topicId);if(passed&&topics[index+1])meta.topicProgress[topics[index+1].id]={...(meta.topicProgress[topics[index+1].id]||{}),unlocked:true};delete meta.activeTopicBoss;save();toast(passed?'Topic complete — next region unlocked!':'Sensei created a recovery route')}
 function renderCollection(tab='words'){const stats=$('#collectionStats'),content=$('#collectionContent');if(!stats||!content)return;const introduced=vocab.filter(wordIntroduced),mnemonics=introduced.filter(word=>memoryScenes[sceneKey(word)]),topics=journeyTopics();stats.innerHTML=`<article><strong>${introduced.length}</strong><span>Words</span></article><article><strong>${kanjiCatalogue().filter(item=>item.status!=='locked').length}</strong><span>Kanji</span></article><article><strong>${mnemonics.length}</strong><span>Mnemonics</span></article><article><strong>${topics.filter(topic=>topicStats(topic).complete).length}/${topics.length}</strong><span>Topics</span></article>`;document.querySelectorAll('[data-collection-tab]').forEach(button=>button.classList.toggle('active',button.dataset.collectionTab===tab));if(tab==='topics')content.innerHTML=topics.map(topic=>{const s=topicStats(topic);return `<article class="collection-item"><span>${esc(topic.icon||'🗾')}</span><div><strong>${esc(topic.title)}</strong><small>${s.introduced}/${s.words.length} words · ${s.complete?'Complete':s.percent+'%'}</small></div></article>`}).join('');else if(tab==='foundations')content.innerHTML=(learningGraph.foundations||[]).map(item=>{const words=introduced.filter(word=>wordFoundationTags(word).includes(item.id));return `<article class="collection-item foundation-item"><span>${esc(item.icon)}</span><div><strong>${esc(item.title)}</strong><small>${words.length} introduced · reused across topics</small><p>${esc(item.description)}</p></div></article>`}).join('');else if(tab==='mnemonics')content.innerHTML=mnemonics.slice(0,100).map(word=>`<article class="collection-word"><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.meaning)}</span><small>${esc(topicForWord(word).title)}</small></article>`).join('')||'<p class="muted">Mnemonic images appear here as you discover words.</p>';else if(tab==='achievements')content.innerHTML=achievementList().map(([icon,title])=>`<article class="achievement"><span>${icon}</span><strong>${esc(title)}</strong></article>`).join('')||'<p class="muted">Continue your adventure to unlock achievements.</p>';else content.innerHTML=introduced.slice(0,200).map(word=>{const foundations=wordFoundationTags(word).map(id=>foundationFor(id)?.title).filter(Boolean);return `<article class="collection-word"><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.reading)} · ${esc(word.meaning)}</span><small>${esc(topicForWord(word).title)}${foundations.length?` · ${esc(foundations.join(', '))}`:''}</small></article>`}).join('')||'<p class="muted">Your discovered words will appear here.</p>'}
 function openCollection(tab='words'){renderCollection(tab);show('collection')}
-function openJourney(section='missions'){renderJourney();show('journey');if(section==='missions')requestAnimationFrame(()=>$('#dailyRouteTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(section==='current')requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}))}
+function renderJourneyTimelineWhenReady(){requestAnimationFrame(()=>requestAnimationFrame(()=>window.KaishiJourneyRender?.()))}
+function openJourney(section='missions'){show('journey');renderJourney();renderJourneyTimelineWhenReady();if(section==='missions')requestAnimationFrame(()=>$('#dailyRouteTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(section==='current')requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}))}
+window.addEventListener('kaishi-journey-ready',()=>{if($('#journey')?.classList.contains('active'))renderJourneyTimelineWhenReady()});
 function startJourneyChapter(itemIndex){if(!chapterUnlocked(itemIndex)){toast('Complete the previous vocabulary chapter first');return}activityReturnScreen='journey';activeVocabularyChapter=itemIndex;makeSession(itemIndex)}
 function launchPathMilestone(id,fromVillage=false){
  if((pathUnlocked(id)||fromVillage)&&!meta.unlockNoticesSeen.includes(id)){meta.unlockNoticesSeen.push(id);save(false)}
