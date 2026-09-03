@@ -44,16 +44,6 @@
   };
 
   const CHAPTER_SIZE = 3;
-  const CHAPTER_SCENES = [
-    {id:'riverside', image:'media/journey-scenes/riverside-path.png', label:'Riverside path'},
-    {id:'lantern', image:'media/journey-scenes/lantern-market.png', label:'Lantern market'},
-    {id:'shrine', image:'media/journey-scenes/shrine-forest.png', label:'Shrine forest'},
-    {id:'coast', image:'media/journey-scenes/coastal-path.png', label:'Coastal path'}
-  ];
-
-  function chapterScene(chapter) {
-    return CHAPTER_SCENES[Math.abs(Number(chapter) || 0) % CHAPTER_SCENES.length];
-  }
 
   function lessonWords(chapter) {
     try {
@@ -228,7 +218,6 @@
         done,
         current: isCurrent,
         future,
-        scene: chapterScene(chapter),
         immersiveMission: immersiveStep?.mission || null
       });
 
@@ -264,7 +253,6 @@
               current: chapter === current && !completed.has(step.id),
               future,
               required: Boolean(step.required),
-              scene: chapterScene(chapter)
             });
           }
         });
@@ -356,19 +344,14 @@
         overflow:hidden;
       }
 
-      .kq-chapter-scene {
-        position:absolute;
-        inset:0;
-        background-image:linear-gradient(90deg,rgba(255,255,255,.93),rgba(255,255,255,.72)),var(--kq-scene);
-        background-size:cover;
-        background-position:center;
-        opacity:.86;
-        pointer-events:none;
+      #journeyHistoryTrack {
+        background-image:linear-gradient(90deg,rgba(255,255,255,.86),rgba(255,255,255,.67)),url('media/journey-scenes/bamboo-scroll-tile.png');
+        background-repeat:repeat-y;
+        background-position:center top;
+        background-size:100% auto;
+        background-attachment:local;
       }
 
-      .kq-unified-card > :not(.kq-chapter-scene) { position:relative; z-index:1; }
-      .kq-unified-node.future .kq-chapter-scene { filter:saturate(.42) brightness(1.08); }
-      .kq-unified-node.done .kq-chapter-scene { filter:saturate(.82); }
       .kq-activity-badge { display:inline-flex; align-items:center; gap:6px; width:max-content; max-width:100%; margin-top:9px; padding:5px 9px; border:1px solid rgba(14,116,144,.28); border-radius:999px; background:rgba(236,254,255,.88); color:#155e75; font-size:.75rem; font-weight:800; }
       .kq-activity-badge span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
       .kq-mission-detail { margin:10px 0 0; padding:10px; border-radius:12px; background:rgba(255,255,255,.78); font-size:.84rem; }
@@ -1003,10 +986,9 @@
     }
 
     return `
-      <article class="${classes}" data-kq-id="${esc(item.id)}" data-kq-scene="${esc(item.scene?.id || '')}">
+      <article class="${classes}" data-kq-id="${esc(item.id)}">
         <div class="kq-unified-marker">${item.done ? '✓' : esc(item.icon || '•')}</div>
-        <div class="kq-unified-card"${item.scene ? ` style="--kq-scene:url('${esc(item.scene.image)}')"` : ''}>
-          ${item.scene ? '<div class="kq-chapter-scene" aria-hidden="true"></div>' : ''}
+        <div class="kq-unified-card">
           <span class="kq-unified-label">${label}</span>
           <strong class="kq-unified-title">${esc(item.title)}</strong>
           <p class="kq-unified-detail">${esc(item.detail)}</p>
