@@ -13,7 +13,7 @@
  * - Listening remains a normal reinforcement skill when audio exists.
  * - Conversation, Karuta, Theatre, Manga, Grammar and Kanji activities are
  *   optional side quests. They never replace the core vocabulary lesson.
- * - SRS Battle is always a separate side quest and never lesson content.
+ * - SRS Battle and Kotoba Colosseum are separate side quests and never lesson content.
  *
  * This is a core module, not a patch overlay. It is loaded after app.js has
  * initialised, then replaces the old XP/AP gating functions with the
@@ -59,7 +59,8 @@
     kanji: 10,
     builder: 10,
     manga: 25,
-    battle: 20
+    battle: 20,
+    colosseum: 8
   };
 
   const rules = [
@@ -73,7 +74,8 @@
     {id:'kanji', icon:'漢', label:'Kanji Recognition', core:false, immersive:false, roadmap:true, minWords:10, note:'Optional side quest focused on written forms of familiar words.'},
     {id:'builder', icon:'🧩', label:'Kanji Builder', core:false, immersive:true, roadmap:true, minWords:10, note:'Optional visual side quest using Kanji already encountered.'},
     {id:'manga', icon:'📖', label:'Manga Stories', core:false, immersive:true, roadmap:true, minWords:25, note:'Optional story side quest using familiar Japanese.'},
-    {id:'battle', icon:'⚔️', label:'SRS Battle', core:false, immersive:true, roadmap:false, minWords:20, note:'Separate review side quest. It is never part of a lesson.'}
+    {id:'battle', icon:'⚔️', label:'SRS Battle', core:false, immersive:true, roadmap:false, minWords:20, note:'Separate review side quest. It is never part of a lesson.'},
+    {id:'colosseum', icon:'⚔️', label:'Kotoba Colosseum', core:false, immersive:true, roadmap:true, minWords:8, note:'Optional listening battle using familiar words. It never replaces a lesson.'}
   ];
 
   const ruleFor = id => rules.find(rule => rule.id === id) || null;
@@ -187,7 +189,7 @@
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;
-    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 7 && Array.isArray(previous.steps)) return previous;
+    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 8 && Array.isArray(previous.steps)) return previous;
 
     const schedule = lessonSchedule(chapter, chapter, words, {forceFirst:true});
     const lessonId = `lesson-${chapter}`;
@@ -213,14 +215,15 @@
       if (id === 'theatre') return safeArray(theatreScenes).some(scene => scene.timeline?.some(line => lesson.some(word => word.word === line.targetWord || word.reading === line.targetWord)));
       if (id === 'manga') return safeArray(mangaStories).some(story => story.panels?.some(panel => lesson.some(word => `${word.word}|${word.reading}` === panel.targetKey)));
       if (id === 'battle') return dueWords().some(word => lesson.includes(word)) || lesson.some(word => wordIntroduced(word));
+      if (id === 'colosseum') return lesson.some(word => wordIntroduced(word));
       if (id === 'grammar') return lesson.some(word => Boolean(word?._anki?.sentence || word?.exampleSentence));
       if (id === 'kanji' || id === 'builder') return lesson.some(word => typeof kanjiCharacters === 'function' && kanjiCharacters(word).length);
       return true;
     };
-    const sideQuestIds=new Set(['karuta','conversation','theatre','builder','manga','battle']);
+    const sideQuestIds=new Set(['karuta','conversation','theatre','builder','manga','battle','colosseum']);
     const candidates=schedule.sideQuests.filter(id => sideQuestIds.has(id) && activityReadiness(id).wordReady && lessonRelevant(id));
     const ranked=candidates.sort((a,b) => {
-      const score=id => (meta.pathVisits?.[id] ? 0 : 6) + (id==='battle' ? 1 : 0) + (id==='karuta' && lesson.some(word => word.wordAudio && memoryScenes?.[sceneKey(word)]?.file) ? 5 : 0);
+      const score=id => (meta.pathVisits?.[id] ? 0 : 6) + (id==='battle' ? 1 : 0) + (id==='colosseum' ? 2 : 0) + (id==='karuta' && lesson.some(word => word.wordAudio && memoryScenes?.[sceneKey(word)]?.file) ? 5 : 0);
       return score(b)-score(a);
     });
     const side=ranked[0];
@@ -243,7 +246,7 @@
     }
 
     meta.dailyJourneyRoute={
-      schemaVersion:7,
+      schemaVersion:8,
       date:today,
       chapter,
       balanceKey:'vocabulary-gated',

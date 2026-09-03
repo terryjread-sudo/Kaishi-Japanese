@@ -1036,17 +1036,24 @@
 
   function bind() {
     const track = $('#journeyHistoryTrack');
-    if (!track || track.dataset.kqUnifiedBound === '1') return;
+    if (!track) return;
 
-    track.dataset.kqUnifiedBound = '1';
-
-    track.addEventListener('scroll', () => {
+    if (track.dataset.kqUnifiedScrollBound !== '1') {
+      track.dataset.kqUnifiedScrollBound = '1';
+      track.addEventListener('scroll', () => {
       track.dataset.kqUserScrolled = '1';
-    }, {passive:true});
+      }, {passive:true});
+    }
 
-    track.addEventListener('click', event => {
+    if (document.documentElement.dataset.kqUnifiedActionsBound === '1') return;
+    document.documentElement.dataset.kqUnifiedActionsBound = '1';
+
+    // app.js can replace this track while rendering legacy history. Delegate
+    // from a stable ancestor so desktop rerenders never orphan Journey buttons.
+    document.addEventListener('click', event => {
       const button = event.target.closest?.('[data-kq-action]');
-      if (!button) return;
+      const activeTrack = button?.closest?.('#journeyHistoryTrack');
+      if (!button || !activeTrack) return;
 
       event.preventDefault();
       event.stopPropagation();
@@ -1083,7 +1090,7 @@
       }
 
       if (action === 'results' || action === 'preview') {
-        const details = track.querySelector(`[data-kq-details="${chapter}"]`);
+        const details = activeTrack.querySelector(`[data-kq-details="${chapter}"]`);
         if (!details) return;
 
         const opening = details.hidden;
@@ -1098,7 +1105,7 @@
         details.hidden = !opening;
         button.setAttribute('aria-expanded', String(opening));
       }
-    });
+    }, true);
   }
 
   function renderAfterNavigation() {
