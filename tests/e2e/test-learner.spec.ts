@@ -57,5 +57,5 @@ test('Journey shows a scheduled immersive mission within its chapter scene', asy
   await expect(page.locator('#journeyHistoryTrack [data-kq-scene]').first()).toBeVisible();
   await expect(page.locator('#journeyHistoryTrack .kq-activity-badge').first()).toBeVisible();
   await page.getByRole('button', { name: 'Why this route?' }).click();
-  await expect(page.locator('#journeyHistoryTrack .kq-mission-detail').first()).toContainText('mission');
+  await expect(page.locator('#journeyHistoryTrack .kq-mission-detail').first()).toContainText('Reinforces');
 });
