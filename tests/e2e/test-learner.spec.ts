@@ -46,6 +46,28 @@ test('test learner lesson jump renders the same early Journey flow', async ({ pa
   await expect(page.getByText('Next immersive event:', { exact: false })).toHaveCount(0);
 });
 
+test('new words offer optional compact pronunciation practice', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem('kq-admin-test-mode', '1');
+  });
+  await page.goto('/');
+  await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
+  await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+
+  await page.locator('#firstEncounterContinue').click();
+  await page.locator('#continueBtn').click();
+  await expect(page.locator('.word-pronunciation-card')).toBeVisible();
+  await expect(page.locator('#pronunciationSkip')).toBeVisible();
+  await expect(page.locator('#pronunciationCheck')).toBeEnabled();
+  await page.locator('#pronunciationCheck').click();
+  await expect(page.locator('#pronunciationCoachDialog')).toBeVisible();
+  await expect(page.locator('#pronunciationCoachDialog')).toContainText('Word pronunciation');
+  await expect(page.locator('#pronunciationCoachDialog .pronunciation-mode')).toBeHidden();
+  await page.locator('#pronunciationCoachDialog .pronunciation-close').click();
+  await page.locator('#pronunciationSkip').click();
+  await expect(page.locator('#sessionCounter')).toContainText('Card 4/');
+});
+
 test('Journey previews immersive missions through its ten-lesson horizon', async ({ page }) => {
   await page.addInitScript(() => {
     window.sessionStorage.setItem('kq-admin-test-mode', '1');
