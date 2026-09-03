@@ -31,15 +31,17 @@ test('test learner can launch an immersive activity after app initialization', a
   await expect(page.locator('#listenBattle')).toHaveClass(/active/);
 });
 
-test('test learner lesson jump renders the Journey timeline immediately', async ({ page }) => {
+test('test learner lesson jump renders the same early Journey flow', async ({ page }) => {
   await page.addInitScript(() => {
     window.sessionStorage.setItem('kq-admin-test-mode', '1');
   });
   await page.goto('/');
-  await page.locator('#adminTestLessonInput').fill('20');
+  await page.locator('#adminTestLessonInput').fill('1');
   await page.locator('#adminTestLessonGo').click();
 
   await expect(page.locator('#journey')).toHaveClass(/active/);
   await expect(page.locator('#journeyHistoryTrack .kq-unified-timeline')).toBeVisible();
   await expect(page.locator('#journeyHistoryTrack')).not.toContainText('Your lessons will appear here as you progress.');
+  await expect(page.locator('#journeyHistoryTrack [data-kq-activity="colosseum"]')).toHaveCount(0);
+  await expect(page.getByText('Next immersive event:', { exact: false })).toHaveCount(0);
 });

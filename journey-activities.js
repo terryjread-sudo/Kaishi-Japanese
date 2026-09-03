@@ -121,11 +121,16 @@
   function lessonSchedule(chapterIndex, currentChapterIndex, words, opts={}) {
     const lesson = safeArray(words);
     const result = {chapterIndex, lessonNumber:chapterIndex+1, core:[], sideQuests:[], available:[]};
-    const introducedCount = introduced().length;
+    const chapterSize=typeof WORD_CHAPTER_SIZE==='number'&&WORD_CHAPTER_SIZE>0?WORD_CHAPTER_SIZE:3;
+    // Test Learner has every activity launchable from its header, but its
+    // Journey should look like the selected lesson for realistic flow tests.
+    const introducedCount=isAdminTestMode()
+      ?Math.min(safeArray(vocab).length,(Number(chapterIndex)+1)*chapterSize)
+      :introduced().length;
 
     const picture = ruleFor('picture');
     const hasPicture = lesson.some(word => { try { return Boolean(memoryScenes?.[sceneKey(word)]?.file); } catch (_) { return false; } });
-    if (hasPicture && (isAdminTestMode() || introducedCount >= picture.minWords)) {
+    if (hasPicture && introducedCount >= picture.minWords) {
       result.available.push('picture');
       // Picture is the preferred immersive reinforcement, but not every lesson
       // needs it. Rotate it gently once the learner has enough vocabulary.
@@ -133,13 +138,13 @@
       if (opts.forceFirst || relative % 2 === 0) result.core.push('picture');
     }
 
-    if (lesson.some(word => Boolean(word?.wordAudio)) && (isAdminTestMode() || introducedCount >= requirements.listening)) {
+    if (lesson.some(word => Boolean(word?.wordAudio)) && introducedCount >= requirements.listening) {
       result.available.push('listening');
       result.core.push('listening');
     }
 
     rules.filter(rule => !rule.core && rule.id !== 'battle').forEach(rule => {
-      if (!(isAdminTestMode() || introducedCount >= rule.minWords)) return;
+      if (introducedCount < rule.minWords) return;
       if (rule.id === 'karuta' && !lesson.some(word => { try { return Boolean(word?.wordAudio && memoryScenes?.[sceneKey(word)]?.file); } catch (_) { return false; } })) return;
       result.available.push(rule.id);
       result.sideQuests.push(rule.id);
@@ -189,7 +194,7 @@
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;
-    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 8 && Array.isArray(previous.steps)) return previous;
+    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 9 && Array.isArray(previous.steps)) return previous;
 
     const schedule = lessonSchedule(chapter, chapter, words, {forceFirst:true});
     const lessonId = `lesson-${chapter}`;
@@ -246,7 +251,7 @@
     }
 
     meta.dailyJourneyRoute={
-      schemaVersion:8,
+      schemaVersion:9,
       date:today,
       chapter,
       balanceKey:'vocabulary-gated',
