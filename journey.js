@@ -44,6 +44,16 @@
   };
 
   const CHAPTER_SIZE = 3;
+  const CHAPTER_SCENES = [
+    {id:'riverside', image:'media/journey-scenes/riverside-path.png', label:'Riverside path'},
+    {id:'lantern', image:'media/journey-scenes/lantern-market.png', label:'Lantern market'},
+    {id:'shrine', image:'media/journey-scenes/shrine-forest.png', label:'Shrine forest'},
+    {id:'coast', image:'media/journey-scenes/coastal-path.png', label:'Coastal path'}
+  ];
+
+  function chapterScene(chapter) {
+    return CHAPTER_SCENES[Math.abs(Number(chapter) || 0) % CHAPTER_SCENES.length];
+  }
 
   function lessonWords(chapter) {
     try {
@@ -202,6 +212,7 @@
       const done = chapter < current || stats.complete;
       const isCurrent = chapter === current && !done;
       const future = chapter > current;
+      const immersiveStep = route.steps.find(step => step?.kind === 'activity' && String(step?.sideQuestFor || '') === `lesson-${chapter}`);
 
       output.push({
         type: done ? 'past' : isCurrent ? 'current' : 'future',
@@ -216,7 +227,9 @@
             : `Coming up${topic?.title ? ` · ${topic.title}` : ''}`,
         done,
         current: isCurrent,
-        future
+        future,
+        scene: chapterScene(chapter),
+        immersiveMission: immersiveStep?.mission || null
       });
 
       route.steps
@@ -250,7 +263,8 @@
               done: completed.has(step.id),
               current: chapter === current && !completed.has(step.id),
               future,
-              required: Boolean(step.required)
+              required: Boolean(step.required),
+              scene: chapterScene(chapter)
             });
           }
         });
@@ -339,7 +353,26 @@
         padding:15px;
         background:var(--card-bg,#fff);
         box-shadow:0 2px 7px rgba(0,0,0,.04);
+        overflow:hidden;
       }
+
+      .kq-chapter-scene {
+        position:absolute;
+        inset:0;
+        background-image:linear-gradient(90deg,rgba(255,255,255,.93),rgba(255,255,255,.72)),var(--kq-scene);
+        background-size:cover;
+        background-position:center;
+        opacity:.86;
+        pointer-events:none;
+      }
+
+      .kq-unified-card > :not(.kq-chapter-scene) { position:relative; z-index:1; }
+      .kq-unified-node.future .kq-chapter-scene { filter:saturate(.42) brightness(1.08); }
+      .kq-unified-node.done .kq-chapter-scene { filter:saturate(.82); }
+      .kq-activity-badge { display:inline-flex; align-items:center; gap:6px; width:max-content; max-width:100%; margin-top:9px; padding:5px 9px; border:1px solid rgba(14,116,144,.28); border-radius:999px; background:rgba(236,254,255,.88); color:#155e75; font-size:.75rem; font-weight:800; }
+      .kq-activity-badge span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      .kq-mission-detail { margin:10px 0 0; padding:10px; border-radius:12px; background:rgba(255,255,255,.78); font-size:.84rem; }
+      .kq-mission-detail p { margin:.35rem 0 0; }
 
       .kq-unified-node.current .kq-unified-card {
         border-width:2px;
@@ -824,7 +857,24 @@
           <small>${esc(word.meaning || '')} · ${wordScore(word)}%</small>
         </div>
       `).join('') || '<p class="muted">No word-level results are available yet.</p>'}
+      ${missionDetail(missionForChapter(chapter))}
     `;
+  }
+
+  function missionForChapter(chapter) {
+    return routeSafe().steps.find(step => step?.kind === 'activity' && String(step?.sideQuestFor || '') === `lesson-${chapter}`)?.mission || null;
+  }
+
+  function lessonExplanationHTML(chapter) {
+    const stats = lessonStats(chapter);
+    const current = currentChapter();
+    const remaining = Math.max(0, stats.words.length - stats.introduced);
+    const state = chapter < current
+      ? 'This lesson is complete; its words will return through spaced review.'
+      : chapter === current
+        ? remaining ? `${remaining} word${remaining === 1 ? '' : 's'} still need to be introduced before this lesson is complete.` : 'The words are introduced; one more focused review will strengthen them.'
+        : 'Complete the earlier lesson first so this vocabulary has the context it needs.';
+    return `<strong>Sensei’s route note</strong><p>${esc(state)}</p><p><b>Current progress:</b> ${stats.introduced}/${stats.words.length} words introduced.</p>${missionDetail(missionForChapter(chapter))}`;
   }
 
   function previewHTML(chapter) {
@@ -839,8 +889,19 @@
         ).join('') || '<li>Lesson content will appear here when it is unlocked.</li>'}
       </ul>
       ${topic?.title ? `<p><b>Topic:</b> ${esc(topic.title)}</p>` : ''}
-      <p><b>Why it’s next:</b> it builds on the Japanese you have already met.</p>
+      <p><b>Why it’s next:</b> complete the previous lesson first; this lesson then introduces its connected words before they return for spaced practice.</p>
+      ${missionDetail(missionForChapter(chapter))}
     `;
+  }
+
+  function missionBadge(mission) {
+    if (!mission) return '';
+    return `<div class="kq-activity-badge" title="${esc(mission.objective)}"><b>${esc(mission.icon)}</b><span>${esc(mission.purpose)} · ${esc(mission.label)}</span></div>`;
+  }
+
+  function missionDetail(mission) {
+    if (!mission) return '';
+    return `<div class="kq-mission-detail"><strong>${esc(mission.icon)} ${esc(mission.label)}</strong><p>${esc(mission.objective)}${mission.vocabulary ? ` Reinforces ${esc(mission.vocabulary)}.` : ''}</p></div>`;
   }
 
   function nodeHTML(item) {
@@ -891,7 +952,16 @@
                   data-kq-chapter="${item.chapter}">
             Continue lesson
           </button>
+          <button type="button"
+                  data-kq-action="explain"
+                  data-kq-chapter="${item.chapter}"
+                  aria-expanded="false">
+            Why this route?
+          </button>
         </div>
+        <div class="kq-unified-expand"
+             data-kq-details="${item.chapter}"
+             hidden></div>
       `;
     } else if (item.type === 'future') {
       actions = `
@@ -933,12 +1003,14 @@
     }
 
     return `
-      <article class="${classes}" data-kq-id="${esc(item.id)}">
+      <article class="${classes}" data-kq-id="${esc(item.id)}" data-kq-scene="${esc(item.scene?.id || '')}">
         <div class="kq-unified-marker">${item.done ? '✓' : esc(item.icon || '•')}</div>
-        <div class="kq-unified-card">
+        <div class="kq-unified-card"${item.scene ? ` style="--kq-scene:url('${esc(item.scene.image)}')"` : ''}>
+          ${item.scene ? '<div class="kq-chapter-scene" aria-hidden="true"></div>' : ''}
           <span class="kq-unified-label">${label}</span>
           <strong class="kq-unified-title">${esc(item.title)}</strong>
           <p class="kq-unified-detail">${esc(item.detail)}</p>
+          ${missionBadge(item.immersiveMission)}
           ${actions}
         </div>
       </article>
@@ -1047,7 +1119,7 @@
         return;
       }
 
-      if (action === 'results' || action === 'preview') {
+      if (action === 'results' || action === 'preview' || action === 'explain') {
         const details = activeTrack.querySelector(`[data-kq-details="${chapter}"]`);
         if (!details) return;
 
@@ -1057,7 +1129,9 @@
           details.innerHTML =
             action === 'results'
               ? resultsHTML(chapter)
-              : previewHTML(chapter);
+              : action === 'preview'
+                ? previewHTML(chapter)
+                : lessonExplanationHTML(chapter);
         }
 
         details.hidden = !opening;

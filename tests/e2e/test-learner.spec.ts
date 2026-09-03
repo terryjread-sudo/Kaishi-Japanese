@@ -45,3 +45,17 @@ test('test learner lesson jump renders the same early Journey flow', async ({ pa
   await expect(page.locator('#journeyHistoryTrack [data-kq-activity="colosseum"]')).toHaveCount(0);
   await expect(page.getByText('Next immersive event:', { exact: false })).toHaveCount(0);
 });
+
+test('Journey shows a scheduled immersive mission within its chapter scene', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem('kq-admin-test-mode', '1');
+  });
+  await page.goto('/');
+  await page.locator('#adminTestLessonInput').fill('20');
+  await page.locator('#adminTestLessonGo').click();
+
+  await expect(page.locator('#journeyHistoryTrack [data-kq-scene]').first()).toBeVisible();
+  await expect(page.locator('#journeyHistoryTrack .kq-activity-badge').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Why this route?' }).click();
+  await expect(page.locator('#journeyHistoryTrack .kq-mission-detail').first()).toContainText('mission');
+});
