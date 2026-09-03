@@ -1,9 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { addRestorePoint, findRestorePoint, type RestorePoint } from './restore-points';
+import {
+  addRestorePoint,
+  findRestorePoint,
+  restorePointsForOwner,
+  type RestorePoint,
+} from './restore-points';
 
-function point(id: string, createdAt: number): RestorePoint {
+function point(id: string, createdAt: number, ownerId = 'learner-one'): RestorePoint {
   return {
     id,
+    ownerId,
     createdAt,
     reason: `Snapshot ${id}`,
     summary: { introducedWords: 3, masteredWords: 1, answers: 12, streak: 2, lesson: 4 },
@@ -30,7 +36,14 @@ describe('restore points', () => {
 
   it('returns a selected snapshot or null', () => {
     const points = [point('one', 1)];
-    expect(findRestorePoint(points, 'one')?.summary.lesson).toBe(4);
-    expect(findRestorePoint(points, 'missing')).toBeNull();
+    expect(findRestorePoint(points, 'one', 'learner-one')?.summary.lesson).toBe(4);
+    expect(findRestorePoint(points, 'one', 'learner-two')).toBeNull();
+    expect(findRestorePoint(points, 'missing', 'learner-one')).toBeNull();
+  });
+
+  it('only returns restore points owned by the active learner', () => {
+    const points = [point('one', 1), point('two', 2, 'learner-two')];
+
+    expect(restorePointsForOwner(points, 'learner-one').map((item) => item.id)).toEqual(['one']);
   });
 });

@@ -14,6 +14,7 @@ test('test learner can launch an immersive activity after app initialization', a
 
   const banner = page.locator('#adminTestBanner');
   const launch = page.locator('#adminTestActivityGo');
+  await expect(page.locator('#restorePointsBtn')).toBeHidden();
   await expect(banner).toBeVisible();
   await expect(launch).toBeEnabled({ timeout: 30_000 });
   await expect(launch).toHaveText('Launch');

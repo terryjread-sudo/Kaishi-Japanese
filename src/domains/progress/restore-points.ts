@@ -10,6 +10,7 @@ export const learnerSnapshotSchema = z.object({
 
 export const restorePointSchema = z.object({
   id: z.string().min(1),
+  ownerId: z.string().min(1),
   createdAt: z.number().int().positive(),
   reason: z.string().min(1),
   summary: z.object({
@@ -39,6 +40,14 @@ export function addRestorePoint(
 export function findRestorePoint(
   current: readonly RestorePoint[],
   id: string,
+  ownerId: string,
 ): RestorePoint | null {
-  return current.find((point) => point.id === id) ?? null;
+  return current.find((point) => point.id === id && point.ownerId === ownerId) ?? null;
+}
+
+export function restorePointsForOwner(
+  current: readonly RestorePoint[],
+  ownerId: string,
+): RestorePoint[] {
+  return current.filter((point) => point.ownerId === ownerId);
 }
