@@ -637,9 +637,12 @@
         // cache-busting. The service worker is configured to always try the
         // network first for this endpoint. If this succeeds (any HTTP response),
         // we have network connectivity. If it times out or network error, we're offline.
-        const checkUrl=`${location.origin}/version.json?t=${Date.now()}`;
+        // Keep the app's deployment subpath (for example /Kakashi-Web/ on
+        // GitHub Pages) instead of incorrectly probing the domain root.
+        const checkUrl=new URL('version.json',document.baseURI);
+        checkUrl.searchParams.set('t',String(Date.now()));
         kaishiLog('offline-check','Fetching: '+checkUrl);
-        const response=await fetch(checkUrl,{
+        const response=await fetch(checkUrl.toString(),{
           cache:'no-store',
           method:'GET',
           headers:{
