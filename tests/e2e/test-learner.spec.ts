@@ -68,6 +68,48 @@ test('new words offer optional compact pronunciation practice', async ({ page })
   await expect(page.locator('#sessionCounter')).toContainText('Card 4/');
 });
 
+test('a learner can save a word without losing their active lesson card', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem('kq-admin-test-mode', '1');
+  });
+  await page.goto('/');
+  await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
+  await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+
+  const counter = page.locator('#sessionCounter');
+  const before = await counter.innerText();
+  await expect(page.locator('[data-notebook-save-word]')).toBeVisible();
+  await page.locator('[data-notebook-save-word]').click();
+  await expect(page.locator('[data-notebook-save-word]')).toContainText('In notebook');
+  await page.locator('#studyNotebook').click();
+  await expect(page.locator('#learningNotebookDialog')).toBeVisible();
+  await expect(page.locator('#learningNotebookDialog')).toContainText('Saved words');
+  await expect(page.locator('#learningNotebookDialog .notebook-ink')).toBeVisible();
+  await page.locator('#learningNotebookClose').click();
+  await expect(counter).toHaveText(before);
+});
+
+test('Sentence Lab saves remain available in the shared notebook', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const app = window as typeof window & {
+      KaishiNotebook: { open: (tab: string) => void };
+      KaishiSentenceLab: { saveSentence: (source: Record<string, unknown>) => void };
+    };
+    app.KaishiSentenceLab.saveSentence({
+      id: 'notebook-test-sentence',
+      sentence: 'お茶をください。',
+      reading: 'おちゃをください。',
+      meaning: 'Tea, please.'
+    });
+    app.KaishiNotebook.open('sentences');
+  });
+
+  await expect(page.locator('#learningNotebookDialog')).toBeVisible();
+  await expect(page.locator('#learningNotebookDialog')).toContainText('Saved sentences');
+  await expect(page.locator('#learningNotebookDialog .notebook-ink')).toContainText('お茶をください。');
+});
+
 test('Journey previews immersive missions through its ten-lesson horizon', async ({ page }) => {
   await page.addInitScript(() => {
     window.sessionStorage.setItem('kq-admin-test-mode', '1');
