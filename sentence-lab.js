@@ -134,7 +134,7 @@ function renderSentenceLabHome(){
     const next=sentenceLabData.lessons.findIndex((lesson,index)=>sentenceLabLessonUnlocked(index)&&!sentenceLessonState(lesson.id).completed);
     startSentenceLabLesson(next<0?0:next);
   };
-  $('#slNotebook').onclick=renderSentenceNotebook;
+  $('#slNotebook').onclick=()=>window.KaishiNotebook?.open('sentences');
   $('#slMistakes').onclick=renderSentenceMistakes;
 }
 
@@ -362,6 +362,13 @@ function renderSentenceMistakes(){
   document.querySelectorAll('[data-sl-mistake-practice]').forEach(button=>button.onclick=()=>{const index=sentenceLabData.lessons.findIndex(lesson=>lesson.id===mistakes[+button.dataset.slMistakePractice].lessonId);if(index>=0)startSentenceLabLesson(index)});
 }
 
+async function practiseSavedSentence(item){
+  await openSentenceLab();
+  const index=sentenceLabData?.lessons?.findIndex(lesson=>lesson.id===item?.lessonId);
+  if(index>=0)startSentenceLabLesson(index);
+  else speakJapanese(item?.sentence);
+}
+
 function makeSentenceMineButton(label,sourceFactory){
   const button=document.createElement('button');button.type='button';button.className='sl-mine-external';button.textContent=label;
   button.onclick=event=>{event.stopPropagation();const made=sourceFactory(),sources=(Array.isArray(made)?made:[made]).filter(Boolean),fresh=sources.filter(source=>!sentenceLabSaved(source.sentence));fresh.forEach(saveSentenceToNotebook);if(!fresh.length)toast('Already in Sentence Notebook');button.textContent='★ Sent to Notebook'};
@@ -404,6 +411,8 @@ installExternalSentenceMining();
 
 window.KaishiSentenceLab={
   open:openSentenceLab,
+  startLesson:startSentenceLabLesson,
+  practiseSavedSentence,
   saveSentence:source=>saveSentenceToNotebook(source),
   saved:()=>structuredClone(sentenceLabState().saved)
 };
