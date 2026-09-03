@@ -1651,7 +1651,25 @@ body.welcome-open{overflow:hidden}
 @keyframes catEarRight{0%,61%,64%,100%{transform:scaleX(-1) rotate(0)}62%{transform:scaleX(-1) rotate(8deg)}}
 @keyframes catV2Arrival{from{opacity:0;transform:translate(-50%,-82%) scale(.88)}to{opacity:1;transform:translate(-50%,-82%) scale(1)}}
 @media(prefers-reduced-motion:reduce){.village-cat-v2 .cat-part{animation:none!important}}
-\n\n/* v11.2.3 — mobile village polish */\n/* Cat: smaller and visually seated closer to the ground anchor. */\n.village-cat-v2{width:clamp(34px,6.4%,56px)!important;transform:translate(-50%,-70%)!important}\n.village-cat-v2.cat-arriving{animation:catV2121Arrival .72s ease both!important}\n@keyframes catV2121Arrival{from{opacity:0;transform:translate(-50%,-70%) scale(.9)}to{opacity:1;transform:translate(-50%,-70%) scale(1)}}\n\n/* Blossoms: smaller, subtler and one-way downward drift only. */\n.petal-drift{width:9%!important;height:8%!important;opacity:.58!important;animation-name:petalFall1121!important;animation-timing-function:linear!important;animation-iteration-count:infinite!important}\n.petal-one{width:11%!important;height:9%!important;animation-duration:15s!important}\n.petal-two{width:10%!important;height:9%!important;animation-duration:19s!important}\n@keyframes petalFall1121{0%{transform:translate(0,-35%) rotate(-5deg);opacity:0}8%{opacity:.58}92%{opacity:.48}100%{transform:translate(42%,260%) rotate(28deg);opacity:0}}\n\n/* Locked map labels: compact lock + actual supported-word progress. */\n.location-lock-progress{display:flex!important;align-items:center;justify-content:center;gap:5px;margin-top:3px!important;color:#e2e8f0!important;font-size:.68rem!important;line-height:1!important}\n.location-progress-track{display:block;width:52px;height:5px;border-radius:999px;overflow:hidden;background:#ffffff38;box-shadow:inset 0 1px 2px #0007}\n.location-progress-track b{display:block;height:100%;border-radius:inherit;background:#c4b5fd;box-shadow:0 0 5px #c4b5fdaa}\n.location-open{color:#86efac!important}.location-ready{color:#fde68a!important}\n@media(max-width:480px){.village-cat-v2{width:clamp(31px,6%,48px)!important}.location-progress-track{width:46px}}\n
+
+/* v11.2.3 - mobile village polish */
+/* Cat: smaller and visually seated closer to the ground anchor. */
+.village-cat-v2{width:clamp(34px,6.4%,56px)!important;transform:translate(-50%,-70%)!important}
+.village-cat-v2.cat-arriving{animation:catV2121Arrival .72s ease both!important}
+@keyframes catV2121Arrival{from{opacity:0;transform:translate(-50%,-70%) scale(.9)}to{opacity:1;transform:translate(-50%,-70%) scale(1)}}
+
+/* Blossoms: smaller, subtler and one-way downward drift only. */
+.petal-drift{width:9%!important;height:8%!important;opacity:.58!important;animation-name:petalFall1121!important;animation-timing-function:linear!important;animation-iteration-count:infinite!important}
+.petal-one{width:11%!important;height:9%!important;animation-duration:15s!important}
+.petal-two{width:10%!important;height:9%!important;animation-duration:19s!important}
+@keyframes petalFall1121{0%{transform:translate(0,-35%) rotate(-5deg);opacity:0}8%{opacity:.58}92%{opacity:.48}100%{transform:translate(42%,260%) rotate(28deg);opacity:0}}
+
+/* Locked map labels: compact lock + actual supported-word progress. */
+.location-lock-progress{display:flex!important;align-items:center;justify-content:center;gap:5px;margin-top:3px!important;color:#e2e8f0!important;font-size:.68rem!important;line-height:1!important}
+.location-progress-track{display:block;width:52px;height:5px;border-radius:999px;overflow:hidden;background:#ffffff38;box-shadow:inset 0 1px 2px #0007}
+.location-progress-track b{display:block;height:100%;border-radius:inherit;background:#c4b5fd;box-shadow:0 0 5px #c4b5fdaa}
+.location-open{color:#86efac!important}.location-ready{color:#fde68a!important}
+@media(max-width:480px){.village-cat-v2{width:clamp(31px,6%,48px)!important}.location-progress-track{width:46px}}
 
 /* v11.2.3 — Activity Village correction */
 /* Cat v3 uses pre-aligned full-canvas layers, so ears/eyes can never drift apart. */

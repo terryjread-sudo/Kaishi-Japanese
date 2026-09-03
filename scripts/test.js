@@ -66,6 +66,7 @@ const versionJs = fs.readFileSync(path.join(rootDir, 'version.js'), 'utf8');
 const versionJson = JSON.parse(fs.readFileSync(path.join(rootDir, 'version.json'), 'utf8'));
 const swJs = fs.readFileSync(path.join(rootDir, 'service-worker.js'), 'utf8');
 const indexHtml = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+const generatedManifest = fs.readFileSync(path.join(rootDir, 'content-manifest.generated.js'), 'utf8');
 
 const vJsMatch = versionJs.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
 const vSwMatch = swJs.match(/VERSION\s*=\s*['"]([^'"]+)['"]/);
@@ -75,6 +76,8 @@ const expectedVersion = versionJson.version;
 assert(Boolean(vJsMatch && vJsMatch[1] === expectedVersion), `version.js APP_VERSION (${vJsMatch?.[1]}) matches version.json (${expectedVersion})`);
 assert(Boolean(vSwMatch && vSwMatch[1] === expectedVersion), `service-worker.js VERSION (${vSwMatch?.[1]}) matches version.json (${expectedVersion})`);
 assert(Boolean(vBadgeMatch && vBadgeMatch[1] === expectedVersion), `index.html version badge (${vBadgeMatch?.[1]}) matches version.json (${expectedVersion})`);
+assert(indexHtml.includes('<script src="content-manifest.generated.js"></script>'), 'Generated content manifest loads before application scripts');
+assert(generatedManifest.includes('KaishiContentManifest'), 'Generated content manifest exposes the shared runtime contract');
 
 // 4. Sequential Browser Execution Simulation
 console.log('\n4. Simulating in-order browser script execution...');
@@ -125,6 +128,7 @@ try {
 
   const scriptOrder = [
     'version.js',
+    'content-manifest.generated.js',
     'app.js',
     'japan-ready.js',
     'vms.js',

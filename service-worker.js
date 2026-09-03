@@ -3,7 +3,7 @@
 /* Kaishi Quest Service Worker — 11.27.0. */
 var VERSION = '11.27.0';
 try {
-  importScripts('./version.js');
+  importScripts('./version.js', './content-manifest.generated.js');
   if (typeof APP_VERSION === 'string' && APP_VERSION.trim()) VERSION = APP_VERSION.trim();
 } catch (e) {}
 
@@ -14,32 +14,10 @@ var FORCE_OFFLINE = false;
 
 function v(path) { return path + '?v=' + encodeURIComponent(VERSION); }
 
-var SHELL = [
-  './','./index.html',v('./version.js'),v('./journey.js'),v('./roadmap-engine.js'),v('./road-ahead.js'),
-  v('./styles.css'),v('./sentence-lab.css'),v('./engagement-layer.css'),
-  v('./pronunciation-coach.css'),v('./bonsai-progress.css'),v('./vms.css'),v('./app.js'),
-  v('./journey-activities.js'),
-  v('./vms.js'),v('./cloud.js'),v('./reporting.js'),v('./japan-ready.js'),v('./supabase-config.js'),
-  v('./release-manager.js'),v('./battle-listen.js'),v('./kotoba-activity.js'),v('./dashboard-clarity.js'),
-  v('./touch-enhancements.js'),v('./learning-ui.js'),v('./carousel-navigation.js'),v('./micro-practice.js'),
-  v('./sentence-lab.js'),v('./engagement-layer.js'),v('./pronunciation-coach.js'),v('./bonsai-progress.js'),
-  v('./adaptive-learning.js'),v('./adaptive-reinforcement.js'),v('./campfire-recall.js'),v('./word-rain.js'),
-  v('./battle-ui-patch.js'),
-  './data/japan-ready-v90.json','./data/sentence-lab.json','./data/vocabulary.json',
-  './data/kana.json','./data/manga-stories.json','./data/conversations.json',
-  './data/theatre-scenes.json','./data/grammar-path.json','./data/kanji-components.json',
-  './memory-scenes.json','./data/anki-content-v72.json','./data/topics-v72.json',
-  './data/learning-graph-v82.json','./visual-mnemonics.json',
-  './icons/icon-192.png','./icons/icon-512.png',
-  v('./media/guides/teacher-guide.webp'),v('./media/guides/sensei/sensei-welcoming.webp'),
-  v('./media/guides/sensei/sensei-explaining.webp'),v('./media/guides/sensei/sensei-celebrating.webp'),
-  v('./media/guides/sensei/sensei-encouraging.webp'),v('./media/guides/sensei/sensei-pointing.webp'),
-  v('./media/guides/sensei/sensei-analysing.webp'),v('./media/sentence-lab/sentence-lab-hero.webp'),
-  v('./media/bonsai/bonsai-growth-stages.png'),v('./media/bonsai/bonsai-condition-overlays.png'),
-  v('./media/profiles/guest-learner.webp'),v('./media/profiles/boy-base.webp'),
-  v('./media/profiles/girl-base.webp'),v('./media/profiles/master-base.webp'),
-  v('./media/profiles/man-base.webp'),v('./media/profiles/woman-base.webp')
-];
+var manifestFiles = self.KaishiContentManifest && self.KaishiContentManifest.coreFiles;
+var SHELL = (manifestFiles || ['./','./index.html','./version.js','./app.js']).map(function(path) {
+  return /\.(?:js|css)$/.test(path) ? v(path) : path;
+});
 
 self.addEventListener('install', function(event) {
   event.waitUntil((async function() {
