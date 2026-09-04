@@ -85,6 +85,11 @@ test('a learner can save a word without losing their active lesson card', async 
   await expect(page.locator('#learningNotebookDialog')).toBeVisible();
   await expect(page.locator('#learningNotebookDialog')).toContainText('Saved words');
   await expect(page.locator('#learningNotebookDialog .notebook-ink')).toBeVisible();
+  await expect(page.locator('#learningNotebookDialog .notebook-entry-actions')).toBeVisible();
+  await expect(page.locator('#notebookResetAll')).toBeHidden();
+  await page.getByLabel('Notebook options').click();
+  await expect(page.locator('#notebookClearTab')).toBeVisible();
+  await expect(page.locator('#notebookResetAll')).toBeVisible();
   await page.locator('#learningNotebookClose').click();
   await expect(counter).toHaveText(before);
 });
