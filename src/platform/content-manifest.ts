@@ -38,6 +38,7 @@ export const OFFLINE_CORE_FILES = [
   './media/sentence-lab/sentence-lab-hero.webp',
   './media/journey-scenes/bamboo-scroll-tile.png',
   './media/mnemonics/katakana-core-01-percent.png',
+  ...Array.from({ length: 99 }, (_, index) => `./media/mnemonics/katakana-core-${String(index + 2).padStart(3, '0')}.png`),
   './media/profiles/guest-learner.webp', './media/profiles/boy-base.webp',
   './media/profiles/girl-base.webp', './media/profiles/master-base.webp',
   './media/profiles/man-base.webp', './media/profiles/woman-base.webp',

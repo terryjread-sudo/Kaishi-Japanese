@@ -52,10 +52,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “America” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-002.png"
     },
     {
       "id": "katakana-core-351-ページ",
@@ -77,10 +78,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “page” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-003.png"
     },
     {
       "id": "katakana-core-420-センター",
@@ -102,10 +104,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “center” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-004.png"
     },
     {
       "id": "katakana-core-549-サービス",
@@ -127,10 +130,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “service” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-005.png"
     },
     {
       "id": "katakana-core-557-システム",
@@ -152,10 +156,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “system” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-006.png"
     },
     {
       "id": "katakana-core-574-メートル",
@@ -177,10 +182,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “metre” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-007.png"
     },
     {
       "id": "katakana-core-592-メール",
@@ -202,10 +208,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “mail” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-008.png"
     },
     {
       "id": "katakana-core-709-データ",
@@ -227,10 +234,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “data” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-009.png"
     },
     {
       "id": "katakana-core-868-フランス",
@@ -252,10 +260,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “France” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-010.png"
     },
     {
       "id": "katakana-core-875-ポイント",
@@ -277,10 +286,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “point” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-011.png"
     },
     {
       "id": "katakana-core-888-ホーム",
@@ -302,10 +312,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “home” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-012.png"
     },
     {
       "id": "katakana-core-907-ホテル",
@@ -327,10 +338,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “hotel” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-013.png"
     },
     {
       "id": "katakana-core-935-ブログ",
@@ -352,10 +364,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “blog” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-014.png"
     },
     {
       "id": "katakana-core-940-クリック",
@@ -377,10 +390,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “click” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-015.png"
     },
     {
       "id": "katakana-core-949-グループ",
@@ -402,10 +416,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “group” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-016.png"
     },
     {
       "id": "katakana-core-955-エネルギー",
@@ -427,10 +442,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “energy” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-017.png"
     },
     {
       "id": "katakana-core-992-タイプ",
@@ -452,10 +468,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “type” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-018.png"
     },
     {
       "id": "katakana-core-1008-ドル",
@@ -477,10 +494,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “dollar” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-019.png"
     },
     {
       "id": "katakana-core-1019-ドイツ",
@@ -502,10 +520,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Germany (from Deutsch)” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-020.png"
     },
     {
       "id": "katakana-core-1022-アップ",
@@ -527,10 +546,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “up” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-021.png"
     },
     {
       "id": "katakana-core-1036-イメージ",
@@ -552,10 +572,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “image” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-022.png"
     },
     {
       "id": "katakana-core-1073-スポーツ",
@@ -577,10 +598,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “sport” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-023.png"
     },
     {
       "id": "katakana-core-1082-パソコン",
@@ -602,10 +624,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “personal computer” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-024.png"
     },
     {
       "id": "katakana-core-1097-モデル",
@@ -627,10 +650,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “model” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-025.png"
     },
     {
       "id": "katakana-core-1107-レベル",
@@ -652,10 +676,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “level” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-026.png"
     },
     {
       "id": "katakana-core-1132-カード",
@@ -677,10 +702,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “card” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-027.png"
     },
     {
       "id": "katakana-core-1137-チーム",
@@ -702,10 +728,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “team” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-028.png"
     },
     {
       "id": "katakana-core-1144-バス",
@@ -727,10 +754,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “bus” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-029.png"
     },
     {
       "id": "katakana-core-1146-アジア",
@@ -752,10 +780,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Asia” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-030.png"
     },
     {
       "id": "katakana-core-1175-ソフト",
@@ -777,10 +806,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “soft” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-031.png"
     },
     {
       "id": "katakana-core-1184-イギリス",
@@ -802,10 +832,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “England” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-032.png"
     },
     {
       "id": "katakana-core-1190-ファイル",
@@ -827,10 +858,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “file” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-033.png"
     },
     {
       "id": "katakana-core-1212-キロ",
@@ -852,10 +884,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “kilo” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-034.png"
     },
     {
       "id": "katakana-core-1220-ケース",
@@ -877,10 +910,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “case” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-035.png"
     },
     {
       "id": "katakana-core-1239-ドア",
@@ -902,10 +936,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “door” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-036.png"
     },
     {
       "id": "katakana-core-1242-サイト",
@@ -927,10 +962,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “site” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-037.png"
     },
     {
       "id": "katakana-core-1261-チェック",
@@ -952,10 +988,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “check” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-038.png"
     },
     {
       "id": "katakana-core-1290-ファックス",
@@ -977,10 +1014,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “fax” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-039.png"
     },
     {
       "id": "katakana-core-1314-ワン",
@@ -1002,10 +1040,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “one” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-040.png"
     },
     {
       "id": "katakana-core-1322-ヨーロッパ",
@@ -1027,10 +1066,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Europe” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-041.png"
     },
     {
       "id": "katakana-core-1323-ゲーム",
@@ -1052,10 +1092,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “game” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-042.png"
     },
     {
       "id": "katakana-core-1329-デザイン",
@@ -1077,10 +1118,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “design” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-043.png"
     },
     {
       "id": "katakana-core-1344-ボール",
@@ -1102,10 +1144,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “ball” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-044.png"
     },
     {
       "id": "katakana-core-1370-クラブ",
@@ -1127,10 +1170,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “club” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-045.png"
     },
     {
       "id": "katakana-core-1409-メーカー",
@@ -1152,10 +1196,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “maker (manufacturer)” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-046.png"
     },
     {
       "id": "katakana-core-1427-ファン",
@@ -1177,10 +1222,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “fan” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-047.png"
     },
     {
       "id": "katakana-core-1451-インターネット",
@@ -1202,10 +1248,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “internet” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-048.png"
     },
     {
       "id": "katakana-core-1480-ネット",
@@ -1227,10 +1274,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “net” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-049.png"
     },
     {
       "id": "katakana-core-1483-ガス",
@@ -1252,10 +1300,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “gas” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-050.png"
     },
     {
       "id": "katakana-core-1536-ライン",
@@ -1277,10 +1326,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “line” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-051.png"
     },
     {
       "id": "katakana-core-1540-コース",
@@ -1302,10 +1352,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “course” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-052.png"
     },
     {
       "id": "katakana-core-1559-タバコ",
@@ -1327,10 +1378,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “tabaco” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-053.png"
     },
     {
       "id": "katakana-core-1567-カメラ",
@@ -1352,10 +1404,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “camera” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-054.png"
     },
     {
       "id": "katakana-core-1574-テーマ",
@@ -1377,10 +1430,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “theme” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-055.png"
     },
     {
       "id": "katakana-core-1585-テーブル",
@@ -1402,10 +1456,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “table” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-056.png"
     },
     {
       "id": "katakana-core-1587-ベッド",
@@ -1427,10 +1482,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “bed” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-057.png"
     },
     {
       "id": "katakana-core-1598-プロ",
@@ -1452,10 +1508,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “pro” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-058.png"
     },
     {
       "id": "katakana-core-1607-トップ",
@@ -1477,10 +1534,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “top” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-059.png"
     },
     {
       "id": "katakana-core-1618-イン",
@@ -1502,10 +1560,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “in” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-060.png"
     },
     {
       "id": "katakana-core-1625-ボタン",
@@ -1527,10 +1586,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “button” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-061.png"
     },
     {
       "id": "katakana-core-1629-コンピューター",
@@ -1552,10 +1612,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “computer” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-062.png"
     },
     {
       "id": "katakana-core-1694-ザ",
@@ -1577,10 +1638,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “the” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-063.png"
     },
     {
       "id": "katakana-core-1715-バランス",
@@ -1602,10 +1664,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “balance” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-064.png"
     },
     {
       "id": "katakana-core-1756-ママ",
@@ -1627,10 +1690,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “mama” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-065.png"
     },
     {
       "id": "katakana-core-1774-タイム",
@@ -1652,10 +1716,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “time” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-066.png"
     },
     {
       "id": "katakana-core-1780-クラス",
@@ -1677,10 +1742,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “class” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-067.png"
     },
     {
       "id": "katakana-core-1793-ネットワーク",
@@ -1702,10 +1768,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “network” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-068.png"
     },
     {
       "id": "katakana-core-1795-メンバー",
@@ -1727,10 +1794,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “member” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-069.png"
     },
     {
       "id": "katakana-core-1803-ビル",
@@ -1752,10 +1820,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “building” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-070.png"
     },
     {
       "id": "katakana-core-1804-プログラム",
@@ -1777,10 +1846,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “program” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-071.png"
     },
     {
       "id": "katakana-core-1805-メニュー",
@@ -1802,10 +1872,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “menu” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-072.png"
     },
     {
       "id": "katakana-core-1817-ガラス",
@@ -1827,10 +1898,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “glas” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-073.png"
     },
     {
       "id": "katakana-core-1822-セット",
@@ -1852,10 +1924,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “set” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-074.png"
     },
     {
       "id": "katakana-core-1836-ロシア",
@@ -1877,10 +1950,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Russia” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-075.png"
     },
     {
       "id": "katakana-core-1860-スタート",
@@ -1902,10 +1976,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “start” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-076.png"
     },
     {
       "id": "katakana-core-1868-ニュース",
@@ -1927,10 +2002,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “news” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-077.png"
     },
     {
       "id": "katakana-core-1870-キー",
@@ -1952,10 +2028,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “key” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-078.png"
     },
     {
       "id": "katakana-core-1873-マン",
@@ -1977,10 +2054,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “man” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-079.png"
     },
     {
       "id": "katakana-core-1899-エンジン",
@@ -2002,10 +2080,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “engine” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-080.png"
     },
     {
       "id": "katakana-core-1921-スタイル",
@@ -2027,10 +2106,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “style” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-081.png"
     },
     {
       "id": "katakana-core-1922-ベース",
@@ -2052,10 +2132,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “base” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-082.png"
     },
     {
       "id": "katakana-core-1934-コーヒー",
@@ -2077,10 +2158,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “coffee” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-083.png"
     },
     {
       "id": "katakana-core-1939-ドラマ",
@@ -2102,10 +2184,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “drama” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-084.png"
     },
     {
       "id": "katakana-core-1954-コスト",
@@ -2127,10 +2210,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “cost” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-085.png"
     },
     {
       "id": "katakana-core-2000-イタリア",
@@ -2152,10 +2236,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Italia” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-086.png"
     },
     {
       "id": "katakana-core-2003-シート",
@@ -2177,10 +2262,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “sheet” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-087.png"
     },
     {
       "id": "katakana-core-2004-オーケー",
@@ -2202,10 +2288,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “okay” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-088.png"
     },
     {
       "id": "katakana-core-2006-リスク",
@@ -2227,10 +2314,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “risk” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-089.png"
     },
     {
       "id": "katakana-core-2027-インド",
@@ -2252,10 +2340,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “India” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-090.png"
     },
     {
       "id": "katakana-core-2028-キリスト",
@@ -2277,10 +2366,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Christ” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-091.png"
     },
     {
       "id": "katakana-core-2039-ウインドー",
@@ -2302,10 +2392,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “window” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-092.png"
     },
     {
       "id": "katakana-core-2040-イベント",
@@ -2327,10 +2418,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “event” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-093.png"
     },
     {
       "id": "katakana-core-2045-ビデオ",
@@ -2352,10 +2444,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “video” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-094.png"
     },
     {
       "id": "katakana-core-2046-カラー",
@@ -2377,10 +2470,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “color” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-095.png"
     },
     {
       "id": "katakana-core-2071-メディア",
@@ -2402,10 +2496,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “media” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-096.png"
     },
     {
       "id": "katakana-core-2078-ビール",
@@ -2427,10 +2522,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “beer” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-097.png"
     },
     {
       "id": "katakana-core-2105-オン",
@@ -2452,10 +2548,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “on” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-098.png"
     },
     {
       "id": "katakana-core-2108-スーパー",
@@ -2477,10 +2574,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “super” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-099.png"
     },
     {
       "id": "katakana-core-2120-パリ",
@@ -2502,10 +2600,11 @@
         "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
       },
       "visualBrief": {
-        "status": "briefed",
+        "status": "approved",
         "pack": "katakana-core-01",
         "sceneGoal": "A cinematic Kaishi memory moment that makes “Paris” unmistakable without text."
-      }
+      },
+      "picture": "mnemonics/katakana-core-100.png"
     }
   ]
 }
