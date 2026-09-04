@@ -148,6 +148,11 @@
   }
 
   function lessonStats(chapter) {
+    try {
+      const snapshot = window.KaishiLessonMastery?.snapshot?.(chapter);
+      if (snapshot?.words) return {...snapshot, percent: snapshot.strength};
+    } catch (_) {}
+
     const words = lessonWords(chapter);
     const scores = words.map(wordScore);
     const introduced = scores.filter(score => score > 0).length;
@@ -159,7 +164,11 @@
       words,
       introduced,
       percent,
-      complete: Boolean(words.length && introduced === words.length)
+      complete: Boolean(words.length && introduced === words.length),
+      strength: percent,
+      stage: introduced === words.length ? 'learned' : 'not-started',
+      label: introduced === words.length ? 'Learned' : 'Not started',
+      recommendation: introduced === words.length ? 'Focused practice builds confidence through recall.' : 'Meet every word in this lesson to open the path ahead.'
     };
   }
 
@@ -225,7 +234,7 @@
         icon: topic?.icon || '👋',
         title: lessonTitle(chapter, stats.words),
         detail: done
-          ? `Completed · ${stats.percent || 100}%`
+          ? `${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`
           : isCurrent
             ? `Current lesson${topic?.title ? ` · ${topic.title}` : ''}`
             : `Coming up${topic?.title ? ` · ${topic.title}` : ''}`,
@@ -671,6 +680,10 @@
     markJourneyReturn();
 
     try {
+      if (window.KaishiLessonMastery?.startPractice?.(chapter)) return true;
+    } catch (_) {}
+
+    try {
       if (typeof makeTargetedMasterySession === 'function') {
         // Some versions of the learning engine reset activityReturnScreen while
         // constructing a session, so set it both before and after the call.
@@ -881,17 +894,22 @@
 
   function resultsHTML(chapter) {
     const stats = lessonStats(chapter);
-    const percent = stats.percent || (stats.complete ? 100 : 0);
+    const percent = stats.strength ?? stats.percent ?? 0;
+    const stages = [['learned','Learned'],['strengthening','Strengthening'],['confident','Confident'],['mastered','Mastered']];
+    const active = Math.max(0, stages.findIndex(([id]) => id === stats.stage));
+    const path = `<section class="kq-lesson-path"><div><span>Sensei’s lesson path</span><strong>${esc(stats.label || 'Learned')}</strong></div><div class="kq-lesson-strength" role="progressbar" aria-label="Current recall strength ${percent}%" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><i style="width:${percent}%"></i></div><ol>${stages.map(([id,label],index) => `<li class="${index <= active ? 'reached' : ''} ${index === active ? 'current' : ''}"><b>${index < active ? '✓' : index + 1}</b>${esc(label)}</li>`).join('')}</ol><p>${esc(stats.recommendation || 'Focused practice builds confidence through recall.')}</p></section>`;
+    const details = stats.wordDetails || stats.words.map(word => ({word, strength: wordScore(word), next: {label:'Focused practice'}}));
 
     return `
       <div class="kq-result-summary">
         <span>${stats.words.length} word${stats.words.length === 1 ? '' : 's'}</span>
-        <span>${percent}% strength</span>
+        <span>Current strength: ${percent}%</span>
       </div>
-      ${stats.words.map(word => `
+      ${path}
+      ${details.map(detail => `
         <div class="kq-word-result">
-          <b lang="ja">${esc(word.word)}</b>
-          <small>${esc(word.meaning || '')} · ${wordScore(word)}%</small>
+          <b lang="ja">${esc(detail.word.word)}</b>
+          <small>${esc(detail.word.meaning || '')} · ${detail.strength}% · Next: ${esc(detail.next?.label || 'Focused practice')}</small>
         </div>
       `).join('') || '<p class="muted">No word-level results are available yet.</p>'}
       ${missionDetail(missionForChapter(chapter))}
@@ -911,11 +929,11 @@
     const current = currentChapter();
     const remaining = Math.max(0, stats.words.length - stats.introduced);
     const state = chapter < current
-      ? 'This lesson is complete; its words will return through spaced review.'
+      ? `${stats.label || 'Learned'}: the next lesson is open, while these words keep growing through practice and spaced review.`
       : chapter === current
-        ? remaining ? `${remaining} word${remaining === 1 ? '' : 's'} still need to be introduced before this lesson is complete.` : 'The words are introduced; one more focused review will strengthen them.'
+        ? remaining ? `${remaining} word${remaining === 1 ? '' : 's'} still need to be introduced before the next lesson opens.` : `${stats.label || 'Learned'}: the next lesson is available, and focused practice will build confidence.`
         : 'Complete the earlier lesson first so this vocabulary has the context it needs.';
-    return `<strong>Sensei’s route note</strong><p>${esc(state)}</p><p><b>Current progress:</b> ${stats.introduced}/${stats.words.length} words introduced.</p>${missionDetail(missionForChapter(chapter))}`;
+    return `<strong>Sensei’s route note</strong><p>${esc(state)}</p><p><b>Words met:</b> ${stats.introduced}/${stats.words.length} · <b>Current strength:</b> ${stats.strength ?? stats.percent ?? 0}%.</p>${missionDetail(missionForChapter(chapter))}`;
   }
 
   function previewHTML(chapter) {

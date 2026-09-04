@@ -6,6 +6,36 @@ test('lesson checkpoints save without presenting a modal', async ({ page }) => {
   await expect(page.locator('#missionCheckpointDialog')).toHaveCount(0);
 });
 
+test('focused lesson practice shows the learner-facing mastery path', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Explore first' }).click();
+  await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
+  await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+
+  for (let index = 0; index < 3; index++) {
+    await page.locator('#firstEncounterContinue').click();
+    await page.locator('#continueBtn').click();
+    await page.locator('#pronunciationSkip').click();
+  }
+  for (let index = 0; index < 3; index++) {
+    await page.locator('#revealBtn').click();
+    await page.getByRole('button', { name: 'Easy' }).click();
+  }
+
+  await expect.poll(() => page.evaluate(() => {
+    const api = (window as typeof window & { KaishiLessonMastery?: { snapshot: (chapter: number) => { complete: boolean } } }).KaishiLessonMastery;
+    return api?.snapshot(0).complete;
+  })).toBe(true);
+  await page.evaluate(() => (window as typeof window & { KaishiLessonMastery: { startPractice: (chapter: number) => boolean } }).KaishiLessonMastery.startPractice(0));
+
+  await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Focused practice');
+  await page.locator('#journeySessionPreviewStart').click();
+  await expect(page.locator('#sessionCounter')).toContainText('Card 1/6');
+  await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s lesson path');
+  await expect(page.locator('.lesson-mastery-path')).toContainText('Current strength:');
+  await expect(page.locator('.lesson-mastery-path details')).toContainText('Meeting every word opens the next lesson.');
+});
+
 test('test learner can launch an immersive activity after app initialization', async ({ page }) => {
   const runtimeErrors: string[] = [];
   page.on('pageerror', (error) => runtimeErrors.push(error.message));
