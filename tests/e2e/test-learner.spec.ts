@@ -31,8 +31,9 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Focused practice');
   await page.locator('#journeySessionPreviewStart').click();
   await expect(page.locator('#sessionCounter')).toContainText('Card 1/6');
-  await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s lesson path');
-  await expect(page.locator('.lesson-mastery-path')).toContainText('Current strength:');
+  await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s Path:');
+  await expect(page.locator('.lesson-mastery-path')).toContainText('%');
+  await expect(page.locator('.lesson-mastery-path summary')).toHaveText('How this works');
   await expect(page.locator('.lesson-mastery-path details')).toContainText('Meeting every word opens the next lesson.');
 });
 
