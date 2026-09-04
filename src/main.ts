@@ -3,3 +3,4 @@ export { createVersionedRepository } from './platform/storage';
 export { CONTENT_DATA_FILES, OFFLINE_CORE_FILES } from './platform/content-manifest';
 export { addRestorePoint, findRestorePoint, RESTORE_POINT_LIMIT } from './domains/progress/restore-points';
 export { offlinePackStatus } from './domains/offline/offline-pack';
+export { createEchoRun, reinforcedProductionStrength, retryWords } from './domains/kotoba-echo/run';
