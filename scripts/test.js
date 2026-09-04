@@ -28,6 +28,8 @@ const jsonFiles = [
   'version.json',
   'manifest.webmanifest',
   'data/vocabulary.json',
+  'data/katakana-core-10k.json',
+  'data/vocabulary-orthography.json',
   'data/kana.json',
   'data/manga-stories.json',
   'data/conversations.json',

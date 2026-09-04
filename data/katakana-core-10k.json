@@ -1,0 +1,2511 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "name": "Katakana Kore 10k - Frequency sorted",
+    "sharedDeckId": "1723626457",
+    "importedTier": 100
+  },
+  "records": [
+    {
+      "id": "katakana-core-142-パーセント",
+      "word": "パーセント",
+      "reading": "パーセント",
+      "meaning": "percent",
+      "frequency": 142,
+      "order": 1,
+      "topicId": "katakana-essentials",
+      "picture": "mnemonics/katakana-core-01-percent.png",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “percent”. Notice the katakana shape パーセント, then say パーセント in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "パーセント",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1100610",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "approved",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “percent” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-305-アメリカ",
+      "word": "アメリカ",
+      "reading": "アメリカ",
+      "meaning": "America",
+      "frequency": 305,
+      "order": 2,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “America”. Notice the katakana shape アメリカ, then say アメリカ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "アメリカ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1149830",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “America” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-351-ページ",
+      "word": "ページ",
+      "reading": "ページ",
+      "meaning": "page",
+      "frequency": 351,
+      "order": 3,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “page”. Notice the katakana shape ページ, then say ページ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ページ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1120410",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “page” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-420-センター",
+      "word": "センター",
+      "reading": "センター",
+      "meaning": "center",
+      "frequency": 420,
+      "order": 4,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “center”. Notice the katakana shape センター, then say センター in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "センター",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1075040",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “center” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-549-サービス",
+      "word": "サービス",
+      "reading": "サービス",
+      "meaning": "service",
+      "frequency": 549,
+      "order": 5,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “service”. Notice the katakana shape サービス, then say サービス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "サービス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1055000",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “service” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-557-システム",
+      "word": "システム",
+      "reading": "システム",
+      "meaning": "system",
+      "frequency": 557,
+      "order": 6,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “system”. Notice the katakana shape システム, then say システム in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "システム",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1060300",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “system” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-574-メートル",
+      "word": "メートル",
+      "reading": "メートル",
+      "meaning": "metre",
+      "frequency": 574,
+      "order": 7,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “metre”. Notice the katakana shape メートル, then say メートル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "メートル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1132570",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “metre” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-592-メール",
+      "word": "メール",
+      "reading": "メール",
+      "meaning": "mail",
+      "frequency": 592,
+      "order": 8,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “mail”. Notice the katakana shape メール, then say メール in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "メール",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1132620",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “mail” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-709-データ",
+      "word": "データ",
+      "reading": "データ",
+      "meaning": "data",
+      "frequency": 709,
+      "order": 9,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “data”. Notice the katakana shape データ, then say データ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "データ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1081190",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “data” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-868-フランス",
+      "word": "フランス",
+      "reading": "フランス",
+      "meaning": "France",
+      "frequency": 868,
+      "order": 10,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “France”. Notice the katakana shape フランス, then say フランス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "フランス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1652680",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “France” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-875-ポイント",
+      "word": "ポイント",
+      "reading": "ポイント",
+      "meaning": "point",
+      "frequency": 875,
+      "order": 11,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “point”. Notice the katakana shape ポイント, then say ポイント in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ポイント",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1124860",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “point” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-888-ホーム",
+      "word": "ホーム",
+      "reading": "ホーム",
+      "meaning": "home",
+      "frequency": 888,
+      "order": 12,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “home”. Notice the katakana shape ホーム, then say ホーム in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ホーム",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1121740",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “home” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-907-ホテル",
+      "word": "ホテル",
+      "reading": "ホテル",
+      "meaning": "hotel",
+      "frequency": 907,
+      "order": 13,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “hotel”. Notice the katakana shape ホテル, then say ホテル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ホテル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1122650",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “hotel” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-935-ブログ",
+      "word": "ブログ",
+      "reading": "ブログ",
+      "meaning": "blog",
+      "frequency": 935,
+      "order": 14,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “blog”. Notice the katakana shape ブログ, then say ブログ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ブログ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "2037270",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “blog” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-940-クリック",
+      "word": "クリック",
+      "reading": "クリック",
+      "meaning": "click",
+      "frequency": 940,
+      "order": 15,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “click”. Notice the katakana shape クリック, then say クリック in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "クリック",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1044910",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “click” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-949-グループ",
+      "word": "グループ",
+      "reading": "グループ",
+      "meaning": "group",
+      "frequency": 949,
+      "order": 16,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “group”. Notice the katakana shape グループ, then say グループ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "グループ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1047300",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “group” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-955-エネルギー",
+      "word": "エネルギー",
+      "reading": "エネルギー",
+      "meaning": "energy",
+      "frequency": 955,
+      "order": 17,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “energy”. Notice the katakana shape エネルギー, then say エネルギー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "エネルギー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1029430",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “energy” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-992-タイプ",
+      "word": "タイプ",
+      "reading": "タイプ",
+      "meaning": "type",
+      "frequency": 992,
+      "order": 18,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “type”. Notice the katakana shape タイプ, then say タイプ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "タイプ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1075940",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “type” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1008-ドル",
+      "word": "ドル",
+      "reading": "ドル",
+      "meaning": "dollar",
+      "frequency": 1008,
+      "order": 19,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “dollar”. Notice the katakana shape ドル, then say ドル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ドル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1089090",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “dollar” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1019-ドイツ",
+      "word": "ドイツ",
+      "reading": "ドイツ",
+      "meaning": "Germany (from Deutsch)",
+      "frequency": 1019,
+      "order": 20,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Germany (from Deutsch)”. Notice the katakana shape ドイツ, then say ドイツ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ドイツ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1599200",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Germany (from Deutsch)” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1022-アップ",
+      "word": "アップ",
+      "reading": "アップ",
+      "meaning": "up",
+      "frequency": 1022,
+      "order": 21,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “up”. Notice the katakana shape アップ, then say アップ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "アップ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1016610",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “up” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1036-イメージ",
+      "word": "イメージ",
+      "reading": "イメージ",
+      "meaning": "image",
+      "frequency": 1036,
+      "order": 22,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “image”. Notice the katakana shape イメージ, then say イメージ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "イメージ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1021750",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “image” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1073-スポーツ",
+      "word": "スポーツ",
+      "reading": "スポーツ",
+      "meaning": "sport",
+      "frequency": 1073,
+      "order": 23,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “sport”. Notice the katakana shape スポーツ, then say スポーツ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "スポーツ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1073210",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “sport” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1082-パソコン",
+      "word": "パソコン",
+      "reading": "パソコン",
+      "meaning": "personal computer",
+      "frequency": 1082,
+      "order": 24,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “personal computer”. Notice the katakana shape パソコン, then say パソコン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "パソコン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1101570",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “personal computer” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1097-モデル",
+      "word": "モデル",
+      "reading": "モデル",
+      "meaning": "model",
+      "frequency": 1097,
+      "order": 25,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “model”. Notice the katakana shape モデル, then say モデル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "モデル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1135270",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “model” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1107-レベル",
+      "word": "レベル",
+      "reading": "レベル",
+      "meaning": "level",
+      "frequency": 1107,
+      "order": 26,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “level”. Notice the katakana shape レベル, then say レベル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "レベル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1145910",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “level” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1132-カード",
+      "word": "カード",
+      "reading": "カード",
+      "meaning": "card",
+      "frequency": 1132,
+      "order": 27,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “card”. Notice the katakana shape カード, then say カード in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "カード",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1036400",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “card” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1137-チーム",
+      "word": "チーム",
+      "reading": "チーム",
+      "meaning": "team",
+      "frequency": 1137,
+      "order": 28,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “team”. Notice the katakana shape チーム, then say チーム in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "チーム",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1077360",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “team” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1144-バス",
+      "word": "バス",
+      "reading": "バス",
+      "meaning": "bus",
+      "frequency": 1144,
+      "order": 29,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “bus”. Notice the katakana shape バス, then say バス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "バス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1098390",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “bus” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1146-アジア",
+      "word": "アジア",
+      "reading": "アジア",
+      "meaning": "Asia",
+      "frequency": 1146,
+      "order": 30,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Asia”. Notice the katakana shape アジア, then say アジア in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "アジア",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1015840",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Asia” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1175-ソフト",
+      "word": "ソフト",
+      "reading": "ソフト",
+      "meaning": "soft",
+      "frequency": 1175,
+      "order": 31,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “soft”. Notice the katakana shape ソフト, then say ソフト in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ソフト",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1075500",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “soft” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1184-イギリス",
+      "word": "イギリス",
+      "reading": "イギリス",
+      "meaning": "England",
+      "frequency": 1184,
+      "order": 32,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “England”. Notice the katakana shape イギリス, then say イギリス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "イギリス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1021160",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “England” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1190-ファイル",
+      "word": "ファイル",
+      "reading": "ファイル",
+      "meaning": "file",
+      "frequency": 1190,
+      "order": 33,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “file”. Notice the katakana shape ファイル, then say ファイル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ファイル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1107800",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “file” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1212-キロ",
+      "word": "キロ",
+      "reading": "キロ",
+      "meaning": "kilo",
+      "frequency": 1212,
+      "order": 34,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “kilo”. Notice the katakana shape キロ, then say キロ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "キロ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1042610",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “kilo” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1220-ケース",
+      "word": "ケース",
+      "reading": "ケース",
+      "meaning": "case",
+      "frequency": 1220,
+      "order": 35,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “case”. Notice the katakana shape ケース, then say ケース in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ケース",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1047880",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “case” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1239-ドア",
+      "word": "ドア",
+      "reading": "ドア",
+      "meaning": "door",
+      "frequency": 1239,
+      "order": 36,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “door”. Notice the katakana shape ドア, then say ドア in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ドア",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1087820",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “door” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1242-サイト",
+      "word": "サイト",
+      "reading": "サイト",
+      "meaning": "site",
+      "frequency": 1242,
+      "order": 37,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “site”. Notice the katakana shape サイト, then say サイト in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "サイト",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1055810",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “site” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1261-チェック",
+      "word": "チェック",
+      "reading": "チェック",
+      "meaning": "check",
+      "frequency": 1261,
+      "order": 38,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “check”. Notice the katakana shape チェック, then say チェック in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "チェック",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1077550",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “check” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1290-ファックス",
+      "word": "ファックス",
+      "reading": "ファックス",
+      "meaning": "fax",
+      "frequency": 1290,
+      "order": 39,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “fax”. Notice the katakana shape ファックス, then say ファックス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ファックス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1108180",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “fax” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1314-ワン",
+      "word": "ワン",
+      "reading": "ワン",
+      "meaning": "one",
+      "frequency": 1314,
+      "order": 40,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “one”. Notice the katakana shape ワン, then say ワン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ワン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1149130",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “one” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1322-ヨーロッパ",
+      "word": "ヨーロッパ",
+      "reading": "ヨーロッパ",
+      "meaning": "Europe",
+      "frequency": 1322,
+      "order": 41,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Europe”. Notice the katakana shape ヨーロッパ, then say ヨーロッパ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ヨーロッパ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1137570",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Europe” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1323-ゲーム",
+      "word": "ゲーム",
+      "reading": "ゲーム",
+      "meaning": "game",
+      "frequency": 1323,
+      "order": 42,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “game”. Notice the katakana shape ゲーム, then say ゲーム in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ゲーム",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1048400",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “game” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1329-デザイン",
+      "word": "デザイン",
+      "reading": "デザイン",
+      "meaning": "design",
+      "frequency": 1329,
+      "order": 43,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “design”. Notice the katakana shape デザイン, then say デザイン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "デザイン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1082900",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “design” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1344-ボール",
+      "word": "ボール",
+      "reading": "ボール",
+      "meaning": "ball",
+      "frequency": 1344,
+      "order": 44,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “ball”. Notice the katakana shape ボール, then say ボール in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ボール",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1123550",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “ball” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1370-クラブ",
+      "word": "クラブ",
+      "reading": "クラブ",
+      "meaning": "club",
+      "frequency": 1370,
+      "order": 45,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “club”. Notice the katakana shape クラブ, then say クラブ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "クラブ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1243910",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “club” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1409-メーカー",
+      "word": "メーカー",
+      "reading": "メーカー",
+      "meaning": "maker (manufacturer)",
+      "frequency": 1409,
+      "order": 46,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “maker (manufacturer)”. Notice the katakana shape メーカー, then say メーカー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "メーカー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1132420",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “maker (manufacturer)” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1427-ファン",
+      "word": "ファン",
+      "reading": "ファン",
+      "meaning": "fan",
+      "frequency": 1427,
+      "order": 47,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “fan”. Notice the katakana shape ファン, then say ファン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ファン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1108540",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “fan” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1451-インターネット",
+      "word": "インターネット",
+      "reading": "インターネット",
+      "meaning": "internet",
+      "frequency": 1451,
+      "order": 48,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “internet”. Notice the katakana shape インターネット, then say インターネット in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "インターネット",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1022880",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “internet” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1480-ネット",
+      "word": "ネット",
+      "reading": "ネット",
+      "meaning": "net",
+      "frequency": 1480,
+      "order": 49,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “net”. Notice the katakana shape ネット, then say ネット in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ネット",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1093020",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “net” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1483-ガス",
+      "word": "ガス",
+      "reading": "ガス",
+      "meaning": "gas",
+      "frequency": 1483,
+      "order": 50,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “gas”. Notice the katakana shape ガス, then say ガス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ガス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1040060",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “gas” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1536-ライン",
+      "word": "ライン",
+      "reading": "ライン",
+      "meaning": "line",
+      "frequency": 1536,
+      "order": 51,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “line”. Notice the katakana shape ライン, then say ライン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ライン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1138390",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “line” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1540-コース",
+      "word": "コース",
+      "reading": "コース",
+      "meaning": "course",
+      "frequency": 1540,
+      "order": 52,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “course”. Notice the katakana shape コース, then say コース in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "コース",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1048830",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “course” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1559-タバコ",
+      "word": "タバコ",
+      "reading": "タバコ",
+      "meaning": "tabaco",
+      "frequency": 1559,
+      "order": 53,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “tabaco”. Notice the katakana shape タバコ, then say タバコ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "タバコ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1597150",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “tabaco” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1567-カメラ",
+      "word": "カメラ",
+      "reading": "カメラ",
+      "meaning": "camera",
+      "frequency": 1567,
+      "order": 54,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “camera”. Notice the katakana shape カメラ, then say カメラ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "カメラ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1038350",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “camera” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1574-テーマ",
+      "word": "テーマ",
+      "reading": "テーマ",
+      "meaning": "theme",
+      "frequency": 1574,
+      "order": 55,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “theme”. Notice the katakana shape テーマ, then say テーマ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "テーマ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1078830",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “theme” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1585-テーブル",
+      "word": "テーブル",
+      "reading": "テーブル",
+      "meaning": "table",
+      "frequency": 1585,
+      "order": 56,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “table”. Notice the katakana shape テーブル, then say テーブル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "テーブル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1078630",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “table” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1587-ベッド",
+      "word": "ベッド",
+      "reading": "ベッド",
+      "meaning": "bed",
+      "frequency": 1587,
+      "order": 57,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “bed”. Notice the katakana shape ベッド, then say ベッド in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ベッド",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1119650",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “bed” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1598-プロ",
+      "word": "プロ",
+      "reading": "プロ",
+      "meaning": "pro",
+      "frequency": 1598,
+      "order": 58,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “pro”. Notice the katakana shape プロ, then say プロ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "プロ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1117030",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “pro” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1607-トップ",
+      "word": "トップ",
+      "reading": "トップ",
+      "meaning": "top",
+      "frequency": 1607,
+      "order": 59,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “top”. Notice the katakana shape トップ, then say トップ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "トップ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1085030",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “top” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1618-イン",
+      "word": "イン",
+      "reading": "イン",
+      "meaning": "in",
+      "frequency": 1618,
+      "order": 60,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “in”. Notice the katakana shape イン, then say イン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "イン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1022130",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “in” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1625-ボタン",
+      "word": "ボタン",
+      "reading": "ボタン",
+      "meaning": "button",
+      "frequency": 1625,
+      "order": 61,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “button”. Notice the katakana shape ボタン, then say ボタン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ボタン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1123880",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “button” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1629-コンピューター",
+      "word": "コンピューター",
+      "reading": "コンピューター",
+      "meaning": "computer",
+      "frequency": 1629,
+      "order": 62,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “computer”. Notice the katakana shape コンピューター, then say コンピューター in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "コンピューター",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1053350",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “computer” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1694-ザ",
+      "word": "ザ",
+      "reading": "ザ",
+      "meaning": "the",
+      "frequency": 1694,
+      "order": 63,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “the”. Notice the katakana shape ザ, then say ザ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ザ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1058900",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “the” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1715-バランス",
+      "word": "バランス",
+      "reading": "バランス",
+      "meaning": "balance",
+      "frequency": 1715,
+      "order": 64,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “balance”. Notice the katakana shape バランス, then say バランス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "バランス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1099690",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “balance” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1756-ママ",
+      "word": "ママ",
+      "reading": "ママ",
+      "meaning": "mama",
+      "frequency": 1756,
+      "order": 65,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “mama”. Notice the katakana shape ママ, then say ママ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ママ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1129240",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “mama” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1774-タイム",
+      "word": "タイム",
+      "reading": "タイム",
+      "meaning": "time",
+      "frequency": 1774,
+      "order": 66,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “time”. Notice the katakana shape タイム, then say タイム in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "タイム",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1076010",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “time” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1780-クラス",
+      "word": "クラス",
+      "reading": "クラス",
+      "meaning": "class",
+      "frequency": 1780,
+      "order": 67,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “class”. Notice the katakana shape クラス, then say クラス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "クラス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1044070",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “class” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1793-ネットワーク",
+      "word": "ネットワーク",
+      "reading": "ネットワーク",
+      "meaning": "network",
+      "frequency": 1793,
+      "order": 68,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “network”. Notice the katakana shape ネットワーク, then say ネットワーク in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ネットワーク",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1093120",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “network” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1795-メンバー",
+      "word": "メンバー",
+      "reading": "メンバー",
+      "meaning": "member",
+      "frequency": 1795,
+      "order": 69,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “member”. Notice the katakana shape メンバー, then say メンバー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "メンバー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1134370",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “member” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1803-ビル",
+      "word": "ビル",
+      "reading": "ビル",
+      "meaning": "building",
+      "frequency": 1803,
+      "order": 70,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “building”. Notice the katakana shape ビル, then say ビル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ビル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1106010",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “building” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1804-プログラム",
+      "word": "プログラム",
+      "reading": "プログラム",
+      "meaning": "program",
+      "frequency": 1804,
+      "order": 71,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “program”. Notice the katakana shape プログラム, then say プログラム in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "プログラム",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1117080",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “program” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1805-メニュー",
+      "word": "メニュー",
+      "reading": "メニュー",
+      "meaning": "menu",
+      "frequency": 1805,
+      "order": 72,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “menu”. Notice the katakana shape メニュー, then say メニュー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "メニュー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1133790",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “menu” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1817-ガラス",
+      "word": "ガラス",
+      "reading": "ガラス",
+      "meaning": "glas",
+      "frequency": 1817,
+      "order": 73,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “glas”. Notice the katakana shape ガラス, then say ガラス in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ガラス",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1040380",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “glas” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1822-セット",
+      "word": "セット",
+      "reading": "セット",
+      "meaning": "set",
+      "frequency": 1822,
+      "order": 74,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “set”. Notice the katakana shape セット, then say セット in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "セット",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1074600",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “set” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1836-ロシア",
+      "word": "ロシア",
+      "reading": "ロシア",
+      "meaning": "Russia",
+      "frequency": 1836,
+      "order": 75,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Russia”. Notice the katakana shape ロシア, then say ロシア in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ロシア",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1775880",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Russia” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1860-スタート",
+      "word": "スタート",
+      "reading": "スタート",
+      "meaning": "start",
+      "frequency": 1860,
+      "order": 76,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “start”. Notice the katakana shape スタート, then say スタート in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "スタート",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1069370",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “start” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1868-ニュース",
+      "word": "ニュース",
+      "reading": "ニュース",
+      "meaning": "news",
+      "frequency": 1868,
+      "order": 77,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “news”. Notice the katakana shape ニュース, then say ニュース in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ニュース",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1091500",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “news” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1870-キー",
+      "word": "キー",
+      "reading": "キー",
+      "meaning": "key",
+      "frequency": 1870,
+      "order": 78,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “key”. Notice the katakana shape キー, then say キー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "キー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1040680",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “key” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1873-マン",
+      "word": "マン",
+      "reading": "マン",
+      "meaning": "man",
+      "frequency": 1873,
+      "order": 79,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “man”. Notice the katakana shape マン, then say マン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "マン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1129970",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “man” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1899-エンジン",
+      "word": "エンジン",
+      "reading": "エンジン",
+      "meaning": "engine",
+      "frequency": 1899,
+      "order": 80,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “engine”. Notice the katakana shape エンジン, then say エンジン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "エンジン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1030950",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “engine” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1921-スタイル",
+      "word": "スタイル",
+      "reading": "スタイル",
+      "meaning": "style",
+      "frequency": 1921,
+      "order": 81,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “style”. Notice the katakana shape スタイル, then say スタイル in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "スタイル",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1069520",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “style” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1922-ベース",
+      "word": "ベース",
+      "reading": "ベース",
+      "meaning": "base",
+      "frequency": 1922,
+      "order": 82,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “base”. Notice the katakana shape ベース, then say ベース in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ベース",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1119210",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “base” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1934-コーヒー",
+      "word": "コーヒー",
+      "reading": "コーヒー",
+      "meaning": "coffee",
+      "frequency": 1934,
+      "order": 83,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “coffee”. Notice the katakana shape コーヒー, then say コーヒー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "コーヒー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1049180",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “coffee” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1939-ドラマ",
+      "word": "ドラマ",
+      "reading": "ドラマ",
+      "meaning": "drama",
+      "frequency": 1939,
+      "order": 84,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “drama”. Notice the katakana shape ドラマ, then say ドラマ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ドラマ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1088830",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “drama” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-1954-コスト",
+      "word": "コスト",
+      "reading": "コスト",
+      "meaning": "cost",
+      "frequency": 1954,
+      "order": 85,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “cost”. Notice the katakana shape コスト, then say コスト in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "コスト",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1050080",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “cost” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2000-イタリア",
+      "word": "イタリア",
+      "reading": "イタリア",
+      "meaning": "Italia",
+      "frequency": 2000,
+      "order": 86,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Italia”. Notice the katakana shape イタリア, then say イタリア in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "イタリア",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1021360",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Italia” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2003-シート",
+      "word": "シート",
+      "reading": "シート",
+      "meaning": "sheet",
+      "frequency": 2003,
+      "order": 87,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “sheet”. Notice the katakana shape シート, then say シート in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "シート",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1059450",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “sheet” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2004-オーケー",
+      "word": "オーケー",
+      "reading": "オーケー",
+      "meaning": "okay",
+      "frequency": 2004,
+      "order": 88,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “okay”. Notice the katakana shape オーケー, then say オーケー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "オーケー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1031600",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “okay” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2006-リスク",
+      "word": "リスク",
+      "reading": "リスク",
+      "meaning": "risk",
+      "frequency": 2006,
+      "order": 89,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “risk”. Notice the katakana shape リスク, then say リスク in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "リスク",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1141440",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “risk” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2027-インド",
+      "word": "インド",
+      "reading": "インド",
+      "meaning": "India",
+      "frequency": 2027,
+      "order": 90,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “India”. Notice the katakana shape インド, then say インド in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "インド",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1023840",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “India” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2028-キリスト",
+      "word": "キリスト",
+      "reading": "キリスト",
+      "meaning": "Christ",
+      "frequency": 2028,
+      "order": 91,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Christ”. Notice the katakana shape キリスト, then say キリスト in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "キリスト",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1042520",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Christ” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2039-ウインドー",
+      "word": "ウインドー",
+      "reading": "ウインドー",
+      "meaning": "window",
+      "frequency": 2039,
+      "order": 92,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “window”. Notice the katakana shape ウインドー, then say ウインドー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ウインドー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1025220",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “window” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2040-イベント",
+      "word": "イベント",
+      "reading": "イベント",
+      "meaning": "event",
+      "frequency": 2040,
+      "order": 93,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “event”. Notice the katakana shape イベント, then say イベント in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "イベント",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1021680",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “event” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2045-ビデオ",
+      "word": "ビデオ",
+      "reading": "ビデオ",
+      "meaning": "video",
+      "frequency": 2045,
+      "order": 94,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “video”. Notice the katakana shape ビデオ, then say ビデオ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ビデオ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1105360",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “video” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2046-カラー",
+      "word": "カラー",
+      "reading": "カラー",
+      "meaning": "color",
+      "frequency": 2046,
+      "order": 95,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “color”. Notice the katakana shape カラー, then say カラー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "カラー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1038500",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “color” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2071-メディア",
+      "word": "メディア",
+      "reading": "メディア",
+      "meaning": "media",
+      "frequency": 2071,
+      "order": 96,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “media”. Notice the katakana shape メディア, then say メディア in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "メディア",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1133620",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “media” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2078-ビール",
+      "word": "ビール",
+      "reading": "ビール",
+      "meaning": "beer",
+      "frequency": 2078,
+      "order": 97,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “beer”. Notice the katakana shape ビール, then say ビール in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "ビール",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "2796520",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “beer” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2105-オン",
+      "word": "オン",
+      "reading": "オン",
+      "meaning": "on",
+      "frequency": 2105,
+      "order": 98,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “on”. Notice the katakana shape オン, then say オン in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "オン",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1035890",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “on” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2108-スーパー",
+      "word": "スーパー",
+      "reading": "スーパー",
+      "meaning": "super",
+      "frequency": 2108,
+      "order": 99,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “super”. Notice the katakana shape スーパー, then say スーパー in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "スーパー",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1066710",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “super” unmistakable without text."
+      }
+    },
+    {
+      "id": "katakana-core-2120-パリ",
+      "word": "パリ",
+      "reading": "パリ",
+      "meaning": "Paris",
+      "frequency": 2120,
+      "order": 100,
+      "topicId": "katakana-essentials",
+      "defaultMnemonic": "Picture a vivid real-world moment that clearly means “Paris”. Notice the katakana shape パリ, then say パリ in one smooth rhythm.",
+      "orthography": {
+        "preferredForm": "パリ",
+        "script": "katakana",
+        "alternateForms": [],
+        "source": "Katakana Kore 10k",
+        "jmdictEntryId": "1102740",
+        "confidence": "high",
+        "status": "approved",
+        "rationale": "The curated frequency deck identifies this as a commonly used katakana loanword."
+      },
+      "visualBrief": {
+        "status": "briefed",
+        "pack": "katakana-core-01",
+        "sceneGoal": "A cinematic Kaishi memory moment that makes “Paris” unmistakable without text."
+      }
+    }
+  ]
+}
