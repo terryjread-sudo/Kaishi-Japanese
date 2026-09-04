@@ -10,8 +10,6 @@
 .acknowledgement a{color:#1d4ed8;font-weight:700;overflow-wrap:anywhere}
 .memory-scene img{aspect-ratio:4/5;object-fit:contain;background:#fff}
 
-.dashboard-notebook-entry{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;margin:12px 0 4px;padding:11px 16px;background:linear-gradient(110deg,#fef3c7,#fff7ed);border:1px solid #fbbf24;color:#78350f}.dashboard-notebook-entry>span:first-child{font-size:1.3rem}.dashboard-notebook-entry>span:last-child{display:grid;text-align:left;gap:1px}.dashboard-notebook-entry strong{font-size:.92rem}.dashboard-notebook-entry small{font-size:.74rem;font-weight:650;color:#92400e}
-
 .game-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
 .game-mode-grid button{min-height:72px;font-weight:800}
 .quiz-picture{display:block;width:min(100%,390px);max-height:none;object-fit:contain;margin:0 auto 16px;border-radius:20px;background:#fff;border:2px solid #ddd6fe}

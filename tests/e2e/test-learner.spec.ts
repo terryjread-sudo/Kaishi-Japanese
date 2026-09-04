@@ -89,13 +89,17 @@ test('a learner can save a word without losing their active lesson card', async 
   await expect(counter).toHaveText(before);
 });
 
-test('the main Dashboard opens the shared notebook outside a lesson', async ({ page }) => {
+test('the Dashboard opens the shared notebook from the Journey utility bar', async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('button', { name: 'Explore first' }).click();
 
-  await expect(page.locator('#dashboardNotebook')).toBeVisible();
-  await page.locator('#dashboardNotebook').click();
+  const notebook = page.locator('#openNotebook');
+  await expect(notebook).toBeAttached();
+  await notebook.scrollIntoViewIfNeeded();
+  await expect(notebook).toBeVisible();
+  await expect(page.locator('#dashboardNav #openNotebook')).toHaveCount(1);
+  await notebook.click();
   await expect(page.locator('#learningNotebookDialog')).toBeVisible();
   await expect(page.locator('#learningNotebookDialog')).toContainText('Saved words');
 });
