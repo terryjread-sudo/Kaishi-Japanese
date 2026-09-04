@@ -306,17 +306,17 @@
     nav.setAttribute('aria-label','Dashboard sections');
     learning.insertAdjacentElement('afterend',nav);
 
-    const practice=el('openPracticeHub');
+    const notebook=el('openNotebook');
     const collection=el('openCollection');
     const progress=el('journeySkills');
     const community=el('journeyCommunity');
 
-    makeNavButton(practice,'🎯','Practice');
+    makeNavButton(notebook,'📓','Notebook');
     makeNavButton(collection,'📚','Collection');
     makeNavButton(progress,'📊','Progress');
     makeNavButton(community,'👥','Community');
 
-    [practice,collection,progress,community].forEach(button=>{
+    [notebook,collection,progress,community].forEach(button=>{
       if(button) nav.appendChild(button);
     });
   }
