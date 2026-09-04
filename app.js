@@ -41,7 +41,7 @@ const SKILL_HELP={
  sentence:'How often you choose the correct word from the context of a sentence.',
  picture:'How often you connect a mnemonic picture with the correct word and meaning.'
 };
-let vocab=[], kanaData=[], mangaStories=[], conversations=[], theatreScenes=[], grammarLessons=[], componentData={components:{},kanji:[]}, ankiContent={records:[]}, topicData={topics:[]}, learningGraph={regions:[],topics:[],foundations:[],assignmentsByWord:{}}, session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
+let vocab=[], kanaData=[], mangaStories=[], conversations=[], theatreScenes=[], grammarLessons=[], componentData={components:{},kanji:[]}, ankiContent={records:[]}, topicData={topics:[]}, katakanaCore={records:[]}, vocabularyOrthography={entries:{}}, learningGraph={regions:[],topics:[],foundations:[],assignmentsByWord:{}}, session=[], index=0, current=null, revealed=false, startedAt=0, hintUsed=false, memoryScenes={};
 let kanaSession=[], kanaIndex=0, kanaScript='', kanaAnswered=false;
 let mangaStory=null, mangaPanelIndex=0, mangaAnswered=false, mangaQuestionAnswered=false, mangaRun=null, mangaComicEnglish=false;
 let conversation=null, conversationTurn=0, conversationAnswered=false, conversationRun=null, japaneseSpeech=null;
@@ -103,8 +103,9 @@ function kanaCharacters(text=''){return [...new Set([...String(text)].filter(ch=
 function kanaKnown(character){const entry=kanaData.find(item=>item.kana===character);return !entry||Number(meta.kanaProgress?.[entry.id]?.stage||0)>0}
 function unknownKanaFor(word){return kanaCharacters(word.reading||word.word).filter(ch=>!kanaKnown(ch))}
 function ankiRecordFor(word){return word._anki||null}
-function graphAssignmentFor(word){return learningGraph.assignmentsByWord?.[word.word]||null}
-function topicForWord(word){const assignment=graphAssignmentFor(word);const id=assignment?.primaryTopicId||word.topicId;return learningGraph.topics?.find(topic=>topic.id===id)||topicData.topics?.find(topic=>topic.id===id)||{id:'abstract-society',title:'Ideas & Society',icon:'🗾',regionId:'communication'}}
+function graphAssignmentFor(word){return learningGraph.assignmentsByWord?.[word.sourceWord||word.word]||null}
+function katakanaTopic(){return{id:'katakana-essentials',title:'Katakana Essentials',icon:'カ',regionId:'foundations'}}
+function topicForWord(word){const assignment=graphAssignmentFor(word);const id=assignment?.primaryTopicId||word.topicId;if(id==='katakana-essentials')return katakanaTopic();return learningGraph.topics?.find(topic=>topic.id===id)||topicData.topics?.find(topic=>topic.id===id)||{id:'abstract-society',title:'Ideas & Society',icon:'🗾',regionId:'communication'}}
 function foundationFor(id){return learningGraph.foundations?.find(item=>item.id===id)}
 function wordFoundationTags(word){return graphAssignmentFor(word)?.foundationTags||word.foundationTags||[]}
 function journeyTopics(){const source=learningGraph.topics?.length?learningGraph.topics:topicData.topics||[];return source.map(topic=>({...topic,words:vocab.filter(word=>topicForWord(word).id===topic.id)})).filter(topic=>topic.words.length)}
@@ -132,9 +133,36 @@ function startTopicSession(topicId=currentTopic().id){
 }
 function senseiRecommendation(topic){const stats=topicStats(topic),weak=topicWeakestSkill(topic),labels={meaning:'meaning recall',listening:'listening',reading:'reading',picture:'picture memory',sentence:'sentence understanding',production:'active recall',kanji:'written Japanese'};if(stats.bossReady&&!stats.complete)return`You are ready to challenge the ${topic.title} boss.`;if(stats.introduced<stats.target)return`Continue ${topic.title}. Foundational skills will return naturally when this topic needs them.`;return`Your weakest skill in ${topic.title} is ${labels[weak]||weak}. Let’s train it through a relevant game.`}
 function achievementList(){const achievements=[];const learned=started(),masteredCount=Object.values(progress).filter(mastery).length;if(learned>=1)achievements.push(['🌱','First Word']);if(learned>=100)achievements.push(['🧠','100 Words']);if(masteredCount>=25)achievements.push(['⭐','25 Mastered']);if(Number(meta.streak||0)>=7)achievements.push(['🌿','7-Day Rhythm']);if(journeyTopics().some(topic=>topicStats(topic).complete))achievements.push(['🏆','First Topic Boss']);return achievements}
+function applyVocabularyAuthority(){
+ const entries=vocabularyOrthography?.entries||{};
+ vocab.forEach(word=>{
+  const authority=entries[word.id]||word.orthography||null;
+  if(!authority)return;
+  word.orthography=authority;
+  if(authority.status!=='approved'||!authority.preferredForm||authority.preferredForm===word.word)return;
+  word.sourceWord=word.word;
+  word.word=authority.preferredForm;
+  if(authority.script==='hiragana'||authority.script==='katakana'){word.reading=authority.preferredForm;word.furigana=authority.preferredForm;word.kanji=''}
+ });
+}
+function weaveKatakanaCore(){
+ const existingIds=new Set(vocab.map(word=>word.id));
+ const additions=(katakanaCore?.records||[]).filter(word=>word?.id&&!existingIds.has(word.id));
+ if(!additions.length)return;
+ const woven=[];let katakanaIndex=0;
+ vocab.forEach((word,index)=>{woven.push(word);if((index+1)%3===0&&katakanaIndex<additions.length)woven.push(additions[katakanaIndex++])});
+ vocab=[...woven,...additions.slice(katakanaIndex)];
+}
+function writingFormNote(word){
+ const authority=word?.orthography;
+ if(!authority)return'';
+ const label={hiragana:'Usually written in hiragana',katakana:'Katakana word',kanji:'Usually written with kanji',mixed:'Mixed Japanese writing'}[authority.script]||'Japanese writing form';
+ const alternatives=(authority.alternateForms||[]).filter(form=>form&&form!==word.word);
+ return `<details class="writing-form-note"><summary>${esc(label)}</summary><p>${alternatives.length?`You may also see: ${esc(alternatives.join(' · '))}. `:''}${esc(authority.rationale||'')}</p></details>`;
+}
 function enrichVocabularyFromAnki(){
  const byWord=new Map();(ankiContent.records||[]).forEach(record=>{if(record.word&&!byWord.has(record.word))byWord.set(record.word,record)});
- vocab.forEach((word,originalIndex)=>{const record=byWord.get(word.word),assignment=learningGraph.assignmentsByWord?.[word.word];word._originalOrder=originalIndex;if(record){word._anki=record;word.exampleSentence=record.sentence||'';word.exampleSentenceRomaji=record.sentenceRomaji||'';word.exampleSentenceMeaning=record.sentenceMeaning||''}if(assignment){word.topicId=assignment.primaryTopicId;word.secondaryTopicIds=assignment.secondaryTopicIds||[];word.foundationTags=assignment.foundationTags||[];word.topicOrder=assignment.topicOrder;word.contentOrder=assignment.contentOrder;const topic=learningGraph.topics?.find(item=>item.id===assignment.primaryTopicId);word.topic=topic?.title||word.topic}});
+ vocab.forEach((word,originalIndex)=>{const lookupWord=word.sourceWord||word.word,record=byWord.get(lookupWord),assignment=learningGraph.assignmentsByWord?.[lookupWord];word._originalOrder=originalIndex;if(record){word._anki=record;word.exampleSentence=record.sentence||'';word.exampleSentenceRomaji=record.sentenceRomaji||'';word.exampleSentenceMeaning=record.sentenceMeaning||''}if(assignment){word.topicId=assignment.primaryTopicId;word.secondaryTopicIds=assignment.secondaryTopicIds||[];word.foundationTags=assignment.foundationTags||[];word.topicOrder=assignment.topicOrder;word.contentOrder=assignment.contentOrder;const topic=learningGraph.topics?.find(item=>item.id===assignment.primaryTopicId);word.topic=topic?.title||word.topic}});
  vocab.sort((a,b)=>Number(topicForWord(a).regionOrder??999)-Number(topicForWord(b).regionOrder??999)||Number(a.topicOrder??999)-Number(b.topicOrder??999)||Number(a.contentOrder??999999)-Number(b.contentOrder??999999)||Number(a._originalOrder)-Number(b._originalOrder));
 }
 function senseiBlock(message,compact=true,pose='auto'){const lower=String(message).toLowerCase(),inferred=/not quite|mistake|try again|almost/.test(lower)?'encouraging':/complete|great work|excellent|mastered/.test(lower)?'celebrating':/first|welcome|meet this/.test(lower)?'welcoming':/notice|look|select|tap|use the/.test(lower)?'pointing':/review|compare|why|understand/.test(lower)?'analysing':'explaining',safePose=['welcoming','explaining','celebrating','encouraging','pointing','analysing'].includes(pose)?pose:inferred;return `<aside class="sensei-guide teacher-guide sensei-${safePose} ${compact?'compact':''}"><div class="sensei-avatar teacher-guide-avatar"><img src="media/guides/sensei/sensei-${safePose}.webp?v=${APP_VERSION}" alt="Sensei ${safePose}"></div><div><strong>Sensei’s guidance</strong><p>${esc(message)}</p></div></aside>`}
@@ -1093,6 +1121,7 @@ function makeTargetedMasterySession(ids,skill,title='Your focused practice sessi
 }
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
 function play(name){if(!name)return;new Audio(media(name)).play().catch(()=>{})}
+function playWord(word){if(word?.wordAudio){play(word.wordAudio);return}if(word?.reading||word?.word)speakJapanese(word.reading||word.word)}
 function kanaState(id){return meta.kanaProgress[id]||(meta.kanaProgress[id]={stage:0,attempts:0,correct:0,due:0})}
 function kanaMastered(script){return kanaData.filter(x=>x.script===script&&Number(meta.kanaProgress?.[x.id]?.stage||0)>=4).length}
 function updateKanaOverview(){
@@ -1469,9 +1498,9 @@ if(current.battle){renderBattleQuestion(v);return}
 if(current.karuta){renderKarutaQuestion(v);return}
 if(skill==='sessionSentence'){renderSessionSentenceBridge(current);return}
 if(skill==='kanaUnlock'){const characters=unknownKanaFor(v).slice(0,2),character=characters[0],entry=kanaData.find(item=>item.kana===character),topic=topicForWord(v);if(!character){current.skill='firstEncounter';renderCurrent();return}const reading=esc(v.reading||v.word),highlightedReading=reading.replace(esc(character),`<mark>${esc(character)}</mark>`);c.innerHTML=`${senseiBlock(`You need ${character} for ${v.word}. Learn this sound now, then the very next card will teach you ${v.word}.`)}<div class="eyebrow">Character unlock</div><section class="kana-unlock-layout"><div class="kana-unlock-main"><div class="kana-unlock-glyph" lang="ja">${esc(character)}</div><div class="kana-unlock-sound">${esc(entry?.romaji||'New Japanese sound')}</div><button id="kanaUnlockAudio" class="audio primary">🔊 Hear the sound</button></div><aside class="kana-word-preview"><span>Used in the next word</span><strong lang="ja">${esc(v.word)}</strong><small>${highlightedReading} · ${esc(v.meaning)}</small><p>After learning ${esc(character)}, you will immediately meet this word.</p></aside></section><button id="kanaUnlockContinue" class="primary reveal">Learn ${esc(character)} now →</button><div class="kana-next-word">Next: Meet <strong lang="ja">${esc(v.word)}</strong></div>`;$('#kanaUnlockAudio').onclick=()=>entry&&playKana(entry);$('#kanaUnlockContinue').onclick=()=>{markKanaIntroduced(character);const remaining=unknownKanaFor(v);if(remaining.length){current.skill='kanaUnlock';renderCurrent();return}const duplicateIndex=session.findIndex((item,itemIndex)=>itemIndex>index&&item.v.id===v.id&&item.skill==='firstEncounter');if(duplicateIndex>index)session.splice(duplicateIndex,1);current.skill='firstEncounter';renderCurrent()};if(entry&&settings.autoAudio)playKana(entry);return}
-if(skill==='firstEncounter'){const topic=topicForWord(v);c.innerHTML=`${senseiBlock('First, simply see and hear this word. We will build the memory next.')}<div class="eyebrow">${esc(topic.icon)} ${esc(topic.title)} · First encounter</div><div class="first-encounter-word" lang="ja">${esc(v.word)}</div><div class="first-encounter-summary">${esc(v.reading)} · <strong>${esc(v.meaning)}</strong></div><button id="firstEncounterAudio" class="audio primary">🔊</button><button id="firstEncounterContinue" class="primary reveal">Meet this word →</button>`;$('#firstEncounterAudio').onclick=()=>play(v.wordAudio);$('#firstEncounterContinue').onclick=next;if(settings.autoAudio)play(v.wordAudio);return}
+if(skill==='firstEncounter'){const topic=topicForWord(v);c.innerHTML=`${senseiBlock('First, simply see and hear this word. We will build the memory next.')}<div class="eyebrow">${esc(topic.icon)} ${esc(topic.title)} · First encounter</div><div class="first-encounter-word" lang="ja">${esc(v.word)}</div><div class="first-encounter-summary">${esc(v.reading)} · <strong>${esc(v.meaning)}</strong></div>${writingFormNote(v)}<button id="firstEncounterAudio" class="audio primary">🔊</button><button id="firstEncounterContinue" class="primary reveal">Meet this word →</button>`;$('#firstEncounterAudio').onclick=()=>playWord(v);$('#firstEncounterContinue').onclick=next;if(settings.autoAudio)playWord(v);return}
 if(skill==='example'){const record=ankiRecordFor(v),sentence=record?.sentence||v.exampleSentence||'',meaning=record?.sentenceMeaning||v.exampleSentenceMeaning||'',romaji=record?.sentenceRomaji||v.exampleSentenceRomaji||'';if(!sentence){next();return}const highlighted=esc(sentence).replace(esc(v.word),`<mark>${esc(v.word)}</mark>`);c.innerHTML=`${senseiBlock('Now see how this word works inside a complete sentence.')}<div class="eyebrow">Example sentence</div><div class="example-sentence" lang="ja">${highlighted}</div>${romaji?`<div class="example-romaji">${esc(romaji)}</div>`:''}<div class="example-meaning">${esc(meaning)}</div><button id="exampleAudio" class="audio primary">🔊 Play sentence</button><button id="exampleContinue" class="primary reveal">Continue the journey →</button>`;$('#exampleAudio').onclick=()=>play(v.wordAudio);$('#exampleContinue').onclick=next;return}
-if(skill==='intro'){const topic=topicForWord(v);const hasKanji=kanjiCharacters(v).length>0&&v.word!==v.reading,showFullGuidance=introGuidanceCount<2;introGuidanceCount++;c.innerHTML=`${senseiBlock('Use the mnemonic image and story to make this word difficult to forget.')}<div class="eyebrow">${esc(topic.icon)} ${esc(topic.title)} · Meet the word</div><section class="meet-word-identity"><div class="meet-word-written"><span>${hasKanji?'Kanji / written word':'Japanese word'}</span><div class="jp">${v.word}</div><button id="introAudio" class="audio meet-word-speaker" aria-label="Play Japanese word" title="Play Japanese word">🔊</button></div><div class="meet-word-summary"><span class="reading">${v.reading}</span><i aria-hidden="true">·</i><strong class="meaning">${v.meaning}</strong></div></section>${visual(v)}${memorySupport(v,true)}<details class="meet-word-guidance"${showFullGuidance?' open':''}><summary>How to learn this word</summary><ol><li>Tap the speaker and say the Japanese word aloud.</li><li>Connect the mnemonic picture and sound clue to the meaning.</li><li>Picture the story, then recall the word once before continuing.</li></ol></details><div class="sticky-study-action"><button id="continueBtn" class="primary reveal">I have linked the word and meaning →</button></div>`;if(settings.autoAudio)play(v.wordAudio);$('#introAudio').onclick=()=>play(v.wordAudio);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
+if(skill==='intro'){const topic=topicForWord(v);const hasKanji=kanjiCharacters(v).length>0&&v.word!==v.reading,showFullGuidance=introGuidanceCount<2;introGuidanceCount++;c.innerHTML=`${senseiBlock('Use the mnemonic image and story to make this word difficult to forget.')}<div class="eyebrow">${esc(topic.icon)} ${esc(topic.title)} · Meet the word</div><section class="meet-word-identity"><div class="meet-word-written"><span>${hasKanji?'Kanji / written word':'Japanese word'}</span><div class="jp">${v.word}</div><button id="introAudio" class="audio meet-word-speaker" aria-label="Play Japanese word" title="Play Japanese word">🔊</button></div><div class="meet-word-summary"><span class="reading">${v.reading}</span><i aria-hidden="true">·</i><strong class="meaning">${v.meaning}</strong></div></section>${writingFormNote(v)}${visual(v)}${memorySupport(v,true)}<details class="meet-word-guidance"${showFullGuidance?' open':''}><summary>How to learn this word</summary><ol><li>Tap the speaker and say the Japanese word aloud.</li><li>Connect the mnemonic picture and sound clue to the meaning.</li><li>Picture the story, then recall the word once before continuing.</li></ol></details><div class="sticky-study-action"><button id="continueBtn" class="primary reveal">I have linked the word and meaning →</button></div>`;if(settings.autoAudio)playWord(v);$('#introAudio').onclick=()=>playWord(v);$('#continueBtn').onclick=next;wireMemoryEditor(v);return}
 if(skill==='pronunciation'){const coachAvailable=Boolean(window.KaishiPronunciation?.available);c.innerHTML=`${senseiBlock('Before we test your memory, give this new word one natural attempt. This is optional and will not affect your progress.')}<div class="eyebrow">Optional speaking practice</div><section class="word-pronunciation-card"><div><span>Say this word</span><strong lang="ja">${esc(v.word)}</strong><small>${esc(v.reading)} · ${esc(v.meaning)}</small></div><button id="pronunciationAudio" class="audio" type="button">🔊 Hear the word</button></section><p class="word-pronunciation-note">In a public place or unable to speak right now? Skip this card with no penalty.</p><div class="word-pronunciation-actions"><button id="pronunciationCheck" class="primary" type="button"${coachAvailable?'':' disabled'}>${coachAvailable?'🎙️ Check my Japanese':'🎙️ Pronunciation check unavailable'}</button><button id="pronunciationSkip" type="button">Skip for now →</button></div><div class="sticky-study-action"><button id="pronunciationContinue" class="primary reveal" type="button">Continue learning →</button></div>`;$('#pronunciationAudio').onclick=()=>play(v.wordAudio);const check=$('#pronunciationCheck');if(check)check.onclick=()=>window.KaishiPronunciation?.open({phrase:v.word,reading:v.reading,meaning:v.meaning,chunks:[v.word],compact:true});$('#pronunciationSkip').onclick=next;$('#pronunciationContinue').onclick=next;if(settings.autoAudio)play(v.wordAudio);return}
 if(skill==='meaning')recallCard(v,'What does this mean?',v.word,`${v.meaning}<div class="reading">${v.reading}</div>`,skill);
 if(skill==='production')recallCard(v,'Recall the Japanese word',v.meaning,`<div class="jp">${v.word}</div><div class="reading">${v.reading}</div>`,skill);
@@ -1868,7 +1897,7 @@ async function init(){
  $('#updateBanner').hidden=true;
  $('#card').innerHTML='<div class="eyebrow">Loading</div><h2>Preparing Kaishi Quest…</h2>';
  try{
-  [vocab,kanaData,mangaStories,conversations,theatreScenes,grammarLessons,componentData,memoryScenes,ankiContent,topicData,learningGraph]=await Promise.all([
+  [vocab,kanaData,mangaStories,conversations,theatreScenes,grammarLessons,componentData,memoryScenes,ankiContent,topicData,learningGraph,katakanaCore,vocabularyOrthography]=await Promise.all([
    safeFetchJson(`data/vocabulary.json?v=${APP_VERSION}`,[]),
    safeFetchJson(`data/kana.json?v=${APP_VERSION}`,{entries:[]}).then(data=>data.entries||[]),
    safeFetchJson(`data/manga-stories.json?v=${APP_VERSION}`,{stories:[]}).then(data=>data.stories||[]),
@@ -1880,8 +1909,12 @@ async function init(){
    safeFetchJson(`data/anki-content-v72.json?v=${APP_VERSION}`,{records:[]}),
    safeFetchJson(`data/topics-v72.json?v=${APP_VERSION}`,{topics:[]}),
    safeFetchJson(`data/learning-graph-v82.json?v=${APP_VERSION}`,{})
+   ,safeFetchJson(`data/katakana-core-10k.json?v=${APP_VERSION}`,{records:[]})
+   ,safeFetchJson(`data/vocabulary-orthography.json?v=${APP_VERSION}`,{entries:{}})
   ]);
+  applyVocabularyAuthority();
   enrichVocabularyFromAnki();
+  weaveKatakanaCore();
   updateHome();
   appReady=true;
   setAdminTestActivityReady(true);
