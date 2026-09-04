@@ -753,10 +753,10 @@ header{
 .learning-balance-adaptive{display:flex!important;align-items:center!important;gap:10px!important;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid #e2e8f0}.learning-balance-adaptive input{width:20px;height:20px;flex:0 0 auto}.learning-balance-adaptive span{display:grid;gap:2px}.learning-balance-adaptive strong{font-size:.82rem}.learning-balance-adaptive small{color:#64748b;font-size:.7rem}
 #learningBalanceDescription{margin:0;color:#334155;font-size:.78rem;line-height:1.45}.learning-balance-guardrail{color:#64748b;font-size:.68rem;line-height:1.4}
 @media(max-width:520px){.learning-balance-heading{display:grid}.learning-balance-heading>strong{justify-self:start}.learning-balance-settings{padding:14px}.learning-balance-labels{font-size:.62rem}}
-#missionCheckpointDialog,#quickSettingsDialog{width:min(92vw,480px);border:0;border-radius:22px;padding:0;box-shadow:0 24px 80px #0f172a55}#missionCheckpointDialog::backdrop,#quickSettingsDialog::backdrop{background:#0f172a99}
-.mission-checkpoint,.quick-settings{display:grid;gap:14px;padding:22px}.mission-checkpoint h2,.quick-settings h2{margin:0}.mission-checkpoint p,.quick-settings p{margin:0;color:#475569}
-.mission-checkpoint-actions,.quick-settings-actions,.mission-complete-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick-settings label{display:grid;gap:7px;font-weight:750}.quick-settings label:has(input){display:flex;align-items:center;gap:8px}.quick-full-settings{font-size:.75rem}.mission-complete-actions{margin-top:18px}
-@media(max-width:520px){.mission-checkpoint-actions,.quick-settings-actions,.mission-complete-actions{grid-template-columns:1fr}}
+#quickSettingsDialog{width:min(92vw,480px);border:0;border-radius:22px;padding:0;box-shadow:0 24px 80px #0f172a55}#quickSettingsDialog::backdrop{background:#0f172a99}
+.quick-settings{display:grid;gap:14px;padding:22px}.quick-settings h2{margin:0}.quick-settings p{margin:0;color:#475569}
+.quick-settings-actions,.mission-complete-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick-settings label{display:grid;gap:7px;font-weight:750}.quick-settings label:has(input){display:flex;align-items:center;gap:8px}.quick-full-settings{font-size:.75rem}.mission-complete-actions{margin-top:18px}
+@media(max-width:520px){.quick-settings-actions,.mission-complete-actions{grid-template-columns:1fr}}
 
 /* v9.0 Japan Ready */
 .campaign-chooser{margin:18px 20px 0;padding:14px;border:1px solid #c7d2fe;border-radius:20px;background:linear-gradient(135deg,#fff,#f5f3ff);display:grid;gap:12px}.campaign-chooser h2{margin:3px 0}.campaign-chooser p{margin:0;color:#475569}.campaign-choice-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.campaign-choice-actions button.active{background:#2563eb;color:#fff;border-color:#2563eb}
