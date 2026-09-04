@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+test('lesson checkpoints save without presenting a modal', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.locator('#missionCheckpointDialog')).toHaveCount(0);
+});
+
 test('test learner can launch an immersive activity after app initialization', async ({ page }) => {
   const runtimeErrors: string[] = [];
   page.on('pageerror', (error) => runtimeErrors.push(error.message));
