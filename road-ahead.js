@@ -8,7 +8,6 @@
  */
 (() => {
   const BUBBLE_ID = 'kqRoadAheadBubble';
-  const DASHBOARD_BTN_ID = 'kqJourneyDashboardBtn';
   const STYLE_ID = 'kqRoadAheadFloatingStyles';
   const escapeHTML = value => String(value ?? '').replace(/[&<>\"']/g, c => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'
@@ -30,12 +29,6 @@
       #${BUBBLE_ID} .kq-ra-title{font-weight:800;font-size:.82rem;white-space:nowrap;
         overflow:hidden;text-overflow:ellipsis}
       #${BUBBLE_ID} .kq-ra-count{font-size:.72rem;opacity:.68;white-space:nowrap}
-      #${DASHBOARD_BTN_ID}{position:fixed;left:12px;top:calc(12px + env(safe-area-inset-top,0px));
-        z-index:60;padding:8px 13px;border-radius:999px;border:1px solid rgba(0,0,0,.10);
-        background:var(--card-bg,#fff);box-shadow:0 4px 14px rgba(0,0,0,.14);
-        font-weight:800;font-size:.82rem;cursor:pointer}
-      #${DASHBOARD_BTN_ID}[hidden]{display:none}
-      .kq-road-ahead-active #journeyBack{display:none}
     `;
     document.head.appendChild(style);
   };
@@ -102,35 +95,13 @@
     `;
   };
 
-  const ensureDashboardButton = () => {
-    let btn = document.getElementById(DASHBOARD_BTN_ID);
-    if (!btn) {
-      btn = document.createElement('button');
-      btn.id = DASHBOARD_BTN_ID;
-      btn.type = 'button';
-      btn.textContent = '← Dashboard';
-      btn.setAttribute('aria-label', 'Return to dashboard');
-      btn.addEventListener('click', () => {
-        try {
-          if (typeof show === 'function') show('home');
-          else if (typeof window.show === 'function') window.show('home');
-        } catch (_) {}
-      });
-      document.body.appendChild(btn);
-    }
-    return btn;
-  };
-
   const setVisible = visible => {
     addStyles();
     const bubble = ensureBubble();
-    const btn = ensureDashboardButton();
     if (visible) {
-      btn.hidden = false;
       renderBubble();
     } else {
       bubble.hidden = true;
-      btn.hidden = true;
     }
   };
 

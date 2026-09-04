@@ -161,6 +161,8 @@ test('Journey Dashboard control floats only from its title-row position', async 
   await page.locator('#adminTestLessonGo').click();
 
   const dashboard = page.locator('#journeyBack');
+  await expect(dashboard).toBeVisible();
+  await expect(page.locator('#kqJourneyDashboardBtn')).toHaveCount(0);
   const originTop = await dashboard.evaluate(element => element.getBoundingClientRect().top);
   const scrollY = await page.evaluate(() => {
     window.scrollTo(0, document.documentElement.scrollHeight);
