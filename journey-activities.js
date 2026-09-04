@@ -60,7 +60,8 @@
     builder: 10,
     manga: 25,
     battle: 20,
-    colosseum: 8
+    colosseum: 8,
+    kotobaEcho: 5
   };
 
   const rules = [
@@ -75,9 +76,10 @@
     {id:'builder', icon:'🧩', label:'Kanji Builder', core:false, immersive:true, roadmap:true, minWords:10, note:'Optional visual side quest using Kanji already encountered.'},
     {id:'manga', icon:'📖', label:'Manga Stories', core:false, immersive:true, roadmap:true, minWords:25, note:'Optional story side quest using familiar Japanese.'},
     {id:'battle', icon:'⚔️', label:'SRS Battle', core:false, immersive:true, roadmap:false, minWords:20, note:'Separate review side quest. It is never part of a lesson.'},
-    {id:'colosseum', icon:'⚔️', label:'Kotoba Colosseum', core:false, immersive:true, roadmap:true, minWords:8, note:'Optional listening battle using familiar words. It never replaces a lesson.'}
+    {id:'colosseum', icon:'⚔️', label:'Kotoba Colosseum', core:false, immersive:true, roadmap:true, minWords:8, note:'Optional listening battle using familiar words. It never replaces a lesson.'},
+    {id:'kotobaEcho', icon:'🎤', label:'Kotoba Echo', core:false, immersive:true, roadmap:true, minWords:5, note:'Optional karaoke speaking side quest using familiar words with audio.'}
   ];
-  const JOURNEY_IMMERSIVE_ACTIVITY_IDS = new Set(['picture','karuta','conversation','theatre','builder','manga','battle','colosseum']);
+  const JOURNEY_IMMERSIVE_ACTIVITY_IDS = new Set(['picture','karuta','conversation','theatre','builder','manga','battle','colosseum','kotobaEcho']);
 
   const ruleFor = id => rules.find(rule => rule.id === id) || null;
   const missionBrief = (id, words=[]) => {
@@ -90,7 +92,8 @@
       theatre: {objective:'Follow a real-world scene and show what you understood.', purpose:'Listening scene mission'},
       builder: {objective:'Rebuild the Kanji components behind familiar lesson words.', purpose:'Kanji construction mission'},
       manga: {objective:'Read familiar Japanese in an illustrated story.', purpose:'Reading story mission'},
-      colosseum: {objective:'Use familiar Japanese in a tactical listening battle.', purpose:'Battle mission'}
+      colosseum: {objective:'Use familiar Japanese in a tactical listening battle.', purpose:'Battle mission'},
+      kotobaEcho: {objective:'Say familiar Japanese from an English karaoke call card.', purpose:'Speaking karaoke mission'}
     };
     const brief = briefs[id] || {objective:rule?.note || 'Use these new words in a different kind of practice.', purpose:'Immersive practice mission'};
     return {...brief, activityId:id, icon:rule?.icon || '🗺️', label:rule?.label || 'Immersive activity', vocabulary};

@@ -8,6 +8,7 @@ export const TEST_ACTIVITY_IDS = [
   'manga',
   'battle',
   'colosseum',
+  'kotobaEcho',
 ] as const;
 
 export type TestActivityId = (typeof TEST_ACTIVITY_IDS)[number];

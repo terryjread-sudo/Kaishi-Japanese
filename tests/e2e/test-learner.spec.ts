@@ -67,6 +67,11 @@ test('test learner can launch an immersive activity after app initialization', a
   await page.locator('#adminTestActivity').selectOption('colosseum');
   await launch.click();
   await expect(page.locator('#listenBattle')).toHaveClass(/active/);
+
+  await page.locator('#adminTestActivity').selectOption('kotobaEcho');
+  await launch.click();
+  await expect(page.locator('#kotobaEcho')).toHaveClass(/active/);
+  await expect(page.locator('#kotobaEchoCard')).toContainText('Your line');
 });
 
 test('test learner lesson jump renders the same early Journey flow', async ({ page }) => {
