@@ -89,6 +89,17 @@ test('a learner can save a word without losing their active lesson card', async 
   await expect(counter).toHaveText(before);
 });
 
+test('the main Dashboard opens the shared notebook outside a lesson', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('button', { name: 'Explore first' }).click();
+
+  await expect(page.locator('#dashboardNotebook')).toBeVisible();
+  await page.locator('#dashboardNotebook').click();
+  await expect(page.locator('#learningNotebookDialog')).toBeVisible();
+  await expect(page.locator('#learningNotebookDialog')).toContainText('Saved words');
+});
+
 test('Sentence Lab saves remain available in the shared notebook', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => {
@@ -150,6 +161,8 @@ test('Journey Dashboard control floats only from its title-row position', async 
   await page.locator('#adminTestLessonGo').click();
 
   const dashboard = page.locator('#journeyBack');
+  await expect(dashboard).toBeVisible();
+  await expect(page.locator('#kqJourneyDashboardBtn')).toHaveCount(0);
   const originTop = await dashboard.evaluate(element => element.getBoundingClientRect().top);
   const scrollY = await page.evaluate(() => {
     window.scrollTo(0, document.documentElement.scrollHeight);
