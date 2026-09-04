@@ -30,7 +30,8 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
 
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Focused practice');
   await page.locator('#journeySessionPreviewStart').click();
-  await expect(page.locator('#sessionCounter')).toContainText('Card 1/6');
+  await expect(page.locator('#sessionCounter .session-progress-chunk')).toHaveCount(6);
+  await expect(page.locator('#sessionCounter .session-progress-chunk.current')).toHaveCount(1);
   await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s Path:');
   await expect(page.locator('.lesson-mastery-path')).toContainText('%');
   await expect(page.locator('.lesson-mastery-path summary')).toHaveText('How this works');
@@ -102,7 +103,7 @@ test('new words offer optional compact pronunciation practice', async ({ page })
   await expect(page.locator('#pronunciationCoachDialog .pronunciation-mode')).toBeHidden();
   await page.locator('#pronunciationCoachDialog .pronunciation-close').click();
   await page.locator('#pronunciationSkip').click();
-  await expect(page.locator('#sessionCounter')).toContainText('Card 4/');
+  await expect(page.locator('#sessionCounter')).toHaveAttribute('aria-label', /card 4 of/);
 });
 
 test('a learner can save a word without losing their active lesson card', async ({ page }) => {
@@ -117,7 +118,8 @@ test('a learner can save a word without losing their active lesson card', async 
   const before = await counter.innerText();
   await expect(page.locator('[data-notebook-save-word]')).toBeVisible();
   await page.locator('[data-notebook-save-word]').click();
-  await expect(page.locator('[data-notebook-save-word]')).toContainText('In notebook');
+  await expect(page.locator('[data-notebook-save-word]')).toHaveText('★');
+  await expect(page.locator('[data-notebook-save-word]')).toHaveAttribute('aria-pressed', 'true');
   await page.locator('#studyNotebook').click();
   await expect(page.locator('#learningNotebookDialog')).toBeVisible();
   await expect(page.locator('#learningNotebookDialog')).toContainText('Saved words');
