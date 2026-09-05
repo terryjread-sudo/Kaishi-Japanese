@@ -1,6 +1,6 @@
 {
-  "version": "11.47.0",
-  "released": "2026-09-04",
+  "version": "11.48.0",
+  "released": "2026-09-05",
   "title": "Automatic minor version bump",
   "changes": [
     "Automated by GitHub Actions after changes were pushed to main. [auto-version]"
