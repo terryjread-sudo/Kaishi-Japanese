@@ -10,7 +10,7 @@
       "romaji": "ookii",
       "meaning": "big",
       "soundMnemonic": "Oh! Oh! Key!",
-      "story": "A giant golden key is so BIG that Kai and Mia can barely see its top.",
+      "story": "A giant golden key is so BIG that Kai and Aiko can barely see its top.",
       "target": "gold-01-ookii.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed",
@@ -42,7 +42,7 @@
       "romaji": "atarashii",
       "meaning": "new",
       "soundMnemonic": "Ah! Tar! She!",
-      "story": "Mia opens a shiny NEW box and shouts, 'Ah! Tar! She found it!'",
+      "story": "Aiko opens a shiny NEW box and shouts, 'Ah! Tar! She found it!'",
       "target": "gold-03-atarashii.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed",
@@ -90,7 +90,7 @@
       "romaji": "mijikai",
       "meaning": "short",
       "soundMnemonic": "Me, jeep, Kai",
-      "story": "Kai is too SHORT to see over the jeep, so Mia lifts him up.",
+      "story": "Kai is too SHORT to see over the jeep, so Aiko lifts him up.",
       "target": "gold-06-mijikai.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed",
@@ -122,7 +122,7 @@
       "romaji": "yasui",
       "meaning": "cheap",
       "soundMnemonic": "YASS!",
-      "story": "Mia spots a huge sale and shouts 'YASS!' because everything is CHEAP.",
+      "story": "Aiko spots a huge sale and shouts 'YASS!' because everything is CHEAP.",
       "target": "gold-08-yasui.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed",
@@ -138,7 +138,7 @@
       "romaji": "muzukashii",
       "meaning": "difficult",
       "soundMnemonic": "Moo zoo cash she",
-      "story": "At the zoo, Mia must count cow cash; it is very DIFFICULT.",
+      "story": "At the zoo, Aiko must count cow cash; it is very DIFFICULT.",
       "target": "gold-09-muzukashii.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed",
@@ -343,7 +343,7 @@
       "romaji": "",
       "meaning": "behind; back",
       "soundMnemonic": "Ooh, she rows",
-      "story": "Mia rows a tiny boat BEHIND Kai while he looks the other way and cries, “Ooh, she rows!”",
+      "story": "Aiko rows a tiny boat BEHIND Kai while he looks the other way and cries, “Ooh, she rows!”",
       "target": "scene-p02-r03-c04.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -368,8 +368,8 @@
       "reading": "みぎ",
       "romaji": "",
       "meaning": "right",
-      "soundMnemonic": "Mia gives",
-      "story": "MIA GIVES Kai a present with her RIGHT hand while a bright arrow points right.",
+      "soundMnemonic": "Aiko gives",
+      "story": "AIKO GIVES Kai a present with her RIGHT hand while a bright arrow points right.",
       "target": "scene-p02-r02-c08.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -382,7 +382,7 @@
       "romaji": "",
       "meaning": "up; above",
       "soundMnemonic": "Way up",
-      "story": "Kai looks WAY UP at Mia floating ABOVE him in a balloon.",
+      "story": "Kai looks WAY UP at Aiko floating ABOVE him in a balloon.",
       "target": "scene-p02-r02-c09.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -486,7 +486,7 @@
       "romaji": "",
       "meaning": "morning",
       "soundMnemonic": "I saw",
-      "story": "At MORNING sunrise Mia points outside and says, “I SAW the sun come up!”",
+      "story": "At MORNING sunrise Aiko points outside and says, “I SAW the sun come up!”",
       "target": "scene-p02-r03-c09.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -512,7 +512,7 @@
       "romaji": "yoru",
       "meaning": "night",
       "soundMnemonic": "You're in the dark",
-      "story": "At NIGHT, Mia lights a tiny lantern outside the tent.",
+      "story": "At NIGHT, Aiko lights a tiny lantern outside the tent.",
       "target": "gold-26-yoru.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed",
@@ -645,7 +645,7 @@
       "romaji": "",
       "meaning": "work; job",
       "soundMnemonic": "She got a job",
-      "story": "Mia celebrates because SHE GOT a new JOB at a busy workshop.",
+      "story": "Aiko celebrates because SHE GOT a new JOB at a busy workshop.",
       "target": "scene-p02-r05-c01.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -697,7 +697,7 @@
       "romaji": "",
       "meaning": "money",
       "soundMnemonic": "Oh, cane!",
-      "story": "Mia cries “OH, CANE!” when coins and MONEY spill from a walking cane.",
+      "story": "Aiko cries “OH, CANE!” when coins and MONEY spill from a walking cane.",
       "target": "scene-p02-r05-c04.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -723,7 +723,7 @@
       "romaji": "",
       "meaning": "book",
       "soundMnemonic": "Hon!",
-      "story": "Mia calls “HON!” while handing Kai a huge BOOK.",
+      "story": "Aiko calls “HON!” while handing Kai a huge BOOK.",
       "target": "scene-p02-r05-c06.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -788,7 +788,7 @@
       "romaji": "",
       "meaning": "to go",
       "soundMnemonic": "Eek, you go!",
-      "story": "Kai shouts “EEK—YOU GO!” as Mia GOES through the departure gate.",
+      "story": "Kai shouts “EEK—YOU GO!” as Aiko GOES through the departure gate.",
       "target": "scene-p03-r01-c01.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -866,7 +866,7 @@
       "romaji": "",
       "meaning": "to know",
       "soundMnemonic": "She knows",
-      "story": "Mia points to the answer with confidence because SHE KNOWS it.",
+      "story": "Aiko points to the answer with confidence because SHE KNOWS it.",
       "target": "scene-p03-r01-c07.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -963,7 +963,7 @@
       "romaji": "",
       "meaning": "to put; place",
       "soundMnemonic": "Oak",
-      "story": "Mia PUTS a golden key carefully on the stump of a huge OAK tree.",
+      "story": "Aiko PUTS a golden key carefully on the stump of a huge OAK tree.",
       "target": "scene-p03-r02-c06.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1027,8 +1027,8 @@
       "reading": "みつける",
       "romaji": "",
       "meaning": "to find",
-      "soundMnemonic": "Mia’s clue",
-      "story": "MIA follows a CLUE and FINDS the missing golden key.",
+      "soundMnemonic": "Aiko’s clue",
+      "story": "AIKO follows a CLUE and FINDS the missing golden key.",
       "target": "scene-p03-r03-c01.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1054,7 +1054,7 @@
       "romaji": "",
       "meaning": "to close",
       "soundMnemonic": "She mailed",
-      "story": "Mia CLOSES a mailbox after SHE MAILED a letter.",
+      "story": "Aiko CLOSES a mailbox after SHE MAILED a letter.",
       "target": "scene-p03-r03-c03.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1281,7 +1281,7 @@
       "romaji": "",
       "meaning": "to hurry",
       "soundMnemonic": "E, so go!",
-      "story": "Mia shouts “E—SO GO!” as Kai HURRIES to catch a departing train.",
+      "story": "Aiko shouts “E—SO GO!” as Kai HURRIES to catch a departing train.",
       "target": "scene-p03-r04-c10.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1294,7 +1294,7 @@
       "romaji": "",
       "meaning": "to teach; tell",
       "soundMnemonic": "Oh, she yells",
-      "story": "“OH, SHE YELLS!” says Kai as Mia TEACHES a lively class.",
+      "story": "“OH, SHE YELLS!” says Kai as Aiko TEACHES a lively class.",
       "target": "scene-p03-r05-c01.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1333,7 +1333,7 @@
       "romaji": "",
       "meaning": "to meet",
       "soundMnemonic": "Ow!",
-      "story": "Kai and Mia accidentally bump heads—“OW!”—when they MEET.",
+      "story": "Kai and Aiko accidentally bump heads—“OW!”—when they MEET.",
       "target": "scene-p03-r05-c04.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1385,7 +1385,7 @@
       "romaji": "",
       "meaning": "disliked",
       "soundMnemonic": "Key lie",
-      "story": "Mia DISLIKES a crooked KEY that keeps LYING about which lock it opens.",
+      "story": "Aiko DISLIKES a crooked KEY that keeps LYING about which lock it opens.",
       "target": "scene-p03-r05-c08.webp",
       "sourceSystem": "memory-scenes",
       "status": "installed"
@@ -1424,7 +1424,7 @@
       "romaji": "hoshi",
       "meaning": "star",
       "soundMnemonic": "Ho! She shines!",
-      "story": "Mia points up and cries, 'Ho! She shines!' as a bright STAR appears.",
+      "story": "Aiko points up and cries, 'Ho! She shines!' as a bright STAR appears.",
       "target": "gold-21-hoshi.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1541,7 +1541,7 @@
       "romaji": "asoko",
       "meaning": "over there",
       "soundMnemonic": "A sock over there",
-      "story": "Mia points OVER THERE at a giant lost sock.",
+      "story": "Aiko points OVER THERE at a giant lost sock.",
       "target": "gold-32-asoko.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1567,7 +1567,7 @@
       "romaji": "shiro",
       "meaning": "castle",
       "soundMnemonic": "She rows to the castle",
-      "story": "Mia rows toward a huge CASTLE.",
+      "story": "Aiko rows toward a huge CASTLE.",
       "target": "gold-34-shiro.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1632,7 +1632,7 @@
       "romaji": "shiranai",
       "meaning": "not know",
       "soundMnemonic": "She ran, I don't know",
-      "story": "Mia asks where she went; Kai says, 'I DON'T KNOW.'",
+      "story": "Aiko asks where she went; Kai says, 'I DON'T KNOW.'",
       "target": "gold-40-shiranai.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1645,7 +1645,7 @@
       "romaji": "amai",
       "meaning": "sweet",
       "soundMnemonic": "Ah, my sweet!",
-      "story": "Mia tastes a giant lollipop and says, 'Ah, my! So SWEET!'",
+      "story": "Aiko tastes a giant lollipop and says, 'Ah, my! So SWEET!'",
       "target": "gold-41-amai.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1684,7 +1684,7 @@
       "romaji": "te",
       "meaning": "hand",
       "soundMnemonic": "Tea in hand",
-      "story": "Mia holds a cup of tea in her HAND.",
+      "story": "Aiko holds a cup of tea in her HAND.",
       "target": "gold-46-te.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1710,7 +1710,7 @@
       "romaji": "ageru",
       "meaning": "to give",
       "soundMnemonic": "A girl gives",
-      "story": "Mia GIVES Kai a present.",
+      "story": "Aiko GIVES Kai a present.",
       "target": "gold-48-ageru.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"
@@ -1736,7 +1736,7 @@
       "romaji": "michi",
       "meaning": "road",
       "soundMnemonic": "Meet on the road",
-      "story": "Kai and Mia meet on a winding ROAD.",
+      "story": "Kai and Aiko meet on a winding ROAD.",
       "target": "gold-50-michi.webp",
       "sourceSystem": "visual-mnemonics",
       "status": "installed"

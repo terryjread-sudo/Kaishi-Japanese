@@ -103,7 +103,7 @@
       "id": "wa-ga-focus", "title": "Choosing は or が", "japanese": "は vs が", "summary": "は establishes or contrasts a topic. が identifies or focuses the subject, especially new information.",
       "examples": [{"japanese":"だれが先生ですか。田中さんが先生です。田中さんは親切です。","reading":"だれ が せんせい です か。たなかさん が せんせい です。たなかさん は しんせつ です。","english":"Who is the teacher? Mr Tanaka is the teacher. As for Mr Tanaka, he is kind.","chunks":["だれが = who (focused subject)","田中さんは = as for Mr Tanaka"]}],
       "questions": [
-        {"prompt":"Which particle answers the focused question ‘Who did it?’","sentence":"ミア＿しました。","choices":["が","は","を","で"],"answer":"が","explanation":"が identifies Mia as the specific answer to ‘who?’"},
+        {"prompt":"Which particle answers the focused question ‘Who did it?’","sentence":"アイコ＿しました。","choices":["が","は","を","で"],"answer":"が","explanation":"が identifies Aiko as the specific answer to ‘who?’"},
         {"prompt":"Which particle introduces dogs as the continuing topic?","sentence":"犬＿かわいいです。犬は頭もいいです。","choices":["は","を","に","で"],"answer":"は","explanation":"は establishes dogs as what the following comments are about."},
         {"prompt":"What contrast is natural?","sentence":"コーヒー＿飲みますが、お茶は飲みません。","choices":["は","を","が","へ"],"answer":"は","explanation":"は can contrast coffee with tea: coffee I drink, but tea I do not."}
       ]

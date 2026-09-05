@@ -77,6 +77,36 @@ test('test learner can launch an immersive activity after app initialization', a
   await expect(page.locator('#kotobaEchoStop')).toBeVisible();
 });
 
+test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Explore first' }).click();
+
+  await page.evaluate(async () => {
+    const [catalog, words] = await Promise.all([
+      fetch('data/lesson-story-scenes.json').then((response) => response.json()),
+      fetch('data/vocabulary.json').then((response) => response.json()),
+    ]);
+    const policy = (window as typeof window & {
+      KaishiActivityPolicy?: {
+        selectLessonStoryScene: (catalog: unknown, lesson: number, words: Array<{ id: string; picture?: string }>) => unknown;
+      };
+    }).KaishiActivityPolicy;
+    const lessonWords = words.slice(3, 6);
+    const scene = policy?.selectLessonStoryScene(catalog, 2, lessonWords);
+    const target = lessonWords.find((word: { id: string }) => word.id === '1708637439873');
+    if (!scene || !target) throw new Error('Expected the Lesson 2 story scene.');
+
+    (0, eval)(`session=[{v:${JSON.stringify(target)},skill:'storySentence',storyScene:${JSON.stringify(scene)}}];index=0;current=null;show('study');renderCurrent();`);
+  });
+
+  await expect(page.locator('.lesson-story-scene')).toBeVisible();
+  await expect(page.locator('.lesson-story-scene')).toContainText('Aiko');
+  await expect(page.locator('.lesson-story-scene')).toContainText('Kai');
+  await page.getByRole('button', { name: 'Aiko', exact: true }).click();
+  await expect(page.locator('#storySentenceFeedback')).toContainText('Not quite');
+  await expect(page.locator('#storyAnswerAudio')).toBeVisible();
+});
+
 test('test learner lesson jump renders the same early Journey flow', async ({ page }) => {
   await page.addInitScript(() => {
     window.sessionStorage.setItem('kq-admin-test-mode', '1');

@@ -20,12 +20,12 @@
     {
       "id": "school-lunch",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "Lunch at School",
       "japaneseTitle": "学校の昼ご飯",
       "level": 1,
       "setting": "Choosing lunch in the cafeteria",
-      "summary": "Choose food and a drink with Mia, then find somewhere to sit.",
+      "summary": "Choose food and a drink with Aiko, then find somewhere to sit.",
       "turns": [
         {"line":"おなかがすきましたか。","reading":"おなかが すきましたか。","meaning":"Are you hungry?","response":"はい、とてもすきました。","responseReading":"はい、とても すきました。","responseMeaning":"Yes, I am very hungry.","reaction":"私もです。昼ご飯にしましょう。","reactionReading":"わたしもです。ひるごはんに しましょう。","reactionMeaning":"Me too. Let's have lunch.","explanation":"おなかがすきました is the standard expression for becoming hungry.","targetWord":"お腹"},
         {"line":"今日の昼ご飯は何にしますか。","reading":"きょうの ひるごはんは なにに しますか。","meaning":"What will you choose for lunch today?","response":"カレーにします。","responseReading":"カレーに します。","responseMeaning":"I will have curry.","reaction":"いいですね。私もカレーが好きです。","reactionReading":"いいですね。わたしも カレーが すきです。","reactionMeaning":"Good choice. I like curry too.","explanation":"X にします means deciding on or choosing X.","targetWord":"昼ご飯"},
@@ -68,11 +68,11 @@
     {
       "id": "at-the-station",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "At the Station",
       "japaneseTitle": "駅で",
       "level": 1,
-      "setting": "Catching a train with Mia",
+      "setting": "Catching a train with Aiko",
       "summary": "Check the train time, tickets, platform and where to sit.",
       "turns": [
         {"line":"次の電車は何時ですか。","reading":"つぎの でんしゃは なんじですか。","meaning":"What time is the next train?","response":"十時十五分です。","responseReading":"じゅうじ じゅうごふんです。","responseMeaning":"It is at 10:15.","reaction":"あと十分ありますね。","reactionReading":"あと じゅっぷん ありますね。","reactionMeaning":"We have ten minutes left.","explanation":"A time followed by です directly answers 何時ですか.","targetWord":"電車"},
@@ -116,7 +116,7 @@
     {
       "id": "rainy-afternoon",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "A Rainy Afternoon",
       "japaneseTitle": "雨の午後",
       "level": 2,
@@ -164,12 +164,12 @@
     {
       "id": "birthday-present",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "A Birthday Present",
       "japaneseTitle": "誕生日のプレゼント",
       "level": 2,
       "setting": "Choosing a present for a teacher",
-      "summary": "Help Mia choose flowers and write a birthday card.",
+      "summary": "Help Aiko choose flowers and write a birthday card.",
       "turns": [
         {"line":"来週は先生の誕生日ですね。","reading":"らいしゅうは せんせいの たんじょうびですね。","meaning":"Next week is our teacher's birthday, isn't it?","response":"はい、プレゼントを買いたいです。","responseReading":"はい、プレゼントを かいたいです。","responseMeaning":"Yes, I want to buy a present.","reaction":"一緒に選びましょう。","reactionReading":"いっしょに えらびましょう。","reactionMeaning":"Let's choose one together.","explanation":"買いたいです expresses your intention to buy a present.","targetWord":"誕生日"},
         {"line":"何がいいと思いますか。","reading":"なにが いいと おもいますか。","meaning":"What do you think would be good?","response":"花がいいと思います。","responseReading":"はなが いいと おもいます。","responseMeaning":"I think flowers would be good.","reaction":"先生は花が好きですね。","reactionReading":"せんせいは はなが すきですね。","reactionMeaning":"Our teacher likes flowers.","explanation":"と思います gives your considered opinion.","targetWord":"思う"},
@@ -212,17 +212,17 @@
     {
       "id": "helping-a-visitor",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "Helping a Visitor",
       "japaneseTitle": "道案内",
       "level": 3,
       "setting": "Giving directions near the station",
-      "summary": "Help Mia guide a visitor who cannot find the station.",
+      "summary": "Help Aiko guide a visitor who cannot find the station.",
       "turns": [
         {"line":"あの人は駅を探しています。手伝いませんか。","reading":"あの ひとは えきを さがしています。てつだいませんか。","meaning":"That person is looking for the station. Shall we help?","response":"はい、手伝いましょう。","responseReading":"はい、てつだいましょう。","responseMeaning":"Yes, let's help.","reaction":"声をかけてみますね。","reactionReading":"こえを かけてみますね。","reactionMeaning":"I will try speaking to them.","explanation":"手伝いましょう accepts the suggestion to help together.","targetWord":"手伝う"},
         {"line":"駅までの道を知っていますか。","reading":"えきまでの みちを しっていますか。","meaning":"Do you know the way to the station?","response":"はい、この道をまっすぐです。","responseReading":"はい、この みちを まっすぐです。","responseMeaning":"Yes, it is straight along this road.","reaction":"分かりやすい道ですね。","reactionReading":"わかりやすい みちですね。","reactionMeaning":"It is an easy route to explain.","explanation":"この道をまっすぐ gives a concise direction to continue straight.","targetWord":"道"},
         {"line":"どの角で曲がりますか。","reading":"どの かどで まがりますか。","meaning":"At which corner do they turn?","response":"二つ目の角を右に曲がります。","responseReading":"ふたつめの かどを みぎに まがります。","responseMeaning":"Turn right at the second corner.","reaction":"そこから駅が見えます。","reactionReading":"そこから えきが みえます。","reactionMeaning":"From there, the station is visible.","explanation":"二つ目 identifies the second corner, and 右に gives the direction of the turn.","targetWord":"右"},
-        {"line":"地図も見せたほうがいいですか。","reading":"ちずも みせたほうが いいですか。","meaning":"Would it be better to show them the map too?","response":"はい、ここを見せてください。","responseReading":"はい、ここを みせてください。","responseMeaning":"Yes, please show them this spot.","reaction":"これなら安心できますね。","reactionReading":"これなら あんしん できますね。","reactionMeaning":"This should reassure them.","explanation":"見せてください politely asks Mia to show a specific place.","targetWord":"地図"}
+        {"line":"地図も見せたほうがいいですか。","reading":"ちずも みせたほうが いいですか。","meaning":"Would it be better to show them the map too?","response":"はい、ここを見せてください。","responseReading":"はい、ここを みせてください。","responseMeaning":"Yes, please show them this spot.","reaction":"これなら安心できますね。","reactionReading":"これなら あんしん できますね。","reactionMeaning":"This should reassure them.","explanation":"見せてください politely asks Aiko to show a specific place.","targetWord":"地図"}
       ]
     },
     {

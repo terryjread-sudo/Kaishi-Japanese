@@ -1,6 +1,7 @@
 export const CONTENT_DATA_FILES = [
   './data/japan-ready-v90.json',
   './data/sentence-lab.json',
+  './data/lesson-story-scenes.json',
   './data/vocabulary.json',
   './data/katakana-core-10k.json',
   './data/vocabulary-orthography.json',
