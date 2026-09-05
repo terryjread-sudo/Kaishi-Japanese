@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { findLessonStoryScene, selectLessonStoryScene } from './story-scenes';
 
@@ -25,5 +27,13 @@ describe('lesson story scenes', () => {
   it('rejects malformed catalogs and can recover a scene by ID for mission resume', () => {
     expect(selectLessonStoryScene({ schemaVersion: 1, scenes: [{ ...scene, question: { ...scene.question, answer: 'Sensei' } }] }, 2, [])).toBeNull();
     expect(findLessonStoryScene(catalog, 'aiko-kai-introductions')?.sentence).toBe('私はカイです。');
+  });
+
+  it('keeps Aiko and Kai returning every fourth lesson through the foundation', () => {
+    const productionCatalog = JSON.parse(readFileSync(resolve(process.cwd(), 'data/lesson-story-scenes.json'), 'utf8')) as typeof catalog;
+    const recurringLessons = productionCatalog.scenes.filter((entry) => entry.lesson >= 16).map((entry) => entry.lesson);
+
+    expect(productionCatalog.scenes.slice(0, 6).map((entry) => entry.lesson)).toEqual([2, 4, 6, 8, 10, 12]);
+    expect(recurringLessons).toEqual(Array.from({ length: 22 }, (_, index) => 16 + index * 4));
   });
 });

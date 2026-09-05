@@ -35,7 +35,7 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
   await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s Path:');
   await expect(page.locator('.lesson-mastery-path')).toContainText('%');
   await expect(page.locator('.lesson-mastery-path summary')).toHaveText('How this works');
-  await expect(page.locator('.lesson-mastery-path details')).toContainText('Meeting every word opens the next lesson.');
+  await expect(page.locator('.lesson-mastery-path details')).toContainText('Completing a lesson opens the next one');
 });
 
 test('test learner can launch an immersive activity after app initialization', async ({ page }) => {
@@ -89,11 +89,13 @@ test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) 
     const policy = (window as typeof window & {
       KaishiActivityPolicy?: {
         selectLessonStoryScene: (catalog: unknown, lesson: number, words: Array<{ id: string; picture?: string }>) => unknown;
+        lessonForIndex: (words: Array<{ id: string; picture?: string }>, index: number) => Array<{ id: string; picture?: string }>;
       };
     }).KaishiActivityPolicy;
-    const lessonWords = words.slice(3, 6);
-    const scene = policy?.selectLessonStoryScene(catalog, 2, lessonWords);
-    const target = lessonWords.find((word: { id: string }) => word.id === '1708637439873');
+    if (!policy) throw new Error('Expected Journey curriculum policy.');
+    const lessonWords = policy.lessonForIndex(words, 1);
+    const scene = policy.selectLessonStoryScene(catalog, 2, lessonWords);
+    const target = lessonWords.find((word: { id: string }) => word.id === '1708637439854');
     if (!scene || !target) throw new Error('Expected the Lesson 2 story scene.');
 
     (0, eval)(`session=[{v:${JSON.stringify(target)},skill:'storySentence',storyScene:${JSON.stringify(scene)}}];index=0;current=null;show('study');renderCurrent();`);
@@ -105,6 +107,41 @@ test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) 
   await page.getByRole('button', { name: 'Aiko', exact: true }).click();
   await expect(page.locator('#storySentenceFeedback')).toContainText('Not quite');
   await expect(page.locator('#storyAnswerAudio')).toBeVisible();
+});
+
+test('the Journey uses the spoken-first foundation and tracks a connector card', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Explore first' }).click();
+
+  await page.evaluate(async () => {
+    const words = await fetch('data/vocabulary.json').then((response) => response.json());
+    const policy = (window as typeof window & {
+      KaishiActivityPolicy?: {
+        lessonForIndex: (words: Array<{ id: string; word: string }>, index: number) => Array<{ id: string; word: string }>;
+        connectorForLesson: (lesson: number) => { id: string; explanation: string } | null;
+      };
+    }).KaishiActivityPolicy;
+    const first = policy?.lessonForIndex(words, 0) ?? [];
+    if (first.map((word) => word.word).join(',') !== 'はい,いいえ,大丈夫') throw new Error('Expected spoken-first lesson one.');
+    const target = policy?.lessonForIndex(words, 1)[0];
+    const connector = policy?.connectorForLesson(2);
+    if (!target || !connector) throw new Error('Expected lesson two connector.');
+    (0, eval)(`session=[{v:${JSON.stringify(target)},skill:'connector',connectorStep:${JSON.stringify(connector)}}];index=0;current=null;show('study');renderCurrent();`);
+  });
+
+  await expect(page.locator('.connector-card')).toContainText('Topic marker');
+  await page.locator('[data-connector-answer]').filter({ hasText: 'Marks what the sentence is about' }).click();
+  await expect.poll(() => page.evaluate(() => (0, eval)('meta.connectorProgress["topic-wa"].attempts'))).toBe(1);
+});
+
+test('a scheduled connector does not displace its Aiko and Kai story card', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Explore first' }).click();
+  await expect.poll(() => page.evaluate(() => (0, eval)('Boolean(storySceneCatalog?.scenes?.length)'))).toBe(true);
+
+  const skills = await page.evaluate(() => (0, eval)('makeSession(1); session.map(item => item.skill)')) as string[];
+  expect(skills).toContain('storySentence');
+  expect(skills).toContain('connector');
 });
 
 test('test learner lesson jump renders the same early Journey flow', async ({ page }) => {

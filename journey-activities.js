@@ -34,8 +34,19 @@
   const introduced = () => safeArray(vocab).filter(word => {
     try { return typeof wordIntroduced === 'function' ? wordIntroduced(word) : Boolean(progress?.[word.id]); } catch (_) { return Boolean(progress?.[word.id]); }
   });
+  // Activity vocabulary must have survived some recall, not just one encounter.
+  const usable = () => {
+    if (isAdminTestMode()) return safeArray(vocab);
+    return introduced().filter(word => {
+      try {
+        if (window.KaishiLearning?.wordState?.(word) === 'Usable') return true;
+        const state = progress?.[word.id];
+        return Number(state?.stage || 0) >= 2 && Number(state?.reps || 0) >= 2;
+      } catch (_) { return false; }
+    });
+  };
   const supported = id => {
-    const words = introduced();
+    const words = usable();
     try {
       if (id === 'picture') return words.filter(word => Boolean(memoryScenes?.[sceneKey(word)]?.file));
       if (id === 'listening') return words.filter(word => Boolean(word?.wordAudio));
@@ -100,7 +111,7 @@
   };
   const wordCount = id => id === 'picture' || id === 'listening' || id === 'karuta' || id === 'sentenceLab' || id === 'kanji' || id === 'builder'
     ? supported(id).length
-    : introduced().length;
+    : usable().length;
 
   function activityReadiness(id) {
     const rule = ruleFor(id);
@@ -145,7 +156,7 @@
     // Journey should look like the selected lesson for realistic flow tests.
     const introducedCount=isAdminTestMode()
       ?Math.min(safeArray(vocab).length,(Number(chapterIndex)+1)*chapterSize)
-      :introduced().length;
+      :usable().length;
 
     const picture = ruleFor('picture');
     const hasPicture = lesson.some(word => { try { return Boolean(memoryScenes?.[sceneKey(word)]?.file); } catch (_) { return false; } });
@@ -226,7 +237,7 @@
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;
-    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 10 && Array.isArray(previous.steps)) return previous;
+    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 11 && Array.isArray(previous.steps)) return previous;
 
     const schedule = lessonSchedule(chapter, chapter, words, {forceFirst:true});
     const lessonId = `lesson-${chapter}`;
@@ -247,20 +258,28 @@
       if (id === 'karuta') return lesson.some(word => Boolean(word?.wordAudio && memoryScenes?.[sceneKey(word)]?.file));
       if (id === 'conversation') return safeArray(conversations).some((item,index) => {
         const targets=typeof conversationTargets==='function'?conversationTargets(item):[];
-        return Boolean(typeof conversationUnlocked==='function'&&conversationUnlocked(index)&&targets.length&&targets.every(word=>wordIntroduced(word))&&targets.some(word=>lesson.includes(word)));
+        return Boolean(typeof conversationUnlocked==='function'&&conversationUnlocked(index)&&targets.length&&targets.every(word=>usable().includes(word))&&targets.some(word=>lesson.includes(word)));
       });
       if (id === 'theatre') return safeArray(theatreScenes).some(scene => scene.timeline?.some(line => lesson.some(word => word.word === line.targetWord || word.reading === line.targetWord)));
       if (id === 'manga') return safeArray(mangaStories).some(story => story.panels?.some(panel => lesson.some(word => `${word.word}|${word.reading}` === panel.targetKey)));
-      if (id === 'battle') return dueWords().some(word => lesson.includes(word)) || lesson.some(word => wordIntroduced(word));
-      if (id === 'colosseum') return lesson.some(word => wordIntroduced(word));
+      if (id === 'battle') return dueWords().some(word => lesson.includes(word)) || lesson.some(word => usable().includes(word));
+      if (id === 'colosseum') return lesson.some(word => usable().includes(word));
       if (id === 'grammar') return lesson.some(word => Boolean(word?._anki?.sentence || word?.exampleSentence));
       if (id === 'kanji' || id === 'builder') return lesson.some(word => typeof kanjiCharacters === 'function' && kanjiCharacters(word).length);
       return true;
     };
-    const candidates=[...new Set([...schedule.core.filter(id=>ruleFor(id)?.immersive),...schedule.sideQuests])]
+    const candidates=[...new Set(schedule.sideQuests)]
       .filter(id => JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(id) && activityReadiness(id).wordReady && lessonRelevant(id));
     const ranked=candidates.sort((a,b) => {
-      const score=id => (meta.pathVisits?.[id] ? 0 : 6) + (id==='battle' ? 1 : 0) + (id==='colosseum' ? 2 : 0) + (id==='karuta' && lesson.some(word => word.wordAudio && memoryScenes?.[sceneKey(word)]?.file) ? 5 : 0);
+      const score=id => {
+        const preference=typeof activityPreferenceWeight==='function'?activityPreferenceWeight(id):1;
+        const dueCoverage=dueWords().filter(word=>lesson.includes(word)).length;
+        const weakSkill=typeof masteryFocus==='function'?masteryFocus()?.skill:'';
+        const listeningIds=['karuta','conversation','theatre','colosseum','kotobaEcho'];
+        const readingIds=['grammar','manga','builder'];
+        const weakSkillMatch=(weakSkill==='listening'&&listeningIds.includes(id))||(weakSkill==='sentence'&&readingIds.includes(id))||(weakSkill==='production'&&id==='kotobaEcho');
+        return (meta.pathVisits?.[id] ? 0 : 6) + preference*3 + dueCoverage*2 + (weakSkillMatch ? 4 : 0) + (id==='colosseum' ? 2 : 0) + (id==='karuta' && lesson.some(word => word.wordAudio && memoryScenes?.[sceneKey(word)]?.file) ? 5 : 0);
+      };
       return score(b)-score(a);
     });
     const side=ranked[0];
@@ -275,8 +294,8 @@
           sideQuestFor:lessonId,
           optional:true,
           icon:rule.icon,
-          title:`Real-world mission · ${rule.label}`,
-          detail:missionBrief(side,lesson).objective,
+          title:`Sensei recommends · ${rule.label}`,
+          detail:`${missionBrief(side,lesson).objective} This is optional, and it matches your current practice.`,
           mission:missionBrief(side,lesson),
           required:false
         });
@@ -285,13 +304,13 @@
     }
 
     meta.dailyJourneyRoute={
-      schemaVersion:10,
+      schemaVersion:11,
       date:today,
       chapter,
       balanceKey:'vocabulary-gated',
       completed: same ? (previous.completed || []) : [],
       retries:same ? (previous.retries || {}) : {},
-      explanation:{chapter,sequence:'One lesson at a time · optional side quests reinforce familiar words'},
+      explanation:{chapter,sequence:'One lesson at a time · Sensei recommends one optional quest when usable words support it'},
       steps
     };
     try { save(); } catch (_) {}
@@ -411,11 +430,16 @@
       }
     }
 
+    const connector=window.KaishiActivityPolicy?.connectorForLesson?.(chapter+1)||dueConnectorStep(chapter+1);
     const story=window.KaishiActivityPolicy?.selectLessonStoryScene?.(storySceneCatalog,chapter+1,selected);
     if(story){
       const target=selected.find(word=>word.id===story.targetWordId);
       if(target){if(session.length>=MISSION_CARD_LIMIT)session.pop();session.push({v:target,skill:'storySentence',storyScene:story})}
-    }else{
+    }
+    if(connector){
+      const target=selected[0]||topic.words[0];
+      if(target){if(session.length>=MISSION_CARD_LIMIT){const removable=session.findIndex(item=>item.skill!=='storySentence');session.splice(removable>=0?removable:0,1)}session.push({v:target,skill:'connector',connectorStep:connector})}
+    }else if(!story){
       const bridge=sessionSentencePlan(selected);if(bridge){if(session.length>=MISSION_CARD_LIMIT)session.pop();session.push({v:bridge.target,skill:'sessionSentence',sentencePlan:bridge})}
     }
     clearMissionResume();index=0;current=null;showJourneySessionPreview(`${topic.icon||'🗾'} ${topic.title}`)

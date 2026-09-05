@@ -55,6 +55,14 @@
     } catch (_) {}
 
     try {
+      const ordered = window.KaishiActivityPolicy?.resolveJourneyVocabulary?.(vocab);
+      if (Array.isArray(ordered) && ordered.length) {
+        const start = Number(chapter) * CHAPTER_SIZE;
+        return ordered.slice(start, start + CHAPTER_SIZE);
+      }
+    } catch (_) {}
+
+    try {
       const start = Number(chapter) * CHAPTER_SIZE;
       return Array.isArray(vocab) ? vocab.slice(start, start + CHAPTER_SIZE) : [];
     } catch (_) {
@@ -71,7 +79,8 @@
     } catch (_) {}
 
     try {
-      return Math.ceil((Array.isArray(vocab) ? vocab.length : 0) / CHAPTER_SIZE);
+      const ordered = window.KaishiActivityPolicy?.resolveJourneyVocabulary?.(vocab);
+      return Math.ceil((Array.isArray(ordered) ? ordered.length : Array.isArray(vocab) ? vocab.length : 0) / CHAPTER_SIZE);
     } catch (_) {
       return 0;
     }
