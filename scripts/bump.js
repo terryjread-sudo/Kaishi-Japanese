@@ -31,8 +31,8 @@ console.log(`Bumping version from v${oldVersion} to v${newVersion}...`);
 const versionJsPath = path.join(rootDir, 'version.js');
 let versionJs = fs.readFileSync(versionJsPath, 'utf8');
 versionJs = versionJs.replace(
-  /\/\* Kaishi Quest [^*]+ \*\//,
-  `/* Kaishi Quest ${newVersion} — single source of truth for application version. */`
+  /\/\* Kaishi Japanese [^*]+ \*\//,
+  `/* Kaishi Japanese ${newVersion} — single source of truth for application version. */`
 );
 versionJs = versionJs.replace(
   /var APP_VERSION = '[^']+';/,
@@ -45,8 +45,8 @@ console.log('? Updated version.js');
 const swJsPath = path.join(rootDir, 'service-worker.js');
 let swJs = fs.readFileSync(swJsPath, 'utf8');
 swJs = swJs.replace(
-  /\/\* Kaishi Quest Service Worker — [^*]+ \*\//,
-  `/* Kaishi Quest Service Worker — ${newVersion}. */`
+  /\/\* Kaishi Japanese Service Worker — [^*]+ \*\//,
+  `/* Kaishi Japanese Service Worker — ${newVersion}. */`
 );
 swJs = swJs.replace(
   /var VERSION = '[^']+';/,
@@ -82,7 +82,7 @@ if (badgePattern.test(indexHtml)) {
 } else {
   console.warn('??  Could not find #versionBadge element in index.html to update.');
 }
-const badgeAriaLabelPattern = /(aria-label="Kaishi Quest version )\d+\.\d+\.\d+(\. Check for updates)/;
+const badgeAriaLabelPattern = /(aria-label="Kaishi Japanese version )\d+\.\d+\.\d+(\. Check for updates)/;
 if (badgeAriaLabelPattern.test(indexHtml)) {
   indexHtml = indexHtml.replace(badgeAriaLabelPattern, `$1${newVersion}$2`);
 }
@@ -91,7 +91,7 @@ console.log('? Updated index.html cache-busters and version badge');
 
 // 6. Create README release notes file
 const readmePath = path.join(rootDir, `README-${newVersion}.txt`);
-const readmeContent = `Kaishi Quest ${newVersion}\n\n${title}\n\nChanges:\n${(changes.length ? changes : [title]).map(c => `- ${c}`).join('\n')}\n`;
+const readmeContent = `Kaishi Japanese ${newVersion}\n\n${title}\n\nChanges:\n${(changes.length ? changes : [title]).map(c => `- ${c}`).join('\n')}\n`;
 fs.writeFileSync(readmePath, readmeContent, 'utf8');
 console.log(`? Created README-${newVersion}.txt`);
 

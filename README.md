@@ -1,4 +1,4 @@
-# Kaishi Quest v11.8.49 — Answer Animation for the Learning Path
+# Kaishi Japanese v11.8.49 — Answer Animation for the Learning Path
 
 ## What's new
 

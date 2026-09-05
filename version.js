@@ -1,6 +1,6 @@
 'use strict';
 
-/* Kaishi Quest 11.52.0 — single source of truth for application version. */
+/* Kaishi Japanese 11.52.0 — single source of truth for application version. */
 var APP_VERSION = '11.52.0';
 var KAISHI_VERSION = APP_VERSION;
 
@@ -70,7 +70,7 @@ try {
         document.title = document.title.replace(/v\d+\.\d+\.\d+/i, 'v' + APP_VERSION);
         document.querySelectorAll('#versionBadge,.version-badge').forEach(el => {
           el.textContent = 'v' + APP_VERSION;
-          el.setAttribute('aria-label', 'Kaishi Quest version ' + APP_VERSION + '. Check for updates and refresh the app.');
+          el.setAttribute('aria-label', 'Kaishi Japanese version ' + APP_VERSION + '. Check for updates and refresh the app.');
         });
       } catch (_) {}
     };

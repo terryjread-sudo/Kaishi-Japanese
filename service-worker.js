@@ -1,6 +1,6 @@
 'use strict';
 
-/* Kaishi Quest Service Worker — 11.52.0. */
+/* Kaishi Japanese Service Worker — 11.52.0. */
 var VERSION = '11.52.0';
 try {
   importScripts('./version.js', './content-manifest.generated.js');
