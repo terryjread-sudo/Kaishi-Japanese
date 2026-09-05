@@ -1,8 +1,8 @@
-# Kaishi Quest Architecture
+# Kaishi Japanese Architecture
 
 ## Direction
 
-Kaishi Quest is migrating from ordered classic scripts to strict TypeScript ES modules. The migration is staged so the existing static PWA remains usable while behavior moves behind explicit, tested contracts.
+Kaishi Japanese is migrating from ordered classic scripts to strict TypeScript ES modules. The migration is staged so the existing static PWA remains usable while behavior moves behind explicit, tested contracts.
 
 ## Ownership
 

@@ -20,7 +20,7 @@ function assert(condition, message) {
   }
 }
 
-console.log('=== Running Kaishi Quest Smoke & Integrity Tests ===\n');
+console.log('=== Running Kaishi Japanese Smoke & Integrity Tests ===\n');
 
 // 1. JSON Files Validation
 console.log('1. Validating JSON files...');

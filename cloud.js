@@ -58,7 +58,7 @@
 
  function renderSignedOut(message='Sign in with GitHub to sync progress between devices.'){
   user=null;initialisedUserId='';selectedAvatar='boy';
-  if(account)account.innerHTML=`<img class="cloud-avatar" src="${GUEST_IMAGE}" alt="Guest learner"><div><strong>Protect your Kaishi Quest progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
+  if(account)account.innerHTML=`<img class="cloud-avatar" src="${GUEST_IMAGE}" alt="Guest learner"><div><strong>Protect your Kaishi Japanese progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
   $('#cloudSignIn')?.addEventListener('click',signIn);
   if(join){join.checked=true;join.disabled=true}
   setStatus('Guest progress is saved only on this device.');
@@ -280,7 +280,7 @@ async function loadLeaderboard(){
  async function changeAvatar(event){const button=event.target.closest('[data-avatar]');if(!button)return;const definition=avatarDefinition(button.dataset.avatar);if(!user){toast('Sign in to choose and sync a Kaishi character');return}if(!avatarUnlocked(button.dataset.avatar)){toast(`${definition?.name||'This character'} unlocks at ${definition?.mastered||0} mastered words`);return}selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();const accountAvatar=account?.querySelector('img');if(accountAvatar)accountAvatar.src=avatarImage(selectedAvatar,adapter()?.stats?.().streak);const{error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);if(error){setStatus(describeError(error),'error');return}setStatus(`${definition?.name||'Kaishi character'} saved.`,'ok');await loadLeaderboard()}
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
  async function syncNow(){if(!user){await signIn();return}await initialiseAccount(true)}
- async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Quest cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
+ async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Japanese cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
  async function handleSession(session){user=session?.user||null;window.dispatchEvent(new CustomEvent('kaishi-auth-change',{detail:{signedIn:Boolean(user),userId:user?.id||null}}));if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
 
 
@@ -383,7 +383,7 @@ async function loadLeaderboard(){
    const result=await friendRpc('redeem_kaishi_friend_invite',{invite_token:token});
    clearPendingInvite();
    await loadFriends();await loadLeaderboard();
-   if(result?.inviter_login)toast(`You and @${result.inviter_login} are now Kaishi Quest friends`);
+   if(result?.inviter_login)toast(`You and @${result.inviter_login} are now Kaishi Japanese friends`);
    return true;
   }catch(error){
    clearPendingInvite();

@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Kaishi Quest release manager
+ * Kaishi Japanese release manager
  * (version number lives in version.js — see APP_VERSION below)
  *
  * Release helpers:
@@ -521,14 +521,14 @@
 
 
   function lockVisibleReleaseVersion(){
-    const apply=()=>{const el=badge();if(el&&el.textContent!==`v${CURRENT_VERSION}`){el.textContent=`v${CURRENT_VERSION}`;el.setAttribute('aria-label',`Kaishi Quest version ${CURRENT_VERSION}. Check for updates and refresh the app.`)}const t=`Kaishi Quest • v${CURRENT_VERSION}`;if(document.title!==t)document.title=t};
+    const apply=()=>{const el=badge();if(el&&el.textContent!==`v${CURRENT_VERSION}`){el.textContent=`v${CURRENT_VERSION}`;el.setAttribute('aria-label',`Kaishi Japanese version ${CURRENT_VERSION}. Check for updates and refresh the app.`)}const t=`Kaishi Japanese • v${CURRENT_VERSION}`;if(document.title!==t)document.title=t};
     apply();new MutationObserver(apply).observe(document.documentElement,{subtree:true,childList:true,characterData:true});
   }
   function refreshVisibleReleaseVersion(){
-    document.title=`Kaishi Quest • v${CURRENT_VERSION}`;
+    document.title=`Kaishi Japanese • v${CURRENT_VERSION}`;
     document.querySelectorAll('.version-badge').forEach(node=>{
       node.textContent=`v${CURRENT_VERSION}`;
-      node.setAttribute('aria-label',`Kaishi Quest version ${CURRENT_VERSION}. Check for updates and refresh the app.`);
+      node.setAttribute('aria-label',`Kaishi Japanese version ${CURRENT_VERSION}. Check for updates and refresh the app.`);
     });
   }
 
@@ -637,7 +637,7 @@
         // cache-busting. The service worker is configured to always try the
         // network first for this endpoint. If this succeeds (any HTTP response),
         // we have network connectivity. If it times out or network error, we're offline.
-        // Keep the app's deployment subpath (for example /Kakashi-Web/ on
+        // Keep the app's deployment subpath (for example /Kaishi-Japanese/ on
         // GitHub Pages) instead of incorrectly probing the domain root.
         const checkUrl=new URL('version.json',document.baseURI);
         checkUrl.searchParams.set('t',String(Date.now()));
@@ -986,7 +986,7 @@
     if(button?.dataset.busy==='1') return;
 
     const confirmed=window.confirm(
-      'Clear Kaishi Quest downloaded app files and images?\\n\\n' +
+      'Clear Kaishi Japanese downloaded app files and images?\\n\\n' +
       'Your learning progress, streak, settings and cloud account will NOT be deleted.'
     );
     if(!confirmed) return;
@@ -1111,7 +1111,7 @@
     refreshing=true;
     const original=`v${CURRENT_VERSION}`;
     setBadge('Checking…',true);
-    notify('Checking for a newer Kaishi Quest release…');
+    notify('Checking for a newer Kaishi Japanese release…');
 
     try{
       const latest=await fetchLatestVersion();
@@ -1119,7 +1119,7 @@
       const newer=compareVersions(latestVersion,CURRENT_VERSION)>0;
 
       notify(newer
-        ? `Kaishi Quest v${latestVersion} found. Refreshing app files…`
+        ? `Kaishi Japanese v${latestVersion} found. Refreshing app files…`
         : `v${CURRENT_VERSION} is current. Refreshing app files…`);
 
       const registration=await updateServiceWorker();
@@ -1232,7 +1232,7 @@
       el.setAttribute('role','button');
       el.setAttribute('tabindex','0');
       el.setAttribute('title','Check for updates and refresh');
-      el.setAttribute('aria-label',`Kaishi Quest version ${CURRENT_VERSION}. Check for updates and refresh the app.`);
+      el.setAttribute('aria-label',`Kaishi Japanese version ${CURRENT_VERSION}. Check for updates and refresh the app.`);
       el.style.cursor='pointer';
       el.addEventListener('click',checkAndRefresh);
       el.addEventListener('keydown',event=>{
@@ -1256,7 +1256,7 @@
     const versionCard=document.querySelector('.version-card');
     if(versionCard){
       const strong=versionCard.querySelector('strong');
-      if(strong) strong.textContent=`Kaishi Quest v${CURRENT_VERSION}`;
+      if(strong) strong.textContent=`Kaishi Japanese v${CURRENT_VERSION}`;
       const title=versionCard.querySelector('span');
       if(title) title.textContent='Cache & Offline Data';
       const detail=versionCard.querySelector('small');

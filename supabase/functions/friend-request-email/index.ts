@@ -56,7 +56,7 @@ Deno.serve(async (request) => {
       .select("display_name,github_login")
       .eq("user_id", sender.id)
       .maybeSingle();
-    const senderName = senderProfile?.display_name || senderProfile?.github_login || "A Kaishi Quest learner";
+    const senderName = senderProfile?.display_name || senderProfile?.github_login || "A Kaishi Japanese learner";
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -64,13 +64,13 @@ Deno.serve(async (request) => {
       body: JSON.stringify({
         from: fromEmail,
         to: [recipientEmail],
-        subject: `${senderName} sent you a Kaishi Quest friend request`,
+        subject: `${senderName} sent you a Kaishi Japanese friend request`,
         html: `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto">
           <h2>Learn Japanese together</h2>
-          <p><strong>${senderName}</strong> has sent you a friend request in Kaishi Quest.</p>
+          <p><strong>${senderName}</strong> has sent you a friend request in Kaishi Japanese.</p>
           <p>Accept it to encourage each other, see recent activity and keep your learning streaks moving.</p>
-          <p><a href="${appUrl}#community" style="display:inline-block;background:#2563eb;color:white;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:bold">Open Kaishi Quest</a></p>
-          <p style="color:#64748b;font-size:13px">Friend-request emails are enabled by default. You can turn them off in Kaishi Quest Settings.</p>
+          <p><a href="${appUrl}#community" style="display:inline-block;background:#2563eb;color:white;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:bold">Open Kaishi Japanese</a></p>
+          <p style="color:#64748b;font-size:13px">Friend-request emails are enabled by default. You can turn them off in Kaishi Japanese Settings.</p>
         </div>`,
       }),
     });

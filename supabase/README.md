@@ -1,4 +1,4 @@
-# Kaishi Quest cloud setup
+# Kaishi Japanese cloud setup
 
 The application is already configured with the project's public Supabase URL
 and publishable key. Never commit the GitHub OAuth client secret, database
@@ -7,9 +7,9 @@ password, or a Supabase secret/service-role key.
 ## One-time Supabase setup
 
 1. In **Authentication → URL Configuration**, set the Site URL to:
-   `https://terryjread-sudo.github.io/Kakashi-Web/`
+   `https://terryjread-sudo.github.io/Kaishi-Japanese/`
 2. Add these Redirect URLs:
-   - `https://terryjread-sudo.github.io/Kakashi-Web/`
+   - `https://terryjread-sudo.github.io/Kaishi-Japanese/`
    - `http://localhost:8000/`
    - `http://127.0.0.1:8000/`
 3. In **Authentication → Providers → GitHub**, enable GitHub and save the
@@ -33,4 +33,4 @@ deletion function.
 - Anyone can read leaderboard rows only when the owner has opted in.
 - The leaderboard never exposes per-word learning progress or settings.
 - Deleting a cloud account removes the Supabase Auth user and cascades to both
-  Kaishi Quest data tables while leaving local browser progress untouched.
+  Kaishi Japanese data tables while leaving local browser progress untouched.
