@@ -124,9 +124,9 @@
         "explanation": "The polite past ending is ました. All other sentence roles remain unchanged."
       },
       "context": {
-        "lines": ["美亜：昼は何をしますか。", "海：友達と寿司を食べます。"],
+        "lines": ["愛子：昼は何をしますか。", "海：友達と寿司を食べます。"],
         "question": "Who will eat sushi?",
-        "choices": ["Kai", "Mia", "The friend alone", "The sushi chef"],
+        "choices": ["Kai", "Aiko", "The friend alone", "The sushi chef"],
         "answer": "Kai",
         "explanation": "Kai is speaking, so the omitted subject is naturally ‘I’—Kai—not the nearby noun 友達."
       },
@@ -185,10 +185,10 @@
         "explanation": "Only the destination noun changes. に still marks the destination and で still marks transport."
       },
       "context": {
-        "lines": ["美亜：いつ東京に行きますか。", "海：明日の朝、行きます。"],
+        "lines": ["愛子：いつ東京に行きますか。", "海：明日の朝、行きます。"],
         "question": "Why can Kai omit 東京に?",
-        "choices": ["Mia’s question already established the destination", "Tokyo is never used with に", "Morning words replace destinations", "行きます always means Tokyo"],
-        "answer": "Mia’s question already established the destination",
+        "choices": ["Aiko’s question already established the destination", "Tokyo is never used with に", "Morning words replace destinations", "行きます always means Tokyo"],
+        "answer": "Aiko’s question already established the destination",
         "explanation": "Known information is commonly omitted in Japanese when the listener can recover it from the conversation."
       },
       "transfer": {
@@ -306,11 +306,11 @@
         "explanation": "待ちました is the polite past form. で and を keep their original roles."
       },
       "context": {
-        "lines": ["海：今どこですか。", "美亜：駅です。友達を待っています。"],
+        "lines": ["海：今どこですか。", "愛子：駅です。友達を待っています。"],
         "question": "Who is waiting for a friend?",
-        "choices": ["Mia", "Kai", "The station", "An unknown shop assistant"],
-        "answer": "Mia",
-        "explanation": "Mia is speaking and the subject stays implicit across her two sentences. Context identifies her as the person waiting."
+        "choices": ["Aiko", "Kai", "The station", "An unknown shop assistant"],
+        "answer": "Aiko",
+        "explanation": "Aiko is speaking and the subject stays implicit across her two sentences. Context identifies her as the person waiting."
       },
       "transfer": {
         "prompt": "Say: I am reading a book at the café.",

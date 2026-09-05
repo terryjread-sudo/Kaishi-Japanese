@@ -8,14 +8,14 @@
       "englishTitle": "The Morning Race",
       "difficulty": 1,
       "image": "media/manga/morning-race.webp",
-      "summary": "Kai and Mia race through their morning routine and head to school together.",
+      "summary": "Kai and Aiko race through their morning routine and head to school together.",
       "panels": [
         {"sentence":"朝、カイは元気に目を覚ましました。","reading":"あさ、カイはげんきにめをさましました。","translation":"In the morning, Kai woke up full of energy.","focus":"朝","targetKey":"朝|あさ"},
         {"sentence":"カイはパンと卵を食べます。","reading":"カイはパンとたまごをたべます。","translation":"Kai eats bread and an egg.","focus":"食べます","targetKey":"食べる|たべる"},
-        {"sentence":"門の前でミアと学校の話をします。","reading":"もんのまえでミアとがっこうのはなしをします。","translation":"At the gate, he talks with Mia about school.","focus":"学校","targetKey":"学校|がっこう"},
+        {"sentence":"門の前でアイコと学校の話をします。","reading":"もんのまえでアイコとがっこうのはなしをします。","translation":"At the gate, he talks with Aiko about school.","focus":"学校","targetKey":"学校|がっこう"},
         {"sentence":"二人は笑いながら一緒に行きました。","reading":"ふたりはわらいながらいっしょにいきました。","translation":"The two went together while laughing.","focus":"行きました","targetKey":"行く|いく"}
       ],
-      "question":{"prompt":"カイとミアはどこへ行きましたか。","translation":"Where did Kai and Mia go?","choices":["学校","海","山"],"answer":"学校"}
+      "question":{"prompt":"カイとアイコはどこへ行きましたか。","translation":"Where did Kai and Aiko go?","choices":["学校","海","山"],"answer":"学校"}
     },
     {
       "id": "rainy-mistake",
@@ -24,14 +24,14 @@
       "englishTitle": "The Rainy-Day Mistake",
       "difficulty": 1,
       "image": "media/manga/rainy-mistake.webp",
-      "summary": "Mia notices something important is missing just as the rain begins.",
+      "summary": "Aiko notices something important is missing just as the rain begins.",
       "panels": [
         {"sentence":"外へ出ると、冷たい雨が降っていました。","reading":"そとへでると、つめたいあめがふっていました。","translation":"When they went outside, cold rain was falling.","focus":"雨","targetKey":"雨|あめ"},
-        {"sentence":"ミアは大切なかばんを忘れました。","reading":"ミアはたいせつなかばんをわすれました。","translation":"Mia forgot her important bag.","focus":"忘れました","targetKey":"忘れる|わすれる"},
+        {"sentence":"アイコは大切なかばんを忘れました。","reading":"アイコはたいせつなかばんをわすれました。","translation":"Aiko forgot her important bag.","focus":"忘れました","targetKey":"忘れる|わすれる"},
         {"sentence":"二人は急いで家へ戻ります。","reading":"ふたりはいそいでいえへもどります。","translation":"The two hurry back home.","focus":"戻ります","targetKey":"戻る|もどる"},
         {"sentence":"かばんを持って、学校まで走りました。","reading":"かばんをもって、がっこうまではしりました。","translation":"With the bag, they ran to school.","focus":"走りました","targetKey":"走る|はしる"}
       ],
-      "question":{"prompt":"ミアは何を忘れましたか。","translation":"What did Mia forget?","choices":["かばん","写真","手紙"],"answer":"かばん"}
+      "question":{"prompt":"アイコは何を忘れましたか。","translation":"What did Aiko forget?","choices":["かばん","写真","手紙"],"answer":"かばん"}
     },
     {
       "id": "lost-cat",
@@ -40,11 +40,11 @@
       "englishTitle": "The Lost Cat",
       "difficulty": 1,
       "image": "media/manga/lost-cat.webp",
-      "summary": "A small cat leads Kai and Mia on a gentle neighbourhood search.",
+      "summary": "A small cat leads Kai and Aiko on a gentle neighbourhood search.",
       "panels": [
         {"sentence":"小さな猫が木の下で鳴いています。","reading":"ちいさなねこがきのしたでないています。","translation":"A small cat is crying beneath a tree.","focus":"猫","targetKey":"猫|ねこ"},
         {"sentence":"首輪には赤い家の絵がありました。","reading":"くびわにはあかいいえのえがありました。","translation":"There was a picture of a red house on its collar.","focus":"家","targetKey":"家|いえ"},
-        {"sentence":"カイとミアは猫と一緒に外を歩きます。","reading":"カイとミアはねこといっしょにそとをあるきます。","translation":"Kai and Mia walk outside with the cat.","focus":"外","targetKey":"外|そと"},
+        {"sentence":"カイとアイコは猫と一緒に外を歩きます。","reading":"カイとアイコはねこといっしょにそとをあるきます。","translation":"Kai and Aiko walk outside with the cat.","focus":"外","targetKey":"外|そと"},
         {"sentence":"角を曲がると、赤い家を見つけました。","reading":"かどをまがると、あかいいえをみつけました。","translation":"After turning the corner, they found the red house.","focus":"見つけました","targetKey":"見つける|みつける"},
         {"sentence":"猫は家族のところへうれしそうに帰りました。","reading":"ねこはかぞくのところへうれしそうにかえりました。","translation":"The cat happily returned to its family.","focus":"帰りました","targetKey":"帰る|かえる"}
       ],
@@ -57,15 +57,15 @@
       "englishTitle": "The Cooking Challenge",
       "difficulty": 2,
       "image": "media/manga/cooking-challenge.webp",
-      "summary": "Kai attempts lunch while Mia and Master offer rather energetic advice.",
+      "summary": "Kai attempts lunch while Aiko and Master offer rather energetic advice.",
       "panels": [
         {"sentence":"今日はカイが初めて料理に挑戦します。","reading":"きょうはカイがはじめてりょうりにちょうせんします。","translation":"Today Kai tries cooking for the first time.","focus":"料理","targetKey":"料理|りょうり"},
         {"sentence":"三人分の昼ご飯を作るつもりです。","reading":"さんにんぶんのひるごはんをつくるつもりです。","translation":"He intends to make lunch for three people.","focus":"作る","targetKey":"作る|つくる"},
         {"sentence":"マスターに教わって、材料を小さく切ります。","reading":"マスターにおそわって、ざいりょうをちいさくきります。","translation":"Learning from Master, he cuts the ingredients small.","focus":"切ります","targetKey":"切る|きる"},
-        {"sentence":"ミアは一口食べて、美味しいと笑いました。","reading":"ミアはひとくちたべて、おいしいとわらいました。","translation":"Mia took one bite and smiled, saying it was tasty.","focus":"美味しい","targetKey":"美味しい|おいしい"},
+        {"sentence":"アイコは一口食べて、美味しいと笑いました。","reading":"アイコはひとくちたべて、おいしいとわらいました。","translation":"Aiko took one bite and smiled, saying it was tasty.","focus":"美味しい","targetKey":"美味しい|おいしい"},
         {"sentence":"三人はできた料理を全部食べました。","reading":"さんにんはできたりょうりをぜんぶたべました。","translation":"The three ate all the finished food.","focus":"食べました","targetKey":"食べる|たべる"}
       ],
-      "question":{"prompt":"料理を教えたのは誰ですか。","translation":"Who taught the cooking?","choices":["マスター","ミア","猫"],"answer":"マスター"}
+      "question":{"prompt":"料理を教えたのは誰ですか。","translation":"Who taught the cooking?","choices":["マスター","アイコ","猫"],"answer":"マスター"}
     },
     {
       "id": "late-meeting",
@@ -74,10 +74,10 @@
       "englishTitle": "Five Minutes Late",
       "difficulty": 2,
       "image": "media/manga/late-meeting.webp",
-      "summary": "Mia waits at the clock while Kai races across town to keep a promise.",
+      "summary": "Aiko waits at the clock while Kai races across town to keep a promise.",
       "panels": [
         {"sentence":"約束の時間は午後三時です。","reading":"やくそくのじかんはごごさんじです。","translation":"The promised time is three in the afternoon.","focus":"時間","targetKey":"時間|じかん"},
-        {"sentence":"ミアは大きな時計の下で待っています。","reading":"ミアはおおきなとけいのしたでまっています。","translation":"Mia is waiting beneath a large clock.","focus":"待っています","targetKey":"待つ|まつ"},
+        {"sentence":"アイコは大きな時計の下で待っています。","reading":"アイコはおおきなとけいのしたでまっています。","translation":"Aiko is waiting beneath a large clock.","focus":"待っています","targetKey":"待つ|まつ"},
         {"sentence":"カイは五分遅れると連絡しました。","reading":"カイはごふんおくれるとれんらくしました。","translation":"Kai contacted her to say he would be five minutes late.","focus":"遅れる","targetKey":"遅れる|おくれる"},
         {"sentence":"カイは息を切らして広場に着きました。","reading":"カイはいきをきらしてひろばにつきました。","translation":"Out of breath, Kai arrived at the square.","focus":"着きました","targetKey":"着く|つく"},
         {"sentence":"二人は無事に会えて、ほっとしました。","reading":"ふたりはぶじにあえて、ほっとしました。","translation":"The two were relieved that they managed to meet safely.","focus":"会えて","targetKey":"会う|あう"}
@@ -96,11 +96,11 @@
         {"sentence":"夜になると、町の明かりが一斉につきました。","reading":"よるになると、まちのあかりがいっせいにつきました。","translation":"When night came, the town lights all switched on.","focus":"夜","targetKey":"夜|よる"},
         {"sentence":"広場にはたくさんの人が集まっています。","reading":"ひろばにはたくさんのひとがあつまっています。","translation":"Many people are gathering in the square.","focus":"人","targetKey":"人|ひと"},
         {"sentence":"思ったより人が多いので、カイは驚きました。","reading":"おもったよりひとがおおいので、カイはおどろきました。","translation":"Kai was surprised because there were more people than expected.","focus":"多い","targetKey":"多い|おおい"},
-        {"sentence":"ミアは音楽と踊りを心から楽しみます。","reading":"ミアはおんがくとおどりをこころからたのしみます。","translation":"Mia wholeheartedly enjoys the music and dancing.","focus":"楽しみます","targetKey":"楽しむ|たのしむ"},
+        {"sentence":"アイコは音楽と踊りを心から楽しみます。","reading":"アイコはおんがくとおどりをこころからたのしみます。","translation":"Aiko wholeheartedly enjoys the music and dancing.","focus":"楽しみます","targetKey":"楽しむ|たのしむ"},
         {"sentence":"マスターが三人の写真を撮りました。","reading":"マスターがさんにんのしゃしんをとりました。","translation":"Master took a photograph of the three of them.","focus":"写真","targetKey":"写真|しゃしん"},
         {"sentence":"三人はその写真を見ながら家へ帰りました。","reading":"さんにんはそのしゃしんをみながらいえへかえりました。","translation":"The three returned home while looking at the photograph.","focus":"帰りました","targetKey":"帰る|かえる"}
       ],
-      "question":{"prompt":"写真を撮ったのは誰ですか。","translation":"Who took the photograph?","choices":["マスター","カイ","ミア"],"answer":"マスター"}
+      "question":{"prompt":"写真を撮ったのは誰ですか。","translation":"Who took the photograph?","choices":["マスター","カイ","アイコ"],"answer":"マスター"}
     },
     {
       "id": "mountain-path",
@@ -109,9 +109,9 @@
       "englishTitle": "The Fork in the Mountain Path",
       "difficulty": 3,
       "image": "media/manga/mountain-path.webp",
-      "summary": "A wrong turn tests Kai and Mia's calm thinking on the mountain.",
+      "summary": "A wrong turn tests Kai and Aiko's calm thinking on the mountain.",
       "panels": [
-        {"sentence":"カイとミアは朝早く山へ向かいました。","reading":"カイとミアはあさはやくやまへむかいました。","translation":"Kai and Mia headed for the mountain early in the morning.","focus":"山","targetKey":"山|やま"},
+        {"sentence":"カイとアイコは朝早く山へ向かいました。","reading":"カイとアイコはあさはやくやまへむかいました。","translation":"Kai and Aiko headed for the mountain early in the morning.","focus":"山","targetKey":"山|やま"},
         {"sentence":"森の中で道が二つに分かれています。","reading":"もりのなかでみちがふたつにわかれています。","translation":"The road splits into two inside the forest.","focus":"道","targetKey":"道|みち"},
         {"sentence":"二人は同じ岩を見て、迷ったことに気づきました。","reading":"ふたりはおなじいわをみて、まよったことにきづきました。","translation":"Seeing the same rock, they realised they had become lost.","focus":"迷った","targetKey":"迷う|まよう"},
         {"sentence":"今いる場所を落ち着いて考えます。","reading":"いまいるばしょをおちついてかんがえます。","translation":"They calmly think about their current location.","focus":"場所","targetKey":"場所|ばしょ"},
@@ -130,7 +130,7 @@
       "summary": "An old letter sends the friends searching through Master's quiet house.",
       "panels": [
         {"sentence":"本棚の後ろから古い手紙が落ちました。","reading":"ほんだなのうしろからふるいてがみがおちました。","translation":"An old letter fell from behind the bookshelf.","focus":"手紙","targetKey":"手紙|てがみ"},
-        {"sentence":"ミアは小さな字をゆっくり読みます。","reading":"ミアはちいさなじをゆっくりよみます。","translation":"Mia slowly reads the small writing.","focus":"読みます","targetKey":"読む|よむ"},
+        {"sentence":"アイコは小さな字をゆっくり読みます。","reading":"アイコはちいさなじをゆっくりよみます。","translation":"Aiko slowly reads the small writing.","focus":"読みます","targetKey":"読む|よむ"},
         {"sentence":"カイは大切な言葉を紙に書きました。","reading":"カイはたいせつなことばをかみにかきました。","translation":"Kai wrote the important words on paper.","focus":"書きました","targetKey":"書く|かく"},
         {"sentence":"手紙には、この家の秘密があると書いてあります。","reading":"てがみには、このいえのひみつがあるとかいてあります。","translation":"The letter says that this house has a secret.","focus":"秘密","targetKey":"秘密|ひみつ"},
         {"sentence":"古い時計の絵が唯一の手掛かりでした。","reading":"ふるいとけいのえがゆいいつのてがかりでした。","translation":"A picture of an old clock was the only clue.","focus":"古い","targetKey":"古い|ふるい"},
@@ -150,7 +150,7 @@
       "panels": [
         {"sentence":"三人は静かな海を見ながら休んでいました。","reading":"さんにんはしずかなうみをみながらやすんでいました。","translation":"The three were resting while looking at the calm sea.","focus":"海","targetKey":"海|うみ"},
         {"sentence":"カイは冷たい水に足を入れました。","reading":"カイはつめたいみずにあしをいれました。","translation":"Kai put his feet into the cold water.","focus":"水","targetKey":"水|みず"},
-        {"sentence":"その時、ミアが遠くの音を聞きました。","reading":"そのとき、ミアがとおくのおとをききました。","translation":"At that moment, Mia heard a distant sound.","focus":"聞きました","targetKey":"聞く|きく"},
+        {"sentence":"その時、アイコが遠くの音を聞きました。","reading":"そのとき、アイコがとおくのおとをききました。","translation":"At that moment, Aiko heard a distant sound.","focus":"聞きました","targetKey":"聞く|きく"},
         {"sentence":"波の向こうから弱い声がします。","reading":"なみのむこうからよわいこえがします。","translation":"A weak voice comes from beyond the waves.","focus":"声","targetKey":"声|こえ"},
         {"sentence":"三人は力を合わせて子犬を助けました。","reading":"さんにんはちからをあわせてこいぬをたすけました。","translation":"Working together, the three rescued a puppy.","focus":"助けました","targetKey":"助ける|たすける"},
         {"sentence":"マスターは子犬を抱いて岸へ戻ります。","reading":"マスターはこいぬをだいてきしへもどります。","translation":"Master carries the puppy back to shore.","focus":"戻ります","targetKey":"戻る|もどる"},
@@ -169,7 +169,7 @@
       "panels": [
         {"sentence":"町の時計塔は、長い時間止まったままです。","reading":"まちのとけいとうは、ながいじかんとまったままです。","translation":"The town clocktower has remained stopped for a long time.","focus":"時間","targetKey":"時間|じかん"},
         {"sentence":"塔の扉を開くための鍵がありません。","reading":"とうのとびらをひらくためのかぎがありません。","translation":"The key needed to open the tower door is missing.","focus":"鍵","targetKey":"鍵|かぎ"},
-        {"sentence":"カイとミアは広場の周りを探します。","reading":"カイとミアはひろばのまわりをさがします。","translation":"Kai and Mia search around the square.","focus":"探します","targetKey":"探す|さがす"},
+        {"sentence":"カイとアイコは広場の周りを探します。","reading":"カイとアイコはひろばのまわりをさがします。","translation":"Kai and Aiko search around the square.","focus":"探します","targetKey":"探す|さがす"},
         {"sentence":"古い像の手の中に鍵を見つけました。","reading":"ふるいぞうのてのなかにかぎをみつけました。","translation":"They found the key inside the hand of an old statue.","focus":"見つけました","targetKey":"見つける|みつける"},
         {"sentence":"重い扉が音を立てて開きます。","reading":"おもいとびらがおとをたててひらきます。","translation":"The heavy door opens with a noise.","focus":"開きます","targetKey":"開く|ひらく"},
         {"sentence":"塔の中には大きな歯車が並んでいました。","reading":"とうのなかにはおおきなはぐるまがならんでいました。","translation":"Large gears were lined up inside the tower.","focus":"中","targetKey":"中|なか"},

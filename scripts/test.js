@@ -30,6 +30,7 @@ const jsonFiles = [
   'data/vocabulary.json',
   'data/katakana-core-10k.json',
   'data/vocabulary-orthography.json',
+  'data/lesson-story-scenes.json',
   'data/kana.json',
   'data/manga-stories.json',
   'data/conversations.json',

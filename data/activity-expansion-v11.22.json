@@ -69,7 +69,7 @@
     {
       "id": "market-shopping",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "At the Market",
       "japaneseTitle": "市場で",
       "level": 2,
@@ -197,7 +197,7 @@
     {
       "id": "classroom-help",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "A Classroom Question",
       "japaneseTitle": "教室で質問",
       "level": 2,
@@ -389,7 +389,7 @@
     {
       "id": "cooking-together",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "Cooking Together",
       "japaneseTitle": "一緒に料理",
       "level": 2,
@@ -517,7 +517,7 @@
     {
       "id": "study-break",
       "character": "girl",
-      "characterName": "Mia",
+      "characterName": "Aiko",
       "title": "Taking a Study Break",
       "japaneseTitle": "勉強の休憩",
       "level": 2,

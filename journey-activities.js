@@ -388,13 +388,16 @@
     const due=topic.words.filter(word=>progress[word.id]&&Number(progress[word.id].due||0)<=Date.now()).sort((a,b)=>pFor(a.id).due-pFor(b.id).due).slice(0,DAILY_REVIEW_TARGET);
     const unseen=pickLinkedNewWords(topic.words,NEW_WORDS_PER_MISSION);
     const support=topicSupportWords(topic,2);
-    const selected=[...new Map([...due,...unseen,...support].map(word=>[word.id,word])).values()];
+    const chapter=currentWordChapterIndex();
+    const chapterStory=window.KaishiActivityPolicy?.selectLessonStoryScene?.(storySceneCatalog,chapter+1,chapterWords(chapter));
+    const storyTarget=chapterStory?chapterWords(chapter).find(word=>word.id===chapterStory.targetWordId):null;
+    const selected=[...new Map([...due,...unseen,...support,storyTarget].filter(Boolean).map(word=>[word.id,word])).values()];
     if(!selected.length){makeTargetedMasterySession(topic.words.slice(0,Math.min(MISSION_CARD_LIMIT,topic.words.length)).map(word=>word.id),topicWeakestSkill(topic));return}
     const queue=selected.map(v=>{const p=pFor(v.id),unknownKana=unknownKanaFor(v).slice(0,1);let skills=p.stage===0?[...(unknownKana.length?['kanaUnlock']:[]),'firstEncounter','intro',...(ankiRecordFor(v)?.sentence?['example']:[]),'meaning']:[chooseSkill(v)];skills=skills.filter(skill=>skill!=='picture'||memoryScenes[sceneKey(v)]);return{v,skills}});
     session=[];
     while(queue.some(item=>item.skills.length)&&session.length<MISSION_CARD_LIMIT){const active=queue.filter(item=>item.skills.length).slice(0,ACTIVE_WORD_MIX);active.forEach(item=>{if(item.skills.length&&session.length<MISSION_CARD_LIMIT)session.push({v:item.v,skill:item.skills.shift()})});queue.push(...queue.splice(0,Math.min(ACTIVE_WORD_MIX,queue.length)))}
 
-    const schedule=lessonSchedule(currentWordChapterIndex(),currentWordChapterIndex(),topic.words,{forceFirst:true});
+    const schedule=lessonSchedule(chapter,chapter,topic.words,{forceFirst:true});
     const pictureScheduled=schedule.core.includes('picture');
     if(pictureScheduled){
       const card=activityCard('picture',topic.words);
@@ -408,7 +411,13 @@
       }
     }
 
-    const bridge=sessionSentencePlan(selected);if(bridge){if(session.length>=MISSION_CARD_LIMIT)session.pop();session.push({v:bridge.target,skill:'sessionSentence',sentencePlan:bridge})}
+    const story=window.KaishiActivityPolicy?.selectLessonStoryScene?.(storySceneCatalog,chapter+1,selected);
+    if(story){
+      const target=selected.find(word=>word.id===story.targetWordId);
+      if(target){if(session.length>=MISSION_CARD_LIMIT)session.pop();session.push({v:target,skill:'storySentence',storyScene:story})}
+    }else{
+      const bridge=sessionSentencePlan(selected);if(bridge){if(session.length>=MISSION_CARD_LIMIT)session.pop();session.push({v:bridge.target,skill:'sessionSentence',sentencePlan:bridge})}
+    }
     clearMissionResume();index=0;current=null;showJourneySessionPreview(`${topic.icon||'🗾'} ${topic.title}`)
   });
 
@@ -435,7 +444,7 @@
   // Make the Journey roadmap consume the same policy. This replaces the old
   // asset-only fallback and removes XP/AP assumptions from roadmap estimates.
   try {
-    window.KaishiActivityPolicy = {requirements, rules, activityReadiness, pathUnlocked, refreshPathUnlocks, scheduleForLesson:lessonSchedule};
+    window.KaishiActivityPolicy = {...(window.KaishiActivityPolicy||{}), requirements, rules, activityReadiness, pathUnlocked, refreshPathUnlocks, scheduleForLesson:lessonSchedule};
     window.KaishiActivityPolicy.refresh = refreshPathUnlocks;
     refreshPathUnlocks();
     try { window.KaishiRoadmap?.refresh?.(); } catch (_) {}
