@@ -1156,11 +1156,16 @@ function showJourneySessionPreview(title='Your Japanese learning session'){
  const newWords=words.filter(word=>Number(pFor(word.id).stage||0)===0),reviewWords=words.filter(word=>Number(pFor(word.id).stage||0)>0);
  const renderWords=list=>list.length?`<div class="journey-session-words">${list.map(word=>`<span><b lang="ja">${esc(word.word)}</b><small>${esc(word.meaning)}</small></span>`).join('')}</div>`:'<p class="muted">None in this session.</p>';
  $('#journeySessionPreviewTitle').textContent=title;
- const matchingConversation=conversations.find(item=>item.turns?.some(turn=>words.some(word=>word.word===turn.targetWord||word.reading===turn.targetWord)));
- const matchingManga=mangaStories.find(story=>story.panels?.some(panel=>words.some(word=>`${word.word}|${word.reading}`===panel.targetKey)));
+ // Preview only activities that the Journey scheduler has made available for
+ // this lesson. A word match alone is not enough to make an activity usable.
+ const previewLessonIndex=Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:currentWordChapterIndex();
+ const previewSchedule=window.KaishiActivitySchedule?.scheduleForLesson?.(previewLessonIndex,currentWordChapterIndex(),chapterWords(previewLessonIndex),{forceFirst:true});
+ const availablePreviewActivities=new Set(previewSchedule?.available||[]);
+ const matchingConversation=availablePreviewActivities.has('conversation')?conversations.find(item=>item.turns?.some(turn=>words.some(word=>word.word===turn.targetWord||word.reading===turn.targetWord))):null;
+ const matchingManga=availablePreviewActivities.has('manga')?mangaStories.find(story=>story.panels?.some(panel=>words.some(word=>`${word.word}|${word.reading}`===panel.targetKey))):null;
  const contextHtml=(matchingConversation||matchingManga)?`<section class="journey-context-options"><h3>Use these words in context</h3><p>Immersive activities are optional and only appear when the current lesson has suitable content.</p><div class="journey-context-actions">${matchingConversation?`<button type="button" data-lesson-immersive="conversation">💬 Conversation · ${esc(matchingConversation.title)}</button>`:''}${matchingManga?`<button type="button" data-lesson-immersive="manga">📖 Manga · choose a story</button>`:''}</div></section>`:'';
  $('#journeySessionPreviewContent').innerHTML=`<p>Here is the small set Sensei selected for this session.</p><section><h3>New words <b>${newWords.length}</b></h3>${renderWords(newWords)}</section><section><h3>Reviews <b>${reviewWords.length}</b></h3>${renderWords(reviewWords)}</section>${contextHtml}`;
- document.querySelectorAll('[data-lesson-immersive]').forEach(button=>button.onclick=()=>{const id=button.dataset.lessonImmersive;activeLessonImmersive={id,returnScreen:'journey'};activityReturnScreen='journey';dialog.close();if(id==='conversation'&&matchingConversation)startConversation(matchingConversation);else if(id==='manga')openMangaLibrary();});
+ $('#journeySessionPreviewContent').querySelectorAll('[data-lesson-immersive]').forEach(button=>button.onclick=()=>{const id=button.dataset.lessonImmersive;activeLessonImmersive={id,returnScreen:'journey'};activityReturnScreen='journey';dialog.close();if(id==='conversation'&&matchingConversation)startConversation(matchingConversation);else if(id==='manga')openMangaLibrary();});
  if(!dialog.open)dialog.showModal();
 }
 function beginJourneySession(){const dialog=$('#journeySessionPreviewDialog');if(dialog?.open)dialog.close();show('study');renderCurrent()}

@@ -6,6 +6,18 @@ test('lesson checkpoints save without presenting a modal', async ({ page }) => {
   await expect(page.locator('#missionCheckpointDialog')).toHaveCount(0);
 });
 
+test('first lesson preview does not offer an unavailable conversation', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const app = window as typeof window & { startJourneyChapter?: (index: number) => void };
+    app.startJourneyChapter?.(0);
+  });
+
+  await expect(page.locator('#journeySessionPreviewDialog')).toBeVisible();
+  await expect(page.locator('[data-lesson-immersive="conversation"]')).toHaveCount(0);
+  await expect(page.locator('[data-lesson-immersive="manga"]')).toHaveCount(0);
+});
+
 test('focused lesson practice shows the learner-facing mastery path', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore first' }).click();
