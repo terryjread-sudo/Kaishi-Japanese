@@ -63,7 +63,7 @@ settings.playMode='journey';
 settings.learningBalance=Math.max(-2,Math.min(2,Math.round(Number(settings.learningBalance)||0)));
 settings.learningBalanceAdaptive=settings.learningBalanceAdaptive!==false;
 let progress=loadJSON(profileStorageKey('kq-progress'),{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},connectorProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},notebook:{words:[]},notebookStarHintSeen:false,mangaProgress:{},conversationProgress:{},theatreProgress:{},canDoAwards:[],pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,rhythm:{behind:0,lastChecked:'',quickWeek:'',quickUsed:0,cycles:0},activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},sessionHistory:[],kotobaEchoHistory:[],updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},connectorProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},notebook:{words:[]},notebookStarHintSeen:false,mangaProgress:{},conversationProgress:{},theatreProgress:{},canDoAwards:[],pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,rhythm:{behind:0,lastChecked:'',quickWeek:'',quickUsed:0,cycles:0},rhythmHistory:{},activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},sessionHistory:[],kotobaEchoHistory:[],updatedAt:0};
 const SESSION_HISTORY_LIMIT=200,NOTEBOOK_WORD_LIMIT=100;
 let meta={...META_DEFAULTS,...loadJSON(profileStorageKey('kq-meta'),{})};
 meta.kanaProgress=meta.kanaProgress||{};
@@ -79,7 +79,7 @@ meta.pathUnlocks=Array.isArray(meta.pathUnlocks)?[...meta.pathUnlocks]:[];
 meta.pathVisits={...(meta.pathVisits||{})};
 meta.pathOverrides=Array.isArray(meta.pathOverrides)?[...meta.pathOverrides]:[];
 meta.chapterOverrides=Array.isArray(meta.chapterOverrides)?[...meta.chapterOverrides]:[];meta.unlockNoticesSeen=Array.isArray(meta.unlockNoticesSeen)?[...meta.unlockNoticesSeen]:[];meta.unlockNoticesDismissed=Array.isArray(meta.unlockNoticesDismissed)?[...meta.unlockNoticesDismissed]:[];meta.topicProgress=meta.topicProgress||{};meta.kotobaEchoHistory=Array.isArray(meta.kotobaEchoHistory)?meta.kotobaEchoHistory:[];
-meta.activeCampaign=meta.activeCampaign||'journey';meta.campaignProgress=meta.campaignProgress||{};meta.activityPurchases=Array.isArray(meta.activityPurchases)?[...new Set(['vocabulary','kana','sentenceLab',...meta.activityPurchases])]:['vocabulary','kana','sentenceLab'];meta.activityModeLevels=meta.activityModeLevels||{};meta.adventurePointsSpent=Number(meta.adventurePointsSpent||0);const legacyRhythm=meta.rhythm||meta.garden||{};meta.rhythm={...META_DEFAULTS.rhythm,behind:Number(legacyRhythm.behind||0),lastChecked:String(legacyRhythm.lastChecked||''),quickWeek:String(legacyRhythm.quickWeek||''),quickUsed:Number(legacyRhythm.quickUsed||0),cycles:Number(legacyRhythm.cycles||0)};delete meta.garden;delete meta.gardenApSpent;
+meta.activeCampaign=meta.activeCampaign||'journey';meta.campaignProgress=meta.campaignProgress||{};meta.activityPurchases=Array.isArray(meta.activityPurchases)?[...new Set(['vocabulary','kana','sentenceLab',...meta.activityPurchases])]:['vocabulary','kana','sentenceLab'];meta.activityModeLevels=meta.activityModeLevels||{};meta.adventurePointsSpent=Number(meta.adventurePointsSpent||0);const legacyRhythm=meta.rhythm||meta.garden||{};meta.rhythm={...META_DEFAULTS.rhythm,behind:Number(legacyRhythm.behind||0),lastChecked:String(legacyRhythm.lastChecked||''),quickWeek:String(legacyRhythm.quickWeek||''),quickUsed:Number(legacyRhythm.quickUsed||0),cycles:Number(legacyRhythm.cycles||0)};meta.rhythmHistory=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'&&!Array.isArray(meta.rhythmHistory)?meta.rhythmHistory:{};if(meta.lastStudy&&!meta.rhythmHistory[meta.lastStudy])meta.rhythmHistory[meta.lastStudy]={completedAt:0,source:'existing rhythm'};delete meta.garden;delete meta.gardenApSpent;
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
 function serialiseMissionItem(item){return{wordId:item?.v?.id||'',skill:item?.skill||'',pictureMode:item?.pictureMode||'',bossTopicId:item?.bossTopicId||'',storySceneId:item?.storyScene?.id||''}}
 function saveMissionResume(){
@@ -200,10 +200,13 @@ function restorePoints(){const ownerId=restorePointOwnerId();if(!ownerId)return[
 function saveRestorePoints(points){const ownerId=restorePointOwnerId();if(!ownerId)return false;const ownedPoints=points.filter(point=>point?.ownerId===ownerId).slice(-RESTORE_POINTS_LIMIT);localStorage.setItem(restorePointStorageKey(ownerId),JSON.stringify(ownedPoints));return true}
 function restorePointSummary(snapshot){const records=Object.values(snapshot.progress||{}),startedCount=records.filter(item=>Number(item?.stage||0)>=1||Object.values(item?.skills||{}).some(skill=>Number(skill?.attempts||0)>0)).length,masteredCount=records.filter(item=>Number(item?.interval||0)>=21).length;return{started:startedCount,mastered:masteredCount,answers:Number(snapshot.meta?.totalAnswers||0),streak:Number(snapshot.meta?.streak||0),lesson:Math.max(1,Math.ceil(startedCount/WORD_CHAPTER_SIZE))}}
 function createRestorePoint(reason){const ownerId=restorePointOwnerId();if(!ownerId)return null;const point={id:`${Date.now()}-${Math.random().toString(36).slice(2,8)}`,ownerId,takenAt:Date.now(),reason,progress:cloneLocalState(progress),meta:cloneLocalState(meta),settings:cloneLocalState(settings)};saveRestorePoints([...restorePoints(),point]);return point}
-function resetLocalProgressState(){
+function learningRhythmSnapshot(){return{streak:Number(meta.streak||0),lastStudy:String(meta.lastStudy||''),rhythm:structuredClone(meta.rhythm||META_DEFAULTS.rhythm),rhythmHistory:structuredClone(meta.rhythmHistory||{}),streakRescue:structuredClone(meta.streakRescue||null)}}
+function resetLocalProgressState({preserveLearningRhythm=false}={}){
  const emailMilestoneCycle=Math.max(0,Number(meta.emailMilestoneCycle||0))+1;
+ const learningRhythm=preserveLearningRhythm?learningRhythmSnapshot():null;
  progress={};
  meta={...META_DEFAULTS,emailMilestoneCycle,rhythm:{...META_DEFAULTS.rhythm},kanaProgress:{},grammarProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},mangaProgress:{},conversationProgress:{},theatreProgress:{},pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],sessionHistory:[]};
+ if(learningRhythm)Object.assign(meta,learningRhythm);
  // History is progress data, not a separate archive. Clear both its model and
  // any already-rendered view so a reset is immediately truthful everywhere.
  pendingSessionRecord=null;redoingHistoryId=null;clearMissionResume();
@@ -247,7 +250,8 @@ function rhythmState(){const rhythm=meta.rhythm={...META_DEFAULTS.rhythm,...(met
 function dateGap(from,to=day()){if(!from)return 0;const start=new Date(`${from}T12:00:00`),end=new Date(`${to}T12:00:00`);return Math.max(0,Math.round((end-start)/86400000))}
 function breakLearningRhythm(rhythm){if(Number(meta.streak||0)<=0){rhythm.behind=0;return}const lostAt=Date.now();meta.streakRescue={lostStreak:Number(meta.streak),lastStudyBeforeLoss:meta.lastStudy,lostAt,expiresAt:lostAt+7*86400000,attempted:false};meta.streak=0;rhythm.behind=0;rhythm.cycles=Number(rhythm.cycles||0)+1;rhythm.lastBrokenAt=day()}
 function reconcileRhythm(){const rhythm=rhythmState(),today=day();if(!rhythm.lastChecked){const missed=Math.max(0,dateGap(meta.lastStudy,today)-1);rhythm.behind=Math.min(3,missed);rhythm.lastChecked=today;if(rhythm.behind>=3)breakLearningRhythm(rhythm);return rhythm}if(rhythm.lastChecked===today)return rhythm;let cursor=new Date(`${rhythm.lastChecked}T12:00:00`),end=new Date(`${today}T12:00:00`);while(cursor<end){const date=day(cursor);if(date!==meta.lastStudy)rhythm.behind++;cursor.setDate(cursor.getDate()+1)}rhythm.lastChecked=today;if(rhythm.behind>=3)breakLearningRhythm(rhythm);return rhythm}
-function awardRhythmDay(quick=false){const rhythm=reconcileRhythm(),today=day(),gap=dateGap(meta.lastStudy,today);if(meta.lastStudy!==today){meta.streak=Number(meta.streak||0)>0&&gap<=3?Number(meta.streak)+1:1;meta.lastStudy=today}if(quick)rhythm.quickUsed=Math.min(2,rhythm.quickUsed+1);else if(rhythm.behind>0)rhythm.behind--;rhythm.lastChecked=today;return rhythm}
+function stampLearningRhythmDay(source){const today=day();meta.rhythmHistory=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'&&!Array.isArray(meta.rhythmHistory)?meta.rhythmHistory:{};if(!meta.rhythmHistory[today])meta.rhythmHistory[today]={completedAt:Date.now(),source:String(source||'learning activity').slice(0,80)}}
+function awardRhythmDay(quick=false,source='learning activity'){const rhythm=reconcileRhythm(),today=day(),gap=dateGap(meta.lastStudy,today);if(meta.lastStudy!==today){meta.streak=Number(meta.streak||0)>0&&gap<=3?Number(meta.streak)+1:1;meta.lastStudy=today}stampLearningRhythmDay(source);if(quick)rhythm.quickUsed=Math.min(2,rhythm.quickUsed+1);else if(rhythm.behind>0)rhythm.behind--;rhythm.lastChecked=today;return rhythm}
 function recordMeaningfulActivity(source,amount=1){
  const activity=todayActivity(),increment=Math.max(0,Number(amount)||0);
  activity.tested+=increment;
@@ -255,7 +259,7 @@ function recordMeaningfulActivity(source,amount=1){
  const testedForGoal=activity.quickStep?Math.max(0,activity.tested-Number(activity.quickStartTested||0)):activity.tested;
  const target=activity.quickStep?3:5;if(testedForGoal>=target&&!activity.qualified)activity.qualified=true;
  if(activity.qualified&&!activity.streakAwarded){
-  const rhythm=awardRhythmDay(Boolean(activity.quickStep));
+  const rhythm=awardRhythmDay(Boolean(activity.quickStep),source);
   activity.streakAwarded=true;
   toast(activity.quickStep?'Quick Step complete — today’s rhythm is protected!':rhythm.behind?'Learning rhythm restored — keep going!':'Today’s learning rhythm is complete!');
  }
@@ -272,6 +276,22 @@ function updateStreakRescue(){
  const active=activeStreakRescue();button.hidden=!active;message.hidden=!active;
  if(active){const days=Math.max(1,Math.ceil((meta.streakRescue.expiresAt-Date.now())/86400000));message.textContent=`One attempt available for ${days} more day${days===1?'':'s'}: defeat Kaidōra with 10 correct answers and no mistakes to restore your ${meta.streakRescue.lostStreak}-day streak.`}
 }
+function rhythmCalendarMonth(monthDate,history){
+ const year=monthDate.getFullYear(),month=monthDate.getMonth(),first=new Date(year,month,1),last=new Date(year,month+1,0),offset=(first.getDay()+6)%7,cells=[];
+ for(let index=0;index<offset;index++)cells.push('<span class="rhythm-calendar-empty" aria-hidden="true"></span>');
+ for(let date=1;date<=last.getDate();date++){
+  const key=day(new Date(year,month,date)),entry=history[key],todayKey=day(),label=new Date(year,month,date).toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'}),state=entry?'completed':'';
+  cells.push(`<span class="rhythm-calendar-day ${state}${key===todayKey?' today':''}" aria-label="${esc(label)}${entry?', learning activity completed':''}" title="${esc(entry?`${label} · ${entry.source||'Learning activity'}`:label)}"><b>${date}</b>${entry?'<i aria-hidden="true"></i>':''}</span>`);
+ }
+ return `<section class="rhythm-calendar-month"><h3>${first.toLocaleDateString(undefined,{month:'long',year:'numeric'})}</h3><div class="rhythm-calendar-weekdays" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="rhythm-calendar-grid">${cells.join('')}</div></section>`;
+}
+function renderLearningRhythmCalendar(){
+ const history=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'?meta.rhythmHistory:{};meta.rhythmHistory=history;if(meta.lastStudy&&!history[meta.lastStudy])history[meta.lastStudy]={completedAt:0,source:'existing rhythm'};const calendar=$('#learningRhythmCalendar');if(!calendar)return;
+ const current=new Date(),months=[2,1,0].map(offset=>new Date(current.getFullYear(),current.getMonth()-offset,1));
+ calendar.innerHTML=months.map(month=>rhythmCalendarMonth(month,history)).join('');
+ const rescue=$('#learningRhythmRescue');if(rescue){rescue.hidden=!activeStreakRescue();rescue.onclick=()=>{const dialog=$('#learningRhythmDialog');if(dialog?.open)dialog.close();show('games');startStreakRescue()}}
+}
+function openLearningRhythmCalendar(){renderLearningRhythmCalendar();const dialog=$('#learningRhythmDialog');if(dialog&&!dialog.open)dialog.showModal()}
 function enterAdminTestMode(){
  if(!window.KaishiReports?.isAdmin?.()){toast('Administrator access is required');return false}
  save(false);sessionStorage.setItem(ADMIN_TEST_MODE_KEY,'1');sessionStorage.setItem(ADMIN_TEST_ENTRY_KEY,'1');location.reload();return true
@@ -2021,11 +2041,13 @@ $('#studyBtn').onclick=()=>{abortSession('home');makeSession()};$('#kanaBtn').on
 $('#openNotebook').onclick=()=>openLearningNotebook('words');
 $('#studyNotebook').onclick=()=>openLearningNotebook('words');
 $('#dashboardAvatarButton').onclick=openCharacterSettings;
+$('#streak').onclick=openLearningRhythmCalendar;
+$('#learningRhythmClose').onclick=()=>$('#learningRhythmDialog').close();
 $('#restorePointsBtn').onclick=openRestorePoints;
 $('#restorePointsClose').onclick=()=>$('#restorePointsDialog').close();
 window.addEventListener('kaishi-auth-change',()=>{const dialog=$('#restorePointsDialog');if(dialog?.open)dialog.close();updateRestorePointAvailability()});
 updateRestorePointAvailability();
-$('#resetBtn').onclick=async()=>{const signedIn=Boolean(restorePointOwnerId());const message=signedIn?'Delete all learning progress? This also erases your synced cloud progress on every device.':'Delete all learning progress?';if(!confirm(message))return;if(signedIn)createRestorePoint('Before resetting local progress');const resetBtn=$('#resetBtn');resetLocalProgressState();save(false);updateHome();if(!signedIn){toast('Progress reset');return}resetBtn.disabled=true;resetBtn.textContent='Resetting cloud progress…';toast('Resetting local and cloud progress…');const result=await window.KaishiCloud?.resetProgress?.();resetBtn.disabled=false;resetBtn.textContent='Reset local progress';toast(result?.ok?'Local and cloud progress reset. A restore point was saved.':'Local progress reset, but the cloud reset failed — try again while online')};
+$('#resetBtn').onclick=async()=>{const signedIn=Boolean(restorePointOwnerId());const message=signedIn?'Delete all learning progress? This also erases your synced cloud progress on every device.':'Delete all learning progress?';if(!confirm(message))return;const resetLearningRhythm=confirm('Also reset your Learning Rhythm?\n\nChoose OK to erase the streak and calendar stamps. Choose Cancel to keep them while resetting lessons, words and activity progress.');if(signedIn)createRestorePoint('Before resetting local progress');const resetBtn=$('#resetBtn');resetLocalProgressState({preserveLearningRhythm:!resetLearningRhythm});save(false);updateHome();if(!signedIn){toast(resetLearningRhythm?'Progress and Learning Rhythm reset':'Progress reset; Learning Rhythm kept');return}resetBtn.disabled=true;resetBtn.textContent='Resetting cloud progress…';toast('Resetting local and cloud progress…');const result=await window.KaishiCloud?.resetProgress?.();resetBtn.disabled=false;resetBtn.textContent='Reset local progress';toast(result?.ok?'Local and cloud progress reset. A restore point was saved.':'Local progress reset, but the cloud reset failed — try again while online')};
 $('#kanjiOverviewBtn').onclick=()=>{if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')};
 $('#kanjiOverviewBack').onclick=()=>show('home');
 $('#skillsBtn').onclick=()=>{renderSkillScores();show('skillsOverview')};
