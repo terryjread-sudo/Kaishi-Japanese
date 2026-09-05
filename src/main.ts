@@ -5,12 +5,31 @@ export { addRestorePoint, findRestorePoint, RESTORE_POINT_LIMIT } from './domain
 export { offlinePackStatus } from './domains/offline/offline-pack';
 export { createEchoRun, reinforcedProductionStrength, retryWords } from './domains/kotoba-echo/run';
 import { findLessonStoryScene, selectLessonStoryScene } from './domains/lesson-stories/story-scenes';
+import {
+  buildJourneyCurriculum,
+  CONNECTOR_STEPS,
+  connectorForLesson,
+  lessonForIndex,
+  resolveJourneyVocabulary,
+  validateJourneyCurriculum,
+} from './domains/curriculum/journey-curriculum';
 
-export { findLessonStoryScene, selectLessonStoryScene };
+export {
+  buildJourneyCurriculum,
+  CONNECTOR_STEPS,
+  connectorForLesson,
+  findLessonStoryScene,
+  lessonForIndex,
+  resolveJourneyVocabulary,
+  selectLessonStoryScene,
+  validateJourneyCurriculum,
+};
 
 declare global {
   interface Window {
     KaishiActivityPolicy?: Record<string, unknown>;
+    renderAdminTestMode?: () => void;
+    updateHome?: () => void;
   }
 }
 
@@ -18,6 +37,19 @@ declare global {
 // Journey execution is migrated into TypeScript modules.
 window.KaishiActivityPolicy = {
   ...window.KaishiActivityPolicy,
+  buildJourneyCurriculum,
+  connectorSteps: CONNECTOR_STEPS,
+  connectorForLesson,
   findLessonStoryScene,
+  lessonForIndex,
+  resolveJourneyVocabulary,
   selectLessonStoryScene,
+  validateJourneyCurriculum,
 };
+
+// app.js starts before this module. Refresh its derived Journey controls once
+// the curriculum policy is available, rather than leaving a stale first render.
+window.setTimeout(() => {
+  window.renderAdminTestMode?.();
+  window.updateHome?.();
+}, 0);
