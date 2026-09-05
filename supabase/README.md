@@ -30,6 +30,29 @@ The migration creates private progress storage, public opt-in leaderboard
 entries, Row Level Security policies, and the learner-controlled cloud-account
 deletion function.
 
+## Email setup
+
+Email is sent only from Supabase Edge Functions. Do not commit a Resend API key
+or add it to browser configuration.
+
+1. Revoke any Resend key that was shared outside the Resend dashboard, then
+   create a replacement there.
+2. Run `migrations/20260905_email_campaigns.sql` in the Supabase SQL Editor.
+3. Deploy the function with `supabase functions deploy admin-email`.
+4. Set these Supabase Edge Function secrets directly in the Supabase dashboard
+   or with the Supabase CLI:
+   - `RESEND_API_KEY` — the newly created Resend key
+   - `KAISHI_FROM_EMAIL=Sensei at Kaishi <sensei@kaishi.uk>`
+   - `KAISHI_APP_URL=https://www.kaishi.uk/`
+   - `KAISHI_EMAIL_CRON_SECRET` — a long random value
+5. In GitHub repository secrets, set only `KAISHI_EMAIL_CRON_SECRET` to the
+   same random value. The scheduled workflow never receives the Resend key.
+
+The Friday workflow calls the function hourly. The function itself uses the
+`Europe/London` time zone and sends only once at 17:00, so UK daylight-saving
+changes do not alter the learner-facing schedule. Email automation is disabled
+until the owner enables it in the Admin area.
+
 ## Security model
 
 - Guest progress remains in the browser's local storage.

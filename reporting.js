@@ -170,6 +170,7 @@
     $('#adminAccessMessage').textContent=`Signed in as @${githubLogin()}. Database access is protected by Supabase policies.`;
     window.scrollTo(0,0);
     document.querySelectorAll('.screen').forEach(screen=>screen.classList.toggle('active',screen.id==='adminArea'));
+    await Promise.all([window.KaishiCloud?.loadAdminUsers?.(),window.KaishiCloud?.loadEmailAutomation?.()]);
     await loadReports();
   }
 
