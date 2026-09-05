@@ -9,6 +9,7 @@
   {key:'harajuku-girl',name:'Harajuku Girl',mastered:10},{key:'harajuku-guy',name:'Harajuku Guy',mastered:25},{key:'izakaya-cook',name:'Izakaya Cook',mastered:50}
  ];
  const FP_KEY='kq-cloud-sync-fingerprint-v1',FRIEND_NUDGE_DISMISS_KEY='kq-friend-nudge-dismiss-v1',SOCIAL_READ_KEY='kq-social-notifications-read-v1';
+ const CANONICAL_ORIGIN='https://www.kaishi.uk';
  let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[];
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
@@ -72,7 +73,12 @@
   renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
  }
 
- async function signIn(){if(!client)return;setStatus('Opening GitHub sign-in…','working');const redirectTo=new URL('.',location.href).href.split('#')[0].split('?')[0];const{error}=await client.auth.signInWithOAuth({provider:'github',options:{redirectTo}});if(error)setStatus(describeError(error),'error')}
+ function enforceCanonicalOrigin(){
+  if(location.protocol!=='https:'||location.hostname!=='kaishi.uk')return false;
+  location.replace(`${CANONICAL_ORIGIN}${location.pathname}${location.search}${location.hash}`);
+  return true;
+ }
+ async function signIn(){if(!client)return;setStatus('Opening GitHub sign-in…','working');const redirectTo=`${CANONICAL_ORIGIN}/`;const{error}=await client.auth.signInWithOAuth({provider:'github',options:{redirectTo}});if(error)setStatus(describeError(error),'error')}
  async function signOut(){if(!client)return;await flush();const{error}=await client.auth.signOut();if(error)setStatus(describeError(error),'error');else renderSignedOut('Signed out. Your local progress remains on this device.')}
 
  async function ensureLeaderboardEntry(){
@@ -422,6 +428,7 @@ async function loadLeaderboard(){
   },true);
  }
  async function init(){
+  if(enforceCanonicalOrigin())return;
   bindPersistentSocialDismissHandlers();
   capturePendingInvite();
   $('#socialNotificationButton')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=!p.hidden});$('#socialNotificationClose')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=true});$('#refreshAdminUsers')?.addEventListener('click',loadAdminUsers);$('#communityProfileClose')?.addEventListener('click',()=>$('#communityProfileDialog')?.close());$('#avatarPicker')?.addEventListener('click',changeAvatar);join?.addEventListener('change',changeOptIn);$('#cloudSyncNow')?.addEventListener('click',syncNow);$('#cloudDelete')?.addEventListener('click',deleteCloudData);$('#leaderboardSignIn')?.addEventListener('click',()=>user?$('#settingsBtn').click():signIn());
