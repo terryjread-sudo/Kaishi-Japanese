@@ -7,13 +7,17 @@ password, or a Supabase secret/service-role key.
 ## One-time Supabase setup
 
 1. In **Authentication → URL Configuration**, set the Site URL to:
-   `https://terryjread-sudo.github.io/Kaishi-Japanese/`
+   `https://kaishi.uk/`
 2. Add these Redirect URLs:
-   - `https://terryjread-sudo.github.io/Kaishi-Japanese/`
+   - `https://kaishi.uk/`
+   - `https://www.kaishi.uk/` (only if the `www` address redirects to or serves the app)
+   - `https://terryjread-sudo.github.io/Kaishi-Japanese/` (legacy GitHub Pages address)
    - `http://localhost:8000/`
    - `http://127.0.0.1:8000/`
 3. In **Authentication → Providers → GitHub**, enable GitHub and save the
-   OAuth client ID and secret in Supabase only.
+   OAuth client ID and secret in Supabase only. The GitHub OAuth app callback URL
+   remains `https://wcnsvwbhfstgadqnaarr.supabase.co/auth/v1/callback`; do not
+   replace it with the Kaishi domain.
 4. Open **SQL Editor**, paste the complete contents of
    `migrations/20260731_cloud_progress.sql`, and run it once.
 5. Then run `migrations/20260731_profile_streak_rescue.sql` to add profile
