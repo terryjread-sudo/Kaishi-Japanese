@@ -18,10 +18,12 @@ code{display:block;font-size:.68rem;overflow-wrap:anywhere;margin-top:5px}.ok{co
 <p id="status">Checking images…</p><div class="grid" id="grid"></div>
 <script>
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-fetch('memory-scenes.json',{cache:'no-store'}).then(r=>r.json()).then(scenes=>{
- const rows=Object.entries(scenes),unique=new Set(rows.map(([,v])=>v.file));
- document.querySelector('#summary').textContent=`${rows.length} mappings · ${unique.size} unique standalone images`;
- document.querySelector('#grid').innerHTML=rows.map(([key,v])=>{const [word,reading]=key.split('|');return `<article><img src="${esc(v.file)}" alt="${esc(v.alt||`Mnemonic scene for ${word}`)}"><div><b>${esc(word)}</b>（${esc(reading)}）</div><code>${esc(v.file)}</code></article>`}).join('');
+Promise.all([fetch('memory-scenes.json',{cache:'no-store'}).then(r=>r.json()),fetch('data/katakana-core-10k.json',{cache:'no-store'}).then(r=>r.json())]).then(([scenes,katakana])=>{
+ const legacyRows=Object.entries(scenes).map(([key,value])=>{const [word,reading]=key.split('|');return {word,reading,file:value.file,alt:value.alt||`Mnemonic scene for ${word}`,source:'Kaishi mnemonic'};});
+ const katakanaRows=(katakana.records||[]).filter(record=>record.picture).map(record=>({word:record.word,reading:record.reading,file:`media/${record.picture}`,alt:`Katakana mnemonic scene for ${record.word}`,source:'Katakana Core'}));
+ const rows=[...legacyRows,...katakanaRows],unique=new Set(rows.map(row=>row.file));
+ document.querySelector('#summary').textContent=`${rows.length} mappings · ${legacyRows.length} Kaishi · ${katakanaRows.length} Katakana Core · ${unique.size} unique images`;
+ document.querySelector('#grid').innerHTML=rows.map(row=>`<article><img src="${esc(row.file)}" alt="${esc(row.alt)}"><div><b>${esc(row.word)}</b>（${esc(row.reading)}）</div><small>${esc(row.source)}</small><code>${esc(row.file)}</code></article>`).join('');
  const images=[...document.images];
  return Promise.all(images.map(img=>new Promise(resolve=>{if(img.complete)resolve(img.naturalWidth>0);else{img.onload=()=>resolve(true);img.onerror=()=>resolve(false)}}))).then(results=>{
   const failed=results.filter(x=>!x).length,el=document.querySelector('#status');
