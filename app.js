@@ -1176,6 +1176,7 @@ function makeTargetedMasterySession(ids,skill,title='Your focused practice sessi
  session=words.map(v=>({v,skill:skill==='retain'?chooseSkill(v):skill}));index=0;current=null;clearMissionResume();showJourneySessionPreview(title);
 }
 const lessonAudioCache=new Map();
+let exampleSentencePlayback=null;
 function media(name){return name?`media/${encodeURIComponent(name).replace(/%2F/g,'/')}`:''}
 function cachedAudio(name){if(!name)return null;const source=media(name);let audio=lessonAudioCache.get(source);if(!audio){audio=new Audio(source);audio.preload='auto';lessonAudioCache.set(source,audio)}return audio}
 function preloadAudio(name){try{cachedAudio(name)?.load()}catch{}}
@@ -1183,6 +1184,19 @@ function preloadUpcomingCardAudio(count=3){const sources=[];session.slice(index,
 function play(name,fallback=''){const currentWord=current?.v,currentRecord=currentWord&&ankiRecordFor(currentWord),currentFallback=current?.skill==='sentence'||current?.skill==='example'?(currentRecord?.sentence||currentWord?.exampleSentence||currentWord?.sentence||currentWord?.reading||currentWord?.word):(currentWord?.reading||currentWord?.word);if(!name){if(fallback||currentFallback)speakJapanese(fallback||currentFallback);return}const audio=cachedAudio(name);if(!audio){if(fallback||currentFallback)speakJapanese(fallback||currentFallback);return}try{audio.currentTime=0}catch{}audio.play().catch(()=>{if(fallback||currentFallback)speakJapanese(fallback||currentFallback)})}
 function playWord(word){play(word?.wordAudio,word?.reading||word?.word||'')}
 function playSentence(word){const record=ankiRecordFor(word),sentence=record?.sentence||word?.exampleSentence||word?.sentence||word?.reading||word?.word||'';play(word?.sentenceAudio||record?.sentenceAudio,sentence)}
+function clearExampleSentencePlayback(){const playback=exampleSentencePlayback;if(!playback)return;cancelAnimationFrame(playback.frame||0);if(playback.audio){playback.audio.removeEventListener('play',playback.start);playback.audio.removeEventListener('timeupdate',playback.update);playback.audio.removeEventListener('ended',playback.finish);playback.audio.removeEventListener('error',playback.fallback)}document.querySelectorAll('.example-sentence-character.is-speaking').forEach(character=>character.classList.remove('is-speaking'));exampleSentencePlayback=null}
+function exampleSentenceMarkup(sentence,word){const start=sentence.indexOf(word);return Array.from(sentence).map((character,index)=>`<span class="example-sentence-character${start>=0&&index>=start&&index<start+word.length?' is-target':''}">${esc(character)}</span>`).join('')}
+function highlightExampleSentence(progress){const characters=[...document.querySelectorAll('.example-sentence-character')];if(!characters.length)return;const active=Math.max(0,Math.min(characters.length-1,Math.floor(progress*characters.length)));characters.forEach((character,index)=>character.classList.toggle('is-speaking',index===active))}
+function playExampleSentence(word,sentence){
+ clearExampleSentencePlayback();const record=ankiRecordFor(word),audio=cachedAudio(word?.sentenceAudio||record?.sentenceAudio);
+ if(!audio){speakJapanese(sentence,()=>clearExampleSentencePlayback(),'neutral',event=>highlightExampleSentence(Number(event.charIndex||0)/Math.max(1,sentence.length)));return}
+ const playback={audio,frame:0,start:null,update:null,finish:null,fallback:null};
+ const update=()=>{if(exampleSentencePlayback!==playback)return;const duration=Number(audio.duration||0),progress=duration>0?audio.currentTime/duration:0;highlightExampleSentence(progress);if(!audio.paused)playback.frame=requestAnimationFrame(update)};
+ const finish=()=>{highlightExampleSentence(1);setTimeout(()=>{if(exampleSentencePlayback===playback)clearExampleSentencePlayback()},550)};
+ const fallback=()=>{clearExampleSentencePlayback();speakJapanese(sentence,()=>clearExampleSentencePlayback(),'neutral',event=>highlightExampleSentence(Number(event.charIndex||0)/Math.max(1,sentence.length)))};
+ playback.start=()=>update();playback.update=()=>{const duration=Number(audio.duration||0);if(duration>0)highlightExampleSentence(audio.currentTime/duration)};playback.finish=finish;playback.fallback=fallback;exampleSentencePlayback=playback;
+ audio.addEventListener('play',playback.start);audio.addEventListener('timeupdate',playback.update);audio.addEventListener('ended',playback.finish);audio.addEventListener('error',playback.fallback);try{audio.currentTime=0}catch{}audio.play().catch(fallback);
+}
 function kanaState(id){return meta.kanaProgress[id]||(meta.kanaProgress[id]={stage:0,attempts:0,correct:0,due:0})}
 function kanaMastered(script){return kanaData.filter(x=>x.script===script&&Number(meta.kanaProgress?.[x.id]?.stage||0)>=4).length}
 function updateKanaOverview(){
@@ -1367,10 +1381,10 @@ function resolveGrammarAnswer(button,question){if(grammarRun.answered)return;gra
 function finishGrammarLesson(){const state=grammarState(grammarLesson.id),total=grammarRun.questions.length,score=Math.round(grammarRun.correct/Math.max(1,total)*100),passed=grammarRun.correct>=Math.ceil(total*.67);state.attempts++;state.best=Math.max(Number(state.best||0),score);if(passed)state.completed=Number(state.completed||0)+1;save();refreshPathUnlocks();$('#grammarCounter').textContent='Lesson result';$('#grammarContent').innerHTML=`<section class="grammar-result"><div>${passed?'⛩️':'🌱'}</div><span class="eyebrow">${passed?'Lesson complete':'Almost there'}</span><h2>${grammarRun.correct} of ${total} correct</h2><p>${passed?'The next particle lesson is now available.':'Review the distinction and answer at least two questions correctly to unlock the next lesson.'}</p><div><button id="grammarRetry" class="primary">${passed?'Practise again':'Review and retry'}</button><button id="grammarFinish">Back to particle path</button></div></section>`;$('#grammarRetry').onclick=()=>startGrammarLesson(grammarRun.lessonIndex);$('#grammarFinish').onclick=()=>{if(activityReturnScreen==='journey')returnToActivitySource('home');else openGrammarPath()}}
 
 const JAPANESE_VOICE_PROFILES={neutral:{rate:.86,pitch:1},kai:{rate:1.02,pitch:.9,names:/keita|ichiro|kaito|takumi|naoki|daichi|haruto|male/i},boy:{rate:1.02,pitch:.9,names:/keita|ichiro|kaito|takumi|naoki|daichi|haruto|male/i},mia:{rate:1.01,pitch:1.18,names:/nanami|ayumi|haruka|sayaka|kyoko|female/i},girl:{rate:1.01,pitch:1.18,names:/nanami|ayumi|haruka|sayaka|kyoko|female/i},aiko:{rate:.94,pitch:1.08,names:/nanami|ayumi|haruka|sayaka|kyoko|female/i},master:{rate:.78,pitch:.68,names:/keita|ichiro|kaito|takumi|naoki|daichi|haruto|male/i}};
-function speakJapanese(text,onEnd,profile='neutral'){
+function speakJapanese(text,onEnd,profile='neutral',onBoundary){
  if(!text||!('speechSynthesis'in window)){toast('Japanese speech is not available in this browser');return}
  if(profile==='neutral'&&theatreScene&&$('#theatre')?.classList.contains('active'))profile=theatreScene.timeline.find(line=>line.line===text)?.speaker||profile;
- speechSynthesis.cancel();japaneseSpeech=new SpeechSynthesisUtterance(text);japaneseSpeech.lang='ja-JP';const voiceProfile=JAPANESE_VOICE_PROFILES[profile]||JAPANESE_VOICE_PROFILES.neutral,voices=speechSynthesis.getVoices().filter(item=>item.lang?.toLowerCase().startsWith('ja')),voice=voices.find(item=>voiceProfile.names?.test(item.name))||voices[0];japaneseSpeech.rate=voiceProfile.rate;japaneseSpeech.pitch=voiceProfile.pitch;if(voice)japaneseSpeech.voice=voice;if(onEnd)japaneseSpeech.onend=onEnd;speechSynthesis.speak(japaneseSpeech);
+ speechSynthesis.cancel();japaneseSpeech=new SpeechSynthesisUtterance(text);japaneseSpeech.lang='ja-JP';const voiceProfile=JAPANESE_VOICE_PROFILES[profile]||JAPANESE_VOICE_PROFILES.neutral,voices=speechSynthesis.getVoices().filter(item=>item.lang?.toLowerCase().startsWith('ja')),voice=voices.find(item=>voiceProfile.names?.test(item.name))||voices[0];japaneseSpeech.rate=voiceProfile.rate;japaneseSpeech.pitch=voiceProfile.pitch;if(voice)japaneseSpeech.voice=voice;if(onEnd)japaneseSpeech.onend=onEnd;if(onBoundary)japaneseSpeech.onboundary=onBoundary;speechSynthesis.speak(japaneseSpeech);
 }
 function speakConversation(lines){
  const queue=lines.filter(Boolean);let position=0;const nextLine=()=>{if(position>=queue.length)return;const line=queue[position++];if(typeof line==='string')speakJapanese(line,nextLine);else speakJapanese(line.text,nextLine,line.profile)};nextLine();
@@ -1592,8 +1606,10 @@ function currentLearningReportContext(){
  };
 }
 function renderCurrent(){
+ clearExampleSentencePlayback();
  try{
   renderCurrentUnsafe();
+  if(current?.skill==='example'&&current.v){const record=ankiRecordFor(current.v),sentence=record?.sentence||current.v.exampleSentence||'';const sentenceNode=$('.example-sentence'),audioButton=$('#exampleAudio');if(sentenceNode&&sentence)sentenceNode.innerHTML=exampleSentenceMarkup(sentence,current.v.word);if(audioButton&&sentence)audioButton.onclick=()=>playExampleSentence(current.v,sentence)}
   if(current?.v&&!current.battle&&!current.karuta)addNotebookSaveControl(current.v);
   if(current?.v&&!pictureGameActive&&!karutaActive&&!battleActive){const chapter=Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:Math.floor(journeyVocabulary().indexOf(current.v)/WORD_CHAPTER_SIZE),panel=document.createElement('div');panel.innerHTML=lessonMasteryPanelHTML(Math.max(0,chapter));$('#card')?.prepend(panel.firstElementChild);const step=masteryStepFor(current.v),banner=document.createElement('aside');banner.className='word-mastery-next';banner.innerHTML=`<span>Journey</span><b>Next: ${esc(step.label)}</b><small>${esc(step.reason)}</small>`;$('#card')?.prepend(banner)}
   wireSceneImages($('#card')||document);
