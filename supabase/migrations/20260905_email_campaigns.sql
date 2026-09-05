@@ -1,5 +1,14 @@
 -- Kaishi Japanese email preferences, owner mail tools and scheduled re-engagement.
--- Run after the existing social and admin SQL setup.
+-- Safe to run whether or not the previous social-email setup is installed.
+
+create table if not exists public.kaishi_notification_preferences (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  friend_request_email boolean not null default true,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.kaishi_notification_preferences enable row level security;
+revoke all on public.kaishi_notification_preferences from anon, authenticated;
 
 alter table public.kaishi_notification_preferences
   add column if not exists learning_email boolean not null default true;
