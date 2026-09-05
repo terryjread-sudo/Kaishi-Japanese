@@ -38,11 +38,15 @@ or add it to browser configuration.
 1. Revoke any Resend key that was shared outside the Resend dashboard, then
    create a replacement there.
 2. Run `migrations/20260905_email_campaigns.sql`, then
-   `migrations/20260905_email_programs.sql`, in the Supabase SQL Editor.
+   `migrations/20260905_email_programs.sql`, then
+   `migrations/20260906_milestone_email_programs.sql`, in the Supabase SQL
+   Editor.
 3. Deploy the owner-mail function with `supabase functions deploy admin-email`.
    Deploy the scheduler with
    `supabase functions deploy email-program-scheduler --no-verify-jwt`; its
    separate cron secret is checked by the function before any work is done.
+   Deploy learner milestone delivery with
+   `supabase functions deploy milestone-email`.
 4. Set these Supabase Edge Function secrets directly in the Supabase dashboard
    or with the Supabase CLI:
    - `RESEND_API_KEY` — the newly created Resend key
@@ -56,8 +60,10 @@ The hourly GitHub Actions workflow calls the scheduler. It uses the
 `Europe/London` time zone, so UK daylight-saving changes do not alter the
 learner-facing schedule. Each program is disabled until the owner enables it in
 the Admin area: Friday return-to-learning reminders, Sunday weekly recaps,
-monthly Sensei letters, and onboarding nudges. Milestone emails are not part of
-this phase.
+monthly Sensei letters, and onboarding nudges. Phase 2 adds optional milestone
+emails for a first lesson, 10 mastered words, each completed chapter, and 3,
+7, 14, 30 and 60 rhythm days. Resetting learning progress starts a new
+milestone cycle, so learners can earn the same celebrations again.
 
 ## Security model
 
