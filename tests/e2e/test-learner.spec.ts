@@ -144,6 +144,56 @@ test('new words offer optional compact pronunciation practice', async ({ page })
   await expect(page.locator('#sessionCounter')).toHaveAttribute('aria-label', /card 4 of/);
 });
 
+test('compact pronunciation results let a learner continue their lesson', async ({ page }) => {
+  await page.addInitScript(() => {
+    class RecognitionStub {
+      lang = '';
+      interimResults = false;
+      continuous = false;
+      onresult?: (event: unknown) => void;
+      onend?: () => void;
+
+      start() {
+        setTimeout(() => {
+          this.onresult?.({ results: [Object.assign([{ transcript: 'こんにちは' }], { isFinal: true })] });
+        }, 0);
+      }
+
+      stop() {
+        this.onend?.();
+      }
+
+      abort() {
+        this.onend?.();
+      }
+    }
+
+    const appWindow = window as typeof window & { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown };
+    appWindow.SpeechRecognition = RecognitionStub;
+    appWindow.webkitSpeechRecognition = RecognitionStub;
+    window.sessionStorage.setItem('kq-admin-test-mode', '1');
+  });
+  await page.goto('/');
+  await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
+  await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+  await page.locator('#firstEncounterContinue').click();
+  await page.locator('#continueBtn').click();
+
+  const counter = page.locator('#sessionCounter');
+  const before = await counter.getAttribute('aria-label');
+  await page.locator('#pronunciationCheck').click();
+  await page.locator('#pronunciationCoachDialog .pronunciation-record').click();
+
+  await expect(page.locator('#pronunciationCoachDialog .pronunciation-record')).toHaveText('🎙️ Check again');
+  await expect(page.locator('#pronunciationCoachDialog .pronunciation-continue')).toBeVisible();
+  await expect(page.locator('#pronunciationCoachDialog .pronunciation-actions')).toHaveClass(/compact-results/);
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+
+  await expect(page.locator('#pronunciationCoachDialog')).not.toHaveAttribute('open', '');
+  await expect(page.locator('.word-pronunciation-card')).toBeVisible();
+  await expect(counter).toHaveAttribute('aria-label', before || '');
+});
+
 test('a learner can save a word without losing their active lesson card', async ({ page }) => {
   await page.addInitScript(() => {
     window.sessionStorage.setItem('kq-admin-test-mode', '1');
