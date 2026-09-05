@@ -710,6 +710,7 @@ header{
 
 .admin-settings-link{width:100%;margin-top:10px}
 .admin-page{display:grid;gap:18px}
+.admin-tabs{display:flex;gap:6px;overflow:auto;padding:5px;border-radius:14px;background:#eef2f7}.admin-tabs button{flex:1 0 auto;border:0;border-radius:10px;background:transparent;color:#475569;font-size:.74rem;font-weight:800}.admin-tabs button.active{background:#fff;color:#173d32;box-shadow:0 2px 8px #0f172a16}.admin-tab-panel{display:grid;gap:12px}.admin-operational-log{display:grid;gap:8px}.admin-operational-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:start;padding:10px;border:1px solid #dbe3f0;border-radius:13px;background:#f8fafc}.admin-operational-row strong,.admin-operational-row small{display:block}.admin-operational-row small{color:#64748b;font-size:.72rem;line-height:1.35}.admin-operational-row>small{grid-column:1/-1}
 .admin-tool-section{border:1px solid #dbe3f0;border-radius:18px;padding:14px;background:#fff}
 .admin-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .admin-section-heading h3{margin:2px 0 0}

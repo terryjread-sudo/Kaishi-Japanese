@@ -1208,7 +1208,7 @@ function updateKanaOverview(){
  if($('#katakanaProgress'))$('#katakanaProgress').textContent=`${kanaMastered('katakana')} / ${k} mastered`;
 }
 function openKanaPath(){updateKanaOverview();$('#kanaOverview').hidden=false;$('#kanaLesson').hidden=true;show('kana')}
-function playKana(entry){if(entry?.audio)play(entry.audio)}
+function playKana(entry){if(entry?.audio)play(entry.audio,entry.kana||entry.romaji||'')}
 function kanaChoices(entry,key){
  const pool=kanaData.filter(x=>x.script===entry.script&&x.id!==entry.id&&x[key]!==entry[key]);
  const choices=[entry[key]];

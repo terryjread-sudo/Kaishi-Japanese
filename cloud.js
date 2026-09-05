@@ -11,9 +11,10 @@
  const FP_KEY='kq-cloud-sync-fingerprint-v1',FRIEND_NUDGE_DISMISS_KEY='kq-friend-nudge-dismiss-v1',SOCIAL_READ_KEY='kq-social-notifications-read-v1';
  const CANONICAL_ORIGIN='https://www.kaishi.uk';
  let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[],adminUsers=[],emailRecipientId='',emailPreviewed=false;
+ const supabaseIssueKeys=new Set();
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
- const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}};
+ const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}if(state==='error')void logSupabaseIssue('cloud-status',message)};
  const setLeaderboardMessage=message=>{if(leaderboardMessage)leaderboardMessage.textContent=message};
  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const avatarDefinition=value=>AVATARS.find(avatar=>avatar.key===value);
@@ -27,6 +28,10 @@
  function isOwner(){return Boolean(user&&profile().github_login.toLowerCase()===OWNER_LOGIN)}
  function setupMissing(error){return['42P01','42703'].includes(error?.code)||/(relation|column) .* does not exist/i.test(error?.message||'')}
  function describeError(error){return setupMissing(error)?'Cloud setup is incomplete. Run the supplied Supabase SQL migrations in order.':(error?.message||'Cloud service is unavailable.')}
+ async function logSupabaseIssue(context,message){
+  const key=`${context}:${String(message)}`;if(!client||!user||supabaseIssueKeys.has(key))return;supabaseIssueKeys.add(key);
+  const{error}=await client.rpc('log_kaishi_supabase_issue',{p_message:String(message).slice(0,1000),p_context:context,p_details:{appVersion:APP_VERSION,path:location.pathname}});if(error)console.warn('Could not record Supabase issue',error.message||error);
+ }
 
  function stable(value){
   if(Array.isArray(value))return value.map(stable);
