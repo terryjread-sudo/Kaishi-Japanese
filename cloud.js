@@ -10,7 +10,7 @@
  ];
  const FP_KEY='kq-cloud-sync-fingerprint-v1',FRIEND_NUDGE_DISMISS_KEY='kq-friend-nudge-dismiss-v1',SOCIAL_READ_KEY='kq-social-notifications-read-v1';
  const CANONICAL_ORIGIN='https://www.kaishi.uk';
- let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[];
+ let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[],adminUsers=[],emailRecipientId='',emailPreviewed=false;
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
  const setStatus=(message,state='')=>{if(status){status.textContent=message;status.dataset.state=state}};
@@ -62,6 +62,7 @@
   if(account)account.innerHTML=`<img class="cloud-avatar" src="${GUEST_IMAGE}" alt="Guest learner"><div><strong>Protect your Kaishi Japanese progress</strong><p>Sign in with GitHub to sync learning, choose a character and continue on another device.</p></div><button id="cloudSignIn" class="github-button">Sign in with GitHub</button>`;
   $('#cloudSignIn')?.addEventListener('click',signIn);
   if(join){join.checked=true;join.disabled=true}
+  const learningEmail=$('#learningEmailOptIn');if(learningEmail){learningEmail.checked=true;learningEmail.disabled=true}
   setStatus('Guest progress is saved only on this device.');
   renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
  }
@@ -70,6 +71,7 @@
   if(account)account.innerHTML=`<img class="cloud-avatar" src="${avatarImage(selectedAvatar,entry?.streak)}" alt=""><div><strong>${esc(p.display_name)}</strong><p>@${esc(p.github_login)} · GitHub account connected</p></div><button id="cloudSignOut">Sign out</button>`;
   $('#cloudSignOut')?.addEventListener('click',signOut);
   if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}
+  const learningEmail=$('#learningEmailOptIn');if(learningEmail)learningEmail.disabled=false;
   renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
  }
 
@@ -80,6 +82,19 @@
  }
  async function signIn(){if(!client)return;setStatus('Opening GitHub sign-in…','working');const redirectTo=`${CANONICAL_ORIGIN}/`;const{error}=await client.auth.signInWithOAuth({provider:'github',options:{redirectTo}});if(error)setStatus(describeError(error),'error')}
  async function signOut(){if(!client)return;await flush();const{error}=await client.auth.signOut();if(error)setStatus(describeError(error),'error');else renderSignedOut('Signed out. Your local progress remains on this device.')}
+
+ async function loadEmailPreferences(){
+  const control=$('#learningEmailOptIn');if(!control||!user||!client)return;
+  const{data,error}=await client.rpc('get_kaishi_email_preferences');
+  if(!error)control.checked=data?.learning_email!==false;
+ }
+ async function setLearningEmailPreference(){
+  const control=$('#learningEmailOptIn');if(!control||!user||!client)return;
+  control.disabled=true;
+  const{error}=await client.rpc('set_kaishi_learning_email_preference',{enabled:control.checked});
+  if(error){control.checked=!control.checked;setStatus(describeError(error),'error')}else setStatus(control.checked?'Kaishi learning emails are enabled.':'Kaishi learning emails are disabled.','ok');
+  control.disabled=false;
+ }
 
  async function ensureLeaderboardEntry(){
   if(!user)return null;
@@ -258,7 +273,50 @@
  async function loadAdminUsers(){
   const list=$('#adminUsersList'),summary=$('#adminUsersSummary');if(!list||!summary||!isOwner())return;
   list.innerHTML='<p class="muted">Loading users…</p>';
-  try{const{data,error}=await client.rpc('get_kaishi_admin_users');if(error)throw error;const rows=data||[];summary.innerHTML=`<span><strong>${rows.length}</strong> profiles</span><span><strong>${rows.filter(r=>r.opted_in).length}</strong> visible</span><span><strong>${rows.filter(r=>!r.opted_in).length}</strong> opted out</span>`;list.innerHTML=rows.map(r=>`<article class="admin-user-row"><img src="${avatarImage(r.avatar_key||'boy',r.streak||0)}" alt=""><div><strong>${esc(r.display_name||r.github_login)}</strong><small>@${esc(r.github_login)} · active ${timeAgo(r.updated_at)}</small></div><span>${r.xp||0} XP · ${r.mastered||0} mastered · ${r.friend_count||0} friends</span><b>${r.opted_in?'Visible':'Opted out'}</b></article>`).join('');adminUsersLoaded=true}catch(e){list.innerHTML=`<p class="muted">${esc(describeError(e))}</p>`}
+  try{
+   const{data,error}=await client.rpc('get_kaishi_admin_users');if(error)throw error;
+   adminUsers=data||[];
+   summary.innerHTML=`<span><strong>${adminUsers.length}</strong> profiles</span><span><strong>${adminUsers.filter(r=>r.contactable).length}</strong> email enabled</span><span><strong>${adminUsers.filter(r=>!r.learning_email).length}</strong> email opt-outs</span>`;
+   list.innerHTML=adminUsers.map(r=>`<article class="admin-user-row"><img src="${avatarImage(r.avatar_key||'boy',r.streak||0)}" alt=""><div><strong>${esc(r.display_name||r.github_login)}</strong><small>@${esc(r.github_login)} · signed in ${r.last_sign_in_at?timeAgo(r.last_sign_in_at):'never'}</small></div><span>${r.xp||0} XP · ${r.mastered||0} mastered · ${r.friend_count||0} friends</span><b>${r.learning_email?'Email enabled':'Email opted out'}</b><button type="button" data-admin-email-user="${esc(r.user_id)}" ${r.contactable?'':'disabled'}>${r.contactable?'Send email':'No email'}</button></article>`).join('');
+   list.querySelectorAll('[data-admin-email-user]').forEach(button=>button.onclick=()=>openAdminEmail(button.dataset.adminEmailUser));
+   adminUsersLoaded=true;
+  }catch(e){list.innerHTML=`<p class="muted">${esc(describeError(e))}</p>`}
+ }
+
+ async function invokeAdminEmail(body){
+  const{data,error}=await client.functions.invoke('admin-email',{body});
+  if(error)throw new Error(error.message||'Email service is unavailable.');
+  if(data?.error)throw new Error(data.error);
+  return data;
+ }
+ function setAdminEmailStatus(message,state=''){const el=$('#adminEmailStatus');if(el){el.textContent=message;el.dataset.state=state}}
+ async function openAdminEmail(userId){
+  const recipient=adminUsers.find(row=>row.user_id===userId),dialog=$('#adminEmailDialog');if(!recipient||!dialog)return;
+  emailRecipientId=userId;emailPreviewed=false;
+  $('#adminEmailRecipient').textContent=`Email @${recipient.github_login||recipient.display_name}`;
+  $('#adminEmailPreviewContent').innerHTML='';$('#adminEmailSend').disabled=true;setAdminEmailStatus('Choose a template, then preview the exact email before sending.');
+  $('#adminEmailHistory').innerHTML='<p class="muted">Loading recent email activity…</p>';
+  dialog.showModal();
+  try{const data=await invokeAdminEmail({action:'history',userId});$('#adminEmailHistory').innerHTML=(data.history||[]).length?(data.history||[]).map(item=>`<p><strong>${esc(item.template_key)}</strong> · ${esc(item.status)} · ${new Date(item.created_at).toLocaleString()}</p>`).join(''):'<p class="muted">No previous emails.</p>'}catch(error){$('#adminEmailHistory').innerHTML=`<p class="muted">${esc(error.message)}</p>`}
+ }
+ async function previewAdminEmail(){
+  if(!emailRecipientId)return;const button=$('#adminEmailPreview');button.disabled=true;setAdminEmailStatus('Rendering email preview…','working');
+  try{const data=await invokeAdminEmail({action:'preview',userId:emailRecipientId,templateKey:$('#adminEmailTemplate').value});$('#adminEmailPreviewContent').innerHTML=data.html||'';emailPreviewed=true;$('#adminEmailSend').disabled=false;setAdminEmailStatus(`Preview ready for ${data.recipient?.name||'this learner'}.`,'ok')}catch(error){emailPreviewed=false;$('#adminEmailSend').disabled=true;setAdminEmailStatus(error.message,'error')}finally{button.disabled=false}
+ }
+ async function sendAdminEmail(){
+  if(!emailRecipientId||!emailPreviewed)return;
+  if(!confirm('Send this reviewed email now?'))return;
+  const button=$('#adminEmailSend');button.disabled=true;setAdminEmailStatus('Sending email…','working');
+  try{const data=await invokeAdminEmail({action:'send',userId:emailRecipientId,templateKey:$('#adminEmailTemplate').value,idempotencyKey:crypto.randomUUID()});if(!data.sent)throw new Error(data.error||'Email was not sent.');emailPreviewed=false;setAdminEmailStatus('Email sent and recorded.','ok');await loadAdminUsers()}catch(error){setAdminEmailStatus(error.message,'error');button.disabled=false}
+ }
+ function nextFridayAtFive(){const now=new Date(),result=new Date(now);result.setHours(17,0,0,0);result.setDate(result.getDate()+((5-result.getDay()+7)%7||7));return result.toLocaleString('en-GB',{timeZone:'Europe/London',dateStyle:'medium',timeStyle:'short',timeZoneName:'short'})}
+ async function loadEmailAutomation(){
+  const status=$('#adminEmailAutomationStatus'),toggle=$('#adminEmailAutomationEnabled');if(!status||!toggle||!isOwner())return;
+  try{const{data,error}=await client.rpc('get_kaishi_email_automation_settings');if(error)throw error;toggle.checked=Boolean(data?.enabled);status.textContent=`${data?.enabled?'Enabled':'Disabled'} · next check ${nextFridayAtFive()} · ${data?.eligible_count||0} eligible · last send ${data?.last_sent_count||0}${data?.last_result?` · ${data.last_result}`:''}`}catch(error){status.textContent=describeError(error);status.dataset.state='error'}
+ }
+ async function setEmailAutomation(){
+  const toggle=$('#adminEmailAutomationEnabled');if(!toggle||!isOwner())return;toggle.disabled=true;
+  const{error}=await client.rpc('set_kaishi_email_automation_enabled',{p_enabled:toggle.checked});if(error){toggle.checked=!toggle.checked;toast(describeError(error))}await loadEmailAutomation();toggle.disabled=false;
  }
  async function initialiseFriends(){
   await loadFriends();
@@ -287,7 +345,7 @@ async function loadLeaderboard(){
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
  async function syncNow(){if(!user){await signIn();return}await initialiseAccount(true)}
  async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Japanese cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
- async function handleSession(session){user=session?.user||null;window.dispatchEvent(new CustomEvent('kaishi-auth-change',{detail:{signedIn:Boolean(user),userId:user?.id||null}}));if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
+ async function handleSession(session){user=session?.user||null;window.dispatchEvent(new CustomEvent('kaishi-auth-change',{detail:{signedIn:Boolean(user),userId:user?.id||null}}));if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();await loadEmailPreferences();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
 
 
  function friendRelation(userId){
@@ -431,7 +489,7 @@ async function loadLeaderboard(){
   if(enforceCanonicalOrigin())return;
   bindPersistentSocialDismissHandlers();
   capturePendingInvite();
-  $('#socialNotificationButton')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=!p.hidden});$('#socialNotificationClose')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=true});$('#refreshAdminUsers')?.addEventListener('click',loadAdminUsers);$('#communityProfileClose')?.addEventListener('click',()=>$('#communityProfileDialog')?.close());$('#avatarPicker')?.addEventListener('click',changeAvatar);join?.addEventListener('change',changeOptIn);$('#cloudSyncNow')?.addEventListener('click',syncNow);$('#cloudDelete')?.addEventListener('click',deleteCloudData);$('#leaderboardSignIn')?.addEventListener('click',()=>user?$('#settingsBtn').click():signIn());
+  $('#socialNotificationButton')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=!p.hidden});$('#socialNotificationClose')?.addEventListener('click',()=>{const p=$('#socialNotificationPanel');if(p)p.hidden=true});$('#refreshAdminUsers')?.addEventListener('click',loadAdminUsers);$('#communityProfileClose')?.addEventListener('click',()=>$('#communityProfileDialog')?.close());$('#avatarPicker')?.addEventListener('click',changeAvatar);join?.addEventListener('change',changeOptIn);$('#learningEmailOptIn')?.addEventListener('change',setLearningEmailPreference);$('#cloudSyncNow')?.addEventListener('click',syncNow);$('#cloudDelete')?.addEventListener('click',deleteCloudData);$('#leaderboardSignIn')?.addEventListener('click',()=>user?$('#settingsBtn').click():signIn());$('#adminEmailPreview')?.addEventListener('click',previewAdminEmail);$('#adminEmailSend')?.addEventListener('click',sendAdminEmail);$('#adminEmailClose')?.addEventListener('click',()=>$('#adminEmailDialog')?.close());$('#adminEmailCancel')?.addEventListener('click',()=>$('#adminEmailDialog')?.close());$('#adminEmailTemplate')?.addEventListener('change',()=>{emailPreviewed=false;$('#adminEmailSend').disabled=true;setAdminEmailStatus('Template changed. Preview again before sending.')});$('#adminEmailAutomationEnabled')?.addEventListener('change',setEmailAutomation);
   if(!config?.url||!config?.publishableKey||!sdk?.createClient){renderSignedOut('Cloud sync could not start. Guest mode is still available.');setStatus('Cloud configuration or library is unavailable.','error');return}
   client=sdk.createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   client.auth.onAuthStateChange((event,session)=>{if(['TOKEN_REFRESHED','USER_UPDATED'].includes(event))return;setTimeout(()=>handleSession(session),0)});
@@ -442,6 +500,6 @@ async function loadLeaderboard(){
   addEventListener('online',()=>user&&scheduleSync());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
  }
- window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,createFriendInviteLink,flush,avatarImage,renderDashboardAvatar,isOwner,isSignedIn:()=>Boolean(user),currentUserId:()=>user?.id||null,resetProgress,currentAvatar:()=>selectedAvatar};
+ window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,createFriendInviteLink,flush,avatarImage,renderDashboardAvatar,isOwner,isSignedIn:()=>Boolean(user),currentUserId:()=>user?.id||null,resetProgress,currentAvatar:()=>selectedAvatar,loadAdminUsers,loadEmailAutomation};
  init();
 })();
