@@ -40,7 +40,8 @@ or add it to browser configuration.
 2. Run `migrations/20260905_email_campaigns.sql`, then
    `migrations/20260905_email_programs.sql`, then
    `migrations/20260906_milestone_email_programs.sql`, in the Supabase SQL
-   Editor.
+   Editor. Run `migrations/20260907_admin_operational_logs.sql` to enable the
+   Admin email-delivery and Supabase-issue logs.
 3. Deploy the owner-mail function with `supabase functions deploy admin-email`.
    Deploy the scheduler with
    `supabase functions deploy email-program-scheduler --no-verify-jwt`; its

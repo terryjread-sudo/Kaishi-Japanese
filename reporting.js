@@ -12,7 +12,7 @@
     other:'Other'
   };
 
-  let client=null,user=null,isAdmin=false,currentContext=null,reports=[];
+  let client=null,user=null,isAdmin=false,currentContext=null,reports=[],activeAdminTab='reports';
 
   const $=selector=>document.querySelector(selector);
   const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,ch=>({
@@ -161,17 +161,53 @@
     if(studio&&!slot.contains(studio)){studio.hidden=false;slot.appendChild(studio)}
   }
 
+  function arrangeAdminTabs(){
+    const placements={reports:['adminReportsSection'],email:['adminEmailAutomation','adminEmailLogSection'],learners:['adminUsersPanel'],system:['adminLocalLogSection','adminSupabaseIssueSection'],tools:['adminToolsSection']};
+    Object.entries(placements).forEach(([tab,ids])=>{const panel=$(`#adminTab-${tab}`);ids.forEach(id=>{const section=$(`#${id}`);if(panel&&section&&!panel.contains(section))panel.appendChild(section)})});
+  }
+
+  function selectAdminTab(tab){
+    activeAdminTab=tab;
+    document.querySelectorAll('[data-admin-tab]').forEach(button=>{const selected=button.dataset.adminTab===tab;button.classList.toggle('active',selected);button.setAttribute('aria-selected',String(selected))});
+    document.querySelectorAll('[data-admin-panel]').forEach(panel=>panel.hidden=panel.dataset.adminPanel!==tab);
+    if(tab==='email')window.KaishiCloud?.loadEmailAutomation?.();
+    if(tab==='learners')window.KaishiCloud?.loadAdminUsers?.();
+    if(tab==='reports')loadReports();
+    if(tab==='system'){loadSupabaseIssues();window.kaishiLog?.('system','Opened system diagnostics')}
+    if(tab==='email')loadEmailLog();
+  }
+
   async function openAdmin(){
     if(!await checkAdmin()){
       alert('Administrator access is required.');
       return;
     }
-    moveOwnerTools();
+    moveOwnerTools();arrangeAdminTabs();selectAdminTab(activeAdminTab);
     $('#adminAccessMessage').textContent=`Signed in as @${githubLogin()}. Database access is protected by Supabase policies.`;
     window.scrollTo(0,0);
     document.querySelectorAll('.screen').forEach(screen=>screen.classList.toggle('active',screen.id==='adminArea'));
-    await Promise.all([window.KaishiCloud?.loadAdminUsers?.(),window.KaishiCloud?.loadEmailAutomation?.()]);
-    await loadReports();
+    await Promise.all([window.KaishiCloud?.loadAdminUsers?.(),window.KaishiCloud?.loadEmailAutomation?.(),loadReports(),loadEmailLog(),loadSupabaseIssues()]);
+  }
+
+  function renderOperationalRows(list,rows,renderer,empty){
+    if(!list)return;
+    list.innerHTML=rows?.length?rows.map(renderer).join(''):`<p class="muted">${empty}</p>`;
+  }
+
+  async function loadEmailLog(){
+    if(!isAdmin)return;const status=$('#adminEmailLogStatus'),list=$('#adminEmailLogList');if(status)status.textContent='Loading email activity…';
+    const{data,error}=await client.rpc('get_kaishi_email_log',{p_limit:100});
+    if(error){if(status){status.textContent=error.message;status.dataset.state='error'}return}
+    const rows=data||[];if(status){status.textContent=`${rows.length} recent delivery record${rows.length===1?'':'s'}.`;status.dataset.state='ok'};
+    renderOperationalRows(list,rows,row=>`<article class="admin-operational-row"><div><strong>${escapeHtml(row.template_key)}</strong><small>${escapeHtml(row.recipient_name||row.recipient_login||'learner')}${row.recipient_login?` · @${escapeHtml(row.recipient_login)}`:''}</small></div><span class="report-status ${escapeHtml(row.status)}">${escapeHtml(row.status)}</span><small>${new Date(row.sent_at||row.created_at).toLocaleString()}${row.error_message?` · ${escapeHtml(row.error_message)}`:''}</small></article>`,'No email delivery records yet.');
+  }
+
+  async function loadSupabaseIssues(){
+    if(!isAdmin)return;const status=$('#adminSupabaseIssueStatus'),list=$('#adminSupabaseIssueList');if(status)status.textContent='Loading Supabase issues…';
+    const{data,error}=await client.rpc('get_kaishi_supabase_issue_log',{p_limit:100});
+    if(error){if(status){status.textContent=error.message;status.dataset.state='error'}return}
+    const rows=data||[];if(status){status.textContent=`${rows.length} recent issue${rows.length===1?'':'s'}.`;status.dataset.state='ok'};
+    renderOperationalRows(list,rows,row=>`<article class="admin-operational-row"><div><strong>${escapeHtml(row.context||'Supabase')}</strong><small>${escapeHtml(row.message)}</small></div><span class="report-status ${escapeHtml(row.severity)}">${escapeHtml(row.severity)}</span><small>${new Date(row.created_at).toLocaleString()}${row.github_login?` · @${escapeHtml(row.github_login)}`:''}</small></article>`,'No Supabase issues have been reported.');
   }
 
   function filterReports(){
@@ -350,6 +386,9 @@
     $('#reportCategoryFilter')?.addEventListener('change',renderReports);
     $('#reportSearch')?.addEventListener('input',renderReports);
     $('#exportReports')?.addEventListener('click',exportReports);
+    document.querySelectorAll('[data-admin-tab]').forEach(button=>button.addEventListener('click',()=>selectAdminTab(button.dataset.adminTab)));
+    $('#refreshEmailLog')?.addEventListener('click',loadEmailLog);
+    $('#refreshSupabaseIssues')?.addEventListener('click',loadSupabaseIssues);
   }
 
   window.KaishiReports={attachToLearningCard,isSignedIn:signedIn,isAdmin:()=>isAdmin};
