@@ -1,7 +1,7 @@
 'use strict';
 
-/* Kaishi Japanese 11.58.0 — single source of truth for application version. */
-var APP_VERSION = '11.58.0';
+/* Kaishi Japanese 11.59.0 — single source of truth for application version. */
+var APP_VERSION = '11.59.0';
 var KAISHI_VERSION = APP_VERSION;
 
 try {
