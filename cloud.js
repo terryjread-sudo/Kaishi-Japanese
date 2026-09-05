@@ -309,7 +309,7 @@
   const button=$('#adminEmailSend');button.disabled=true;setAdminEmailStatus('Sending email…','working');
   try{const data=await invokeAdminEmail({action:'send',userId:emailRecipientId,templateKey:$('#adminEmailTemplate').value,idempotencyKey:crypto.randomUUID()});if(!data.sent)throw new Error(data.error||'Email was not sent.');emailPreviewed=false;setAdminEmailStatus('Email sent and recorded.','ok');await loadAdminUsers()}catch(error){setAdminEmailStatus(error.message,'error');button.disabled=false}
  }
- function nextFridayAtFive(){const now=new Date(),result=new Date(now);result.setHours(17,0,0,0);result.setDate(result.getDate()+((5-result.getDay()+7)%7||7));return result.toLocaleString('en-GB',{timeZone:'Europe/London',dateStyle:'medium',timeStyle:'short',timeZoneName:'short'})}
+ function nextFridayAtFive(){const now=new Date(),result=new Date(now);result.setHours(17,0,0,0);result.setDate(result.getDate()+((5-result.getDay()+7)%7||7));return result.toLocaleString('en-GB',{timeZone:'Europe/London',weekday:'short',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'})}
  async function loadEmailAutomation(){
   const status=$('#adminEmailAutomationStatus'),toggle=$('#adminEmailAutomationEnabled');if(!status||!toggle||!isOwner())return;
   try{const{data,error}=await client.rpc('get_kaishi_email_automation_settings');if(error)throw error;toggle.checked=Boolean(data?.enabled);status.textContent=`${data?.enabled?'Enabled':'Disabled'} · next check ${nextFridayAtFive()} · ${data?.eligible_count||0} eligible · last send ${data?.last_sent_count||0}${data?.last_result?` · ${data.last_result}`:''}`}catch(error){status.textContent=describeError(error);status.dataset.state='error'}
