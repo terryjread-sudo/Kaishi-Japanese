@@ -192,16 +192,18 @@
   }
 
   function lessonTitle(chapter, words) {
-    const meanings = words.slice(0, 2).map(word => word?.meaning).filter(Boolean);
-    if (meanings.length) {
-      return `Lesson ${chapter + 1}: ${meanings.join(' + ')}`;
-    }
+    const topic = topicFor(words);
+    if (topic?.title) return `Lesson ${chapter + 1} · ${topic.title}`;
 
     const routeStep = routeSafe().steps.find(step =>
       chapterFromId(step?.id) === chapter && step?.kind === 'chapter'
     );
 
     return routeStep?.title || `Lesson ${chapter + 1}`;
+  }
+
+  function lessonVocabulary(words) {
+    return words.slice(0, 3).map(word => word?.word).filter(Boolean).join(' · ');
   }
 
   function futureMissionForChapter(chapter, current) {
@@ -242,6 +244,7 @@
         chapter,
         icon: topic?.icon || '👋',
         title: lessonTitle(chapter, stats.words),
+        vocabulary: lessonVocabulary(stats.words),
         detail: done
           ? `${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`
           : isCurrent
@@ -330,6 +333,10 @@
         min-height:0;
         overflow:visible;
         touch-action:pan-y;
+        padding:10px 9px 2px;
+        border:1px solid rgba(15,23,42,.16);
+        border-radius:24px;
+        box-shadow:0 16px 38px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.82);
       }
 
       .kq-unified-timeline {
@@ -379,16 +386,16 @@
       .kq-unified-card {
         flex:1;
         min-width:0;
-        border:1px solid rgba(0,0,0,.1);
+        border:1px solid rgba(15,23,42,.16);
         border-radius:17px;
         padding:15px;
-        background:var(--card-bg,#fff);
-        box-shadow:0 2px 7px rgba(0,0,0,.04);
+        background:rgba(255,255,255,.96);
+        box-shadow:0 7px 18px rgba(15,23,42,.14);
         overflow:hidden;
       }
 
       #journeyHistoryTrack {
-        background-image:linear-gradient(90deg,rgba(255,255,255,.86),rgba(255,255,255,.67)),url('media/journey-scenes/bamboo-scroll-tile.png');
+        background-image:linear-gradient(90deg,rgba(218,230,232,.94),rgba(237,244,238,.84)),url('media/journey-scenes/bamboo-scroll-tile.png');
         background-repeat:repeat-y;
         background-position:center top;
         background-size:100% auto;
@@ -424,11 +431,42 @@
       .kq-mission-detail p { margin:.35rem 0 0; }
 
       .kq-unified-node.current .kq-unified-card {
-        border-width:2px;
+        border:2px solid #0f766e;
+        background:linear-gradient(145deg,#ffffff,#ecfdf5);
+        box-shadow:0 12px 28px rgba(15,118,110,.24);
       }
 
+      .kq-unified-node.current .kq-unified-marker {
+        color:#fff;
+        background:#0f766e;
+        border-color:#065f46;
+        box-shadow:0 0 0 5px rgba(45,212,191,.24),0 5px 12px rgba(15,118,110,.28);
+      }
+
+      .kq-unified-node.done .kq-unified-card { background:rgba(236,253,245,.94); border-color:rgba(5,150,105,.3); }
+      .kq-unified-node.done .kq-unified-marker { color:#047857; background:#d1fae5; border-color:#10b981; }
+
       .kq-unified-node.future {
-        opacity:.72;
+        opacity:1;
+      }
+
+      .kq-unified-node.future .kq-unified-card {
+        background:rgba(226,232,240,.88);
+        border-color:rgba(100,116,139,.34);
+        border-style:dashed;
+        box-shadow:0 4px 10px rgba(15,23,42,.08);
+      }
+
+      .kq-unified-node.future .kq-unified-marker {
+        color:#64748b;
+        background:#e2e8f0;
+        border-color:#94a3b8;
+      }
+
+      .kq-unified-node.future .kq-unified-title,
+      .kq-unified-node.future .kq-unified-detail { color:#475569; }
+
+      .kq-unified-node.future .kq-unified-actions button { color:#475569; background:rgba(255,255,255,.72); border-color:#94a3b8; }
       }
 
       .kq-unified-node.horizon { color:#64748b; }
@@ -453,6 +491,23 @@
         opacity:.78;
       }
 
+      .kq-unified-vocabulary {
+        display:inline-flex;
+        max-width:100%;
+        margin-top:8px;
+        padding:4px 8px;
+        overflow:hidden;
+        border:1px solid rgba(30,64,175,.16);
+        border-radius:999px;
+        background:rgba(239,246,255,.88);
+        color:#1e3a8a;
+        font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+        font-size:.84rem;
+        font-weight:800;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+
       .kq-unified-event {
         display:inline-flex;
         align-items:center;
@@ -475,6 +530,23 @@
 
       .kq-unified-actions button {
         margin:0;
+      }
+
+      .kq-unified-node.current .kq-unified-actions .primary {
+        border-color:#065f46;
+        background:linear-gradient(135deg,#047857,#0f766e);
+        color:#fff;
+        box-shadow:0 5px 12px rgba(15,118,110,.22);
+      }
+
+      .kq-route-explain {
+        padding:7px 4px!important;
+        border-color:transparent!important;
+        background:transparent!important;
+        color:#1d4ed8!important;
+        font-size:.82rem;
+        text-decoration:underline;
+        text-underline-offset:3px;
       }
 
       .kq-unified-expand {
@@ -550,6 +622,7 @@
         .kq-unified-actions button {
           width:100%;
         }
+        .kq-unified-actions .kq-route-explain { width:max-content; }
         .kq-milestone {
           margin-left:48px;
         }
@@ -1024,6 +1097,7 @@
             Continue lesson
           </button>
           <button type="button"
+                  class="kq-route-explain"
                   data-kq-action="explain"
                   data-kq-chapter="${item.chapter}"
                   aria-expanded="false">
@@ -1075,11 +1149,12 @@
 
     return `
       <article class="${classes}" data-kq-id="${esc(item.id)}">
-        <div class="kq-unified-marker">${item.done ? '✓' : esc(item.icon || '•')}</div>
+        <div class="kq-unified-marker">${item.done ? '✓' : item.future ? '🔒' : esc(item.icon || '•')}</div>
         <div class="kq-unified-card">
           <span class="kq-unified-label">${label}</span>
           <strong class="kq-unified-title">${esc(item.title)}</strong>
           <p class="kq-unified-detail">${esc(item.detail)}</p>
+          ${item.vocabulary ? `<span class="kq-unified-vocabulary" lang="ja">${esc(item.vocabulary)}</span>` : ''}
           ${missionBadge(item.immersiveMission, item.missionPreview)}
           ${actions}
         </div>

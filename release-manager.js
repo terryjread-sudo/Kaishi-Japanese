@@ -93,7 +93,7 @@
   // CURRENT_VERSION is read from the single source of truth in version.js
   // (loaded before this script in index.html), not duplicated here.
   const CURRENT_VERSION=window.APP_VERSION;
-  const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-'];
+  const CACHE_PREFIXES=['kaishi-shell-','kaishi-images-','kaishi-audio-'];
   const THEATRE_SPEED_KEY='kq-theatre-playback-speed';
   const THEATRE_SPEEDS=[
     {rate:1,label:'Normal'},
@@ -908,7 +908,8 @@
       files:0,
       bytes:0,
       shellFiles:0,
-      imageFiles:0
+      imageFiles:0,
+      audioFiles:0
     };
     if(!result.supported) return result;
 
@@ -923,6 +924,7 @@
       result.files+=requests.length;
       if(name.startsWith('kaishi-shell-')) result.shellFiles+=requests.length;
       if(name.startsWith('kaishi-images-')) result.imageFiles+=requests.length;
+      if(name.startsWith('kaishi-audio-')) result.audioFiles+=requests.length;
 
       for(const request of requests){
         try{
@@ -966,6 +968,7 @@
       set('cacheWorkerScript',worker.script);
       set('cacheShellFiles',String(stats.shellFiles));
       set('cacheImageFiles',String(stats.imageFiles));
+      set('cacheAudioFiles',String(stats.audioFiles));
       set('cacheTotalFiles',String(stats.files));
       set('cacheTotalSize',formatBytes(stats.bytes));
       set('cacheNames',stats.names.length?stats.names.join(', '):'No Kaishi caches');
@@ -1042,6 +1045,7 @@
         <span><small>Service worker</small><strong id="cacheWorkerState">Checking…</strong></span>
         <span><small>Shell files</small><strong id="cacheShellFiles">—</strong></span>
         <span><small>Image files</small><strong id="cacheImageFiles">—</strong></span>
+        <span><small>Audio files</small><strong id="cacheAudioFiles">—</strong></span>
         <span><small>Total cached files</small><strong id="cacheTotalFiles">—</strong></span>
         <span><small>Approx. cache size</small><strong id="cacheTotalSize">—</strong></span>
       </div>

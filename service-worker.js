@@ -9,6 +9,7 @@ try {
 
 var SHELL_CACHE = 'kaishi-shell-' + VERSION;
 var IMAGE_CACHE = 'kaishi-images-' + VERSION;
+var AUDIO_CACHE = 'kaishi-audio-' + VERSION;
 var OFFLINE_CACHE = 'kaishi-offline-' + VERSION;
 var FORCE_OFFLINE = false;
 
@@ -36,6 +37,7 @@ self.addEventListener('activate', function(event) {
       await Promise.all(keys.filter(function(key) {
         return (key.indexOf('kaishi-shell-') === 0 && key !== SHELL_CACHE) ||
                (key.indexOf('kaishi-images-') === 0 && key !== IMAGE_CACHE) ||
+               (key.indexOf('kaishi-audio-') === 0 && key !== AUDIO_CACHE) ||
                (key.indexOf('kaishi-offline-') === 0 && key !== OFFLINE_CACHE);
       }).map(function(key) { return caches.delete(key).catch(function(){return false;}); }));
     } catch (e) {}
@@ -57,6 +59,23 @@ async function offlineMatch(request) {
 function isImage(request) {
   try { return request.destination === 'image'; } catch (e) { return false; }
 }
+function isAudio(request) {
+  try { return request.destination === 'audio'; } catch (e) { return false; }
+}
+async function cacheFirst(request, cacheName) {
+  var cached = await caches.match(request);
+  if (cached) return cached;
+  try {
+    var response = await fetch(request);
+    if (response && response.ok) {
+      var cache = await caches.open(cacheName);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (e) {
+    return cached || Response.error();
+  }
+}
 self.addEventListener('fetch', function(event) {
   try {
     var request = event.request;
@@ -70,20 +89,11 @@ self.addEventListener('fetch', function(event) {
       return;
     }
     if (isImage(request)) {
-      event.respondWith((async function() {
-        var cached = await caches.match(request);
-        if (cached) return cached;
-        try {
-          var response = await fetch(request);
-          if (response && response.ok) {
-            var cache = await caches.open(IMAGE_CACHE);
-            await cache.put(request, response.clone());
-          }
-          return response;
-        } catch (e) {
-          return cached || Response.error();
-        }
-      })());
+      event.respondWith(cacheFirst(request, IMAGE_CACHE));
+      return;
+    }
+    if (isAudio(request)) {
+      event.respondWith(cacheFirst(request, AUDIO_CACHE));
     }
   } catch (e) {}
 });
