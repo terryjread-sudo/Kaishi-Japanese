@@ -7,10 +7,10 @@ password, or a Supabase secret/service-role key.
 ## One-time Supabase setup
 
 1. In **Authentication → URL Configuration**, set the Site URL to:
-   `https://kaishi.uk/`
+   `https://www.kaishi.uk/`
 2. Add these Redirect URLs:
-   - `https://kaishi.uk/`
-   - `https://www.kaishi.uk/` (only if the `www` address redirects to or serves the app)
+   - `https://www.kaishi.uk/`
+   - `https://kaishi.uk/` (only while it redirects to the canonical `www` address)
    - `https://terryjread-sudo.github.io/Kaishi-Japanese/` (legacy GitHub Pages address)
    - `http://localhost:8000/`
    - `http://127.0.0.1:8000/`
