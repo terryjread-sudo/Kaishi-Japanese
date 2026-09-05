@@ -19,7 +19,7 @@ export const CONTENT_DATA_FILES = [
 ] as const;
 
 export const OFFLINE_CORE_FILES = [
-  './', './index.html', './manifest.webmanifest', './styles.css', './sentence-lab.css',
+  './', './index.html', './image-diagnostics.html', './manifest.webmanifest', './styles.css', './sentence-lab.css',
   './engagement-layer.css', './pronunciation-coach.css', './bonsai-progress.css', './vms.css',
   './version.js', './content-manifest.generated.js', './app.js', './journey.js',
   './roadmap-engine.js', './road-ahead.js', './journey-activities.js', './vms.js', './cloud.js',

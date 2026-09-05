@@ -171,6 +171,28 @@ test('a learner can save a word without losing their active lesson card', async 
   await expect(counter).toHaveText(before);
 });
 
+test('the first notebook star explains how to save a word once', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem('kq-admin-test-mode', '1');
+  });
+  await page.goto('/');
+  await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
+  await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+
+  await expect(page.locator('.notebook-star-hint')).toContainText('Tap the star to save this word to your Notebook.');
+  await page.getByRole('button', { name: 'Got it' }).click();
+  await expect(page.locator('.notebook-star-hint')).toHaveCount(0);
+  await page.locator('#firstEncounterContinue').click();
+  await expect(page.locator('.notebook-star-hint')).toHaveCount(0);
+});
+
+test('image diagnostics includes imported Katakana Core mnemonic scenes', async ({ page }) => {
+  await page.goto('/image-diagnostics.html');
+
+  await expect(page.locator('#summary')).toContainText('100 Katakana Core');
+  await expect(page.locator('#grid')).toContainText('Katakana Core');
+});
+
 test('the Dashboard opens the shared notebook from the Journey utility bar', async ({ page }) => {
   await page.goto('/');
 

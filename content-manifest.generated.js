@@ -24,6 +24,7 @@
   "coreFiles": [
     "./",
     "./index.html",
+    "./image-diagnostics.html",
     "./manifest.webmanifest",
     "./styles.css",
     "./sentence-lab.css",
