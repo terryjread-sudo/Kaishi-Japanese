@@ -26,6 +26,14 @@ export interface ConnectorStep {
 
 export const CURRICULUM_LESSON_SIZE = 3;
 export const CURATED_FOUNDATION_LESSON_COUNT = 100;
+/** Increment when saved Journey route metadata must be rebuilt. */
+export const JOURNEY_CURRICULUM_REVISION = 'spoken-first-v1';
+
+export interface StoredJourneyRoute {
+  curriculumRevision?: unknown;
+  chapter?: unknown;
+  steps?: unknown;
+}
 
 const arcs: readonly CurriculumArc[] = [
   { id: 'introductions', title: 'Meeting people' },
@@ -189,6 +197,23 @@ export function buildJourneyCurriculum<T extends CurriculumVocabulary>(vocabular
 export function lessonForIndex<T extends CurriculumVocabulary>(vocabulary: readonly T[], index: number): T[] {
   const start = Math.max(0, Math.floor(index)) * CURRICULUM_LESSON_SIZE;
   return resolveJourneyVocabulary(vocabulary).slice(start, start + CURRICULUM_LESSON_SIZE);
+}
+
+/** Daily routes are valid only when they name the canonical words for a chapter. */
+export function isJourneyRouteCurrent<T extends CurriculumVocabulary>(
+  route: StoredJourneyRoute | null | undefined,
+  vocabulary: readonly T[],
+): boolean {
+  if (!route || route.curriculumRevision !== JOURNEY_CURRICULUM_REVISION) return false;
+  const chapter = Number(route.chapter);
+  if (!Number.isInteger(chapter) || chapter < 0 || !Array.isArray(route.steps)) return false;
+  const step = route.steps.find((candidate): candidate is { id?: unknown; kind?: unknown; wordIds?: unknown } =>
+    Boolean(candidate) && typeof candidate === 'object'
+      && (candidate as { id?: unknown }).id === `lesson-${chapter}`
+      && (candidate as { kind?: unknown }).kind === 'chapter',
+  );
+  if (!step || !Array.isArray(step.wordIds)) return false;
+  return step.wordIds.join('|') === lessonForIndex(vocabulary, chapter).map((word) => word.id).join('|');
 }
 
 export function connectorForLesson(lessonNumber: number): ConnectorStep | null {
