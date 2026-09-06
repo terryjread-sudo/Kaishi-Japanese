@@ -1902,15 +1902,15 @@ body.welcome-open{overflow:hidden}
 .example-sentence .example-sentence-word{display:inline-block;border-radius:6px;transition:background .12s ease,color .12s ease,transform .12s ease}.example-sentence .example-sentence-word.is-target{background:#fef08a;padding:1px 3px}.example-sentence .example-sentence-word.is-speaking{background:#fde68a;color:#92400e;transform:translateY(-2px)}
 /* Compact mastery path retains every stage label and a generous help target. */
 .lesson-mastery-path{gap:0;overflow:hidden;padding:0;border-color:#b7d7ee;border-radius:14px;background:#eef8ff}
-.lesson-mastery-heading{align-items:center;min-height:36px;padding:6px 12px;background:linear-gradient(180deg,#c9e5f9,#b8dcf5);border-bottom:1px solid #c3dded}
-.lesson-mastery-heading strong{min-width:0;font-size:clamp(.875rem,2vw,1rem);line-height:1.25;color:#172033}
-.lesson-mastery-help{position:relative;flex-shrink:0;width:24px;min-width:24px;height:24px;border-color:#b7d7ee;background:#fff;color:#2563eb;font-size:.875rem}
+.lesson-mastery-heading{align-items:center;min-height:32px;padding:4px 10px;background:linear-gradient(180deg,#c9e5f9,#b8dcf5);border-bottom:1px solid #c3dded}
+.lesson-mastery-heading strong{min-width:0;font-size:clamp(.8125rem,2vw,.9375rem);line-height:1.2;color:#172033}
+.lesson-mastery-help{position:relative;flex-shrink:0;width:20px;min-width:20px;height:20px;border-color:#b7d7ee;background:#fff;color:#2563eb;font-size:.75rem}
 .lesson-mastery-help::after{content:'';position:absolute;inset:-6px}
 .lesson-mastery-help:focus-visible{outline:2px solid #2563eb;outline-offset:3px}
-.lesson-mastery-stages{padding:7px 8px;background:#eef8ff}
-.lesson-mastery-stages::before{top:17px;height:4px}
-.lesson-mastery-stages span{min-width:0;align-content:start;gap:3px;font-size:.75rem;line-height:1.2;color:#334155}
-.lesson-mastery-stages i{width:24px;height:24px;background:#e2e8f0;font-size:.8125rem}
+.lesson-mastery-stages{padding:5px 6px;background:#eef8ff}
+.lesson-mastery-stages::before{top:15px;height:3px}
+.lesson-mastery-stages span{min-width:0;align-content:start;gap:2px;font-size:.625rem;line-height:1.15;white-space:nowrap;color:#334155}
+.lesson-mastery-stages i{width:20px;height:20px;background:#e2e8f0;font-size:.6875rem}
 .lesson-mastery-stages .reached i{background:#dbeafe;color:#1e3a8a}
 .lesson-mastery-stages .current i{outline:2px solid #2563eb;outline-offset:2px}
 .meet-word-identity{margin:10px 0!important}.meet-word-written{padding:10px 12px!important}.meet-word-written .notebook-word-row--meet{gap:5px!important}.meet-word-written .jp{font-size:clamp(2.35rem,10vw,4.5rem)!important}.meet-word-summary{justify-content:flex-start!important;padding:5px 4px 0!important}.meet-word-summary .meaning{font-size:1.08rem!important;text-align:left!important}.notebook-word-row .notebook-save-control{width:28px!important;min-width:28px!important;height:28px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#b45309!important;font-size:1.55rem!important;box-shadow:none!important}.notebook-word-row .notebook-save-control.saved{border:0!important;background:transparent!important;color:#d97706!important}.word-pronunciation-card{display:block!important;margin:12px 0 10px!important;padding:14px!important}.word-pronunciation-card>div{gap:6px!important}.word-pronunciation-identity{display:flex;align-items:center;gap:7px;min-width:0}.word-pronunciation-identity .notebook-word-row--pronunciation{gap:5px!important;margin:0!important}.word-pronunciation-identity .audio{display:grid!important;place-items:center;width:40px;min-width:40px;height:40px;margin:0!important;padding:0!important;border-radius:50%;background:#e2e8f0}.word-pronunciation-card small{font-size:1rem!important;color:#334155!important}.word-pronunciation-actions{margin-bottom:66px!important}
