@@ -10,7 +10,7 @@
  ];
  const FP_KEY='kq-cloud-sync-fingerprint-v1',FRIEND_NUDGE_DISMISS_KEY='kq-friend-nudge-dismiss-v1',SOCIAL_READ_KEY='kq-social-notifications-read-v1';
  const CANONICAL_ORIGIN='https://www.kaishi.uk';
- let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[],adminUsers=[],emailRecipientId='',emailPreviewed=false;
+ let client=null,user=null,syncTimer=null,initialisedUserId='',syncing=false,selectedAvatar='boy',friendRefreshTimer=null,communityProfiles=new Map(),adminUsersLoaded=false,lastFriendRows=[],adminUsers=[],emailRecipientId='',emailPreviewed=false,cloudRevision=0,resetGeneration=0,lastSyncedAt=0;
  const supabaseIssueKeys=new Set();
 
  const adapter=()=>window.KaishiQuestCloudAdapter;
@@ -114,57 +114,63 @@
   if(error)throw error;return data;
  }
 
- async function chooseProgress(){
-  const dialog=$('#cloudConflictDialog');if(!dialog)return'cloud';
-  return new Promise(resolve=>{dialog.showModal();const finish=choice=>{dialog.close();resolve(choice)};$('#useCloudProgress').onclick=()=>finish('cloud');$('#keepDeviceProgress').onclick=()=>finish('device')});
+ const syncDomain=()=>window.KaishiActivityPolicy||{};
+ const cloudPayload=()=>adapter()?.cloudSnapshot?.()||adapter()?.snapshot?.()||{};
+ const hasStarted=payload=>syncDomain().hasStartedCloudProgress?.(payload)||Object.keys(payload?.progress||{}).length>0||Number(payload?.meta?.totalAnswers||0)>0;
+ const mergePayloads=(local,remote)=>syncDomain().mergeCloudPayloads?.(local,remote)||local;
+ const claimKey=id=>`kq-cloud-guest-claim-v1:${id}`;
+ async function waitForSyncDomain(){if(syncDomain().mergeCloudPayloads)return true;return new Promise(resolve=>{const timeout=setTimeout(()=>resolve(Boolean(syncDomain().mergeCloudPayloads)),1800);addEventListener('kaishi-cloud-sync-ready',()=>{clearTimeout(timeout);resolve(true)},{once:true})})}
+ async function chooseGuestProgress(){
+  const dialog=$('#cloudGuestClaimDialog');if(!dialog)return false;
+  return new Promise(resolve=>{dialog.showModal();const finish=choice=>{dialog.close();resolve(choice)};$('#claimGuestProgress').onclick=()=>finish(true);$('#leaveGuestProgress').onclick=()=>finish(false)});
  }
- async function reconcile(local,remote,forceChoice=false){
-  const lf=fingerprint(local),rf=fingerprint(remote),last=remembered();
-  if(lf===rf)return'cloud';
-  if(!forceChoice&&last){
-   if(rf===last&&lf!==last)return'device';
-   if(lf===last&&rf!==last)return'cloud';
-  }
-  const la=Number(local?.meta?.totalAnswers||0),ra=Number(remote?.meta?.totalAnswers||0);
-  if(!forceChoice&&la!==ra)return la>ra?'device':'cloud';
-  const lt=Number(local?.meta?.updatedAt||0),rt=Number(remote?.meta?.updatedAt||0);
-  if(!forceChoice&&Math.abs(lt-rt)<10000)return lt>=rt?'device':'cloud';
-  return chooseProgress();
+ async function maybeClaimGuestProgress(local){
+  if(!user||localStorage.getItem(claimKey(user.id))||!hasStarted(adapter()?.profileSnapshot?.('guest')))return local;
+  const claim=await chooseGuestProgress();localStorage.setItem(claimKey(user.id),claim?'claimed':'kept');
+  return claim?mergePayloads(local,adapter()?.profileSnapshot?.('guest')||{}):local;
  }
 
- async function initialiseAccount(forceChoice=false){
+ async function initialiseAccount(){
   if(adapter()?.isTestMode?.()){setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}
   if(!user||syncing||resetLock)return;syncing=true;setStatus('Checking cloud progress…','working');
   try{
+   await waitForSyncDomain();
    const entry=await ensureLeaderboardEntry();renderSignedIn(entry);
-   const{data,error}=await client.from('user_progress').select('payload,updated_at').eq('user_id',user.id).maybeSingle();
+   const{data,error}=await client.from('user_progress').select('payload,updated_at,revision,reset_generation').eq('user_id',user.id).maybeSingle();
    if(error)throw error;
-   const local=adapter()?.snapshot?.()||{},remote=data?.payload;
-   const localStarted=Object.keys(local.progress||{}).length>0,remoteStarted=Object.keys(remote?.progress||{}).length>0;
-   if(!data){await saveSnapshot(true);setStatus('Cloud backup created.','ok')}
-   else if(remoteStarted&&!localStarted){adapter()?.restore?.(remote);remember(adapter()?.snapshot?.()||remote);setStatus('Progress restored from the cloud.','ok')}
-   else if(remoteStarted&&localStarted){
-    const choice=await reconcile(local,remote,forceChoice);
-    if(choice==='cloud'){adapter()?.restore?.(remote);remember(adapter()?.snapshot?.()||remote);setStatus('Progress synced from the cloud.','ok')}
-    else{await saveSnapshot(true);setStatus('This device is now the cloud version.','ok')}
-   }else{await saveSnapshot(true);setStatus('Progress is synced.','ok')}
+   cloudRevision=Number(data?.revision||0);resetGeneration=Number(data?.reset_generation||0);
+   let local=await maybeClaimGuestProgress(cloudPayload()),remote=data?.payload||null;
+   if(!data){adapter()?.restore?.(local);await saveSnapshot(true);setStatus('Cloud backup created.','ok')}
+   else if(!hasStarted(local)){adapter()?.restore?.(remote);remember(remote);lastSyncedAt=Date.now();setStatus('Progress restored from the cloud.','ok')}
+   else if(!hasStarted(remote)){await saveSnapshot(true);setStatus('Progress synced.','ok')}
+   else if(fingerprint(local)===fingerprint(remote)){remember(remote);lastSyncedAt=Date.now();setStatus('Progress synced.','ok')}
+   else{const merged=mergePayloads(local,remote);adapter()?.restore?.(merged);await saveSnapshot(true);setStatus('Progress merged across your devices.','ok')}
    await loadLeaderboard();
   }catch(error){console.error('Cloud initialisation failed',error);setStatus(describeError(error),'error');setLeaderboardMessage(describeError(error))}
   finally{syncing=false}
  }
 
- async function saveSnapshot(force=false){
+ async function saveSnapshot(force=false,retried=false){
   if(!user||!client||(!force&&syncing))return;
-  const payload=adapter()?.snapshot?.();if(!payload)return;
-  const{error}=await client.from('user_progress').upsert({user_id:user.id,schema_version:2,payload},{onConflict:'user_id'});
+  const payload=cloudPayload();if(!payload)return;
+  const{data,error}=await client.rpc('save_kaishi_progress',{p_payload:payload,p_schema_version:4,p_expected_revision:cloudRevision,p_reset_generation:resetGeneration});
   if(error)throw error;
-  remember(payload);await ensureLeaderboardEntry();void reportMilestoneEmails();
+  if(data?.status==='conflict'){
+   cloudRevision=Number(data.revision||0);
+   const serverGeneration=Number(data.reset_generation||0),remote=data.payload;
+   if(serverGeneration>resetGeneration){resetGeneration=serverGeneration;adapter()?.restore?.(remote||{});remember(remote||{});setStatus('Progress was reset on another device.','ok');return}
+   resetGeneration=serverGeneration;
+   if(retried)throw new Error('Cloud progress changed again. Please tap Sync now.');
+   adapter()?.restore?.(mergePayloads(payload,remote||{}));
+   return saveSnapshot(true,true);
+  }
+  cloudRevision=Number(data?.revision||cloudRevision);resetGeneration=Number(data?.reset_generation||resetGeneration);lastSyncedAt=Date.now();remember(payload);await ensureLeaderboardEntry();void reportMilestoneEmails();
  }
  async function reportMilestoneEmails(){
   const events=adapter()?.milestoneEmailEvents?.();if(!user||!client||!Array.isArray(events)||!events.length)return;
   const{error}=await client.functions.invoke('milestone-email',{body:{events}});if(error)console.warn('Milestone email reporting failed',error.message||error);
  }
- function scheduleSync(){if(adapter()?.isTestMode?.()||!user||!client||resetLock)return;clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await saveSnapshot();setStatus('Progress synced.','ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus(describeError(error),'error')}},1400)}
+ function scheduleSync(){if(adapter()?.isTestMode?.()||!user||!client||resetLock)return;if(!navigator.onLine){setStatus('Offline — changes are saved on this device.','working');return}clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{setStatus('Syncing progress…','working');await saveSnapshot();setStatus(`Synced ${lastSyncedAt?new Date(lastSyncedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'just now'}.`,'ok');await loadLeaderboard();await initialiseFriends();await redeemFriendInviteFromUrl()}catch(error){console.error('Cloud sync failed',error);setStatus('Could not sync. Your changes are still saved on this device.','error')}},1400)}
  async function flush(){clearTimeout(syncTimer);if(adapter()?.isTestMode?.()||resetLock)return;if(user)try{await saveSnapshot(true)}catch(error){console.error('Cloud flush failed',error)}}
 
  // resetLock blocks any in-flight or newly scheduled sync (and the
@@ -177,9 +183,10 @@
   if(!user||!client){remember({});return{ok:true,synced:false}}
   resetLock=true;syncing=true;setStatus('Resetting cloud progress…','working');
   try{
-   const payload=adapter()?.snapshot?.()||{progress:{},meta:{},settings:{}};
-   const{error}=await client.from('user_progress').upsert({user_id:user.id,schema_version:2,payload},{onConflict:'user_id'});
+   const payload=cloudPayload()||{progress:{},meta:{}};
+   const{data,error}=await client.rpc('reset_kaishi_progress',{p_payload:payload,p_schema_version:4});
    if(error)throw error;
+   cloudRevision=Number(data?.revision||0);resetGeneration=Number(data?.reset_generation||resetGeneration+1);
    remember(payload);
    await ensureLeaderboardEntry();
    setStatus('Progress reset and synced.','ok');
@@ -352,9 +359,9 @@ async function loadLeaderboard(){
  }
  async function changeAvatar(event){const button=event.target.closest('[data-avatar]');if(!button)return;const definition=avatarDefinition(button.dataset.avatar);if(!user){toast('Sign in to choose and sync a Kaishi character');return}if(!avatarUnlocked(button.dataset.avatar)){toast(`${definition?.name||'This character'} unlocks at ${definition?.mastered||0} mastered words`);return}selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();const accountAvatar=account?.querySelector('img');if(accountAvatar)accountAvatar.src=avatarImage(selectedAvatar,adapter()?.stats?.().streak);const{error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);if(error){setStatus(describeError(error),'error');return}setStatus(`${definition?.name||'Kaishi character'} saved.`,'ok');await loadLeaderboard()}
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
- async function syncNow(){if(!user){await signIn();return}await initialiseAccount(true)}
+ async function syncNow(){if(!user){await signIn();return}await initialiseAccount()}
  async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Japanese cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
- async function handleSession(session){user=session?.user||null;window.dispatchEvent(new CustomEvent('kaishi-auth-change',{detail:{signedIn:Boolean(user),userId:user?.id||null}}));if(!user){renderSignedOut();await loadLeaderboard();return}renderStudioAccess();await loadEmailPreferences();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
+ async function handleSession(session){user=session?.user||null;window.dispatchEvent(new CustomEvent('kaishi-auth-change',{detail:{signedIn:Boolean(user),userId:user?.id||null}}));if(!user){if(adapter()?.profileId?.()&&adapter()?.profileId?.()!=='guest'){adapter()?.activateProfile?.('guest');return}renderSignedOut();await loadLeaderboard();return}if(!adapter()?.isTestMode?.()&&adapter()?.profileId?.()!==user.id){adapter()?.activateProfile?.(user.id);return}renderStudioAccess();await loadEmailPreferences();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
 
 
  function friendRelation(userId){

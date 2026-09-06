@@ -15,6 +15,7 @@ import {
   resolveJourneyVocabulary,
   validateJourneyCurriculum,
 } from './domains/curriculum/journey-curriculum';
+import { hasStartedProgress, mergeSyncPayloads } from './domains/cloud-sync/merge';
 
 export {
   buildJourneyCurriculum,
@@ -28,6 +29,8 @@ export {
   selectLessonStoryScene,
   validateJourneyCurriculum,
 };
+
+export { hasStartedProgress as hasStartedCloudProgress, mergeSyncPayloads as mergeCloudPayloads };
 
 declare global {
   interface Window {
@@ -51,7 +54,11 @@ window.KaishiActivityPolicy = {
   resolveJourneyVocabulary,
   selectLessonStoryScene,
   validateJourneyCurriculum,
+  mergeCloudPayloads: mergeSyncPayloads,
+  hasStartedCloudProgress: hasStartedProgress,
 };
+
+window.dispatchEvent(new Event('kaishi-cloud-sync-ready'));
 
 // app.js starts before this module. Refresh its derived Journey controls once
 // the curriculum policy is available, rather than leaving a stale first render.
