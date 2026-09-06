@@ -3,9 +3,11 @@ import {
   CONNECTOR_STEPS,
   CURATED_FOUNDATION_LESSON_COUNT,
   CURRICULUM_LESSON_SIZE,
+  JOURNEY_CURRICULUM_REVISION,
   SPOKEN_FIRST_FOUNDATION,
   buildJourneyCurriculum,
   connectorForLesson,
+  isJourneyRouteCurrent,
   resolveJourneyVocabulary,
   validateJourneyCurriculum,
 } from './journey-curriculum';
@@ -34,5 +36,16 @@ describe('Journey curriculum', () => {
     expect(connectorForLesson(2)?.form).toBe('は');
     expect(connectorForLesson(3)).toBeNull();
     expect(new Set(CONNECTOR_STEPS.map((step) => step.lesson)).size).toBe(CONNECTOR_STEPS.length);
+  });
+
+  it('accepts only a route that names the canonical words for its chapter', () => {
+    const route = {
+      curriculumRevision: JOURNEY_CURRICULUM_REVISION,
+      chapter: 0,
+      steps: [{ id: 'lesson-0', kind: 'chapter', wordIds: [...SPOKEN_FIRST_FOUNDATION[0]!] }],
+    };
+    expect(isJourneyRouteCurrent(route, vocabulary)).toBe(true);
+    expect(isJourneyRouteCurrent({ ...route, curriculumRevision: 'legacy' }, vocabulary)).toBe(false);
+    expect(isJourneyRouteCurrent({ ...route, steps: [{ id: 'lesson-0', kind: 'chapter', wordIds: fillerVocabulary.slice(0, 3).map((word) => word.id) }] }, vocabulary)).toBe(false);
   });
 });

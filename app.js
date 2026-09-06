@@ -63,7 +63,7 @@ settings.playMode='journey';
 settings.learningBalance=Math.max(-2,Math.min(2,Math.round(Number(settings.learningBalance)||0)));
 settings.learningBalanceAdaptive=settings.learningBalanceAdaptive!==false;
 let progress=loadJSON(profileStorageKey('kq-progress'),{});
-const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},connectorProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},notebook:{words:[]},notebookStarHintSeen:false,mangaProgress:{},conversationProgress:{},theatreProgress:{},canDoAwards:[],pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,rhythm:{behind:0,lastChecked:'',quickWeek:'',quickUsed:0,cycles:0},rhythmHistory:{},activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},sessionHistory:[],kotobaEchoHistory:[],updatedAt:0};
+const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},connectorProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},notebook:{words:[]},notebookStarHintSeen:false,mangaProgress:{},conversationProgress:{},theatreProgress:{},canDoAwards:[],pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,journeyCurriculumRevision:'',dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,rhythm:{behind:0,lastChecked:'',quickWeek:'',quickUsed:0,cycles:0},rhythmHistory:{},activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},sessionHistory:[],kotobaEchoHistory:[],updatedAt:0};
 const SESSION_HISTORY_LIMIT=200,NOTEBOOK_WORD_LIMIT=100;
 let meta={...META_DEFAULTS,...loadJSON(profileStorageKey('kq-meta'),{})};
 meta.kanaProgress=meta.kanaProgress||{};
@@ -569,6 +569,8 @@ function pathUnlocked(id){return isAdminTestMode()||id!=='battle'||meta.activity
 function pathCurrentIndex(){const firstUnvisited=PATH_MILESTONES.findIndex(item=>pathUnlocked(item.id)&&!meta.pathVisits[item.id]);if(firstUnvisited>=0)return firstUnvisited;let current=0;PATH_MILESTONES.forEach((item,itemIndex)=>{if(pathUnlocked(item.id))current=itemIndex});return current}
 const WORD_CHAPTER_SIZE=3,WORD_CHAPTER_NAMES=['First Steps','Riverside Path','Bamboo Trail','Lantern Market','Tea Garden','Green Hill','Cedar Crossing','Crane Lake','Festival Street','Moonlit Terrace','Torii Pass','Maple Valley','Coastal Road','Snowy Hamlet','Castle Approach','Artisan Quarter','Mountain Shrine','Firefly Marsh','Orchard Lane','Scholar’s Court','Cloud Pass','Silver Waterfall','Sunflower Plain','Old Post Town','Red Maple Ridge','Starry Plateau','Dragonfly Coast','Summit Trail','Dawn Sanctuary','Kaishi Summit'];
 function journeyVocabulary(){try{const ordered=window.KaishiActivityPolicy?.resolveJourneyVocabulary?.(vocab);if(Array.isArray(ordered)&&ordered.length===vocab.length)return ordered}catch{}return vocab}
+function journeyCurriculumReady(){return Boolean(window.KaishiActivityPolicy?.curriculumRevision&&typeof window.KaishiActivityPolicy?.lessonForIndex==='function'&&typeof window.KaishiActivityPolicy?.isJourneyRouteCurrent==='function')}
+function normaliseJourneyCurriculumState(){const policy=window.KaishiActivityPolicy,revision=policy?.curriculumRevision;if(!revision||!journeyCurriculumReady()||!Array.isArray(vocab)||!vocab.length)return false;const routeCurrent=meta.dailyJourneyRoute?Boolean(policy.isJourneyRouteCurrent(meta.dailyJourneyRoute,vocab)):true;if(meta.journeyCurriculumRevision===revision&&routeCurrent)return false;meta.dailyJourneyRoute=null;meta.journeyCurriculumRevision=revision;clearMissionResume();save(false);return true}
 function wordChapterCount(){return Math.max(1,Math.ceil(journeyVocabulary().length/WORD_CHAPTER_SIZE))}
 function chapterWords(itemIndex){try{const resolved=window.KaishiActivityPolicy?.lessonForIndex?.(vocab,itemIndex);if(Array.isArray(resolved))return resolved}catch{}const ordered=journeyVocabulary();return ordered.slice(itemIndex*WORD_CHAPTER_SIZE,Math.min(ordered.length,(itemIndex+1)*WORD_CHAPTER_SIZE))}
 // Called here (rather than right after its own declaration, above) because it depends on
@@ -637,6 +639,8 @@ function wordJourneyPosition(){const total=wordChapterCount(),explored=vocab.fil
 function missionActivityId(){const available=['kana','picture','listening','karuta','conversation','grammar','sentenceLab','theatre','builder','manga','battle'].filter(id=>pathUnlocked(id)),newActivity=available.find(id=>!meta.pathVisits[id]);if(newActivity)return newActivity;const weighted=available.flatMap(id=>Array.from({length:Math.max(1,Math.round(activityPreferenceWeight(id)*4))},()=>id)),seed=day().split('-').reduce((sum,value)=>sum+Number(value||0),0);return weighted[seed%Math.max(1,weighted.length)]||available[0]||'kana'}
 function ensureDailyJourneyRoute(){
  refreshPathUnlocks();
+ if(!journeyCurriculumReady())return meta.dailyJourneyRoute||{steps:[],completed:[]};
+ normaliseJourneyCurriculumState();
  const balanceKey=`${settings.learningBalanceAdaptive!==false?'adaptive':'manual'}:${storedLearningBalance()}:${effectiveLearningBalance()}`;
  const chapter=currentWordChapterIndex();
  // Outside Admin Test Mode, the route intentionally stays pinned to whichever
@@ -645,11 +649,11 @@ function ensureDailyJourneyRoute(){
  // "one lesson at a time" daily pacing honest. Admin Test Mode is exempted
  // so the "Test as if at lesson N" control can actually switch the route.
  const chapterMatches=!isAdminTestMode()||meta.dailyJourneyRoute?.chapter===chapter;
- if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===5&&meta.dailyJourneyRoute.balanceKey===balanceKey&&chapterMatches&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
+ if(meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.schemaVersion===5&&meta.dailyJourneyRoute.curriculumRevision===window.KaishiActivityPolicy.curriculumRevision&&meta.dailyJourneyRoute.balanceKey===balanceKey&&chapterMatches&&Array.isArray(meta.dailyJourneyRoute.steps))return meta.dailyJourneyRoute;
  const words=chapterWords(chapter),topic=currentTopic();
  const previousCompleted=meta.dailyJourneyRoute?.date===day()&&meta.dailyJourneyRoute.chapter===chapter?meta.dailyJourneyRoute.completed||[]:[];
- meta.dailyJourneyRoute={schemaVersion:5,date:day(),balanceKey,chapter,completed:previousCompleted,explanation:{chapter,sequence:'One lesson at a time'},steps:[
-  {id:`lesson-${chapter}`,kind:'chapter',chapter,topicId:topic.id,icon:topic.icon||'🗺️',title:`Lesson ${chapter+1}: ${words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title}`,detail:`Learn ${words.length} connected word${words.length===1?'':'s'} from ${topic.title}, then strengthen them before the next lesson.`}
+ meta.dailyJourneyRoute={schemaVersion:5,curriculumRevision:window.KaishiActivityPolicy.curriculumRevision,date:day(),balanceKey,chapter,completed:previousCompleted,explanation:{chapter,sequence:'One lesson at a time'},steps:[
+  {id:`lesson-${chapter}`,kind:'chapter',chapter,wordIds:words.map(word=>word.id),topicId:topic.id,icon:topic.icon||'🗺️',title:`Lesson ${chapter+1}: ${words.slice(0,2).map(word=>word.meaning).join(' + ')||topic.title}`,detail:`Learn ${words.length} connected word${words.length===1?'':'s'} from ${topic.title}, then strengthen them before the next lesson.`}
  ]};
  save();
  return meta.dailyJourneyRoute;
@@ -1070,6 +1074,7 @@ function unlockOwnerPathThrough(itemIndex){if(!window.KaishiCloud?.isOwner?.())r
 function unlockOwnerChapterThrough(itemIndex){if(!window.KaishiCloud?.isOwner?.())return;meta.chapterOverrides=[...new Set([...meta.chapterOverrides,...Array.from({length:itemIndex+1},(_,index)=>index)])];save();renderOwnerPathControls(true);renderJourneyHome();toast(`Vocabulary journey unlocked through chapter ${itemIndex+1}`)}
 window.KaishiQuestPath={renderOwnerPathControls};
 function updateHome(){
+ normaliseJourneyCurriculumState();
  detectLostStreak();const due=dailyDueWords().length,dailyLimit=meta.dailyReviewPlan?.limit||settings.sessionSize,initialDue=Math.max(0,Number(meta.dailyReviewPlan?.initialTotal||0)),dueRatio=initialDue?Math.min(1,due/initialDue):0,activity=todayActivity(),karutaAverage=recentKarutaBestAverage();
  const ring=$('#dueCount').parentElement;$('#dueCount').textContent=due;ring.style.setProperty('--due-progress',dueRatio);ring.setAttribute('aria-label',`${due} of ${initialDue} planned reviews remaining today`);ring.title=`${due} of ${initialDue} planned reviews remain. The ring drains as you complete them.`;$('#dueProgressLabel').textContent=initialDue?`of ${initialDue} due`:'due';
  const streakTarget=activity.quickStep?3:5,streakTested=activity.quickStep?Math.max(0,Number(activity.tested||0)-Number(activity.quickStartTested||0)):Number(activity.tested||0);$('#streakActivity').textContent=activity.qualified?'Today’s learning complete':`${Math.min(streakTested,streakTarget)} / ${streakTarget} tested answers`;$('#streakActivityFill').style.width=`${Math.min(100,streakTested/streakTarget*100)}%`;
