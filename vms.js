@@ -55,10 +55,10 @@
     <img src="${esc(v.scene)}?v=${encodeURIComponent(String(v.imageVersion||1))}" alt="Visual mnemonic for ${esc(v.word)}">
     <div class="vms-overlay" style="--overlay-opacity:${Number(v.overlayOpacity)||.34};--overlay-size:${Number(v.overlaySize)||.62};--overlay-colour:${esc(v.overlayColour||'#ffffff')}">${esc(v.overlay)}</div>
    </div>
-   <div class="vms-reveal-controls">
-    <button type="button" data-step="overlay">Show written word</button>
-    <button type="button" data-step="reading">Show reading</button>
-    <button type="button" data-step="story">Show story</button>
+   <div class="vms-reveal-controls" role="group" aria-label="Mnemonic details">
+    <button type="button" data-step="overlay" aria-pressed="false">Written</button>
+    <button type="button" data-step="reading" aria-pressed="false">Reading</button>
+    <button type="button" data-step="story" aria-pressed="false">Story</button>
    </div>
    <div class="vms-reading-panel">
     <div><span>Hiragana</span><strong>${esc(v.reading)}</strong></div>
@@ -87,9 +87,10 @@
   const readingButton=box.querySelector('[data-step="reading"]');
   const storyButton=box.querySelector('[data-step="story"]');
 
-  if(overlayButton)overlayButton.onclick=()=>overlay?.classList.toggle('show');
-  if(readingButton)readingButton.onclick=()=>panel?.classList.toggle('show');
-  if(storyButton)storyButton.onclick=()=>memory?.classList.toggle('show');
+  const toggle=(button,target)=>{if(!button||!target)return;const sync=()=>button.setAttribute('aria-pressed',String(target.classList.contains('show')));sync();button.onclick=()=>{target.classList.toggle('show');sync()}};
+  toggle(overlayButton,overlay);
+  toggle(readingButton,panel);
+  toggle(storyButton,memory);
  }
 
  function isMeetWord(card){
