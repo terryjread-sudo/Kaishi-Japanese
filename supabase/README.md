@@ -25,6 +25,8 @@ password, or a Supabase secret/service-role key.
    still safe to run the second migration after the first.
 6. Run `migrations/20260817_progression_avatars.sql` to allow the Harajuku Girl,
    Harajuku Guy, and Izakaya Cook keys in saved cloud and community profiles.
+7. Run `migrations/20260909_safer_cloud_sync.sql` to add revisioned progress
+   writes and reset protection for multi-device sync.
 
 The migration creates private progress storage, public opt-in leaderboard
 entries, Row Level Security policies, and the learner-controlled cloud-account
@@ -70,8 +72,9 @@ milestone cycle, so learners can earn the same celebrations again.
 
 ## Security model
 
-- Guest progress remains in the browser's local storage.
-- Signed-in users can read and write only their own progress row.
+- Guest progress remains in a separate browser-local profile.
+- Signed-in accounts use separate browser-local profiles and can read and write
+  only their own progress row.
 - Anyone can read leaderboard rows only when the owner has opted in.
 - The leaderboard never exposes per-word learning progress or settings.
 - Deleting a cloud account removes the Supabase Auth user and cascades to both

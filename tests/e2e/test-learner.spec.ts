@@ -1,5 +1,28 @@
 import { expect, test } from '@playwright/test';
 
+test('migrates legacy progress into an isolated guest profile', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem('kq-progress', JSON.stringify({ legacy: { stage: 1 } }));
+  });
+  await page.goto('/');
+  await expect.poll(() => page.evaluate(() => ({
+    legacy: window.localStorage.getItem('kq-progress'),
+    guest: window.localStorage.getItem('kq-profile-v1:guest:kq-progress'),
+  }))).toEqual({ legacy: null, guest: JSON.stringify({ legacy: { stage: 1 } }) });
+});
+
+test('reads separate browser profiles without exposing another account’s progress', async ({ page }) => {
+  type CloudAdapter = { profileSnapshot: (id: string) => { progress: Record<string, unknown> } };
+  await page.goto('/');
+  const profiles = await page.evaluate(() => {
+    const api = (window as typeof window & { KaishiQuestCloudAdapter: CloudAdapter }).KaishiQuestCloudAdapter;
+    window.localStorage.setItem('kq-profile-v1:learner-a:kq-progress', JSON.stringify({ a: { stage: 1 } }));
+    window.localStorage.setItem('kq-profile-v1:learner-b:kq-progress', JSON.stringify({ b: { stage: 1 } }));
+    return { a: api.profileSnapshot('learner-a').progress, b: api.profileSnapshot('learner-b').progress };
+  });
+  expect(profiles).toEqual({ a: { a: { stage: 1 } }, b: { b: { stage: 1 } } });
+});
+
 test('lesson checkpoints save without presenting a modal', async ({ page }) => {
   await page.goto('/');
 
