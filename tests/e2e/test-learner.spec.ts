@@ -38,6 +38,8 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
     const api = (window as typeof window & { KaishiLessonMastery?: { snapshot: (chapter: number) => { complete: boolean } } }).KaishiLessonMastery;
     return api?.snapshot(0).complete;
   })).toBe(true);
+  const celebration = page.locator('#engagementCelebration[open]');
+  if (await celebration.count()) await celebration.getByRole('button', { name: 'Continue' }).click();
   await page.evaluate(() => (window as typeof window & { KaishiLessonMastery: { startPractice: (chapter: number) => boolean } }).KaishiLessonMastery.startPractice(0));
 
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Focused practice');
@@ -46,8 +48,11 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
   await expect(page.locator('#sessionCounter .session-progress-chunk.current')).toHaveCount(1);
   await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s Path:');
   await expect(page.locator('.lesson-mastery-path')).toContainText('%');
-  await expect(page.locator('.lesson-mastery-path summary')).toHaveText('How this works');
-  await expect(page.locator('.lesson-mastery-path details')).toContainText('Completing a lesson opens the next one');
+  await page.getByRole('button', { name: 'How Sensei’s Path works' }).click();
+  await expect(page.locator('#senseiPathHelpDialog')).toBeVisible();
+  await expect(page.locator('#senseiPathHelpText')).toContainText('Completing a lesson opens the next one');
+  await page.getByRole('button', { name: 'Got it' }).dispatchEvent('click');
+  await expect(page.locator('#senseiPathHelpDialog')).not.toBeVisible();
 });
 
 test('test learner can launch an immersive activity after app initialization', async ({ page }) => {
