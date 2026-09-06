@@ -61,7 +61,9 @@ The hourly GitHub Actions workflow calls the scheduler. It uses the
 `Europe/London` time zone, so UK daylight-saving changes do not alter the
 learner-facing schedule. Each program is disabled until the owner enables it in
 the Admin area: Friday return-to-learning reminders, Sunday weekly recaps,
-monthly Sensei letters, and onboarding nudges. Phase 2 adds optional milestone
+monthly Sensei letters, and onboarding nudges. Scheduled emails use the
+learner's private synced lesson, words, mastered total and learning rhythm when
+available; no progress snapshot is retained in email-delivery logs. Phase 2 adds optional milestone
 emails for a first lesson, 10 mastered words, each completed chapter, and 3,
 7, 14, 30 and 60 rhythm days. Resetting learning progress starts a new
 milestone cycle, so learners can earn the same celebrations again.

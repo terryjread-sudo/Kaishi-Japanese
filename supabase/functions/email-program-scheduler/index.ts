@@ -1,13 +1,14 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { buildLearnerEmailSnapshot, personalisedEmailContent, type LearnerEmailSnapshot } from "../_shared/learner-email-personalization.ts";
 
 type ProgramKey = "reengagement" | "weekly_recap" | "monthly_sensei_letter" | "onboarding_nudge";
-type Recipient = { id: string; email: string; name: string };
+type Recipient = { id: string; email: string; snapshot: LearnerEmailSnapshot };
 
-const programs: Record<ProgramKey, { templateKey: string; scheduled: (now: Record<string, string>) => boolean; eligible: (user: Record<string, unknown>, now: Date) => boolean; subject: string; eyebrow: string; title: string; body: (name: string) => string; cta: string }> = {
-  reengagement: { templateKey: "journey_waiting", scheduled: now => now.weekday === "Fri" && now.hour === "17", eligible: (user, now) => Boolean(user.last_sign_in_at) && new Date(String(user.last_sign_in_at)).getTime() <= now.getTime() - 7 * 86400000, subject: "Your Japanese journey is waiting", eyebrow: "A small nudge from Sensei", title: "A few Japanese words are waiting for you", body: name => `Hello ${name}, it has been a little while since you last visited. A short review is a lovely way to keep the words you have met feeling familiar.`, cta: "Continue my journey" },
-  weekly_recap: { templateKey: "weekly_recap", scheduled: now => now.weekday === "Sun" && now.hour === "10", eligible: (user, now) => Boolean(user.last_sign_in_at) && new Date(String(user.last_sign_in_at)).getTime() > now.getTime() - 7 * 86400000, subject: "A gentle weekly note from Sensei", eyebrow: "Your week in Japanese", title: "Keep your Japanese close this week", body: name => `Hello ${name}, thank you for making time for Japanese this week. A few minutes of review is a calm way to carry your words into the week ahead.`, cta: "Open my journey" },
-  monthly_sensei_letter: { templateKey: "monthly_sensei_letter", scheduled: now => now.day === "01" && now.hour === "10", eligible: user => Boolean(user.last_sign_in_at), subject: "A new month of Japanese with Sensei", eyebrow: "A note from Sensei", title: "A small step is enough", body: name => `Hello ${name}, a new month is a lovely moment to return to the words you know and meet one more. Your Japanese journey is ready whenever you are.`, cta: "Continue my journey" },
-  onboarding_nudge: { templateKey: "onboarding_nudge", scheduled: now => now.hour === "10", eligible: (user, now) => { const created = new Date(String(user.created_at)).getTime(); const lastSignIn = new Date(String(user.last_sign_in_at || user.created_at)).getTime(); return created <= now.getTime() - 3 * 86400000 && created > now.getTime() - 10 * 86400000 && lastSignIn <= created + 5 * 60000; }, subject: "Your first Japanese words are ready", eyebrow: "A welcome from Sensei", title: "Your journey is ready when you are", body: name => `Hello ${name}, your Kaishi Japanese journey is ready to begin. Start with one small lesson and let the next step appear when you are ready.`, cta: "Start my journey" },
+const programs: Record<ProgramKey, { templateKey: string; scheduled: (now: Record<string, string>) => boolean; eligible: (user: Record<string, unknown>, now: Date) => boolean }> = {
+  reengagement: { templateKey: "journey_waiting", scheduled: now => now.weekday === "Fri" && now.hour === "17", eligible: (user, now) => Boolean(user.last_sign_in_at) && new Date(String(user.last_sign_in_at)).getTime() <= now.getTime() - 7 * 86400000 },
+  weekly_recap: { templateKey: "weekly_recap", scheduled: now => now.weekday === "Sun" && now.hour === "10", eligible: (user, now) => Boolean(user.last_sign_in_at) && new Date(String(user.last_sign_in_at)).getTime() > now.getTime() - 7 * 86400000 },
+  monthly_sensei_letter: { templateKey: "monthly_sensei_letter", scheduled: now => now.day === "01" && now.hour === "10", eligible: user => Boolean(user.last_sign_in_at) },
+  onboarding_nudge: { templateKey: "onboarding_nudge", scheduled: now => now.hour === "10", eligible: (user, now) => { const created = new Date(String(user.created_at)).getTime(); const lastSignIn = new Date(String(user.last_sign_in_at || user.created_at)).getTime(); return created <= now.getTime() - 3 * 86400000 && created > now.getTime() - 10 * 86400000 && lastSignIn <= created + 5 * 60000; } },
 };
 
 const escape = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]!));
@@ -18,10 +19,18 @@ function londonParts() {
 }
 
 function email(program: ProgramKey, recipient: Recipient, token: string, appUrl: string, unsubscribeBase: string) {
-  const template = programs[program];
+  const template = personalisedEmailContent(program, recipient.snapshot);
   const unsubscribe = `${unsubscribeBase}?unsubscribe=${encodeURIComponent(token)}`;
   const logo = `${appUrl.replace(/\/$/, "")}/media/branding/kaishi-japanese-mark.png`;
-  return { subject: template.subject, html: `<div style="margin:0;padding:28px 14px;background:#eef4f0;font-family:Georgia,'Hiragino Mincho ProN',serif;color:#173d32"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="560" style="max-width:560px;background:#fffdf7;border-radius:22px;overflow:hidden;border:1px solid #d7e5dc"><tr><td style="padding:28px 34px 18px;background:#173d32;color:#fff"><img src="${logo}" width="54" height="54" alt="Kaishi Japanese" style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#f7d676">${template.eyebrow}</div><h1 style="margin:8px 0 0;font-size:28px;line-height:1.15;color:#fff">${template.title}</h1></td></tr><tr><td style="padding:30px 34px;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#25352f"><p style="margin-top:0">${template.body(escape(recipient.name))}</p><p style="margin:26px 0"><a href="${appUrl}" style="display:inline-block;padding:13px 20px;border-radius:12px;background:#16835f;color:#fff;text-decoration:none;font-weight:bold">${template.cta}</a></p><p style="margin-bottom:0;color:#64736d;font-size:13px">You are receiving this because you have a Kaishi Japanese account. <a href="${unsubscribe}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>` };
+  return { subject: template.subject.replace(/[\r\n]+/g, " "), html: `<div style="margin:0;padding:28px 14px;background:#eef4f0;font-family:Georgia,'Hiragino Mincho ProN',serif;color:#173d32"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="560" style="max-width:560px;background:#fffdf7;border-radius:22px;overflow:hidden;border:1px solid #d7e5dc"><tr><td style="padding:28px 34px 18px;background:#173d32;color:#fff"><img src="${logo}" width="54" height="54" alt="Kaishi Japanese" style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#f7d676">${escape(template.eyebrow)}</div><h1 style="margin:8px 0 0;font-size:28px;line-height:1.15;color:#fff">${escape(template.title)}</h1></td></tr><tr><td style="padding:30px 34px;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#25352f"><p style="margin-top:0">${escape(template.body)}</p><p style="margin:26px 0"><a href="${appUrl}" style="display:inline-block;padding:13px 20px;border-radius:12px;background:#16835f;color:#fff;text-decoration:none;font-weight:bold">${escape(template.cta)}</a></p><p style="margin-bottom:0;color:#64736d;font-size:13px">You are receiving this because you have a Kaishi Japanese account. <a href="${unsubscribe}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`, text: `${template.title}\n\n${template.body}\n\n${appUrl}\n\nUnsubscribe: ${unsubscribe}` };
+}
+
+async function vocabularyFor(appUrl: string) {
+  try {
+    const response = await fetch(new URL("data/vocabulary.json", appUrl).href);
+    const data = await response.json();
+    return Array.isArray(data) ? data.filter((word): word is { id: string; word: string } => typeof word?.id === "string" && typeof word?.word === "string") : [];
+  } catch { return []; }
 }
 
 async function unsubscribeToken(admin: ReturnType<typeof createClient>, userId: string) {
@@ -52,6 +61,7 @@ Deno.serve(async request => {
   const from = Deno.env.get("KAISHI_FROM_EMAIL")!;
   const appUrl = Deno.env.get("KAISHI_APP_URL") || "https://www.kaishi.uk/";
   const admin = createClient(supabaseUrl, serviceKey);
+  const vocabulary = await vocabularyFor(appUrl);
   const london = londonParts(), now = new Date(), results: Record<string, unknown> = {};
   for (const [key, program] of Object.entries(programs) as [ProgramKey, typeof programs[ProgramKey]][]) {
     if (!program.scheduled(london)) { results[key] = "outside-schedule"; continue; }
@@ -67,7 +77,10 @@ Deno.serve(async request => {
         if (!user.email || !program.eligible(user as Record<string, unknown>, now)) continue;
         const { data: preference } = await admin.from("kaishi_notification_preferences").select("learning_email").eq("user_id", user.id).maybeSingle();
         if (preference?.learning_email === false) continue;
-        const outcome = await send(admin, resendKey, from, appUrl, `${supabaseUrl}/functions/v1/admin-email`, key, { id: user.id, email: user.email, name: String(user.user_metadata?.full_name || user.user_metadata?.name || user.user_metadata?.user_name || "learner") }, runKey);
+        const { data: savedProgress } = await admin.from("user_progress").select("payload").eq("user_id", user.id).maybeSingle();
+        const name = String(user.user_metadata?.full_name || user.user_metadata?.name || user.user_metadata?.user_name || "learner");
+        const snapshot = buildLearnerEmailSnapshot(savedProgress?.payload, name, vocabulary, now);
+        const outcome = await send(admin, resendKey, from, appUrl, `${supabaseUrl}/functions/v1/admin-email`, key, { id: user.id, email: user.email, snapshot }, runKey);
         if (outcome === "sent") sent++; else if (outcome === "failed") failed++;
       }
       if ((data.users || []).length < 200) break;
