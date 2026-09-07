@@ -33,6 +33,7 @@ test('a complete Journey lesson includes assessments and stable prerequisite cou
   await expect(page.locator('#card')).toContainText('Session complete');
   await expect(page.locator('#card')).not.toContainText('Ready to meet');
   await expect(page.locator('#missionSummaryDialog .session-can-do-award')).toContainText('I can');
+  await expect(page.locator('#missionSummaryDialog .lesson-celebration-cat')).toHaveAttribute('src','media/celebrations/maneki-neko.li');
   await expect(page.locator('#engagementCelebration[open]')).toHaveCount(0);
   await page.locator('#missionSummaryDialog[open]').evaluateAll(dialogs=>dialogs.forEach(d=>(d as HTMLDialogElement).close()));
   await page.locator('#engagementCelebration[open]').evaluateAll(dialogs=>dialogs.forEach(d=>(d as HTMLDialogElement).close()));
