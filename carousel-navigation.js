@@ -60,7 +60,7 @@
       #campaignChooser .campaign-preview-panel small{
         overflow-wrap:anywhere;
       }
-      #campaignChooser .campaign-preview-panel[hidden]{display:block!important}
+      #campaignChooser .campaign-preview-panel[hidden]{display:none!important}
       #journeyCampaignPreview,#japanReadyCampaignPreview{
         border-radius:24px!important;padding:12px!important;border:1px solid!important
       }
@@ -148,6 +148,7 @@
           scroll-snap-align:start!important;
           cursor:pointer
         }
+        #campaignChooser .campaign-preview-panel[hidden]{display:flex!important}
         .campaign-carousel-tabs,.campaign-pagination-dots{display:none}
         #campaignChooser .campaign-preview-panel .campaign-card-heading{
           visibility:visible!important
@@ -206,8 +207,8 @@
     tabs.className='campaign-carousel-tabs';
     tabs.setAttribute('aria-label','Study mode pages');
     tabs.innerHTML=`
-      <button class="campaign-carousel-tab active" data-carousel-index="0" aria-label="Show Japanese Journey">Journey</button>
-      <button class="campaign-carousel-tab" data-carousel-index="1" aria-label="Show Japan Ready">Japan Ready</button>
+      <button id="chooseJourneyCampaign" class="campaign-carousel-tab active" data-carousel-index="0" aria-label="Show Japanese Journey">Journey</button>
+      <button id="chooseJapanReadyCampaign" class="campaign-carousel-tab" data-carousel-index="1" aria-label="Show Japan Ready">Japan Ready</button>
     `;
     const strip=chooser.querySelector('.campaign-preview');
     strip?.insertAdjacentElement('beforebegin',tabs);
@@ -235,12 +236,13 @@
   }
 
   function scrollToIndex(index,activate=false){
-    const strip=$('#campaignChooser .campaign-preview');
     const ps=panels();
     const target=ps[index];
-    if(!strip||!target)return;
-    const left = target.offsetLeft - strip.offsetLeft - Math.max(0,(strip.clientWidth-target.offsetWidth)/2);
-    strip.scrollTo({left:Math.max(0,left),behavior:'smooth'});
+    if(!target)return;
+    ps.forEach((panel,panelIndex)=>{
+      panel.hidden=panelIndex!==index;
+      panel.classList.toggle('carousel-current',panelIndex===index);
+    });
     if(activate)activateIndex(index);
     updateDots(index);
   }
