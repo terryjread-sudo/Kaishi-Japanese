@@ -136,69 +136,6 @@
     if(status) status.textContent=message;
   }
 
-  // ----- v11.8.34: Reading-from-Meaning review pause --------------------
-  function installReadingReviewPause(){
-    try{
-      if(typeof bindChoices!=='function' || typeof grade!=='function') return;
-
-      bindChoices=function(answer,skill,onReveal){
-        document.querySelectorAll('.choice').forEach(button=>{
-          button.onclick=()=>{
-            if(revealed) return;
-            revealed=true;
-
-            const value=decodeURIComponent(button.dataset.answer);
-            const ok=value===answer;
-
-            button.classList.add(ok?'correct':'wrong');
-            document.querySelectorAll('.choice').forEach(choice=>{
-              if(decodeURIComponent(choice.dataset.answer)===answer){
-                choice.classList.add('correct');
-              }
-              choice.disabled=true;
-            });
-
-            if(onReveal) onReveal(ok);
-
-            const pauseForReadingReview=
-              skill==='reading' &&
-              !ok &&
-              Boolean(document.getElementById('readingFeedback'));
-
-            if(!pauseForReadingReview){
-              setTimeout(
-                ()=>grade(current.v,skill,ok?(hintUsed?2:3):1,ok),
-                900
-              );
-              return;
-            }
-
-            grade(current.v,skill,1,false,false);
-
-            const feedback=document.getElementById('readingFeedback');
-            if(!feedback) return;
-
-            let continueButton=document.getElementById('readingReviewContinue');
-            if(!continueButton){
-              continueButton=document.createElement('button');
-              continueButton.id='readingReviewContinue';
-              continueButton.type='button';
-              continueButton.className='primary reveal';
-              continueButton.textContent='Continue →';
-              feedback.appendChild(continueButton);
-            }
-
-            continueButton.onclick=()=>next();
-            feedback.scrollIntoView({behavior:'smooth',block:'nearest'});
-            continueButton.focus({preventScroll:true});
-          };
-        });
-      };
-    }catch(error){
-      console.warn('[Kaishi v11.8.40] Reading review pause could not be installed',error);
-    }
-  }
-
   // ----- v11.8.40: Theatre speed ---------------------------------------
   function theatreSpeed(){
     try{
@@ -745,154 +682,26 @@
     },20000);
   }
 
-  const OFFLINE_CORE=window.KaishiContentManifest?.coreFiles||[
-    './','./index.html','./version.js','./app.js','./data/vocabulary.json'
-  ];
-
-  function offlineState(){try{return JSON.parse(localStorage.getItem(OFFLINE_STATE_KEY)||'null')}catch{return null}}
-  function saveOfflineState(state){try{state?localStorage.setItem(OFFLINE_STATE_KEY,JSON.stringify(state)):localStorage.removeItem(OFFLINE_STATE_KEY)}catch{}}
-  function offlinePackOutdated(){const state=offlineState();return Boolean(state?.version&&state.version!==CURRENT_VERSION)}
+  function offlineState(){return window.KaishiActivityPolicy?.offline?.state?.()||null}
   function publishOfflineState(){window.dispatchEvent(new Event('kaishi-offline-status'))}
-  function localAsset(value){
-    if(typeof value!=='string'||!value)return null;
-    const clean=value.trim();if(!clean||clean.startsWith('data:')||clean.startsWith('blob:'))return null;
-    try{
-      const url=new URL(clean,location.href);if(url.origin!==location.origin)return null;
-      if(!/\.(?:js|css|json|webmanifest|png|jpe?g|webp|gif|svg|mp3|m4a|aac|ogg|wav)(?:$|\?)/i.test(url.pathname+url.search))return null;
-      return url.href;
-    }catch{return null}
-  }
-  function collectAssets(value,out=new Set(),seen=new WeakSet()){
-    if(value==null)return out;
-    if(typeof value==='string'){const asset=localAsset(value);if(asset)out.add(asset);return out}
-    if(typeof value!=='object')return out;if(seen.has(value))return out;seen.add(value);
-    (Array.isArray(value)?value:Object.values(value)).forEach(item=>collectAssets(item,out,seen));return out;
-  }
-  function loadedAssets(){
-    const out=new Set();
-    document.querySelectorAll('[src],[href]').forEach(node=>{const asset=localAsset(node.getAttribute('src')||node.getAttribute('href'));if(asset)out.add(asset)});
-    performance.getEntriesByType?.('resource')?.forEach(entry=>{const asset=localAsset(entry.name);if(asset)out.add(asset)});
-    return out;
-  }
-  function offlinePackUrls(pack){
-    const urls=new Set(OFFLINE_CORE.map(item=>new URL(item,location.href).href));
-    loadedAssets().forEach(item=>urls.add(item));
-    try{collectAssets(currentTopic()?.words||[]).forEach(item=>urls.add(item))}catch{}
-    if(pack==='standard'||pack==='full'){
-      try{collectAssets(vocab.filter(word=>wordIntroduced(word))).forEach(item=>urls.add(item))}catch{}
-      try{collectAssets(theatreScenes).forEach(item=>urls.add(item))}catch{}
-      try{collectAssets(mangaStories).forEach(item=>urls.add(item))}catch{}
-      try{collectAssets(conversations).forEach(item=>urls.add(item))}catch{}
-      try{collectAssets(grammarLessons).forEach(item=>urls.add(item))}catch{}
-      try{collectAssets(memoryScenes).forEach(item=>urls.add(item))}catch{}
-    }
-    if(pack==='full'){
-      for(const source of [()=>vocab,()=>kanaData,()=>componentData,()=>topicData,()=>learningGraph,()=>ankiContent]){
-        try{collectAssets(source()).forEach(item=>urls.add(item))}catch{}
-      }
-    }
-    return [...urls];
-  }
-  async function offlineStorageSummary(){
-    try{const e=await navigator.storage?.estimate?.();return e?{usage:Number(e.usage||0),quota:Number(e.quota||0),free:Math.max(0,Number(e.quota||0)-Number(e.usage||0))}:null}catch{return null}
-  }
-  async function offlineCacheStats(){
-    if(!('caches'in window))return{files:0,bytes:0};
-    const cache=await caches.open(OFFLINE_CACHE),keys=await cache.keys();let bytes=0;
-    for(const request of keys){try{const response=await cache.match(request),length=Number(response?.headers?.get('content-length'));bytes+=Number.isFinite(length)&&length>0?length:(await response?.clone().blob())?.size||0}catch{}}
-    return{files:keys.length,bytes};
-  }
-  function setOfflineProgress(done,total,text=''){
-    const fill=document.getElementById('offlinePackFill'),label=document.getElementById('offlinePackProgressText');
-    if(fill)fill.style.width=`${total?Math.round(done/total*100):0}%`;if(label)label.textContent=text||`${done} / ${total} files`;
-  }
-  async function downloadOfflinePack(pack){
-    if(!(await verifyConnectivity())){notify('Connect to the internet before downloading an offline pack.');return}
-    if(!('caches'in window)){notify('Offline packs are not supported by this browser.');return}
-    const button=document.getElementById('downloadOfflinePack');if(button?.dataset.busy==='1')return;
-    const urls=offlinePackUrls(pack),storage=await offlineStorageSummary();
-    if(storage&&storage.free<15*1024*1024&&pack!=='essential'&&!confirm('Browser storage is running low. Download this larger pack anyway?'))return;
-    if(button){button.dataset.busy='1';button.disabled=true;button.textContent='Downloading…'}
-    const cache=await caches.open(OFFLINE_CACHE);let done=0,failed=0;
-    setOfflineProgress(0,urls.length,'Preparing offline pack…');
-    for(const raw of urls){
-      try{
-        const url=new URL(raw);url.searchParams.set('offline-v',CURRENT_VERSION);
-        const response=await fetch(url.toString(),{cache:'no-cache'});if(!response.ok)throw new Error(String(response.status));
-        await cache.put(url.toString(),response.clone());
-      }catch{failed++}
-      done++;setOfflineProgress(done,urls.length,`${done} / ${urls.length} files${failed?` · ${failed} unavailable`:''}`);
-      if(done%10===0)await new Promise(resolve=>setTimeout(resolve,0));
-    }
-    const stats=await offlineCacheStats();
-    saveOfflineState({pack,version:CURRENT_VERSION,downloadedAt:new Date().toISOString(),files:stats.files,bytes:stats.bytes,failed});publishOfflineState();
-    await renderOfflineMode();
-    if(button){button.disabled=false;button.dataset.busy='0';button.textContent='Update offline content'}
-    notify(failed?`Offline pack ready with ${failed} unavailable file${failed===1?'':'s'}.`:'Offline pack is ready.');
-  }
-  async function removeOfflinePack(){
-    if(!offlineState())return;if(!confirm('Remove downloaded Offline Mode content? Learning progress will be kept.'))return;
-    const names=await caches.keys();await Promise.all(names.filter(name=>name.startsWith('kaishi-offline-')).map(name=>caches.delete(name)));
-    saveOfflineState(null);publishOfflineState();await renderOfflineMode();notify('Offline pack removed. Learning progress was kept.');
-  }
+  function offlinePackOutdated(){return window.KaishiActivityPolicy?.offline?.isOutdated?.()||false}
+  function downloadOfflinePack(pack){return window.KaishiActivityPolicy?.offline?.download?.(pack==='complete'?'full':pack)}
+  function removeOfflinePack(){return window.KaishiActivityPolicy?.offline?.remove?.()}
   function ensureOfflineIndicator(){
     let pill=document.getElementById('offlineStatusPill');
     if(!pill){pill=document.createElement('span');pill.id='offlineStatusPill';pill.className='offline-status-pill';pill.hidden=true;badge()?.insertAdjacentElement('afterend',pill)}
     updateOfflineStatusUI();
   }
-  async function renderOfflineMode(){
-    const card=document.getElementById('offlineModeCard');if(!card)return;
-    const state=offlineState(),stats=state?await offlineCacheStats():{files:0,bytes:0},storage=await offlineStorageSummary();
-    const selected=card.querySelector('.offline-pack-option.active')?.dataset.pack||state?.pack||'standard';
-    card.querySelectorAll('.offline-pack-option').forEach(option=>option.classList.toggle('active',option.dataset.pack===selected));
-    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
-    set('offlinePackState',state?`${state.pack[0].toUpperCase()+state.pack.slice(1)} ready`:'Not downloaded');
-    set('offlinePackFiles',state?String(stats.files):'0');set('offlinePackSize',state?formatBytes(stats.bytes):'0 KB');set('offlineStorageFree',storage?formatBytes(storage.free):'Unknown');
-    const download=document.getElementById('downloadOfflinePack'),remove=document.getElementById('removeOfflinePack');
-    if(download)download.textContent=state?'Update offline content':'Download for offline use';if(remove)remove.hidden=!state;
-    state?setOfflineProgress(stats.files,stats.files,`✓ ${stats.files} files ready offline · ${new Date(state.downloadedAt).toLocaleDateString()}`):setOfflineProgress(0,1,'Choose a pack, then download it while online.');
-    ensureOfflineIndicator();
-  }
+  async function renderOfflineMode(){window.KaishiActivityPolicy?.offline?.render?.()}
   function installOfflineMode(){
-    const cacheCard=document.getElementById('cacheDataCard'),updateButton=document.getElementById('checkUpdateBtn');
-    if((!cacheCard&&!updateButton)||document.getElementById('offlineModeCard'))return;
-    const card=document.createElement('section');card.id='offlineModeCard';card.className='offline-mode-card';
-    card.innerHTML=`<div class="offline-mode-heading"><div><span class="eyebrow">Travel without a connection</span><h3>Offline Mode</h3><p>Download learning content before a flight, train journey or anywhere data may be unreliable.</p></div></div>
-      <div class="offline-pack-options" role="radiogroup">
-        <button type="button" class="offline-pack-option" data-pack="essential"><strong>🌱 Essential</strong><small>Core app, Japan Ready, current topic and currently used media.</small><b>Smallest</b></button>
-        <button type="button" class="offline-pack-option active" data-pack="standard"><strong>🎒 Standard</strong><small>Essential + introduced words and locally referenced Theatre, Manga, conversation and grammar media.</small><b>Recommended</b></button>
-        <button type="button" class="offline-pack-option" data-pack="full"><strong>🗾 Full learning pack</strong><small>All locally referenced vocabulary and learning media Kaishi currently knows about.</small><b>Largest</b></button>
-      </div>
-      <div class="offline-pack-progress"><div><i id="offlinePackFill"></i></div><span id="offlinePackProgressText">Choose a pack, then download it while online.</span></div>
-      <div class="offline-pack-meta"><span><small>Status</small><strong id="offlinePackState">Not downloaded</strong></span><span><small>Files</small><strong id="offlinePackFiles">0</strong></span><span><small>Pack size</small><strong id="offlinePackSize">0 KB</strong></span><span><small>Storage free</small><strong id="offlineStorageFree">Checking…</strong></span></div>
-      <div class="offline-pack-actions"><button id="downloadOfflinePack" class="primary" type="button">Download for offline use</button><button id="removeOfflinePack" class="offline-remove" type="button" hidden>Remove offline content</button></div>
-      <div class="force-offline-row">
-        <div class="force-offline-copy">
-          <strong>Force offline mode</strong>
-          <small>Make Kaishi behave as offline even when internet is available. Online-only requests are paused until this is switched off.</small>
-        </div>
-        <button id="forceOfflineToggle" class="force-offline-toggle" type="button" role="switch" aria-checked="false"></button>
-      </div>
-      <small id="forceOfflineStatus" class="cache-data-note">Online</small>
-      <small class="cache-data-note">Learning progress keeps saving on this device offline. Cloud sync and Community resume when you reconnect.</small>`;
-    (cacheCard||updateButton).before(card);
-    card.querySelectorAll('.offline-pack-option').forEach(option=>option.onclick=()=>card.querySelectorAll('.offline-pack-option').forEach(item=>item.classList.toggle('active',item===option)));
-    document.getElementById('downloadOfflinePack').onclick=()=>downloadOfflinePack(card.querySelector('.offline-pack-option.active')?.dataset.pack||'standard');
-    document.getElementById('removeOfflinePack').onclick=removeOfflinePack;
-    const forceToggle=document.getElementById('forceOfflineToggle');
-    if(forceToggle){
-      forceToggle.addEventListener('click',()=>{
-        saveForceOffline(!isForceOffline());
-        updateOfflineStatusUI();
-        if(typeof notify==='function')notify(isForceOffline()?'Offline mode forced. Online-only features are paused.':'Forced offline mode disabled.');
-      });
-    }
+    window.KaishiActivityPolicy?.offline?.install?.();
+    const toggle=document.getElementById('forceOfflineToggle');
+    if(toggle)toggle.onclick=()=>{saveForceOffline(!isForceOffline());updateOfflineStatusUI();};
     installOfflineDetection();
-    window.addEventListener('online',()=>{renderOfflineMode();updateOfflineStatusUI()});
-    window.addEventListener('offline',()=>{ensureOfflineIndicator();updateOfflineStatusUI()});
-    renderOfflineMode();
+    ensureOfflineIndicator();
     updateOfflineStatusUI();
   }
+  window.addEventListener('kaishi-cloud-sync-ready',installOfflineMode);
 
   // ----- v11.8.40: Settings cache/offline diagnostics -------------------
   function formatBytes(bytes){
@@ -1216,7 +1025,7 @@
   }
 
   function install(){
-    installReadingReviewPause();
+
     installTheatreSpeed();
     installEnhancementStyles();
     refreshVisibleReleaseVersion();

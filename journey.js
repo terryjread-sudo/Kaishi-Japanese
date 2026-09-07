@@ -192,7 +192,9 @@
   }
 
   function lessonTitle(chapter, words) {
-    const topic = topicFor(words);
+    const curriculum=window.KaishiActivityPolicy?.buildJourneyCurriculum?.(window.KaishiJapanReadyBridge?.getVocab?.()||[]);
+    if(curriculum?.[chapter])return `Lesson ${chapter+1} · ${curriculum[chapter].arc.title}`;
+    const topic = {...topicFor(words),title:window.KaishiActivityPolicy?.buildJourneyCurriculum?.(window.KaishiJapanReadyBridge?.getVocab?.()||[])?.[chapter]?.arc?.title||topicFor(words)?.title};
     if (topic?.title) return `Lesson ${chapter + 1} · ${topic.title}`;
 
     const routeStep = routeSafe().steps.find(step =>
@@ -231,7 +233,7 @@
 
     for (let chapter = from; chapter < to; chapter++) {
       const stats = lessonStats(chapter);
-      const topic = topicFor(stats.words);
+      const topic = {...topicFor(stats.words),title:window.KaishiActivityPolicy?.buildJourneyCurriculum?.(window.KaishiJapanReadyBridge?.getVocab?.()||[])?.[chapter]?.arc?.title||topicFor(stats.words)?.title};
       const done = chapter < current || stats.complete;
       const isCurrent = chapter === current && !done;
       const future = chapter > current;
@@ -1020,7 +1022,7 @@
 
   function previewHTML(chapter) {
     const words = lessonWords(chapter);
-    const topic = topicFor(words);
+    const topic = {...topicFor(words),title:window.KaishiActivityPolicy?.buildJourneyCurriculum?.(window.KaishiJapanReadyBridge?.getVocab?.()||[])?.[chapter]?.arc?.title||topicFor(words)?.title};
 
     return `
       <strong>What you’ll learn</strong>
