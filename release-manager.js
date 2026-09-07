@@ -394,7 +394,8 @@
       .cache-data-note{color:#64748b;font-size:.66rem;line-height:1.4}
       @media(max-width:430px){.cache-data-grid{grid-template-columns:1fr 1fr}.cache-data-actions{flex-direction:column}}
 
-      .offline-mode-card{display:grid;gap:12px;margin:14px 0;padding:14px;border:1px solid #a7f3d0;border-radius:17px;background:linear-gradient(145deg,#f0fdf4,#eff6ff)}
+      .offline-mode-card{display:grid;gap:12px;margin:14px 0;padding:14px;border:1px solid #a7f3d0;border-radius:17px;background:linear-gradient(145deg,#f0fdf4,#eff6ff);min-width:0;max-width:100%;overflow:hidden}
+      .offline-mode-card select{width:100%;min-width:0;max-width:100%}
       .offline-mode-heading h3,.offline-mode-heading p{margin:2px 0}.offline-mode-heading p{font-size:.74rem;line-height:1.4;color:#64748b}
       .offline-pack-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
       .offline-pack-option{display:grid;gap:3px;align-content:start;min-height:96px;padding:10px;text-align:left;border:1px solid #dbe7e0;border-radius:13px;background:#fff}
@@ -962,7 +963,8 @@
       .settings-tab.active{background:var(--navy,#172554);color:#fff;box-shadow:0 6px 16px #17255440}
       .settings-tab:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
       .settings-card{padding-top:18px}
-      .settings-panel{display:grid;gap:18px}
+      .settings-card,.settings-panel{display:grid;gap:18px;min-width:0;max-width:100%}
+      .settings-panel>*{min-width:0;max-width:100%}
       .settings-panel[hidden]{display:none}
       @media(max-width:480px){.settings-tab{padding:9px 11px;font-size:.76rem}}
     `;
