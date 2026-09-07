@@ -21,9 +21,7 @@ const speak = (text: string) => { if (!('speechSynthesis' in window)) return; sp
 
 export function installJapanReady() {
   const bridge = window.KaishiJapanReadyBridge;
-  // app.js loads its learner bridge after the module on a cold start. Retry
-  // briefly so the dashboard button is bound once the bridge is available.
-  if (!bridge) { window.setTimeout(() => installJapanReady(), 100); return; }
+  if (!bridge) return;
   const b = bridge;
   let data: TravelContent | undefined, active: Scenario | undefined, turn=0, mistakes=0, parts: string[]=[], position=0, busy=false;
   function campaign(): Campaign {
