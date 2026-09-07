@@ -270,23 +270,8 @@
     if(!strip||strip.dataset.carouselBound==='1')return;
     strip.dataset.carouselBound='1';
 
-    let settleTimer=null;
-    strip.addEventListener('scroll',()=>{
-      clearTimeout(settleTimer);
-      settleTimer=setTimeout(()=>{
-        const ps=panels();
-        if(ps.length<2)return;
-        const center=strip.scrollLeft + strip.clientWidth/2;
-        let best=0,bestDist=Infinity;
-        ps.forEach((panel,i)=>{
-          const pc=panel.offsetLeft + panel.offsetWidth/2 - strip.offsetLeft;
-          const dist=Math.abs(pc-center);
-          if(dist<bestDist){best=i;bestDist=dist}
-        });
-        updateDots(best);
-        activateIndex(best);
-      },90);
-    },{passive:true});
+    // Do not infer the active campaign from scroll position. Mobile browser
+    // reflow and focus restoration can move this strip without user intent.
   }
 
   function syncToExistingState(){
