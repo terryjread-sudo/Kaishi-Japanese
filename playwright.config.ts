@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
+  testIgnore: 'offline-production.spec.ts',
   fullyParallel: true,
   // A single Chromium worker keeps the GitHub runner stable; local runs stay parallel.
   workers: process.env.CI ? 1 : undefined,

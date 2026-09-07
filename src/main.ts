@@ -16,6 +16,11 @@ import {
   validateJourneyCurriculum,
 } from './domains/curriculum/journey-curriculum';
 import { hasStartedProgress, mergeSyncPayloads } from './domains/cloud-sync/merge';
+import { prepareLesson, sessionPosition } from './domains/lessons/session';
+import { decorateLesson, showAnswerFeedback } from './core/lesson-ui';
+import './core/learning.css';
+import { installJapanReady } from './core/japan-ready';
+import { createOfflineUI } from './core/offline-ui';
 
 export {
   buildJourneyCurriculum,
@@ -42,6 +47,7 @@ declare global {
 
 // The classic lesson runtime consumes this existing compatibility policy while
 // Journey execution is migrated into TypeScript modules.
+const offlineUI=createOfflineUI((window as Window & { APP_VERSION?: string }).APP_VERSION || 'unknown');
 window.KaishiActivityPolicy = {
   ...window.KaishiActivityPolicy,
   buildJourneyCurriculum,
@@ -56,9 +62,16 @@ window.KaishiActivityPolicy = {
   validateJourneyCurriculum,
   mergeCloudPayloads: mergeSyncPayloads,
   hasStartedCloudProgress: hasStartedProgress,
+  prepareLesson,
+  sessionPosition,
+  decorateLesson,
+  showAnswerFeedback,
+  offline: offlineUI,
 };
 
 window.dispatchEvent(new Event('kaishi-cloud-sync-ready'));
+installJapanReady();
+offlineUI.install();
 
 // app.js starts before this module. Refresh its derived Journey controls once
 // the curriculum policy is available, rather than leaving a stale first render.

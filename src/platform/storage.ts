@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+/** Device-wide repositories use this port; domains never access browser storage. */
+export function deviceStorage(): StorageLike { return localStorage; }
+
 export interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;

@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const offlinePackSchema = z.object({
   version: z.string().min(1),
-  pack: z.enum(['standard', 'complete']).default('standard'),
-  downloadedAt: z.number().int().positive().optional(),
+  pack: z.enum(['essential', 'standard', 'full', 'complete']).transform(value => value === 'complete' ? 'full' as const : value).default('standard'),
+  downloadedAt: z.union([z.number().int().positive(), z.string().datetime().transform(value=>Date.parse(value))]).optional(),
 });
 
 export type OfflinePack = z.infer<typeof offlinePackSchema>;

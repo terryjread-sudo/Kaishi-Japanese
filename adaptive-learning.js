@@ -225,11 +225,7 @@
         const repairable=activeScreen==='study' && SKILLS.includes(skill) && !activeQuickStep;
         const key=`${v.id}:${skill}`;
 
-        if(repairable && !recentRepairKeys.has(key)){
-          recentRepairKeys.add(key);
-          const insertAt=Math.min(session.length,index+REPAIR_DELAY);
-          session.splice(insertAt,0,{v,skill,adaptiveRepair:true});
-        }
+
         save(false);
       }
       return result;

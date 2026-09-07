@@ -434,7 +434,7 @@
 
         if(!ok){
           const activeScreen=document.querySelector('.screen.active')?.id;
-          const repairable=activeScreen==='study' && !activeQuickStep;
+          const repairable=activeScreen==='study' && index<session.length && !activeQuickStep;
           const alt=alternateSkill(v,skill);
           const key=`${v.id}:${alt}`;
 

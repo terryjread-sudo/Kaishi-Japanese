@@ -62,15 +62,16 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
     return api?.snapshot(0).complete;
   })).toBe(true);
   const celebration = page.locator('#engagementCelebration[open]');
-  if (await celebration.count()) await celebration.getByRole('button', { name: 'Continue' }).click();
+  await expect(celebration).toBeVisible();
+  await celebration.getByRole('button', { name: 'Continue', exact: true }).click();
   await page.evaluate(() => (window as typeof window & { KaishiLessonMastery: { startPractice: (chapter: number) => boolean } }).KaishiLessonMastery.startPractice(0));
 
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Focused practice');
   await page.locator('#journeySessionPreviewStart').click();
   await expect(page.locator('#sessionCounter .session-progress-chunk')).toHaveCount(6);
   await expect(page.locator('#sessionCounter .session-progress-chunk.current')).toHaveCount(1);
-  await expect(page.locator('.lesson-mastery-path')).toContainText('Sensei’s Path:');
-  await expect(page.locator('.lesson-mastery-path')).toContainText('%');
+  await expect(page.locator('.lesson-shell-heading')).toContainText('Long-term strength');
+  await expect(page.locator('.lesson-shell-heading')).toContainText('%');
   await page.getByRole('button', { name: 'How Sensei’s Path works' }).click();
   await expect(page.locator('#senseiPathHelpDialog')).toBeVisible();
   await expect(page.locator('#senseiPathHelpText')).toContainText('Completing a lesson opens the next one');
@@ -145,8 +146,8 @@ test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) 
   await expect(page.locator('.lesson-story-scene')).toContainText('Aiko');
   await expect(page.locator('.lesson-story-scene')).toContainText('Kai');
   await page.getByRole('button', { name: 'Aiko', exact: true }).click();
-  await expect(page.locator('#storySentenceFeedback')).toContainText('Not quite');
-  await expect(page.locator('#storyAnswerAudio')).toBeVisible();
+  await expect(page.locator('.lesson-answer-feedback')).toContainText('Let’s compare');
+  await expect(page.getByRole('button', { name: '🔊 Hear the answer', exact: true })).toBeVisible();
 });
 
 test('the Journey uses the spoken-first foundation and tracks a connector card', async ({ page }) => {

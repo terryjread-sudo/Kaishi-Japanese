@@ -1,3 +1,5 @@
+import { mergeTripPlan } from '../japan-ready/trip-plan';
+
 export type SyncPayload = {
   version: 4;
   progress: Record<string, Record<string, unknown>>;
@@ -69,6 +71,7 @@ export function mergeSyncPayloads(local: unknown, remote: unknown, now = new Dat
   meta.rhythmHistory = rhythmHistory;
   meta.streak = rhythmDays(rhythmHistory, now);
   meta.sessionHistory = mergeHistory(localMeta.sessionHistory, remoteMeta.sessionHistory);
+  meta.tripPlan = mergeTripPlan(localMeta.tripPlan, remoteMeta.tripPlan);
   meta.notebook = { ...asRecord(latestMeta.notebook), words: mergeNotebook(asRecord(localMeta.notebook).words, asRecord(remoteMeta.notebook).words) };
   for (const key of ['pathUnlocks', 'canDoAwards', 'activityPurchases', 'unlockNoticesSeen', 'unlockNoticesDismissed']) {
     meta[key] = unique([...(Array.isArray(localMeta[key]) ? localMeta[key] : []), ...(Array.isArray(remoteMeta[key]) ? remoteMeta[key] : [])], item => JSON.stringify(item));

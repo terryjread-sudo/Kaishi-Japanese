@@ -1,0 +1,45 @@
+.cohesive-lesson { --lesson-gap: 1rem; padding: 1.25rem; }
+.cohesive-lesson .lesson-shell-heading { position: static; display: grid; grid-template-columns: 1fr auto; gap: .35rem .75rem; background: #f0f5fc; color: #172554; border: 1px solid #dce5f1; border-radius: 12px; padding: .75rem; margin: 0 0 1rem; box-shadow: none; min-height: 0; }
+.lesson-shell-heading strong { font-size: 1rem; }
+.lesson-shell-heading span { grid-column: 1; font-size: .85rem; }
+.cohesive-lesson .lesson-shell-heading button { grid-column: 2; grid-row: 1 / 3; font-size: .75rem; width: auto; height: auto; min-width: 120px; max-width: 145px; min-height: 44px; padding: .4rem; border-radius: 8px; background: transparent; }
+.cohesive-lesson .sensei-guide { margin: 0 0 1rem; padding: .65rem .8rem; }
+.cohesive-lesson .sensei-avatar, .cohesive-lesson .sensei-avatar img { width: 40px; height: 48px; }
+.cohesive-lesson .sensei-guide strong { display: none; }
+.cohesive-lesson .sensei-guide p { margin: 0; line-height: 1.5; }
+.cohesive-lesson .jp, .cohesive-lesson .first-encounter-word { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.35; }
+.cohesive-lesson .example-sentence { font-size: clamp(1.75rem, 5vw, 2.7rem); line-height: 1.8; overflow-wrap: anywhere; }
+.cohesive-lesson .kana-unlock-glyph { font-size: clamp(4rem, 15vw, 7rem); }
+.cohesive-lesson .meet-word-written { padding: .8rem; }
+.cohesive-lesson .audio { min-height: 44px; border-radius: 12px; font-size: .95rem; }
+.cohesive-lesson .meet-word-speaker { width: auto; min-width: 110px; height: auto; padding: .6rem .9rem; white-space: nowrap; }
+.cohesive-lesson:has(.memory-scene img, .vms-scene img) > .picture { display: none; }
+.cohesive-lesson .sticky-study-action { position: static !important; padding: 0 !important; margin-top: 1rem; background: transparent; }
+.cohesive-lesson > .reveal, .cohesive-lesson .sticky-study-action .reveal, .cohesive-lesson .lesson-answer-feedback > .primary { width: 100%; min-height: 48px; margin-top: 1rem; }
+.cohesive-lesson .vms-scene, .cohesive-lesson figure { margin: 1rem 0; }
+.cohesive-lesson figure img, .cohesive-lesson .vms-scene img { max-height: 320px; object-fit: contain; }
+.lesson-image-fallback { padding: 1rem; background: #f1f5f9; border-radius: 12px; }
+.lesson-answer-feedback { margin-top: 1rem; padding: 1rem; border: 2px solid #d5dfea; border-radius: 14px; background: #f8fafc; color: #172554; }
+.lesson-answer-feedback.correct { border-color: #67a98a; }
+.lesson-answer-feedback.incorrect { border-color: #d6a86b; }
+.lesson-answer-feedback h3 { margin: 0 0 .5rem; }
+.lesson-answer-feedback p { line-height: 1.6; overflow-wrap: anywhere; }
+.trip-plan, .offline-coverage { margin-block: 1rem; padding: 1rem; border: 1px solid #dce5f1; border-radius: 14px; background: #f8fafc; }
+.trip-plan label { display: block; margin-block: .75rem; }
+.trip-plan input, .trip-plan select { min-height: 44px; max-width: 100%; }
+.trip-plan fieldset { border: 1px solid #dce5f1; border-radius: 10px; }
+.trip-plan .trip-priorities { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .5rem; }
+.trip-plan .trip-priorities label { display: flex; align-items: center; gap: .5rem; }
+.trip-plan .trip-priorities input { min-height: 0; }
+.trip-plan button { margin: .4rem .4rem .4rem 0; }
+.offline-coverage table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.offline-coverage th, .offline-coverage td { text-align: left; padding: .5rem .3rem; border-bottom: 1px solid #dce5f1; }
+.offline-coverage details { margin-block: .7rem; }
+@media(max-width: 560px) {
+  .cohesive-lesson { padding: .85rem; }
+  .cohesive-lesson .lesson-shell-heading { grid-template-columns: 1fr; }
+  .cohesive-lesson .lesson-shell-heading button { grid-column: 1; grid-row: auto; max-width: none; text-align: left; min-height: 44px; padding: .2rem; }
+  .cohesive-lesson .kana-unlock-layout { grid-template-columns: 1fr; }
+  .cohesive-lesson .kana-word-preview { padding: .75rem; }
+  .trip-plan .trip-priorities { grid-template-columns: 1fr; }
+}

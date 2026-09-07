@@ -10,10 +10,11 @@
     "lint": "eslint .",
     "test": "node scripts/test.js && vitest run",
     "test:e2e": "playwright test",
+    "test:e2e:offline": "playwright test --config=playwright.offline.config.ts",
     "test:legacy": "node scripts/test.js",
     "generate:manifest": "node scripts/generate-content-manifest.mjs",
     "check:manifest": "node scripts/generate-content-manifest.mjs --check",
-    "check": "npm run check:manifest && npm run typecheck && npm run lint && npm test && npm run build && npm run test:e2e",
+    "check": "npm run check:manifest && npm run typecheck && npm run lint && npm test && npm run build && npm run test:e2e && npm run test:e2e:offline",
     "bump": "node scripts/bump.js"
   },
   "dependencies": {
