@@ -364,6 +364,9 @@
         gap:13px;
         align-items:flex-start;
         padding:8px 2px 17px;
+        min-width:0;
+        max-width:100%;
+        box-sizing:border-box;
       }
 
       .kq-unified-marker {
@@ -388,6 +391,8 @@
       .kq-unified-card {
         flex:1;
         min-width:0;
+        max-width:100%;
+        box-sizing:border-box;
         border:1px solid rgba(15,23,42,.16);
         border-radius:17px;
         padding:15px;
@@ -397,6 +402,10 @@
       }
 
       #journeyHistoryTrack {
+        display:block;
+        inline-size:100%;
+        max-width:100%;
+        overflow-x:hidden;
         background-image:linear-gradient(90deg,rgba(218,230,232,.94),rgba(237,244,238,.84)),url('media/journey-scenes/bamboo-scroll-tile.png');
         background-repeat:repeat-y;
         background-position:center top;
@@ -427,8 +436,8 @@
         z-index:30;
       }
 
-      .kq-activity-badge { display:inline-flex; align-items:center; gap:6px; width:max-content; max-width:100%; margin-top:9px; padding:5px 9px; border:1px solid rgba(14,116,144,.28); border-radius:999px; background:rgba(236,254,255,.88); color:#155e75; font-size:.75rem; font-weight:800; }
-      .kq-activity-badge span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      .kq-activity-badge { display:inline-flex; align-items:center; gap:6px; width:auto; max-width:100%; margin-top:9px; padding:5px 9px; border:1px solid rgba(14,116,144,.28); border-radius:999px; background:rgba(236,254,255,.88); color:#155e75; font-size:.75rem; font-weight:800; box-sizing:border-box; }
+      .kq-activity-badge span { min-width:0; overflow-wrap:anywhere; }
       .kq-mission-detail { margin:10px 0 0; padding:10px; border-radius:12px; background:rgba(255,255,255,.78); font-size:.84rem; }
       .kq-mission-detail p { margin:.35rem 0 0; }
 
