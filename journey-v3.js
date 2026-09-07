@@ -421,7 +421,7 @@
 #journey > .journey-section > .eyebrow,#journey > .journey-section > h2,#journey > .journey-section > p,#journey > .journey-section > #journeyStats,#journey > .journey-section > #journeyUnlockNotice,#journey > .journey-section > .daily-route,#journey > .journey-section > .journey-path-ahead{display:none!important}
 #journeyHistoryTimeline{display:block!important;margin-top:0!important}
 #journeyHistoryTimeline .journey-history-timeline-heading{position:sticky;top:0;z-index:5;padding:10px 0 14px;background:var(--card-bg,#fff)}
-#journeyHistoryTrack{max-height:min(74vh,760px);min-height:500px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;cursor:grab}
+#journeyHistoryTrack{display:block;inline-size:100%;max-width:100%;max-height:min(74vh,760px);min-height:500px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;cursor:grab}
 #journeyHistoryTrack.dragging{cursor:grabbing;user-select:none}
 .kq1710-timeline{position:relative;padding:12px 8px 36px}.kq1710-timeline:before{content:"";position:absolute;left:29px;top:32px;bottom:32px;width:3px;border-radius:3px;background:currentColor;opacity:.12}
 .kq1710-node{position:relative;display:flex;gap:14px;align-items:flex-start;padding:8px 4px 18px;min-width:0;max-width:100%;box-sizing:border-box}.kq1710-marker{position:relative;z-index:1;flex:0 0 46px;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--card-bg,#fff);border:2px solid currentColor;box-shadow:0 2px 8px rgba(0,0,0,.08)}
