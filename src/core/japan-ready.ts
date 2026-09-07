@@ -27,7 +27,7 @@ export function installJapanReady() {
   let data: TravelContent | undefined, active: Scenario | undefined, turn=0, mistakes=0, parts: string[]=[], position=0, busy=false;
   function campaign(): Campaign {
     const m=b.getMeta(); m.campaignProgress ||= {};
-    const saved=m.campaignProgress['japan-ready'] || {};
+    const saved=(m.campaignProgress['japan-ready'] || {}) as Partial<Campaign>;
     const value=m.campaignProgress['japan-ready']={
       currentScenarioId:typeof saved.currentScenarioId==='string'&&saved.currentScenarioId?saved.currentScenarioId:'polite-basics',
       unlockedScenarioIds:Array.isArray(saved.unlockedScenarioIds)&&saved.unlockedScenarioIds.length?saved.unlockedScenarioIds:['polite-basics'],
