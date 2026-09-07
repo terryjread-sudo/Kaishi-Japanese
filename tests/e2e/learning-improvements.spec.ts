@@ -1,5 +1,15 @@
 import { test,expect } from '@playwright/test';
 
+test('Japan Ready repairs an incomplete saved campaign and opens its first scenario',async({page})=>{
+  await page.addInitScript(()=>localStorage.setItem('kq-profile-v1:guest:kq-meta',JSON.stringify({campaignProgress:{'japan-ready':{scenarioProgress:{}}}})));
+  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true})).toBeEnabled();
+  await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();
+  await expect(page.locator('#japanReadyScenarioList button').first()).toBeEnabled();
+  await page.locator('#japanReadyScenarioList button').first().click();
+  await expect(page.getByRole('button',{name:'Focused study',exact:true})).toBeVisible();
+});
+
 test('a complete Journey lesson includes assessments and stable prerequisite counts',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
   await page.getByRole('button',{name:'Continue · 冒険を続ける',exact:true}).click();

@@ -18,15 +18,22 @@ const q = <T extends HTMLElement = HTMLElement>(selector: string) => document.qu
 const esc = (value: string) => value.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c] || c));
 const today = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 const speak = (text: string) => { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const utterance=new SpeechSynthesisUtterance(text); utterance.lang='ja-JP'; utterance.rate=.88; speechSynthesis.speak(utterance); };
+let retryScheduled = false;
 
 export function installJapanReady() {
   const bridge = window.KaishiJapanReadyBridge;
-  if (!bridge) return;
+  if (!bridge) { if (!retryScheduled) { retryScheduled=true; window.setTimeout(() => { retryScheduled=false; installJapanReady(); }, 250); } return; }
   const b = bridge;
   let data: TravelContent | undefined, active: Scenario | undefined, turn=0, mistakes=0, parts: string[]=[], position=0, busy=false;
   function campaign(): Campaign {
     const m=b.getMeta(); m.campaignProgress ||= {};
-    return m.campaignProgress['japan-ready'] ||= { currentScenarioId:'polite-basics',unlockedScenarioIds:['polite-basics'],scenarioProgress:{} };
+    const saved=m.campaignProgress['japan-ready'] || {};
+    const value=m.campaignProgress['japan-ready']={
+      currentScenarioId:typeof saved.currentScenarioId==='string'&&saved.currentScenarioId?saved.currentScenarioId:'polite-basics',
+      unlockedScenarioIds:Array.isArray(saved.unlockedScenarioIds)&&saved.unlockedScenarioIds.length?saved.unlockedScenarioIds:['polite-basics'],
+      scenarioProgress:saved.scenarioProgress&&typeof saved.scenarioProgress==='object'?saved.scenarioProgress:{},
+    };
+    return value;
   }
   function state(id: string) { const c=campaign(); c.scenarioProgress ||= {}; return c.scenarioProgress[id] ||= { completedActivities:[],conversationAttempts:0,confidence:0,completedAt:null }; }
   function planRoute() { const plan=readTripPlan(b.getMeta().tripPlan); return plan?.enabled && data ? recommendTrip(plan,data.scenarios,campaign().scenarioProgress,today()) : null; }
