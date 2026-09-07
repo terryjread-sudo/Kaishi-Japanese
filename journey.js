@@ -1176,15 +1176,31 @@
   function renderArchivedLessonCard(data) {
     const host = $('#journeyArchivedLesson');
     if (!host) return;
-    const archived = data.filter(item => item.type === 'past' && Number.isFinite(item.chapter));
+    // The visible timeline intentionally keeps only a short recent window.
+    // Build this selector from the complete curriculum so lessons that have
+    // scrolled out of that window remain available for review.
+    const total = lessonCount();
+    const current = currentChapter();
+    const archived = Array.from({length: total}, (_, chapter) => {
+      const stats = lessonStats(chapter);
+      const done = chapter < current || stats.complete;
+      if (!done) return null;
+      return {
+        type: 'past', chapter,
+        title: lessonTitle(chapter, stats.words),
+        detail: `${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`
+      };
+    }).filter(Boolean);
     if (!archived.length) { host.hidden = true; host.innerHTML = ''; return; }
     const selectedChapter = Number(host.dataset.chapter || archived[archived.length - 1].chapter);
     const selected = archived.find(item => item.chapter === selectedChapter) || archived[archived.length - 1];
+    const expanded = host.dataset.expanded === '1';
     host.hidden = false;
     host.dataset.chapter = String(selected.chapter);
     const stats = lessonStats(selected.chapter);
     const words = stats.words.filter(word => typeof wordIntroduced !== 'function' || wordIntroduced(word));
-    host.innerHTML = `<div class="journey-archive-heading"><div><span class="eyebrow">Past lessons</span><h3>Keep earlier lessons fresh</h3></div><label><span class="sr-only">Choose a past lesson</span><select id="journeyArchivedLessonSelect" aria-label="Choose a past lesson">${archived.map(item => `<option value="${item.chapter}"${item.chapter === selected.chapter ? ' selected' : ''}>${esc(item.title)} · ${Number(item.detail.match(/(\d+)%/)?.[1] || 0)}% strength</option>`).join('')}</select></label></div><p class="journey-archive-summary"><strong>${esc(selected.title)}</strong><span>${esc(selected.detail)} · ${words.length}/${stats.words.length} words introduced</span></p><div id="journeyArchivedLessonDetails" hidden></div><div class="journey-archive-actions"><button type="button" data-archive-results>View lesson results</button><button type="button" class="primary" data-archive-practice>Practice lesson</button></div>`;
+    host.innerHTML = `<div class="journey-archive-heading"><strong>Past lessons</strong><button type="button" class="journey-archive-toggle" aria-expanded="${expanded}" aria-controls="journeyArchivedLessonBody" title="${expanded ? 'Collapse' : 'Expand'} past lessons">${expanded ? '⌃' : '⌄'}<span class="sr-only">${expanded ? 'Collapse' : 'Expand'} past lessons</span></button></div><div id="journeyArchivedLessonBody" class="journey-archive-body"${expanded ? '' : ' hidden'}><label><span class="sr-only">Choose a past lesson</span><select id="journeyArchivedLessonSelect" aria-label="Choose a past lesson">${archived.map(item => `<option value="${item.chapter}"${item.chapter === selected.chapter ? ' selected' : ''}>${esc(item.title)} · ${Number(item.detail.match(/(\d+)%/)?.[1] || 0)}% strength</option>`).join('')}</select></label><p class="journey-archive-summary"><strong>${esc(selected.title)}</strong><span>${esc(selected.detail)} · ${words.length}/${stats.words.length} words introduced</span></p><div id="journeyArchivedLessonDetails" hidden></div><div class="journey-archive-actions"><button type="button" data-archive-results>View lesson results</button><button type="button" class="primary" data-archive-practice>Practice lesson</button></div></div>`;
+    host.querySelector('.journey-archive-toggle')?.addEventListener('click', () => { host.dataset.expanded = host.dataset.expanded === '1' ? '0' : '1'; renderArchivedLessonCard(data); });
     host.querySelector('#journeyArchivedLessonSelect')?.addEventListener('change', event => { host.dataset.chapter = event.target.value; renderArchivedLessonCard(data); });
     host.querySelector('[data-archive-results]')?.addEventListener('click', () => { const details = host.querySelector('#journeyArchivedLessonDetails'); if (!details) return; details.hidden = !details.hidden; if (!details.hidden) details.innerHTML = `${masteryHTML(selected.chapter)}<p class="journey-archive-words">${words.map(word => `<span lang="ja">${esc(word.word)}<small>${esc(word.meaning)}</small></span>`).join('') || 'No introduced words recorded yet.'}</p>`; });
     host.querySelector('[data-archive-practice]')?.addEventListener('click', () => retryLesson(selected.chapter));
