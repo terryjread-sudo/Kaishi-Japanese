@@ -282,7 +282,12 @@
       };
       return score(b)-score(a);
     });
-    const side=ranked[0];
+    const previousCompleted = new Set(safeArray(previous?.completed));
+    const pendingSide = !same && safeArray(previous?.steps).find(step =>
+      step?.kind === 'activity' && step?.optional && step.activityId && !previousCompleted.has(step.id) &&
+      JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(step.activityId) && activityReadiness(step.activityId).wordReady
+    );
+    const side=pendingSide?.activityId || ranked[0];
     if (side) {
       const rule=ruleFor(side);
       const shouldShow=!meta.pathVisits?.[side] || chapter % 3 === 0;
