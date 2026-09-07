@@ -1668,7 +1668,7 @@ function renderCurrent(){
   if(current?.v&&!current.battle&&!current.karuta)addNotebookSaveControl(current.v);
   if(current?.v&&!pictureGameActive&&!karutaActive&&!battleActive){
    const chapter=Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:Math.max(0,Math.floor(journeyVocabulary().indexOf(current.v)/WORD_CHAPTER_SIZE)),snapshot=lessonMasterySnapshot(chapter),lesson=window.KaishiActivityPolicy?.buildJourneyCurriculum?.(journeyVocabulary())?.[chapter],title=`Lesson ${chapter+1} · ${lesson?.arc?.title||'Japanese Journey'}`;
-   window.KaishiActivityPolicy?.decorateLesson?.($('#card'),{title,skill:current.skill,strength:snapshot.strength,complete:index>=session.length,help:()=>openSenseiPathHelp(snapshot)});
+   window.KaishiActivityPolicy?.decorateLesson?.($('#card'),{title,skill:current.skill,strength:snapshot.strength,complete:index>=session.length,help:()=>openSenseiPathHelp(snapshot),pathMarkup:window.KaishiLessonMastery?.panel?.(chapter)});
    const position=window.KaishiActivityPolicy?.sessionPosition?.(session,index);
    if(position&&index<session.length){const counter=$('#sessionCounter');counter.setAttribute('aria-label',position.extra?'Extra practice':`Study progress: card ${position.completed+1} of ${position.total}`);counter.setAttribute('aria-valuemax',String(position.total));counter.setAttribute('aria-valuenow',String(Math.min(position.total,position.completed+1)));if(position.extra)counter.textContent='Extra practice';}
    $('#card')?.scrollIntoView({block:'start'});

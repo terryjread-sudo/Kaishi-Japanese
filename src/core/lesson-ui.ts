@@ -27,15 +27,26 @@ export function showAnswerFeedback(host: HTMLElement, feedback: AnswerFeedback, 
   next.focus({ preventScroll: true });
 }
 
-export function decorateLesson(host: HTMLElement, info: { title: string; skill: string; strength: number; complete: boolean; help: () => void }) {
+export function decorateLesson(host: HTMLElement, info: { title: string; skill: string; strength: number; complete: boolean; help: () => void; pathMarkup?: string }) {
   host.classList.add('cohesive-lesson');
   host.querySelector('.lesson-shell-heading')?.remove();
   const heading = document.createElement('header'); heading.className = 'lesson-shell-heading';
   const title = document.createElement('strong'); title.textContent = info.title;
-  const phase = document.createElement('span'); phase.textContent = info.complete ? 'Session complete' : lessonPhase(info.skill);
+  const phase = document.createElement('span'); phase.textContent = `${info.complete ? 'Session complete' : lessonPhase(info.skill)}${info.pathMarkup ? ` · Long-term strength ${info.strength}%` : ''}`;
   const help = document.createElement('button'); help.type = 'button'; help.className = 'lesson-mastery-help';
   help.setAttribute('aria-label', 'How Sensei’s Path works'); help.textContent = `Long-term strength ${info.strength}% · ?`; help.onclick = info.help;
-  heading.append(title, phase, help); host.prepend(heading);
+  heading.append(title, phase);
+  if (!info.pathMarkup) heading.append(help);
+  host.prepend(heading);
+  if (info.pathMarkup && !host.querySelector('.lesson-mastery-path')) {
+    const template = document.createElement('template');
+    template.innerHTML = info.pathMarkup.trim();
+    const path = template.content.firstElementChild;
+    if (path) {
+      path.querySelector<HTMLButtonElement>('.lesson-mastery-help')?.addEventListener('click', info.help);
+      heading.after(path);
+    }
+  }
   host.querySelectorAll<HTMLDetailsElement>('.meet-word-guidance').forEach(details => { details.open = false; });
   if (host.querySelector('.vms-scene img, .memory-scene img')) host.querySelectorAll<HTMLElement>(':scope > .picture').forEach(picture => { picture.hidden = true; });
   host.querySelectorAll<HTMLButtonElement>('.audio').forEach(button => {
