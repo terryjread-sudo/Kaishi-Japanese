@@ -2172,13 +2172,6 @@ $('#shareAchievement').onclick=()=>{$('#shareDialog').close();shareAchievement()
 $('#shareClose').onclick=()=>$('#shareDialog').close();
 $('#missionSummaryContinue').onclick=()=>{$('#missionSummaryDialog').close();openJourney()};
 $('#missionSummaryShare').onclick=()=>{$('#missionSummaryDialog').close();openInviteDialog()};
-const japanReadyContinue=$('#continueJapanReadyCampaign');
-if(japanReadyContinue)japanReadyContinue.addEventListener('click',event=>{
- if(japanReadyContinue.onclick)return;
- event.preventDefault();event.stopImmediatePropagation();
- japanReadyContinue.disabled=true;const original=japanReadyContinue.innerHTML; japanReadyContinue.textContent='Loading Japan Ready…';
- const retry=attempt=>{if(japanReadyContinue.onclick){japanReadyContinue.disabled=false;japanReadyContinue.innerHTML=original;japanReadyContinue.click();return}if(attempt<100){setTimeout(()=>retry(attempt+1),100);return}japanReadyContinue.disabled=false;japanReadyContinue.innerHTML=original;toast('Japan Ready is still loading — please try again shortly.')};retry(0);
-},true);
 const journeySessionPreview=ensureJourneySessionPreview();
 $('#journeySessionPreviewStart').onclick=beginJourneySession;
 $('#journeySessionPreviewCancel').onclick=cancelJourneySessionPreview;
@@ -2191,6 +2184,12 @@ function attachKanjiStrokePlayer(){const panel=$('#kanjiWords'),character=panel?
 const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());kanjiStrokeObserver.observe($('#kanjiWords'),{childList:true,subtree:true});
 document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
 init();
+// Keep the dashboard entry usable while the modular Japan Ready controller
+// finishes loading on slower devices.
+window.setTimeout(()=>{
+ const bindJapanReady=()=>{const button=$('#continueJapanReadyCampaign'),bridge=window.KaishiJapanReadyBridge;if(button&&!button.onclick&&bridge){button.onclick=()=>{bridge.getMeta().activeCampaign='japan-ready';bridge.save();bridge.show('japanReady')};return}window.setTimeout(bindJapanReady,250)};
+ bindJapanReady();
+},500);
 
 
 function hasAnyKaishiLocalData(){
