@@ -4,6 +4,7 @@ export { CONTENT_DATA_FILES, OFFLINE_CORE_FILES } from './platform/content-manif
 export { addRestorePoint, findRestorePoint, RESTORE_POINT_LIMIT } from './domains/progress/restore-points';
 export { offlinePackStatus } from './domains/offline/offline-pack';
 export { createEchoRun, reinforcedProductionStrength, retryWords } from './domains/kotoba-echo/run';
+import { defineElement } from '@lordicon/element';
 import { findLessonStoryScene, selectLessonStoryScene } from './domains/lesson-stories/story-scenes';
 import {
   buildJourneyCurriculum,
@@ -21,6 +22,8 @@ import { decorateLesson, showAnswerFeedback } from './core/lesson-ui';
 import './core/learning.css';
 import { installJapanReady } from './core/japan-ready';
 import { createOfflineUI } from './core/offline-ui';
+
+defineElement();
 
 export {
   buildJourneyCurriculum,

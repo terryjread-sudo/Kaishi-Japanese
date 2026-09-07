@@ -63,6 +63,7 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
   })).toBe(true);
   const celebration = page.locator('#engagementCelebration[open]');
   await expect(celebration).toBeVisible();
+  await expect(celebration.locator('lord-icon.celebration-cat')).toHaveAttribute('src', 'media/celebrations/maneki-neko.li');
   await celebration.getByRole('button', { name: 'Continue', exact: true }).click();
   await page.evaluate(() => (window as typeof window & { KaishiLessonMastery: { startPractice: (chapter: number) => boolean } }).KaishiLessonMastery.startPractice(0));
 

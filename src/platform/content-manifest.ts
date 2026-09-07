@@ -35,6 +35,7 @@ export const OFFLINE_CORE_FILES = [
   './media/guides/sensei/sensei-explaining.webp', './media/guides/sensei/sensei-celebrating.webp',
   './media/guides/sensei/sensei-encouraging.webp', './media/guides/sensei/sensei-pointing.webp',
   './media/guides/sensei/sensei-analysing.webp', './media/guides/aiko-guide-icon.webp',
+  './media/celebrations/maneki-neko.li',
   './media/guides/aiko-guide-portrait.webp', './media/guides/aiko-guide-large.webp',
   './media/sentence-lab/sentence-lab-hero.webp',
   './media/journey-scenes/bamboo-scroll-tile.png',
