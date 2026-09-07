@@ -1077,6 +1077,16 @@
       const detail=versionCard.querySelector('small');
       if(detail) detail.textContent='Settings now shows the app cache, offline-file counts and service-worker state, with a safe button to clear cached files without deleting learning progress.';
     }
+    const releaseDate=document.getElementById('releaseDate');
+    if(releaseDate){
+      fetchLatestVersion().then(latest=>{
+        const released=typeof latest?.released==='string'?new Date(latest.released):null;
+        if(!released||Number.isNaN(released.getTime())){releaseDate.textContent='Release date unavailable';return;}
+        const hasTime=latest.released.includes('T');
+        const options=hasTime?{dateStyle:'medium',timeStyle:'short'}:{dateStyle:'medium'};
+        releaseDate.textContent=`Released ${new Intl.DateTimeFormat(undefined,options).format(released)}`;
+      }).catch(()=>{releaseDate.textContent='Release date unavailable';});
+    }
   }
 
   if(document.readyState==='loading'){

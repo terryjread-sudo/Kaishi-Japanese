@@ -56,7 +56,8 @@ fs.writeFileSync(swJsPath, swJs, 'utf8');
 console.log('? Updated service-worker.js');
 
 // 4. Update version.json
-const now = new Date().toISOString().slice(0, 10);
+// Keep the full timestamp so the About panel can show when a release was made.
+const now = new Date().toISOString();
 const updatedVersionJson = {
   version: newVersion,
   released: now,
