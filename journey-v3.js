@@ -409,6 +409,35 @@
     }
     return rows;
   }
+  function archivedLessonRows(){
+    const total=count(),cur=Math.min(current(),Math.max(0,total-1)),rows=[];
+    for(let i=0;i<=cur;i++){
+      const st=stats(i),done=Boolean(st.complete||st.completed||st.isComplete||Number(st.percent)>=100);
+      if(!done)continue;
+      const ws=words(i),names=ws.slice(0,2).map(w=>w?.meaning).filter(Boolean);
+      rows.push({chapter:i,title:`Lesson ${i+1}${names.length?`: ${names.join(' + ')}`:''}`,strength:Math.round(Number(st.strength??st.percent??0)),words:ws});
+    }
+    return rows;
+  }
+  function renderArchivedLesson(chapter){
+    const host=q('#journeyArchivedLesson');if(!host)return;
+    const archived=archivedLessonRows();
+    if(!archived.length){host.hidden=true;return}
+    const selected=archived.find(item=>item.chapter===Number(chapter))||archived[archived.length-1];
+    if(host.dataset.chapter===String(selected.chapter)&&host.querySelector('#journeyArchivedLessonSelect'))return;
+    const snapshot=stats(selected.chapter),wordList=selected.words.filter(w=>w && typeof wordIntroduced==='function'&&wordIntroduced(w)).slice(0,8);
+    host.hidden=false;
+    host.dataset.chapter=String(selected.chapter);
+    host.innerHTML=`<div class="journey-archive-heading"><div><span class="eyebrow">Past lessons</span><h3>Keep earlier lessons fresh</h3></div><label><span class="sr-only">Choose a lesson</span><select id="journeyArchivedLessonSelect" aria-label="Choose a past lesson">${archived.map(item=>`<option value="${item.chapter}"${item.chapter===selected.chapter?' selected':''}>${esc(item.title)} · ${item.strength}% strength</option>`).join('')}</select></label></div><p class="journey-archive-summary"><strong>${esc(selected.title)}</strong><span>${selected.strength}% strength · ${snapshot.attempts||0} practice attempts</span></p><div id="journeyArchivedLessonDetails" hidden></div><div class="journey-archive-actions"><button type="button" data-archive-results>View lesson results</button><button type="button" class="primary" data-archive-practice>Practice lesson</button></div>`;
+    const select=host.querySelector('#journeyArchivedLessonSelect');
+    select?.addEventListener('change',()=>renderArchivedLesson(Number(select.value)));
+    host.querySelector('[data-archive-results]')?.addEventListener('click',()=>{
+      const details=host.querySelector('#journeyArchivedLessonDetails');if(!details)return;
+      details.hidden=!details.hidden;
+      if(!details.hidden)details.innerHTML=`${window.KaishiLessonMastery?.panel?.(selected.chapter)||''}<p class="journey-archive-words">${wordList.length?wordList.map(w=>`<span lang="ja">${esc(w.word)}<small>${esc(w.meaning)}</small></span>`).join(''):'No introduced words recorded yet.'}</p>`;
+    });
+    host.querySelector('[data-archive-practice]')?.addEventListener('click',()=>window.KaishiLessonMastery?.startPractice?.(selected.chapter));
+  }
   function sideRows(chapter,completed){
     const r=route(),steps=Array.isArray(r.steps)?r.steps:[];
     return steps.filter(s=>{
@@ -428,7 +457,7 @@
 .kq1710-card{flex:1;min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;border:1px solid rgba(0,0,0,.1);border-radius:16px;padding:13px 15px;background:var(--card-bg,#fff);box-shadow:0 2px 7px rgba(0,0,0,.04)}.kq1710-node.current .kq1710-card{border-width:2px}.kq1710-node.future{opacity:.7}.kq1710-node.side{margin-left:16px}.kq1710-node.side .kq1710-marker{border-style:dashed}.kq1710-card strong{display:block;font-size:1.02rem;margin:.18rem 0}.kq1710-card p{margin:.25rem 0 0;opacity:.78}.kq1710-label{font-size:.75rem;font-weight:700;letter-spacing:.03em;opacity:.78}.kq1710-action{margin-top:10px}.kq1710-note{display:block;margin-top:7px;font-size:.78rem;font-weight:700}
 `;document.head.appendChild(s)}
   function hideOld(){const r=q('#journey');if(!r)return;style();r.querySelectorAll('.journey-section > .eyebrow,.journey-section > h2,.journey-section > p,.journey-section > #journeyStats,.journey-section > #journeyUnlockNotice,.journey-section > .daily-route,.journey-section > .journey-path-ahead').forEach(e=>{e.hidden=true;e.setAttribute('aria-hidden','true')});const t=q('#journeyHistoryTimeline');if(t){t.hidden=false;t.style.display='block'}const h=q('#journeyHistoryTimelineTitle');if(h)h.textContent='Your Journey';const e=h?.parentElement?.querySelector('.eyebrow');if(e)e.textContent='Past · Present · Future'}
-  function render(){const t=q('#journeyHistoryTrack');if(!t||rendering)return;const data=rows();if(!data.length)return;rendering=true;try{const html=data.map(x=>{const cls=['kq1710-node',x.done?'done':'',x.current?'current':'',x.future?'future':'',x.type==='side'?'side':''].filter(Boolean).join(' ');const label=x.type==='past'?'Completed':x.type==='current'?'Current lesson':x.type==='side'?(x.required?'Required side quest':'Optional side quest'):x.type==='retry'?'Retry':'Coming up';const action=x.current&&!x.done?'<button type="button" class="primary kq1710-action" data-kq1710="continue">Continue lesson</button>':x.type==='side'&&!x.done?'<button type="button" class="kq1710-action" data-kq1710="side">Start side quest</button>':x.type==='past'?'<small class="kq1710-note">Review available</small>':'';return `<article class="${cls}" data-kq1710-id="${esc(x.id)}"><div class="kq1710-marker">${x.done?'✓':esc(x.icon||'•')}</div><div class="kq1710-card"><span class="kq1710-label">${label}</span><strong>${esc(x.title)}</strong><p>${esc(x.detail)}</p>${action}</div></article>`}).join('');t.innerHTML=`<div class="kq1710-timeline">${html}</div>`;if(!t.dataset.kq1710UserScrolled){requestAnimationFrame(()=>{const c=t.querySelector('.current');if(c)t.scrollTop=Math.max(0,c.offsetTop-t.clientHeight*.28)})}}finally{rendering=false}}
+  function render(){const t=q('#journeyHistoryTrack');if(!t||rendering)return;const data=rows();renderArchivedLesson();if(!data.length)return;rendering=true;try{const html=data.map(x=>{const cls=['kq1710-node',x.done?'done':'',x.current?'current':'',x.future?'future':'',x.type==='side'?'side':''].filter(Boolean).join(' ');const label=x.type==='past'?'Completed':x.type==='current'?'Current lesson':x.type==='side'?(x.required?'Required side quest':'Optional side quest'):x.type==='retry'?'Retry':'Coming up';const action=x.current&&!x.done?'<button type="button" class="primary kq1710-action" data-kq1710="continue">Continue lesson</button>':x.type==='side'&&!x.done?'<button type="button" class="kq1710-action" data-kq1710="side">Start side quest</button>':x.type==='past'?'<small class="kq1710-note">Review available above</small>':'';return `<article class="${cls}" data-kq1710-id="${esc(x.id)}"><div class="kq1710-marker">${x.done?'✓':esc(x.icon||'•')}</div><div class="kq1710-card"><span class="kq1710-label">${label}</span><strong>${esc(x.title)}</strong><p>${esc(x.detail)}</p>${action}</div></article>`}).join('');t.innerHTML=`<div class="kq1710-timeline">${html}</div>`;if(!t.dataset.kq1710UserScrolled){requestAnimationFrame(()=>{const c=t.querySelector('.current');if(c)t.scrollTop=Math.max(0,c.offsetTop-t.clientHeight*.28)})}}finally{rendering=false}}
   function bind(){if(!q('#journey')?.classList.contains('active'))return;hideOld();render();const t=q('#journeyHistoryTrack');if(t&&!t.dataset.kq1710Bound){t.dataset.kq1710Bound='1';t.addEventListener('scroll',()=>t.dataset.kq1710UserScrolled='1',{passive:true});let down=false,y=0,top=0;t.addEventListener('pointerdown',e=>{if(e.button!==0)return;down=true;y=e.clientY;top=t.scrollTop;t.classList.add('dragging');t.setPointerCapture?.(e.pointerId)});t.addEventListener('pointermove',e=>{if(down)t.scrollTop=top-(e.clientY-y)});const end=e=>{down=false;t.classList.remove('dragging');try{t.releasePointerCapture?.(e.pointerId)}catch{}};t.addEventListener('pointerup',end);t.addEventListener('pointercancel',end);t.addEventListener('click',e=>{const b=e.target.closest?.('[data-kq1710]');if(!b)return;e.preventDefault();e.stopPropagation();q('#startNextMission')?.click()},{capture:true})}}
   function init(){bind();const r=q('#journey');if(r)new MutationObserver(()=>{clearTimeout(window.__kq1710Timer);window.__kq1710Timer=setTimeout(bind,100)}).observe(r,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden']});document.addEventListener('click',e=>{if(e.target.closest?.('#continueJourney,#startNextMission'))setTimeout(bind,150)},true);window.addEventListener('pageshow',bind)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
