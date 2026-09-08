@@ -1211,7 +1211,7 @@
     return Boolean(window.KaishiQuestCloudAdapter?.experimentalUx?.());
   }
 
-  function renderExperimentalTimeline(data, track) {
+  function renderExperimentalTimeline(data, track, options = {}) {
     const all = data.filter(item => item.type !== 'horizon' && item.type !== 'retry');
     const total = lessonCount();
     const current = currentChapter();
@@ -1234,14 +1234,38 @@
     track.innerHTML = `<div class="experimental-journey-shell">
       <div class="experimental-journey-switcher"><button type="button" data-experimental-mode="past" class="${showingPast?'active':''}">Past Lessons</button><h2>Journey Timeline</h2><button type="button" data-experimental-mode="current" class="${showingPast?'':'active'}">Current</button></div>
       <div class="experimental-journey-timeline">${items.map(item => `<button type="button" class="experimental-lesson-node ${item.chapter===selected.chapter?'selected':''}" data-experimental-lesson="${item.chapter}" ${item.type==='future'?'aria-label="Coming up"':''}><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><span><small>${item.type==='past'?'Completed':item.type==='side'?'Side quest':item.type==='current'?'Today\'s learning':'Coming up'}</small><strong>${esc(item.title)}</strong></span></button>`).join('')}</div>
-      <article class="experimental-lesson-detail"><span class="eyebrow">${label}</span><h2>${esc(selected.title)}</h2><p>${esc(detail)}</p>${selected.vocabulary?`<span class="kq-unified-vocabulary" lang="ja">${esc(selected.vocabulary)}</span>`:''}<button type="button" class="primary experimental-lesson-cta" data-experimental-action="${selected.type==='past'?'retry':selected.type==='side'?'activity':'current'}" data-kq-chapter="${selected.chapter}" data-kq-activity="${esc(selected.activityId||'')}">${cta}</button></article>
+      <article class="experimental-lesson-detail"><span class="eyebrow">${label}</span><h2>${esc(selected.title)}</h2><p>${esc(detail)}</p>${selected.vocabulary?`<span class="kq-unified-vocabulary" lang="ja">${esc(selected.vocabulary)}</span>`:''}<small class="experimental-lesson-number">Lesson ${selected.chapter + 1} · Focused lesson</small><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${selected.type==='past'?'retry':selected.type==='side'?'activity':'current'}" data-kq-chapter="${selected.chapter}" data-kq-activity="${esc(selected.activityId||'')}">${cta}</button></article>
     </div>`;
-    track.querySelectorAll('[data-experimental-lesson]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalSelected=button.dataset.experimentalLesson; renderExperimentalTimeline(data,track); }));
+    const timeline = track.querySelector('.experimental-journey-timeline');
+    const focusFromScroll = () => {
+      if (!timeline) return;
+      const nodes = [...timeline.querySelectorAll('[data-experimental-lesson]')];
+      if (!nodes.length) return;
+      const center = timeline.getBoundingClientRect().top + timeline.clientHeight / 2;
+      const focused = nodes.reduce((nearest, node) => {
+        const distance = Math.abs(node.getBoundingClientRect().top + node.offsetHeight / 2 - center);
+        const nearestDistance = Math.abs(nearest.getBoundingClientRect().top + nearest.offsetHeight / 2 - center);
+        return distance < nearestDistance ? node : nearest;
+      });
+      if (focused.dataset.experimentalLesson === track.dataset.kqExperimentalSelected) return;
+      track.dataset.kqExperimentalSelected = focused.dataset.experimentalLesson;
+      renderExperimentalTimeline(data, track, { preserveScrollTop: timeline.scrollTop });
+    };
+    track.querySelectorAll('[data-experimental-lesson]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalSelected=button.dataset.experimentalLesson; renderExperimentalTimeline(data,track,{centerSelection:true}); }));
+    timeline?.addEventListener('scroll', () => window.requestAnimationFrame(focusFromScroll), { passive:true });
     track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; renderExperimentalTimeline(data,track); }));
     track.querySelector('[data-experimental-action]')?.addEventListener('click', event => {
       const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
       if (button.dataset.experimentalAction === 'retry') retryLesson(chapter); else if (button.dataset.experimentalAction === 'activity') launchPathMilestone(button.dataset.kqActivity, true); else launchCurrentLesson();
     });
+    if (timeline) {
+      if (Number.isFinite(options.preserveScrollTop)) timeline.scrollTop = options.preserveScrollTop;
+      else if (options.centerSelection || !track.dataset.kqExperimentalInitialised) {
+        const selectedNode = timeline.querySelector(`[data-experimental-lesson="${selected.chapter}"]`);
+        if (selectedNode) timeline.scrollTop = Math.max(0, selectedNode.offsetTop - timeline.clientHeight / 2 + selectedNode.offsetHeight / 2);
+      }
+      track.dataset.kqExperimentalInitialised = '1';
+    }
   }
 
   function render() {

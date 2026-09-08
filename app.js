@@ -261,6 +261,14 @@ function bindExperimentalBottomNav(){
   else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
  }));
 }
+function bindExperimentalHeader(){
+ const japanReady=$('#experimentalJapanReady');if(japanReady)japanReady.onclick=openExperimentalJapanReady;
+ const settingsButton=$('#experimentalSettingsBtn');if(settingsButton)settingsButton.onclick=()=>{
+  if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}
+  else{renderLearningBalanceSettings();show('settings')}
+ };
+ const profile=$('#experimentalProfile');if(profile)profile.onclick=()=>window.KaishiCloud?.isSignedIn?.()?openCharacterSettings():$('#dashboardSignIn')?.click();
+}
 function renderExperimentalJourneyUx(){
  const enabled=settings.experimentalJourneyUx===true;
  document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);
@@ -2241,6 +2249,7 @@ function attachKanjiStrokePlayer(){const panel=$('#kanjiWords'),character=panel?
 const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());kanjiStrokeObserver.observe($('#kanjiWords'),{childList:true,subtree:true});
 document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
 bindExperimentalBottomNav();
+bindExperimentalHeader();
 init();
 // Keep the dashboard entry usable while the modular Japan Ready controller
 // finishes loading on slower devices.
