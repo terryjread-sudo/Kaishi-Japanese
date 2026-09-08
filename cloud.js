@@ -52,6 +52,9 @@
  const streak=Number(adapter()?.stats?.().streak||0);
  const stats=adapter()?.stats?.()||{},src=user?avatarImage(selectedAvatar,streak):GUEST_IMAGE;
  const image=$('#dashboardAvatar');if(image)image.src=src;
+ const experimentalImage=$('#experimentalProfileAvatar');if(experimentalImage)experimentalImage.src=src;
+ const experimentalName=$('#experimentalProfileName');if(experimentalName)experimentalName.textContent=user?profile().display_name:'Sign in';
+ if(experimentalImage)experimentalImage.alt=user?`${profile().display_name} profile`:'Guest learner';
  if($('#journeyHomeAvatar'))$('#journeyHomeAvatar').src=src;
  if($('#journeyAvatar'))$('#journeyAvatar').src=src;
  if($('#dashboardAvatarTitle'))$('#dashboardAvatarTitle').textContent=user?`@${profile().github_login}`:'Save your progress across devices';
