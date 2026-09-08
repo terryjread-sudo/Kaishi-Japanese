@@ -1,7 +1,7 @@
 'use strict';
 
-/* Kaishi Japanese Service Worker — 11.103.0. */
-var VERSION = '11.103.0';
+/* Kaishi Japanese Service Worker — 11.104.0. */
+var VERSION = '11.104.0';
 try {
   importScripts('./version.js', './content-manifest.generated.js');
   if (typeof APP_VERSION === 'string' && APP_VERSION.trim()) VERSION = APP_VERSION.trim();
