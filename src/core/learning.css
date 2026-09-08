@@ -52,3 +52,7 @@
   .cohesive-lesson .kana-word-preview { padding: .75rem; }
   .trip-plan .trip-priorities { grid-template-columns: 1fr; }
 }
+
+.sentence-bridge-hint-tools { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin-top:.75rem; }
+.sentence-bridge-hint-tools button { min-height:44px; }
+.sentence-bridge-hint-reveal { margin:.65rem 0 0; padding:.65rem .8rem; border-radius:10px; background:#fff7ed; color:#9a3412; }
