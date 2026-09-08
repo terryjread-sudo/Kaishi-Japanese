@@ -1286,14 +1286,20 @@
       node.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(); } });
     });
     timeline?.addEventListener('scroll', () => { scheduleCardStyles(); settleFocus(); }, { passive:true });
-    timeline?.addEventListener('scrollend', focusFromScroll, { passive:true });
     track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; renderExperimentalTimeline(data,track); }));
     track.querySelector('[data-experimental-action]')?.addEventListener('click', event => {
       const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
       if (button.dataset.experimentalAction === 'retry') retryLesson(chapter); else if (button.dataset.experimentalAction === 'activity') launchPathMilestone(button.dataset.kqActivity, true); else launchCurrentLesson();
     });
     if (timeline) {
-      if (Number.isFinite(options.preserveScrollTop)) timeline.scrollTop = options.preserveScrollTop;
+      if (Number.isFinite(options.preserveScrollTop)) {
+        const restoreScrollTop = options.preserveScrollTop;
+        timeline.scrollTop = restoreScrollTop;
+        window.requestAnimationFrame(() => {
+          timeline.scrollTop = restoreScrollTop;
+          window.requestAnimationFrame(() => { timeline.scrollTop = restoreScrollTop; });
+        });
+      }
       else if (options.centerSelection || !track.dataset.kqExperimentalInitialised) {
         const selectedNode = timeline.querySelector(`[data-experimental-lesson="${selected.chapter}"]`);
         if (selectedNode) timeline.scrollTop = Math.max(0, selectedNode.offsetTop - timeline.clientHeight / 2 + selectedNode.offsetHeight / 2);
