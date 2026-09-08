@@ -67,7 +67,9 @@ try {
 
     const setBadge = () => {
       try {
-        document.title = document.title.replace(/v\d+\.\d+\.\d+/i, 'v' + APP_VERSION);
+        document.title = /v\d+\.\d+\.\d+/i.test(document.title)
+          ? document.title.replace(/v\d+\.\d+\.\d+/i, 'v' + APP_VERSION)
+          : `${document.title} • v${APP_VERSION}`;
         document.querySelectorAll('#versionBadge,.version-badge').forEach(el => {
           el.textContent = 'v' + APP_VERSION;
           el.setAttribute('aria-label', 'Kaishi Japanese version ' + APP_VERSION + '. Check for updates and refresh the app.');
