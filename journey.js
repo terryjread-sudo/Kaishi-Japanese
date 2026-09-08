@@ -1228,15 +1228,17 @@
     const selectedChapter = Number(track.dataset.kqExperimentalSelected || actionable?.chapter || 0);
     const selected = items.find(item => item.chapter === selectedChapter) || actionable;
     if (!selected) { track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>'; return; }
-    const detail = selected.detail || '';
-    const label = selected.type === 'future' ? 'Coming up' : selected.type === 'past' ? 'Completed' : 'Today\'s learning';
-    const cta = selected.type === 'side' ? 'Start side quest' : selected.type === 'past' ? 'Practice' : selected.type === 'future' ? 'Start lesson' : 'Continue lesson';
     track.innerHTML = `<div class="experimental-journey-shell">
       <div class="experimental-journey-switcher"><button type="button" data-experimental-mode="past" class="${showingPast?'active':''}">Past Lessons</button><h2>Journey Timeline</h2><button type="button" data-experimental-mode="current" class="${showingPast?'':'active'}">Current</button></div>
-      <div class="experimental-journey-timeline">${items.map(item => `<button type="button" class="experimental-lesson-node ${item.chapter===selected.chapter?'selected':''}" data-experimental-lesson="${item.chapter}" ${item.type==='future'?'aria-label="Coming up"':''}><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><span><small>${item.type==='past'?'Completed':item.type==='side'?'Side quest':item.type==='current'?'Today\'s learning':'Coming up'}</small><strong>${esc(item.title)}</strong></span></button>`).join('')}</div>
-      <article class="experimental-lesson-detail"><span class="eyebrow">${label}</span><h2>${esc(selected.title)}</h2><p>${esc(detail)}</p>${selected.vocabulary?`<span class="kq-unified-vocabulary" lang="ja">${esc(selected.vocabulary)}</span>`:''}<small class="experimental-lesson-number">Lesson ${selected.chapter + 1} · Focused lesson</small><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${selected.type==='past'?'retry':selected.type==='side'?'activity':'current'}" data-kq-chapter="${selected.chapter}" data-kq-activity="${esc(selected.activityId||'')}">${cta}</button></article>
-    </div>`;
-    const timeline = track.querySelector('.experimental-journey-timeline');
+      <div class="experimental-journey-timeline">${items.map(item => {
+        const focused = item.chapter === selected.chapter;
+        const itemLabel = item.type==='past'?'Completed':item.type==='side'?'Side quest':item.type==='current'?"Today's learning":'Coming up';
+        const itemAction = item.type==='past'?'retry':item.type==='side'?'activity':'current';
+        const itemCta = item.type==='side'?'Start side quest':item.type==='past'?'Practice':item.type==='future'?'Start lesson':'Continue lesson';
+        return `<article class="experimental-timeline-item ${focused?'active':''}" data-experimental-lesson="${item.chapter}"><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><button type="button" class="experimental-lesson-node" ${item.future?'aria-label="Coming up"':''}><span class="experimental-node-copy"><small>${itemLabel}</small><strong>${esc(item.title)}</strong></span>${focused?`<span class="experimental-card-details"><span class="experimental-lesson-number">Lesson ${item.chapter + 1} · Focused lesson</span>${item.detail?`<span>${esc(item.detail)}</span>`:''}${item.vocabulary?`<span class="kq-unified-vocabulary" lang="ja">${esc(item.vocabulary)}</span>`:''}<button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId||'')}">${itemCta}</button></span>`:''}</button></article>`;
+      }).join('')}</div>
+      <p class="experimental-focus-hint">Scroll to bring another lesson into focus.</p>
+    </div>`;    const timeline = track.querySelector('.experimental-journey-timeline');
     const focusFromScroll = () => {
       if (!timeline) return;
       const nodes = [...timeline.querySelectorAll('[data-experimental-lesson]')];
@@ -1251,7 +1253,7 @@
       track.dataset.kqExperimentalSelected = focused.dataset.experimentalLesson;
       renderExperimentalTimeline(data, track, { preserveScrollTop: timeline.scrollTop });
     };
-    track.querySelectorAll('[data-experimental-lesson]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalSelected=button.dataset.experimentalLesson; renderExperimentalTimeline(data,track,{centerSelection:true}); }));
+    track.querySelectorAll('.experimental-lesson-node').forEach(button => button.addEventListener('click', () => { const item=button.closest('[data-experimental-lesson]'); if(!item)return; track.dataset.kqExperimentalSelected=item.dataset.experimentalLesson; renderExperimentalTimeline(data,track,{centerSelection:true}); }));
     timeline?.addEventListener('scroll', () => window.requestAnimationFrame(focusFromScroll), { passive:true });
     track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; renderExperimentalTimeline(data,track); }));
     track.querySelector('[data-experimental-action]')?.addEventListener('click', event => {
