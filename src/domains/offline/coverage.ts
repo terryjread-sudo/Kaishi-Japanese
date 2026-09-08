@@ -15,6 +15,9 @@ export function selectPack(catalog:OfflineCatalog,pack:Pack,introducedIds:string
   return catalog.assets.filter(asset=>urls.has(asset.url));
 }
 export function groupCoverage(group:OfflineCatalog['groups'][number],verified:Record<string,number>,catalog:OfflineCatalog) {
-  const assets=catalog.assets.filter(a=>group.urls.includes(a.url));
+  return assetCoverage(group.urls,verified,catalog);
+}
+export function assetCoverage(urls:readonly string[],verified:Record<string,number>,catalog:OfflineCatalog) {
+  const assets=catalog.assets.filter(a=>urls.includes(a.url));
   return (['text','images','audio'] as const).map(kind=>{const required=assets.filter(a=>a.kind===kind);return {kind,total:required.length,ready:required.filter(a=>verified[a.url]!==undefined).length};});
 }
