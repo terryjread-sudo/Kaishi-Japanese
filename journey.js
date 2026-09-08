@@ -1207,6 +1207,43 @@
     host.querySelector('[data-archive-practice]')?.addEventListener('click', () => retryLesson(selected.chapter));
   }
 
+  function experimentalEnabled() {
+    return Boolean(window.KaishiQuestCloudAdapter?.experimentalUx?.());
+  }
+
+  function renderExperimentalTimeline(data, track) {
+    const all = data.filter(item => item.type !== 'horizon' && item.type !== 'retry');
+    const total = lessonCount();
+    const current = currentChapter();
+    const visible = new Set(all.filter(item => Number.isFinite(item.chapter)).map(item => item.chapter));
+    const archived = Array.from({length: total}, (_, chapter) => {
+      const stats = lessonStats(chapter);
+      const done = chapter < current || stats.complete;
+      if (!done || visible.has(chapter)) return null;
+      return {type:'past', id:`lesson-${chapter}`, chapter, icon:'◷', title:lessonTitle(chapter, stats.words), vocabulary:lessonVocabulary(stats.words), detail:`${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`, done:true, current:false, future:false};
+    }).filter(Boolean);
+    const showingPast = track.dataset.kqExperimentalMode === 'past';
+    const items = showingPast ? archived : all;
+    const actionable = items.find(item => item.type === 'current') || items.find(item => item.type === 'past') || items[0];
+    const selectedChapter = Number(track.dataset.kqExperimentalSelected || actionable?.chapter || 0);
+    const selected = items.find(item => item.chapter === selectedChapter) || actionable;
+    if (!selected) { track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>'; return; }
+    const detail = selected.detail || '';
+    const label = selected.type === 'future' ? 'Coming up' : selected.type === 'past' ? 'Completed' : 'Today\'s learning';
+    const cta = selected.type === 'side' ? 'Start side quest' : selected.type === 'past' ? 'Practice' : selected.type === 'future' ? 'Start lesson' : 'Continue lesson';
+    track.innerHTML = `<div class="experimental-journey-shell">
+      <div class="experimental-journey-switcher"><button type="button" data-experimental-mode="past" class="${showingPast?'active':''}">Past Lessons</button><h2>Journey Timeline</h2><button type="button" data-experimental-mode="current" class="${showingPast?'':'active'}">Current</button></div>
+      <div class="experimental-journey-timeline">${items.map(item => `<button type="button" class="experimental-lesson-node ${item.chapter===selected.chapter?'selected':''}" data-experimental-lesson="${item.chapter}" ${item.type==='future'?'aria-label="Coming up"':''}><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><span><small>${item.type==='past'?'Completed':item.type==='side'?'Side quest':item.type==='current'?'Today\'s learning':'Coming up'}</small><strong>${esc(item.title)}</strong></span></button>`).join('')}</div>
+      <article class="experimental-lesson-detail"><span class="eyebrow">${label}</span><h2>${esc(selected.title)}</h2><p>${esc(detail)}</p>${selected.vocabulary?`<span class="kq-unified-vocabulary" lang="ja">${esc(selected.vocabulary)}</span>`:''}<button type="button" class="primary experimental-lesson-cta" data-experimental-action="${selected.type==='past'?'retry':selected.type==='side'?'activity':'current'}" data-kq-chapter="${selected.chapter}" data-kq-activity="${esc(selected.activityId||'')}">${cta}</button></article>
+    </div>`;
+    track.querySelectorAll('[data-experimental-lesson]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalSelected=button.dataset.experimentalLesson; renderExperimentalTimeline(data,track); }));
+    track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; renderExperimentalTimeline(data,track); }));
+    track.querySelector('[data-experimental-action]')?.addEventListener('click', event => {
+      const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
+      if (button.dataset.experimentalAction === 'retry') retryLesson(chapter); else if (button.dataset.experimentalAction === 'activity') launchPathMilestone(button.dataset.kqActivity, true); else launchCurrentLesson();
+    });
+  }
+
   function render() {
     const root = $('#journey');
     const track = $('#journeyHistoryTrack');
@@ -1220,6 +1257,11 @@
 
     if (!data.length) {
       track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>';
+      return;
+    }
+
+    if (experimentalEnabled()) {
+      renderExperimentalTimeline(data, track);
       return;
     }
 
