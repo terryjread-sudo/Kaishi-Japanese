@@ -1926,3 +1926,9 @@ body.welcome-open{overflow:hidden}
 .journey-archive-body{padding-top:12px}
 .journey-archive-body>label{display:block}
 .journey-archive-body select{width:100%}
+/* Archived lessons use the same timeline node/card treatment as Journey history. */
+.journey-archived-lesson{display:block;margin:0 0 16px;padding:8px 2px 17px;border:0;border-radius:0;background:transparent;box-shadow:none}
+.journey-archive-node{display:flex;align-items:flex-start;gap:13px;min-width:0}
+.journey-archive-marker{position:relative;z-index:1;flex:0 0 46px;width:46px;height:46px;display:grid;place-items:center;border:2px solid #64748b;border-radius:50%;background:var(--card-bg,#fff);color:#475569;font-size:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.journey-archive-card{flex:1;min-width:0;box-sizing:border-box;padding:15px;border:1px solid rgba(15,23,42,.16);border-radius:17px;background:rgba(255,255,255,.96);box-shadow:0 7px 18px rgba(15,23,42,.14);overflow:hidden}
+@media(max-width:560px){.journey-archive-heading{align-items:center;flex-direction:row}.journey-archive-node{gap:10px}.journey-archive-marker{flex-basis:40px;width:40px;height:40px}}
