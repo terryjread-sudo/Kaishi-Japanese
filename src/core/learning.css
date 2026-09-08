@@ -35,6 +35,15 @@
 .offline-coverage table { width: 100%; border-collapse: collapse; font-size: .85rem; }
 .offline-coverage th, .offline-coverage td { text-align: left; padding: .5rem .3rem; border-bottom: 1px solid #dce5f1; }
 .offline-coverage details { margin-block: .7rem; }
+.offline-mode-card { display: grid; gap: .8rem; margin-top: 1rem; padding: 1rem; border: 1px solid #dce5f1; border-radius: 16px; background: #f8fafc; }
+.offline-mode-card h3, .offline-mode-card p { margin: 0; }
+.offline-mode-card > label { display: grid; gap: .4rem; font-weight: 700; }
+.offline-mode-card select { min-height: 44px; max-width: 100%; padding: .65rem .75rem; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; }
+#forceOfflineToggle { display: flex; align-items: center; justify-content: flex-start; gap: .55rem; width: max-content; min-height: 44px; padding: .5rem .7rem; border: 1px solid #cbd5e1; border-radius: 999px; background: #fff; color: #172554; font-weight: 750; }
+#forceOfflineToggle.is-forced { border-color: #f0b4b4; background: #fff7f7; }
+.offline-status-dot { display: inline-block; width: .72rem; height: .72rem; flex: 0 0 auto; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 3px #dcfce7; }
+.offline-status-dot.is-offline { background: #dc2626; box-shadow: 0 0 0 3px #fee2e2; }
+#forceOfflineStatus { font-size: .82rem; color: #475569; }
 @media(max-width: 560px) {
   .cohesive-lesson { padding: .85rem; }
   .cohesive-lesson .lesson-shell-heading { grid-template-columns: 1fr; }
