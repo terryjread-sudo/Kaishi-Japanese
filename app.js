@@ -284,9 +284,9 @@ function playExperimentalJapanReadyTransition(){
  const overlay=document.createElement('div');overlay.className='experimental-japan-transition';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<svg viewBox="0 0 120 64" role="presentation"><path d="M8 31h42l13-16 6 2-8 14h45c5 0 8 2 8 5s-3 5-8 5H61l8 13-6 2-14-15H8l12-5z"/></svg>';
  document.body.append(overlay);const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  if(reduced){overlay.classList.add('reduced');setTimeout(()=>overlay.remove(),260);return}
- requestAnimationFrame(()=>overlay.classList.add('run'));setTimeout(()=>overlay.remove(),1050);
+ requestAnimationFrame(()=>overlay.classList.add('run'));setTimeout(()=>overlay.remove(),1780);
 }
-function openExperimentalJapanReady(){playExperimentalJapanReadyTransition();setTimeout(()=>{const bridge=window.KaishiJapanReadyBridge;if(bridge){bridge.getMeta().activeCampaign='japan-ready';bridge.save();bridge.show('japanReady')}else $('#continueJapanReadyCampaign')?.click()},260)}
+function openExperimentalJapanReady(){playExperimentalJapanReadyTransition();setTimeout(()=>{const bridge=window.KaishiJapanReadyBridge;if(bridge){bridge.getMeta().activeCampaign='japan-ready';bridge.save();bridge.show('japanReady')}else $('#continueJapanReadyCampaign')?.click()},420)}
 function openCharacterSettings(){show('settings');requestAnimationFrame(()=>{const picker=$('#avatarPicker');if(!picker)return;picker.scrollIntoView({behavior:'smooth',block:'center'});picker.classList.add('profile-target');setTimeout(()=>picker.classList.remove('profile-target'),1600)})}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
 function day(date=new Date()){const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');return `${y}-${m}-${d}`}
