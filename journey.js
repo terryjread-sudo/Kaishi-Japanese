@@ -1240,6 +1240,27 @@
       <p class="experimental-focus-hint">Scroll to bring another lesson into focus.</p>
     </div>`;
     const timeline = track.querySelector('.experimental-journey-timeline');
+    let styleFrame = 0;
+    const updateCardStyles = () => {
+      styleFrame = 0;
+      if (!timeline) return;
+      const center = timeline.getBoundingClientRect().top + timeline.clientHeight / 2;
+      const range = Math.max(220, timeline.clientHeight * .72);
+      timeline.querySelectorAll('.experimental-timeline-item').forEach(node => {
+        const rect = node.getBoundingClientRect();
+        const distance = rect.top + rect.height / 2 - center;
+        const proximity = Math.min(1, Math.abs(distance) / range);
+        const lift = Math.max(-24, Math.min(24, distance * .07));
+        const scale = 1.02 - proximity * .08;
+        node.style.transform = `translate3d(0,${lift.toFixed(1)}px,0) scale(${scale.toFixed(3)})`;
+        node.style.opacity = String((1 - proximity * .28).toFixed(3));
+        node.style.zIndex = String(100 - Math.round(proximity * 100));
+      });
+    };
+    const scheduleCardStyles = () => {
+      if (styleFrame) return;
+      styleFrame = window.requestAnimationFrame(updateCardStyles);
+    };
     const focusFromScroll = () => {
       if (!timeline) return;
       const nodes = [...timeline.querySelectorAll('[data-experimental-lesson]')];
@@ -1264,7 +1285,7 @@
       node.addEventListener('click', event => { if (event.target.closest('[data-experimental-action]')) return; selectNode(); });
       node.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(); } });
     });
-    timeline?.addEventListener('scroll', settleFocus, { passive:true });
+    timeline?.addEventListener('scroll', () => { scheduleCardStyles(); settleFocus(); }, { passive:true });
     timeline?.addEventListener('scrollend', focusFromScroll, { passive:true });
     track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; renderExperimentalTimeline(data,track); }));
     track.querySelector('[data-experimental-action]')?.addEventListener('click', event => {
@@ -1278,6 +1299,7 @@
         if (selectedNode) timeline.scrollTop = Math.max(0, selectedNode.offsetTop - timeline.clientHeight / 2 + selectedNode.offsetHeight / 2);
       }
       track.dataset.kqExperimentalInitialised = '1';
+      scheduleCardStyles();
     }
   }
 
