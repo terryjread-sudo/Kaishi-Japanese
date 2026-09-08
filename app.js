@@ -231,7 +231,36 @@ function applyRestorePoint(point){const ownerId=restorePointOwnerId();if(!ownerI
 function renderRestorePoints(){const list=$('#restorePointsList');if(!list)return;const points=[...restorePoints()].reverse();list.innerHTML=points.length?points.map(point=>{const summary=restorePointSummary(point);return `<article class="restore-point"><div><strong>${esc(new Date(point.takenAt).toLocaleString())}</strong><small>${esc(point.reason||'Saved progress')}</small><p>Lesson ${summary.lesson} · ${summary.started} words started · ${summary.mastered} mastered · ${summary.answers} answers · ${summary.streak}-day rhythm</p></div><button type="button" data-restore-point="${esc(point.id)}" class="primary">Restore</button></article>`}).join(''):'<p class="muted">No restore points yet. One is created before you reset progress or restore a point.</p>';list.querySelectorAll('[data-restore-point]').forEach(button=>button.onclick=()=>{const point=restorePoints().find(item=>item.id===button.dataset.restorePoint);if(point&&confirm('Restore this point? Your current progress will first be saved as a new restore point.'))applyRestorePoint(point)})}
 function updateRestorePointAvailability(){const available=Boolean(restorePointOwnerId()),button=$('#restorePointsBtn'),dialog=$('#restorePointsDialog');if(button)button.hidden=!available;if(!available&&dialog?.open)dialog.close()}
 function openRestorePoints(){if(!restorePointOwnerId()){toast('Sign in to use restore points');return}renderRestorePoints();const dialog=$('#restorePointsDialog');if(dialog&&!dialog.open)dialog.showModal()}
-function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);}
+function updateExperimentalNavVisibility(){
+ const nav=$('#experimentalBottomNav'),enabled=settings.experimentalJourneyUx===true,active=$('.screen.active')?.id||'';
+ if(!nav)return;
+ const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder';
+ const inPanel=Boolean($('.screen.active.experimental-panel'));
+ const visible=enabled&&!inLesson&&!inPanel&&(active==='home'||active==='journey');
+ nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
+}
+function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();}
+function closeExperimentalPanel(){
+ document.querySelectorAll('.screen.experimental-panel').forEach(panel=>panel.classList.remove('experimental-panel'));
+ if(typeof openJourney==='function')openJourney('current');else show('journey');
+}
+function openExperimentalPanel(id,render){
+ const panel=$(`#${id}`);if(!panel)return;
+ if(typeof render==='function')render();
+ panel.classList.add('experimental-panel');
+ let close=panel.querySelector('.experimental-panel-close');
+ if(!close){close=document.createElement('button');close.type='button';close.className='experimental-panel-close';close.setAttribute('aria-label','Close panel');close.textContent='×';close.addEventListener('click',closeExperimentalPanel);panel.prepend(close)}
+ show(id);
+}
+function bindExperimentalBottomNav(){
+ document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
+  const action=button.dataset.experimentalNav;
+  if(action==='notebook')openLearningNotebook('words');
+  else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
+  else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores());
+  else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
+ }));
+}
 function renderExperimentalJourneyUx(){
  const enabled=settings.experimentalJourneyUx===true;
  document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);
@@ -240,6 +269,7 @@ function renderExperimentalJourneyUx(){
  if(actions)actions.hidden=enabled;
  if(panel)panel.hidden=!enabled;
  const control=$('#experimentalJourneyUx');if(control)control.checked=enabled;
+ updateExperimentalNavVisibility();
  if(enabled&&$('.screen.active')?.id==='home')openJourney('missions');
 }
 function playExperimentalJapanReadyTransition(){
@@ -2210,6 +2240,7 @@ function strokeAsset(character){return componentRecord(character)?`media/kanji-s
 function attachKanjiStrokePlayer(){const panel=$('#kanjiWords'),character=panel?.querySelector('.kanji-detail-heading>span')?.textContent,asset=character&&strokeAsset(character);if(!panel||!asset||panel.querySelector('[data-kanji-strokes]'))return;const tools=document.createElement('div');tools.className='kanji-stroke-tools';tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">✍️ Watch stroke order</button><small>Animated strokes from KanjiVG</small>`;panel.querySelector('.kanji-detail-heading')?.after(tools)}
 const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());kanjiStrokeObserver.observe($('#kanjiWords'),{childList:true,subtree:true});
 document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
+bindExperimentalBottomNav();
 init();
 // Keep the dashboard entry usable while the modular Japan Ready controller
 // finishes loading on slower devices.
