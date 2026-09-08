@@ -1216,7 +1216,6 @@
     hideLegacyJourneySurface();
 
     const data = journeyRows();
-    renderArchivedLessonCard(data);
     const oldScrollTop = track.scrollTop;
 
     if (!data.length) {
@@ -1224,7 +1223,7 @@
       return;
     }
 
-    let markup = '<div class="kq-unified-timeline">';
+    let markup = '<div class="kq-unified-timeline"><section id="journeyArchivedLesson" class="journey-archived-lesson" hidden></section>';
 
     data.forEach(item => {
       markup += nodeHTML(item);
@@ -1237,6 +1236,7 @@
      * That is the key stability guarantee for v11.20.0.
      */
     track.innerHTML = markup;
+    renderArchivedLessonCard(data);
 
     if (track.dataset.kqUserScrolled === '1') {
       track.scrollTop = oldScrollTop;
