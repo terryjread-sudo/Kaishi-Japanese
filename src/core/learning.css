@@ -56,3 +56,8 @@
 .sentence-bridge-hint-tools { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin-top:.75rem; }
 .sentence-bridge-hint-tools button { min-height:44px; }
 .sentence-bridge-hint-reveal { margin:.65rem 0 0; padding:.65rem .8rem; border-radius:10px; background:#fff7ed; color:#9a3412; }
+
+.kotoba-echo-results { display:grid; gap:.45rem; margin:1rem 0; padding:0; list-style:none; text-align:left; }
+.kotoba-echo-results li { display:flex; justify-content:space-between; gap:.75rem; padding:.65rem .75rem; border:1px solid #dce5f1; border-radius:10px; background:#f8fafc; }
+.kotoba-echo-results small { color:#475569; text-align:right; }
+@media(max-width:560px){.kotoba-echo-results li{display:grid;gap:.2rem}.kotoba-echo-results small{text-align:left}}
