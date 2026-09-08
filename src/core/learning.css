@@ -61,3 +61,13 @@
 .kotoba-echo-results li { display:flex; justify-content:space-between; gap:.75rem; padding:.65rem .75rem; border:1px solid #dce5f1; border-radius:10px; background:#f8fafc; }
 .kotoba-echo-results small { color:#475569; text-align:right; }
 @media(max-width:560px){.kotoba-echo-results li{display:grid;gap:.2rem}.kotoba-echo-results small{text-align:left}}
+
+.offline-download-bubble { position:fixed; right:1rem; bottom:1rem; z-index:80; display:flex; align-items:stretch; max-width:min(92vw,22rem); border:1px solid #bfdbfe; border-radius:999px; background:#172554; color:#fff; box-shadow:0 12px 30px #17255455; overflow:hidden; }
+.offline-download-bubble[hidden] { display:none; }
+.offline-download-open { display:flex; align-items:center; gap:.55rem; min-height:48px; padding:.55rem .85rem; border:0; background:transparent; color:inherit; font-weight:750; text-align:left; }
+.offline-download-icon { display:grid; place-items:center; width:1.7rem; height:1.7rem; border:2px solid #93c5fd; border-radius:50%; animation:offline-download-spin 1.2s linear infinite; }
+.offline-download-pause { width:2.4rem; border:0; border-left:1px solid #ffffff33; background:transparent; color:#bfdbfe; font-size:1.25rem; }
+.offline-download-bubble.is-complete { animation:offline-download-flash .55s ease-in-out 3; }
+@keyframes offline-download-spin { to { transform:rotate(360deg); } }
+@keyframes offline-download-flash { 50% { background:#047857; transform:scale(1.04); } }
+@media(prefers-reduced-motion:reduce){.offline-download-icon,.offline-download-bubble.is-complete{animation:none}}
