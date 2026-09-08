@@ -1934,3 +1934,5 @@ body.welcome-open{overflow:hidden}
 @media(max-width:560px){.journey-archive-heading{align-items:center;flex-direction:row}.journey-archive-node{gap:10px}.journey-archive-marker{flex-basis:40px;width:40px;height:40px}}
 /* Keep archived lessons visually inside the bamboo Journey surface. */
 .journey-archived-lesson{margin-bottom:0;border-radius:24px 24px 0 0;background-image:linear-gradient(90deg,rgba(218,230,232,.94),rgba(237,244,238,.84)),url('media/journey-scenes/bamboo-scroll-tile.png');background-repeat:repeat-y;background-position:center top;background-size:100% auto;box-shadow:none}
+/* Archived node shares the Journey track surface; the parent owns the bamboo background. */
+.journey-archived-lesson{background:transparent!important;background-image:none!important;margin:0!important;padding:8px 2px 17px!important;border:0!important;box-shadow:none!important}
