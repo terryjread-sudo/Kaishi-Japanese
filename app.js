@@ -281,7 +281,7 @@ function renderExperimentalJourneyUx(){
  if(enabled&&$('.screen.active')?.id==='home')openJourney('missions');
 }
 function playExperimentalJapanReadyTransition(){
- const overlay=document.createElement('div');overlay.className='experimental-japan-transition';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<svg viewBox="0 0 120 64" role="presentation"><path d="M8 31h42l13-16 6 2-8 14h45c5 0 8 2 8 5s-3 5-8 5H61l8 13-6 2-14-15H8l12-5z"/></svg>';
+ const overlay=document.createElement('div');overlay.className='experimental-japan-transition';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor" role="presentation"><path d="M12 2C11.5 2 11 3.5 11 5V10L3 14V16.5L11 14.5V19.5L8.5 21V22.5L12 21.5L15.5 22.5V21L13 19.5V14.5L21 16.5V14L13 10V5C13 3.5 12.5 2 12 2Z"/></svg>';
  document.body.append(overlay);const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  if(reduced){overlay.classList.add('reduced');setTimeout(()=>overlay.remove(),260);return}
  requestAnimationFrame(()=>overlay.classList.add('run'));setTimeout(()=>overlay.remove(),1780);
