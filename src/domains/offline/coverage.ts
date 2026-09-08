@@ -10,7 +10,7 @@ export function selectPack(catalog:OfflineCatalog,pack:Pack,introducedIds:string
   const introduced=new Set(introducedIds);
   const next=catalog.groups.find(group=>group.id.startsWith('lesson-')&&group.wordIds.some(id=>!introduced.has(id)));
   const urls=new Set(catalog.core);
-  for(const group of catalog.groups){if(group.id.startsWith('travel-')||group===next||pack==='full'||pack==='standard'&&group.wordIds.some(id=>introduced.has(id)))group.urls.forEach(url=>urls.add(url));}
+  for(const group of catalog.groups){if(group.id.startsWith('travel-')||pack==='full'||pack==='standard'&&group.wordIds.some(id=>introduced.has(id))||pack==='standard'&&group===next)group.urls.forEach(url=>urls.add(url));}
   if(pack==='full')catalog.assets.forEach(asset=>urls.add(asset.url));
   return catalog.assets.filter(asset=>urls.has(asset.url));
 }

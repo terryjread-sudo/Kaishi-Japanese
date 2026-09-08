@@ -2,10 +2,13 @@ import { catalogSchema, groupCoverage, selectPack } from '../domains/offline/cov
 import type { OfflineCatalog, Pack } from '../domains/offline/coverage';
 import { cacheDownloadPort, downloadAssets, offlineRepository, removeOfflineCaches, verifyAssets } from '../platform/offline-download';
 import { loadContent } from '../platform/content';
+import { deviceStorage } from '../platform/storage';
 
 const bytes=(value:number)=>value<1048576?`${Math.round(value/1024)} KB`:`${(value/1048576).toFixed(1)} MB`;
 export function createOfflineUI(version:string) {
-  const repository=offlineRepository();let catalog:OfflineCatalog|undefined,selected:Pack=repository.load()?.pack||'standard',busy=false,controller:AbortController|undefined;
+  const repository=offlineRepository();const storage=deviceStorage();let catalog:OfflineCatalog|undefined,selected:Pack=repository.load()?.pack||'essential',busy=false,controller:AbortController|undefined;
+  const forceOfflineKey='kq-force-offline';
+  const forceOffline=()=>storage.getItem(forceOfflineKey)==='1';
   let loading:Promise<void>|undefined;
   const q=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T|null;
   const publish=()=>window.dispatchEvent(new Event('kaishi-offline-status'));
@@ -24,6 +27,7 @@ export function createOfflineUI(version:string) {
     const retry=q<HTMLButtonElement>('downloadOfflinePack');if(retry){retry.disabled=busy;retry.textContent=state&&sameVersion&&missing.length?'Retry missing files':state?'Update offline content':'Download for offline use';}
     const cancel=q('offlineCancel');if(cancel)cancel.hidden=!busy;
     const missingHost=q('offlineMissing');if(missingHost){missingHost.replaceChildren();const heading=document.createElement('summary');heading.textContent=`${missing.length} missing files`;missingHost.append(heading);const list=document.createElement('ul');for(const asset of missing.slice(0,100)){const li=document.createElement('li');li.textContent=asset.url;list.append(li);}if(missing.length>100){const note=document.createElement('p');note.textContent='Showing the first 100. Retry checks every missing file.';missingHost.append(note);}missingHost.append(list);}
+    const toggle=q<HTMLButtonElement>('forceOfflineToggle');const statusEl=q('forceOfflineStatus');const forced=forceOffline();const online=!forced&&navigator.onLine!==false;if(toggle){toggle.setAttribute('aria-checked',String(forced));toggle.classList.toggle('is-forced',forced);toggle.innerHTML=`<span class="offline-status-dot ${online?'is-online':'is-offline'}" aria-hidden="true"></span><span>${forced?'Offline mode enabled':'Force offline mode'}</span>`;}if(statusEl)statusEl.textContent=online?'Online — downloads and live content available':'Offline — using downloaded content where available';
   }
   async function load() {
     if(loading)return loading;
@@ -46,9 +50,11 @@ export function createOfflineUI(version:string) {
     if(q('offlineModeCard'))return;
     const target=q('checkUpdateBtn');if(!target)return;
     const host=document.createElement('section');host.id='offlineModeCard';host.className='offline-mode-card';
-    host.innerHTML='<h3>Offline learning</h3><p>Download before travelling. Availability below is verified against saved files.</p><label>Content pack <select id="offlinePackSelect"><option value="essential">Essential — next lesson and travel text</option><option value="standard">Standard — next lesson, introduced words and travel text</option><option value="full">Full — all bundled learning media</option></select></label><p id="offlineEstimate"></p><strong id="offlinePackState">Checking…</strong><p id="offlinePackProgressText" role="status"></p><button id="downloadOfflinePack" class="primary">Download for offline use</button><button id="offlineCancel" hidden>Pause download</button><button id="removeOfflinePack">Remove offline content</button><details class="offline-coverage"><summary>Coverage by lesson and scenario</summary><div id="offlineCoverage"></div></details><details id="offlineMissing"></details><p>Recorded audio works when downloaded. Travel voices depend on Japanese speech installed on this device; speech recognition may need a connection. Text remains usable without audio.</p>';
-    const toggle=document.createElement('button');toggle.id='forceOfflineToggle';toggle.type='button';toggle.setAttribute('role','switch');toggle.setAttribute('aria-checked','false');toggle.textContent='Use offline mode';const status=document.createElement('p');status.id='forceOfflineStatus';host.append(toggle,status);
+    host.innerHTML='<h3>Offline learning</h3><p>Download Japan Ready and its travel cheat sheet before travelling.</p><label>Content pack <select id="offlinePackSelect"><option value="essential">Essential Pack — Japan Ready and travel cheat sheet</option><option value="standard">Standard Pack — next lesson, introduced words and travel text</option><option value="full">Full Pack — all bundled learning media</option></select></label><p id="offlineEstimate"></p><strong id="offlinePackState">Checking…</strong><p id="offlinePackProgressText" role="status"></p><button id="downloadOfflinePack" class="primary">Download for offline use</button><button id="offlineCancel" hidden>Pause download</button><button id="removeOfflinePack">Remove offline content</button><details class="offline-coverage"><summary>Coverage by lesson and scenario</summary><div id="offlineCoverage"></div></details><details id="offlineMissing"></details><p>Recorded audio works when downloaded. Travel voices depend on Japanese speech installed on this device; speech recognition may need a connection. Text remains usable without audio.</p>';
+    const toggle=document.createElement('button');toggle.id='forceOfflineToggle';toggle.type='button';toggle.setAttribute('role','switch');const status=document.createElement('p');status.id='forceOfflineStatus';host.append(toggle,status);
     target.before(host);const select=q<HTMLSelectElement>('offlinePackSelect');if(select){select.value=selected;select.onchange=()=>{selected=select.value as Pack;paint();};}
+    toggle.onclick=()=>{storage.setItem(forceOfflineKey,forceOffline()?'0':'1');paint();publish();};
+    addEventListener('online',()=>paint());addEventListener('offline',()=>paint());
     const button=q<HTMLButtonElement>('downloadOfflinePack');if(button)button.onclick=()=>{void download()};const cancel=q<HTMLButtonElement>('offlineCancel');if(cancel)cancel.onclick=()=>controller?.abort();const removeButton=q<HTMLButtonElement>('removeOfflinePack');if(removeButton)removeButton.onclick=()=>{void remove()};
     void load();
   }
