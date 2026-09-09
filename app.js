@@ -243,7 +243,7 @@ function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
  const button=$('#experimentalJapanReady');if(!button)return;
  const journeyActive=settings.experimentalJourneyUx===true&&screenId==='japanReady';
  button.classList.toggle('experimental-header-journey',journeyActive);
- button.textContent=journeyActive?'↩ Journey':'⛩️ Japan Ready';
+ button.innerHTML=journeyActive?'↩ <span>Journey</span>':'<span aria-hidden="true">⛩️</span><span class="experimental-japan-label"><span>Japan</span><span>Ready</span></span>';
  button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
  button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
 }
@@ -370,10 +370,10 @@ function renderLearningRhythmCalendar(){
 function openLearningRhythmCalendar(){renderLearningRhythmCalendar();const dialog=$('#learningRhythmDialog');if(dialog&&!dialog.open)dialog.showModal()}
 function renderLearningRhythmWeek(){
  const history=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'?meta.rhythmHistory:{};meta.rhythmHistory=history;if(meta.lastStudy&&!history[meta.lastStudy])history[meta.lastStudy]={completedAt:0,source:'existing rhythm'};
- const now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),todayKey=day(),days=$('#learningRhythmWeekDays'),summary=$('#learningRhythmWeekSummary');if(!days)return;
- const japaneseWeekdays=['月曜日','火曜日','水曜日','木曜日','金曜日','土曜日','日曜日'];days.innerHTML=Array.from({length:7},(_,offset)=>{const date=new Date(monday);date.setDate(monday.getDate()+offset);const key=day(date),entry=history[key],label=date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}),weekday=japaneseWeekdays[offset];return `<button type="button" class="learning-rhythm-week-day${entry?' completed':''}${key===todayKey?' today':''}" data-rhythm-weekday="${weekday}" aria-label="${esc(`${label}, ${weekday}`)}${entry?', learning activity completed':''}" title="${esc(entry?`${label} · ${entry.source||'Learning activity'}`:label)}"><small lang="ja" aria-hidden="true">${weekday.slice(0,1)}</small><b>${date.getDate()}</b>${entry?'<i aria-hidden="true"></i>':''}</button>`}).join('');
- days.querySelectorAll('[data-rhythm-weekday]').forEach(button=>button.onclick=()=>speakJapanese(button.dataset.rhythmWeekday));
- if(summary){const completed=Object.keys(history).filter(key=>key>=day(monday)&&key<=day(new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+6))).length;summary.textContent=completed?`${completed} of 7 days stamped this week.`:'Complete a learning activity to earn today’s stamp.'}
+ const now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),todayKey=day(),daysTargets=[...document.querySelectorAll('#learningRhythmWeekDays,#skillsRhythmWeekDays')],summaryTargets=[...document.querySelectorAll('#learningRhythmWeekSummary,#skillsRhythmSummary')];if(!daysTargets.length)return;
+ const japaneseWeekdays=['月曜日','火曜日','水曜日','木曜日','金曜日','土曜日','日曜日'];const markup=Array.from({length:7},(_,offset)=>{const date=new Date(monday);date.setDate(monday.getDate()+offset);const key=day(date),entry=history[key],label=date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}),weekday=japaneseWeekdays[offset];return `<button type="button" class="learning-rhythm-week-day${entry?' completed':''}${key===todayKey?' today':''}" data-rhythm-weekday="${weekday}" aria-label="${esc(`${label}, ${weekday}`)}${entry?', learning activity completed':''}" title="${esc(entry?`${label} · ${entry.source||'Learning activity'}`:label)}"><small lang="ja" aria-hidden="true">${weekday.slice(0,1)}</small><b>${date.getDate()}</b>${entry?'<i aria-hidden="true"></i>':''}</button>`}).join('');
+ daysTargets.forEach(days=>{days.innerHTML=markup;days.querySelectorAll('[data-rhythm-weekday]').forEach(button=>button.onclick=()=>speakJapanese(button.dataset.rhythmWeekday))});
+ const completed=Object.keys(history).filter(key=>key>=day(monday)&&key<=day(new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+6))).length;summaryTargets.forEach(summary=>{summary.textContent=completed?`${completed} of 7 days stamped this week.`:'Complete a learning activity to earn today’s stamp.'});
 }
 function enterAdminTestMode(){
  if(!window.KaishiReports?.isAdmin?.()){toast('Administrator access is required');return false}
@@ -2169,6 +2169,7 @@ $('#openNotebook').onclick=()=>openLearningNotebook('words');
 $('#studyNotebook').onclick=()=>openLearningNotebook('words');
 $('#dashboardAvatarButton').onclick=openCharacterSettings;
 $('#openLearningRhythmCalendar').onclick=openLearningRhythmCalendar;
+$('#skillsOpenLearningRhythmCalendar').onclick=openLearningRhythmCalendar;
 $('#learningRhythmClose').onclick=()=>$('#learningRhythmDialog').close();
 $('#senseiPathHelpClose').onclick=()=>$('#senseiPathHelpDialog').close();
 $('#senseiPathHelpDone').onclick=()=>$('#senseiPathHelpDialog').close();

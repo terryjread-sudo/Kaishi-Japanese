@@ -2038,6 +2038,13 @@ body.experimental-journey-enabled .experimental-timeline-item:not(.active){opaci
 body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-card-content{
   background:linear-gradient(90deg,#287f70 var(--experimental-strength),#203b56 var(--experimental-strength));
 }
+body.experimental-journey-enabled .experimental-timeline-item{min-height:0}
+body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-node-copy{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:1;
+}
 body.experimental-journey-enabled .experimental-timeline-item.is-completed .experimental-lesson-marker{
   border-color:#6ee7b7;
   background:#10b981;
@@ -2092,8 +2099,22 @@ body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .exp
 body.experimental-journey-enabled .experimental-jump-current{
   bottom:max(110px,calc(env(safe-area-inset-bottom) + 96px));
 }
+body.experimental-journey-enabled .experimental-japan-ready{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-width:92px;
+  line-height:1.05;
+}
+body.experimental-journey-enabled .experimental-japan-label{display:inline-grid;text-align:left}
+body.experimental-journey-enabled .experimental-japan-label span{display:block}
+.skills-rhythm-summary{display:grid;gap:12px;margin:0 0 20px;padding:16px;border:1px solid #b9d9cc;border-radius:20px;background:linear-gradient(135deg,#f2fbf4,#fff9e9);box-shadow:0 8px 22px #04785712}
+.skills-rhythm-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.skills-rhythm-heading h2,.skills-rhythm-heading p{margin:3px 0}.skills-rhythm-heading p{color:#475569;font-size:.84rem}.skills-rhythm-heading button{padding:9px 11px;border:1px solid #a7d8c2;border-radius:999px;background:#fff;color:#14532d;font-size:.72rem;white-space:nowrap}
 @media(max-width:680px){
   body.experimental-journey-enabled .experimental-journey-timeline::before{left:31px}
+  body.experimental-journey-enabled .experimental-japan-ready{min-width:78px;padding:8px 10px;font-size:.72rem}
+  .skills-rhythm-heading{display:grid}.skills-rhythm-heading button{justify-self:start}
 }
 /* Keep the Kaishi Japanese identity visible beside the mark in experimental mode. */
 body.experimental-journey-enabled .experimental-brand .brand-wordmark{display:grid}

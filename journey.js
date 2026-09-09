@@ -1220,7 +1220,7 @@
       || actionable;
     if (!selected) { track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>'; return; }
 
-    const COMPACT_HEIGHT = 104;
+    const COMPACT_HEIGHT = 84;
     const EXPANDED_HEIGHT = 286;
     const BUFFER = 5;
     const currentIndex = Math.max(0, all.findIndex(item => item.type === 'current'));
