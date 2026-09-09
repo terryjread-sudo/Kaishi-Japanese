@@ -1229,8 +1229,9 @@
       || actionable;
     if (!selected) { track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>'; return; }
 
-    const COMPACT_HEIGHT = 84;
-    const EXPANDED_HEIGHT = 286;
+    const COMPACT_HEIGHT = 104;
+    const EXPANDED_HEIGHT = 320;
+    const ITEM_GAP = 12;
     const BUFFER = 5;
     const currentIndex = Math.max(0, all.findIndex(item => item.type === 'current'));
     const selectedIndex = Math.max(0, all.findIndex(item => item === selected));
@@ -1239,7 +1240,7 @@
     const header = document.querySelector('#appHeader.experimental-journey-enabled');
     const headerClearance = Math.ceil((header?.getBoundingClientRect().height || 96) + 16);
     let totalHeight = headerClearance;
-    all.forEach(item => { offsets.push(totalHeight); totalHeight += itemHeight(item); });
+    all.forEach(item => { offsets.push(totalHeight); totalHeight += itemHeight(item) + ITEM_GAP; });
     totalHeight += headerClearance;
     track.innerHTML = `<div class="experimental-journey-shell">
       <button type="button" class="experimental-jump-current" data-experimental-jump>◎ Jump to current lesson</button>
