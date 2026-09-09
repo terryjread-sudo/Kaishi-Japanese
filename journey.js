@@ -208,6 +208,14 @@
     return words.slice(0, 3).map(word => word?.word).filter(Boolean).join(' · ');
   }
 
+  function lessonSubtitle(words) {
+    return words
+      .slice(0, 3)
+      .map(word => String(word?.meaning || '').trim())
+      .filter(Boolean)
+      .join(' · ');
+  }
+
   function futureMissionForChapter(chapter, current) {
     try {
       return window.KaishiActivitySchedule?.previewMissionForLesson?.(
@@ -246,6 +254,7 @@
         chapter,
         icon: topic?.icon || '👋',
         title: lessonTitle(chapter, stats.words),
+        subtitle: lessonSubtitle(stats.words),
         vocabulary: lessonVocabulary(stats.words),
         detail: done
           ? `${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`
@@ -1227,8 +1236,11 @@
     const selectedIndex = Math.max(0, all.findIndex(item => item === selected));
     const itemHeight = item => item.id === selected.id ? EXPANDED_HEIGHT : COMPACT_HEIGHT;
     const offsets = [];
-    let totalHeight = 0;
+    const header = document.querySelector('#appHeader.experimental-journey-enabled');
+    const headerClearance = Math.ceil((header?.getBoundingClientRect().height || 96) + 16);
+    let totalHeight = headerClearance;
     all.forEach(item => { offsets.push(totalHeight); totalHeight += itemHeight(item); });
+    totalHeight += headerClearance;
     track.innerHTML = `<div class="experimental-journey-shell">
       <button type="button" class="experimental-jump-current" data-experimental-jump>◎ Jump to current lesson</button>
       <div class="experimental-journey-timeline" role="list" aria-label="Journey lessons"><span class="experimental-selection-bar" aria-hidden="true"></span><div class="experimental-virtual-spacer" style="height:${totalHeight}px"></div><div class="experimental-virtual-window"></div></div>
@@ -1238,6 +1250,7 @@
     const timeline = track.querySelector('.experimental-journey-timeline');
     const virtualWindow = track.querySelector('.experimental-virtual-window');
     if (!timeline || !virtualWindow) return;
+    timeline.style.setProperty('--experimental-header-clearance', `${headerClearance}px`);
     const focusScrollTop = index => Math.max(0, offsets[index] - Math.max(0, (timeline.clientHeight - itemHeight(all[index])) / 2));
     let renderFrame = 0;
     let styleFrame = 0;
@@ -1255,7 +1268,10 @@
       const itemClasses = ['experimental-timeline-item', focused ? 'active' : '', item.done ? 'is-completed' : '', item.type === 'side' ? 'is-side-quest' : '', locked ? 'is-locked' : ''].filter(Boolean).join(' ');
       const lantern = '<svg class="experimental-lantern-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L4 6H20L12 2Z"/><rect x="6" y="6" width="12" height="3"/><rect x="7" y="9" width="10" height="7" rx="1"/><line x1="12" y1="9" x2="12" y2="16"/><path d="M5 16H19L21 22H3L5 16Z"/></svg>';
       const marker = item.type === 'side' ? esc(item.icon || '⚔️') : item.done ? '✓' : lantern;
-      return `<article class="${itemClasses}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;height:${itemHeight(item)}px;--experimental-strength:${progress}%"><span class="experimental-lesson-marker">${marker}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future ? 'aria-label="Coming up"' : ''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}"${locked ? ' disabled aria-disabled="true"' : ''}>${itemCta}</button></div></div></div></div></article>`;
+      const displayTitle = item.subtitle && Number.isFinite(item.chapter)
+        ? `Lesson ${item.chapter + 1} · ${item.subtitle}`
+        : item.title;
+      return `<article class="${itemClasses}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;height:${itemHeight(item)}px;--experimental-strength:${progress}%"><span class="experimental-lesson-marker">${marker}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future ? 'aria-label="Coming up"' : ''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(displayTitle)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}"${locked ? ' disabled aria-disabled="true"' : ''}>${itemCta}</button></div></div></div></div></article>`;
     };
 
     const updateCardStyles = () => {
