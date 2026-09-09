@@ -1989,3 +1989,5 @@ body.experimental-journey-enabled .screen.experimental-panel.active{position:fix
 .experimental-lesson-node::before{display:none}
 .experimental-timeline-item.active .experimental-lesson-node{transform:none}
 .experimental-card-details{display:block}
+.experimental-japan-ready.experimental-header-journey{background:#14b8a6;color:#042f2e;box-shadow:0 0 0 2px #5eead4aa,0 8px 18px #02061744}
+.experimental-japan-ready.experimental-header-journey:hover{background:#2dd4bf;color:#042f2e}

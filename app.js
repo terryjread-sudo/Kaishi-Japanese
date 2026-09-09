@@ -239,7 +239,15 @@ function updateExperimentalNavVisibility(){
  const visible=enabled&&!inLesson&&!inPanel&&(active==='home'||active==='journey');
  nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
 }
-function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();}
+function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
+ const button=$('#experimentalJapanReady');if(!button)return;
+ const journeyActive=settings.experimentalJourneyUx===true&&screenId==='japanReady';
+ button.classList.toggle('experimental-header-journey',journeyActive);
+ button.textContent=journeyActive?'↩ Journey':'⛩️ Japan Ready';
+ button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
+ button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
+}
+function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);}
 function closeExperimentalPanel(){
  document.querySelectorAll('.screen.experimental-panel').forEach(panel=>panel.classList.remove('experimental-panel'));
  if(typeof openJourney==='function')openJourney('current');else show('journey');
@@ -262,7 +270,7 @@ function bindExperimentalBottomNav(){
  }));
 }
 function bindExperimentalHeader(){
- const japanReady=$('#experimentalJapanReady');if(japanReady)japanReady.onclick=openExperimentalJapanReady;
+ const japanReady=$('#experimentalJapanReady');if(japanReady)syncExperimentalHeaderAction();
  const settingsButton=$('#experimentalSettingsBtn');if(settingsButton)settingsButton.onclick=()=>{
   if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}
   else{renderLearningBalanceSettings();show('settings')}

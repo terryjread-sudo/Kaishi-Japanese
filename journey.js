@@ -1243,7 +1243,7 @@
         const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
         return `<article class="experimental-timeline-item ${focused?'active':''}" data-experimental-lesson="${item.chapter}"><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future?'aria-label="Coming up"':''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId||'')}">${itemCta}</button></div></div></div></div></article>`;
       }).join('')}</div>
-      <p class="experimental-focus-hint">Scroll to bring another lesson into focus.</p>
+      <p class="experimental-focus-hint">Scroll through the timeline, then select a lesson to expand it.</p>
     </div>`;
     const timeline = track.querySelector('.experimental-journey-timeline');
     const focusScrollTop = node => Math.max(0, timeline.scrollTop + (node.getBoundingClientRect().top + node.getBoundingClientRect().height / 2 - window.innerHeight / 2));
@@ -1253,47 +1253,20 @@
       if (!timeline) return;
       const center = window.innerHeight / 2;
       timeline.style.setProperty('--experimental-focus-position', `${center - timeline.getBoundingClientRect().top}px`);
-      const range = Math.max(220, timeline.clientHeight * .72);
-      timeline.querySelectorAll('.experimental-timeline-item').forEach(node => {
-        const rect = node.getBoundingClientRect();
-        const distance = rect.top + rect.height / 2 - center;
-        const proximity = Math.min(1, Math.abs(distance) / range);
-        const lift = Math.max(-24, Math.min(24, distance * .07));
-        const scale = 1.02 - proximity * .08;
-        node.style.transform = `translate3d(0,${lift.toFixed(1)}px,0) scale(${scale.toFixed(3)})`;
-        node.style.opacity = String((1 - proximity * .28).toFixed(3));
-        node.style.zIndex = String(100 - Math.round(proximity * 100));
-      });
     };
     const scheduleCardStyles = () => {
       if (styleFrame) return;
       styleFrame = window.requestAnimationFrame(updateCardStyles);
-    };
-    const focusFromScroll = () => {
-      if (!timeline) return;
-      const nodes = [...timeline.querySelectorAll('[data-experimental-lesson]')];
-      if (!nodes.length) return;
-      const center = window.innerHeight / 2;
-      const focused = nodes.reduce((nearest, node) => {
-        const distance = Math.abs(node.getBoundingClientRect().top + node.offsetHeight / 2 - center);
-        const nearestDistance = Math.abs(nearest.getBoundingClientRect().top + nearest.offsetHeight / 2 - center);
-        return distance < nearestDistance ? node : nearest;
-      });
-      if (focused.dataset.experimentalLesson === track.dataset.kqExperimentalSelected) return;
-      track.dataset.kqExperimentalSelected = focused.dataset.experimentalLesson;
-      renderExperimentalTimeline(data, track, { centerSelection: true });
-    };
-    let focusTimer = 0;
-    const settleFocus = () => {
-      window.clearTimeout(focusTimer);
-      focusTimer = window.setTimeout(focusFromScroll, 120);
     };
     track.querySelectorAll('.experimental-lesson-node').forEach(node => {
       const selectNode = () => { const item=node.closest('[data-experimental-lesson]'); if(!item)return; track.dataset.kqExperimentalSelected=item.dataset.experimentalLesson; renderExperimentalTimeline(data,track,{centerSelection:true}); };
       node.addEventListener('click', event => { if (event.target.closest('[data-experimental-action]')) return; selectNode(); });
       node.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(); } });
     });
-    timeline?.addEventListener('scroll', () => { scheduleCardStyles(); settleFocus(); }, { passive:true });
+    // Scrolling is deliberately visual only. The expanded lesson changes only
+    // after an intentional press/click, so a swipe cannot unexpectedly replace
+    // the learner's selected card or trigger a rerender while the finger is down.
+    timeline?.addEventListener('scroll', scheduleCardStyles, { passive:true });
     track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; delete track.dataset.kqExperimentalCentered; renderExperimentalTimeline(data,track); }));
     track.querySelectorAll('[data-experimental-action]').forEach(element => element.addEventListener('click', event => {
       const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
