@@ -2197,3 +2197,31 @@ body.experimental-journey-enabled .experimental-brand .brand-wordmark em{font-si
   body.experimental-journey-enabled .experimental-profile{padding:4px}
   body.experimental-journey-enabled .experimental-profile img{width:32px;height:32px}
 }
+
+/* Experimental mobile UX stability and accessible lesson-card controls. */
+[hidden]{display:none!important}
+body.experimental-journey-enabled,
+body.experimental-journey-enabled main,
+body.experimental-journey-enabled #journey.screen.active,
+body.experimental-journey-enabled #journeyHistoryTimeline,
+body.experimental-journey-enabled #journeyHistoryTrack,
+body.experimental-journey-enabled .experimental-journey-shell{width:100%;max-width:100%;overflow-x:clip}
+body.experimental-journey-enabled #study.screen.active{box-sizing:border-box;padding-top:calc(var(--experimental-header-clearance,112px) + 12px);scroll-margin-top:var(--experimental-header-clearance,112px)}
+body.experimental-journey-enabled .experimental-timeline-item{min-height:0;margin:0;padding:6px 10px 6px 0;box-sizing:border-box;align-items:stretch}
+body.experimental-journey-enabled .experimental-lesson-node{min-width:0;height:100%}
+body.experimental-journey-enabled .experimental-card-content{height:100%;overflow:hidden}
+body.experimental-journey-enabled .experimental-card-select{display:block;width:100%;padding:0;border:0;border-radius:0;background:transparent;color:inherit;text-align:left;box-shadow:none}
+body.experimental-journey-enabled .experimental-card-select:active{transform:none}
+body.experimental-journey-enabled .experimental-card-select:focus-visible{outline:3px solid #60a5fa;outline-offset:3px;border-radius:8px}
+body.experimental-journey-enabled .experimental-card-header{display:flex}
+body.experimental-journey-enabled .experimental-node-copy,
+body.experimental-journey-enabled .experimental-card-subtitle{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+body.experimental-journey-enabled .experimental-card-subtitle{margin-top:4px;color:#cbd5e1;font-size:.78rem;line-height:1.25}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-subtitle{color:#334155}
+body.experimental-journey-enabled .experimental-card-xp{color:#1e293b;font-weight:800}
+body.experimental-journey-enabled .experimental-jump-current[hidden]{display:none!important}
+body.experimental-journey-enabled .screen.experimental-panel.active>.study-top{display:none}
+@media(max-width:680px){body.experimental-journey-enabled .experimental-timeline-item{padding-right:10px}}
+.rhythm-calendar-earlier{grid-column:1/-1}.rhythm-calendar-earlier>summary{cursor:pointer;padding:12px 14px;border:1px solid #dbe3f0;border-radius:14px;background:#fff;color:#172554;font-weight:800}.rhythm-calendar-earlier[open]>summary{margin-bottom:12px}.rhythm-calendar-earlier>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}@media(max-width:620px){.rhythm-calendar-earlier>div{grid-template-columns:1fr}}
+.cheat-sheet-nav{position:sticky;z-index:3;top:0;display:flex;gap:8px;overflow-x:auto;padding:8px 0;background:#fff}.cheat-sheet-nav button{flex:0 0 auto;padding:9px 12px;border:1px solid #cbd5e1;border-radius:999px;background:#f8fafc;font-size:.78rem;white-space:nowrap}.cheat-sheet-nav button[aria-current="page"]{background:#172554;color:#fff;border-color:#172554}
+.untested-skills{padding:14px 16px;border:1px solid #cbd5e1;border-radius:18px;background:#f8fafc}.untested-skills summary{cursor:pointer;color:#172554;font-weight:850}.untested-skills>p{color:#475569}.untested-skills ul{display:grid;gap:10px;margin:12px 0 0;padding:0;list-style:none}.untested-skills li{display:grid;gap:3px;padding-top:10px;border-top:1px solid #e2e8f0}.untested-skills li span{color:#64748b;font-size:.8rem;line-height:1.35}

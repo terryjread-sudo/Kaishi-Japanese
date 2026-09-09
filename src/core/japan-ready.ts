@@ -1,4 +1,4 @@
-import { travelContentSchema } from '../domains/japan-ready/content';
+import { resolveScenarioWords, travelContentSchema } from '../domains/japan-ready/content';
 import type { Scenario, TravelContent } from '../domains/japan-ready/content';
 import { readTripPlan, recommendTrip, tripPlanSchema } from '../domains/japan-ready/trip-plan';
 import type { ScenarioProgress } from '../domains/japan-ready/trip-plan';
@@ -24,7 +24,7 @@ export function installJapanReady() {
   const bridge = window.KaishiJapanReadyBridge;
   if (!bridge) { if (!retryScheduled) { retryScheduled=true; window.setTimeout(() => { retryScheduled=false; installJapanReady(); }, 250); } return; }
   const b = bridge;
-  let data: TravelContent | undefined, active: Scenario | undefined, turn=0, mistakes=0, parts: string[]=[], position=0, busy=false;
+  let data: TravelContent | undefined, active: Scenario | undefined, turn=0, mistakes=0, parts: string[]=[], position=0, busy=false, activeCheatSheetGroup='';
   function campaign(): Campaign {
     const m=b.getMeta(); m.campaignProgress ||= {};
     const saved=(m.campaignProgress['japan-ready'] || {}) as Partial<Campaign>;
@@ -37,7 +37,9 @@ export function installJapanReady() {
   }
   function state(id: string) { const c=campaign(); c.scenarioProgress ||= {}; return c.scenarioProgress[id] ||= { completedActivities:[],conversationAttempts:0,confidence:0,completedAt:null }; }
   function planRoute() { const plan=readTripPlan(b.getMeta().tripPlan); return plan?.enabled && data ? recommendTrip(plan,data.scenarios,campaign().scenarioProgress,today()) : null; }
-  function words(s: Scenario) { return b.getVocab().filter(w=>s.wordHints.some(h=>`${w.meaning} ${w.topic||''}`.toLowerCase().includes(h.toLowerCase()))).slice(0,24); }
+  function words(s: Scenario) {
+    return resolveScenarioWords(s,b.getVocab());
+  }
   function current() { const id=planRoute()?.scenarioId || campaign().currentScenarioId; return data?.scenarios.find(s=>s.id===id) || data?.scenarios[0]; }
   function unlocked(id: string) { return b.isTestMode?.() || campaign().unlockedScenarioIds.includes(id) || planRoute()?.unlockedIds.includes(id); }
   function bind(id: string, callback: () => void) { const el=q<HTMLButtonElement>(`#${id}`); if(el) el.onclick=callback; }
@@ -68,7 +70,7 @@ export function installJapanReady() {
   function detail(id: string) {
     const s=data?.scenarios.find(s=>s.id===id),list=q('#japanReadyScenarioList');if(!s||!list||!unlocked(id))return;
     const ws=words(s),unknown=ws.filter(w=>!b.wordIntroduced(w));
-    list.innerHTML=`<section class="scenario-detail"><button id="scenarioListBack">← All scenarios</button><h2>${s.icon} ${esc(s.title)}</h2><p>${esc(s.confidenceGoal)}</p><aside class="aiko-cultural-tip"><p>${esc(s.cultureTip)}</p></aside><div class="scenario-word-preview">${ws.slice(0,12).map(w=>`<span lang="ja">${esc(w.word)}<small>${esc(w.meaning)}</small></span>`).join('')}</div><p>${unknown.length?`${unknown.length} useful words are new. Focused study introduces them before testing.`:'Revisit these words or practise the conversation.'}</p><div class="scenario-actions"><button id="travelFocused" class="primary">Focused study</button><button id="travelLive">Live conversation</button></div></section>`;
+    list.innerHTML=`<section class="scenario-detail"><button id="scenarioListBack">← All scenarios</button><h2>${s.icon} ${esc(s.title)}</h2><p>${esc(s.confidenceGoal)}</p><aside class="aiko-cultural-tip"><p>${esc(s.cultureTip)}</p></aside><div class="scenario-word-preview">${ws.map(w=>`<span lang="ja">${esc(w.word)}<small>${esc(w.meaning)}</small></span>`).join('')}</div><p>${unknown.length?`${unknown.length} of ${ws.length} useful words are new. Focused study starts with up to three of them.`:'Revisit these words or practise the conversation.'}</p><div class="scenario-actions"><button id="travelFocused" class="primary">Focused study</button><button id="travelLive">Live conversation</button></div></section>`;
     bind('scenarioListBack',render);bind('travelFocused',()=>b.startFocusedStudy([...unknown,...ws.filter(w=>b.wordIntroduced(w))].slice(0,3).map(w=>w.id)));bind('travelLive',()=>start(s));
   }
   async function open() { b.getMeta().activeCampaign='japan-ready';b.save();b.show('japanReady');if(!data)await load();render(); }
@@ -91,9 +93,19 @@ export function installJapanReady() {
   }
   function submit() { const phrase=active?.phrases[turn];if(!phrase)return;const expected=Array.from((phrase.accepted[0]||'').replace(/[\s。、！？!?]/g,''));if(position<expected.length)return;bubble('You',phrase.accepted[0]||'',phrase.acceptedEnglish?.[0]||'');turn++;nextTurn(); }
   function complete() { if(!active||!data)return;const p=state(active.id),earned=mistakes===0?5:mistakes<=2?4:mistakes<=5?3:2;p.confidence=Math.max(p.confidence||0,earned);p.completedAt=new Date().toISOString();p.updatedAt=Date.now();p.completedActivities=Array.from(new Set([...(p.completedActivities||[]),'live-conversation']));p.lastWrongKana=mistakes;const next=data.scenarios[data.scenarios.findIndex(s=>s.id===active?.id)+1];if(next){campaign().unlockedScenarioIds=Array.from(new Set([...campaign().unlockedScenarioIds,next.id]));campaign().currentScenarioId=next.id;}b.save();q('#liveConversationInputArea')?.setAttribute('hidden','');const host=q('#liveConversationComplete');if(host){host.hidden=false;host.innerHTML=`<h2>Scenario complete</h2><p>${esc(active.title)} · ${earned}/5 confidence</p><p>${mistakes} character corrections</p><button id="travelReturn" class="primary">Return to scenarios</button><button id="travelRepeat">Practise again</button>`;bind('travelReturn',()=>{void open()});bind('travelRepeat',()=>{if(active)start(active)});} }
-  function cheatSheet() { if(!data)return;const host=q('#cheatSheetSections');if(host){host.innerHTML=data.cheatSheet.map(group=>`<section class="cheat-sheet-group"><h3>${group.icon} ${esc(group.title)}</h3>${group.phrases.map(p=>`<article class="cheat-phrase"><button class="audio" data-phrase="${esc(p.jp)}" aria-label="Play ${esc(p.en)}">🔊</button><div><strong lang="ja">${esc(p.jp)}</strong><small>${esc(p.romaji)}</small><span>${esc(p.en)}</span></div></article>`).join('')}</section>`).join('');host.querySelectorAll<HTMLButtonElement>('[data-phrase]').forEach(button=>button.onclick=()=>speak(button.dataset.phrase||''));}b.show('japanReadyCheatSheet'); }
+  function leaveConversation() {
+    const inProgress=Boolean(active&&(turn>0||position>0||parts.length));
+    if(!inProgress){active=undefined;void open();return;}
+    let dialog=q<HTMLDialogElement>('#leaveTravelConversationDialog');
+    if(!dialog){dialog=document.createElement('dialog');dialog.id='leaveTravelConversationDialog';dialog.className='exit-session-dialog';dialog.innerHTML='<section><span class="eyebrow">Leave this conversation?</span><h2>Are you sure?</h2><p>Your completed scenario progress is saved, but this unfinished response will be discarded.</p><div class="exit-session-dialog-actions"><button id="keepTravelConversation" type="button">Keep practising</button><button id="exitTravelConversation" class="danger" type="button">Exit conversation</button></div></section>';document.body.append(dialog);bind('keepTravelConversation',()=>dialog?.close());bind('exitTravelConversation',()=>{dialog?.close();active=undefined;void open()});}
+    if(!dialog.open)dialog.showModal();
+  }
+  function cheatSheet(groupTitle=current()?.cheatSheetGroup||data?.cheatSheet[0]?.title||'') {
+    if(!data)return;activeCheatSheetGroup=groupTitle;const host=q('#cheatSheetSections'),selected=data.cheatSheet.find(group=>group.title===activeCheatSheetGroup)||data.cheatSheet[0];
+    if(host&&selected){host.innerHTML=`<nav class="cheat-sheet-nav" aria-label="Phrase categories">${data.cheatSheet.map(group=>`<button type="button" data-cheat-group="${esc(group.title)}"${group.title===selected.title?' aria-current="page"':''}>${group.icon} ${esc(group.title)}</button>`).join('')}</nav><section class="cheat-sheet-group"><h3>${selected.icon} ${esc(selected.title)}</h3>${selected.phrases.map(p=>`<article class="cheat-phrase"><button class="audio" data-phrase="${esc(p.jp)}" aria-label="Play ${esc(p.en)}">🔊</button><div><strong lang="ja">${esc(p.jp)}</strong><small>${esc(p.romaji)}</small><span>${esc(p.en)}</span></div></article>`).join('')}</section>`;host.querySelectorAll<HTMLButtonElement>('[data-cheat-group]').forEach(button=>button.onclick=()=>cheatSheet(button.dataset.cheatGroup||''));host.querySelectorAll<HTMLButtonElement>('[data-phrase]').forEach(button=>button.onclick=()=>speak(button.dataset.phrase||''));}b.show('japanReadyCheatSheet');
+  }
   async function load() { if(busy)return;busy=true;try{data=await loadContent('data/japan-ready-v90.json',travelContentSchema);render();}catch{const host=q('#japanReadyScenarioList');if(host){host.innerHTML='<p role="status">Travel content is unavailable. Connect and retry, or download it before travelling.</p><button id="travelRetry">Retry</button>';bind('travelRetry',()=>{void load()});}}finally{busy=false;} }
-  bind('continueJapanReadyCampaign',()=>{void open()});bind('japanReadyBack',()=>{b.getMeta().activeCampaign='journey';b.save();b.show('home')});bind('liveConversationBack',()=>{void open()});bind('cheatSheetBack',()=>{void open()});bind('openJapanReadyCheatSheet',cheatSheet);bind('liveConversationSubmit',submit);bind('kanaBuilderUndo',()=>{if(position){position--;parts.pop();renderBuilder();}});
+  bind('continueJapanReadyCampaign',()=>{void open()});bind('japanReadyBack',()=>{b.getMeta().activeCampaign='journey';b.save();b.show('home')});bind('liveConversationBack',leaveConversation);bind('cheatSheetBack',()=>{void open()});bind('openJapanReadyCheatSheet',()=>cheatSheet());bind('liveConversationSubmit',submit);bind('kanaBuilderUndo',()=>{if(position){position--;parts.pop();renderBuilder();}});
   window.addEventListener('kaishi-cloud-sync-ready',()=>{if(data)render();});
   void load();
 }

@@ -71,6 +71,10 @@
   $('#cloudSignIn')?.addEventListener('click',signIn);
   if(join){join.checked=true;join.disabled=true}
   const learningEmail=$('#learningEmailOptIn');if(learningEmail){learningEmail.checked=true;learningEmail.disabled=true}
+  const cloudActions=document.querySelector('.cloud-actions');if(cloudActions)cloudActions.hidden=true;
+  const joinLabel=typeof join?.closest==='function'?join.closest('label'):null;if(joinLabel)joinLabel.hidden=true;
+  const learningEmailLabel=typeof learningEmail?.closest==='function'?learningEmail.closest('label'):null;if(learningEmailLabel)learningEmailLabel.hidden=true;
+  const adminLink=$('#adminAreaLink');if(adminLink)adminLink.hidden=true;
   setStatus('Guest progress is saved only on this device.');
   renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
  }
@@ -80,6 +84,9 @@
   $('#cloudSignOut')?.addEventListener('click',signOut);
   if(join){join.disabled=false;join.checked=Boolean(entry?.opted_in)}
   const learningEmail=$('#learningEmailOptIn');if(learningEmail)learningEmail.disabled=false;
+  const cloudActions=document.querySelector('.cloud-actions');if(cloudActions)cloudActions.hidden=false;
+  const joinLabel=typeof join?.closest==='function'?join.closest('label'):null;if(joinLabel)joinLabel.hidden=false;
+  const learningEmailLabel=typeof learningEmail?.closest==='function'?learningEmail.closest('label'):null;if(learningEmailLabel)learningEmailLabel.hidden=false;
   renderAvatarPicker();renderDashboardAvatar();renderStudioAccess();
  }
 
@@ -362,7 +369,7 @@ async function loadLeaderboard(){
  }
  async function changeAvatar(event){const button=event.target.closest('[data-avatar]');if(!button)return;const definition=avatarDefinition(button.dataset.avatar);if(!user){toast('Sign in to choose and sync a Kaishi character');return}if(!avatarUnlocked(button.dataset.avatar)){toast(`${definition?.name||'This character'} unlocks at ${definition?.mastered||0} mastered words`);return}selectedAvatar=avatarKey(button.dataset.avatar);renderAvatarPicker();renderDashboardAvatar();const accountAvatar=account?.querySelector('img');if(accountAvatar)accountAvatar.src=avatarImage(selectedAvatar,adapter()?.stats?.().streak);const{error}=await client.from('leaderboard_entries').update({avatar_key:selectedAvatar}).eq('user_id',user.id);if(error){setStatus(describeError(error),'error');return}setStatus(`${definition?.name||'Kaishi character'} saved.`,'ok');await loadLeaderboard()}
  async function changeOptIn(){if(!user)return;join.disabled=true;const{error}=await client.from('leaderboard_entries').update({opted_in:join.checked}).eq('user_id',user.id);join.disabled=false;if(error){join.checked=!join.checked;setStatus(describeError(error),'error');return}setStatus(join.checked?'You have joined the public leaderboard.':'You have left the public leaderboard.','ok');await loadLeaderboard()}
- async function syncNow(){if(!user){await signIn();return}await initialiseAccount()}
+ async function syncNow(){if(!user){setStatus('Sign in before syncing progress.');return}await initialiseAccount()}
  async function deleteCloudData(){if(!user||!confirm('Delete your Kaishi Japanese cloud account, progress and leaderboard entry? Local progress on this device will remain.'))return;const{error}=await client.rpc('delete_my_kaishi_account');if(error){setStatus(describeError(error),'error');return}await client.auth.signOut({scope:'local'});localStorage.removeItem(FP_KEY);renderSignedOut('Cloud account deleted. Local progress was kept on this device.');await loadLeaderboard()}
  async function handleSession(session){user=session?.user||null;window.dispatchEvent(new CustomEvent('kaishi-auth-change',{detail:{signedIn:Boolean(user),userId:user?.id||null}}));if(!user){if(adapter()?.profileId?.()&&adapter()?.profileId?.()!=='guest'){adapter()?.activateProfile?.('guest');return}renderSignedOut();await loadLeaderboard();return}if(!adapter()?.isTestMode?.()&&adapter()?.profileId?.()!==user.id){adapter()?.activateProfile?.(user.id);return}renderStudioAccess();await loadEmailPreferences();if(isOwner()&&!adminUsersLoaded)loadAdminUsers();if(adapter()?.isTestMode?.()){const{data:entry}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();renderSignedIn(entry||{});setStatus('Test learner is isolated. Cloud sync is paused.','ok');return}if(initialisedUserId===user.id)return;initialisedUserId=user.id;await initialiseAccount();await initialiseFriends();await redeemFriendInviteFromUrl()}
 
@@ -519,6 +526,6 @@ async function loadLeaderboard(){
   addEventListener('online',()=>user&&scheduleSync());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
  }
- window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,createFriendInviteLink,flush,avatarImage,renderDashboardAvatar,isOwner,isSignedIn:()=>Boolean(user),currentUserId:()=>user?.id||null,resetProgress,currentAvatar:()=>selectedAvatar,loadAdminUsers,loadEmailAutomation};
+ window.KaishiCloud={scheduleSync,loadLeaderboard,loadFriends,createFriendInviteLink,flush,avatarImage,renderDashboardAvatar,isOwner,isSignedIn:()=>Boolean(user),currentUserId:()=>user?.id||null,resetProgress,currentAvatar:()=>selectedAvatar,loadAdminUsers,loadEmailAutomation,client:()=>client};
  init();
 })();

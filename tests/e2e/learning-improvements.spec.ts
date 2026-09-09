@@ -67,3 +67,52 @@ test('trip plan persists and prioritises selected scenarios after courtesy',asyn
   await page.reload();await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();await expect(page.locator('#tripPlan')).toContainText('5 minutes a day');
   await page.getByRole('button',{name:'Remove plan',exact:true}).click();await expect(page.getByRole('button',{name:'Plan my trip',exact:true})).toBeVisible();
 });
+
+test('experimental mobile Journey keeps lessons separated and restores them after exit',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.getByRole('button',{name:'Open settings'}).click();
+  await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();
+  await page.locator('#settingsBack').click();
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(10);
+
+  const geometry=await page.locator('#journeyHistoryTrack').evaluate(()=>{
+    const rows=[...document.querySelectorAll<HTMLElement>('.experimental-timeline-item')].slice(0,6).map(row=>row.getBoundingClientRect());
+    return{gaps:rows.slice(1).map((row,index)=>Math.round(row.top-rows[index]!.bottom)),overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
+  });
+  expect(Math.min(...geometry.gaps)).toBeGreaterThanOrEqual(10);
+  expect(geometry.overflow).toBeLessThanOrEqual(1);
+
+  await page.getByRole('button',{name:'Continue lesson',exact:true}).click();
+  await page.getByRole('button',{name:'Start session',exact:true}).click();
+  await expect(page.locator('#study')).toHaveClass(/active/);
+  const clearance=await page.evaluate(()=>{const header=document.querySelector('#appHeader')!.getBoundingClientRect(),exit=document.querySelector('#exitBtn')!.getBoundingClientRect(),progress=document.querySelector('#sessionCounter')!.getBoundingClientRect();return{scrollY,headerBottom:header.bottom,exitTop:exit.top,progressTop:progress.top}});
+  expect(clearance.scrollY).toBe(0);expect(clearance.exitTop).toBeGreaterThanOrEqual(clearance.headerBottom);expect(clearance.progressTop).toBeGreaterThanOrEqual(clearance.headerBottom);
+
+  await page.locator('#exitBtn').click();await expect(page.locator('#exitSessionDialog')).toBeVisible();
+  await page.getByRole('button',{name:'Keep learning',exact:true}).click();await expect(page.locator('#study')).toHaveClass(/active/);
+  await page.locator('#exitBtn').click();await page.getByRole('button',{name:'Exit lesson',exact:true}).click();
+  await expect(page.locator('#journey')).toHaveClass(/active/);
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(10);
+});
+
+test('experimental panels return to their origin and guest account actions stay hidden',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();await page.locator('#settingsBack').click();
+  await page.getByRole('navigation',{name:'Experimental quick navigation'}).getByRole('button',{name:'Progress'}).click();
+  await expect(page.locator('#skillsOverview')).toHaveClass(/experimental-panel/);
+  await page.getByRole('button',{name:'Close panel'}).click();await expect(page.locator('#journey')).toHaveClass(/active/);
+  await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('tab',{name:/Account/}).click();
+  await expect(page.locator('.cloud-actions')).toBeHidden();await expect(page.locator('#adminAreaLink')).toBeHidden();
+});
+
+test('Japan Ready uses curated words and opens the matching cheat-sheet category',async({page})=>{
+  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();
+  await page.locator('#japanReadyScenarioList button').first().click();
+  const words=page.locator('.scenario-word-preview');await expect(words).toContainText('はい');await expect(words).toContainText('すみません');await expect(words).not.toContainText('うるさい');
+  await page.locator('#scenarioListBack').click();await page.locator('#openJapanReadyCheatSheet').click();
+  await expect(page.locator('.cheat-sheet-nav [aria-current="page"]')).toContainText('Greetings & Courtesy');
+  await expect(page.locator('.cheat-sheet-group')).toHaveCount(1);
+});

@@ -357,7 +357,7 @@
     const sdk=window.supabase;
     if(!config?.url||!config?.publishableKey||!sdk?.createClient)return;
 
-    client=sdk.createClient(config.url,config.publishableKey,{
+    client=window.KaishiCloud?.client?.()||sdk.createClient(config.url,config.publishableKey,{
       auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
     });
 
