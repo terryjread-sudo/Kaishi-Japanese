@@ -2116,6 +2116,73 @@ body.experimental-journey-enabled .experimental-japan-label span{display:block}
   body.experimental-journey-enabled .experimental-japan-ready{min-width:78px;padding:8px 10px;font-size:.72rem}
   .skills-rhythm-heading{display:grid}.skills-rhythm-heading button{justify-self:start}
 }
+
+/* Experimental Indigo Scroll theme. */
+body.experimental-journey-enabled .experimental-journey-shell{
+  background-color:#0f172a;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cpath d='M0,20 A20,20 0 0,1 40,20 A20,20 0 0,1 0,20 M-10,20 A10,10 0 0,1 10,20 A10,10 0 0,1 -10,20 M30,20 A10,10 0 0,1 50,20 A10,10 0 0,1 30,20 M10,20 A20,20 0 0,1 30,20 A20,20 0 0,1 10,20 M10,20 A10,10 0 0,1 30,20 A10,10 0 0,1 10,20' fill='none' stroke='%23ffffff' stroke-opacity='0.04' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  color:#d1d5db;
+}
+body.experimental-journey-enabled .experimental-journey-timeline::before{
+  background:linear-gradient(180deg,#c5a059 0%,#8a6d33 100%);
+  box-shadow:0 0 4px rgba(197,160,89,.3);
+}
+body.experimental-journey-enabled .experimental-lesson-marker{
+  width:32px;
+  height:32px;
+  border:2px solid #c5a059;
+  border-radius:6px;
+  background:#1e293b;
+  color:#c5a059;
+  box-shadow:0 2px 6px rgba(0,0,0,.4);
+}
+body.experimental-journey-enabled .experimental-lantern-icon{display:block;color:#c5a059}
+body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-card-content{
+  background:linear-gradient(90deg,rgba(42,72,83,.95) var(--experimental-strength),rgba(30,41,59,.85) var(--experimental-strength));
+  backdrop-filter:blur(8px);
+  border-color:rgba(197,160,89,.3);
+  border-radius:12px;
+  color:#d1d5db;
+}
+body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-node-copy{color:#e2c391}
+body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-card-status,
+body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-card-duration{color:#d1d5db}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-content{
+  background-color:#f3efe0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='15' cy='20' r='1' fill='%23c5a059' opacity='.3'/%3E%3Ccircle cx='75' cy='45' r='1.5' fill='%23c5a059' opacity='.25'/%3E%3Ccircle cx='35' cy='80' r='1' fill='%23c5a059' opacity='.35'/%3E%3Ccircle cx='85' cy='15' r='.8' fill='%23c5a059' opacity='.4'/%3E%3C/svg%3E");
+  color:#2c221e;
+  border:1px solid #c5a059;
+  border-radius:12px;
+  box-shadow:0 4px 15px rgba(0,0,0,.25);
+}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-node-copy strong,
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-duration{color:#2c221e}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-description,
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-xp{color:#334155}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-progress-track{background:#d6d0c1}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-progress-track span{background:#c83e2b}
+body.experimental-journey-enabled .experimental-lesson-cta{
+  background:linear-gradient(135deg,#d94834 0%,#a82e1e 100%);
+  color:#fff;
+  border:1px solid #e26352;
+  border-radius:8px;
+  font-weight:700;
+  box-shadow:0 4px 12px rgba(200,62,43,.4);
+}
+body.experimental-journey-enabled .experimental-lesson-cta:active{transform:scale(.98)}
+body.experimental-journey-enabled .experimental-jump-current{
+  background:linear-gradient(135deg,#8a6d33 0%,#5c461e 100%);
+  border:1px solid #c5a059;
+  color:#f3efe0;
+  border-radius:8px;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-card-content{
+  background:linear-gradient(90deg,rgba(138,109,51,.95) var(--experimental-strength),rgba(30,41,59,.85) var(--experimental-strength));
+  border-color:#c5a059;
+}
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-node-copy{color:#e2c391}
 /* Keep the Kaishi Japanese identity visible beside the mark in experimental mode. */
 body.experimental-journey-enabled .experimental-brand .brand-wordmark{display:grid}
 body.experimental-journey-enabled .experimental-brand .brand-wordmark b{font-size:1rem}
