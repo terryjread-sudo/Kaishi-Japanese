@@ -107,6 +107,25 @@ test('experimental panels return to their origin and guest account actions stay 
   await expect(page.locator('.cloud-actions')).toBeHidden();await expect(page.locator('#adminAreaLink')).toBeHidden();
 });
 
+test('experimental profile reveals rhythm and keeps guest sign-in explicit',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();await page.locator('#settingsBack').click();
+  const profile=page.locator('#experimentalProfile');await expect(profile).toHaveAttribute('aria-expanded','false');await profile.click();
+  const dialog=page.locator('#experimentalProfileDialog');await expect(dialog).toBeVisible();await expect(profile).toHaveAttribute('aria-expanded','true');
+  await expect(dialog.getByRole('heading',{name:'Guest learner'})).toBeVisible();await expect(dialog.locator('#experimentalProfileRhythmDays .learning-rhythm-week-day')).toHaveCount(7);
+  await expect(dialog.getByRole('button',{name:'Sign in to save progress',exact:true})).toBeVisible();
+  const geometry=await dialog.evaluate(element=>{const avatar=element.querySelector('#experimentalProfileLargeAvatar')!.getBoundingClientRect();return{avatarWidth:avatar.width,overflow:element.scrollWidth-element.clientWidth}});
+  expect(geometry.avatarWidth).toBeGreaterThanOrEqual(130);expect(geometry.overflow).toBeLessThanOrEqual(1);
+  await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect(profile).toBeFocused();
+
+  await profile.click();await dialog.getByRole('button',{name:'View full calendar',exact:true}).click();await expect(dialog).toBeHidden();await expect(page.locator('#learningRhythmDialog')).toBeVisible();
+  await page.locator('#learningRhythmClose').click();
+  await page.evaluate(()=>{const cloud=(window as typeof window&{KaishiCloud?:{isSignedIn?:()=>boolean}}).KaishiCloud;if(cloud)cloud.isSignedIn=()=>true;document.querySelector('#experimentalProfileName')!.textContent='Terry'});
+  await profile.click();await expect(dialog.getByRole('heading',{name:'Terry'})).toBeVisible();await dialog.getByRole('button',{name:'Edit character',exact:true}).click();
+  await expect(page.locator('#settings')).toHaveClass(/active/);await expect(page.locator('#settingsPanel-character')).toBeVisible();
+});
+
 test('Japan Ready uses curated words and opens the matching cheat-sheet category',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
   await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();

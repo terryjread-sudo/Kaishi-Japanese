@@ -252,7 +252,7 @@ function resetScreenScroll(id,focusTarget=''){
  const reset=()=>{const scrolling=document.scrollingElement||document.documentElement;if(scrolling)scrolling.scrollTop=0;window.scrollTo(0,0)};
  reset();
  if(id!=='study'&&settings.experimentalJourneyUx!==true)return;
- requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const target=$(focusTarget||(id==='study'?'#exitBtn':''));if(target?.focus)target.focus({preventScroll:true})})});
+ requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
 function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 let experimentalPanelOrigin='journey';
@@ -275,7 +275,34 @@ function openExperimentalPanel(id,render){
  show(id);
  history.pushState({...history.state,kaishiExperimentalPanel:id},'',location.href);experimentalPanelHistoryActive=true;
 }
-window.addEventListener('popstate',()=>{if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel'))closeExperimentalPanel(true)});
+let experimentalProfileHistoryActive=false;
+let experimentalProfileAfterClose=null;
+let experimentalProfileCloseTimer=0;
+function renderExperimentalProfile(){
+ const signedIn=Boolean(window.KaishiCloud?.isSignedIn?.()),sourceAvatar=$('#experimentalProfileAvatar'),largeAvatar=$('#experimentalProfileLargeAvatar'),headerName=$('#experimentalProfileName')?.textContent?.trim();
+ const name=signedIn&&headerName?headerName:'Guest learner',streak=Math.max(0,Number(meta.streak||0)),milestone=$('#dashboardAvatarMilestone')?.textContent?.trim();
+ if(largeAvatar&&sourceAvatar){largeAvatar.src=sourceAvatar.src;largeAvatar.alt=signedIn?`${name} profile`:'Guest learner'}
+ if($('#experimentalProfileDialogTitle'))$('#experimentalProfileDialogTitle').textContent=name;
+ if($('#experimentalProfileIdentity'))$('#experimentalProfileIdentity').textContent=signedIn?'Your learning is protected and synced with your Kaishi account.':'Your guest progress is saved on this device.';
+ if($('#experimentalProfileRhythmTitle'))$('#experimentalProfileRhythmTitle').innerHTML=`<strong id="experimentalProfileStreak">${streak}</strong> day${streak===1?'':'s'} rhythm`;
+ if($('#experimentalProfileMilestone'))$('#experimentalProfileMilestone').textContent=milestone||(signedIn?'Keep learning to unlock your next character pose.':'Sign in to choose a character and protect your progress.');
+ const account=$('#experimentalProfileAccount');if(account){account.textContent=signedIn?'Edit character':'Sign in to save progress';account.onclick=()=>closeExperimentalProfile(false,signedIn?openCharacterSettings:()=>$('#dashboardSignIn')?.click())}
+ renderLearningRhythmWeek();
+}
+function finishExperimentalProfileClose(){
+ const dialog=$('#experimentalProfileDialog'),profile=$('#experimentalProfile');clearTimeout(experimentalProfileCloseTimer);experimentalProfileCloseTimer=0;
+ if(dialog?.open)dialog.close();dialog?.classList.remove('is-open','is-closing');document.body.classList.remove('experimental-profile-open');if(profile)profile.setAttribute('aria-expanded','false');experimentalProfileHistoryActive=false;profile?.focus?.({preventScroll:true});
+ const afterClose=experimentalProfileAfterClose;experimentalProfileAfterClose=null;if(typeof afterClose==='function')afterClose();
+}
+function closeExperimentalProfile(fromHistory=false,afterClose=null){
+ const dialog=$('#experimentalProfileDialog');if(typeof afterClose==='function')experimentalProfileAfterClose=afterClose;if(!dialog?.open){finishExperimentalProfileClose();return}
+ if(!fromHistory&&experimentalProfileHistoryActive&&history.state?.kaishiExperimentalProfile){history.back();return}
+ experimentalProfileHistoryActive=false;dialog.classList.add('is-closing');dialog.classList.remove('is-open');const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;experimentalProfileCloseTimer=setTimeout(finishExperimentalProfileClose,reduced?0:330);
+}
+function openExperimentalProfile(){
+ const dialog=$('#experimentalProfileDialog'),profile=$('#experimentalProfile');if(!dialog||!profile||dialog.open)return;renderExperimentalProfile();const rect=profile.getBoundingClientRect(),reveal=dialog.querySelector('.experimental-profile-reveal');reveal?.style.setProperty('--profile-origin-x',`${Math.round(rect.left+rect.width/2)}px`);reveal?.style.setProperty('--profile-origin-y',`${Math.round(rect.top+rect.height/2)}px`);dialog.classList.remove('is-closing');dialog.showModal();document.body.classList.add('experimental-profile-open');profile.setAttribute('aria-expanded','true');requestAnimationFrame(()=>{dialog.classList.add('is-open');requestAnimationFrame(()=>$('#experimentalProfileClose')?.focus?.({preventScroll:true}))});history.pushState({...history.state,kaishiExperimentalProfile:true},'',location.href);experimentalProfileHistoryActive=true;
+}
+window.addEventListener('popstate',()=>{if(experimentalProfileHistoryActive&&$('#experimentalProfileDialog')?.open)closeExperimentalProfile(true);else if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel'))closeExperimentalPanel(true)});
 function bindExperimentalBottomNav(){
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
@@ -291,7 +318,10 @@ function bindExperimentalHeader(){
   if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}
   else{renderLearningBalanceSettings();show('settings')}
  };
- const profile=$('#experimentalProfile');if(profile)profile.onclick=()=>window.KaishiCloud?.isSignedIn?.()?openCharacterSettings():$('#dashboardSignIn')?.click();
+ const profile=$('#experimentalProfile');if(profile)profile.onclick=openExperimentalProfile;
+ const close=$('#experimentalProfileClose');if(close)close.onclick=()=>closeExperimentalProfile();
+ const calendar=$('#experimentalProfileCalendar');if(calendar)calendar.onclick=()=>closeExperimentalProfile(false,openLearningRhythmCalendar);
+ const dialog=$('#experimentalProfileDialog');if(dialog)dialog.addEventListener('cancel',event=>{event.preventDefault();closeExperimentalProfile()});
 }
 function renderExperimentalJourneyUx(){
  const enabled=settings.experimentalJourneyUx===true;
@@ -312,7 +342,7 @@ function playExperimentalJapanReadyTransition(){
  requestAnimationFrame(()=>overlay.classList.add('run'));setTimeout(()=>overlay.remove(),1780);
 }
 function openExperimentalJapanReady(){playExperimentalJapanReadyTransition();setTimeout(()=>{const bridge=window.KaishiJapanReadyBridge;if(bridge){bridge.getMeta().activeCampaign='japan-ready';bridge.save();bridge.show('japanReady')}else $('#continueJapanReadyCampaign')?.click()},420)}
-function openCharacterSettings(){show('settings');requestAnimationFrame(()=>{const picker=$('#avatarPicker');if(!picker)return;picker.scrollIntoView({behavior:'smooth',block:'center'});picker.classList.add('profile-target');setTimeout(()=>picker.classList.remove('profile-target'),1600)})}
+function openCharacterSettings(){show('settings');$('#settingsTab-character')?.click();requestAnimationFrame(()=>{const picker=$('#avatarPicker');if(!picker)return;picker.scrollIntoView({behavior:'smooth',block:'center'});picker.classList.add('profile-target');setTimeout(()=>picker.classList.remove('profile-target'),1600)})}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
 function day(date=new Date()){const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');return `${y}-${m}-${d}`}
 function esc(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
@@ -388,7 +418,7 @@ let learningRhythmOpener=null;
 function openLearningRhythmCalendar(){learningRhythmOpener=document.activeElement;renderLearningRhythmCalendar();const dialog=$('#learningRhythmDialog');if(dialog&&!dialog.open){dialog.showModal();requestAnimationFrame(()=>dialog.querySelector('.rhythm-calendar-month')?.scrollIntoView({block:'start'}))}}
 function renderLearningRhythmWeek(){
  const history=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'?meta.rhythmHistory:{};meta.rhythmHistory=history;if(meta.lastStudy&&!history[meta.lastStudy])history[meta.lastStudy]={completedAt:0,source:'existing rhythm'};
- const now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),todayKey=day(),daysTargets=[...document.querySelectorAll('#learningRhythmWeekDays,#skillsRhythmWeekDays')],summaryTargets=[...document.querySelectorAll('#learningRhythmWeekSummary,#skillsRhythmSummary')];if(!daysTargets.length)return;
+ const now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),todayKey=day(),daysTargets=[...document.querySelectorAll('#learningRhythmWeekDays,#skillsRhythmWeekDays,#experimentalProfileRhythmDays')],summaryTargets=[...document.querySelectorAll('#learningRhythmWeekSummary,#skillsRhythmSummary,#experimentalProfileRhythmSummary')];if(!daysTargets.length)return;
  const japaneseWeekdays=['月曜日','火曜日','水曜日','木曜日','金曜日','土曜日','日曜日'];const markup=Array.from({length:7},(_,offset)=>{const date=new Date(monday);date.setDate(monday.getDate()+offset);const key=day(date),entry=history[key],label=date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}),weekday=japaneseWeekdays[offset];return `<button type="button" class="learning-rhythm-week-day${entry?' completed':''}${key===todayKey?' today':''}" data-rhythm-weekday="${weekday}" aria-label="${esc(`${label}, ${weekday}`)}${entry?', learning activity completed':''}" title="${esc(entry?`${label} · ${entry.source||'Learning activity'}`:label)}"><small lang="ja" aria-hidden="true">${weekday.slice(0,1)}</small><b>${date.getDate()}</b>${entry?'<i aria-hidden="true"></i>':''}</button>`}).join('');
  daysTargets.forEach(days=>{days.innerHTML=markup;days.querySelectorAll('[data-rhythm-weekday]').forEach(button=>button.onclick=()=>speakJapanese(button.dataset.rhythmWeekday))});
  const completed=Object.keys(history).filter(key=>key>=day(monday)&&key<=day(new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+6))).length;summaryTargets.forEach(summary=>{summary.textContent=completed?`${completed} of 7 days stamped this week.`:'Complete a learning activity to earn today’s stamp.'});
@@ -2208,7 +2238,7 @@ $('#senseiPathHelpClose').onclick=()=>$('#senseiPathHelpDialog').close();
 $('#senseiPathHelpDone').onclick=()=>$('#senseiPathHelpDialog').close();
 $('#restorePointsBtn').onclick=openRestorePoints;
 $('#restorePointsClose').onclick=()=>$('#restorePointsDialog').close();
-window.addEventListener('kaishi-auth-change',()=>{const dialog=$('#restorePointsDialog');if(dialog?.open)dialog.close();updateRestorePointAvailability()});
+window.addEventListener('kaishi-auth-change',()=>{const dialog=$('#restorePointsDialog');if(dialog?.open)dialog.close();updateRestorePointAvailability();setTimeout(()=>{if($('#experimentalProfileDialog')?.open)renderExperimentalProfile()},0)});
 updateRestorePointAvailability();
 $('#resetBtn').onclick=async()=>{const signedIn=Boolean(restorePointOwnerId());const message=signedIn?'Delete all learning progress? This also erases your synced cloud progress on every device.':'Delete all learning progress?';if(!confirm(message))return;const resetLearningRhythm=confirm('Also reset your Learning Rhythm?\n\nChoose OK to erase the streak and calendar stamps. Choose Cancel to keep them while resetting lessons, words and activity progress.');if(signedIn)createRestorePoint('Before resetting local progress');const resetBtn=$('#resetBtn');resetLocalProgressState({preserveLearningRhythm:!resetLearningRhythm});save(false);updateHome();if(!signedIn){toast(resetLearningRhythm?'Progress and Learning Rhythm reset':'Progress reset; Learning Rhythm kept');return}resetBtn.disabled=true;resetBtn.textContent='Resetting cloud progress…';toast('Resetting local and cloud progress…');const result=await window.KaishiCloud?.resetProgress?.();resetBtn.disabled=false;resetBtn.textContent='Reset local progress';toast(result?.ok?'Local and cloud progress reset. A restore point was saved.':'Local progress reset, but the cloud reset failed — try again while online')};
 $('#kanjiOverviewBtn').onclick=()=>{if(settings.playMode!=='classic'&&!pathUnlocked('kanji')){toast('Reach the Kanji Gate to open this overview');return}renderKanjiOverview();show('kanjiOverview')};
