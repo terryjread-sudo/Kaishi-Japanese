@@ -1236,7 +1236,12 @@
         const itemLabel = item.type==='past'?'Completed':item.type==='side'?'Side quest':item.type==='current'?"Today's learning":'Coming up';
         const itemAction = item.type==='past'?'retry':item.type==='side'?'activity':'current';
         const itemCta = item.type==='side'?'Start side quest':item.type==='past'?'Practice':item.type==='future'?'Start lesson':'Continue lesson';
-        return `<article class="experimental-timeline-item ${focused?'active':''}" data-experimental-lesson="${item.chapter}"><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future?'aria-label="Coming up"':''}><span class="experimental-node-copy"><small>${itemLabel}</small><strong>${esc(item.title)}</strong></span>${focused?`<span class="experimental-card-details"><span class="experimental-lesson-number">Lesson ${item.chapter + 1} · Focused lesson</span>${item.detail?`<span>${esc(item.detail)}</span>`:''}${item.vocabulary?`<span class="kq-unified-vocabulary" lang="ja">${esc(item.vocabulary)}</span>`:''}<button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId||'')}">${itemCta}</button></span>`:''}</div></article>`;
+        const progressMatch = String(item.detail || '').match(/(\d+)%/);
+        const progress = Math.max(0, Math.min(100, Number(progressMatch?.[1] || (item.done ? 100 : 0))));
+        const status = item.type==='past'?'Completed':item.type==='current'?'In progress':item.type==='future'?(item.chapter === current ? 'Next up':'Locked'):'Side quest';
+        const duration = item.type==='past'?'Practice':item.type==='side'?'Activity':'Lesson';
+        const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
+        return `<article class="experimental-timeline-item ${focused?'active':''}" data-experimental-lesson="${item.chapter}"><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future?'aria-label="Coming up"':''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId||'')}">${itemCta}</button></div></div></div></div></article>`;
       }).join('')}</div>
       <p class="experimental-focus-hint">Scroll to bring another lesson into focus.</p>
     </div>`;
@@ -1268,7 +1273,7 @@
       if (!timeline) return;
       const nodes = [...timeline.querySelectorAll('[data-experimental-lesson]')];
       if (!nodes.length) return;
-      const center = timeline.getBoundingClientRect().top + timeline.clientHeight / 2;
+      const center = window.innerHeight / 2;
       const focused = nodes.reduce((nearest, node) => {
         const distance = Math.abs(node.getBoundingClientRect().top + node.offsetHeight / 2 - center);
         const nearestDistance = Math.abs(nearest.getBoundingClientRect().top + nearest.offsetHeight / 2 - center);
@@ -1290,10 +1295,10 @@
     });
     timeline?.addEventListener('scroll', () => { scheduleCardStyles(); settleFocus(); }, { passive:true });
     track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; delete track.dataset.kqExperimentalCentered; renderExperimentalTimeline(data,track); }));
-    track.querySelector('[data-experimental-action]')?.addEventListener('click', event => {
+    track.querySelectorAll('[data-experimental-action]').forEach(element => element.addEventListener('click', event => {
       const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
       if (button.dataset.experimentalAction === 'retry') retryLesson(chapter); else if (button.dataset.experimentalAction === 'activity') launchPathMilestone(button.dataset.kqActivity, true); else launchCurrentLesson();
-    });
+    }));
     if (timeline) {
       if (Number.isFinite(options.preserveScrollTop)) {
         const restoreScrollTop = options.preserveScrollTop;
