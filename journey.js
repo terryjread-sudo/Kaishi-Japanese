@@ -220,13 +220,13 @@
     }
   }
 
-  function journeyRows() {
+  function journeyRows(options = {}) {
     const total = lessonCount();
     if (!total) return [];
 
     const current = Math.min(currentChapter(), total - 1);
-    const from = Math.max(0, current - 4);
-    const to = Math.min(total, current + FUTURE_HORIZON + 1);
+    const from = options.full ? 0 : Math.max(0, current - 4);
+    const to = options.full ? total : Math.min(total, current + FUTURE_HORIZON + 1);
     const route = routeSafe();
     const completed = new Set(Array.isArray(route.completed) ? route.completed : []);
     const output = [];
@@ -1212,107 +1212,96 @@
   }
 
   function renderExperimentalTimeline(data, track, options = {}) {
-    if (!Number.isFinite(options.preserveScrollTop)) delete track.dataset.kqExperimentalCentered;
     const all = data.filter(item => item.type !== 'horizon' && item.type !== 'retry');
-    const total = lessonCount();
-    const current = currentChapter();
-    const visible = new Set(all.filter(item => Number.isFinite(item.chapter)).map(item => item.chapter));
-    const archived = Array.from({length: total}, (_, chapter) => {
-      const stats = lessonStats(chapter);
-      const done = chapter < current || stats.complete;
-      if (!done || visible.has(chapter)) return null;
-      return {type:'past', id:`lesson-${chapter}`, chapter, icon:'◷', title:lessonTitle(chapter, stats.words), vocabulary:lessonVocabulary(stats.words), detail:`${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`, done:true, current:false, future:false};
-    }).filter(Boolean);
-    const showingPast = track.dataset.kqExperimentalMode === 'past';
-    const items = showingPast ? archived : all;
-    const actionable = items.find(item => item.type === 'current') || items.find(item => item.type === 'past') || items[0];
+    const actionable = all.find(item => item.type === 'current') || all.find(item => item.type === 'past') || all[0];
     const selectedChapter = Number(track.dataset.kqExperimentalSelected || actionable?.chapter || 0);
-    const selected = items.find(item => item.chapter === selectedChapter) || actionable;
+    const selected = all.find(item => item.chapter === selectedChapter) || actionable;
     if (!selected) { track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>'; return; }
+
+    const ROW_HEIGHT = 112;
+    const BUFFER = 5;
+    const currentIndex = Math.max(0, all.findIndex(item => item.type === 'current'));
+    const selectedIndex = Math.max(0, all.findIndex(item => item === selected));
     track.innerHTML = `<div class="experimental-journey-shell">
-      <div class="experimental-journey-switcher"><h2>Journey Timeline</h2><div class="experimental-capy-toggle ${showingPast?'past':''}" role="group" aria-label="Journey lesson view"><span class="experimental-capy-track"><button type="button" data-experimental-mode="current" class="${showingPast?'':'active'}">Current</button><button type="button" data-experimental-mode="past" class="${showingPast?'active':''}">Past</button><span class="experimental-capy-knob" aria-hidden="true">🦫</span></span></div></div>
-      <div class="experimental-journey-timeline"><span class="experimental-selection-bar" aria-hidden="true"></span>${items.map(item => {
-        const focused = item.chapter === selected.chapter;
-        const itemLabel = item.type==='past'?'Completed':item.type==='side'?'Side quest':item.type==='current'?"Today's learning":'Coming up';
-        const itemAction = item.type==='past'?'retry':item.type==='side'?'activity':'current';
-        const itemCta = item.type==='side'?'Start side quest':item.type==='past'?'Practice':item.type==='future'?'Start lesson':'Continue lesson';
-        const progressMatch = String(item.detail || '').match(/(\d+)%/);
-        const progress = Math.max(0, Math.min(100, Number(progressMatch?.[1] || (item.done ? 100 : 0))));
-        const status = item.type==='past'?'Completed':item.type==='current'?'In progress':item.type==='future'?(item.chapter === current ? 'Next up':'Locked'):'Side quest';
-        const duration = item.type==='past'?'Practice':item.type==='side'?'Activity':'Lesson';
-        const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
-        return `<article class="experimental-timeline-item ${focused?'active':''}" data-experimental-lesson="${item.chapter}"><span class="experimental-lesson-marker">${item.done?'✓':item.future?'🔒':esc(item.icon||'•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future?'aria-label="Coming up"':''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId||'')}">${itemCta}</button></div></div></div></div></article>`;
-      }).join('')}</div>
+      <div class="experimental-journey-switcher"><div><span class="eyebrow">Past · Present · Future</span><h2>Journey Timeline</h2></div><button type="button" class="experimental-jump-current" data-experimental-jump>◎ Jump to current lesson</button></div>
+      <div class="experimental-journey-timeline" role="list" aria-label="Journey lessons"><span class="experimental-selection-bar" aria-hidden="true"></span><div class="experimental-virtual-spacer" style="height:${all.length * ROW_HEIGHT}px"></div><div class="experimental-virtual-window"></div></div>
       <p class="experimental-focus-hint">Scroll through the timeline, then select a lesson to expand it.</p>
     </div>`;
+
     const timeline = track.querySelector('.experimental-journey-timeline');
-    const focusScrollTop = node => Math.max(0, timeline.scrollTop + (node.getBoundingClientRect().top + node.getBoundingClientRect().height / 2 - window.innerHeight / 2));
+    const virtualWindow = track.querySelector('.experimental-virtual-window');
+    if (!timeline || !virtualWindow) return;
+    const focusScrollTop = index => Math.max(0, index * ROW_HEIGHT - Math.max(0, (timeline.clientHeight - ROW_HEIGHT) / 2));
+    let renderFrame = 0;
     let styleFrame = 0;
+
+    const cardMarkup = (item, index) => {
+      const focused = item.chapter === selected.chapter;
+      const itemAction = item.type === 'past' ? 'retry' : item.type === 'side' ? 'activity' : 'current';
+      const itemCta = item.type === 'side' ? 'Start side quest' : item.type === 'past' ? 'Practice' : item.type === 'future' ? 'Start lesson' : 'Continue lesson';
+      const progressMatch = String(item.detail || '').match(/(\d+)%/);
+      const progress = Math.max(0, Math.min(100, Number(progressMatch?.[1] || (item.done ? 100 : 0))));
+      const status = item.type === 'past' ? 'Completed' : item.type === 'current' ? 'In progress' : item.type === 'future' ? (item.chapter === currentChapter() ? 'Next up' : 'Locked') : 'Side quest';
+      const duration = item.type === 'past' ? 'Practice' : item.type === 'side' ? 'Activity' : 'Lesson';
+      const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
+      return `<article class="experimental-timeline-item ${focused ? 'active' : ''}" data-experimental-lesson="${item.chapter}" data-virtual-index="${index}" role="listitem" style="top:${index * ROW_HEIGHT}px"><span class="experimental-lesson-marker">${item.done ? '✓' : item.future ? '🔒' : esc(item.icon || '•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future ? 'aria-label="Coming up"' : ''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}">${itemCta}</button></div></div></div></div></article>`;
+    };
+
     const updateCardStyles = () => {
       styleFrame = 0;
-      if (!timeline) return;
-      const center = window.innerHeight / 2;
-      timeline.style.setProperty('--experimental-focus-position', `${center - timeline.getBoundingClientRect().top}px`);
+      timeline.style.setProperty('--experimental-focus-position', `${window.innerHeight / 2 - timeline.getBoundingClientRect().top}px`);
     };
     const scheduleCardStyles = () => {
       if (styleFrame) return;
       styleFrame = window.requestAnimationFrame(updateCardStyles);
     };
-    track.querySelectorAll('.experimental-lesson-node').forEach(node => {
-      const selectNode = () => { const item=node.closest('[data-experimental-lesson]'); if(!item)return; track.dataset.kqExperimentalSelected=item.dataset.experimentalLesson; renderExperimentalTimeline(data,track,{centerSelection:true}); };
-      node.addEventListener('click', event => { if (event.target.closest('[data-experimental-action]')) return; selectNode(); });
-      node.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(); } });
-    });
-    // Scrolling is deliberately visual only. The expanded lesson changes only
-    // after an intentional press/click, so a swipe cannot unexpectedly replace
-    // the learner's selected card or trigger a rerender while the finger is down.
-    timeline?.addEventListener('scroll', scheduleCardStyles, { passive:true });
-    track.querySelectorAll('[data-experimental-mode]').forEach(button => button.addEventListener('click', () => { track.dataset.kqExperimentalMode=button.dataset.experimentalMode==='past'?'past':'current'; delete track.dataset.kqExperimentalSelected; delete track.dataset.kqExperimentalCentered; renderExperimentalTimeline(data,track); }));
-    track.querySelectorAll('[data-experimental-action]').forEach(element => element.addEventListener('click', event => {
-      const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
-      if (button.dataset.experimentalAction === 'retry') retryLesson(chapter); else if (button.dataset.experimentalAction === 'activity') launchPathMilestone(button.dataset.kqActivity, true); else launchCurrentLesson();
-    }));
-    if (timeline) {
-      if (Number.isFinite(options.preserveScrollTop)) {
-        const restoreScrollTop = options.preserveScrollTop;
-        timeline.scrollTop = restoreScrollTop;
-        window.requestAnimationFrame(() => {
-          timeline.scrollTop = restoreScrollTop;
-          window.requestAnimationFrame(() => { timeline.scrollTop = restoreScrollTop; });
-        });
-      }
-      else if (options.centerSelection || !track.dataset.kqExperimentalInitialised) {
-        const selectedNode = timeline.querySelector(`[data-experimental-lesson="${selected.chapter}"]`);
-        if (selectedNode) timeline.scrollTop = focusScrollTop(selectedNode);
-      }
-      track.dataset.kqExperimentalInitialised = timeline.clientHeight > 0 ? '1' : '0';
-      if (!Number.isFinite(options.preserveScrollTop)) {
-        window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
-          if (timeline.clientHeight === 0) return;
-          const selectedNode = timeline.querySelector(`[data-experimental-lesson="${selected.chapter}"]`);
-          if (!selectedNode) return;
-          timeline.scrollTop = focusScrollTop(selectedNode);
-          track.dataset.kqExperimentalCentered = '1';
-          scheduleCardStyles();
-          window.setTimeout(() => {
-            const currentNode = timeline.querySelector(`[data-experimental-lesson="${selected.chapter}"]`);
-            if (currentNode) timeline.scrollTop = focusScrollTop(currentNode);
-          }, 180);
-        }));
+    const bindWindowEvents = () => {
+      virtualWindow.querySelectorAll('.experimental-lesson-node').forEach(node => {
+        const selectNode = () => {
+          const item = node.closest('[data-experimental-lesson]');
+          if (!item) return;
+          track.dataset.kqExperimentalSelected = item.dataset.experimentalLesson;
+          renderWindow(true);
+        };
+        node.addEventListener('click', event => { if (!event.target.closest('[data-experimental-action]')) selectNode(); });
+        node.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(); } });
+      });
+      virtualWindow.querySelectorAll('[data-experimental-action]').forEach(element => element.addEventListener('click', event => {
+        const button = event.currentTarget, chapter = Number(button.dataset.kqChapter);
+        if (button.dataset.experimentalAction === 'retry') retryLesson(chapter); else if (button.dataset.experimentalAction === 'activity') launchPathMilestone(button.dataset.kqActivity, true); else launchCurrentLesson();
+      }));
+    };
+    const renderWindow = (centerSelection = false) => {
+      const visibleStart = Math.max(0, Math.floor(timeline.scrollTop / ROW_HEIGHT) - BUFFER);
+      const visibleEnd = Math.min(all.length, visibleStart + Math.ceil(timeline.clientHeight / ROW_HEIGHT) + BUFFER * 2);
+      virtualWindow.innerHTML = all.slice(visibleStart, visibleEnd).map((item, offset) => cardMarkup(item, visibleStart + offset)).join('');
+      bindWindowEvents();
+      if (centerSelection) {
+        const index = Math.max(0, all.findIndex(item => item.chapter === Number(track.dataset.kqExperimentalSelected)));
+        timeline.scrollTop = focusScrollTop(index);
       }
       scheduleCardStyles();
-      if (!Number.isFinite(options.preserveScrollTop)) {
-        window.setTimeout(() => {
-          const currentTimeline = track.querySelector('.experimental-journey-timeline');
-          const currentNode = currentTimeline?.querySelector('.experimental-timeline-item.active');
-          if (!currentTimeline || !currentNode) return;
-          const correction = currentNode.getBoundingClientRect().top + currentNode.getBoundingClientRect().height / 2 - window.innerHeight / 2;
-          currentTimeline.scrollTop = Math.max(0, currentTimeline.scrollTop + correction);
-        }, 420);
-      }
-    }
-  }
+    };
+    const scheduleWindow = () => {
+      if (renderFrame) return;
+      renderFrame = window.requestAnimationFrame(() => { renderFrame = 0; renderWindow(false); });
+    };
 
+    timeline.addEventListener('scroll', scheduleWindow, { passive: true });
+    track.querySelector('[data-experimental-jump]')?.addEventListener('click', () => {
+      const target = all[currentIndex] || all[0];
+      track.dataset.kqExperimentalSelected = String(target.chapter);
+      renderWindow(true);
+    });
+
+    if (!track.dataset.kqExperimentalInitialised || options.centerSelection) {
+      timeline.scrollTop = focusScrollTop(selectedIndex);
+      track.dataset.kqExperimentalInitialised = '1';
+    } else if (Number.isFinite(options.preserveScrollTop)) {
+      timeline.scrollTop = options.preserveScrollTop;
+    }
+    renderWindow(false);
+  }
   function render() {
     const root = $('#journey');
     const track = $('#journeyHistoryTrack');
@@ -1321,7 +1310,7 @@
 
     hideLegacyJourneySurface();
 
-    const data = journeyRows();
+    const data = experimentalEnabled() ? journeyRows({full:true}) : journeyRows();
     const oldScrollTop = track.scrollTop;
 
     if (!data.length) {
