@@ -1230,7 +1230,7 @@
     let totalHeight = 0;
     all.forEach(item => { offsets.push(totalHeight); totalHeight += itemHeight(item); });
     track.innerHTML = `<div class="experimental-journey-shell">
-      <div class="experimental-journey-switcher"><div><span class="eyebrow">Past · Present · Future</span><h2>Journey Timeline</h2></div><button type="button" class="experimental-jump-current" data-experimental-jump>◎ Jump to current lesson</button></div>
+      <button type="button" class="experimental-jump-current" data-experimental-jump>◎ Jump to current lesson</button>
       <div class="experimental-journey-timeline" role="list" aria-label="Journey lessons"><span class="experimental-selection-bar" aria-hidden="true"></span><div class="experimental-virtual-spacer" style="height:${totalHeight}px"></div><div class="experimental-virtual-window"></div></div>
       <p class="experimental-focus-hint">Scroll through the timeline, then select a lesson to expand it.</p>
     </div>`;
@@ -1245,13 +1245,14 @@
     const cardMarkup = (item, index) => {
       const focused = item.id === selected.id;
       const itemAction = item.type === 'past' ? 'retry' : item.type === 'side' ? 'activity' : 'current';
-      const itemCta = item.type === 'side' ? 'Start side quest' : item.type === 'past' ? 'Practice' : item.type === 'future' ? 'Start lesson' : 'Continue lesson';
+      const locked = item.type === 'future' && item.chapter !== currentChapter();
+      const itemCta = locked ? 'Locked' : item.type === 'side' ? 'Start side quest' : item.type === 'past' ? 'Practice' : item.type === 'future' ? 'Start lesson' : 'Continue lesson';
       const progressMatch = String(item.detail || '').match(/(\d+)%/);
       const progress = Math.max(0, Math.min(100, Number(progressMatch?.[1] || (item.done ? 100 : 0))));
       const status = item.type === 'past' ? 'Completed' : item.type === 'current' ? 'In progress' : item.type === 'future' ? (item.chapter === currentChapter() ? 'Next up' : 'Locked') : 'Side quest';
       const duration = item.type === 'past' ? 'Practice' : item.type === 'side' ? 'Activity' : 'Lesson';
       const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
-      return `<article class="experimental-timeline-item ${focused ? 'active' : ''}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;height:${itemHeight(item)}px"><span class="experimental-lesson-marker">${item.done ? '✓' : item.future ? '🔒' : esc(item.icon || '•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future ? 'aria-label="Coming up"' : ''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}">${itemCta}</button></div></div></div></div></article>`;
+      return `<article class="experimental-timeline-item ${focused ? 'active' : ''}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;height:${itemHeight(item)}px;--experimental-strength:${progress}%"><span class="experimental-lesson-marker">${item.done ? '✓' : item.future ? '🔒' : esc(item.icon || '•')}</span><div class="experimental-lesson-node" role="button" tabindex="0" ${item.future ? 'aria-label="Coming up"' : ''}><div class="experimental-card-content"><div class="experimental-card-header"><div><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(item.title)}</strong></div><span class="experimental-card-duration">${duration}</span></div><div class="experimental-card-details"><p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}"${locked ? ' disabled aria-disabled="true"' : ''}>${itemCta}</button></div></div></div></div></article>`;
     };
 
     const updateCardStyles = () => {
