@@ -2063,3 +2063,35 @@ body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .exp
 @media(max-width:680px){
   body.experimental-journey-enabled #appHeader.experimental-journey-enabled{top:max(6px,env(safe-area-inset-top));left:6px;right:6px}
 }
+
+/* Final experimental timeline polish. */
+body.experimental-journey-enabled .experimental-journey-timeline{
+  padding-top:calc(110px + env(safe-area-inset-top));
+  scroll-padding-top:calc(110px + env(safe-area-inset-top));
+}
+body.experimental-journey-enabled .experimental-journey-timeline::before{
+  display:block!important;
+  content:'';
+  position:absolute;
+  z-index:0;
+  left:39px;
+  top:0;
+  bottom:0;
+  width:4px;
+  border-radius:99px;
+  background:#2c5a52;
+  pointer-events:none;
+}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-status{
+  color:#334155;
+}
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-card-content{
+  background:linear-gradient(90deg,#8a5a18 var(--experimental-strength),#493c38 var(--experimental-strength));
+  box-shadow:0 8px 20px rgba(245,158,11,.2),inset 0 0 0 999px rgba(217,119,6,.08),inset 0 1px rgba(255,255,255,.12);
+}
+body.experimental-journey-enabled .experimental-jump-current{
+  bottom:max(110px,calc(env(safe-area-inset-bottom) + 96px));
+}
+@media(max-width:680px){
+  body.experimental-journey-enabled .experimental-journey-timeline::before{left:31px}
+}
