@@ -2073,8 +2073,8 @@ body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .exp
 
 /* Final experimental timeline polish. */
 body.experimental-journey-enabled .experimental-journey-timeline{
-  padding-top:calc(110px + env(safe-area-inset-top));
-  scroll-padding-top:calc(110px + env(safe-area-inset-top));
+  padding-top:0;
+  scroll-padding-top:var(--experimental-header-clearance, 0px);
 }
 body.experimental-journey-enabled .experimental-journey-timeline::before{
   display:block!important;
@@ -2156,10 +2156,12 @@ body.experimental-journey-enabled .experimental-timeline-item.active .experiment
   border-radius:12px;
   box-shadow:0 4px 15px rgba(0,0,0,.25);
 }
-body.experimental-journey-enabled .experimental-timeline-item.active .experimental-node-copy strong,
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-node-copy,
 body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-duration{color:#2c221e}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-node-copy{color:#1e293b}
 body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-description,
-body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-xp{color:#334155}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-xp{color:#1e293b;font-weight:800;letter-spacing:.01em}
+body.experimental-journey-enabled .experimental-timeline-item.active .experimental-card-description{color:#334155}
 body.experimental-journey-enabled .experimental-timeline-item.active .experimental-progress-track{background:#d6d0c1}
 body.experimental-journey-enabled .experimental-timeline-item.active .experimental-progress-track span{background:#c83e2b}
 body.experimental-journey-enabled .experimental-lesson-cta{
