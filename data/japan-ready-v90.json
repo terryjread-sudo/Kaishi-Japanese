@@ -15,6 +15,8 @@
       "title": "Greetings & Courtesy",
       "description": "Greet people, get attention and make polite requests.",
       "confidenceGoal": "Use polite phrases naturally in a brief interaction.",
+      "wordIds": ["1708637439902", "1708637439903", "1708637439888", "1708637440067", "1708637439921", "1708637439926", "1708637440417"],
+      "cheatSheetGroup": "Greetings & Courtesy",
       "wordHints": [
         "hello",
         "thank",
@@ -91,6 +93,8 @@
       "title": "Convenience Store Checkout",
       "description": "Buy an item and answer common bag and payment questions.",
       "confidenceGoal": "Complete a normal convenience-store checkout.",
+      "wordIds": ["1708637440051", "1708637440760", "1708637440076", "1708637441281", "katakana-core-1132-カード", "katakana-core-1934-コーヒー", "1708637439903", "1708637439921"],
+      "cheatSheetGroup": "Shopping & Money",
       "wordHints": [
         "water",
         "coffee",
@@ -169,6 +173,8 @@
       "title": "Order at a Café",
       "description": "Order drinks, quantities and ask the price.",
       "confidenceGoal": "Order drinks and complete payment.",
+      "wordIds": ["katakana-core-1934-コーヒー", "1708637440760", "1708637440051", "1708637441345", "1708637441346", "1708637441347", "1708637440450", "1708637439921"],
+      "cheatSheetGroup": "Food & Drink",
       "wordHints": [
         "coffee",
         "tea",
@@ -246,6 +252,8 @@
       "title": "Restaurant Meal",
       "description": "Get a table, ask about food and request the bill.",
       "confidenceGoal": "Complete a simple restaurant visit.",
+      "wordIds": ["katakana-core-1805-メニュー", "1708637440051", "1708637440076", "1708637441145", "1708637440504", "1708637441345", "1708637441346", "1708637439921"],
+      "cheatSheetGroup": "Food & Drink",
       "wordHints": [
         "restaurant",
         "menu",
@@ -324,6 +332,8 @@
       "title": "Trains & Transfers",
       "description": "Find a station, confirm a train and ask where to transfer.",
       "confidenceGoal": "Reach the correct train and destination.",
+      "wordIds": ["1708637439894", "1708637439869", "1708637439881", "1708637440161", "1708637440162", "1708637440260", "1708637439971"],
+      "cheatSheetGroup": "Transport & Directions",
       "wordHints": [
         "train",
         "station",
@@ -401,6 +411,8 @@
       "title": "Hotel & Luggage",
       "description": "Check in, ask about breakfast, Wi-Fi and luggage storage.",
       "confidenceGoal": "Handle the essential hotel exchanges.",
+      "wordIds": ["katakana-core-907-ホテル", "1708637439889", "1708637439974", "1708637440827", "1708637440843", "1708637439921"],
+      "cheatSheetGroup": "Hotel & Airport",
       "wordHints": [
         "hotel",
         "reservation",
@@ -478,6 +490,8 @@
       "title": "Shopping & Payment",
       "description": "Ask prices, choose an item and check payment or tax-free options.",
       "confidenceGoal": "Buy an item confidently.",
+      "wordIds": ["1708637439935", "1708637440027", "1708637440317", "1708637440375", "1708637440954", "1708637441299", "katakana-core-1132-カード", "1708637440450"],
+      "cheatSheetGroup": "Shopping & Money",
       "wordHints": [
         "shop",
         "price",
@@ -556,6 +570,8 @@
       "title": "Directions & Facilities",
       "description": "Find places, toilets and understand simple directions.",
       "confidenceGoal": "Ask for a place and confirm the directions.",
+      "wordIds": ["1708637440077", "1708637439894", "1708637439979", "1708637440184", "1708637440263", "1708637440000", "1708637440794", "1708637440726", "1708637440161", "1708637440162"],
+      "cheatSheetGroup": "Transport & Directions",
       "wordHints": [
         "where",
         "left",
@@ -634,6 +650,8 @@
       "title": "Airport & Departure",
       "description": "Find check-in, confirm documents and locate the gate.",
       "confidenceGoal": "Handle a basic airport exchange.",
+      "wordIds": ["1708637439894", "1708637440843", "1708637441033", "1708637439888", "1708637439889"],
+      "cheatSheetGroup": "Hotel & Airport",
       "wordHints": [
         "airport",
         "passport",
@@ -710,6 +728,8 @@
       "title": "Emergencies & Lost Items",
       "description": "Ask urgently for help, medical care or the police.",
       "confidenceGoal": "Communicate a critical need quickly.",
+      "wordIds": ["1708637440184", "1708637440413", "1708637440585", "1708637440712", "1708637441077", "1708637441134", "1708637441322", "1708637440787", "1708637441269", "1708637440244"],
+      "cheatSheetGroup": "Emergencies",
       "wordHints": [
         "help",
         "police",

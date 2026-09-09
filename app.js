@@ -248,19 +248,34 @@ function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
  button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
 }
 function syncExperimentalHeaderClearance(){const style=document.body?.style;if(!style||typeof style.setProperty!=='function')return;const header=$('#appHeader.experimental-journey-enabled');style.setProperty('--experimental-header-clearance',header?`${Math.ceil(header.getBoundingClientRect().height+16)}px`:'')}
-function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
-function closeExperimentalPanel(){
+function resetScreenScroll(id,focusTarget=''){
+ const reset=()=>{const scrolling=document.scrollingElement||document.documentElement;if(scrolling)scrolling.scrollTop=0;window.scrollTo(0,0)};
+ reset();
+ if(id!=='study'&&settings.experimentalJourneyUx!==true)return;
+ requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const target=$(focusTarget||(id==='study'?'#exitBtn':''));if(target?.focus)target.focus({preventScroll:true})})});
+}
+function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
+let experimentalPanelOrigin='journey';
+let experimentalPanelHistoryActive=false;
+function closeExperimentalPanel(fromHistory=false){
+ const origin=experimentalPanelOrigin==='home'?'home':'journey';
  document.querySelectorAll('.screen.experimental-panel').forEach(panel=>panel.classList.remove('experimental-panel'));
- if(typeof openJourney==='function')openJourney('current');else show('journey');
+ experimentalPanelHistoryActive=false;
+ if(!fromHistory&&history.state?.kaishiExperimentalPanel)history.back();
+ if(origin==='journey'&&typeof openJourney==='function')openJourney('current');else show(origin);
 }
 function openExperimentalPanel(id,render){
  const panel=$(`#${id}`);if(!panel)return;
+ const active=$('.screen.active')?.id||'journey';experimentalPanelOrigin=active==='home'?'home':'journey';
  if(typeof render==='function')render();
  panel.classList.add('experimental-panel');
  let close=panel.querySelector('.experimental-panel-close');
- if(!close){close=document.createElement('button');close.type='button';close.className='experimental-panel-close';close.setAttribute('aria-label','Close panel');close.textContent='×';close.addEventListener('click',closeExperimentalPanel);panel.prepend(close)}
+ if(!close){close=document.createElement('button');close.type='button';close.className='experimental-panel-close';close.setAttribute('aria-label','Close panel');close.textContent='×';close.addEventListener('click',()=>closeExperimentalPanel());panel.prepend(close)}
+ if(panel.dataset.experimentalBackBound!=='1'){panel.dataset.experimentalBackBound='1';panel.addEventListener('click',event=>{const button=event.target.closest('.study-top>button');if(!button||!panel.classList.contains('experimental-panel'))return;event.preventDefault();event.stopImmediatePropagation();closeExperimentalPanel()},true)}
  show(id);
+ history.pushState({...history.state,kaishiExperimentalPanel:id},'',location.href);experimentalPanelHistoryActive=true;
 }
+window.addEventListener('popstate',()=>{if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel'))closeExperimentalPanel(true)});
 function bindExperimentalBottomNav(){
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
@@ -365,11 +380,12 @@ function rhythmCalendarMonth(monthDate,history){
 }
 function renderLearningRhythmCalendar(){
  const history=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'?meta.rhythmHistory:{};meta.rhythmHistory=history;if(meta.lastStudy&&!history[meta.lastStudy])history[meta.lastStudy]={completedAt:0,source:'existing rhythm'};const calendar=$('#learningRhythmCalendar');if(!calendar)return;
- const current=new Date(),months=[2,1,0].map(offset=>new Date(current.getFullYear(),current.getMonth()-offset,1));
- calendar.innerHTML=months.map(month=>rhythmCalendarMonth(month,history)).join('');
+ const current=new Date(),currentMonth=new Date(current.getFullYear(),current.getMonth(),1),earlier=[1,2].map(offset=>new Date(current.getFullYear(),current.getMonth()-offset,1));
+ calendar.innerHTML=`${rhythmCalendarMonth(currentMonth,history)}<details class="rhythm-calendar-earlier"><summary>Earlier months</summary><div>${earlier.map(month=>rhythmCalendarMonth(month,history)).join('')}</div></details>`;
  const rescue=$('#learningRhythmRescue');if(rescue){rescue.hidden=!activeStreakRescue();rescue.onclick=()=>{const dialog=$('#learningRhythmDialog');if(dialog?.open)dialog.close();show('games');startStreakRescue()}}
 }
-function openLearningRhythmCalendar(){renderLearningRhythmCalendar();const dialog=$('#learningRhythmDialog');if(dialog&&!dialog.open)dialog.showModal()}
+let learningRhythmOpener=null;
+function openLearningRhythmCalendar(){learningRhythmOpener=document.activeElement;renderLearningRhythmCalendar();const dialog=$('#learningRhythmDialog');if(dialog&&!dialog.open){dialog.showModal();requestAnimationFrame(()=>dialog.querySelector('.rhythm-calendar-month')?.scrollIntoView({block:'start'}))}}
 function renderLearningRhythmWeek(){
  const history=meta.rhythmHistory&&typeof meta.rhythmHistory==='object'?meta.rhythmHistory:{};meta.rhythmHistory=history;if(meta.lastStudy&&!history[meta.lastStudy])history[meta.lastStudy]={completedAt:0,source:'existing rhythm'};
  const now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),todayKey=day(),daysTargets=[...document.querySelectorAll('#learningRhythmWeekDays,#skillsRhythmWeekDays')],summaryTargets=[...document.querySelectorAll('#learningRhythmWeekSummary,#skillsRhythmSummary')];if(!daysTargets.length)return;
@@ -469,7 +485,11 @@ function renderKanjiWords(item){const panel=$('#kanjiWords');if(!panel||item.sta
 function renderKanjiOverview(){const catalogue=kanjiCatalogue(),counts={locked:0,introduced:0,practised:0,mastered:0};catalogue.forEach(item=>counts[item.status]++);$('#kanjiOverviewStats').innerHTML=`<article><strong>${counts.introduced}</strong><span>Introduced</span></article><article><strong>${counts.practised}</strong><span>Practised</span></article><article><strong>${counts.mastered}</strong><span>Mastered</span></article><article><strong>${catalogue.length}</strong><span>Total Kanji</span></article>`;$('#kanjiGrid').innerHTML=catalogue.map((item,index)=>`<button class="kanji-tile ${item.status}" data-kanji-index="${index}" aria-label="${item.status==='locked'?'Kanji not introduced':`${item.character}, ${item.status}`}"><span lang="ja">${item.status==='locked'?'?':esc(item.character)}</span><small>${item.status}</small></button>`).join('');$('#kanjiWords').hidden=true;document.querySelectorAll('[data-kanji-index]').forEach(button=>button.onclick=()=>{const item=catalogue[+button.dataset.kanjiIndex];if(item.status==='locked'){toast('Study a word containing this Kanji to reveal it');return}renderKanjiWords(item)})}
 function renderSkillScores(){
  const list=$('#skills');if(!list)return;
- list.innerHTML=SKILLS.map(skill=>{let attempts=0,correct=0,words=0,strength=0;Object.values(progress).forEach(p=>{const metric=p.skills?.[skill];if(!metric||!Number(metric.attempts))return;attempts+=Number(metric.attempts);correct+=Number(metric.correct||0);strength+=Number(metric.strength||0);words++});const score=words?Math.round(strength/words*100):0,accuracy=attempts?Math.round(correct/attempts*100):0,sample=words===0?'Not tested yet':words<5?'Early signal':words<20?'Developing signal':'Established signal';return `<div class="skill-score-row" tabindex="0" role="group" aria-label="${esc(LABELS[skill])}: ${score}% current strength, ${accuracy}% accuracy across ${attempts} attempts and ${words} words. ${esc(SKILL_HELP[skill])}"><div class="skill-score-heading"><b>${esc(LABELS[skill])}</b><strong>${score}%</strong></div><div class="bar" aria-hidden="true"><i style="width:${score}%"></i></div><p>${esc(SKILL_HELP[skill])}</p><div class="skill-score-details"><span><b>${accuracy}%</b> accuracy</span><span><b>${attempts}</b> attempts</span><span><b>${words}</b> words</span><small>${sample}</small></div></div>`}).join('');
+ const rows=SKILLS.map(skill=>{let attempts=0,correct=0,words=0,strength=0;Object.values(progress).forEach(p=>{const metric=p.skills?.[skill];if(!metric||!Number(metric.attempts))return;attempts+=Number(metric.attempts);correct+=Number(metric.correct||0);strength+=Number(metric.strength||0);words++});return{skill,attempts,correct,words,strength}});
+ const markup=({skill,attempts,correct,words,strength})=>{const score=words?Math.round(strength/words*100):0,accuracy=attempts?Math.round(correct/attempts*100):0,sample=words<5?'Early signal':words<20?'Developing signal':'Established signal',attemptLabel=`${attempts} attempt${attempts===1?'':'s'}`,wordLabel=`${words} word${words===1?'':'s'}`;return `<div class="skill-score-row" tabindex="0" role="group" aria-label="${esc(LABELS[skill])}: ${score}% current strength, ${accuracy}% accuracy across ${attemptLabel} and ${wordLabel}. ${esc(SKILL_HELP[skill])}"><div class="skill-score-heading"><b>${esc(LABELS[skill])}</b><strong>${score}%</strong></div><div class="bar" aria-hidden="true"><i style="width:${score}%"></i></div><p>${esc(SKILL_HELP[skill])}</p><div class="skill-score-details"><span><b>${accuracy}%</b> accuracy</span><span><b>${attempts}</b> attempt${attempts===1?'':'s'}</span><span><b>${words}</b> word${words===1?'':'s'}</span><small>${sample}</small></div></div>`};
+ const tested=rows.filter(row=>row.words>0),untested=rows.filter(row=>row.words===0);
+ list.innerHTML=`${tested.map(markup).join('')}${untested.length?`<details class="untested-skills"><summary>${untested.length} skill${untested.length===1?'':'s'} not tested yet</summary><p>Complete a lesson to start building meaningful skill scores.</p>${tested.length?'':'<button id="skillsStartLearning" class="primary" type="button">Start my first lesson</button>'}<ul>${untested.map(row=>`<li><b>${esc(LABELS[row.skill])}</b><span>${esc(SKILL_HELP[row.skill])}</span></li>`).join('')}</ul></details>`:''}`;
+ const start=$('#skillsStartLearning');if(start)start.onclick=()=>openJourney('missions');
 }
 function historyEntries(){return[...(Array.isArray(meta.sessionHistory)?meta.sessionHistory:[])].sort((a,b)=>b.completedAt-a.completedAt)}
 function historyEntryWords(entry){return(entry?.wordIds||[]).map(id=>vocab.find(v=>v.id===id)).filter(Boolean)}
@@ -837,7 +857,13 @@ function finishActiveJourneyMission(){
 }
 const KAISHI_SHARE_URL=new URL('./',location.href).href;
 let activeFriendInviteUrl=KAISHI_SHARE_URL;
+const POST_AUTH_ACTION_KEY='kq-post-auth-action';
 function inviteText(url=activeFriendInviteUrl){return`I’m learning Japanese with Kaishi Japanese! Join me on the 1,500-word journey: ${url}`}
+function ensureInviteSignInDialog(){
+ let dialog=$('#inviteSignInDialog');if(dialog)return dialog;
+ document.body.insertAdjacentHTML('beforeend','<dialog id="inviteSignInDialog" class="exit-session-dialog"><section><span class="eyebrow">Sign in required</span><h2>Sign in to invite a friend</h2><p>Your guest learning stays on this device. Sign in with GitHub to create a secure invitation, then you will return to Community.</p><div class="exit-session-dialog-actions"><button id="inviteSignInCancel" type="button">Not now</button><button id="inviteSignInConfirm" class="primary" type="button">Sign in with GitHub</button></div></section></dialog>');
+ dialog=$('#inviteSignInDialog');$('#inviteSignInCancel').onclick=()=>dialog.close();$('#inviteSignInConfirm').onclick=()=>{sessionStorage.setItem(POST_AUTH_ACTION_KEY,'invite');dialog.close();$('#dashboardSignIn')?.click()};return dialog;
+}
 async function prepareFriendInvite(){
  const generated=await window.KaishiCloud?.createFriendInviteLink?.();
  if(!generated)return null;
@@ -847,6 +873,7 @@ async function prepareFriendInvite(){
  return generated;
 }
 async function openInviteDialog(){
+ if(!window.KaishiCloud?.isSignedIn?.()){const gate=ensureInviteSignInDialog();if(!gate.open)gate.showModal();return}
  const dialog=$('#shareDialog');if(!dialog)return;
  const url=await prepareFriendInvite();
  if(!url)return;
@@ -1156,7 +1183,7 @@ function continueJourney(){openJourney('missions')}
 function returnToActivitySource(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';activeVocabularyChapter=null;if(destination==='journey'){finishActiveJourneyMission();openJourney()}else show(destination)}
 function ensureExitSessionDialog(){let dialog=$('#exitSessionDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend','<dialog id="exitSessionDialog" class="exit-session-dialog"><section><span class="eyebrow">Leave this lesson?</span><h2>Are you sure?</h2><p>Your current progress is saved, so you can return later. Leaving now will end this session.</p><div class="exit-session-dialog-actions"><button id="exitSessionCancel" type="button">Keep learning</button><button id="exitSessionConfirm" class="danger" type="button">Exit lesson</button></div></section></dialog>');dialog=$('#exitSessionDialog');$('#exitSessionCancel').onclick=()=>dialog.close();return dialog}
 function requestExitActivitySession(fallback='home'){const hasActiveSession=Boolean(session.length||pictureGameActive||karutaActive||battleActive);if(!hasActiveSession){exitActivitySession(fallback);return}const dialog=ensureExitSessionDialog(),confirmButton=$('#exitSessionConfirm');if(!dialog||!confirmButton)return;confirmButton.onclick=()=>{dialog.close();exitActivitySession(fallback)};if(!dialog.open)dialog.showModal()}
-function exitActivitySession(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';if(destination==='journey')finishActiveJourneyMission();abortSession(destination);if(destination==='journey')renderJourney()}
+function exitActivitySession(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';if(destination==='journey')finishActiveJourneyMission();abortSession(destination)}
 function renderOwnerPathControls(owner=window.KaishiCloud?.isOwner?.()){
  const controls=$('#ownerPathControls');if(!controls)return;controls.hidden=!owner;if(!owner)return;controls.querySelector('#ownerPathGrid').innerHTML=PATH_MILESTONES.map((item,itemIndex)=>`<button type="button" data-owner-path="${itemIndex}" class="${pathUnlocked(item.id)?'unlocked':''}"><span>${esc(item.icon)}</span><b>${esc(item.activity)}</b><small>${pathUnlocked(item.id)?'Available':'Unlock through here'}</small></button>`).join('');controls.querySelector('#ownerChapterGrid').innerHTML=Array.from({length:wordChapterCount()},(_,itemIndex)=>`<button type="button" data-owner-chapter="${itemIndex}" class="${chapterUnlocked(itemIndex)?'unlocked':''}"><b>${itemIndex+1}</b><span>${esc(WORD_CHAPTER_NAMES[itemIndex]||`Chapter ${itemIndex+1}`)}</span></button>`).join('');
 }
@@ -1201,8 +1228,9 @@ function abortSession(destination='home'){
  const card=$('#card');
  if(card)card.innerHTML='';
  updateHome();
- if(destination==='journey')renderJourney();show(destination);if(returnToJourney)activityReturnScreen='home';
+ if(destination==='journey')openJourney('current');else show(destination);if(returnToJourney)activityReturnScreen='home';
 }
+window.addEventListener('kaishi-auth-change',event=>{if(!event.detail?.signedIn||sessionStorage.getItem(POST_AUTH_ACTION_KEY)!=='invite')return;sessionStorage.removeItem(POST_AUTH_ACTION_KEY);setTimeout(()=>{if(settings.experimentalJourneyUx)openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());else{show('community');window.KaishiCloud?.loadLeaderboard?.()}setTimeout(openInviteDialog,400)},300)});
 function wordBoundaryMatch(sentence,candidate){if(!sentence||!candidate)return false;const word=typeof candidate==='string'?candidate:candidate.word;if(!word)return false;const isHan=ch=>/[\u4e00-\u9fff\u3400-\u4dbf]/.test(ch||'');let idx=sentence.indexOf(word);while(idx!==-1){const before=sentence[idx-1],after=sentence[idx+word.length];if(!isHan(before)&&!isHan(after))return true;idx=sentence.indexOf(word,idx+1)}if(typeof candidate==='string')return false;return sentenceGuideParts(sentence).some(part=>part.kind==='word'&&sentenceTokenMatchesWord(part.text,candidate))}
 function sentenceTokenMatchesWord(token,wordObj){if(!token||!wordObj)return false;if(token===wordObj.word)return true;const entry=sentenceLexiconEntry(token);return Boolean(entry&&wordObj.meaning&&entry.meaning===wordObj.meaning&&entry.reading===wordObj.reading)}
 function pickLinkedNewWords(pool,count){const unseenPool=pool.filter(v=>!progress[v.id]||Number(progress[v.id].stage||0)===0);if(count<=0||!unseenPool.length)return unseenPool.slice(0,count);for(const word of unseenPool){const sentence=word.sentence||word.exampleSentence||'';if(!sentence)continue;const companion=unseenPool.find(other=>other!==word&&wordBoundaryMatch(sentence,other));if(companion){const rest=unseenPool.filter(w=>w!==word&&w!==companion).slice(0,Math.max(0,count-2));return[word,companion,...rest].slice(0,count)}}return unseenPool.slice(0,count)}
@@ -2175,6 +2203,7 @@ $('#dashboardAvatarButton').onclick=openCharacterSettings;
 $('#openLearningRhythmCalendar').onclick=openLearningRhythmCalendar;
 $('#skillsOpenLearningRhythmCalendar').onclick=openLearningRhythmCalendar;
 $('#learningRhythmClose').onclick=()=>$('#learningRhythmDialog').close();
+$('#learningRhythmDialog').addEventListener('close',()=>learningRhythmOpener?.focus?.({preventScroll:true}));
 $('#senseiPathHelpClose').onclick=()=>$('#senseiPathHelpDialog').close();
 $('#senseiPathHelpDone').onclick=()=>$('#senseiPathHelpDialog').close();
 $('#restorePointsBtn').onclick=openRestorePoints;
