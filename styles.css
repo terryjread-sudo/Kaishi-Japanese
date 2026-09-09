@@ -2009,3 +2009,57 @@ body.experimental-journey-enabled .experimental-journey-timeline::before,body.ex
 .experimental-journey-timeline::-webkit-scrollbar{display:none}.experimental-virtual-spacer{position:relative;width:100%;pointer-events:none}.experimental-virtual-window{position:absolute;inset:0;pointer-events:none}.experimental-timeline-item{position:absolute;left:0;right:0;box-sizing:border-box;display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;min-height:96px;margin:0;padding:8px 16px 8px 0;pointer-events:auto;opacity:.5;transform:none;transition:opacity .2s ease}.experimental-timeline-item.active{opacity:1}.experimental-timeline-item:not(.active) .experimental-card-content{background:linear-gradient(90deg,#285f59 var(--experimental-strength),#1e293b var(--experimental-strength))}.experimental-lesson-marker{margin-left:22px}.experimental-lesson-node{width:100%;box-sizing:border-box}.experimental-card-content{width:100%;box-sizing:border-box}.experimental-selection-bar{top:calc(50% - 1px);left:0;right:0}.experimental-focus-hint{margin:8px 18px 0}
 .experimental-journey-timeline .experimental-timeline-item:first-of-type,.experimental-journey-timeline .experimental-timeline-item:last-of-type{margin-top:0;margin-bottom:0}
 @media(max-width:680px){.experimental-journey-shell{padding-top:clamp(78px,11dvh,108px)}.experimental-journey-switcher{padding-left:12px;padding-right:12px}.experimental-journey-switcher h2{font-size:1.12rem}.experimental-jump-current{padding:9px 10px;font-size:.68rem}.experimental-journey-timeline{height:calc(100dvh - 165px)}.experimental-timeline-item{grid-template-columns:52px minmax(0,1fr);padding-right:10px}.experimental-lesson-marker{margin-left:8px}.experimental-focus-hint{margin-left:12px;margin-right:12px}}
+
+/* Experimental timeline: let the lesson stream run underneath the glass profile bar. */
+body.experimental-journey-enabled #appHeader.experimental-journey-enabled{
+  position:fixed;
+  top:max(10px,env(safe-area-inset-top));
+  left:12px;
+  right:12px;
+  z-index:120;
+  width:auto;
+  margin:0;
+  border:1px solid rgba(255,255,255,.24);
+  background:rgba(15,35,67,.72);
+  box-shadow:0 12px 30px rgba(2,6,23,.34);
+  backdrop-filter:blur(20px) saturate(145%);
+  -webkit-backdrop-filter:blur(20px) saturate(145%);
+}
+body.experimental-journey-enabled .experimental-journey-shell{padding-top:0}
+body.experimental-journey-enabled .experimental-journey-timeline{height:100dvh;min-height:100dvh}
+
+/* Higher contrast surfaces keep compact cards legible against the deep blue background. */
+body.experimental-journey-enabled .experimental-card-content{
+  border-color:#54738a;
+  background:#203b56;
+  box-shadow:0 7px 18px rgba(2,6,23,.34),inset 0 1px rgba(255,255,255,.08);
+}
+body.experimental-journey-enabled .experimental-timeline-item:not(.active){opacity:.88}
+body.experimental-journey-enabled .experimental-timeline-item:not(.active) .experimental-card-content{
+  background:linear-gradient(90deg,#287f70 var(--experimental-strength),#203b56 var(--experimental-strength));
+}
+body.experimental-journey-enabled .experimental-timeline-item.is-completed .experimental-lesson-marker{
+  border-color:#6ee7b7;
+  background:#10b981;
+  color:#062e24;
+  box-shadow:0 0 0 4px rgba(16,185,129,.24),0 5px 14px rgba(16,185,129,.3);
+}
+
+/* Optional activities use an amber treatment and a clear quest marker. */
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-card-content{
+  border:2px solid #f59e0b;
+  background:linear-gradient(90deg,#8a5a18 var(--experimental-strength),#3d3340 var(--experimental-strength));
+  box-shadow:0 8px 20px rgba(245,158,11,.2),inset 0 1px rgba(255,255,255,.12);
+}
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-lesson-marker{
+  border-color:#fbbf24;
+  background:#78350f;
+  color:#fef3c7;
+  box-shadow:0 0 0 4px rgba(245,158,11,.25),0 5px 14px rgba(245,158,11,.28);
+}
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-card-status{color:#fcd34d}
+body.experimental-journey-enabled .experimental-timeline-item.is-side-quest .experimental-card-xp{color:#fcd34d}
+
+@media(max-width:680px){
+  body.experimental-journey-enabled #appHeader.experimental-journey-enabled{top:max(6px,env(safe-area-inset-top));left:6px;right:6px}
+}
