@@ -2095,3 +2095,14 @@ body.experimental-journey-enabled .experimental-jump-current{
 @media(max-width:680px){
   body.experimental-journey-enabled .experimental-journey-timeline::before{left:31px}
 }
+/* Keep the Kaishi Japanese identity visible beside the mark in experimental mode. */
+body.experimental-journey-enabled .experimental-brand .brand-wordmark{display:grid}
+body.experimental-journey-enabled .experimental-brand .brand-wordmark b{font-size:1rem}
+body.experimental-journey-enabled .experimental-brand .brand-wordmark em{font-size:.52rem}
+@media(max-width:680px){
+  body.experimental-journey-enabled .experimental-brand .brand-wordmark b{font-size:.82rem}
+  body.experimental-journey-enabled .experimental-brand .brand-wordmark em{font-size:.45rem}
+  body.experimental-journey-enabled .experimental-profile span{display:none}
+  body.experimental-journey-enabled .experimental-profile{padding:4px}
+  body.experimental-journey-enabled .experimental-profile img{width:32px;height:32px}
+}
