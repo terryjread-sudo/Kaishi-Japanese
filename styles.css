@@ -1993,6 +1993,9 @@ body.experimental-journey-enabled .screen.experimental-panel.active{position:fix
 .experimental-japan-ready.experimental-header-journey:hover{background:#2dd4bf;color:#042f2e}
 /* Full-screen virtualized experimental timeline */
 body.experimental-journey-enabled #journey.screen.active{width:100vw;max-width:none;margin:0;padding:0;min-height:100dvh}
+body.experimental-journey-enabled #journey>.study-top{display:none}
+body.experimental-journey-enabled #journey>.journey-section{width:100vw;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+body.experimental-journey-enabled #journey>.journey-section>*:not(#journeyHistoryTimeline){display:none!important}
 body.experimental-journey-enabled #journeyHistoryTimeline{width:100vw;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:transparent}
 body.experimental-journey-enabled #journeyHistoryTimeline>.journey-history-timeline-heading{display:none}
 body.experimental-journey-enabled #journeyHistoryTrack{width:100vw;max-width:none;margin:0;padding:0;overflow:visible;border:0;border-radius:0;background:transparent}
@@ -2003,4 +2006,5 @@ body.experimental-journey-enabled #journeyHistoryTrack{width:100vw;max-width:non
 .experimental-jump-current:hover{background:#166534;color:#fff}
 .experimental-journey-timeline{position:relative;width:100%;height:calc(100dvh - clamp(178px,22dvh,230px));min-height:420px;max-height:none;box-sizing:border-box;display:block;padding:0;overflow-y:auto;overflow-x:hidden;scroll-snap-type:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .experimental-journey-timeline::-webkit-scrollbar{display:none}.experimental-virtual-spacer{position:relative;width:100%;pointer-events:none}.experimental-virtual-window{position:absolute;inset:0;pointer-events:none}.experimental-timeline-item{position:absolute;left:0;right:0;box-sizing:border-box;display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;min-height:96px;margin:0;padding:8px 16px 8px 0;pointer-events:auto;opacity:.5;transform:none;transition:opacity .2s ease}.experimental-timeline-item.active{opacity:1}.experimental-lesson-marker{margin-left:22px}.experimental-lesson-node{width:100%;box-sizing:border-box}.experimental-card-content{width:100%;box-sizing:border-box}.experimental-selection-bar{top:calc(50% - 1px);left:0;right:0}.experimental-focus-hint{margin:8px 18px 0}
+.experimental-journey-timeline .experimental-timeline-item:first-of-type,.experimental-journey-timeline .experimental-timeline-item:last-of-type{margin-top:0;margin-bottom:0}
 @media(max-width:680px){.experimental-journey-shell{padding-top:clamp(78px,11dvh,108px)}.experimental-journey-switcher{padding-left:12px;padding-right:12px}.experimental-journey-switcher h2{font-size:1.12rem}.experimental-jump-current{padding:9px 10px;font-size:.68rem}.experimental-journey-timeline{height:calc(100dvh - 165px)}.experimental-timeline-item{grid-template-columns:52px minmax(0,1fr);padding-right:10px}.experimental-lesson-marker{margin-left:8px}.experimental-focus-hint{margin-left:12px;margin-right:12px}}
