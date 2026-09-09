@@ -1993,6 +1993,7 @@ body.experimental-journey-enabled .screen.experimental-panel.active{position:fix
 .experimental-japan-ready.experimental-header-journey:hover{background:#2dd4bf;color:#042f2e}
 /* Full-screen virtualized experimental timeline */
 body.experimental-journey-enabled #journey.screen.active{width:100vw;max-width:none;margin:0;padding:0;min-height:100dvh}
+body.experimental-journey-enabled #study.screen.active{padding-top:var(--experimental-header-clearance, 112px)}
 body.experimental-journey-enabled #journey>.study-top{display:none}
 body.experimental-journey-enabled #journey>.journey-section{width:100vw;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
 body.experimental-journey-enabled #journey>.journey-section>*:not(#journeyHistoryTimeline){display:none!important}
@@ -2043,7 +2044,7 @@ body.experimental-journey-enabled .experimental-timeline-item:not(.active) .expe
   display:-webkit-box;
   overflow:hidden;
   -webkit-box-orient:vertical;
-  -webkit-line-clamp:1;
+  -webkit-line-clamp:2;
 }
 body.experimental-journey-enabled .experimental-timeline-item.is-completed .experimental-lesson-marker{
   border-color:#6ee7b7;

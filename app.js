@@ -247,7 +247,8 @@ function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
  button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
  button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
 }
-function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);}
+function syncExperimentalHeaderClearance(){const style=document.body?.style;if(!style||typeof style.setProperty!=='function')return;const header=$('#appHeader.experimental-journey-enabled');style.setProperty('--experimental-header-clearance',header?`${Math.ceil(header.getBoundingClientRect().height+16)}px`:'')}
+function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));scrollTo(0,0);const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 function closeExperimentalPanel(){
  document.querySelectorAll('.screen.experimental-panel').forEach(panel=>panel.classList.remove('experimental-panel'));
  if(typeof openJourney==='function')openJourney('current');else show('journey');
@@ -286,6 +287,7 @@ function renderExperimentalJourneyUx(){
  if(panel)panel.hidden=!enabled;
  const control=$('#experimentalJourneyUx');if(control)control.checked=enabled;
  updateExperimentalNavVisibility();
+ if(enabled)requestAnimationFrame(syncExperimentalHeaderClearance);else if(typeof document.body?.style?.setProperty==='function')document.body.style.setProperty('--experimental-header-clearance','');
  if(enabled&&$('.screen.active')?.id==='home')openJourney('missions');
 }
 function playExperimentalJapanReadyTransition(){
@@ -1152,6 +1154,8 @@ function launchPathMilestone(id,fromVillage=false){
 }
 function continueJourney(){openJourney('missions')}
 function returnToActivitySource(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';activeVocabularyChapter=null;if(destination==='journey'){finishActiveJourneyMission();openJourney()}else show(destination)}
+function ensureExitSessionDialog(){let dialog=$('#exitSessionDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend','<dialog id="exitSessionDialog" class="exit-session-dialog"><section><span class="eyebrow">Leave this lesson?</span><h2>Are you sure?</h2><p>Your current progress is saved, so you can return later. Leaving now will end this session.</p><div class="exit-session-dialog-actions"><button id="exitSessionCancel" type="button">Keep learning</button><button id="exitSessionConfirm" class="danger" type="button">Exit lesson</button></div></section></dialog>');dialog=$('#exitSessionDialog');$('#exitSessionCancel').onclick=()=>dialog.close();return dialog}
+function requestExitActivitySession(fallback='home'){const hasActiveSession=Boolean(session.length||pictureGameActive||karutaActive||battleActive);if(!hasActiveSession){exitActivitySession(fallback);return}const dialog=ensureExitSessionDialog(),confirmButton=$('#exitSessionConfirm');if(!dialog||!confirmButton)return;confirmButton.onclick=()=>{dialog.close();exitActivitySession(fallback)};if(!dialog.open)dialog.showModal()}
 function exitActivitySession(fallback='home'){const destination=activityReturnScreen==='journey'?'journey':fallback;activityReturnScreen='home';if(destination==='journey')finishActiveJourneyMission();abortSession(destination);if(destination==='journey')renderJourney()}
 function renderOwnerPathControls(owner=window.KaishiCloud?.isOwner?.()){
  const controls=$('#ownerPathControls');if(!controls)return;controls.hidden=!owner;if(!owner)return;controls.querySelector('#ownerPathGrid').innerHTML=PATH_MILESTONES.map((item,itemIndex)=>`<button type="button" data-owner-path="${itemIndex}" class="${pathUnlocked(item.id)?'unlocked':''}"><span>${esc(item.icon)}</span><b>${esc(item.activity)}</b><small>${pathUnlocked(item.id)?'Available':'Unlock through here'}</small></button>`).join('');controls.querySelector('#ownerChapterGrid').innerHTML=Array.from({length:wordChapterCount()},(_,itemIndex)=>`<button type="button" data-owner-chapter="${itemIndex}" class="${chapterUnlocked(itemIndex)?'unlocked':''}"><b>${itemIndex+1}</b><span>${esc(WORD_CHAPTER_NAMES[itemIndex]||`Chapter ${itemIndex+1}`)}</span></button>`).join('');
@@ -2233,7 +2237,7 @@ $('#skillsBack').onclick=()=>returnToActivitySource('home');
 $('#conversationBack').onclick=()=>returnToActivitySource('games');
 $('#grammarBack').onclick=()=>returnToActivitySource('games');
 $('#grammarLibraryBack').onclick=openGrammarPath;
-$('#exitBtn').onclick=()=>exitActivitySession(pictureGameActive||karutaActive||battleActive?'games':'home');
+$('#exitBtn').onclick=()=>requestExitActivitySession(pictureGameActive||karutaActive||battleActive?'games':'home');
 $('#learningBalance').oninput=updateLearningBalanceFromControls;
 $('#learningBalanceAdaptive').onchange=updateLearningBalanceFromControls;
 $('#settingsBack').onclick=saveSettingsAndExit;
