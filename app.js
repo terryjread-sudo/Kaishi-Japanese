@@ -69,12 +69,13 @@ let activeVocabularyChapter=null;
 let activeJourneyMission=null,activeQuickStep=false,activeFirstLesson=false,kotobaEchoRun=null,kotobaEchoRecognition=null,kotobaEchoStopTimer=0;
 let introGuidanceCount=0;
 const MISSION_CARD_LIMIT=15,NEW_WORDS_PER_MISSION=3,DAILY_REVIEW_TARGET=6,ACTIVE_WORD_MIX=3,CHECKPOINT_INTERVAL=5;
-const defaults={sessionSize:10,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true,learningBalance:0,learningBalanceAdaptive:true,experimentalJourneyUx:false};
+const defaults={sessionSize:10,pictureDifficulty:4,mnemonicStyle:'clear',autoAudio:true,learningBalance:0,learningBalanceAdaptive:true,experimentalJourneyUx:true};
 let settings={...defaults,...loadJSON(profileStorageKey('kq-settings'),{})};
 settings.playMode='journey';
 settings.learningBalance=Math.max(-2,Math.min(2,Math.round(Number(settings.learningBalance)||0)));
 settings.learningBalanceAdaptive=settings.learningBalanceAdaptive!==false;
-settings.experimentalJourneyUx=settings.experimentalJourneyUx===true;
+// The revised Journey is now the permanent learner experience.
+settings.experimentalJourneyUx=true;
 let progress=loadJSON(profileStorageKey('kq-progress'),{});
 const META_DEFAULTS={lastStudy:'',streak:0,totalAnswers:0,totalCorrect:0,kanaAnswers:0,kanaCorrect:0,grammarAnswers:0,grammarCorrect:0,kanaProgress:{},grammarProgress:{},connectorProgress:{},sentenceLabProgress:{lessons:{},saved:[],mistakes:[],totalAnswers:0,totalCorrect:0},notebook:{words:[]},notebookStarHintSeen:false,mangaProgress:{},conversationProgress:{},theatreProgress:{},canDoAwards:[],pathUnlocks:[],pathVisits:{},pathOverrides:[],chapterOverrides:[],dailyJourneyRoute:null,journeyCurriculumRevision:'',dailyActivity:null,unlockNoticesSeen:[],unlockNoticesDismissed:[],activityPurchases:['vocabulary','kana','sentenceLab'],adventurePointsSpent:0,rhythm:{behind:0,lastChecked:'',quickWeek:'',quickUsed:0,cycles:0},rhythmHistory:{},activityModeLevels:{},karutaSessions:[],monsterVictories:[],totalMonsterVictories:0,streakRescue:null,activeCampaign:'journey',campaignProgress:{},sessionHistory:[],kotobaEchoHistory:[],updatedAt:0};
 const SESSION_HISTORY_LIMIT=200,NOTEBOOK_WORD_LIMIT=100;
@@ -242,23 +243,23 @@ function renderRestorePoints(){const list=$('#restorePointsList');if(!list)retur
 function updateRestorePointAvailability(){const available=Boolean(restorePointOwnerId()),button=$('#restorePointsBtn'),dialog=$('#restorePointsDialog');if(button)button.hidden=!available;if(!available&&dialog?.open)dialog.close()}
 function openRestorePoints(){if(!restorePointOwnerId()){toast('Sign in to use restore points');return}renderRestorePoints();const dialog=$('#restorePointsDialog');if(dialog&&!dialog.open)dialog.showModal()}
 function updateExperimentalNavVisibility(){
- const nav=$('#experimentalBottomNav'),enabled=settings.experimentalJourneyUx===true,active=$('.screen.active')?.id||'';
+ const nav=$('#experimentalBottomNav'),active=$('.screen.active')?.id||'';
  if(!nav)return;
  const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder';
  const inPanel=Boolean($('.screen.active.experimental-panel'));
- const activeAction={collection:'collection',skillsOverview:'progress',community:'community'}[active]||'';
+ const activeAction={home:'journey',journey:'journey',collection:'collection',community:'community',japanReady:'japan-ready'}[active]||'';
  nav.querySelectorAll('[data-experimental-nav]').forEach(item=>{const current=item.dataset.experimentalNav===activeAction;item.classList.toggle('is-active',current);if(current)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
- const visible=enabled&&!inLesson&&(inPanel||active==='home'||active==='journey');
+ const visible=!inLesson&&(inPanel||active==='home'||active==='journey'||active==='japanReady');
  nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
 }
 function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
  const button=$('#experimentalJapanReady');if(!button)return;
- const journeyActive=settings.experimentalJourneyUx===true&&screenId==='japanReady';
+ const journeyActive=screenId==='japanReady';
  button.classList.toggle('experimental-header-journey',journeyActive);
  const frame='<svg class="sumie-action-frame" viewBox="0 0 140 52" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14V2h12M126 2h12v12M2 38v12h12M126 50h12V38"/></svg>';
  const journeyIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M39 13H17c-7 0-11 5-11 11s4 11 11 11h16M25 27l8 8-8 8"/></svg>';
- const toriiIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M7 15h34M11 15l3-8 4 8m12 0 4-8 3 8M15 17v24m18-24v24M9 41h30M24 17v24"/></svg>';
- button.innerHTML=journeyActive?`${frame}${journeyIcon}<span class="sumie-action-copy"><small lang="ja">旅路</small><b>Journey</b></span>`:`${frame}${toriiIcon}<span class="sumie-action-copy"><small lang="ja">日本へ</small><b>Japan Ready</b></span>`;
+ const fujiIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 38 18 16l6 9 4-6 15 19H5Z"/><path d="m18 16 6 9 4-6M5 38h38"/></svg>';
+ button.innerHTML=journeyActive?`${frame}${journeyIcon}<span class="sumie-action-copy"><small lang="ja">旅路</small><b>Journey</b></span>`:`${frame}${fujiIcon}<span class="sumie-action-copy"><small lang="ja">日本へ</small><b>Japan Ready</b></span>`;
  button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
  button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
 }
@@ -266,10 +267,10 @@ function syncExperimentalHeaderClearance(){const style=document.body?.style;if(!
 function resetScreenScroll(id,focusTarget=''){
  const reset=()=>{const scrolling=document.scrollingElement||document.documentElement;if(scrolling)scrolling.scrollTop=0;window.scrollTo(0,0)};
  reset();
- if(id!=='study'&&settings.experimentalJourneyUx!==true)return;
+ if(id!=='study')return;
  requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
-function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);document.body.classList.toggle('experimental-settings-active',enabled&&id==='settings');$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
+function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
 let experimentalNotebookHistoryActive=false;
@@ -340,13 +341,25 @@ function openExperimentalProfile(){
 }
 window.addEventListener('popstate',event=>{if(experimentalProfileHistoryActive&&$('#experimentalProfileDialog')?.open)closeExperimentalProfile(true);else if(experimentalNotebookHistoryActive&&$('#learningNotebookDialog')?.open){experimentalNotebookHistoryActive=false;$('#learningNotebookDialog').close()}else if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel')&&!event.state?.kaishiExperimentalPanel)closeExperimentalPanel(true)});
 function bindExperimentalBottomNav(){
+ const nav=$('#experimentalBottomNav');
+ if(nav&&!nav.dataset.permanentNavBound){
+  nav.dataset.permanentNavBound='1';
+  nav.setAttribute('aria-label','Primary navigation');
+  const legacyProgress=nav.querySelector('[data-experimental-nav="progress"]');
+  if(legacyProgress?.parentNode?.removeChild)legacyProgress.parentNode.removeChild(legacyProgress);
+  const navButton=(action,japanese,english,sublabel,icon)=>`<button type="button" data-experimental-nav="${action}"><span class="experimental-nav-japanese" lang="ja">${japanese}</span><span class="experimental-nav-art"><svg class="experimental-nav-hanko" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/></svg><svg class="experimental-nav-icon" viewBox="0 0 48 48" aria-hidden="true"><g>${icon}</g></svg></span><b>${english}</b><small lang="ja">${sublabel}</small></button>`;
+  const journey=navButton('journey','旅','Journey','旅路','<path d="M7 24h29M27 14l10 10-10 10"/>');
+  const japanReady=navButton('japan-ready','日本へ','Japan Ready','富士','<path d="M5 38 18 16l6 9 4-6 15 19H5Z"/><path d="M5 38h38"/>');
+  nav.innerHTML=journey+nav.innerHTML+japanReady;
+ }
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
   document.querySelectorAll('[data-experimental-nav]').forEach(item=>{item.classList.toggle('is-active',item===button);if(item===button)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
-  if(action==='notebook')openExperimentalNotebook();
+  if(action==='journey')openJourney('missions');
+  else if(action==='notebook')openExperimentalNotebook();
   else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
-  else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores());
   else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
+  else if(action==='japan-ready')openExperimentalJapanReady();
  }));
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.screen.active.experimental-panel')&&!document.querySelector('dialog[open]')){event.preventDefault();closeExperimentalPanel()}});
 }
@@ -362,17 +375,19 @@ function bindExperimentalHeader(){
  const dialog=$('#experimentalProfileDialog');if(dialog)dialog.addEventListener('cancel',event=>{event.preventDefault();closeExperimentalProfile()});
 }
 function renderExperimentalJourneyUx(){
- const enabled=settings.experimentalJourneyUx===true;
- document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);
- document.body.classList.toggle('experimental-settings-active',enabled&&$('.screen.active')?.id==='settings');
+ const enabled=true;
+ settings.experimentalJourneyUx=true;
+ document.body.classList.add('experimental-journey-enabled');$('#appHeader')?.classList.add('experimental-journey-enabled');
+ document.body.classList.toggle('experimental-settings-active',$('.screen.active')?.id==='settings');
  const legacy=document.querySelector('.standard-header-content'),actions=document.querySelector('.standard-header-actions'),panel=$('#experimentalHeaderContent');
  if(legacy)legacy.hidden=enabled;
  if(actions)actions.hidden=enabled;
  if(panel)panel.hidden=!enabled;
- const control=$('#experimentalJourneyUx');if(control)control.checked=enabled;
+ const control=$('#experimentalJourneyUx'),controlLabel=control?.parentNode;
+ if(controlLabel?.parentNode?.removeChild)controlLabel.parentNode.removeChild(controlLabel);else if(control)control.hidden=true;
  updateExperimentalNavVisibility();
  if(enabled)requestAnimationFrame(syncExperimentalHeaderClearance);else if(typeof document.body?.style?.setProperty==='function')document.body.style.setProperty('--experimental-header-clearance','');
- if(enabled&&$('.screen.active')?.id==='home')openJourney('missions');
+ if($('.screen.active')?.id==='home')openJourney('missions');
 }
 function playExperimentalJapanReadyTransition(){
  const overlay=document.createElement('div');overlay.className='experimental-japan-transition';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor" role="presentation"><path d="M12 2C11.5 2 11 3.5 11 5V10L3 14V16.5L11 14.5V19.5L8.5 21V22.5L12 21.5L15.5 22.5V21L13 19.5V14.5L21 16.5V14L13 10V5C13 3.5 12.5 2 12 2Z"/></svg>';
@@ -785,7 +800,7 @@ function activityPreferenceWeight(id){return learningPreferenceWeight(LISTENING_
 function learningBalanceDescription(){const effective=effectiveLearningBalance(),label=LEARNING_BALANCE_LABELS[String(effective)];if(settings.learningBalanceAdaptive)return effective===0?'Sensei is keeping reading and listening balanced from your current results.':`Sensei currently recommends ${label.toLowerCase()} because it needs more reinforcement.`;return`${LEARNING_BALANCE_LABELS[String(storedLearningBalance())]} will guide future questions and daily activities. Both skills will still appear.`}
 function renderLearningBalanceSettings(){const slider=$('#learningBalance'),adaptive=$('#learningBalanceAdaptive'),value=$('#learningBalanceValue'),description=$('#learningBalanceDescription');if(!slider||!adaptive)return;slider.value=String(storedLearningBalance());adaptive.checked=settings.learningBalanceAdaptive!==false;slider.disabled=adaptive.checked;if(value)value.textContent=adaptive.checked?'Let Sensei decide':LEARNING_BALANCE_LABELS[slider.value];if(description)description.textContent=learningBalanceDescription()}
 function updateLearningBalanceFromControls(){const slider=$('#learningBalance'),adaptive=$('#learningBalanceAdaptive');if(!slider||!adaptive)return;settings.learningBalance=Math.max(-2,Math.min(2,Math.round(Number(slider.value)||0)));settings.learningBalanceAdaptive=adaptive.checked;renderLearningBalanceSettings()}
-function saveSettingsAndExit(){settings.playMode='journey';settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;settings.activityVillageMode=$('#activityVillageMode')?.checked!==false;settings.experimentalJourneyUx=$('#experimentalJourneyUx')?.checked===true;updateLearningBalanceFromControls();save();updateHome();renderExperimentalJourneyUx();if(settings.experimentalJourneyUx)openJourney('missions');else show('home')}
+function saveSettingsAndExit(){settings.playMode='journey';settings.pictureDifficulty=Math.max(2,Math.min(6,+$('#pictureDifficulty').value||4));settings.mnemonicStyle=$('#mnemonicStyle').value;settings.autoAudio=$('#autoAudio').checked;settings.activityVillageMode=$('#activityVillageMode')?.checked!==false;settings.experimentalJourneyUx=true;updateLearningBalanceFromControls();save();updateHome();renderExperimentalJourneyUx();openJourney('missions')}
 const MASTERY_SEQUENCE=[
  {id:'meaning',label:'Meaning recognition',minimum:2,strength:.42,reason:'recognise the meaning from written Japanese'},
  {id:'listening',label:'Listening',minimum:2,strength:.42,reason:'recognise the word by sound'},
@@ -1244,7 +1259,7 @@ function completeTopicBoss(topicId,passed=true){meta.topicProgress=meta.topicPro
 function renderCollection(tab='words'){const stats=$('#collectionStats'),content=$('#collectionContent');if(!stats||!content)return;const introduced=vocab.filter(wordIntroduced),mnemonics=introduced.filter(word=>memoryScenes[sceneKey(word)]),topics=journeyTopics();stats.innerHTML=`<article><strong>${introduced.length}</strong><span>Words</span></article><article><strong>${kanjiCatalogue().filter(item=>item.status!=='locked').length}</strong><span>Kanji</span></article><article><strong>${mnemonics.length}</strong><span>Mnemonics</span></article><article><strong>${topics.filter(topic=>topicStats(topic).complete).length}/${topics.length}</strong><span>Topics</span></article>`;document.querySelectorAll('[data-collection-tab]').forEach(button=>button.classList.toggle('active',button.dataset.collectionTab===tab));if(tab==='topics')content.innerHTML=topics.map(topic=>{const s=topicStats(topic);return `<article class="collection-item"><span>${esc(topic.icon||'🗾')}</span><div><strong>${esc(topic.title)}</strong><small>${s.introduced}/${s.words.length} words · ${s.complete?'Complete':s.percent+'%'}</small></div></article>`}).join('');else if(tab==='foundations')content.innerHTML=(learningGraph.foundations||[]).map(item=>{const words=introduced.filter(word=>wordFoundationTags(word).includes(item.id));return `<article class="collection-item foundation-item"><span>${esc(item.icon)}</span><div><strong>${esc(item.title)}</strong><small>${words.length} introduced · reused across topics</small><p>${esc(item.description)}</p></div></article>`}).join('');else if(tab==='mnemonics')content.innerHTML=mnemonics.slice(0,100).map(word=>`<article class="collection-word"><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.meaning)}</span><small>${esc(topicForWord(word).title)}</small></article>`).join('')||'<p class="muted">Mnemonic images appear here as you discover words.</p>';else if(tab==='achievements')content.innerHTML=achievementList().map(([icon,title])=>`<article class="achievement"><span>${icon}</span><strong>${esc(title)}</strong></article>`).join('')||'<p class="muted">Continue your adventure to unlock achievements.</p>';else content.innerHTML=introduced.slice(0,200).map(word=>{const foundations=wordFoundationTags(word).map(id=>foundationFor(id)?.title).filter(Boolean);return `<article class="collection-word"><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.reading)} · ${esc(word.meaning)}</span><small>${esc(topicForWord(word).title)}${foundations.length?` · ${esc(foundations.join(', '))}`:''}</small></article>`}).join('')||'<p class="muted">Your discovered words will appear here.</p>'}
 function openCollection(tab='words'){renderCollection(tab);show('collection')}
 function renderJourneyTimelineWhenReady(){requestAnimationFrame(()=>requestAnimationFrame(()=>window.KaishiJourneyRender?.()))}
-function openJourney(section='missions'){show('journey');try{renderJourney()}catch(error){console.error('Journey legacy render failed',error)}renderJourneyTimelineWhenReady();const experimental=settings.experimentalJourneyUx===true;if(section==='missions'&&!experimental)requestAnimationFrame(()=>$('#dailyRouteTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));if(experimental)requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if(section==='current')requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}))}
+function openJourney(section='missions'){show('journey');try{renderJourney()}catch(error){console.error('Journey legacy render failed',error)}renderJourneyTimelineWhenReady();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if(section==='current')requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}))}
 window.addEventListener('kaishi-journey-ready',()=>{if($('#journey')?.classList.contains('active'))renderJourneyTimelineWhenReady()});
 function startJourneyChapter(itemIndex){if(!chapterUnlocked(itemIndex)){toast('Complete the previous vocabulary chapter first');return}activityReturnScreen='journey';activeVocabularyChapter=itemIndex;makeSession(itemIndex)}
 function kotobaEchoWords(){return vocab.filter(word=>wordIntroduced(word)&&(isAdminTestMode()||window.KaishiLearning?.wordState?.(word)!=='New'))}
@@ -1312,7 +1327,7 @@ function abortSession(destination='home'){
  updateHome();
  if(destination==='journey')openJourney('current');else show(destination);if(returnToJourney)activityReturnScreen='home';
 }
-window.addEventListener('kaishi-auth-change',event=>{if(!event.detail?.signedIn||sessionStorage.getItem(POST_AUTH_ACTION_KEY)!=='invite')return;sessionStorage.removeItem(POST_AUTH_ACTION_KEY);setTimeout(()=>{if(settings.experimentalJourneyUx)openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());else{show('community');window.KaishiCloud?.loadLeaderboard?.()}setTimeout(openInviteDialog,400)},300)});
+window.addEventListener('kaishi-auth-change',event=>{if(!event.detail?.signedIn||sessionStorage.getItem(POST_AUTH_ACTION_KEY)!=='invite')return;sessionStorage.removeItem(POST_AUTH_ACTION_KEY);setTimeout(()=>{openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());setTimeout(openInviteDialog,400)},300)});
 function wordBoundaryMatch(sentence,candidate){if(!sentence||!candidate)return false;const word=typeof candidate==='string'?candidate:candidate.word;if(!word)return false;const isHan=ch=>/[\u4e00-\u9fff\u3400-\u4dbf]/.test(ch||'');let idx=sentence.indexOf(word);while(idx!==-1){const before=sentence[idx-1],after=sentence[idx+word.length];if(!isHan(before)&&!isHan(after))return true;idx=sentence.indexOf(word,idx+1)}if(typeof candidate==='string')return false;return sentenceGuideParts(sentence).some(part=>part.kind==='word'&&sentenceTokenMatchesWord(part.text,candidate))}
 function sentenceTokenMatchesWord(token,wordObj){if(!token||!wordObj)return false;if(token===wordObj.word)return true;const entry=sentenceLexiconEntry(token);return Boolean(entry&&wordObj.meaning&&entry.meaning===wordObj.meaning&&entry.reading===wordObj.reading)}
 function pickLinkedNewWords(pool,count){const unseenPool=pool.filter(v=>!progress[v.id]||Number(progress[v.id].stage||0)===0);if(count<=0||!unseenPool.length)return unseenPool.slice(0,count);for(const word of unseenPool){const sentence=word.sentence||word.exampleSentence||'';if(!sentence)continue;const companion=unseenPool.find(other=>other!==word&&wordBoundaryMatch(sentence,other));if(companion){const rest=unseenPool.filter(w=>w!==word&&w!==companion).slice(0,Math.max(0,count-2));return[word,companion,...rest].slice(0,count)}}return unseenPool.slice(0,count)}

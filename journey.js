@@ -1217,7 +1217,7 @@
   }
 
   function experimentalEnabled() {
-    return Boolean(window.KaishiQuestCloudAdapter?.experimentalUx?.());
+    return true;
   }
 
   function renderExperimentalTimeline(data, track, options = {}) {
@@ -1256,7 +1256,12 @@
     const virtualWindow = track.querySelector('.experimental-virtual-window');
     if (!timeline || !virtualWindow) return;
     timeline.style.setProperty('--experimental-header-clearance', `${headerClearance}px`);
-    const focusScrollTop = index => Math.max(0, offsets[index] - Math.max(0, (timeline.clientHeight - itemHeight(all[index])) / 2));
+    const nav = document.querySelector('#experimentalBottomNav');
+    const navClearance = Math.ceil((nav?.getBoundingClientRect().height || 98) + 24);
+    const focusScrollTop = index => {
+      const usableHeight = Math.max(240, timeline.clientHeight - navClearance);
+      return Math.max(0, offsets[index] - Math.max(0, (usableHeight - itemHeight(all[index])) / 2));
+    };
     let renderFrame = 0;
     let styleFrame = 0;
 
