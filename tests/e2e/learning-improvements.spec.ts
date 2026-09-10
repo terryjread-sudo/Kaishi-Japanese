@@ -75,6 +75,9 @@ test('experimental mobile Journey keeps lessons separated and restores them afte
   await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();
   await page.locator('#settingsBack').click();
   await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(10);
+  const jump=page.locator('.experimental-jump-current');
+  await expect(jump.locator('svg.sumie-action-frame')).toHaveCount(1);
+  await expect(jump.locator('.sumie-action-copy')).toContainText('現在地');
 
   const geometry=await page.locator('#journeyHistoryTrack').evaluate(()=>{
     const rows=[...document.querySelectorAll<HTMLElement>('.experimental-timeline-item')].slice(0,6).map(row=>row.getBoundingClientRect());
@@ -124,13 +127,19 @@ test('experimental panels return to their origin and guest account actions stay 
   const nav=page.getByRole('navigation',{name:'Experimental quick navigation'});
   await expect(nav).toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('進捗');await expect(nav).toContainText('仲間');
   await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(4);
-  await page.getByRole('navigation',{name:'Experimental quick navigation'}).getByRole('button',{name:'Progress'}).click();
+  await expect(nav.locator('.experimental-nav-panel .experimental-frame-line')).toHaveCount(4);
+  await expect(nav.locator('filter')).toHaveCount(2);
+  const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(4);
+  for(let index=0;index<4;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
+  const progressNav=page.locator('#experimentalBottomNav [data-experimental-nav="progress"]');await progressNav.click();await expect(progressNav).toHaveAttribute('aria-current','page');
   await expect(page.locator('#skillsOverview')).toHaveClass(/experimental-panel/);
   await page.getByRole('button',{name:'Close panel'}).click();await expect(page.locator('#journey')).toHaveClass(/active/);
   await page.getByRole('button',{name:'Open settings'}).click();await expect(page.locator('#appHeader')).toBeHidden();
   await expect(page.locator('#settingsBack')).toBeInViewport();await page.getByRole('tab',{name:/Account/}).click();
   await expect(page.locator('.cloud-actions')).toBeHidden();await expect(page.locator('#adminAreaLink')).toBeHidden();
   await page.locator('#settingsBack').click();await expect(page.locator('#appHeader')).toBeVisible();
+  const japanReady=page.locator('#experimentalJapanReady');await expect(japanReady.locator('svg.sumie-action-icon')).toHaveCount(1);await expect(japanReady.locator('svg.sumie-action-frame')).toHaveCount(1);
+  expect(await japanReady.evaluate(element=>getComputedStyle(element).borderRadius)).toBe('1px');
 });
 
 test('experimental profile reveals rhythm and keeps guest sign-in explicit',async({page})=>{
