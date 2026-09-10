@@ -113,6 +113,7 @@ test('experimental profile reveals rhythm and keeps guest sign-in explicit',asyn
   await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();await page.locator('#settingsBack').click();
   const profile=page.locator('#experimentalProfile');await expect(profile).toHaveAttribute('aria-expanded','false');await profile.click();
   const dialog=page.locator('#experimentalProfileDialog');await expect(dialog).toBeVisible();await expect(profile).toHaveAttribute('aria-expanded','true');
+  await expect(dialog.locator('.experimental-profile-reveal')).toHaveCSS('transition-duration','0.55s');
   await expect(dialog.getByRole('heading',{name:'Guest learner'})).toBeVisible();await expect(dialog.locator('#experimentalProfileRhythmDays .learning-rhythm-week-day')).toHaveCount(7);
   await expect(dialog.getByRole('button',{name:'Sign in to save progress',exact:true})).toBeVisible();
   const geometry=await dialog.evaluate(element=>{const avatar=element.querySelector('#experimentalProfileLargeAvatar')!.getBoundingClientRect();return{avatarWidth:avatar.width,overflow:element.scrollWidth-element.clientWidth}});
