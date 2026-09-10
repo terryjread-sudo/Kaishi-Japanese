@@ -187,7 +187,17 @@ function notebookWords(){return normaliseNotebookState().words}
 function notebookSentences(){return Array.isArray(meta.sentenceLabProgress?.saved)?meta.sentenceLabProgress.saved:[]}
 function notebookWordSaved(word){return Boolean(word&&notebookWords().some(item=>item.wordId===word.id))}
 function toggleNotebookWord(word){const words=notebookWords(),existing=words.findIndex(item=>item.wordId===word?.id);if(!word?.id)return false;if(existing>=0){words.splice(existing,1);save();toast('Removed from Notebook');return false}words.unshift({wordId:word.id,word:word.word||'',reading:word.reading||'',meaning:word.meaning||'',wordAudio:word.wordAudio||'',savedAt:Date.now()});meta.notebook.words=words.slice(0,NOTEBOOK_WORD_LIMIT);save();toast('Saved to Notebook');return true}
-function ensureNotebookDialog(){let dialog=$('#learningNotebookDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend','<dialog id="learningNotebookDialog" class="learning-notebook-dialog"><section class="learning-notebook"><header><div><span class="eyebrow">Your learning notebook</span><h2>Words worth keeping</h2></div><button id="learningNotebookClose" class="learning-notebook-close" type="button" aria-label="Close notebook">×</button></header><div class="learning-notebook-tabs" role="tablist" aria-label="Notebook sections"><button type="button" data-notebook-tab="words" role="tab">Words</button><button type="button" data-notebook-tab="sentences" role="tab">Sentences</button></div><div id="learningNotebookContent"></div></section></dialog>');dialog=$('#learningNotebookDialog');$('#learningNotebookClose').onclick=()=>dialog.close();return dialog}
+const EXPERIMENTAL_UTILITY_COPY={
+ notebook:{japanese:'ノート · 帖',title:'Learning Notebook',description:'Keep useful Japanese close at hand.'},
+ collection:{japanese:'収集 · 図鑑',title:'Your Collection',description:'Browse the Japanese you have discovered.'},
+ progress:{japanese:'進捗 · 歩み',title:'Learning Progress',description:'See your rhythm, recall and growing confidence.'},
+ community:{japanese:'衆 · 仲間',title:'Kaishi Community',description:'Learn alongside friends and fellow learners.'}
+};
+function experimentalUtilityHeader(action,closeAttribute=''){
+ const copy=EXPERIMENTAL_UTILITY_COPY[action],sourceIcon=$(`[data-experimental-nav="${action}"] .experimental-nav-icon`),icon=sourceIcon?sourceIcon.outerHTML:'';
+ return `<header class="experimental-utility-header" data-experimental-utility="${action}"><span class="experimental-utility-header-icon" aria-hidden="true">${icon}</span><div class="experimental-utility-heading"><span class="eyebrow" lang="ja">${copy.japanese}</span><h2>${copy.title}</h2><p>${copy.description}</p></div><button ${closeAttribute} class="learning-notebook-close experimental-utility-close" type="button" aria-label="Close ${copy.title}"><span aria-hidden="true">×</span><span class="experimental-utility-close-copy"><small lang="ja">閉じる</small><b>Close</b></span></button></header>`;
+}
+function ensureNotebookDialog(){let dialog=$('#learningNotebookDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend',`<dialog id="learningNotebookDialog" class="learning-notebook-dialog"><section class="learning-notebook">${experimentalUtilityHeader('notebook','id="learningNotebookClose"')}<div class="learning-notebook-tabs" role="tablist" aria-label="Notebook sections"><button type="button" data-notebook-tab="words" role="tab">Words</button><button type="button" data-notebook-tab="sentences" role="tab">Sentences</button></div><div id="learningNotebookContent"></div></section></dialog>`);dialog=$('#learningNotebookDialog');$('#learningNotebookClose').onclick=()=>dialog.close();return dialog}
 function notebookWordHtml(item,index){return `<article class="notebook-entry notebook-word-entry"><strong class="notebook-ink" lang="ja">${esc(item.word)}</strong><small class="notebook-reading" hidden>${esc(item.reading)}</small><p class="notebook-meaning" hidden>${esc(item.meaning)}</p><time>${esc(new Date(item.savedAt||Date.now()).toLocaleDateString())}</time><div class="notebook-entry-actions"><button type="button" data-notebook-word-audio="${index}" aria-label="Play ${esc(item.word)}">🔊</button><button type="button" data-notebook-word-reading="${index}">Reading</button><button type="button" data-notebook-word-meaning="${index}">EN</button><button type="button" data-notebook-word-remove="${index}" aria-label="Remove ${esc(item.word)}">×</button></div></article>`}
 function notebookSentenceHtml(item,index){return `<article class="notebook-entry notebook-sentence-entry"><strong class="notebook-ink" lang="ja">${esc(item.sentence)}</strong><small class="notebook-reading" hidden>${esc(item.reading)}</small><p class="notebook-meaning" hidden>${esc(item.meaning)}</p><time>${esc(new Date(item.savedAt||Date.now()).toLocaleDateString())}</time><div class="notebook-entry-actions"><button type="button" data-notebook-sentence-audio="${index}" aria-label="Play saved sentence">🔊</button><button type="button" data-notebook-sentence-reading="${index}">Reading</button><button type="button" data-notebook-sentence-meaning="${index}">EN</button><button type="button" data-notebook-sentence-practise="${index}">Practise</button><button type="button" data-notebook-sentence-remove="${index}" aria-label="Remove saved sentence">×</button></div></article>`}
 function renderLearningNotebook(tab='words'){
@@ -262,23 +272,44 @@ function resetScreenScroll(id,focusTarget=''){
 function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);document.body.classList.toggle('experimental-settings-active',enabled&&id==='settings');$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
+let experimentalNotebookHistoryActive=false;
+function removeExperimentalPanelChrome(panel){panel.classList.remove('experimental-panel');panel.querySelector('.experimental-utility-header')?.remove()}
+function setExperimentalPanelBackdrop(open){
+ let backdrop=$('#experimentalUtilityBackdrop');
+ if(open&&!backdrop){backdrop=document.createElement('button');backdrop.id='experimentalUtilityBackdrop';backdrop.className='experimental-utility-backdrop';backdrop.type='button';backdrop.setAttribute('aria-label','Close utility panel');backdrop.addEventListener('click',()=>closeExperimentalPanel());document.body.append(backdrop)}
+ backdrop?.classList.toggle('is-open',open);
+ backdrop?.setAttribute('aria-hidden',String(!open));
+}
 function closeExperimentalPanel(fromHistory=false){
  const origin=experimentalPanelOrigin==='home'?'home':'journey';
- document.querySelectorAll('.screen.experimental-panel').forEach(panel=>panel.classList.remove('experimental-panel'));
+ document.querySelectorAll('.screen.experimental-panel').forEach(removeExperimentalPanelChrome);setExperimentalPanelBackdrop(false);
  experimentalPanelHistoryActive=false;
  if(!fromHistory&&history.state?.kaishiExperimentalPanel)history.back();
  if(origin==='journey'&&typeof openJourney==='function')openJourney('current');else show(origin);
 }
 function openExperimentalPanel(id,render){
  const panel=$(`#${id}`);if(!panel)return;
- const active=$('.screen.active')?.id||'journey';experimentalPanelOrigin=active==='home'?'home':'journey';
+ const activePanel=$('.screen.active.experimental-panel'),active=$('.screen.active')?.id||'journey',switching=Boolean(activePanel);
+ if(!switching)experimentalPanelOrigin=active==='home'?'home':'journey';
  if(typeof render==='function')render();
+ document.querySelectorAll('.screen.experimental-panel').forEach(existing=>{if(existing!==panel)removeExperimentalPanelChrome(existing)});
  panel.classList.add('experimental-panel');
- let close=panel.querySelector('.experimental-panel-close');
- if(!close){close=document.createElement('button');close.type='button';close.className='experimental-panel-close';close.setAttribute('aria-label','Close panel');close.textContent='×';close.addEventListener('click',()=>closeExperimentalPanel());panel.prepend(close)}
+ const action={collection:'collection',skillsOverview:'progress',community:'community'}[id];
+ panel.querySelector('.experimental-utility-header')?.remove();panel.insertAdjacentHTML('afterbegin',experimentalUtilityHeader(action,'data-experimental-panel-close'));
+ const panelClose=panel.querySelector('[data-experimental-panel-close]');panelClose.classList.add('experimental-panel-close');panelClose.setAttribute('aria-label','Close panel');panelClose.addEventListener('click',()=>closeExperimentalPanel());setExperimentalPanelBackdrop(true);
  if(panel.dataset.experimentalBackBound!=='1'){panel.dataset.experimentalBackBound='1';panel.addEventListener('click',event=>{const button=event.target.closest('.study-top>button');if(!button||!panel.classList.contains('experimental-panel'))return;event.preventDefault();event.stopImmediatePropagation();closeExperimentalPanel()},true)}
  show(id);
- history.pushState({...history.state,kaishiExperimentalPanel:id},'',location.href);experimentalPanelHistoryActive=true;
+ const nextState={...history.state,kaishiExperimentalPanel:id};delete nextState.kaishiExperimentalNotebook;
+ if(switching&&experimentalPanelHistoryActive)history.replaceState(nextState,'',location.href);else history.pushState(nextState,'',location.href);experimentalPanelHistoryActive=true;
+}
+function openExperimentalNotebook(){
+ const dialog=ensureNotebookDialog();dialog.classList.add('experimental-utility-dialog');openLearningNotebook('words');
+ if(dialog.dataset.experimentalUtilityBound!=='1'){
+  dialog.dataset.experimentalUtilityBound='1';
+  dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
+  dialog.addEventListener('close',()=>{const wasHistoryActive=experimentalNotebookHistoryActive;experimentalNotebookHistoryActive=false;dialog.classList.remove('experimental-utility-dialog');updateExperimentalNavVisibility();if(wasHistoryActive&&history.state?.kaishiExperimentalNotebook)history.back()});
+ }
+ const nextState={...history.state,kaishiExperimentalNotebook:true};history.pushState(nextState,'',location.href);experimentalNotebookHistoryActive=true;
 }
 let experimentalProfileHistoryActive=false;
 let experimentalProfileAfterClose=null;
@@ -307,16 +338,17 @@ function closeExperimentalProfile(fromHistory=false,afterClose=null){
 function openExperimentalProfile(){
  const dialog=$('#experimentalProfileDialog'),profile=$('#experimentalProfile');if(!dialog||!profile||dialog.open)return;renderExperimentalProfile();const rect=profile.getBoundingClientRect(),reveal=dialog.querySelector('.experimental-profile-reveal');reveal?.style.setProperty('--profile-origin-x',`${Math.round(rect.left+rect.width/2)}px`);reveal?.style.setProperty('--profile-origin-y',`${Math.round(rect.top+rect.height/2)}px`);dialog.classList.remove('is-closing');dialog.showModal();document.body.classList.add('experimental-profile-open');profile.setAttribute('aria-expanded','true');requestAnimationFrame(()=>{dialog.classList.add('is-open');requestAnimationFrame(()=>$('#experimentalProfileClose')?.focus?.({preventScroll:true}))});history.pushState({...history.state,kaishiExperimentalProfile:true},'',location.href);experimentalProfileHistoryActive=true;
 }
-window.addEventListener('popstate',()=>{if(experimentalProfileHistoryActive&&$('#experimentalProfileDialog')?.open)closeExperimentalProfile(true);else if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel'))closeExperimentalPanel(true)});
+window.addEventListener('popstate',event=>{if(experimentalProfileHistoryActive&&$('#experimentalProfileDialog')?.open)closeExperimentalProfile(true);else if(experimentalNotebookHistoryActive&&$('#learningNotebookDialog')?.open){experimentalNotebookHistoryActive=false;$('#learningNotebookDialog').close()}else if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel')&&!event.state?.kaishiExperimentalPanel)closeExperimentalPanel(true)});
 function bindExperimentalBottomNav(){
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
   document.querySelectorAll('[data-experimental-nav]').forEach(item=>{item.classList.toggle('is-active',item===button);if(item===button)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
-  if(action==='notebook'){openLearningNotebook('words');const dialog=$('#learningNotebookDialog');if(dialog&&dialog.dataset.experimentalNavCloseBound!=='1'){dialog.dataset.experimentalNavCloseBound='1';dialog.addEventListener('close',updateExperimentalNavVisibility)}}
+  if(action==='notebook')openExperimentalNotebook();
   else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
   else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores());
   else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
  }));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.screen.active.experimental-panel')&&!document.querySelector('dialog[open]')){event.preventDefault();closeExperimentalPanel()}});
 }
 function bindExperimentalHeader(){
  const japanReady=$('#experimentalJapanReady');if(japanReady)syncExperimentalHeaderAction();
