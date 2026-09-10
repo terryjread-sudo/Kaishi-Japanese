@@ -236,14 +236,19 @@ function updateExperimentalNavVisibility(){
  if(!nav)return;
  const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder';
  const inPanel=Boolean($('.screen.active.experimental-panel'));
- const visible=enabled&&!inLesson&&!inPanel&&(active==='home'||active==='journey');
+ const activeAction={collection:'collection',skillsOverview:'progress',community:'community'}[active]||'';
+ nav.querySelectorAll('[data-experimental-nav]').forEach(item=>{const current=item.dataset.experimentalNav===activeAction;item.classList.toggle('is-active',current);if(current)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
+ const visible=enabled&&!inLesson&&(inPanel||active==='home'||active==='journey');
  nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
 }
 function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
  const button=$('#experimentalJapanReady');if(!button)return;
  const journeyActive=settings.experimentalJourneyUx===true&&screenId==='japanReady';
  button.classList.toggle('experimental-header-journey',journeyActive);
- button.innerHTML=journeyActive?'↩ <span>Journey</span>':'<span aria-hidden="true">⛩️</span><span class="experimental-japan-label"><span>Japan</span><span>Ready</span></span>';
+ const frame='<svg class="sumie-action-frame" viewBox="0 0 140 52" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14V2h12M126 2h12v12M2 38v12h12M126 50h12V38"/></svg>';
+ const journeyIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M39 13H17c-7 0-11 5-11 11s4 11 11 11h16M25 27l8 8-8 8"/></svg>';
+ const toriiIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M7 15h34M11 15l3-8 4 8m12 0 4-8 3 8M15 17v24m18-24v24M9 41h30M24 17v24"/></svg>';
+ button.innerHTML=journeyActive?`${frame}${journeyIcon}<span class="sumie-action-copy"><small lang="ja">旅路</small><b>Journey</b></span>`:`${frame}${toriiIcon}<span class="sumie-action-copy"><small lang="ja">日本へ</small><b>Japan Ready</b></span>`;
  button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
  button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
 }
@@ -307,7 +312,7 @@ function bindExperimentalBottomNav(){
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
   document.querySelectorAll('[data-experimental-nav]').forEach(item=>{item.classList.toggle('is-active',item===button);if(item===button)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
-  if(action==='notebook')openLearningNotebook('words');
+  if(action==='notebook'){openLearningNotebook('words');const dialog=$('#learningNotebookDialog');if(dialog&&dialog.dataset.experimentalNavCloseBound!=='1'){dialog.dataset.experimentalNavCloseBound='1';dialog.addEventListener('close',updateExperimentalNavVisibility)}}
   else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
   else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores());
   else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
