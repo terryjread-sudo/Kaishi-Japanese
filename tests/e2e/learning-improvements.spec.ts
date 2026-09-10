@@ -96,15 +96,41 @@ test('experimental mobile Journey keeps lessons separated and restores them afte
   await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(10);
 });
 
+test('experimental desktop Journey remains clickable after restoring saved history',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});
+  await page.addInitScript(()=>{
+    localStorage.setItem('kq-profile-v1:guest:kq-settings',JSON.stringify({experimentalJourneyUx:true}));
+    localStorage.setItem('kq-profile-v1:guest:kq-meta',JSON.stringify({sessionHistory:[{id:'restored-session',title:'Saved lesson',wordIds:[],completedAt:Date.now(),attempts:3,correct:2}]}));
+  });
+  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.reload();
+  const track=page.locator('#journeyHistoryTrack');
+  await expect(track.locator('.experimental-timeline-item').first()).toBeVisible();
+  expect(await track.locator('.experimental-timeline-item').count()).toBeGreaterThan(1);
+  await expect(page.locator('#kqRoadAheadBubble')).toBeHidden();
+  const alternate=track.locator('[data-experimental-select]').nth(1);
+  const lessonId=await alternate.locator('xpath=ancestor::*[@data-experimental-lesson][1]').getAttribute('data-experimental-lesson');
+  await alternate.click();
+  await expect(track).not.toHaveClass(/dragging/);
+  await expect(track).toHaveAttribute('data-kq-experimental-selected',lessonId!);
+  await track.getByRole('button',{name:/Continue lesson|Practice|Start lesson/}).first().click();
+  await expect(page.locator('#journeySessionPreviewDialog')).toBeVisible();
+});
+
 test('experimental panels return to their origin and guest account actions stay hidden',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
   await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();await page.locator('#settingsBack').click();
+  const nav=page.getByRole('navigation',{name:'Experimental quick navigation'});
+  await expect(nav).toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('進捗');await expect(nav).toContainText('仲間');
+  await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(4);
   await page.getByRole('navigation',{name:'Experimental quick navigation'}).getByRole('button',{name:'Progress'}).click();
   await expect(page.locator('#skillsOverview')).toHaveClass(/experimental-panel/);
   await page.getByRole('button',{name:'Close panel'}).click();await expect(page.locator('#journey')).toHaveClass(/active/);
-  await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('tab',{name:/Account/}).click();
+  await page.getByRole('button',{name:'Open settings'}).click();await expect(page.locator('#appHeader')).toBeHidden();
+  await expect(page.locator('#settingsBack')).toBeInViewport();await page.getByRole('tab',{name:/Account/}).click();
   await expect(page.locator('.cloud-actions')).toBeHidden();await expect(page.locator('#adminAreaLink')).toBeHidden();
+  await page.locator('#settingsBack').click();await expect(page.locator('#appHeader')).toBeVisible();
 });
 
 test('experimental profile reveals rhythm and keeps guest sign-in explicit',async({page})=>{

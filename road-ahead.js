@@ -24,6 +24,7 @@
         border:1px solid rgba(0,0,0,.10);box-shadow:0 4px 14px rgba(0,0,0,.14);
         pointer-events:none;transition:opacity .15s ease}
       #${BUBBLE_ID}[hidden]{display:none}
+      body.experimental-journey-enabled #${BUBBLE_ID}{display:none!important}
       #${BUBBLE_ID} .kq-ra-sensei{flex:0 0 44px;width:44px;height:44px;object-fit:contain;align-self:flex-end}
       #${BUBBLE_ID} .kq-ra-text{min-width:0;display:flex;flex-direction:column;gap:1px}
       #${BUBBLE_ID} .kq-ra-title{font-weight:800;font-size:.82rem;white-space:nowrap;

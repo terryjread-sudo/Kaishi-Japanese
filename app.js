@@ -247,14 +247,14 @@ function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
  button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
  button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
 }
-function syncExperimentalHeaderClearance(){const style=document.body?.style;if(!style||typeof style.setProperty!=='function')return;const header=$('#appHeader.experimental-journey-enabled');style.setProperty('--experimental-header-clearance',header?`${Math.ceil(header.getBoundingClientRect().height+16)}px`:'')}
+function syncExperimentalHeaderClearance(){const style=document.body?.style;if(!style||typeof style.setProperty!=='function')return;const header=$('#appHeader.experimental-journey-enabled'),hidden=document.body.classList.contains('experimental-settings-active');style.setProperty('--experimental-header-clearance',header&&!hidden?`${Math.ceil(header.getBoundingClientRect().height+16)}px`:'')}
 function resetScreenScroll(id,focusTarget=''){
  const reset=()=>{const scrolling=document.scrollingElement||document.documentElement;if(scrolling)scrolling.scrollTop=0;window.scrollTo(0,0)};
  reset();
  if(id!=='study'&&settings.experimentalJourneyUx!==true)return;
  requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
-function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
+function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');const enabled=settings.experimentalJourneyUx===true;document.body.classList.toggle('experimental-journey-enabled',enabled);document.body.classList.toggle('experimental-settings-active',enabled&&id==='settings');$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
 function closeExperimentalPanel(fromHistory=false){
@@ -306,6 +306,7 @@ window.addEventListener('popstate',()=>{if(experimentalProfileHistoryActive&&$('
 function bindExperimentalBottomNav(){
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
+  document.querySelectorAll('[data-experimental-nav]').forEach(item=>{item.classList.toggle('is-active',item===button);if(item===button)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
   if(action==='notebook')openLearningNotebook('words');
   else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
   else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores());
@@ -326,6 +327,7 @@ function bindExperimentalHeader(){
 function renderExperimentalJourneyUx(){
  const enabled=settings.experimentalJourneyUx===true;
  document.body.classList.toggle('experimental-journey-enabled',enabled);$('#appHeader')?.classList.toggle('experimental-journey-enabled',enabled);
+ document.body.classList.toggle('experimental-settings-active',enabled&&$('.screen.active')?.id==='settings');
  const legacy=document.querySelector('.standard-header-content'),actions=document.querySelector('.standard-header-actions'),panel=$('#experimentalHeaderContent');
  if(legacy)legacy.hidden=enabled;
  if(actions)actions.hidden=enabled;
@@ -565,11 +567,24 @@ function renderHistoryTimeline(){
 const historyTimelineDragBound=new WeakSet();
 function bindHistoryTimelineDrag(track){
  if(historyTimelineDragBound.has(track))return;historyTimelineDragBound.add(track);
- let dragging=false,startX=0,startScroll=0,moved=false;
- track.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')return;dragging=true;moved=false;startX=event.clientX;startScroll=track.scrollLeft;try{track.setPointerCapture(event.pointerId)}catch{}track.classList.add('dragging')});
- track.addEventListener('pointermove',event=>{if(!dragging)return;const dx=event.clientX-startX;if(Math.abs(dx)>4)moved=true;track.scrollLeft=startScroll-dx});
- const end=event=>{if(!dragging)return;dragging=false;track.classList.remove('dragging');if(moved){const tile=event.target.closest('[data-history-tile]');if(tile)tile.dataset.dragSuppressed='1'}};
- track.addEventListener('pointerup',end);track.addEventListener('pointercancel',end);track.addEventListener('pointerleave',end);
+ let tracking=false,dragging=false,startX=0,startScroll=0,pointerId=null;
+ const interactive='button,a,input,select,textarea,[role="button"],[data-kq-action]';
+ track.addEventListener('pointerdown',event=>{
+  if(event.pointerType==='touch'||event.button!==0||event.target.closest(interactive))return;
+  tracking=true;dragging=false;pointerId=event.pointerId;startX=event.clientX;startScroll=track.scrollLeft;
+ });
+ track.addEventListener('pointermove',event=>{
+  if(!tracking||event.pointerId!==pointerId)return;
+  const dx=event.clientX-startX;
+  if(!dragging&&Math.abs(dx)>6){dragging=true;track.classList.add('dragging');try{track.setPointerCapture(event.pointerId)}catch{}}
+  if(dragging)track.scrollLeft=startScroll-dx;
+ });
+ const end=event=>{
+  if(!tracking||(event?.pointerId!==undefined&&event.pointerId!==pointerId))return;
+  const wasDragging=dragging;tracking=false;dragging=false;pointerId=null;track.classList.remove('dragging');
+  if(wasDragging){const tile=event?.target?.closest?.('[data-history-tile]');if(tile)tile.dataset.dragSuppressed='1'}
+ };
+ track.addEventListener('pointerup',end);track.addEventListener('pointercancel',end);track.addEventListener('lostpointercapture',end);window.addEventListener('blur',()=>end());
 }
 function ensureHistoryEntryDialog(){let dialog=$('#historyEntryDialog');if(dialog)return dialog;document.body.insertAdjacentHTML('beforeend','<dialog id="historyEntryDialog" class="history-entry-dialog"><div class="history-entry-dialog-inner"><span class="eyebrow" id="historyEntryDialogDate"></span><h2 id="historyEntryDialogTitle"></h2><div id="historyEntryDialogStats" class="history-entry-dialog-stats"></div><div id="historyEntryDialogWords" class="history-entry-words"></div><div class="history-entry-dialog-actions"><button id="historyEntryDialogClose" type="button">Close</button><button id="historyEntryDialogRedo" class="primary" type="button">Redo this lesson</button></div></div></dialog>');$('#historyEntryDialogClose').onclick=closeHistoryEntryDialog;return $('#historyEntryDialog')}
 function openHistoryEntryDialog(id){
