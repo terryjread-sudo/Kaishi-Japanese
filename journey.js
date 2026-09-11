@@ -1245,7 +1245,7 @@
     let totalHeight = headerClearance;
     all.forEach(item => { offsets.push(totalHeight); totalHeight += itemHeight(item) + ITEM_GAP; });
     totalHeight += headerClearance + 120;
-    track.innerHTML = `<div class="experimental-journey-shell">
+    track.innerHTML = `<div class="experimental-journey-shell"><img class="experimental-journey-hero-art" src="media/experimental/kaishi-journey-hero.png" alt="" aria-hidden="true">
       <aside class="experimental-journey-world" aria-hidden="true"><img src="icons/kaishi-header-characters-transparent.png" alt=""><div><small>一緒にがんばろう</small><strong>Your adventure starts here</strong></div></aside>
       <button type="button" class="experimental-jump-current sumie-action-button" data-experimental-jump><svg class="sumie-action-frame" viewBox="0 0 190 58" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14V2h12M176 2h12v12M2 44v12h12M176 56h12V44"/></svg><svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path class="sumie-enso" d="M36 10C21 0 6 10 8 25c2 14 19 20 31 9"/><path d="M24 12v23m-7-7 7 7 7-7"/></svg><span class="sumie-action-copy"><small lang="ja">現在地</small><b>Jump to current lesson</b></span></button>
       <div class="experimental-journey-timeline" role="list" aria-label="Journey lessons"><span class="experimental-selection-bar" aria-hidden="true"></span><div class="experimental-virtual-spacer" style="height:${totalHeight}px"></div><div class="experimental-virtual-window"></div></div>

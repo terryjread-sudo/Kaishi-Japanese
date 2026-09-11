@@ -2310,6 +2310,7 @@ body.experimental-journey-enabled #journeyHistoryTrack{background:
   url("media/experimental/kaishi-journey-hero.png") center top/cover no-repeat,
   #0f172a;}
 body.experimental-journey-enabled .experimental-journey-shell{padding-top:clamp(220px,28vw,300px);background-color:transparent;background-image:linear-gradient(180deg,rgba(15,23,42,.04),rgba(15,23,42,.97) 410px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cpath d='M0,20 A20,20 0 0,1 40,20 A20,20 0 0,1 0,20' fill='none' stroke='%23ffffff' stroke-opacity='.04'/%3E%3C/svg%3E");}
+body.experimental-journey-enabled .experimental-journey-hero-art{position:absolute;z-index:0;inset:0 0 auto;width:100%;height:clamp(220px,28vw,300px);object-fit:cover;object-position:center top;opacity:1;pointer-events:none;}
 body.experimental-journey-enabled .experimental-journey-world{top:clamp(250px,35vw,350px);}
 body.experimental-journey-enabled .experimental-journey-timeline{height:calc(100dvh - 120px);min-height:520px;padding-bottom:max(148px,calc(env(safe-area-inset-bottom) + 136px));scroll-padding-bottom:max(148px,calc(env(safe-area-inset-bottom) + 136px));box-sizing:border-box;}
 body.experimental-journey-enabled .experimental-timeline-item{padding-bottom:18px;}
@@ -2323,4 +2324,5 @@ body.experimental-journey-enabled .experimental-profile-dialog .experimental-pro
 body.experimental-journey-enabled .screen.experimental-panel.active,
 body.experimental-journey-enabled .experimental-utility-dialog{border-radius:14px;}
 @media(max-width:680px){body.experimental-journey-enabled .experimental-bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr));padding-inline:2px}body.experimental-journey-enabled .experimental-journey-shell{padding-top:clamp(250px,72vw,330px)}body.experimental-journey-enabled .experimental-journey-world{top:220px}.experimental-bottom-nav button>b{font-size:clamp(9px,2.8vw,13px)}}
+@media(max-width:680px){body.experimental-journey-enabled .experimental-journey-hero-art{height:clamp(250px,72vw,330px);object-position:center top}}
 @media(max-width:680px){.experimental-journey-world{top:78px;right:2px;width:210px}.experimental-journey-world img{height:100px;opacity:.18}.experimental-journey-world div{right:6px;bottom:2px}.experimental-journey-world strong{font-size:.68rem}.experimental-journey-world small{font-size:.58rem}.experimental-card-character{right:-22px;bottom:-24px;width:98px;height:128px}.experimental-card-description,.experimental-card-footer,.experimental-progress-track{max-width:calc(100% - 58px)!important}}
