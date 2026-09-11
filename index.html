@@ -3,27 +3,25 @@
 <div id="firstLaunchOverlay" class="first-launch-overlay" hidden>
   <section class="first-launch-card" role="dialog" aria-modal="true" aria-labelledby="firstLaunchTitle">
     <button id="firstLaunchClose" class="first-launch-close" type="button" aria-label="Close welcome">×</button>
-    <div class="first-launch-hero">
-      <div class="first-launch-logo">開</div>
-      <div>
-        <span class="eyebrow">Welcome to Kaishi Japanese</span>
-        <h1 id="firstLaunchTitle">Learn your first Japanese in three minutes</h1>
-        <p>Meet three useful words, hear them clearly, then prove you can remember them. Sensei will guide every step.</p>
+    <div class="first-launch-visual"><img src="media/experimental/kaishi-journey-hero.png" alt="A bright journey through Japan"><span>一歩ずつ、もっと遠くへ</span></div>
+    <div class="first-launch-content">
+      <span class="eyebrow">Welcome to Kaishi Japanese</span>
+      <h1 id="firstLaunchTitle">Take your first step toward Japan.</h1>
+      <p>Start with three useful words, meet your guide, and build a learning rhythm that grows with you.</p>
+
+      <div class="first-launch-features first-launch-steps">
+        <article><span>旅</span><div><strong>Meet your guide</strong><p>Sensei introduces practical Japanese in a clear, friendly first lesson.</p></div></article>
+        <article><span>歩</span><div><strong>Build your rhythm</strong><p>Small, meaningful study days turn into steady progress.</p></div></article>
+        <article><span>開</span><div><strong>Unlock new characters</strong><p>Signed-in learners can choose characters as their journey grows.</p></div></article>
       </div>
-    </div>
 
-    <div class="first-launch-features first-launch-steps">
-      <article><span>1</span><div><strong>See and hear</strong><p>Sensei introduces three useful Japanese words without testing you immediately.</p></div></article>
-      <article><span>2</span><div><strong>Make a memory</strong><p>Connect each sound to a clear image and meaning.</p></div></article>
-      <article><span>3</span><div><strong>Recall successfully</strong><p>Try three recall questions and earn your first learning-rhythm stamp.</p></div></article>
+      <div class="first-launch-actions">
+        <button id="firstLaunchFirstLesson" class="primary" type="button">Start Lesson 1</button>
+        <button id="firstLaunchStart" type="button">Explore Journey</button>
+        <button id="firstLaunchSignIn" type="button">Sign in to save progress</button>
+      </div>
+      <small>Your guest progress stays on this device. Sign in to save it across devices and choose an avatar after Lesson 1.</small>
     </div>
-
-    <div class="first-launch-actions">
-      <button id="firstLaunchFirstLesson" class="primary" type="button">Learn my first three words</button>
-      <button id="firstLaunchStart" type="button">Explore first</button>
-      <button id="firstLaunchSignIn" type="button">Sign in to save progress</button>
-    </div>
-    <small>Your progress stays on this device unless you sign in with GitHub.</small>
   </section>
 </div>
 

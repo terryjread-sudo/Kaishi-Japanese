@@ -43,7 +43,7 @@ test('first lesson preview does not offer an unavailable conversation', async ({
 
 test('focused lesson practice shows the learner-facing mastery path', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore first' }).click();
+  await page.getByRole('button', { name: 'Explore Journey' }).click();
   await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
   await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
 
@@ -118,7 +118,7 @@ test('test learner can launch an immersive activity after app initialization', a
 
 test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore first' }).click();
+  await page.getByRole('button', { name: 'Explore Journey' }).click();
 
   await page.evaluate(async () => {
     const [catalog, words] = await Promise.all([
@@ -150,7 +150,7 @@ test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) 
 
 test('the Journey uses the spoken-first foundation and tracks a connector card', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore first' }).click();
+  await page.getByRole('button', { name: 'Explore Journey' }).click();
 
   await page.evaluate(async () => {
     const words = await fetch('data/vocabulary.json').then((response) => response.json());
@@ -175,7 +175,7 @@ test('the Journey uses the spoken-first foundation and tracks a connector card',
 
 test('a scheduled connector does not displace its Aiko and Kai story card', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore first' }).click();
+  await page.getByRole('button', { name: 'Explore Journey' }).click();
   await expect.poll(() => page.evaluate(() => (0, eval)('Boolean(storySceneCatalog?.scenes?.length)'))).toBe(true);
 
   const skills = await page.evaluate(() => (0, eval)('makeSession(1); session.map(item => item.skill)')) as string[];
@@ -322,7 +322,7 @@ test('image diagnostics includes imported Katakana Core mnemonic scenes', async 
 test('the Journey bottom navigation opens the shared notebook', async ({ page }) => {
   await page.goto('/');
 
-  await page.getByRole('button', { name: 'Explore first' }).click();
+  await page.getByRole('button', { name: 'Explore Journey' }).click();
 
   const notebook = page.locator('[data-experimental-nav="notebook"]');
   await expect(notebook).toBeVisible();

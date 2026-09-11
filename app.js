@@ -2413,15 +2413,16 @@ window.setTimeout(()=>{
 
 function hasAnyKaishiLocalData(){
   try{
+    if(Object.keys(progress||{}).length>0)return true;
+    if(String(meta?.lastStudy||'')||Number(meta?.totalAnswers||0)>0||Number(meta?.firstLessonStartedAt||0)>0||Number(meta?.streak||0)>0)return true;
+    if(Array.isArray(meta?.sessionHistory)&&meta.sessionHistory.length>0)return true;
+    if(Number(meta?.dailyActivity?.tested||0)>0||Object.keys(meta?.rhythmHistory||{}).length>0)return true;
     if(localStorage.length===0)return false;
     for(let index=0;index<localStorage.length;index++){
       const key=localStorage.key(index);
-      if(key&&(
-        key.toLowerCase().includes('kaishi')||
-        key.toLowerCase().includes('kakashi')||
-        key.toLowerCase().includes('progress')||
-        key.toLowerCase().includes('journey')
-      ))return true;
+      if(!key||(!key.endsWith(':kq-progress')&&key!=='kq-progress'))continue;
+      const value=JSON.parse(localStorage.getItem(key)||'{}');
+      if(value&&typeof value==='object'&&Object.keys(value).length>0)return true;
     }
     return false;
   }catch(error){
@@ -2434,6 +2435,41 @@ function dismissFirstLaunch(){
   if(overlay)overlay.hidden=true;
   try{localStorage.setItem('kaishi_first_launch_seen','1')}catch(error){}
 }
+function requestFirstLaunchSignIn(){
+  const signIn=document.getElementById('cloudSignIn')||document.getElementById('dashboardSignIn');
+  if(signIn){signIn.click();return}
+  toast('Sign-in is not available right now. You can try again from Settings.');
+}
+function showFirstLaunchWelcome(markSeen=false){
+  const overlay=document.getElementById('firstLaunchOverlay');
+  if(!overlay||isAdminTestMode())return;
+  if(markSeen)dismissFirstLaunch();
+  overlay.hidden=false;
+  document.body.classList.add('welcome-open');
+  requestAnimationFrame(()=>document.getElementById('firstLaunchFirstLesson')?.focus?.({preventScroll:true}));
+}
+function installWelcomeTourControl(){
+  const panel=document.getElementById('settingsPanel-about');
+  if(!panel||panel.querySelector('#openWelcomeTour'))return;
+  const button=document.createElement('button');
+  button.id='openWelcomeTour';button.type='button';button.className='settings-link';button.textContent='Replay welcome tour';
+  panel.querySelector('.acknowledgement')?.before(button);
+  button.addEventListener('click',()=>showFirstLaunchWelcome());
+}
+function installFirstLessonCompletionAction(){
+  const card=document.getElementById('card');
+  if(!card)return;
+  const addSignIn=()=>{
+    if(!String(card.textContent||'').includes('First lesson complete')||card.querySelector('#firstLessonSignIn')||window.KaishiCloud?.isSignedIn?.())return;
+    const actions=card.querySelector('.mission-complete-actions');
+    if(!actions)return;
+    const button=document.createElement('button');
+    button.id='firstLessonSignIn';button.type='button';button.textContent='Sign in to save progress';
+    button.addEventListener('click',requestFirstLaunchSignIn);actions.append(button);
+  };
+  new MutationObserver(addSignIn).observe(card,{childList:true,subtree:true});
+  addSignIn();
+}
 function initialiseFirstLaunchWelcome(){
   const overlay=document.getElementById('firstLaunchOverlay');
   if(!overlay)return;
@@ -2442,11 +2478,17 @@ function initialiseFirstLaunchWelcome(){
     document.body.classList.remove('welcome-open');
     return;
   }
+  installWelcomeTourControl();
   let seen=false;
   try{seen=localStorage.getItem('kaishi_first_launch_seen')==='1'}catch(error){}
+  const revealIfEligible=()=>{
+    let currentSeen=false;
+    try{currentSeen=localStorage.getItem('kaishi_first_launch_seen')==='1'}catch(error){}
+    if(!currentSeen&&!hasAnyKaishiLocalData())showFirstLaunchWelcome();
+  };
   if(!seen&&!hasAnyKaishiLocalData()){
-    overlay.hidden=false;
-    document.body.classList.add('welcome-open');
+    const fallback=window.setTimeout(revealIfEligible,6000);
+    window.addEventListener('kaishi-onboarding-ready',()=>{window.clearTimeout(fallback);revealIfEligible()},{once:true});
   }
   const close=()=>{
     dismissFirstLaunch();
@@ -2464,11 +2506,11 @@ function initialiseFirstLaunchWelcome(){
   });
   document.getElementById('firstLaunchSignIn')?.addEventListener('click',async()=>{
     close();
-    const signIn=document.getElementById('dashboardSignIn')||document.getElementById('cloudSignIn');
-    if(signIn)signIn.click();
+    requestFirstLaunchSignIn();
   });
 }
 
 initialiseFirstLaunchWelcome();
+installFirstLessonCompletionAction();
 
 document.addEventListener('visibilitychange',()=>document.documentElement.classList.toggle('village-paused',document.hidden));

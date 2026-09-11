@@ -3,7 +3,7 @@ test.setTimeout(60000);
 
 test('Japan Ready repairs an incomplete saved campaign and opens its first scenario',async({page})=>{
   await page.addInitScript(()=>localStorage.setItem('kq-profile-v1:guest:kq-meta',JSON.stringify({campaignProgress:{'japan-ready':{scenarioProgress:{}}}})));
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
   await expect(page.locator('#japanReadyScenarioList button').first()).toBeEnabled();
   await page.locator('#japanReadyScenarioList button').first().click();
@@ -11,7 +11,7 @@ test('Japan Ready repairs an incomplete saved campaign and opens its first scena
 });
 
 test('a complete Journey lesson includes assessments and stable prerequisite counts',async({page})=>{
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.getByRole('button',{name:'Continue lesson',exact:true}).click();
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Meeting people');
   await page.getByRole('button',{name:'Start session',exact:true}).click();
@@ -41,7 +41,7 @@ test('a complete Journey lesson includes assessments and stable prerequisite cou
 });
 
 test('wrong answers persist until Continue and are recorded once',async({page})=>{
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.evaluate(()=>{
     const app=window as typeof window & {KaishiJapanReadyBridge:{getVocab:()=>Array<{id:string;reading:string;word:string}>;startFocusedStudy:(ids:string[])=>void};KaishiLessonMastery:unknown};
     const word=app.KaishiJapanReadyBridge.getVocab().find(w=>w.word==='大丈夫')!;
@@ -59,7 +59,7 @@ test('wrong answers persist until Continue and are recorded once',async({page})=
 });
 
 test('trip plan persists and prioritises selected scenarios after courtesy',async({page})=>{
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
   await page.getByRole('button',{name:'Plan my trip',exact:true}).click();await page.getByLabel('Departure date').fill('2027-01-15');await page.getByLabel('Daily study time').selectOption('5');
   await page.getByRole('button',{name:'Save trip plan',exact:true}).click();await expect(page.locator('#tripPlan')).toContainText('5 minutes a day');await expect(page.locator('#tripPlan')).toContainText('Greetings & Courtesy');
@@ -69,7 +69,7 @@ test('trip plan persists and prioritises selected scenarios after courtesy',asyn
 
 test('experimental mobile Journey keeps lessons separated and restores them after exit',async({page})=>{
   await page.setViewportSize({width:390,height:844});
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await expect.poll(() => page.locator('#journeyHistoryTrack .experimental-timeline-item').count()).toBeGreaterThanOrEqual(8);
   const jump=page.locator('.experimental-jump-current');
   await expect(jump.locator('svg.sumie-action-frame')).toHaveCount(1);
@@ -101,7 +101,9 @@ test('experimental desktop Journey remains clickable after restoring saved histo
     localStorage.setItem('kq-profile-v1:guest:kq-settings',JSON.stringify({experimentalJourneyUx:true}));
     localStorage.setItem('kq-profile-v1:guest:kq-meta',JSON.stringify({sessionHistory:[{id:'restored-session',title:'Saved lesson',wordIds:[],completedAt:Date.now(),attempts:3,correct:2}]}));
   });
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');
+  const welcome=page.locator('#firstLaunchOverlay');
+  if(await welcome.isVisible())await welcome.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.reload();
   const track=page.locator('#journeyHistoryTrack');
   await expect(track.locator('.experimental-timeline-item').first()).toBeVisible();
@@ -125,7 +127,7 @@ test('experimental desktop Journey remains clickable after restoring saved histo
 
 test('experimental panels return to their origin and guest account actions stay hidden',async({page})=>{
   await page.setViewportSize({width:390,height:844});
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   const nav=page.getByRole('navigation',{name:'Primary navigation'});
   await expect(nav).toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('衆');await expect(nav).toContainText('日本へ');
   await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(5);
@@ -144,7 +146,7 @@ test('experimental panels return to their origin and guest account actions stay 
 
 test('experimental profile reveals rhythm and keeps guest sign-in explicit',async({page})=>{
   await page.setViewportSize({width:390,height:844});
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   const profile=page.locator('[data-experimental-profile-trigger]');await profile.click();
   const dialog=page.locator('#experimentalProfileDialog');await expect(dialog).toBeVisible();
   await expect(dialog.locator('.experimental-profile-reveal')).toHaveCSS('transition-duration','0.55s');
@@ -162,7 +164,7 @@ test('experimental profile reveals rhythm and keeps guest sign-in explicit',asyn
 });
 
 test('Japan Ready uses curated words and opens the matching cheat-sheet category',async({page})=>{
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
   await page.locator('#japanReadyScenarioList button').first().click();
   const words=page.locator('.scenario-word-preview');await expect(words).toContainText('はい');await expect(words).toContainText('すみません');await expect(words).not.toContainText('うるさい');
