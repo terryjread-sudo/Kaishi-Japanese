@@ -146,7 +146,8 @@
   function playBgm() {
     const a = ensureBgm();
     a.muted = SFX.isMuted();
-    a.play().catch(() => {});
+    const attempt = a.play();
+    if (attempt?.catch) attempt.catch(() => {});
     fadeBgm(BGM_TARGET_VOLUME, 600);
   }
 
@@ -388,12 +389,14 @@
     `;
     $('#kbCmdAttack').onclick = () => {
       SFX.select();
+      playBgm();
       beginRound('attack');
     };
     const reviveBtn = $('#kbCmdRevive');
     if (reviveBtn)
       reviveBtn.onclick = () => {
         SFX.select();
+        playBgm();
         beginRound('revive');
       };
     const muteBtn = $('#kbMute');
@@ -437,7 +440,10 @@
       <section id="kbFeedback" class="game-feedback" aria-live="polite" hidden></section>
     `;
 
-    $('#kbListen').onclick = () => speakRound(v);
+    $('#kbListen').onclick = () => {
+      playBgm();
+      speakRound(v);
+    };
     document.querySelectorAll('.kb-choice').forEach(btn => (btn.onclick = () => resolveChoice(btn, v)));
 
     startedAt = Date.now();
@@ -454,8 +460,8 @@
       kb.hinted++;
     }
     if (btn) btn.dataset.played = '1';
-    if (v.wordAudio) play(v.wordAudio);
-    else speakJapanese(v.word);
+    if (v.wordAudio) play(v.wordAudio, v.reading || v.word);
+    else speakJapanese(v.reading || v.word);
   }
 
   function knockOutRandom() {
