@@ -201,7 +201,10 @@
     "./media/profiles/journey-girl-base.png",
     "./media/profiles/journey-boy-base.png",
     "./media/profiles/journey-friend-base.png",
-    "./media/profiles/journey-guide-base.png"
+    "./media/profiles/journey-guide-base.png",
+    "./media/profiles/journey-girl-avatar.png",
+    "./media/profiles/journey-boy-avatar.png",
+    "./media/profiles/journey-friend-avatar.png"
   ]
 });
 })(typeof self!=='undefined'?self:window);
