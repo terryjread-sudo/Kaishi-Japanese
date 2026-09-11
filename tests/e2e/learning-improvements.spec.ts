@@ -166,9 +166,19 @@ test('experimental profile reveals rhythm and keeps guest sign-in explicit',asyn
 test('Japan Ready uses curated words and opens the matching cheat-sheet category',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
+  await expect(page.locator('#appHeader')).toBeHidden();
+  await page.locator('#japanReadyBack').click();
+  await expect(page.locator('#appHeader')).toBeHidden();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="community"]').click();
+  await expect(page.locator('#appHeader')).toBeVisible();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="journey"]').click();
+  await expect(page.locator('#appHeader')).toBeHidden();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
+  await expect(page.locator('#appHeader')).toBeHidden();
   await page.locator('#japanReadyScenarioList button').first().click();
   const words=page.locator('.scenario-word-preview');await expect(words).toContainText('はい');await expect(words).toContainText('すみません');await expect(words).not.toContainText('うるさい');
   await page.locator('#scenarioListBack').click();await page.locator('#openJapanReadyCheatSheet').click();
+  await expect(page.locator('#appHeader')).toBeHidden();
   await expect(page.locator('.cheat-sheet-nav [aria-current="page"]')).toContainText('Greetings & Courtesy');
   await expect(page.locator('.cheat-sheet-group')).toHaveCount(1);
 });
