@@ -192,9 +192,9 @@ test('test learner lesson jump renders the same early Journey flow', async ({ pa
   await page.locator('#adminTestLessonGo').click();
 
   await expect(page.locator('#journey')).toHaveClass(/active/);
-  await expect(page.locator('#journeyHistoryTrack .kq-unified-timeline')).toBeVisible();
+  await expect(page.locator('#journeyHistoryTrack .experimental-journey-timeline')).toBeVisible();
   await expect(page.locator('#journeyHistoryTrack')).not.toContainText('Your lessons will appear here as you progress.');
-  await expect(page.locator('#journeyHistoryTrack [data-kq-activity="colosseum"]')).toHaveCount(0);
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
   await expect(page.getByText('Next immersive event:', { exact: false })).toHaveCount(0);
 });
 
@@ -319,16 +319,13 @@ test('image diagnostics includes imported Katakana Core mnemonic scenes', async 
   await expect(page.locator('#grid')).toContainText('Katakana Core');
 });
 
-test('the Dashboard opens the shared notebook from the Journey utility bar', async ({ page }) => {
+test('the Journey utility strip opens the shared notebook', async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('button', { name: 'Explore first' }).click();
 
-  const notebook = page.locator('#openNotebook');
-  await expect(notebook).toBeAttached();
-  await notebook.scrollIntoViewIfNeeded();
+  const notebook = page.locator('[data-experimental-utility-action="notebook"]');
   await expect(notebook).toBeVisible();
-  await expect(page.locator('#dashboardNav #openNotebook')).toHaveCount(1);
   await notebook.click();
   await expect(page.locator('#learningNotebookDialog')).toBeVisible();
   await expect(page.locator('#learningNotebookDialog')).toContainText('Saved words');
@@ -365,12 +362,9 @@ test('Journey previews immersive missions through its ten-lesson horizon', async
 
   await expect(page.locator('#journeyHistoryTrack')).toBeVisible();
   const journeyBackground = await page.locator('#journeyHistoryTrack').evaluate(element => getComputedStyle(element).backgroundImage);
-  expect(journeyBackground).toContain('bamboo-scroll-tile.png');
-  await expect(page.locator('#journeyHistoryTrack .kq-chapter-scene')).toHaveCount(0);
-  await expect(page.locator('#journeyHistoryTrack .kq-activity-badge').first()).toBeVisible();
-  await expect(page.locator('#journeyHistoryTrack .kq-unified-node.future .kq-activity-badge').first()).toContainText('Immersive mission ahead');
-  await page.getByRole('button', { name: 'Why this route?' }).click();
-  await expect(page.locator('#journeyHistoryTrack .kq-mission-detail').first()).toContainText('Reinforces');
+  expect(journeyBackground).toContain('kaishi-journey-hero');
+  await expect(page.locator('#journeyHistoryTrack .experimental-journey-hero-art')).toHaveCount(1);
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item').first()).toBeVisible();
 });
 
 test('Journey shows ten upcoming lessons and explains that the path continues', async ({ page }) => {
@@ -381,12 +375,11 @@ test('Journey shows ten upcoming lessons and explains that the path continues', 
   await page.locator('#adminTestLessonInput').fill('1');
   await page.locator('#adminTestLessonGo').click();
 
-  await expect(page.locator('#journeyHistoryTrack [data-kq-id^="lesson-"]')).toHaveCount(11);
-  await expect(page.getByText('The path continues', { exact: true })).toBeVisible();
-  await expect(page.getByText('Complete lessons to reveal more of your Journey ahead.', { exact: true })).toBeVisible();
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
+  await expect(page.getByText('Scroll through the timeline, then select a lesson to expand it.', { exact: true })).toBeVisible();
 });
 
-test('Journey Dashboard control floats only from its title-row position', async ({ page }) => {
+test('Journey hero controls and bottom navigation remain available', async ({ page }) => {
   await page.addInitScript(() => {
     window.sessionStorage.setItem('kq-admin-test-mode', '1');
   });
@@ -394,20 +387,8 @@ test('Journey Dashboard control floats only from its title-row position', async 
   await page.locator('#adminTestLessonInput').fill('1');
   await page.locator('#adminTestLessonGo').click();
 
-  const dashboard = page.locator('#journeyBack');
-  await expect(dashboard).toBeVisible();
-  await expect(page.locator('#kqJourneyDashboardBtn')).toHaveCount(0);
-  const originTop = await dashboard.evaluate(element => element.getBoundingClientRect().top);
-  const scrollY = await page.evaluate(() => {
-    window.scrollTo(0, document.documentElement.scrollHeight);
-    window.dispatchEvent(new Event('scroll'));
-    return window.scrollY;
-  });
-  expect(scrollY).toBeGreaterThan(4);
-  await expect(dashboard).toHaveClass(/kq-floating-dashboard/);
-  const floatingTop = await dashboard.evaluate(element => element.getBoundingClientRect().top);
-  expect(Math.abs(floatingTop - originTop)).toBeLessThanOrEqual(1);
-
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await expect(dashboard).not.toHaveClass(/kq-floating-dashboard/);
+  await expect(page.locator('[data-experimental-profile-trigger]')).toBeVisible();
+  await expect(page.locator('[data-experimental-japan-ready]')).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
+  await expect(page.locator('.experimental-journey-utilities')).toBeVisible();
 });

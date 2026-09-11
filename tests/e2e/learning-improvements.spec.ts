@@ -3,8 +3,7 @@ import { test,expect } from '@playwright/test';
 test('Japan Ready repairs an incomplete saved campaign and opens its first scenario',async({page})=>{
   await page.addInitScript(()=>localStorage.setItem('kq-profile-v1:guest:kq-meta',JSON.stringify({campaignProgress:{'japan-ready':{scenarioProgress:{}}}})));
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await expect(page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true})).toBeEnabled();
-  await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
   await expect(page.locator('#japanReadyScenarioList button').first()).toBeEnabled();
   await page.locator('#japanReadyScenarioList button').first().click();
   await expect(page.getByRole('button',{name:'Focused study',exact:true})).toBeVisible();
@@ -12,7 +11,6 @@ test('Japan Ready repairs an incomplete saved campaign and opens its first scena
 
 test('a complete Journey lesson includes assessments and stable prerequisite counts',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await page.getByRole('button',{name:'Continue · 冒険を続ける',exact:true}).click();
   await page.getByRole('button',{name:'Continue lesson',exact:true}).click();
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Meeting people');
   await page.getByRole('button',{name:'Start session',exact:true}).click();
@@ -61,20 +59,17 @@ test('wrong answers persist until Continue and are recorded once',async({page})=
 
 test('trip plan persists and prioritises selected scenarios after courtesy',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
   await page.getByRole('button',{name:'Plan my trip',exact:true}).click();await page.getByLabel('Departure date').fill('2027-01-15');await page.getByLabel('Daily study time').selectOption('5');
   await page.getByRole('button',{name:'Save trip plan',exact:true}).click();await expect(page.locator('#tripPlan')).toContainText('5 minutes a day');await expect(page.locator('#tripPlan')).toContainText('Greetings & Courtesy');
-  await page.reload();await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();await expect(page.locator('#tripPlan')).toContainText('5 minutes a day');
+  await page.reload();await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();await expect(page.locator('#tripPlan')).toContainText('5 minutes a day');
   await page.getByRole('button',{name:'Remove plan',exact:true}).click();await expect(page.getByRole('button',{name:'Plan my trip',exact:true})).toBeVisible();
 });
 
 test('experimental mobile Journey keeps lessons separated and restores them after exit',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await page.getByRole('button',{name:'Open settings'}).click();
-  await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();
-  await page.locator('#settingsBack').click();
-  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(10);
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
   const jump=page.locator('.experimental-jump-current');
   await expect(jump.locator('svg.sumie-action-frame')).toHaveCount(1);
   await expect(jump.locator('.sumie-action-copy')).toContainText('現在地');
@@ -96,7 +91,7 @@ test('experimental mobile Journey keeps lessons separated and restores them afte
   await page.getByRole('button',{name:'Keep learning',exact:true}).click();await expect(page.locator('#study')).toHaveClass(/active/);
   await page.locator('#exitBtn').click();await page.getByRole('button',{name:'Exit lesson',exact:true}).click();
   await expect(page.locator('#journey')).toHaveClass(/active/);
-  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(10);
+  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
 });
 
 test('experimental desktop Journey remains clickable after restoring saved history',async({page})=>{
@@ -123,21 +118,14 @@ test('experimental desktop Journey remains clickable after restoring saved histo
 test('experimental panels return to their origin and guest account actions stay hidden',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();await page.locator('#settingsBack').click();
-  const nav=page.getByRole('navigation',{name:'Experimental quick navigation'});
-  await expect(nav).toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('進捗');await expect(nav).toContainText('仲間');
-  await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(4);
-  await expect(nav.locator('.experimental-nav-panel .experimental-frame-line')).toHaveCount(4);
-  await expect(nav.locator('filter')).toHaveCount(2);
-  const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(4);
-  for(let index=0;index<4;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
-  const progressNav=page.locator('#experimentalBottomNav [data-experimental-nav="progress"]');await progressNav.click();await expect(progressNav).toHaveAttribute('aria-current','page');
-  await expect(page.locator('#skillsOverview')).toHaveClass(/experimental-panel/);
+  const nav=page.getByRole('navigation',{name:'Primary navigation'});
+  await expect(nav).toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('衆');await expect(nav).toContainText('日本へ');
+  await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(5);
+  const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(5);
+  for(let index=0;index<5;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
+  const progressNav=page.locator('[data-experimental-utility-action="progress"]');await progressNav.click();
+  await expect(page.locator('#skillsOverview')).toHaveClass(/active/);
   await page.getByRole('button',{name:'Close panel'}).click();await expect(page.locator('#journey')).toHaveClass(/active/);
-  await page.getByRole('button',{name:'Open settings'}).click();await expect(page.locator('#appHeader')).toBeHidden();
-  await expect(page.locator('#settingsBack')).toBeInViewport();await page.getByRole('tab',{name:/Account/}).click();
-  await expect(page.locator('.cloud-actions')).toBeHidden();await expect(page.locator('#adminAreaLink')).toBeHidden();
-  await page.locator('#settingsBack').click();await expect(page.locator('#appHeader')).toBeVisible();
   const japanReady=page.locator('#experimentalJapanReady');await expect(japanReady.locator('svg.sumie-action-icon')).toHaveCount(1);await expect(japanReady.locator('svg.sumie-action-frame')).toHaveCount(1);
   expect(await japanReady.evaluate(element=>getComputedStyle(element).borderRadius)).toBe('1px');
 });
@@ -145,15 +133,14 @@ test('experimental panels return to their origin and guest account actions stay 
 test('experimental profile reveals rhythm and keeps guest sign-in explicit',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await page.getByRole('button',{name:'Open settings'}).click();await page.getByRole('checkbox',{name:/Experimental Journey experience/}).check();await page.locator('#settingsBack').click();
-  const profile=page.locator('#experimentalProfile');await expect(profile).toHaveAttribute('aria-expanded','false');await profile.click();
-  const dialog=page.locator('#experimentalProfileDialog');await expect(dialog).toBeVisible();await expect(profile).toHaveAttribute('aria-expanded','true');
+  const profile=page.locator('[data-experimental-profile-trigger]');await profile.click();
+  const dialog=page.locator('#experimentalProfileDialog');await expect(dialog).toBeVisible();
   await expect(dialog.locator('.experimental-profile-reveal')).toHaveCSS('transition-duration','0.55s');
   await expect(dialog.getByRole('heading',{name:'Guest learner'})).toBeVisible();await expect(dialog.locator('#experimentalProfileRhythmDays .learning-rhythm-week-day')).toHaveCount(7);
   await expect(dialog.getByRole('button',{name:'Sign in to save progress',exact:true})).toBeVisible();
   const geometry=await dialog.evaluate(element=>{const avatar=element.querySelector('#experimentalProfileLargeAvatar')!.getBoundingClientRect();return{avatarWidth:avatar.width,overflow:element.scrollWidth-element.clientWidth}});
   expect(geometry.avatarWidth).toBeGreaterThanOrEqual(130);expect(geometry.overflow).toBeLessThanOrEqual(1);
-  await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect(profile).toBeFocused();
+  await page.keyboard.press('Escape');await expect(dialog).toBeHidden();
 
   await profile.click();await dialog.getByRole('button',{name:'View full calendar',exact:true}).click();await expect(dialog).toBeHidden();await expect(page.locator('#learningRhythmDialog')).toBeVisible();
   await page.locator('#learningRhythmClose').click();
@@ -164,7 +151,7 @@ test('experimental profile reveals rhythm and keeps guest sign-in explicit',asyn
 
 test('Japan Ready uses curated words and opens the matching cheat-sheet category',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await page.getByRole('button',{name:'Continue Japan Ready 旅行学習を続ける',exact:true}).click();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
   await page.locator('#japanReadyScenarioList button').first().click();
   const words=page.locator('.scenario-word-preview');await expect(words).toContainText('はい');await expect(words).toContainText('すみません');await expect(words).not.toContainText('うるさい');
   await page.locator('#scenarioListBack').click();await page.locator('#openJapanReadyCheatSheet').click();

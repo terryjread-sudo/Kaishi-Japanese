@@ -270,7 +270,7 @@ function resetScreenScroll(id,focusTarget=''){
  if(id!=='study')return;
  requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
-function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
+function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
 let experimentalNotebookHistoryActive=false;
@@ -328,7 +328,7 @@ function renderExperimentalProfile(){
 }
 function finishExperimentalProfileClose(){
  const dialog=$('#experimentalProfileDialog'),profile=$('#experimentalProfile');clearTimeout(experimentalProfileCloseTimer);experimentalProfileCloseTimer=0;
- if(dialog?.open)dialog.close();dialog?.classList.remove('is-open','is-closing');document.body.classList.remove('experimental-profile-open');if(profile)profile.setAttribute('aria-expanded','false');experimentalProfileHistoryActive=false;profile?.focus?.({preventScroll:true});
+ if(dialog?.open)dialog.close();dialog?.classList.remove('is-open','is-closing');document.body.classList.remove('experimental-profile-open');document.querySelectorAll('#experimentalProfile,[data-experimental-profile-trigger]').forEach(trigger=>trigger.setAttribute('aria-expanded','false'));experimentalProfileHistoryActive=false;profile?.focus?.({preventScroll:true});
  const afterClose=experimentalProfileAfterClose;experimentalProfileAfterClose=null;if(typeof afterClose==='function')afterClose();
 }
 function closeExperimentalProfile(fromHistory=false,afterClose=null){
@@ -337,7 +337,7 @@ function closeExperimentalProfile(fromHistory=false,afterClose=null){
  experimentalProfileHistoryActive=false;dialog.classList.add('is-closing');dialog.classList.remove('is-open');const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;experimentalProfileCloseTimer=setTimeout(finishExperimentalProfileClose,reduced?0:330);
 }
 function openExperimentalProfile(){
- const dialog=$('#experimentalProfileDialog'),profile=$('#experimentalProfile');if(!dialog||!profile||dialog.open)return;renderExperimentalProfile();const rect=profile.getBoundingClientRect(),reveal=dialog.querySelector('.experimental-profile-reveal');reveal?.style.setProperty('--profile-origin-x',`${Math.round(rect.left+rect.width/2)}px`);reveal?.style.setProperty('--profile-origin-y',`${Math.round(rect.top+rect.height/2)}px`);dialog.classList.remove('is-closing');dialog.showModal();document.body.classList.add('experimental-profile-open');profile.setAttribute('aria-expanded','true');requestAnimationFrame(()=>{dialog.classList.add('is-open');requestAnimationFrame(()=>$('#experimentalProfileClose')?.focus?.({preventScroll:true}))});history.pushState({...history.state,kaishiExperimentalProfile:true},'',location.href);experimentalProfileHistoryActive=true;
+ const dialog=$('#experimentalProfileDialog'),profile=$('#experimentalProfile');if(!dialog||!profile||dialog.open)return;renderExperimentalProfile();const rect=(document.querySelector('[data-experimental-profile-trigger]')||profile).getBoundingClientRect(),reveal=dialog.querySelector('.experimental-profile-reveal');reveal?.style.setProperty('--profile-origin-x',`${Math.round(rect.left+rect.width/2)}px`);reveal?.style.setProperty('--profile-origin-y',`${Math.round(rect.top+rect.height/2)}px`);dialog.classList.remove('is-closing');dialog.showModal();document.body.classList.add('experimental-profile-open');document.querySelectorAll('#experimentalProfile,[data-experimental-profile-trigger]').forEach(trigger=>trigger.setAttribute('aria-expanded','true'));requestAnimationFrame(()=>{dialog.classList.add('is-open');requestAnimationFrame(()=>$('#experimentalProfileClose')?.focus?.({preventScroll:true}))});history.pushState({...history.state,kaishiExperimentalProfile:true},'',location.href);experimentalProfileHistoryActive=true;
 }
 window.addEventListener('popstate',event=>{if(experimentalProfileHistoryActive&&$('#experimentalProfileDialog')?.open)closeExperimentalProfile(true);else if(experimentalNotebookHistoryActive&&$('#learningNotebookDialog')?.open){experimentalNotebookHistoryActive=false;$('#learningNotebookDialog').close()}else if(experimentalPanelHistoryActive&&$('.screen.active.experimental-panel')&&!event.state?.kaishiExperimentalPanel)closeExperimentalPanel(true)});
 function bindExperimentalBottomNav(){
@@ -357,19 +357,23 @@ function bindExperimentalBottomNav(){
   document.querySelectorAll('[data-experimental-nav]').forEach(item=>{item.classList.toggle('is-active',item===button);if(item===button)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
   if(action==='journey')openJourney('missions');
   else if(action==='notebook')openExperimentalNotebook();
-  else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
-  else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
-  else if(action==='japan-ready')openExperimentalJapanReady();
+ else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
+ else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
+ else if(action==='japan-ready')openExperimentalJapanReady();
  }));
+ document.addEventListener('click',event=>{const button=event.target.closest?.('[data-experimental-utility-action]');if(!button)return;const action=button.dataset.experimentalUtilityAction;if(action==='notebook')openExperimentalNotebook();else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores())});
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.screen.active.experimental-panel')&&!document.querySelector('dialog[open]')){event.preventDefault();closeExperimentalPanel()}});
 }
 function bindExperimentalHeader(){
  const japanReady=$('#experimentalJapanReady');if(japanReady)syncExperimentalHeaderAction();
+ document.querySelectorAll('[data-experimental-japan-ready]').forEach(button=>button.onclick=openExperimentalJapanReady);
+ document.addEventListener('click',event=>{const button=event.target.closest?.('[data-experimental-japan-ready]');if(button)openExperimentalJapanReady()});
  const settingsButton=$('#experimentalSettingsBtn');if(settingsButton)settingsButton.onclick=()=>{
   if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}
   else{renderLearningBalanceSettings();show('settings')}
  };
- const profile=$('#experimentalProfile');if(profile)profile.onclick=openExperimentalProfile;
+ document.querySelectorAll('#experimentalProfile,[data-experimental-profile-trigger]').forEach(profile=>profile.onclick=openExperimentalProfile);
+ document.addEventListener('click',event=>{const trigger=event.target.closest?.('[data-experimental-profile-trigger]');if(trigger)openExperimentalProfile()});
  const close=$('#experimentalProfileClose');if(close)close.onclick=()=>closeExperimentalProfile();
  const calendar=$('#experimentalProfileCalendar');if(calendar)calendar.onclick=()=>closeExperimentalProfile(false,openLearningRhythmCalendar);
  const dialog=$('#experimentalProfileDialog');if(dialog)dialog.addEventListener('cancel',event=>{event.preventDefault();closeExperimentalProfile()});
