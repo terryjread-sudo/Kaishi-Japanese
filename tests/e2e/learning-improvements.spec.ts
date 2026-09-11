@@ -131,9 +131,7 @@ test('experimental panels return to their origin and guest account actions stay 
   await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(5);
   const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(5);
   for(let index=0;index<5;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
-  const progressNav=page.locator('[data-experimental-utility-action="progress"]');await progressNav.click();
-  await expect(page.locator('#skillsOverview')).toHaveClass(/active/);
-  await page.getByRole('button',{name:'Close panel'}).click();await expect(page.locator('#journey')).toHaveClass(/active/);
+  await expect(page.locator('.experimental-journey-utilities')).toHaveCount(0);
   const japanReady=page.locator('#experimentalJapanReady');await expect(japanReady.locator('svg.sumie-action-icon')).toHaveCount(1);await expect(japanReady.locator('svg.sumie-action-frame')).toHaveCount(1);
   expect(await japanReady.evaluate(element=>getComputedStyle(element).borderRadius)).toBe('1px');
 });

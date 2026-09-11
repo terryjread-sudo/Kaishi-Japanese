@@ -319,12 +319,12 @@ test('image diagnostics includes imported Katakana Core mnemonic scenes', async 
   await expect(page.locator('#grid')).toContainText('Katakana Core');
 });
 
-test('the Journey utility strip opens the shared notebook', async ({ page }) => {
+test('the Journey bottom navigation opens the shared notebook', async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('button', { name: 'Explore first' }).click();
 
-  const notebook = page.locator('[data-experimental-utility-action="notebook"]');
+  const notebook = page.locator('[data-experimental-nav="notebook"]');
   await expect(notebook).toBeVisible();
   await notebook.click();
   await expect(page.locator('#learningNotebookDialog')).toBeVisible();
@@ -390,5 +390,5 @@ test('Journey hero controls and bottom navigation remain available', async ({ pa
   await expect(page.locator('[data-experimental-profile-trigger]')).toBeVisible();
   await expect(page.locator('[data-experimental-japan-ready]')).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
-  await expect(page.locator('.experimental-journey-utilities')).toBeVisible();
+  await expect(page.locator('.experimental-journey-utilities')).toHaveCount(0);
 });

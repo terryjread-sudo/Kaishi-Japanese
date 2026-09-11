@@ -1253,7 +1253,6 @@
       <button type="button" class="experimental-jump-current sumie-action-button" data-experimental-jump><svg class="sumie-action-frame" viewBox="0 0 190 58" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14V2h12M176 2h12v12M2 44v12h12M176 56h12V44"/></svg><svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path class="sumie-enso" d="M36 10C21 0 6 10 8 25c2 14 19 20 31 9"/><path d="M24 12v23m-7-7 7 7 7-7"/></svg><span class="sumie-action-copy"><small lang="ja">現在地</small><b>Jump to current lesson</b></span></button>
       <div class="experimental-journey-timeline" role="list" aria-label="Journey lessons"><span class="experimental-selection-bar" aria-hidden="true"></span><div class="experimental-virtual-spacer" style="height:${totalHeight}px"></div><div class="experimental-virtual-window"></div></div>
       <p class="experimental-focus-hint">Scroll through the timeline, then select a lesson to expand it.</p>
-      <div class="experimental-journey-utilities" aria-label="Journey tools"><button type="button" data-experimental-utility-action="notebook"><span aria-hidden="true">▣</span><b>Notebook</b><small>Save and review</small></button><button type="button" data-experimental-utility-action="collection"><span aria-hidden="true">◇</span><b>Collection</b><small>Words you found</small></button><button type="button" data-experimental-utility-action="progress"><span aria-hidden="true">▥</span><b>Progress</b><small>See how far you’ve come</small></button></div>
     </div>`;
     window.KaishiCloud?.renderDashboardAvatar?.();
 
