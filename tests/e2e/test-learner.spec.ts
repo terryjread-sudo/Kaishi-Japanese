@@ -106,6 +106,11 @@ test('test learner can launch an immersive activity after app initialization', a
   await page.locator('#adminTestActivity').selectOption('colosseum');
   await launch.click();
   await expect(page.locator('#listenBattle')).toHaveClass(/active/);
+  await expect(page.locator('#appHeader')).toBeHidden();
+  await page.locator('#kbCmdAttack').click();
+  await expect(page.locator('#kbListen')).toBeVisible();
+  await expect(page.locator('#kbListen')).toHaveAttribute('data-played', '1');
+  await page.locator('#kbListen').click();
 
   await page.locator('#adminTestActivity').selectOption('kotobaEcho');
   await launch.click();
