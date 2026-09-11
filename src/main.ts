@@ -23,6 +23,7 @@ import './core/learning.css';
 import './core/journey-shell';
 import { installJapanReady } from './core/japan-ready';
 import { createOfflineUI } from './core/offline-ui';
+import { installSeasonalHero } from './core/seasonal-hero';
 
 defineElement();
 
@@ -75,6 +76,7 @@ window.KaishiActivityPolicy = {
 
 window.dispatchEvent(new Event('kaishi-cloud-sync-ready'));
 installJapanReady();
+installSeasonalHero();
 offlineUI.install();
 
 // app.js starts before this module. Refresh its derived Journey controls once
