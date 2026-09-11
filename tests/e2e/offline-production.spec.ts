@@ -2,7 +2,7 @@ import { test,expect } from '@playwright/test';
 
 test('a verified production pack opens a fresh page and travel content with the network disabled',async({page,context})=>{
   const remoteScripts:string[]=[];page.on('request',request=>{if(request.resourceType()==='script'&&request.url().includes('raw.githubusercontent.com'))remoteScripts.push(request.url());});
-  await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('[data-experimental-settings-trigger]:visible').click();await page.getByRole('tab',{name:'Data & Offline'}).click();
   await expect(page.locator('#offlinePackSelect')).toBeVisible();await page.locator('#offlinePackSelect').selectOption('essential');
   await expect(page.locator('#offlineEstimate')).toContainText('Estimated pack size',{timeout:60000});
