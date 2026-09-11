@@ -245,7 +245,7 @@ function openRestorePoints(){if(!restorePointOwnerId()){toast('Sign in to use re
 function updateExperimentalNavVisibility(){
  const nav=$('#experimentalBottomNav'),active=$('.screen.active')?.id||'';
  if(!nav)return;
- const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder';
+ const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder'||active==='kotobaEcho';
  const inPanel=Boolean($('.screen.active.experimental-panel'));
  const activeAction={home:'journey',journey:'journey',collection:'collection',community:'community',japanReady:'japan-ready'}[active]||'';
  nav.querySelectorAll('[data-experimental-nav]').forEach(item=>{const current=item.dataset.experimentalNav===activeAction;item.classList.toggle('is-active',current);if(current)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
@@ -270,7 +270,7 @@ function resetScreenScroll(id,focusTarget=''){
  if(id!=='study')return;
  requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
-function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
+function show(id,options={}){screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');document.body.classList.toggle('experimental-immersive-active',['study','games','kana','manga','conversation','theatre','grammar','kanjiBuilder','kotobaEcho'].includes(id));$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(syncExperimentalHeaderClearance);}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
 let experimentalNotebookHistoryActive=false;
@@ -372,6 +372,7 @@ function bindExperimentalHeader(){
   if($('#study')?.classList.contains('active')&&session.length){$('#quickAutoAudio').checked=settings.autoAudio;$('#quickMnemonicStyle').value=settings.mnemonicStyle;$('#quickSettingsDialog').showModal()}
   else{renderLearningBalanceSettings();show('settings')}
  };
+ document.addEventListener('click',event=>{const button=event.target.closest?.('[data-experimental-settings-trigger]');if(!button)return;renderLearningBalanceSettings();show('settings')});
  document.querySelectorAll('#experimentalProfile,[data-experimental-profile-trigger]').forEach(profile=>profile.onclick=openExperimentalProfile);
  document.addEventListener('click',event=>{const trigger=event.target.closest?.('[data-experimental-profile-trigger]');if(trigger)openExperimentalProfile()});
  const close=$('#experimentalProfileClose');if(close)close.onclick=()=>closeExperimentalProfile();
@@ -2293,6 +2294,7 @@ async function init(){
  $('#mnemonicStyle').value=settings.mnemonicStyle;
  $('#autoAudio').checked=settings.autoAudio;
  renderLearningBalanceSettings();
+ document.body.classList.remove('app-loading');
  const experimentalControl=$('#experimentalJourneyUx');if(experimentalControl)experimentalControl.checked=settings.experimentalJourneyUx===true;
  renderExperimentalJourneyUx();
  const versionCard=$('.version-card');if(versionCard){versionCard.querySelector('strong').textContent=`Kaishi Japanese v${APP_VERSION}`;versionCard.querySelector('span').textContent='Progression Characters';versionCard.querySelector('small').textContent='Three new characters and complete pose sets now unlock through genuine vocabulary mastery.'}

@@ -2269,6 +2269,46 @@ body.experimental-profile-open{overflow:hidden}
 .experimental-profile-card>.eyebrow{color:#9a6700}.experimental-profile-card h2{margin:0;color:#172554;font-size:clamp(1.7rem,6vw,2.5rem)}
 .experimental-profile-large-avatar{width:clamp(132px,38vw,210px);height:clamp(132px,38vw,210px);border:6px solid #fff;border-radius:50%;object-fit:cover;background:#e2e8f0;box-shadow:0 0 0 3px #d7a832,0 18px 42px #17255435}
 .experimental-profile-identity{margin:0;color:#475569;line-height:1.45}
+
+/* Prevent stale legacy surfaces from flashing while content and auth settle. */
+body.app-loading main{visibility:hidden}
+
+/* Permanent anime Journey layout: constrain the desktop reading canvas while
+   preserving the wide artwork and keep the hero controls together under the copy. */
+@media(min-width:681px){
+  body.experimental-journey-screen-active #journeyHistoryTrack,
+  body.experimental-journey-screen-active .experimental-journey-shell{width:min(1120px,calc(100% - 40px));max-width:1120px;margin-inline:auto}
+  body.experimental-journey-screen-active .experimental-journey-hero-copy{left:max(24px,calc((100% - 1120px)/2 + 24px));right:auto;width:min(280px,36%)}
+  body.experimental-journey-screen-active .experimental-hero-actions{width:220px;margin-top:18px}
+  body.experimental-journey-screen-active .experimental-journey-hero-art{object-position:center top}
+}
+.experimental-hero-version{display:inline-block;margin-left:6px;font-family:Inter,system-ui,sans-serif;font-size:.32em;font-weight:700;letter-spacing:.08em;opacity:.8;vertical-align:middle}
+.experimental-hero-japan-icon{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.experimental-hero-settings{display:grid;place-items:center;width:40px;min-height:40px;padding:0;border:1px solid #ffffff8c;border-radius:10px;background:#071534c9;color:#fff;font-size:1.1rem;box-shadow:0 8px 18px #02061755;backdrop-filter:blur(8px)}
+.experimental-hero-settings:hover{background:#ffffff2b}
+
+/* Immersive activities have their own exit/settings chrome; do not leave the
+   Journey header bubble floating over the lesson or sidequest. */
+body.experimental-journey-enabled.experimental-immersive-active #appHeader.experimental-journey-enabled{display:none}
+body.experimental-journey-enabled.experimental-immersive-active .screen.active{padding-top:max(16px,env(safe-area-inset-top))}
+body.experimental-journey-enabled.experimental-immersive-active #study.screen.active{padding-top:max(16px,env(safe-area-inset-top));scroll-margin-top:0}
+
+/* The current-location affordance is a small overlay, never a reserved blank
+   panel in the lesson stream. */
+body.experimental-journey-enabled .experimental-jump-current{width:auto;max-width:min(260px,calc(100vw - 28px));min-height:42px;padding:6px 10px;font-size:.76rem}
+body.experimental-journey-enabled .experimental-jump-current .sumie-action-icon{width:24px;height:24px}
+body.experimental-journey-enabled .experimental-jump-current .sumie-action-copy{gap:0}
+
+/* Give the confirmation dialog room to breathe on narrow screens. */
+.exit-session-dialog{width:min(520px,calc(100% - 28px));max-width:520px;padding:0;border:0;border-radius:24px;background:transparent;box-shadow:0 24px 80px #02061766}
+.exit-session-dialog::backdrop{background:#0f172a99;backdrop-filter:blur(4px)}
+.exit-session-dialog section{display:grid;gap:14px;padding:28px 30px 30px;background:#fff;border-radius:24px}
+.exit-session-dialog h2,.exit-session-dialog p{margin:0}
+.exit-session-dialog p{line-height:1.5;color:#334155}
+.exit-session-dialog-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.exit-session-dialog-actions button{min-height:48px;padding:12px 18px}
+@media(max-width:560px){.exit-session-dialog section{padding:24px 20px 22px}.exit-session-dialog-actions{display:grid;grid-template-columns:1fr}.exit-session-dialog-actions button{width:100%}}
+@media(max-width:680px){.experimental-hero-settings{width:34px;min-height:34px;font-size:1rem}}
 .experimental-profile-rhythm{width:100%;display:grid;gap:14px;margin-top:8px;padding:18px;border:1px solid #b9d9cc;border-radius:22px;background:linear-gradient(135deg,#f2fbf4,#fff9e9);text-align:left}
 .experimental-profile-rhythm h3,.experimental-profile-rhythm p{margin:3px 0}.experimental-profile-rhythm h3{color:#172554;font-size:1.2rem}.experimental-profile-rhythm h3 strong{color:#0f766e;font-size:1.55rem}.experimental-profile-rhythm p{color:#475569;font-size:.84rem}
 .experimental-profile-rhythm .learning-rhythm-week-day{min-height:62px}.experimental-profile-milestone{width:100%;margin:2px 0;padding:12px 14px;border-radius:15px;background:#eef2ff;color:#334155;font-size:.84rem;line-height:1.45;text-align:left}

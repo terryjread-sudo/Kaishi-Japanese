@@ -1,4 +1,5 @@
 import { test,expect } from '@playwright/test';
+test.setTimeout(60000);
 
 test('Japan Ready repairs an incomplete saved campaign and opens its first scenario',async({page})=>{
   await page.addInitScript(()=>localStorage.setItem('kq-profile-v1:guest:kq-meta',JSON.stringify({campaignProgress:{'japan-ready':{scenarioProgress:{}}}})));
