@@ -105,6 +105,13 @@ test('experimental desktop Journey remains clickable after restoring saved histo
   const track=page.locator('#journeyHistoryTrack');
   await expect(track.locator('.experimental-timeline-item').first()).toBeVisible();
   expect(await track.locator('.experimental-timeline-item').count()).toBeGreaterThan(1);
+  const timeline=track.locator('.experimental-journey-timeline');
+  await timeline.evaluate(element=>{element.scrollTop=element.scrollHeight;element.dispatchEvent(new Event('scroll'));});
+  await page.waitForTimeout(120);
+  await timeline.evaluate(element=>{element.scrollTop=0;element.dispatchEvent(new Event('scroll'));});
+  await page.waitForTimeout(120);
+  await expect(track.locator('.experimental-timeline-item').first()).toBeVisible();
+  await expect(track.locator('.experimental-virtual-window')).not.toBeEmpty();
   await expect(page.locator('#kqRoadAheadBubble')).toBeHidden();
   const alternate=track.locator('[data-experimental-select]').nth(1);
   const lessonId=await alternate.locator('xpath=ancestor::*[@data-experimental-lesson][1]').getAttribute('data-experimental-lesson');

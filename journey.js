@@ -1325,6 +1325,13 @@
       const windowBottom = timeline.scrollTop + timeline.clientHeight;
       while (visibleEnd < all.length && offsets[visibleEnd] < windowBottom) visibleEnd += 1;
       visibleEnd = Math.min(all.length, visibleEnd + BUFFER);
+      // Keep the learner's anchor lesson mounted while scroll and resize
+      // events settle. This prevents a blank shell when the virtual window
+      // is recalculated during an upward scroll.
+      const requiredStart = Math.max(0, Math.min(currentIndex, selectedIndex) - BUFFER);
+      const requiredEnd = Math.min(all.length, Math.max(currentIndex, selectedIndex) + BUFFER + 1);
+      visibleStart = Math.min(visibleStart, requiredStart);
+      visibleEnd = Math.max(visibleEnd, requiredEnd);
       virtualWindow.innerHTML = all.slice(visibleStart, visibleEnd).map((item, offset) => cardMarkup(item, visibleStart + offset)).join('');
       bindWindowEvents();
       if (centerSelection) {
