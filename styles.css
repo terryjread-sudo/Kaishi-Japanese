@@ -2414,3 +2414,15 @@ body.experimental-journey-enabled .experimental-jump-current{position:fixed!impo
   body.experimental-journey-screen-active .experimental-hero-actions{width:150px;margin-top:12px}
   body.experimental-journey-enabled .experimental-jump-current{inset:auto 10px max(112px,calc(env(safe-area-inset-bottom) + 101px)) auto!important;min-height:40px!important}
 }
+
+/* The permanent Journey view owns the viewport: artwork stays fixed while
+   the lesson timeline is the only scrolling surface. */
+body.experimental-journey-screen-active{height:100dvh;overflow:hidden}
+body.experimental-journey-screen-active #journey.screen.active{height:100dvh;min-height:0;overflow:hidden}
+body.experimental-journey-screen-active .experimental-journey-shell{height:100dvh;min-height:0;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+body.experimental-journey-screen-active .experimental-journey-heading{display:none!important}
+body.experimental-journey-screen-active .experimental-journey-settings{position:absolute;z-index:8;top:14px;right:14px;display:grid;place-items:center;width:42px;height:42px;padding:0;border:1px solid #ffffffa8;border-radius:12px;background:#071534d9;color:#fff;font-size:1.2rem;line-height:1;box-shadow:0 8px 18px #02061766;backdrop-filter:blur(8px);cursor:pointer}
+body.experimental-journey-screen-active .experimental-journey-settings:hover{background:#1e3a5fcc;border-color:#7dd3fc}
+body.experimental-journey-screen-active .experimental-journey-timeline{flex:1 1 auto;height:auto!important;min-height:0!important;max-height:none!important;overflow-y:auto;overscroll-behavior:contain}
+body.screen-transitioning main{visibility:hidden}
+@media(max-width:680px){body.experimental-journey-screen-active .experimental-journey-settings{top:10px;right:10px;width:38px;height:38px;font-size:1.05rem}}
