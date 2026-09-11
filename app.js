@@ -253,16 +253,14 @@ function updateExperimentalNavVisibility(){
  const visible=!inLesson&&(inPanel||active==='home'||active==='journey'||active==='japanReady');
  nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
 }
-function syncExperimentalHeaderAction(screenId=$('.screen.active')?.id||''){
+function syncExperimentalHeaderAction(){
  const button=$('#experimentalJapanReady');if(!button)return;
- const journeyActive=screenId==='japanReady';
- button.classList.toggle('experimental-header-journey',journeyActive);
+ button.classList.remove('experimental-header-journey');
  const frame='<svg class="sumie-action-frame" viewBox="0 0 140 52" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14V2h12M126 2h12v12M2 38v12h12M126 50h12V38"/></svg>';
- const journeyIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M39 13H17c-7 0-11 5-11 11s4 11 11 11h16M25 27l8 8-8 8"/></svg>';
  const fujiIcon='<svg class="sumie-action-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 38 18 16l6 9 4-6 15 19H5Z"/><path d="m18 16 6 9 4-6M5 38h38"/></svg>';
- button.innerHTML=journeyActive?`${frame}${journeyIcon}<span class="sumie-action-copy"><small lang="ja">旅路</small><b>Journey</b></span>`:`${frame}${fujiIcon}<span class="sumie-action-copy"><small lang="ja">日本へ</small><b>Japan Ready</b></span>`;
- button.setAttribute('aria-label',journeyActive?'Return to Journey':'Open Japan Ready');
- button.onclick=journeyActive?()=>openJourney('missions'):openExperimentalJapanReady;
+ button.innerHTML=`${frame}${fujiIcon}<span class="sumie-action-copy"><small lang="ja">日本へ</small><b>Japan Ready</b></span>`;
+ button.setAttribute('aria-label','Open Japan Ready');
+ button.onclick=openExperimentalJapanReady;
 }
 function syncExperimentalHeaderClearance(){const style=document.body?.style;if(!style||typeof style.setProperty!=='function')return;const header=$('#appHeader.experimental-journey-enabled'),hidden=document.body.classList.contains('experimental-settings-active');style.setProperty('--experimental-header-clearance',header&&!hidden?`${Math.ceil(header.getBoundingClientRect().height+16)}px`:'')}
 function resetScreenScroll(id,focusTarget=''){
@@ -395,6 +393,7 @@ function renderExperimentalJourneyUx(){
  if(enabled)requestAnimationFrame(syncExperimentalHeaderClearance);else if(typeof document.body?.style?.setProperty==='function')document.body.style.setProperty('--experimental-header-clearance','');
  if($('.screen.active')?.id==='home')openJourney('missions');
 }
+function clearExperimentalPanelOverlay(){document.querySelectorAll('.screen.experimental-panel').forEach(removeExperimentalPanelChrome);setExperimentalPanelBackdrop(false);experimentalPanelHistoryActive=false}
 function playExperimentalJapanReadyTransition(){
  const overlay=document.createElement('div');overlay.className='experimental-japan-transition';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor" role="presentation"><path d="M12 2C11.5 2 11 3.5 11 5V10L3 14V16.5L11 14.5V19.5L8.5 21V22.5L12 21.5L15.5 22.5V21L13 19.5V14.5L21 16.5V14L13 10V5C13 3.5 12.5 2 12 2Z"/></svg>';
  document.body.append(overlay);const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -1266,7 +1265,7 @@ function completeTopicBoss(topicId,passed=true){meta.topicProgress=meta.topicPro
 function renderCollection(tab='words'){const stats=$('#collectionStats'),content=$('#collectionContent');if(!stats||!content)return;const introduced=vocab.filter(wordIntroduced),mnemonics=introduced.filter(word=>memoryScenes[sceneKey(word)]),topics=journeyTopics();stats.innerHTML=`<article><strong>${introduced.length}</strong><span>Words</span></article><article><strong>${kanjiCatalogue().filter(item=>item.status!=='locked').length}</strong><span>Kanji</span></article><article><strong>${mnemonics.length}</strong><span>Mnemonics</span></article><article><strong>${topics.filter(topic=>topicStats(topic).complete).length}/${topics.length}</strong><span>Topics</span></article>`;document.querySelectorAll('[data-collection-tab]').forEach(button=>button.classList.toggle('active',button.dataset.collectionTab===tab));if(tab==='topics')content.innerHTML=topics.map(topic=>{const s=topicStats(topic);return `<article class="collection-item"><span>${esc(topic.icon||'🗾')}</span><div><strong>${esc(topic.title)}</strong><small>${s.introduced}/${s.words.length} words · ${s.complete?'Complete':s.percent+'%'}</small></div></article>`}).join('');else if(tab==='foundations')content.innerHTML=(learningGraph.foundations||[]).map(item=>{const words=introduced.filter(word=>wordFoundationTags(word).includes(item.id));return `<article class="collection-item foundation-item"><span>${esc(item.icon)}</span><div><strong>${esc(item.title)}</strong><small>${words.length} introduced · reused across topics</small><p>${esc(item.description)}</p></div></article>`}).join('');else if(tab==='mnemonics')content.innerHTML=mnemonics.slice(0,100).map(word=>`<article class="collection-word"><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.meaning)}</span><small>${esc(topicForWord(word).title)}</small></article>`).join('')||'<p class="muted">Mnemonic images appear here as you discover words.</p>';else if(tab==='achievements')content.innerHTML=achievementList().map(([icon,title])=>`<article class="achievement"><span>${icon}</span><strong>${esc(title)}</strong></article>`).join('')||'<p class="muted">Continue your adventure to unlock achievements.</p>';else content.innerHTML=introduced.slice(0,200).map(word=>{const foundations=wordFoundationTags(word).map(id=>foundationFor(id)?.title).filter(Boolean);return `<article class="collection-word"><strong lang="ja">${esc(word.word)}</strong><span>${esc(word.reading)} · ${esc(word.meaning)}</span><small>${esc(topicForWord(word).title)}${foundations.length?` · ${esc(foundations.join(', '))}`:''}</small></article>`}).join('')||'<p class="muted">Your discovered words will appear here.</p>'}
 function openCollection(tab='words'){renderCollection(tab);show('collection')}
 function renderJourneyTimelineWhenReady(){requestAnimationFrame(()=>requestAnimationFrame(()=>window.KaishiJourneyRender?.()))}
-function openJourney(section='missions'){show('journey');try{renderJourney()}catch(error){console.error('Journey legacy render failed',error)}renderJourneyTimelineWhenReady();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if(section==='current')requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}))}
+function openJourney(section='missions'){clearExperimentalPanelOverlay();show('journey');try{renderJourney()}catch(error){console.error('Journey legacy render failed',error)}renderJourneyTimelineWhenReady();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if(section==='current')requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}))}
 window.addEventListener('kaishi-journey-ready',()=>{if($('#journey')?.classList.contains('active'))renderJourneyTimelineWhenReady()});
 function startJourneyChapter(itemIndex){if(!chapterUnlocked(itemIndex)){toast('Complete the previous vocabulary chapter first');return}activityReturnScreen='journey';activeVocabularyChapter=itemIndex;makeSession(itemIndex)}
 function kotobaEchoWords(){return vocab.filter(word=>wordIntroduced(word)&&(isAdminTestMode()||window.KaishiLearning?.wordState?.(word)!=='New'))}

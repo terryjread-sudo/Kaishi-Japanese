@@ -388,7 +388,8 @@ test('Journey hero controls and bottom navigation remain available', async ({ pa
   await page.locator('#adminTestLessonGo').click();
 
   await expect(page.locator('[data-experimental-profile-trigger]')).toBeVisible();
-  await expect(page.locator('[data-experimental-japan-ready]')).toBeVisible();
+  await expect(page.locator('[data-experimental-japan-ready]')).toHaveCount(0);
+  await expect(page.locator('[data-experimental-nav="japan-ready"]')).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
   await expect(page.locator('.experimental-journey-utilities')).toHaveCount(0);
 });

@@ -132,6 +132,12 @@ test('experimental panels return to their origin and guest account actions stay 
   const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(5);
   for(let index=0;index<5;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
   await expect(page.locator('.experimental-journey-utilities')).toHaveCount(0);
+  await nav.locator('[data-experimental-nav="collection"]').click();
+  await expect(page.locator('.screen.experimental-panel.active')).toHaveCount(1);
+  await nav.locator('[data-experimental-nav="journey"]').click();
+  await expect(page.locator('.screen.experimental-panel.active')).toHaveCount(0);
+  await expect(page.locator('#experimentalUtilityBackdrop.is-open')).toHaveCount(0);
+  await expect(page.locator('[data-experimental-select]').first()).toBeVisible();
   const japanReady=page.locator('#experimentalJapanReady');await expect(japanReady.locator('svg.sumie-action-icon')).toHaveCount(1);await expect(japanReady.locator('svg.sumie-action-frame')).toHaveCount(1);
   expect(await japanReady.evaluate(element=>getComputedStyle(element).borderRadius)).toBe('1px');
 });

@@ -1254,6 +1254,7 @@
       <div class="experimental-journey-timeline" role="list" aria-label="Journey lessons"><span class="experimental-selection-bar" aria-hidden="true"></span><div class="experimental-virtual-spacer" style="height:${totalHeight}px"></div><div class="experimental-virtual-window"></div></div>
       <p class="experimental-focus-hint">Scroll through the timeline, then select a lesson to expand it.</p>
     </div>`;
+    track.querySelector('[data-experimental-japan-ready]')?.remove();
     window.KaishiCloud?.renderDashboardAvatar?.();
 
     const timeline = track.querySelector('.experimental-journey-timeline');
