@@ -2398,3 +2398,19 @@ body.experimental-journey-screen-active .experimental-bottom-nav{bottom:max(12px
 body.experimental-journey-screen-active .experimental-bottom-nav button>b{color:#f8fafc}body.experimental-journey-screen-active .experimental-bottom-nav button>small,body.experimental-journey-screen-active .experimental-nav-japanese{color:#bae6fd}body.experimental-journey-screen-active .experimental-bottom-nav .experimental-nav-icon{color:#e0f2fe;stroke:#e0f2fe;filter:drop-shadow(0 0 3px #7dd3fc88)}body.experimental-journey-screen-active .experimental-bottom-nav .experimental-nav-icon .ink-fill{fill:#e0f2fe}
 body.experimental-journey-screen-active .experimental-bottom-nav button.is-active .experimental-nav-icon,body.experimental-journey-screen-active .experimental-bottom-nav button[aria-current="page"] .experimental-nav-icon{color:#7dd3fc;filter:drop-shadow(0 0 7px #38bdf8)}
 @media(max-width:680px){body.experimental-journey-screen-active .experimental-journey-shell{padding-top:clamp(250px,68vw,300px)}body.experimental-journey-screen-active .experimental-journey-hero-art{height:clamp(250px,68vw,300px);object-position:center top}body.experimental-journey-screen-active .experimental-journey-hero-copy{inset:14px 12px auto}.experimental-hero-brand{font-size:1.55rem!important}.experimental-hero-actions{width:142px!important;margin-top:14px!important}.experimental-hero-profile,.experimental-hero-japan-ready{min-height:40px!important;padding:5px 7px!important;font-size:.68rem}.experimental-hero-profile img{width:28px!important;height:28px!important}.experimental-journey-heading{margin-top:0!important}.experimental-journey-heading-note{display:none}.experimental-journey-utilities{margin-bottom:122px!important}}
+
+/* Final responsive corrections for the permanent Journey composition. */
+@media(min-width:681px){
+  body.experimental-journey-screen-active #journeyHistoryTrack,
+  body.experimental-journey-screen-active .experimental-journey-shell{width:min(1120px,calc(100% - 40px));max-width:1120px;margin-inline:auto}
+  body.experimental-journey-screen-active .experimental-journey-hero-copy{left:24px;right:auto;width:280px}
+  body.experimental-journey-screen-active .experimental-hero-actions{width:220px}
+}
+body.experimental-journey-enabled .experimental-jump-current{position:fixed!important;inset:auto 18px max(120px,calc(env(safe-area-inset-bottom) + 106px)) auto!important;width:max-content!important;height:auto!important;max-width:min(260px,calc(100vw - 28px));min-height:42px!important;padding:6px 10px!important}
+@media(max-width:680px){
+  body.experimental-journey-screen-active .experimental-journey-shell{padding-top:270px}
+  body.experimental-journey-screen-active .experimental-journey-hero-art{height:270px}
+  body.experimental-journey-screen-active .experimental-journey-hero-copy{inset:12px 12px auto}
+  body.experimental-journey-screen-active .experimental-hero-actions{width:150px;margin-top:12px}
+  body.experimental-journey-enabled .experimental-jump-current{inset:auto 10px max(112px,calc(env(safe-area-inset-bottom) + 101px)) auto!important;min-height:40px!important}
+}
