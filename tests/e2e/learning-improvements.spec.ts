@@ -163,6 +163,18 @@ test('experimental profile reveals rhythm and keeps guest sign-in explicit',asyn
   await expect(page.locator('#settings')).toHaveClass(/active/);await expect(page.locator('#settingsPanel-character')).toBeVisible();
 });
 
+test('Journey hero resolves a seasonal asset without changing its controls',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
+  const hero=page.locator('.experimental-journey-hero-art');
+  await expect(hero).toHaveAttribute('data-seasonal-hero',/^(spring|summer|autumn|winter|halloween|christmas|new-year|tanabata)$/);
+  await expect(hero).toHaveAttribute('src',/media\/experimental\/(kaishi-journey-hero\.png|heroes\/.*\.jpg)$/);
+  await expect(page.locator('.experimental-hero-profile')).toBeVisible();
+  await expect(page.locator('.experimental-hero-japan-ready')).toHaveCount(0);
+  await expect(page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]')).toBeVisible();
+  await expect(page.locator('.experimental-hero-brand')).toContainText('Kaishi');
+});
+
 test('Japan Ready uses curated words and opens the matching cheat-sheet category',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
