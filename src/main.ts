@@ -20,6 +20,7 @@ import { hasStartedProgress, mergeSyncPayloads } from './domains/cloud-sync/merg
 import { prepareLesson, sessionPosition } from './domains/lessons/session';
 import { decorateLesson, showAnswerFeedback } from './core/lesson-ui';
 import './core/learning.css';
+import './core/journey-shell';
 import { installJapanReady } from './core/japan-ready';
 import { createOfflineUI } from './core/offline-ui';
 

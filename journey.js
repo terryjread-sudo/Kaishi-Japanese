@@ -754,6 +754,16 @@
     } catch (_) {}
 
     try {
+      // The experimental timeline has no visible legacy route button, but it
+      // still needs the route mission bookkeeping for completion summaries.
+      const next = typeof journeyRouteProgress === 'function' ? journeyRouteProgress().next : null;
+      if (next && typeof startJourneyMission === 'function') {
+        startJourneyMission(next.id);
+        return true;
+      }
+    } catch (_) {}
+
+    try {
       // The route owns the next lesson. Starting a whole topic here can select
       // a different lesson (and made the Continue button appear unresponsive).
       const routeButton = $('#startNextMission');
@@ -1397,11 +1407,13 @@
 
     if (!data.length) {
       track.innerHTML = '<p class="muted">Your lessons will appear here as you progress.</p>';
+      document.dispatchEvent(new Event('kaishi-journey-rendered'));
       return;
     }
 
     if (experimentalEnabled()) {
       renderExperimentalTimeline(data, track);
+      document.dispatchEvent(new Event('kaishi-journey-rendered'));
       return;
     }
 
@@ -1419,6 +1431,7 @@
      */
     track.innerHTML = markup;
     renderArchivedLessonCard(data);
+    document.dispatchEvent(new Event('kaishi-journey-rendered'));
 
     if (track.dataset.kqUserScrolled === '1') {
       track.scrollTop = oldScrollTop;
