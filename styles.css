@@ -2272,6 +2272,7 @@ body.experimental-profile-open{overflow:hidden}
 
 /* Prevent stale legacy surfaces from flashing while content and auth settle. */
 body.app-loading main{visibility:hidden}
+body.journey-render-pending #journeyHistoryTrack{visibility:hidden}
 
 /* Permanent anime Journey layout: constrain the desktop reading canvas while
    preserving the wide artwork and keep the hero controls together under the copy. */
