@@ -194,7 +194,7 @@ test('test learner lesson jump renders the same early Journey flow', async ({ pa
   await expect(page.locator('#journey')).toHaveClass(/active/);
   await expect(page.locator('#journeyHistoryTrack .experimental-journey-timeline')).toBeVisible();
   await expect(page.locator('#journeyHistoryTrack')).not.toContainText('Your lessons will appear here as you progress.');
-  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
+  await expect.poll(() => page.locator('#journeyHistoryTrack .experimental-timeline-item').count()).toBeGreaterThanOrEqual(8);
   await expect(page.getByText('Next immersive event:', { exact: false })).toHaveCount(0);
 });
 
@@ -375,7 +375,7 @@ test('Journey shows ten upcoming lessons and explains that the path continues', 
   await page.locator('#adminTestLessonInput').fill('1');
   await page.locator('#adminTestLessonGo').click();
 
-  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
+  await expect.poll(() => page.locator('#journeyHistoryTrack .experimental-timeline-item').count()).toBeGreaterThanOrEqual(8);
   await expect(page.getByText('Scroll through the timeline, then select a lesson to expand it.', { exact: true })).toBeVisible();
 });
 

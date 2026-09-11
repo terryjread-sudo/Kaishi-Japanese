@@ -1241,7 +1241,8 @@
     const itemHeight = item => Number(heightCache[heightKey(item)] || (item.id === selected.id ? EXPANDED_HEIGHT : COMPACT_HEIGHT));
     const offsets = [];
     const header = document.querySelector('#appHeader.experimental-journey-enabled');
-    const headerClearance = Math.ceil((header?.getBoundingClientRect().height || 96) + 16);
+    const headerHeight = header?.getBoundingClientRect().height || 0;
+    const headerClearance = Math.ceil(headerHeight ? headerHeight + 16 : 0);
     let totalHeight = headerClearance;
     all.forEach(item => { offsets.push(totalHeight); totalHeight += itemHeight(item) + ITEM_GAP; });
     totalHeight += headerClearance + 120;

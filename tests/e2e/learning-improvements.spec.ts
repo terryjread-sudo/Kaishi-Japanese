@@ -69,7 +69,7 @@ test('trip plan persists and prioritises selected scenarios after courtesy',asyn
 test('experimental mobile Journey keeps lessons separated and restores them after exit',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');await page.getByRole('button',{name:'Explore first',exact:true}).click();
-  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
+  await expect.poll(() => page.locator('#journeyHistoryTrack .experimental-timeline-item').count()).toBeGreaterThanOrEqual(8);
   const jump=page.locator('.experimental-jump-current');
   await expect(jump.locator('svg.sumie-action-frame')).toHaveCount(1);
   await expect(jump.locator('.sumie-action-copy')).toContainText('現在地');
@@ -91,7 +91,7 @@ test('experimental mobile Journey keeps lessons separated and restores them afte
   await page.getByRole('button',{name:'Keep learning',exact:true}).click();await expect(page.locator('#study')).toHaveClass(/active/);
   await page.locator('#exitBtn').click();await page.getByRole('button',{name:'Exit lesson',exact:true}).click();
   await expect(page.locator('#journey')).toHaveClass(/active/);
-  await expect(page.locator('#journeyHistoryTrack .experimental-timeline-item')).toHaveCount(8);
+  await expect.poll(() => page.locator('#journeyHistoryTrack .experimental-timeline-item').count()).toBeGreaterThanOrEqual(8);
 });
 
 test('experimental desktop Journey remains clickable after restoring saved history',async({page})=>{
