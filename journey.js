@@ -1287,11 +1287,8 @@
         ? `Lesson ${item.chapter + 1} · ${item.vocabulary || item.subtitle}`
         : item.title;
       const subtitle = item.subtitle && Number.isFinite(item.chapter) ? `<span class="experimental-card-subtitle">${esc(item.subtitle)}</span>` : '';
-      const characterArt = item.type === 'current'
-        ? '<img class="experimental-card-character" src="media/experimental/kaishi-learner-welcome.png" alt="" aria-hidden="true">'
-        : item.done
-          ? '<img class="experimental-card-character" src="media/experimental/kaishi-learner-celebrating.png" alt="" aria-hidden="true">'
-          : '';
+      const cardCharacters = ['journey-girl-base.png','journey-boy-base.png','journey-friend-base.png','journey-guide-base.png'];
+      const characterArt = `<img class="experimental-card-character" src="media/profiles/${cardCharacters[index % cardCharacters.length]}" alt="" aria-hidden="true">`;
       return `<article class="${itemClasses}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;--experimental-strength:${progress}%"><span class="experimental-lesson-marker">${marker}</span><div class="experimental-lesson-node"><div class="experimental-card-content"><button type="button" class="experimental-card-select" data-experimental-select aria-expanded="${focused}"${item.type === 'current' ? ' aria-current="step"' : ''}><span class="experimental-card-header"><span><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(displayTitle)}</strong>${subtitle}</span><span class="experimental-card-duration">${duration}</span></span></button><div class="experimental-card-details">${characterArt}<p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}"${locked ? ' disabled aria-disabled="true"' : ''}>${itemCta}</button></div></div></div></div></article>`;
     };
 

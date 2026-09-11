@@ -44,4 +44,6 @@ export const OFFLINE_CORE_FILES = [
   './media/profiles/guest-learner.webp', './media/profiles/boy-base.webp',
   './media/profiles/girl-base.webp', './media/profiles/master-base.webp',
   './media/profiles/man-base.webp', './media/profiles/woman-base.webp',
+  './media/profiles/journey-girl-base.png', './media/profiles/journey-boy-base.png',
+  './media/profiles/journey-friend-base.png', './media/profiles/journey-guide-base.png',
 ] as const;
