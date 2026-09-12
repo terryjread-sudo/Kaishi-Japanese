@@ -1,4 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function completeFirstRunTutorial(page: Page): Promise<void> {
+  const tutorialStart = page.locator('[data-sensei-tutorial-start]');
+  await expect(tutorialStart).toBeVisible();
+  await page.locator('[data-sensei-tutorial-choice="correct"]').click();
+  await expect(page.locator('[data-sensei-tutorial-feedback]')).toContainText('Correct');
+  await tutorialStart.click();
+}
 
 test('new learners can open Sensei’s Desk and review a paper', async ({ page }) => {
   await page.goto('/');
@@ -10,6 +18,7 @@ test('new learners can open Sensei’s Desk and review a paper', async ({ page }
   await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
   await expect(page.locator('[data-sensei-start]')).toBeVisible();
   await page.locator('[data-sensei-start]').click();
+  await completeFirstRunTutorial(page);
   await expect(page.locator('.sensei-desk-workspace')).toBeVisible();
   await expect(page.locator('[data-sensei-line]')).toHaveCount(2);
   await expect(page.locator('[data-sensei-submit]')).toBeDisabled();
@@ -21,6 +30,7 @@ test('leaving an active shift asks for confirmation', async ({ page }) => {
   await page.getByRole('button', { name: 'Explore Journey', exact: true }).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="sensei-desk"]').click();
   await page.locator('[data-sensei-start]').click();
+  await completeFirstRunTutorial(page);
   page.once('dialog', dialog => dialog.dismiss());
   await page.locator('[data-sensei-exit]').click();
   await expect(page.locator('#senseiDesk')).toHaveClass(/active/);

@@ -1,16 +1,19 @@
 import { z } from 'zod';
-import { createVersionedRepository, sessionStorage } from '../platform/storage';
+import { createVersionedRepository, deviceStorage, sessionStorage } from '../platform/storage';
 import { playSenseiDeskEffect, senseiDeskAudioEnabled, setSenseiDeskAudioEnabled, startSenseiDeskMusic, stopSenseiDeskMusic } from '../platform/sensei-desk-audio';
 import { createShift, currentSubmission, finishShift, gradePaper, lineFor, reviewPaper, shiftScore } from '../domains/sensei-desk/desk';
 import type { GradeDecision, HomeworkLine, SenseiShiftState, SenseiWord } from '../domains/sensei-desk/types';
 
 const SHIFT_KEY = 'kaishi-sensei-desk-shift';
+const TUTORIAL_KEY = 'kaishi-sensei-desk-tutorial';
 const shiftSchema = z.custom<SenseiShiftState>((value) => {
   if (!value || typeof value !== 'object') return false;
   const candidate = value as Partial<SenseiShiftState>;
   return candidate.schemaVersion === 1 && Array.isArray(candidate.submissions) && typeof candidate.currentIndex === 'number' && typeof candidate.phase === 'string';
 });
+const tutorialSchema = z.object({ schemaVersion: z.literal(1), completed: z.boolean() });
 const repository = createVersionedRepository<SenseiShiftState>({ storage: sessionStorage(), key: SHIFT_KEY, version: 1, schema: shiftSchema });
+const tutorialRepository = createVersionedRepository({ storage: deviceStorage(), key: TUTORIAL_KEY, version: 1, schema: tutorialSchema });
 
 type HostPolicy = {
   show?: (id: string) => void;
@@ -22,6 +25,8 @@ type HostPolicy = {
 
 let draftDecisions: Record<string, GradeDecision> = {};
 let timerHandle: number | undefined;
+let tutorialActive = false;
+let tutorialChoice: GradeDecision['verdict'] | undefined;
 
 function host(): HostPolicy { return (window.KaishiActivityPolicy?.senseiDesk || {}) as HostPolicy; }
 function target(): HTMLElement | null { return document.querySelector<HTMLElement>('#senseiDesk'); }
@@ -54,12 +59,32 @@ function stateOrNull(): SenseiShiftState | null {
   const saved = repository.load();
   return saved?.dateKey === today() ? saved : null;
 }
-function startShift(): void {
+function tutorialSeen(): boolean { return tutorialRepository.load()?.completed === true; }
+function markTutorialSeen(): void { tutorialRepository.save({ schemaVersion: 1, completed: true }); }
+function startSavedShift(): void {
   const state = createShift(availableWords(), today());
   repository.save(state);
   draftDecisions = {};
   startSenseiDeskMusic();
   render(state);
+}
+function startShift(): void {
+  if (!tutorialSeen()) {
+    tutorialActive = true;
+    tutorialChoice = undefined;
+    render(null);
+    return;
+  }
+  startSavedShift();
+}
+function openTutorial(): void { tutorialActive = true; tutorialChoice = undefined; render(stateOrNull()); }
+function finishTutorial(): void {
+  markTutorialSeen();
+  tutorialActive = false;
+  tutorialChoice = undefined;
+  const saved = stateOrNull();
+  if (saved && (saved.phase === 'desk' || saved.phase === 'correction')) return render(saved);
+  startSavedShift();
 }
 function exitDesk(): void {
   const state = stateOrNull();
@@ -117,9 +142,10 @@ function tick(): void {
     render(expired);
   }
 }
-function bindTimer(state: SenseiShiftState): void {
+function bindTimer(state: SenseiShiftState | null): void {
   if (timerHandle) window.clearInterval(timerHandle);
   timerHandle = undefined;
+  if (!state) return;
   if (state.phase === 'desk' || state.phase === 'correction') timerHandle = window.setInterval(tick, 1000);
 }
 function lineMarkup(line: HomeworkLine, state: SenseiShiftState): string {
@@ -131,10 +157,23 @@ function lineMarkup(line: HomeworkLine, state: SenseiShiftState): string {
 function frame(title: string, content: string): string {
   return `<div class="sensei-desk-shell"><header class="sensei-desk-header"><div><span class="eyebrow">SENSEI’S DESK · 先生の机</span><h1>${title}</h1><p>Grade one small answer at a time. Every correction teaches a word.</p></div><div class="sensei-desk-header-actions"><label class="sensei-audio-toggle"><input type="checkbox" data-sensei-audio ${senseiDeskAudioEnabled() ? 'checked' : ''}> Sound</label><button type="button" class="sensei-exit" data-sensei-exit>← Leave desk</button></div></header>${content}<p class="sensei-desk-note">A beginner can learn through the desk: read the pupil’s answer, identify the issue, then check the explanation.</p></div>`;
 }
+function renderTutorial(state: SenseiShiftState | null): void {
+  const choice = tutorialChoice;
+  const choiceFeedback = choice === 'correct'
+    ? '<p class="sensei-tutorial-feedback is-correct" data-sensei-tutorial-feedback>Correct. The Japanese, reading, and meaning agree, so mark <b>Looks right</b>.</p>'
+    : choice === 'needs-correction'
+      ? '<p class="sensei-tutorial-feedback is-wrong" data-sensei-tutorial-feedback>Almost—but this example is consistent. On a real mistake, choose <b>Needs correction</b>, then name the issue: Meaning, Particle, or Kana.</p>'
+      : '<p class="sensei-tutorial-prompt">Try the decision below. You can change your choice at any time.</p>';
+  const actionLabel = state && (state.phase === 'desk' || state.phase === 'correction') ? 'Continue my shift' : 'Start my first shift';
+  const content = `<section class="sensei-tutorial"><div class="sensei-tutorial-heading"><span class="sensei-seal">学</span><div><span class="eyebrow">First shift briefing · はじめに</span><h2>How to grade a paper</h2><p>You are the Sensei for a small class. Your job is to check each answer carefully—not to write a perfect essay.</p></div></div><div class="sensei-tutorial-grid"><ol class="sensei-tutorial-steps"><li><b>Read the three clues</b><span>Compare the Japanese answer, its reading, and the English meaning.</span></li><li><b>Make one decision</b><span>Choose <strong>Looks right</strong> when they agree, or <strong>Needs correction</strong> when they do not.</span></li><li><b>Label the lesson</b><span>For a mistake, select whether it is a Meaning, Particle, or Kana problem.</span></li><li><b>Stamp and learn</b><span>Submit the paper, then read Sensei’s feedback before the next pupil arrives.</span></li></ol><section class="sensei-tutorial-example" aria-labelledby="senseiTutorialExampleTitle"><span class="eyebrow">Worked example</span><h3 id="senseiTutorialExampleTitle">Does this answer match?</h3><article class="sensei-tutorial-line"><span class="sensei-line-number">EXAMPLE</span><strong lang="ja">わたしは みずを のみます</strong><span>わたしは みずを のみます · I drink water</span></article><div class="sensei-verdicts"><button type="button" class="sensei-verdict ${choice === 'correct' ? 'is-selected' : ''}" data-sensei-tutorial-choice="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${choice === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-tutorial-choice="needs-correction">✎ Needs correction</button></div>${choiceFeedback}<aside class="sensei-tutorial-mistake"><b>When it is wrong</b><span><span lang="ja">みずに おぼえます</span> · “I remember water”</span><small>The connector に is the issue here. Mark <b>Needs correction → Particle</b>.</small></aside></section></div><button type="button" class="sensei-primary sensei-tutorial-start" data-sensei-tutorial-start>${actionLabel} <span>判</span></button></section>`;
+  const targetElement = target();
+  if (targetElement) targetElement.innerHTML = frame('Your first paper, step by step', content);
+  bind();
+}
 function renderMenu(): void {
   const saved = stateOrNull();
   const resume = saved && (saved.phase === 'desk' || saved.phase === 'correction') ? `<button type="button" class="sensei-primary" data-sensei-resume>Resume shift <span>${saved.quota.submitted}/${saved.quota.total} papers</span></button>` : '';
-  const content = `<section class="sensei-desk-welcome"><div class="sensei-desk-welcome-art" role="img" aria-label="A calm teacher’s desk"></div><div><span class="sensei-seal">判</span><h2>Welcome to the homework desk</h2><p>Students have left five short papers for you. Decide what is correct, mark the kind of mistake, and read the Sensei’s explanation.</p><div class="sensei-rules"><span><b>01</b> Read the answer</span><span><b>02</b> Spot the issue</span><span><b>03</b> Learn the fix</span></div><div class="sensei-menu-actions">${resume}<button type="button" class="sensei-primary" data-sensei-start>Start a new shift <span>5 papers · 8 min</span></button></div></div></section>`;
+  const content = `<section class="sensei-desk-welcome"><div class="sensei-desk-welcome-art" role="img" aria-label="A calm teacher’s desk"></div><div><span class="sensei-seal">判</span><h2>Welcome to the homework desk</h2><p>Students have left five short papers for you. Decide what is correct, mark the kind of mistake, and read the Sensei’s explanation.</p><div class="sensei-rules"><span><b>01</b> Read the answer</span><span><b>02</b> Spot the issue</span><span><b>03</b> Learn the fix</span></div><div class="sensei-menu-actions">${resume}<button type="button" class="sensei-primary" data-sensei-start>Start a new shift <span>5 papers · 8 min</span></button><button type="button" class="sensei-secondary" data-sensei-tutorial>See an example</button></div></div></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame('The homework shift', content);
   bind();
@@ -172,7 +211,8 @@ function renderEnd(state: SenseiShiftState): void {
 }
 function render(state: SenseiShiftState | null): void {
   resetViewport();
-  bindTimer(state ?? ({ phase: 'passed' } as SenseiShiftState));
+  bindTimer(tutorialActive ? null : state ?? ({ phase: 'passed' } as SenseiShiftState));
+  if (tutorialActive) return renderTutorial(state);
   if (!state) return renderMenu();
   if (state.phase === 'desk') return renderDesk(state);
   if (state.phase === 'correction') return renderCorrection(state);
@@ -183,6 +223,9 @@ function bind(): void {
   const element = target();
   if (!element) return;
   element.querySelector<HTMLElement>('[data-sensei-start]')?.addEventListener('click', startShift);
+  element.querySelector<HTMLElement>('[data-sensei-tutorial]')?.addEventListener('click', openTutorial);
+  element.querySelector<HTMLElement>('[data-sensei-tutorial-start]')?.addEventListener('click', finishTutorial);
+  element.querySelectorAll<HTMLElement>('[data-sensei-tutorial-choice]').forEach(button => button.addEventListener('click', () => { tutorialChoice = button.dataset.senseiTutorialChoice as GradeDecision['verdict']; renderTutorial(stateOrNull()); }));
   element.querySelector<HTMLElement>('[data-sensei-resume]')?.addEventListener('click', () => { const state = stateOrNull(); if (state) { startSenseiDeskMusic(); render(state); } });
   element.querySelector<HTMLElement>('[data-sensei-exit]')?.addEventListener('click', exitDesk);
   element.querySelector<HTMLElement>('[data-sensei-journey]')?.addEventListener('click', exitDesk);
