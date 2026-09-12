@@ -24,7 +24,7 @@ export const OFFLINE_CORE_FILES = [
   './version.js', './content-manifest.generated.js', './app.js', './journey.js',
   './roadmap-engine.js', './road-ahead.js', './journey-activities.js', './vms.js', './cloud.js',
   './reporting.js', './japan-ready.js', './supabase-config.js', './release-manager.js',
-  './battle-listen.js', './kotoba-activity.js', './dashboard-clarity.js', './touch-enhancements.js',
+  './battle-listen.js', './dashboard-clarity.js', './touch-enhancements.js',
   './learning-ui.js', './carousel-navigation.js', './micro-practice.js', './sentence-lab.js',
   './adaptive-learning.js', './adaptive-reinforcement.js', './campfire-recall.js', './word-rain.js',
   './battle-ui-patch.js',

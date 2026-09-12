@@ -46,7 +46,6 @@
     "./supabase-config.js",
     "./release-manager.js",
     "./battle-listen.js",
-    "./kotoba-activity.js",
     "./dashboard-clarity.js",
     "./touch-enhancements.js",
     "./learning-ui.js",

@@ -3,6 +3,9 @@ import { z } from 'zod';
 /** Device-wide repositories use this port; domains never access browser storage. */
 export function deviceStorage(): StorageLike { return localStorage; }
 
+/** Temporary run state must not become part of the learner's synced profile. */
+export function sessionStorage(): StorageLike { return window.sessionStorage; }
+
 export interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
