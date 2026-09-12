@@ -346,10 +346,6 @@ function bindExperimentalBottomNav(){
   nav.setAttribute('aria-label','Primary navigation');
   const legacyProgress=nav.querySelector('[data-experimental-nav="progress"]');
   if(legacyProgress?.parentNode?.removeChild)legacyProgress.parentNode.removeChild(legacyProgress);
-  const legacyDesk=nav.querySelector('[data-experimental-nav="ascension"]');
-  if(legacyDesk){legacyDesk.dataset.experimentalNav='sensei-desk';legacyDesk.innerHTML='<span class="experimental-nav-japanese" lang="ja">先生</span><span class="experimental-nav-art"><svg class="experimental-nav-hanko" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/></svg><svg class="experimental-nav-icon" viewBox="0 0 48 48" aria-hidden="true"><g><path d="M7 14h34v23H7z"/><path d="M12 19h24M12 25h12M12 31h18M34 7v7"/><path class="ink-fill" d="m34 27 7 5-7 5z"/></g></svg></span><b>Sensei’s Desk</b><small lang="ja">先生の机</small>'}
-  const legacyActivity=document.querySelector('#adminTestActivity option[value="ascension"]');
-  if(legacyActivity){legacyActivity.value='senseiDesk';legacyActivity.textContent='Sensei’s Desk'}
   const navButton=(action,japanese,english,sublabel,icon)=>`<button type="button" data-experimental-nav="${action}"><span class="experimental-nav-japanese" lang="ja">${japanese}</span><span class="experimental-nav-art"><svg class="experimental-nav-hanko" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/></svg><svg class="experimental-nav-icon" viewBox="0 0 48 48" aria-hidden="true"><g>${icon}</g></svg></span><b>${english}</b><small lang="ja">${sublabel}</small></button>`;
   const journey=navButton('journey','旅','Journey','旅路','<path d="M7 24h29M27 14l10 10-10 10"/>');
   const japanReady=navButton('japan-ready','日本へ','Japan Ready','富士','<path d="M5 38 18 16l6 9 4-6 15 19H5Z"/><path d="M5 38h38"/>');
