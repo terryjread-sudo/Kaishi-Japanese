@@ -2233,6 +2233,10 @@ body.experimental-journey-enabled.experimental-immersive-active #appHeader.exper
 body.experimental-journey-enabled.experimental-immersive-active .screen.active{padding-top:max(16px,env(safe-area-inset-top))}
 body.experimental-journey-enabled.experimental-immersive-active #study.screen.active{padding-top:max(16px,env(safe-area-inset-top));scroll-margin-top:0}
 
+/* Keep the fixed navigation dock clear of the final travel controls. */
+body.experimental-journey-enabled #japanReady.screen.active,
+body.experimental-journey-enabled #japanReadyCheatSheet.screen.active{padding-bottom:calc(132px + env(safe-area-inset-bottom))}
+
 /* The current-location affordance is a small overlay, never a reserved blank
    panel in the lesson stream. */
 body.experimental-journey-enabled .experimental-jump-current{width:auto;max-width:min(260px,calc(100vw - 28px));min-height:42px;padding:6px 10px;font-size:.76rem}
@@ -2285,7 +2289,7 @@ body.experimental-journey-enabled .experimental-focus-hint{color:#bae6fd}
 
 /* Permanent anime Journey shell: the former experimental surface is now the
    single learner-facing visual system. */
-body.experimental-journey-enabled .experimental-bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr));}
+body.experimental-journey-enabled .experimental-bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr));}
 body.experimental-journey-enabled #journeyHistoryTrack{background:
   linear-gradient(180deg,rgba(9,24,56,.08) 0 330px,rgba(9,24,56,.95) 470px),
   url("media/experimental/kaishi-journey-hero.png") center top/cover no-repeat,
@@ -2304,7 +2308,7 @@ body.experimental-journey-enabled .experimental-timeline-item.active .experiment
 body.experimental-journey-enabled .experimental-profile-dialog .experimental-profile-card,
 body.experimental-journey-enabled .screen.experimental-panel.active,
 body.experimental-journey-enabled .experimental-utility-dialog{border-radius:14px;}
-@media(max-width:680px){body.experimental-journey-enabled .experimental-bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr));padding-inline:2px}body.experimental-journey-enabled .experimental-journey-shell{padding-top:clamp(250px,72vw,330px)}body.experimental-journey-enabled .experimental-journey-world{top:220px}.experimental-bottom-nav button>b{font-size:clamp(9px,2.8vw,13px)}}
+@media(max-width:680px){body.experimental-journey-enabled .experimental-bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr));padding-inline:2px}body.experimental-journey-enabled .experimental-journey-shell{padding-top:clamp(250px,72vw,330px)}body.experimental-journey-enabled .experimental-journey-world{top:220px}.experimental-bottom-nav button>b{font-size:clamp(8px,2.55vw,13px)}}
 @media(max-width:680px){body.experimental-journey-enabled .experimental-journey-hero-art{height:clamp(250px,72vw,330px);object-position:center top}}
 @media(max-width:680px){.experimental-journey-world{top:78px;right:2px;width:210px}.experimental-journey-world img{height:100px;opacity:.18}.experimental-journey-world div{right:6px;bottom:2px}.experimental-journey-world strong{font-size:.68rem}.experimental-journey-world small{font-size:.58rem}.experimental-card-character{right:-22px;bottom:-24px;width:98px;height:128px}.experimental-card-description,.experimental-card-footer,.experimental-progress-track{max-width:calc(100% - 58px)!important}}
 
