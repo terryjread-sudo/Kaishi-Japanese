@@ -10,6 +10,12 @@ export interface SenseiWord {
   wordAudio?: string;
 }
 
+export interface SenseiWordProgress {
+  due?: number;
+  strength?: number;
+  deskMisses?: number;
+}
+
 export interface PupilProfile {
   id: string;
   name: string;
@@ -64,7 +70,8 @@ export interface SenseiShiftState {
   decisions: Record<string, GradeDecision>;
   paperResults: Record<string, PaperResult>;
   reputation: number;
-  quota: { total: 5; submitted: number };
+  quota: { total: number; submitted: number };
+  guided?: boolean;
   startedAt: number;
   deadlineAt: number;
   missedLineIds: string[];

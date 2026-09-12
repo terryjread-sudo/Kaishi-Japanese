@@ -112,6 +112,8 @@
     "./media/sensei-desk/homework-paper.png",
     "./media/sensei-desk/spy-loop.mp3",
     "./media/sensei-desk/sunset-walk.ogg",
+    "./media/sensei-desk/lamp-off.mp3",
+    "./media/sensei-desk/overlays/sensei-hands.png",
     "./media/sensei-desk/paper-flip.ogg",
     "./media/sensei-desk/stamp.wav",
     "./media/sensei-desk/success.mp3",
