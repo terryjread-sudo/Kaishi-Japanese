@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createVersionedRepository, deviceStorage, sessionStorage } from '../platform/storage';
-import { playSenseiDeskEffect, senseiDeskAudioEnabled, setSenseiDeskAudioEnabled, startSenseiDeskMusic, stopSenseiDeskMusic } from '../platform/sensei-desk-audio';
+import { playSenseiDeskEffect, playSenseiDeskWordAudio, senseiDeskAudioEnabled, setSenseiDeskAudioEnabled, startSenseiDeskMusic, stopSenseiDeskMusic } from '../platform/sensei-desk-audio';
 import { createShift, currentSubmission, finishShift, gradePaper, lineFor, reviewPaper, shiftScore } from '../domains/sensei-desk/desk';
 import type { GradeDecision, HomeworkLine, SenseiShiftState, SenseiWord } from '../domains/sensei-desk/types';
 
@@ -27,6 +27,10 @@ let draftDecisions: Record<string, GradeDecision> = {};
 let timerHandle: number | undefined;
 let tutorialActive = false;
 let tutorialChoice: GradeDecision['verdict'] | undefined;
+let stampHandle: number | undefined;
+let handbookOpen = false;
+let handbookQuery = '';
+let handbookWordId: string | undefined;
 
 function host(): HostPolicy { return (window.KaishiActivityPolicy?.senseiDesk || {}) as HostPolicy; }
 function target(): HTMLElement | null { return document.querySelector<HTMLElement>('#senseiDesk'); }
@@ -65,6 +69,9 @@ function startSavedShift(): void {
   const state = createShift(availableWords(), today());
   repository.save(state);
   draftDecisions = {};
+  handbookOpen = false;
+  handbookQuery = '';
+  handbookWordId = undefined;
   startSenseiDeskMusic();
   render(state);
 }
@@ -90,6 +97,10 @@ function exitDesk(): void {
   const state = stateOrNull();
   const active = state?.phase === 'desk' || state?.phase === 'correction';
   if (active && !window.confirm('Leave Sensei’s Desk? Your current shift will be saved so you can return later.')) return;
+  if (stampHandle) {
+    window.clearTimeout(stampHandle);
+    stampHandle = undefined;
+  }
   stopSenseiDeskMusic();
   host().show?.('journey');
 }
@@ -109,12 +120,18 @@ function decisionReady(line: HomeworkLine): boolean {
 }
 function submitPaper(state: SenseiShiftState): void {
   const submission = currentSubmission(state);
-  if (!submission || !submission.lines.every(decisionReady)) return;
-  const next = gradePaper(state, draftDecisions);
-  repository.save(next);
-  draftDecisions = {};
+  if (!submission || !submission.lines.every(decisionReady) || stampHandle) return;
   playSenseiDeskEffect('stamp');
-  render(next);
+  stampHandle = window.setTimeout(() => {
+    stampHandle = undefined;
+    const latest = stateOrNull();
+    if (!latest || latest.phase !== 'desk') return;
+    const next = gradePaper(latest, draftDecisions);
+    repository.save(next);
+    draftDecisions = {};
+    render(next);
+  }, 720);
+  render(state);
 }
 function continueAfterReview(state: SenseiShiftState): void {
   const next = reviewPaper(state);
@@ -157,6 +174,35 @@ function lineMarkup(line: HomeworkLine, state: SenseiShiftState): string {
 function frame(title: string, content: string): string {
   return `<div class="sensei-desk-shell"><header class="sensei-desk-header"><div><span class="eyebrow">SENSEI’S DESK · 先生の机</span><h1>${title}</h1><p>Grade one small answer at a time. Every correction teaches a word.</p></div><div class="sensei-desk-header-actions"><label class="sensei-audio-toggle"><input type="checkbox" data-sensei-audio ${senseiDeskAudioEnabled() ? 'checked' : ''}> Sound</label><button type="button" class="sensei-exit" data-sensei-exit>← Leave desk</button></div></header>${content}<p class="sensei-desk-note">A beginner can learn through the desk: read the pupil’s answer, identify the issue, then check the explanation.</p></div>`;
 }
+function handbookMarkup(): string {
+  const query = handbookQuery.trim().toLocaleLowerCase();
+  const words = availableWords();
+  const matches = words.filter(word => !query || [word.word, word.reading, word.meaning].some(value => value.toLocaleLowerCase().includes(query))).slice(0, 8);
+  const selected = words.find(word => word.id === handbookWordId) ?? matches[0];
+  if (selected && !handbookWordId) handbookWordId = selected.id;
+  return `<div class="sensei-handbook-heading"><div><span class="sensei-seal">辞</span><h2>Sensei’s handbook</h2></div><button type="button" class="sensei-handbook-toggle" data-sensei-handbook-toggle aria-expanded="${handbookOpen}">${handbookOpen ? 'Close' : 'Open'} handbook</button></div><p>Check a word before you make your judgement. Search the Japanese, reading, or English meaning.</p><form class="sensei-handbook-search" data-sensei-handbook-form><label for="senseiHandbookSearch">Look up a word</label><div><input id="senseiHandbookSearch" data-sensei-handbook-search value="${escapeHtml(handbookQuery)}" placeholder="e.g. water / みず" autocomplete="off"><button type="submit">Search</button></div></form><div class="sensei-handbook-results" aria-live="polite">${matches.length ? matches.map(word => `<button type="button" class="sensei-handbook-word ${selected?.id === word.id ? 'is-selected' : ''}" data-sensei-handbook-word="${escapeHtml(word.id)}"><strong lang="ja">${escapeHtml(word.word)}</strong><span>${escapeHtml(word.reading)} · ${escapeHtml(word.meaning)}</span></button>`).join('') : '<p class="sensei-handbook-empty">No matching word yet. Try a Japanese word, reading, or English meaning.</p>'}</div>${selected ? `<article class="sensei-handbook-entry"><span class="eyebrow">Word card</span><h3 lang="ja">${escapeHtml(selected.word)}</h3><strong>${escapeHtml(selected.reading)}</strong><p>${escapeHtml(selected.meaning)}</p>${selected.wordAudio ? `<button type="button" class="sensei-hear" data-sensei-handbook-hear="${escapeHtml(selected.wordAudio)}">🔊 Hear word</button>` : '<small>Audio is not available for this word yet.</small>'}</article>` : ''}<div class="sensei-handbook-rules"><b>Meaning</b><span>Does the English match?</span><b>Particle</b><span>Does the connector fit?</span><b>Kana</b><span>Does each sound match?</span></div>`;
+}
+function enhanceDesk(state: SenseiShiftState, targetElement: HTMLElement): void {
+  const status = targetElement.querySelector<HTMLElement>('.sensei-desk-status');
+  status?.insertAdjacentHTML('beforeend', `<button type="button" class="sensei-handbook-launch" data-sensei-handbook-toggle aria-expanded="${handbookOpen}">📖 ${handbookOpen ? 'Close handbook' : 'Open handbook'}</button>`);
+  const handbook = targetElement.querySelector<HTMLElement>('.sensei-handbook');
+  if (handbook) {
+    handbook.classList.toggle('is-open', handbookOpen);
+    handbook.innerHTML = handbookMarkup();
+  }
+  const paper = targetElement.querySelector<HTMLElement>('.sensei-paper');
+  if (stampHandle && paper) {
+    paper.classList.add('is-stamping');
+    paper.insertAdjacentHTML('afterbegin', '<span class="sensei-stamp-drop" aria-hidden="true">判</span>');
+  }
+  if (stampHandle) {
+    const submit = targetElement.querySelector<HTMLButtonElement>('[data-sensei-submit]');
+    if (submit) {
+      submit.disabled = true;
+      submit.innerHTML = 'Stamping paper… <span>判</span>';
+    }
+  }
+}
 function renderTutorial(state: SenseiShiftState | null): void {
   const choice = tutorialChoice;
   const choiceFeedback = choice === 'correct'
@@ -173,7 +219,7 @@ function renderTutorial(state: SenseiShiftState | null): void {
 function renderMenu(): void {
   const saved = stateOrNull();
   const resume = saved && (saved.phase === 'desk' || saved.phase === 'correction') ? `<button type="button" class="sensei-primary" data-sensei-resume>Resume shift <span>${saved.quota.submitted}/${saved.quota.total} papers</span></button>` : '';
-  const content = `<section class="sensei-desk-welcome"><div class="sensei-desk-welcome-art" role="img" aria-label="A calm teacher’s desk"></div><div><span class="sensei-seal">判</span><h2>Welcome to the homework desk</h2><p>Students have left five short papers for you. Decide what is correct, mark the kind of mistake, and read the Sensei’s explanation.</p><div class="sensei-rules"><span><b>01</b> Read the answer</span><span><b>02</b> Spot the issue</span><span><b>03</b> Learn the fix</span></div><div class="sensei-menu-actions">${resume}<button type="button" class="sensei-primary" data-sensei-start>Start a new shift <span>5 papers · 8 min</span></button><button type="button" class="sensei-secondary" data-sensei-tutorial>See an example</button></div></div></section>`;
+  const content = `<section class="sensei-desk-welcome"><div class="sensei-desk-welcome-art" role="img" aria-label="A calm teacher’s desk"></div><div><span class="sensei-seal">判</span><h2>Welcome to the homework desk</h2><p>Students have left five short papers for you. Decide what is correct, mark the kind of mistake, and read the Sensei’s explanation.</p><div class="sensei-rules"><span><b>01</b> Read the answer</span><span><b>02</b> Spot the issue</span><span><b>03</b> Learn the fix</span></div><div class="sensei-menu-actions">${resume}<button type="button" class="sensei-primary" data-sensei-start>Start a new shift <span>5 papers · 8 min</span></button><button type="button" class="sensei-secondary" data-sensei-tutorial>Tutorial &amp; example</button></div></div></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame('The homework shift', content);
   bind();
@@ -183,7 +229,10 @@ function renderDesk(state: SenseiShiftState): void {
   if (!submission) return renderSummary(state);
   const content = `<div class="sensei-desk-status"><span><b>Paper ${state.currentIndex + 1}</b> of ${state.submissions.length}</span><span>Quota <b>${state.quota.submitted}/${state.quota.total}</b></span><span>Reputation <b>${state.reputation}</b></span><span class="sensei-clock">⌛ <b data-sensei-timer>${formatTime(state.deadlineAt)}</b></span></div><section class="sensei-desk-workspace"><div class="sensei-workbench"><div class="sensei-workbench-label">Desk view · ${escapeHtml(submission.subject)}</div><div class="sensei-paper" style="--paper-art:url('${escapeHtml(submission.paperAsset)}')"><div class="sensei-paper-head"><img src="${escapeHtml(submission.pupil.portrait)}" alt="${escapeHtml(submission.pupil.name)}" class="sensei-pupil-portrait"><div><span class="eyebrow">${escapeHtml(submission.pupil.role)}</span><h2>${escapeHtml(submission.pupil.name)}’s homework</h2><p>${escapeHtml(submission.pupil.concern)}</p></div><span class="sensei-paper-stamp">未採点</span></div><div class="sensei-paper-lines">${submission.lines.map(line => lineMarkup(line, state)).join('')}</div></div></div><aside class="sensei-handbook"><span class="sensei-seal">辞</span><h2>Sensei’s handbook</h2><p>Look for agreement between the Japanese, reading, and meaning.</p><div class="sensei-handbook-rule"><b>Meaning</b><span>Does the English match the Japanese?</span></div><div class="sensei-handbook-rule"><b>Particle</b><span>Does the connector fit the sentence?</span></div><div class="sensei-handbook-rule"><b>Kana</b><span>Does every sound match?</span></div><p class="sensei-handbook-tip">You can hear a word after submitting a paper during the correction review.</p></aside></section><button type="button" class="sensei-submit" data-sensei-submit ${submission.lines.every(decisionReady) ? '' : 'disabled'}>Stamp this paper <span>判定</span></button>`;
   const targetElement = target();
-  if (targetElement) targetElement.innerHTML = frame(`Paper ${state.currentIndex + 1} · ${submission.subject}`, content);
+  if (targetElement) {
+    targetElement.innerHTML = frame(`Paper ${state.currentIndex + 1} · ${submission.subject}`, content);
+    enhanceDesk(state, targetElement);
+  }
   bind();
 }
 function renderCorrection(state: SenseiShiftState): void {
@@ -226,6 +275,10 @@ function bind(): void {
   element.querySelector<HTMLElement>('[data-sensei-tutorial]')?.addEventListener('click', openTutorial);
   element.querySelector<HTMLElement>('[data-sensei-tutorial-start]')?.addEventListener('click', finishTutorial);
   element.querySelectorAll<HTMLElement>('[data-sensei-tutorial-choice]').forEach(button => button.addEventListener('click', () => { tutorialChoice = button.dataset.senseiTutorialChoice as GradeDecision['verdict']; renderTutorial(stateOrNull()); }));
+  element.querySelectorAll<HTMLElement>('[data-sensei-handbook-toggle]').forEach(button => button.addEventListener('click', () => { handbookOpen = !handbookOpen; render(stateOrNull()); }));
+  element.querySelector<HTMLFormElement>('[data-sensei-handbook-form]')?.addEventListener('submit', event => { event.preventDefault(); handbookQuery = element.querySelector<HTMLInputElement>('[data-sensei-handbook-search]')?.value.trim() ?? ''; render(stateOrNull()); });
+  element.querySelectorAll<HTMLElement>('[data-sensei-handbook-word]').forEach(button => button.addEventListener('click', () => { handbookWordId = button.dataset.senseiHandbookWord; handbookOpen = true; render(stateOrNull()); }));
+  element.querySelector<HTMLElement>('[data-sensei-handbook-hear]')?.addEventListener('click', () => { const word = availableWords().find(item => item.wordAudio === element.querySelector<HTMLElement>('[data-sensei-handbook-hear]')?.dataset.senseiHandbookHear); if (word) playSenseiDeskWordAudio(word.wordAudio, word.reading); });
   element.querySelector<HTMLElement>('[data-sensei-resume]')?.addEventListener('click', () => { const state = stateOrNull(); if (state) { startSenseiDeskMusic(); render(state); } });
   element.querySelector<HTMLElement>('[data-sensei-exit]')?.addEventListener('click', exitDesk);
   element.querySelector<HTMLElement>('[data-sensei-journey]')?.addEventListener('click', exitDesk);
@@ -234,7 +287,7 @@ function bind(): void {
   element.querySelector<HTMLElement>('[data-sensei-finish]')?.addEventListener('click', () => { const state = stateOrNull(); if (state) finish(state); });
   element.querySelectorAll<HTMLElement>('[data-sensei-verdict]').forEach(button => button.addEventListener('click', () => selectVerdict(button.dataset.senseiVerdict ?? '', button.dataset.senseiValue as GradeDecision['verdict'])));
   element.querySelectorAll<HTMLElement>('[data-sensei-error]').forEach(button => button.addEventListener('click', () => selectError(button.dataset.senseiError ?? '', button.dataset.senseiErrorTag as GradeDecision['errorTag'])));
-  element.querySelectorAll<HTMLElement>('[data-sensei-hear]').forEach(button => button.addEventListener('click', () => { const state = stateOrNull(); if (state) host().speak?.(lineFor(state, button.dataset.senseiHear ?? '')?.reading ?? ''); }));
+  element.querySelectorAll<HTMLElement>('[data-sensei-hear]').forEach(button => button.addEventListener('click', () => { const state = stateOrNull(); if (state) { const line = lineFor(state, button.dataset.senseiHear ?? ''); playSenseiDeskWordAudio(line?.audio, line?.reading ?? ''); } }));
   element.querySelector<HTMLInputElement>('[data-sensei-audio]')?.addEventListener('change', event => { const input = event.currentTarget as HTMLInputElement; setSenseiDeskAudioEnabled(input.checked); if (input.checked) startSenseiDeskMusic(); });
 }
 
