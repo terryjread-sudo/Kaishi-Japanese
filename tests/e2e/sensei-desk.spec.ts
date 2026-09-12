@@ -6,6 +6,9 @@ async function completeFirstRunTutorial(page: Page): Promise<void> {
   await page.locator('[data-sensei-tutorial-choice="correct"]').click();
   await expect(page.locator('[data-sensei-tutorial-feedback]')).toContainText('Correct');
   await tutorialStart.click();
+  await expect(page.locator('.sensei-desk-stage')).toBeVisible();
+  await expect(page.locator('.sensei-guided-status')).toContainText('no timer');
+  await page.locator('[data-sensei-open-paper]').click();
 }
 
 test('new learners can open Sensei’s Desk and review a paper', async ({ page }) => {

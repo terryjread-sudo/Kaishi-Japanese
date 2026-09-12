@@ -1,4 +1,4 @@
-import type { GradeDecision, HomeworkLine, HomeworkSubmission, PupilProfile, SenseiShiftState, SenseiWord } from './types';
+import type { GradeDecision, HomeworkLine, HomeworkSubmission, PupilProfile, SenseiShiftState, SenseiWord, SenseiWordProgress } from './types';
 
 export const SHIFT_PAPERS = 5;
 export const SHIFT_DURATION_MS = 8 * 60 * 1000;
@@ -44,16 +44,24 @@ function makeLine(word: SenseiWord, words: readonly SenseiWord[], paperIndex: nu
   };
 }
 
-export function createShift(words: readonly SenseiWord[], dateKey: string, seed = Date.now()): SenseiShiftState {
+export function createShift(words: readonly SenseiWord[], dateKey: string, seed = Date.now(), options: { guided?: boolean; wordProgress?: Readonly<Record<string, SenseiWordProgress>> } = {}): SenseiShiftState {
   const next = random(seed);
-  const pool = [...words].filter(word => word.word && word.reading && word.meaning);
+  const guided = options.guided === true;
+  const pool = [...words].filter(word => word.word && word.reading && word.meaning).sort((left, right) => {
+    const leftProgress = options.wordProgress?.[left.id] ?? {};
+    const rightProgress = options.wordProgress?.[right.id] ?? {};
+    const leftScore = (leftProgress.deskMisses ?? 0) * 10 + (leftProgress.due && leftProgress.due <= Date.now() ? 5 : 0) - (leftProgress.strength ?? 0);
+    const rightScore = (rightProgress.deskMisses ?? 0) * 10 + (rightProgress.due && rightProgress.due <= Date.now() ? 5 : 0) - (rightProgress.strength ?? 0);
+    return rightScore - leftScore;
+  });
   const usable = pool.length ? pool : [{ id: 'beginner-water', word: 'みず', reading: 'みず', meaning: 'water' }];
-  const submissions = Array.from({ length: SHIFT_PAPERS }, (_, paperIndex) => {
+  const paperCount = guided ? 2 : SHIFT_PAPERS;
+  const submissions = Array.from({ length: paperCount }, (_, paperIndex) => {
     const selected = [0, 1].map(offset => usable[(paperIndex * 2 + offset) % usable.length]!);
     return { id: `submission-${paperIndex + 1}`, pupil: pick(PUPILS, next, paperIndex), subject: paperIndex === 0 ? 'Basic vocabulary' : paperIndex === 1 ? 'Kana check' : paperIndex === 2 ? 'Particles in context' : paperIndex === 3 ? 'Everyday sentences' : 'Review paper', paperAsset: PAPER_ASSETS[paperIndex]!, lines: selected.map((word, lineIndex) => makeLine(word, usable, paperIndex, lineIndex)) };
   });
   const startedAt = Date.now();
-  return { schemaVersion: 1, shiftId: `sensei-${startedAt.toString(36)}`, dateKey, phase: 'desk', currentIndex: 0, submissions, decisions: {}, paperResults: {}, reputation: 100, quota: { total: SHIFT_PAPERS, submitted: 0 }, startedAt, deadlineAt: startedAt + SHIFT_DURATION_MS, missedLineIds: [] };
+  return { schemaVersion: 1, shiftId: `sensei-${startedAt.toString(36)}`, dateKey, phase: 'desk', currentIndex: 0, submissions, decisions: {}, paperResults: {}, reputation: 100, quota: { total: paperCount, submitted: 0 }, startedAt, deadlineAt: startedAt + (guided ? 24 * 60 * 60 * 1000 : SHIFT_DURATION_MS), missedLineIds: [], guided };
 }
 
 export function currentSubmission(state: SenseiShiftState): HomeworkSubmission | null { return state.submissions[state.currentIndex] ?? null; }

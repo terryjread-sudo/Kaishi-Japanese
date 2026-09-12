@@ -9,6 +9,7 @@ const EFFECTS = {
   paper: 'media/sensei-desk/paper-flip.ogg',
   stamp: 'media/sensei-desk/stamp.wav',
   success: 'media/sensei-desk/success.mp3',
+  lampOff: 'media/sensei-desk/lamp-off.mp3',
 } as const;
 
 let music: HTMLAudioElement | null = null;

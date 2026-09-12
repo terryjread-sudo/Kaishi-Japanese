@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { createVersionedRepository, deviceStorage, sessionStorage } from '../platform/storage';
 import { playSenseiDeskEffect, playSenseiDeskWordAudio, senseiDeskAudioEnabled, setSenseiDeskAudioEnabled, startSenseiDeskMusic, stopSenseiDeskMusic } from '../platform/sensei-desk-audio';
 import { createShift, currentSubmission, finishShift, gradePaper, lineFor, reviewPaper, shiftScore } from '../domains/sensei-desk/desk';
-import type { GradeDecision, HomeworkLine, SenseiShiftState, SenseiWord } from '../domains/sensei-desk/types';
+import type { GradeDecision, HomeworkLine, SenseiShiftState, SenseiWord, SenseiWordProgress } from '../domains/sensei-desk/types';
 
 const SHIFT_KEY = 'kaishi-sensei-desk-shift';
 const TUTORIAL_KEY = 'kaishi-sensei-desk-tutorial';
@@ -20,6 +20,8 @@ type HostPolicy = {
   currentLessonWords?: () => unknown;
   introducedVocabulary?: () => unknown;
   completeShift?: (wordIds: string[]) => void;
+  wordProgress?: () => Record<string, SenseiWordProgress>;
+  recordDeskMisses?: (wordIds: string[]) => void;
   speak?: (text: string) => void;
 };
 
@@ -31,6 +33,7 @@ let stampHandle: number | undefined;
 let handbookOpen = false;
 let handbookQuery = '';
 let handbookWordId: string | undefined;
+let deskView: 'arrival' | 'idle' | 'inspect' | 'closed' = 'idle';
 
 function host(): HostPolicy { return (window.KaishiActivityPolicy?.senseiDesk || {}) as HostPolicy; }
 function target(): HTMLElement | null { return document.querySelector<HTMLElement>('#senseiDesk'); }
@@ -65,13 +68,14 @@ function stateOrNull(): SenseiShiftState | null {
 }
 function tutorialSeen(): boolean { return tutorialRepository.load()?.completed === true; }
 function markTutorialSeen(): void { tutorialRepository.save({ schemaVersion: 1, completed: true }); }
-function startSavedShift(): void {
-  const state = createShift(availableWords(), today());
+function startSavedShift(guided = false): void {
+  const state = createShift(availableWords(), today(), Date.now(), { guided, wordProgress: host().wordProgress?.() });
   repository.save(state);
   draftDecisions = {};
   handbookOpen = false;
   handbookQuery = '';
   handbookWordId = undefined;
+  deskView = 'arrival';
   startSenseiDeskMusic();
   render(state);
 }
@@ -91,7 +95,7 @@ function finishTutorial(): void {
   tutorialChoice = undefined;
   const saved = stateOrNull();
   if (saved && (saved.phase === 'desk' || saved.phase === 'correction')) return render(saved);
-  startSavedShift();
+  startSavedShift(true);
 }
 function exitDesk(): void {
   const state = stateOrNull();
@@ -127,6 +131,9 @@ function submitPaper(state: SenseiShiftState): void {
     const latest = stateOrNull();
     if (!latest || latest.phase !== 'desk') return;
     const next = gradePaper(latest, draftDecisions);
+    const current = currentSubmission(next);
+    const missed = current ? current.lines.filter(line => next.paperResults[current.id]?.mistakes.includes(line.id)).map(line => line.wordId) : [];
+    if (missed.length) host().recordDeskMisses?.(missed);
     repository.save(next);
     draftDecisions = {};
     render(next);
@@ -137,6 +144,7 @@ function continueAfterReview(state: SenseiShiftState): void {
   const next = reviewPaper(state);
   repository.save(next);
   playSenseiDeskEffect(next.phase === 'summary' ? 'success' : 'paper');
+  deskView = 'arrival';
   render(next);
 }
 function finish(state: SenseiShiftState): void {
@@ -146,6 +154,8 @@ function finish(state: SenseiShiftState): void {
     host().completeShift?.(availableWords().map(word => word.id));
     playSenseiDeskEffect('success');
   }
+  deskView = 'closed';
+  playSenseiDeskEffect('lampOff');
   render(next);
 }
 function tick(): void {
@@ -169,7 +179,7 @@ function lineMarkup(line: HomeworkLine, state: SenseiShiftState): string {
   const decision = draftDecisions[line.id];
   const verdict = decision?.verdict;
   const correctionOptions = verdict === 'needs-correction' ? `<div class="sensei-error-tags" aria-label="What needs correction">${(['meaning', 'particle', 'kana'] as const).map(tag => `<button type="button" class="sensei-tag ${decision?.errorTag === tag ? 'is-selected' : ''}" data-sensei-error="${line.id}" data-sensei-error-tag="${tag}">${tag === 'meaning' ? 'Meaning' : tag === 'particle' ? 'Particle' : 'Kana'}</button>`).join('')}</div>` : '';
-  return `<article class="sensei-homework-line ${verdict ? `is-${verdict}` : ''}" data-sensei-line="${escapeHtml(line.id)}"><div class="sensei-line-copy"><span class="sensei-line-number">${state.currentIndex + 1}.${line.id.split('-').at(-1)}</span><strong lang="ja">${escapeHtml(line.japanese)}</strong><span>${escapeHtml(line.reading)} · ${escapeHtml(line.meaning)}</span></div><div class="sensei-verdicts"><button type="button" class="sensei-verdict ${verdict === 'correct' ? 'is-selected' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${verdict === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="needs-correction">✎ Needs correction</button></div>${correctionOptions}</article>`;
+  return `<article class="sensei-homework-line ${verdict ? `is-${verdict}` : ''}" data-sensei-line="${escapeHtml(line.id)}"><div class="sensei-line-copy"><span class="sensei-line-number">${state.currentIndex + 1}.${line.id.split('-').at(-1)}</span><strong lang="ja">${escapeHtml(line.japanese)}</strong><span>${escapeHtml(line.reading)} · ${escapeHtml(line.meaning)}</span></div>${line.audio ? `<button type="button" class="sensei-hear sensei-preflight-hear" data-sensei-hear="${escapeHtml(line.id)}">🔊 Hear it</button>` : ''}<div class="sensei-verdicts"><button type="button" class="sensei-verdict ${verdict === 'correct' ? 'is-selected' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${verdict === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="needs-correction">✎ Needs correction</button></div>${correctionOptions}</article>`;
 }
 function frame(title: string, content: string): string {
   return `<div class="sensei-desk-shell"><header class="sensei-desk-header"><div><span class="eyebrow">SENSEI’S DESK · 先生の机</span><h1>${title}</h1><p>Grade one small answer at a time. Every correction teaches a word.</p></div><div class="sensei-desk-header-actions"><label class="sensei-audio-toggle"><input type="checkbox" data-sensei-audio ${senseiDeskAudioEnabled() ? 'checked' : ''}> Sound</label><button type="button" class="sensei-exit" data-sensei-exit>← Leave desk</button></div></header>${content}<p class="sensei-desk-note">A beginner can learn through the desk: read the pupil’s answer, identify the issue, then check the explanation.</p></div>`;
@@ -211,7 +221,7 @@ function renderTutorial(state: SenseiShiftState | null): void {
       ? '<p class="sensei-tutorial-feedback is-wrong" data-sensei-tutorial-feedback>Almost—but this example is consistent. On a real mistake, choose <b>Needs correction</b>, then name the issue: Meaning, Particle, or Kana.</p>'
       : '<p class="sensei-tutorial-prompt">Try the decision below. You can change your choice at any time.</p>';
   const actionLabel = state && (state.phase === 'desk' || state.phase === 'correction') ? 'Continue my shift' : 'Start my first shift';
-  const content = `<section class="sensei-tutorial"><div class="sensei-tutorial-heading"><span class="sensei-seal">学</span><div><span class="eyebrow">First shift briefing · はじめに</span><h2>How to grade a paper</h2><p>You are the Sensei for a small class. Your job is to check each answer carefully—not to write a perfect essay.</p></div></div><div class="sensei-tutorial-grid"><ol class="sensei-tutorial-steps"><li><b>Read the three clues</b><span>Compare the Japanese answer, its reading, and the English meaning.</span></li><li><b>Make one decision</b><span>Choose <strong>Looks right</strong> when they agree, or <strong>Needs correction</strong> when they do not.</span></li><li><b>Label the lesson</b><span>For a mistake, select whether it is a Meaning, Particle, or Kana problem.</span></li><li><b>Stamp and learn</b><span>Submit the paper, then read Sensei’s feedback before the next pupil arrives.</span></li></ol><section class="sensei-tutorial-example" aria-labelledby="senseiTutorialExampleTitle"><span class="eyebrow">Worked example</span><h3 id="senseiTutorialExampleTitle">Does this answer match?</h3><article class="sensei-tutorial-line"><span class="sensei-line-number">EXAMPLE</span><strong lang="ja">わたしは みずを のみます</strong><span>わたしは みずを のみます · I drink water</span></article><div class="sensei-verdicts"><button type="button" class="sensei-verdict ${choice === 'correct' ? 'is-selected' : ''}" data-sensei-tutorial-choice="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${choice === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-tutorial-choice="needs-correction">✎ Needs correction</button></div>${choiceFeedback}<aside class="sensei-tutorial-mistake"><b>When it is wrong</b><span><span lang="ja">みずに おぼえます</span> · “I remember water”</span><small>The connector に is the issue here. Mark <b>Needs correction → Particle</b>.</small></aside></section></div><button type="button" class="sensei-primary sensei-tutorial-start" data-sensei-tutorial-start>${actionLabel} <span>判</span></button></section>`;
+  const content = `<section class="sensei-tutorial"><div class="sensei-tutorial-heading"><span class="sensei-seal">学</span><div><span class="eyebrow">First shift briefing · はじめに</span><h2>How to grade a paper</h2><p>You are the Sensei for a small class. Open each paper on the desk, check the clues, then leave a helpful mark.</p></div></div><div class="sensei-tutorial-grid"><ol class="sensei-tutorial-steps"><li><b>Open the paper</b><span>Tap the new homework on the desk. The handbook and audio are always there if you need them.</span></li><li><b>Read the three clues</b><span>Compare the Japanese answer, its reading, and the English meaning.</span></li><li><b>Make one decision</b><span>Choose <strong>Looks right</strong> when they agree, or <strong>Needs correction</strong> when they do not.</span></li><li><b>Stamp and learn</b><span>Name a mistake if there is one, stamp the paper, then read Sensei’s feedback.</span></li></ol><section class="sensei-tutorial-example" aria-labelledby="senseiTutorialExampleTitle"><span class="eyebrow">Worked example</span><h3 id="senseiTutorialExampleTitle">Does this answer match?</h3><article class="sensei-tutorial-line"><span class="sensei-line-number">EXAMPLE</span><strong lang="ja">わたしは みずを のみます</strong><span>わたしは みずを のみます · I drink water</span></article><div class="sensei-verdicts"><button type="button" class="sensei-verdict ${choice === 'correct' ? 'is-selected' : ''}" data-sensei-tutorial-choice="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${choice === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-tutorial-choice="needs-correction">✎ Needs correction</button></div>${choiceFeedback}<aside class="sensei-tutorial-mistake"><b>When it is wrong</b><span><span lang="ja">みずに おぼえます</span> · “I remember water”</span><small>The connector に is the issue here. Mark <b>Needs correction → Particle</b>.</small></aside></section></div><button type="button" class="sensei-primary sensei-tutorial-start" data-sensei-tutorial-start>${actionLabel} <span>判</span></button></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame('Your first paper, step by step', content);
   bind();
@@ -224,10 +234,20 @@ function renderMenu(): void {
   if (targetElement) targetElement.innerHTML = frame('The homework shift', content);
   bind();
 }
-function renderDesk(state: SenseiShiftState): void {
+function renderDeskScene(state: SenseiShiftState): void {
   const submission = currentSubmission(state);
   if (!submission) return renderSummary(state);
-  const content = `<div class="sensei-desk-status"><span><b>Paper ${state.currentIndex + 1}</b> of ${state.submissions.length}</span><span>Quota <b>${state.quota.submitted}/${state.quota.total}</b></span><span>Reputation <b>${state.reputation}</b></span><span class="sensei-clock">⌛ <b data-sensei-timer>${formatTime(state.deadlineAt)}</b></span></div><section class="sensei-desk-workspace"><div class="sensei-workbench"><div class="sensei-workbench-label">Desk view · ${escapeHtml(submission.subject)}</div><div class="sensei-paper" style="--paper-art:url('${escapeHtml(submission.paperAsset)}')"><div class="sensei-paper-head"><img src="${escapeHtml(submission.pupil.portrait)}" alt="${escapeHtml(submission.pupil.name)}" class="sensei-pupil-portrait"><div><span class="eyebrow">${escapeHtml(submission.pupil.role)}</span><h2>${escapeHtml(submission.pupil.name)}’s homework</h2><p>${escapeHtml(submission.pupil.concern)}</p></div><span class="sensei-paper-stamp">未採点</span></div><div class="sensei-paper-lines">${submission.lines.map(line => lineMarkup(line, state)).join('')}</div></div></div><aside class="sensei-handbook"><span class="sensei-seal">辞</span><h2>Sensei’s handbook</h2><p>Look for agreement between the Japanese, reading, and meaning.</p><div class="sensei-handbook-rule"><b>Meaning</b><span>Does the English match the Japanese?</span></div><div class="sensei-handbook-rule"><b>Particle</b><span>Does the connector fit the sentence?</span></div><div class="sensei-handbook-rule"><b>Kana</b><span>Does every sound match?</span></div><p class="sensei-handbook-tip">You can hear a word after submitting a paper during the correction review.</p></aside></section><button type="button" class="sensei-submit" data-sensei-submit ${submission.lines.every(decisionReady) ? '' : 'disabled'}>Stamp this paper <span>判定</span></button>`;
+  const arrival = deskView === 'arrival';
+  const content = `<div class="sensei-desk-status"><span><b>Paper ${state.currentIndex + 1}</b> of ${state.submissions.length}</span><span>Quota <b>${state.quota.submitted}/${state.quota.total}</b></span><span>Reputation <b>${state.reputation}</b></span>${state.guided ? '<span class="sensei-guided-status">Guided shift · no timer</span>' : `<span class="sensei-clock">⌛ <b data-sensei-timer>${formatTime(state.deadlineAt)}</b></span>`}</div><section class="sensei-desk-stage ${arrival ? 'is-arriving' : ''}"><div class="sensei-desk-stack" aria-hidden="true"><span></span><span></span><span></span></div><button type="button" class="sensei-desk-paper-preview" data-sensei-open-paper aria-label="Open ${escapeHtml(submission.pupil.name)}’s homework"><span class="sensei-desk-paper-label">${arrival ? 'A new paper arrives' : 'Tap to open homework'}</span><img src="${escapeHtml(submission.pupil.portrait)}" alt="" class="sensei-stage-pupil"><strong>${escapeHtml(submission.pupil.name)}’s homework</strong><small>${escapeHtml(submission.subject)}</small></button><div class="sensei-desk-out-tray" aria-hidden="true"><span>Graded tray</span></div><img class="sensei-hand-place" src="media/sensei-desk/overlays/sensei-hands.png" alt="" aria-hidden="true"><button type="button" class="sensei-handbook-launch sensei-stage-handbook" data-sensei-handbook-toggle aria-expanded="${handbookOpen}">📖 Handbook</button><aside class="sensei-handbook ${handbookOpen ? 'is-open' : ''}">${handbookMarkup()}</aside></section><p class="sensei-desk-stage-note">${state.guided ? 'Start by opening the paper. You can listen or check the handbook before making a judgement.' : 'A pupil has left a paper for you. Open it when you are ready.'}</p>`;
+  const targetElement = target();
+  if (targetElement) targetElement.innerHTML = frame(state.guided ? 'Guided homework shift' : 'The homework desk', content);
+  bind();
+}
+function renderDesk(state: SenseiShiftState): void {
+  if (deskView !== 'inspect' && !stampHandle) return renderDeskScene(state);
+  const submission = currentSubmission(state);
+  if (!submission) return renderSummary(state);
+  const content = `<div class="sensei-desk-status"><span><b>Paper ${state.currentIndex + 1}</b> of ${state.submissions.length}</span><span>Quota <b>${state.quota.submitted}/${state.quota.total}</b></span><span>Reputation <b>${state.reputation}</b></span>${state.guided ? '<span class="sensei-guided-status">Guided shift · no timer</span>' : `<span class="sensei-clock">⌛ <b data-sensei-timer>${formatTime(state.deadlineAt)}</b></span>`}</div><section class="sensei-desk-workspace"><div class="sensei-workbench"><div class="sensei-workbench-label">Desk view · ${escapeHtml(submission.subject)}</div><div class="sensei-paper" style="--paper-art:url('${escapeHtml(submission.paperAsset)}')"><div class="sensei-paper-head"><img src="${escapeHtml(submission.pupil.portrait)}" alt="${escapeHtml(submission.pupil.name)}" class="sensei-pupil-portrait"><div><span class="eyebrow">${escapeHtml(submission.pupil.role)}</span><h2>${escapeHtml(submission.pupil.name)}’s homework</h2><p>${submission.lines.map(line => escapeHtml(line.correctJapanese)).join(' · ')}</p>${state.guided ? '<p class="sensei-guided-tip">Compare the Japanese sentence, reading, and meaning. Use the handbook if you are unsure.</p>' : ''}</div><span class="sensei-paper-stamp">未採点</span></div><div class="sensei-paper-lines">${submission.lines.map(line => lineMarkup(line, state)).join('')}</div></div></div><aside class="sensei-handbook ${handbookOpen ? 'is-open' : ''}">${handbookMarkup()}</aside></section><button type="button" class="sensei-submit" data-sensei-submit ${submission.lines.every(decisionReady) ? '' : 'disabled'}>Stamp this paper <span>判定</span></button>`;
   const targetElement = target();
   if (targetElement) {
     targetElement.innerHTML = frame(`Paper ${state.currentIndex + 1} · ${submission.subject}`, content);
@@ -239,7 +259,7 @@ function renderCorrection(state: SenseiShiftState): void {
   const submission = currentSubmission(state);
   if (!submission) return renderSummary(state);
   const result = state.paperResults[submission.id];
-  const content = `<section class="sensei-correction"><div class="sensei-correction-banner"><span class="sensei-seal">${result?.mistakes.length ? '学' : '良'}</span><div><span class="eyebrow">Correction review</span><h2>${result?.mistakes.length ? 'A few marks to study' : 'Excellent judgement'}</h2><p>${result?.correct ?? 0}/${result?.total ?? 0} lines matched. Read the feedback before the next pupil arrives.</p></div></div><div class="sensei-feedback-list">${submission.lines.map(line => { const mistake = result?.mistakes.includes(line.id); return `<article class="sensei-feedback ${mistake ? 'is-mistake' : 'is-correct'}"><div><b>${mistake ? 'Needs study' : 'Correct'}</b><strong lang="ja">${escapeHtml(line.correctJapanese)}</strong><span>${escapeHtml(line.correctReading)} · ${escapeHtml(line.correctMeaning)}</span></div><p>${escapeHtml(line.explanation)}</p>${line.audio ? `<button type="button" class="sensei-hear" data-sensei-hear="${escapeHtml(line.audio)}">🔊 Hear it</button>` : ''}</article>`; }).join('')}</div><button type="button" class="sensei-submit" data-sensei-continue>${state.currentIndex + 1 === state.submissions.length ? 'Review shift summary' : 'Next homework'} <span>→</span></button></section>`;
+  const content = `<section class="sensei-correction"><div class="sensei-correction-banner"><span class="sensei-seal">${result?.mistakes.length ? '学' : '良'}</span><div><span class="eyebrow">Correction review</span><h2>${result?.mistakes.length ? 'A few marks to study' : 'Excellent judgement'}</h2><p>${result?.correct ?? 0}/${result?.total ?? 0} lines matched. Read the feedback before the next pupil arrives.</p></div></div><div class="sensei-feedback-list">${submission.lines.map(line => { const mistake = result?.mistakes.includes(line.id); return `<article class="sensei-feedback ${mistake ? 'is-mistake' : 'is-correct'}"><div><b>${mistake ? 'Needs study' : 'Correct'}</b><strong lang="ja">${escapeHtml(line.correctJapanese)}</strong><span>${escapeHtml(line.correctReading)} · ${escapeHtml(line.correctMeaning)}</span></div><p>${escapeHtml(line.explanation)}</p>${line.audio ? `<button type="button" class="sensei-hear" data-sensei-hear="${escapeHtml(line.id)}">🔊 Hear it</button>` : ''}</article>`; }).join('')}</div><button type="button" class="sensei-submit" data-sensei-continue>${state.currentIndex + 1 === state.submissions.length ? 'Review shift summary' : 'Next homework'} <span>→</span></button></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame('Read the teacher’s notes', content);
   bind();
@@ -253,7 +273,7 @@ function renderSummary(state: SenseiShiftState): void {
 }
 function renderEnd(state: SenseiShiftState): void {
   const passed = state.phase === 'passed';
-  const content = `<section class="sensei-summary sensei-final"><span class="sensei-seal">${passed ? '合' : '学'}</span><span class="eyebrow">${passed ? 'Shift accepted' : 'Keep studying'}</span><h2>${passed ? 'The class can continue.' : 'Every paper made you sharper.'}</h2><p>${passed ? 'You identified the key Japanese patterns and sent the vocabulary back to your learning path.' : 'Your corrections are saved. Try again and aim for 80% or more.'}</p><div class="sensei-menu-actions"><button type="button" class="sensei-primary" data-sensei-start>Start another shift <span>5 papers</span></button><button type="button" class="sensei-secondary" data-sensei-journey>Return to Journey</button></div></section>`;
+  const content = `<section class="sensei-summary sensei-final sensei-lights-out"><span class="sensei-seal">${passed ? '合' : '学'}</span><span class="eyebrow">Desk closed for tonight · 机じまい</span><h2>${passed ? 'The class can continue.' : 'Every paper made you sharper.'}</h2><p>The final paper settles in the graded tray. The desk lamp clicks off, and your notes are saved for tomorrow.</p><div class="sensei-menu-actions"><button type="button" class="sensei-primary" data-sensei-start>Start another shift <span>5 papers</span></button><button type="button" class="sensei-secondary" data-sensei-journey>Return to Journey</button></div></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame(passed ? 'Well done, Sensei' : 'The desk remains open', content);
   bind();
@@ -279,7 +299,8 @@ function bind(): void {
   element.querySelector<HTMLFormElement>('[data-sensei-handbook-form]')?.addEventListener('submit', event => { event.preventDefault(); handbookQuery = element.querySelector<HTMLInputElement>('[data-sensei-handbook-search]')?.value.trim() ?? ''; render(stateOrNull()); });
   element.querySelectorAll<HTMLElement>('[data-sensei-handbook-word]').forEach(button => button.addEventListener('click', () => { handbookWordId = button.dataset.senseiHandbookWord; handbookOpen = true; render(stateOrNull()); }));
   element.querySelector<HTMLElement>('[data-sensei-handbook-hear]')?.addEventListener('click', () => { const word = availableWords().find(item => item.wordAudio === element.querySelector<HTMLElement>('[data-sensei-handbook-hear]')?.dataset.senseiHandbookHear); if (word) playSenseiDeskWordAudio(word.wordAudio, word.reading); });
-  element.querySelector<HTMLElement>('[data-sensei-resume]')?.addEventListener('click', () => { const state = stateOrNull(); if (state) { startSenseiDeskMusic(); render(state); } });
+  element.querySelector<HTMLElement>('[data-sensei-open-paper]')?.addEventListener('click', () => { deskView = 'inspect'; playSenseiDeskEffect('paper'); render(stateOrNull()); });
+  element.querySelector<HTMLElement>('[data-sensei-resume]')?.addEventListener('click', () => { const state = stateOrNull(); if (state) { deskView = 'idle'; startSenseiDeskMusic(); render(state); } });
   element.querySelector<HTMLElement>('[data-sensei-exit]')?.addEventListener('click', exitDesk);
   element.querySelector<HTMLElement>('[data-sensei-journey]')?.addEventListener('click', exitDesk);
   element.querySelector<HTMLElement>('[data-sensei-submit]')?.addEventListener('click', () => { const state = stateOrNull(); if (state) submitPaper(state); });

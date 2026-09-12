@@ -50,7 +50,7 @@ export const OFFLINE_CORE_FILES = [
   './media/battle-listen/party-warrior.png', './media/battle-listen/party-mage.png',
   './media/battle-listen/party-guardian.png',
   './media/sensei-desk/sensei-desk-background.png', './media/sensei-desk/homework-paper.png',
-  './media/sensei-desk/spy-loop.mp3', './media/sensei-desk/sunset-walk.ogg',
+  './media/sensei-desk/spy-loop.mp3', './media/sensei-desk/sunset-walk.ogg', './media/sensei-desk/lamp-off.mp3', './media/sensei-desk/overlays/sensei-hands.png',
   './media/sensei-desk/paper-flip.ogg', './media/sensei-desk/stamp.wav', './media/sensei-desk/success.mp3',
   './media/sensei-desk/README.md',
   './media/mnemonics/katakana-core-01-percent.png',
