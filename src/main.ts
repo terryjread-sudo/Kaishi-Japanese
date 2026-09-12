@@ -24,7 +24,7 @@ import './core/journey-shell';
 import { installJapanReady } from './core/japan-ready';
 import { createOfflineUI } from './core/offline-ui';
 import { installSeasonalHero } from './core/seasonal-hero';
-import { installKotobaAscension } from './core/kotoba-ascension';
+import { installSenseiDesk } from './core/sensei-desk';
 
 defineElement();
 
@@ -78,7 +78,7 @@ window.KaishiActivityPolicy = {
 window.dispatchEvent(new Event('kaishi-cloud-sync-ready'));
 installJapanReady();
 installSeasonalHero();
-installKotobaAscension();
+installSenseiDesk();
 offlineUI.install();
 
 // app.js starts before this module. Refresh its derived Journey controls once

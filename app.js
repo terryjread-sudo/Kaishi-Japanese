@@ -246,11 +246,11 @@ function openRestorePoints(){if(!restorePointOwnerId()){toast('Sign in to use re
 function updateExperimentalNavVisibility(){
  const nav=$('#experimentalBottomNav'),active=$('.screen.active')?.id||'';
  if(!nav)return;
- const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder'||active==='kotobaEcho'||active==='ascension';
+ const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder'||active==='kotobaEcho'||active==='senseiDesk';
  const inPanel=Boolean($('.screen.active.experimental-panel'));
- const activeAction={home:'journey',journey:'journey',collection:'collection',community:'community',japanReady:'japan-ready',ascension:'ascension'}[active]||'';
+ const activeAction={home:'journey',journey:'journey',collection:'collection',community:'community',japanReady:'japan-ready',senseiDesk:'sensei-desk'}[active]||'';
  nav.querySelectorAll('[data-experimental-nav]').forEach(item=>{const current=item.dataset.experimentalNav===activeAction;item.classList.toggle('is-active',current);if(current)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
- const visible=!inLesson&&(inPanel||active==='home'||active==='journey'||active==='japanReady'||active==='ascension');
+ const visible=!inLesson&&(inPanel||active==='home'||active==='journey'||active==='japanReady'||active==='senseiDesk');
  nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
 }
 function syncExperimentalHeaderAction(){
@@ -269,7 +269,7 @@ function resetScreenScroll(id,focusTarget=''){
  if(id!=='study')return;
  requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
-function show(id,options={}){document.body.classList.add('screen-transitioning');screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-japan-ready-active',id==='japanReady'||id==='japanReadyCheatSheet');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');document.body.classList.toggle('experimental-immersive-active',['study','games','kana','manga','conversation','theatre','grammar','kanjiBuilder','kotobaEcho','listenBattle','ascension'].includes(id));$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(()=>{document.body.classList.remove('screen-transitioning');syncExperimentalHeaderClearance()});}
+function show(id,options={}){document.body.classList.add('screen-transitioning');screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-japan-ready-active',id==='japanReady'||id==='japanReadyCheatSheet');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');document.body.classList.toggle('experimental-immersive-active',['study','games','kana','manga','conversation','theatre','grammar','kanjiBuilder','kotobaEcho','listenBattle','senseiDesk'].includes(id));$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(()=>{document.body.classList.remove('screen-transitioning');syncExperimentalHeaderClearance()});}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
 let experimentalNotebookHistoryActive=false;
@@ -346,6 +346,10 @@ function bindExperimentalBottomNav(){
   nav.setAttribute('aria-label','Primary navigation');
   const legacyProgress=nav.querySelector('[data-experimental-nav="progress"]');
   if(legacyProgress?.parentNode?.removeChild)legacyProgress.parentNode.removeChild(legacyProgress);
+  const legacyDesk=nav.querySelector('[data-experimental-nav="ascension"]');
+  if(legacyDesk){legacyDesk.dataset.experimentalNav='sensei-desk';legacyDesk.innerHTML='<span class="experimental-nav-japanese" lang="ja">先生</span><span class="experimental-nav-art"><svg class="experimental-nav-hanko" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/></svg><svg class="experimental-nav-icon" viewBox="0 0 48 48" aria-hidden="true"><g><path d="M7 14h34v23H7z"/><path d="M12 19h24M12 25h12M12 31h18M34 7v7"/><path class="ink-fill" d="m34 27 7 5-7 5z"/></g></svg></span><b>Sensei’s Desk</b><small lang="ja">先生の机</small>'}
+  const legacyActivity=document.querySelector('#adminTestActivity option[value="ascension"]');
+  if(legacyActivity){legacyActivity.value='senseiDesk';legacyActivity.textContent='Sensei’s Desk'}
   const navButton=(action,japanese,english,sublabel,icon)=>`<button type="button" data-experimental-nav="${action}"><span class="experimental-nav-japanese" lang="ja">${japanese}</span><span class="experimental-nav-art"><svg class="experimental-nav-hanko" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/></svg><svg class="experimental-nav-icon" viewBox="0 0 48 48" aria-hidden="true"><g>${icon}</g></svg></span><b>${english}</b><small lang="ja">${sublabel}</small></button>`;
   const journey=navButton('journey','旅','Journey','旅路','<path d="M7 24h29M27 14l10 10-10 10"/>');
   const japanReady=navButton('japan-ready','日本へ','Japan Ready','富士','<path d="M5 38 18 16l6 9 4-6 15 19H5Z"/><path d="M5 38h38"/>');
@@ -359,12 +363,12 @@ function bindExperimentalBottomNav(){
  else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
  else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
  else if(action==='japan-ready')openExperimentalJapanReady();
- else if(action==='ascension'){hostAscensionShow();}
+ else if(action==='sensei-desk'){hostSenseiDeskShow();}
  }));
  document.addEventListener('click',event=>{const button=event.target.closest?.('[data-experimental-utility-action]');if(!button)return;const action=button.dataset.experimentalUtilityAction;if(action==='notebook')openExperimentalNotebook();else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores())});
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.screen.active.experimental-panel')&&!document.querySelector('dialog[open]')){event.preventDefault();closeExperimentalPanel()}});
 }
-function hostAscensionShow(){show('ascension');window.dispatchEvent(new Event('kaishi-ascension-host-ready'));}
+function hostSenseiDeskShow(){show('senseiDesk');document.body.classList.add('experimental-immersive-active');window.dispatchEvent(new Event('kaishi-sensei-desk-host-ready'));}
 function bindExperimentalHeader(){
  const japanReady=$('#experimentalJapanReady');if(japanReady)syncExperimentalHeaderAction();
  document.querySelectorAll('[data-experimental-japan-ready]').forEach(button=>button.onclick=openExperimentalJapanReady);
@@ -523,10 +527,10 @@ function setAdminTestActivityReady(ready){
 async function launchAdminTestActivity(id){
  const button=$('#adminTestActivityGo');
  if(!appReady){toast('Activities are still loading. Please try again in a moment.');return false}
- if(id!=='colosseum'&&id!=='kotobaEcho'&&id!=='ascension'&&!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
+ if(id!=='colosseum'&&id!=='kotobaEcho'&&id!=='senseiDesk'&&!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
  if(button){button.disabled=true;button.textContent='Launching...'}
  try{
-  if(id==='ascension'){show('ascension');return true}
+  if(id==='senseiDesk'){show('senseiDesk');document.body.classList.add('experimental-immersive-active');window.dispatchEvent(new Event('kaishi-sensei-desk-host-ready'));return true}
   if(id==='kotobaEcho'){startKotobaEcho();return true}
   if(id==='colosseum'){
    const launch=$('#kotobaColosseumMode');
@@ -2405,16 +2409,11 @@ const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());ka
 document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
 bindExperimentalBottomNav();
 bindExperimentalHeader();
-window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),ascension:{
+window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),senseiDesk:{
  show:(id)=>show(id),
- vocabulary:()=>vocab,
- progress:()=>progress,
- topics:()=>journeyTopics(),
- topicStats:(topic)=>topicStats(topic),
- gradeWord:(wordId,skill,rating,correct)=>{const word=vocab.find(item=>item.id===wordId);if(!word)return;startedAt=Date.now();hintUsed=false;grade(word,skill,rating,correct,false)},
- completeTopicBoss:(topicId,passed=true)=>completeTopicBoss(topicId,passed),
- adventurePoints:()=>adventurePoints(),
- spendAdventurePoints:(cost)=>{if(adventurePoints()<cost)return false;meta.adventurePointsSpent=Number(meta.adventurePointsSpent||0)+cost;save();return true},
+ currentLessonWords:()=>chapterWords(Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:0),
+ introducedVocabulary:()=>vocab.filter(wordIntroduced),
+ completeShift:(wordIds)=>{wordIds.forEach(wordId=>{const word=vocab.find(item=>item.id===wordId);if(word){startedAt=Date.now();hintUsed=false;grade(word,'meaning',4,true,false)}});save();updateHome()},
  speak:(text)=>speakJapanese(text),
 }};
 init();
