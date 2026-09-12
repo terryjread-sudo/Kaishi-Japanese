@@ -246,7 +246,7 @@ function openRestorePoints(){if(!restorePointOwnerId()){toast('Sign in to use re
 function updateExperimentalNavVisibility(){
  const nav=$('#experimentalBottomNav'),active=$('.screen.active')?.id||'';
  if(!nav)return;
- const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder'||active==='kotobaEcho';
+ const inLesson=active==='study'||active==='games'||active==='kana'||active==='manga'||active==='conversation'||active==='theatre'||active==='grammar'||active==='kanjiBuilder'||active==='kotobaEcho'||active==='ascension';
  const inPanel=Boolean($('.screen.active.experimental-panel'));
  const activeAction={home:'journey',journey:'journey',collection:'collection',community:'community',japanReady:'japan-ready',ascension:'ascension'}[active]||'';
  nav.querySelectorAll('[data-experimental-nav]').forEach(item=>{const current=item.dataset.experimentalNav===activeAction;item.classList.toggle('is-active',current);if(current)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});

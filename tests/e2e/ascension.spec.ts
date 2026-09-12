@@ -14,6 +14,12 @@ test('new learners can open the Ascension Prologue without Activity Village', as
   await page.locator('[data-ascension-start="prologue"]').click();
   await page.locator('[data-ascension-node]').click();
   await expect(page.locator('.ascension-battle-card')).toBeVisible();
+  await expect(page.locator('#experimentalBottomNav')).toHaveClass(/is-hidden/);
+  await expect(page.locator('#experimentalBottomNav')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('.ascension-player-combatant')).toBeVisible();
+  await expect(page.locator('.ascension-player-art')).toHaveAttribute('src', /party-warrior\.png/);
+  await expect(page.locator('.ascension-enemy-combatant')).toBeVisible();
+  await expect(page.locator('.ascension-enemy-art')).toHaveAttribute('src', /tanuki\.png/);
   await expect(page.locator('.ascension-hand .ascension-card')).toHaveCount(5);
 
   const dialog = page.waitForEvent('dialog').then(async (event) => {
