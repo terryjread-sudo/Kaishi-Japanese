@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildAscensionDeck, drawHand } from './cards';
 import { evaluateChain } from './chains';
 import { availableMapNodes, createAscensionMap, createPrologueMap, visitMapNode } from './map';
-import { createRun, RUN_DEFAULTS, startNode } from './run';
+import { applyDamage, createRun, refreshTurn, RUN_DEFAULTS, startNode } from './run';
 
 const words = [
   { id: 'cat', word: 'ねこ', reading: 'neko', meaning: 'cat', role: 'noun' as const },
@@ -50,10 +50,25 @@ describe('Kotoba Ascension run', () => {
   it('starts with the planned beginner resources and playable prologue', () => {
     const run = createRun({ runId: 'run-1', seed: 1, topicId: 'core-japanese', words, prologue: true });
     expect(run.resources).toMatchObject({ maxHp: RUN_DEFAULTS.maxHp, energy: 3, focus: 2 });
+    expect(run.schemaVersion).toBe(2);
     expect(run.prologue).toBe(true);
     const combat = startNode(run, 'combat');
     expect(combat.phase).toBe('combat');
     expect(combat.hand).toHaveLength(5);
     expect(combat.enemy?.hp).toBeGreaterThan(0);
+    expect(combat.drawPile.length + combat.hand.length + combat.discard.length).toBe(combat.deck.length);
+    const refreshed = refreshTurn({ ...combat, hand: combat.hand.slice(1), discard: [...combat.discard, combat.hand[0]!] });
+    expect(refreshed.hand).toHaveLength(5);
+  });
+
+  it('creates a reward state and escalates the boss intent', () => {
+    const run = createRun({ runId: 'run-2', seed: 2, topicId: 'core-japanese', words, prologue: true });
+    const combat = startNode(run, 'combat');
+    const defeated = applyDamage({ ...combat, enemy: { ...combat.enemy!, hp: 1 } }, 10, 0);
+    expect(defeated.phase).toBe('reward');
+    const boss = startNode(run, 'boss');
+    const phaseTwo = applyDamage({ ...boss, enemy: { ...boss.enemy!, hp: 40 }, turn: 1 }, 1, 0);
+    expect(phaseTwo.enemy?.phase).toBe(2);
+    expect(phaseTwo.enemy?.intent).toBe('confuse');
   });
 });

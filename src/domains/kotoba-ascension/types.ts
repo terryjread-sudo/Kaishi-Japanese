@@ -1,7 +1,8 @@
-export type AscensionNodeType = 'combat' | 'elite' | 'rest' | 'shop' | 'boss';
+export type AscensionNodeType = 'combat' | 'elite' | 'rest' | 'shop' | 'event' | 'treasure' | 'boss';
 export type CardRole = 'noun' | 'verb' | 'adjective' | 'other';
 export type CardKind = 'word' | 'particle';
-export type RunPhase = 'map' | 'combat' | 'rest' | 'shop' | 'boss' | 'victory' | 'defeat';
+export type EnemyIntent = 'attack' | 'ward' | 'confuse';
+export type RunPhase = 'map' | 'combat' | 'rest' | 'shop' | 'event' | 'reward' | 'boss' | 'victory' | 'defeat';
 
 export interface AscensionWord {
   id: string;
@@ -23,6 +24,14 @@ export interface AscensionCard {
   kind: CardKind;
   particle?: string;
   mastery: number;
+  cost: number;
+  upgradeLevel: number;
+}
+
+export interface AscensionRelic {
+  id: string;
+  name: string;
+  description: string;
 }
 
 export interface AscensionNode {
@@ -56,12 +65,14 @@ export interface AscensionEnemy {
   maxHp: number;
   hp: number;
   telegraph: number;
+  intent: EnemyIntent;
+  phase: number;
   elite?: boolean;
   boss?: boolean;
 }
 
 export interface AscensionRunState {
-  schemaVersion: 1;
+  schemaVersion: 2;
   runId: string;
   topicId: string;
   prologue: boolean;
@@ -69,13 +80,20 @@ export interface AscensionRunState {
   map: AscensionMap;
   resources: AscensionResources;
   deck: AscensionCard[];
+  drawPile: AscensionCard[];
   hand: AscensionCard[];
   discard: AscensionCard[];
+  rewardPool: AscensionCard[];
+  rewardChoices: AscensionCard[];
+  rewardRelic?: AscensionRelic;
+  relics: AscensionRelic[];
+  block: number;
   enemy?: AscensionEnemy;
   turn: number;
   wins: number;
   pendingMessage: string;
   selectedCardIds: string[];
+  eventId?: string;
 }
 
 export interface ChainResult {

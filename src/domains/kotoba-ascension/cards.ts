@@ -11,7 +11,7 @@ export function masteryFromProgress(progress: unknown): number {
 }
 
 export function cardPower(card: AscensionCard): number {
-  return 4 + card.mastery * 2 + (card.kind === 'particle' ? 1 : 0);
+  return 4 + card.mastery * 2 + (card.kind === 'particle' ? 1 : 0) + card.upgradeLevel * 3;
 }
 
 export function roleForWord(word: AscensionWord): CardRole {
@@ -32,6 +32,8 @@ export function buildAscensionDeck(words: readonly AscensionWord[], progressById
     role: roleForWord(word),
     kind: 'word' as const,
     mastery: masteryFromProgress(progressById[word.id]),
+    cost: 1,
+    upgradeLevel: 0,
   }));
   return cards.concat(PARTICLES.map((particle) => ({
     id: `particle:${particle}`,
@@ -40,9 +42,15 @@ export function buildAscensionDeck(words: readonly AscensionWord[], progressById
     kind: 'particle' as const,
     particle,
     mastery: 2,
+    cost: 0,
+    upgradeLevel: 0,
   })));
 }
 
 export function drawHand(deck: readonly AscensionCard[], random: () => number = Math.random, size = 5): AscensionCard[] {
   return [...deck].sort(() => random() - 0.5).slice(0, Math.max(1, size));
+}
+
+export function upgradeCard(card: AscensionCard): AscensionCard {
+  return { ...card, upgradeLevel: card.upgradeLevel + 1 };
 }

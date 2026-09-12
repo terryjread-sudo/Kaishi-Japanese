@@ -1,6 +1,6 @@
 import type { AscensionMap, AscensionNode, AscensionNodeType } from './types';
 
-const BODY_TYPES: readonly AscensionNodeType[] = ['combat', 'combat', 'elite', 'rest', 'shop'];
+const BODY_TYPES: readonly AscensionNodeType[] = ['combat', 'combat', 'elite', 'rest', 'shop', 'event', 'treasure'];
 
 function random(seed: number): () => number {
   let value = seed >>> 0;
@@ -19,7 +19,7 @@ export function createAscensionMap(seed: number, layers = 5): AscensionMap {
     id: `${seed}-${layer}-${index}`,
     layer,
     type,
-    label: type === 'boss' ? 'Topic boss' : type === 'elite' ? 'Elite' : type.charAt(0).toUpperCase() + type.slice(1),
+      label: type === 'boss' ? 'Topic boss' : type === 'elite' ? 'Elite' : type === 'event' ? 'Story event' : type === 'treasure' ? 'Treasure' : type.charAt(0).toUpperCase() + type.slice(1),
     connections: [],
   });
   const start = makeNode(0, 'combat', 0);
