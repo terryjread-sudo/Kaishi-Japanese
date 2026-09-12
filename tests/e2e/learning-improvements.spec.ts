@@ -129,10 +129,10 @@ test('experimental panels return to their origin and guest account actions stay 
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   const nav=page.getByRole('navigation',{name:'Primary navigation'});
-  await expect(nav).toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('衆');await expect(nav).toContainText('日本へ');
-  await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(6);
-  const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(6);
-  for(let index=0;index<6;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
+  await expect(nav).not.toContainText('ノート');await expect(nav).toContainText('図鑑');await expect(nav).toContainText('衆');await expect(nav).toContainText('日本へ');
+  await expect(nav.locator('svg.experimental-nav-icon')).toHaveCount(5);
+  const navButtons=nav.getByRole('button');await expect(navButtons).toHaveCount(5);
+  for(let index=0;index<5;index++){await expect(navButtons.nth(index).locator('.experimental-nav-japanese')).toHaveCount(1);await expect(navButtons.nth(index).locator('.experimental-nav-art')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>b')).toHaveCount(1);await expect(navButtons.nth(index).locator(':scope>small')).toHaveCount(1);}
   await expect(page.locator('.experimental-journey-utilities')).toHaveCount(0);
   await nav.locator('[data-experimental-nav="collection"]').click();
   await expect(page.locator('.screen.experimental-panel.active')).toHaveCount(1);
