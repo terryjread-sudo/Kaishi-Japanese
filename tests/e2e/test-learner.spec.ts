@@ -324,12 +324,15 @@ test('image diagnostics includes imported Katakana Core mnemonic scenes', async 
   await expect(page.locator('#grid')).toContainText('Katakana Core');
 });
 
-test('the Journey bottom navigation opens the shared notebook', async ({ page }) => {
+test('Collection provides the shared notebook shortcut', async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('button', { name: 'Explore Journey' }).click();
 
-  const notebook = page.locator('[data-experimental-nav="notebook"]');
+  const collection = page.locator('[data-experimental-nav="collection"]');
+  await expect(collection).toBeVisible();
+  await collection.click();
+  const notebook = page.locator('[data-collection-notebook]');
   await expect(notebook).toBeVisible();
   await notebook.click();
   await expect(page.locator('#learningNotebookDialog')).toBeVisible();
