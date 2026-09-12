@@ -12,6 +12,7 @@ const EFFECTS = {
 } as const;
 
 let music: HTMLAudioElement | null = null;
+let wordAudio: HTMLAudioElement | null = null;
 
 export function senseiDeskAudioEnabled(): boolean {
   return deviceStorage().getItem(AUDIO_KEY) !== 'off';
@@ -45,4 +46,29 @@ export function playSenseiDeskEffect(effect: keyof typeof EFFECTS): void {
   const sound = new Audio(EFFECTS[effect]);
   sound.volume = effect === 'stamp' ? .42 : .3;
   void sound.play().catch(() => undefined);
+}
+
+function speakFallback(text: string): void {
+  if (!text || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ja-JP';
+  utterance.rate = .82;
+  window.speechSynthesis.speak(utterance);
+}
+
+export function playSenseiDeskWordAudio(source: string | undefined, fallbackText: string): void {
+  if (!senseiDeskAudioEnabled()) return;
+  if (!source) {
+    speakFallback(fallbackText);
+    return;
+  }
+  try {
+    wordAudio?.pause();
+    wordAudio = new Audio(source);
+    wordAudio.volume = .8;
+    void wordAudio.play().catch(() => speakFallback(fallbackText));
+  } catch {
+    speakFallback(fallbackText);
+  }
 }
