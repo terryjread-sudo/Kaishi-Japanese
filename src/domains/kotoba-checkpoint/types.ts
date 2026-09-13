@@ -11,6 +11,7 @@ export interface CheckpointLevel {
   aid: 'full' | 'romaji' | 'minimal';
   seconds: number;
   travellers: number;
+  teaching: { title: string; explanation: string; examples: Array<{ japanese: string; romaji: string; english: string }> };
 }
 
 export interface CheckpointDocument {
@@ -25,6 +26,7 @@ export interface CheckpointCase {
   traveller: string;
   portrait: string;
   city: string;
+  identity: { nationality: string; birthDate: string; sex: 'F' | 'M'; passportNumber: string; expires: string };
   passport: CheckpointDocument;
   entry: CheckpointDocument;
   question?: { japanese: string; romaji: string; english: string; answer: string };

@@ -23,6 +23,7 @@ function caseFor(levelId: number, index: number, learnerWords: CheckpointLearner
   const word = learnerWords[index % Math.max(learnerWords.length, 1)];
   const purpose = PURPOSES[index % PURPOSES.length]!;
   const incorrectPurpose = purpose.japanese.replace('したい', 'します');
+  const identity = { nationality: 'JPN', birthDate: `${year}-0${(index % 8) + 1}-1${index}`, sex: index % 2 === 0 ? 'F' as const : 'M' as const, passportNumber: `TR${levelId}${String(index + 1).padStart(7, '0')}`, expires: `203${(index % 5) + 1}-11-30` };
   let passport = doc('PASSPORT · 旅券', kana, `Name: ${kana}`);
   let entry = doc('ENTRY FORM · 入国カード', mismatch ? `${kana}あ` : kana, `Name: ${mismatch ? `${kana}あ` : kana}`);
   const expected: Verdict = mismatch ? 'deny' : 'approve';
@@ -55,7 +56,7 @@ function caseFor(levelId: number, index: number, learnerWords: CheckpointLearner
     entry = doc('ENTRY FORM · 目的', mismatch ? incorrectPurpose : purpose.japanese, mismatch ? 'Incorrect desire form' : purpose.english, mismatch ? purpose.romaji.replace('shitai', 'shimasu') : purpose.romaji);
     ruleId = 'tai-form'; explanation = expected === 'approve' ? 'The purpose correctly uses 〜たいです.' : 'The purpose should use 〜たいです to express “want to”.';
   }
-  return { id: `${levelId}-${index}`, traveller, portrait, city: level.location, passport, entry, question, ruleId, expected, explanation, practiceIds };
+  return { id: `${levelId}-${index}`, traveller, portrait, city: level.location, identity, passport, entry, question, ruleId, expected, explanation, practiceIds };
 }
 
 export function createCheckpointRun(levelId = 1, learnerWords: CheckpointLearnerWord[] = [], credits = 0, completedLevels: number[] = []): CheckpointRun {
