@@ -13,6 +13,7 @@ test('a brand-new learner can start the day-one kana checkpoint', async ({ page 
   await expect(page.getByRole('heading', { name: 'Kana arrivals' })).toBeVisible();
   await expect(page.getByText(/Senior Officer Mori/)).toBeVisible();
   await expect(page.getByText(/Worked examples/)).toBeVisible();
+  await expect(page.locator('[data-checkpoint-lesson-audio]')).toHaveCount(2);
   await expect(page.getByRole('button', { name: /Start shift/ })).toBeVisible();
   await page.getByRole('button', { name: /Start shift/ }).click();
   await expect(page.locator('.checkpoint-rulebook')).toContainText('hiragana');
