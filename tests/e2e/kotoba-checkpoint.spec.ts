@@ -22,6 +22,8 @@ test('a brand-new learner can start the day-one kana checkpoint', async ({ page 
   await expect(page.locator('.checkpoint-passport')).toContainText('Passport No.');
   await expect(page.locator('.checkpoint-passport-record')).toBeVisible();
   await expect(page.locator('[data-checkpoint-stamp="approve"]')).toBeVisible();
+  await page.keyboard.press('d');
+  await expect(page.locator('.checkpoint-feedback')).toBeVisible();
 });
 
 test('inspection feedback, handbook and pause controls remain usable', async ({ page }) => {
