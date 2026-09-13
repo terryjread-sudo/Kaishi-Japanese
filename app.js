@@ -2405,13 +2405,14 @@ const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());ka
 document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
 bindExperimentalBottomNav();
 bindExperimentalHeader();
-window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),senseiDesk:{
+window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),kotobaCheckpoint:{
  show:(id)=>show(id),
  currentLessonWords:()=>chapterWords(Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:0),
  introducedVocabulary:()=>vocab.filter(wordIntroduced).map(word=>({...word,sentenceIntroduced:Number(progress[word.id]?.skills?.sentence?.attempts||0)>0})),
  wordProgress:()=>Object.fromEntries(vocab.map(word=>{const item=progress[word.id]||{},meaning=item.skills?.meaning||{};return[word.id,{due:Number(item.due||0),strength:Number(meaning.strength||0),deskMisses:Number(item.senseiDeskMisses||0)}]})),
  recordDeskMisses:(wordIds)=>{wordIds.forEach(wordId=>{const item=progress[wordId]||(progress[wordId]={});item.senseiDeskMisses=Number(item.senseiDeskMisses||0)+1});save()},
  completeShift:(wordIds)=>{wordIds.forEach(wordId=>{const word=vocab.find(item=>item.id===wordId);if(word){startedAt=Date.now();hintUsed=false;grade(word,'meaning',4,true,false)}});save();updateHome()},
+ recordCheckpointResult:({level,passed,credits,practiceIds})=>{meta.kotobaCheckpoint=meta.kotobaCheckpoint||{attempts:0,credits:0,cleared:[]};meta.kotobaCheckpoint.attempts+=1;meta.kotobaCheckpoint.credits+=Math.max(0,Number(credits)||0);if(passed&&!meta.kotobaCheckpoint.cleared.includes(level))meta.kotobaCheckpoint.cleared.push(level);practiceIds.forEach(wordId=>{const item=progress[wordId]||(progress[wordId]={});item.checkpointPractice=Number(item.checkpointPractice||0)+1});save()},
  speak:(text)=>speakJapanese(text),
 }};
 init();

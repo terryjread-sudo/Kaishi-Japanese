@@ -53,6 +53,7 @@ export const OFFLINE_CORE_FILES = [
   './media/sensei-desk/spy-loop.mp3', './media/sensei-desk/sunset-walk.ogg', './media/sensei-desk/lamp-off.mp3', './media/sensei-desk/overlays/sensei-hands.png',
   './media/sensei-desk/paper-flip.ogg', './media/sensei-desk/stamp.wav', './media/sensei-desk/success.mp3',
   './media/sensei-desk/README.md',
+  './media/kotoba-checkpoint/tokyo-terminal.png', './media/kotoba-checkpoint/traveller-aiko.png', './media/kotoba-checkpoint/traveller-haru.png', './media/kotoba-checkpoint/traveller-mio.png', './media/kotoba-checkpoint/traveller-ren.png', './media/kotoba-checkpoint/traveller-sora.png',
   './media/mnemonics/katakana-core-01-percent.png',
   ...Array.from({ length: 99 }, (_, index) => `./media/mnemonics/katakana-core-${String(index + 2).padStart(3, '0')}.png`),
   './media/profiles/guest-learner.webp', './media/profiles/boy-base.webp',
