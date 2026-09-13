@@ -5,6 +5,7 @@ async function openCheckpoint(page: import('@playwright/test').Page): Promise<vo
   await page.getByRole('button', { name: 'Explore Journey', exact: true }).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="sensei-desk"]').click();
   await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
+  await expect(page.locator('.checkpoint-brief')).toBeVisible({ timeout: 15_000 });
 }
 
 test('a brand-new learner can start the day-one kana checkpoint', async ({ page }) => {
