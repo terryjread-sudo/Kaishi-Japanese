@@ -54,8 +54,11 @@ function wordsFrom(value: unknown): SenseiWord[] {
 function availableWords(): SenseiWord[] {
   const current = wordsFrom(host().currentLessonWords?.());
   const introduced = wordsFrom(host().introducedVocabulary?.());
+  const introducedIds = new Set(introduced.map(word => word.id));
   const unique = new Map<string, SenseiWord>();
-  [...current, ...introduced].forEach(word => unique.set(word.id, word));
+  // Current-lesson words are a priority, never an exception: a learner must
+  // have encountered a word before it can appear on a pupil's paper.
+  [...current.filter(word => introducedIds.has(word.id)), ...introduced].forEach(word => unique.set(word.id, word));
   return [...unique.values()];
 }
 function formatTime(deadline: number): string {
@@ -64,12 +67,24 @@ function formatTime(deadline: number): string {
 }
 function stateOrNull(): SenseiShiftState | null {
   const saved = repository.load();
-  return saved?.dateKey === today() ? saved : null;
+  if (!saved || saved.dateKey !== today()) return null;
+  const introducedIds = new Set(availableWords().map(word => word.id));
+  const usesOnlyIntroducedWords = saved.submissions.flatMap(submission => submission.lines).every(line => introducedIds.has(line.wordId));
+  if (!usesOnlyIntroducedWords) {
+    repository.remove();
+    return null;
+  }
+  return saved;
 }
 function tutorialSeen(): boolean { return tutorialRepository.load()?.completed === true; }
 function markTutorialSeen(): void { tutorialRepository.save({ schemaVersion: 1, completed: true }); }
 function startSavedShift(guided = false): void {
-  const state = createShift(availableWords(), today(), Date.now(), { guided, wordProgress: host().wordProgress?.() });
+  const words = availableWords();
+  if (!words.length) {
+    renderMenu();
+    return;
+  }
+  const state = createShift(words, today(), Date.now(), { guided, wordProgress: host().wordProgress?.() });
   repository.save(state);
   draftDecisions = {};
   handbookOpen = false;
@@ -95,6 +110,10 @@ function finishTutorial(): void {
   tutorialChoice = undefined;
   const saved = stateOrNull();
   if (saved && (saved.phase === 'desk' || saved.phase === 'correction')) return render(saved);
+  if (!availableWords().length) {
+    renderMenu();
+    return;
+  }
   startSavedShift(true);
 }
 function exitDesk(): void {
@@ -229,7 +248,11 @@ function renderTutorial(state: SenseiShiftState | null): void {
 function renderMenu(): void {
   const saved = stateOrNull();
   const resume = saved && (saved.phase === 'desk' || saved.phase === 'correction') ? `<button type="button" class="sensei-primary" data-sensei-resume>Resume shift <span>${saved.quota.submitted}/${saved.quota.total} papers</span></button>` : '';
-  const content = `<section class="sensei-desk-welcome"><div class="sensei-desk-welcome-art" role="img" aria-label="A calm teacher’s desk"></div><div><span class="sensei-seal">判</span><h2>Welcome to the homework desk</h2><p>Students have left five short papers for you. Decide what is correct, mark the kind of mistake, and read the Sensei’s explanation.</p><div class="sensei-rules"><span><b>01</b> Read the answer</span><span><b>02</b> Spot the issue</span><span><b>03</b> Learn the fix</span></div><div class="sensei-menu-actions">${resume}<button type="button" class="sensei-primary" data-sensei-start>Start a new shift <span>5 papers · 8 min</span></button><button type="button" class="sensei-secondary" data-sensei-tutorial>Tutorial &amp; example</button></div></div></section>`;
+  const hasIntroducedWords = availableWords().length > 0;
+  const start = hasIntroducedWords
+    ? `<button type="button" class="sensei-primary" data-sensei-start>Start a new shift <span>5 papers · 8 min</span></button>`
+    : '<button type="button" class="sensei-primary" data-sensei-journey>Learn your first words <span>Journey →</span></button><p class="sensei-desk-unavailable">Sensei’s Desk opens after you have met your first lesson word. Papers only use words already introduced in your Journey.</p>';
+  const content = `<section class="sensei-desk-welcome"><div class="sensei-desk-welcome-art" role="img" aria-label="A calm teacher’s desk"></div><div><span class="sensei-seal">判</span><h2>Welcome to the homework desk</h2><p>Students have left five short papers for you. Decide what is correct, mark the kind of mistake, and read the Sensei’s explanation.</p><div class="sensei-rules"><span><b>01</b> Read the answer</span><span><b>02</b> Spot the issue</span><span><b>03</b> Learn the fix</span></div><div class="sensei-menu-actions">${resume}${start}<button type="button" class="sensei-secondary" data-sensei-tutorial>Tutorial &amp; example</button></div></div></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame('The homework shift', content);
   bind();
