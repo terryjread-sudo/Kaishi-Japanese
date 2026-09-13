@@ -12,7 +12,7 @@ const PUPILS: readonly PupilProfile[] = [
 ];
 
 const PAPER_ASSETS = ['media/sensei-desk/homework-paper.png', 'media/sensei-desk/homework-paper.png', 'media/sensei-desk/homework-paper.png', 'media/sensei-desk/homework-paper.png', 'media/sensei-desk/homework-paper.png'];
-const ERROR_TAGS = ['meaning', 'particle', 'kana'] as const;
+const ERROR_TAGS = ['meaning', 'kana'] as const;
 
 function random(seed: number): () => number {
   let value = seed >>> 0;
@@ -21,26 +21,31 @@ function random(seed: number): () => number {
 
 function pick<T>(items: readonly T[], next: () => number, index: number): T { return items[Math.floor(next() * items.length) % items.length] ?? items[index % items.length]!; }
 function mutateKana(reading: string): string { return reading.length > 1 ? `${reading.slice(0, -1)}${reading.at(-1) === 'う' ? 'お' : 'う'}` : `${reading}ー`; }
-function otherMeaning(words: readonly SenseiWord[], word: SenseiWord): string { return words.find(item => item.id !== word.id)?.meaning ?? 'something else'; }
-
 function makeLine(word: SenseiWord, words: readonly SenseiWord[], paperIndex: number, lineIndex: number): HomeworkLine {
-  const isCorrect = (paperIndex + lineIndex) % 4 !== 1;
+  const isCorrect = (paperIndex + lineIndex) % 3 !== 1;
   const errorTag = ERROR_TAGS[(paperIndex + lineIndex) % ERROR_TAGS.length];
-  const wrongReading = mutateKana(word.reading);
-  const japanese = errorTag === 'particle' ? `${word.word}にします` : word.word;
+  const hasIntroducedSentence = Boolean(word.sentenceIntroduced && word.sentence && word.sentenceMeaning && word.sentenceAudio);
+  const kind = hasIntroducedSentence ? 'sentence' as const : 'word' as const;
+  const correctJapanese = hasIntroducedSentence ? word.sentence! : word.word;
+  const correctReading = hasIntroducedSentence ? (word.sentenceReading || word.reading) : word.reading;
+  const correctMeaning = hasIntroducedSentence ? word.sentenceMeaning! : word.meaning;
+  const wrongReading = mutateKana(correctReading);
+  const other = words.find(item => item.id !== word.id && (hasIntroducedSentence ? item.sentenceIntroduced && item.sentenceMeaning : item.meaning));
+  const wrongMeaning = hasIntroducedSentence ? (other?.sentenceMeaning || 'A different sentence') : (other?.meaning || 'something else');
   return {
     id: `paper-${paperIndex + 1}-line-${lineIndex + 1}`,
     wordId: word.id,
-    japanese: isCorrect ? `${word.word}をおぼえます` : japanese,
-    reading: isCorrect || errorTag !== 'kana' ? word.reading : wrongReading,
-    meaning: isCorrect || errorTag !== 'meaning' ? word.meaning : otherMeaning(words, word),
-    correctJapanese: `${word.word}をおぼえます`,
-    correctReading: word.reading,
-    correctMeaning: word.meaning,
+    kind,
+    japanese: correctJapanese,
+    reading: isCorrect || errorTag !== 'kana' ? correctReading : wrongReading,
+    meaning: isCorrect || errorTag !== 'meaning' ? correctMeaning : wrongMeaning,
+    correctJapanese,
+    correctReading,
+    correctMeaning,
     isCorrect,
     errorTag: isCorrect ? undefined : errorTag,
-    explanation: isCorrect ? 'The word, reading, and sentence are consistent.' : errorTag === 'particle' ? 'This sentence needs を for the object being remembered.' : errorTag === 'kana' ? `The reading should be ${word.reading}. Compare each kana sound.` : `The meaning should be “${word.meaning}”.`,
-    audio: word.wordAudio,
+    explanation: isCorrect ? `The ${kind}, reading, and English ${kind === 'sentence' ? 'sentence' : 'meaning'} are consistent.` : errorTag === 'kana' ? `The reading should be ${correctReading}. Compare each sound.` : `The English should be “${correctMeaning}”.`,
+    audio: hasIntroducedSentence ? word.sentenceAudio : word.wordAudio,
   };
 }
 

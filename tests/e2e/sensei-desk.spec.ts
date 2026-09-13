@@ -1,5 +1,15 @@
 import { expect, test, type Page } from '@playwright/test';
 
+async function introduceDeskWords(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    localStorage.setItem('kq-profile-v1:guest:kq-progress', JSON.stringify({
+      '1708637439902': { stage: 1, reps: 1, skills: {} },
+      '1708637439903': { stage: 1, reps: 1, skills: {} },
+      '1708637439971': { stage: 1, reps: 1, skills: {} },
+    }));
+  });
+}
+
 async function completeFirstRunTutorial(page: Page): Promise<void> {
   const tutorialStart = page.locator('[data-sensei-tutorial-start]');
   await expect(tutorialStart).toBeVisible();
@@ -11,7 +21,16 @@ async function completeFirstRunTutorial(page: Page): Promise<void> {
   await page.locator('[data-sensei-open-paper]').click();
 }
 
-test('new learners can open Sensei’s Desk and review a paper', async ({ page }) => {
+test('new learners are directed to meet their first words before starting a shift', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Explore Journey', exact: true }).click();
+  await page.locator('#experimentalBottomNav [data-experimental-nav="sensei-desk"]').click();
+  await expect(page.getByRole('button', { name: /Learn your first words/ })).toBeVisible();
+  await expect(page.locator('[data-sensei-start]')).toHaveCount(0);
+});
+
+test('learners review only introduced words in Sensei’s Desk', async ({ page }) => {
+  await introduceDeskWords(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore Journey', exact: true }).click();
   const nav = page.locator('#experimentalBottomNav');
@@ -26,12 +45,14 @@ test('new learners can open Sensei’s Desk and review a paper', async ({ page }
   await expect(page.locator('[data-sensei-line]')).toHaveCount(2);
   await expect(page.locator('[data-sensei-submit]')).toBeDisabled();
   await expect(page.locator('[data-sensei-audio]')).toBeChecked();
+  await expect(page.locator('.sensei-line-english')).toBeVisible();
   await page.locator('[data-sensei-handbook-toggle]').first().click();
   await expect(page.locator('.sensei-handbook.is-open')).toBeVisible();
   await expect(page.locator('[data-sensei-handbook-form]')).toBeVisible();
 });
 
 test('a completed paper shows the stamping transition before feedback', async ({ page }) => {
+  await introduceDeskWords(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore Journey', exact: true }).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="sensei-desk"]').click();
@@ -42,7 +63,7 @@ test('a completed paper shows the stamping transition before feedback', async ({
   const secondLine = page.locator('[data-sensei-line]').nth(1);
   await firstLine.locator('[data-sensei-value="correct"]').click();
   await secondLine.locator('[data-sensei-value="needs-correction"]').click();
-  await secondLine.locator('[data-sensei-error-tag="particle"]').click();
+  await secondLine.locator('[data-sensei-error-tag="meaning"]').click();
   const submit = page.locator('[data-sensei-submit]');
   await expect(submit).toBeEnabled();
   await submit.click();
@@ -53,6 +74,7 @@ test('a completed paper shows the stamping transition before feedback', async ({
 });
 
 test('leaving an active shift asks for confirmation', async ({ page }) => {
+  await introduceDeskWords(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore Journey', exact: true }).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="sensei-desk"]').click();

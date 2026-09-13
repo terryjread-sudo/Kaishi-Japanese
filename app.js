@@ -2408,7 +2408,7 @@ bindExperimentalHeader();
 window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),senseiDesk:{
  show:(id)=>show(id),
  currentLessonWords:()=>chapterWords(Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:0),
- introducedVocabulary:()=>vocab.filter(wordIntroduced),
+ introducedVocabulary:()=>vocab.filter(wordIntroduced).map(word=>({...word,sentenceIntroduced:Number(progress[word.id]?.skills?.sentence?.attempts||0)>0})),
  wordProgress:()=>Object.fromEntries(vocab.map(word=>{const item=progress[word.id]||{},meaning=item.skills?.meaning||{};return[word.id,{due:Number(item.due||0),strength:Number(meaning.strength||0),deskMisses:Number(item.senseiDeskMisses||0)}]})),
  recordDeskMisses:(wordIds)=>{wordIds.forEach(wordId=>{const item=progress[wordId]||(progress[wordId]={});item.senseiDeskMisses=Number(item.senseiDeskMisses||0)+1});save()},
  completeShift:(wordIds)=>{wordIds.forEach(wordId=>{const word=vocab.find(item=>item.id===wordId);if(word){startedAt=Date.now();hintUsed=false;grade(word,'meaning',4,true,false)}});save();updateHome()},

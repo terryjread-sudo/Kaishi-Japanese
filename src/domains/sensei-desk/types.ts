@@ -1,4 +1,4 @@
-export type SenseiErrorTag = 'meaning' | 'particle' | 'kana';
+export type SenseiErrorTag = 'meaning' | 'kana';
 export type SenseiVerdict = 'correct' | 'needs-correction';
 export type SenseiShiftPhase = 'desk' | 'correction' | 'summary' | 'passed' | 'failed';
 
@@ -8,6 +8,12 @@ export interface SenseiWord {
   reading: string;
   meaning: string;
   wordAudio?: string;
+  sentence?: string;
+  sentenceMeaning?: string;
+  sentenceReading?: string;
+  sentenceAudio?: string;
+  /** A sentence can be reviewed only after the learner has met it in a lesson. */
+  sentenceIntroduced?: boolean;
 }
 
 export interface SenseiWordProgress {
@@ -28,6 +34,7 @@ export interface PupilProfile {
 export interface HomeworkLine {
   id: string;
   wordId: string;
+  kind: 'word' | 'sentence';
   japanese: string;
   reading: string;
   meaning: string;
