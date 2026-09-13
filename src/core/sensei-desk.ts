@@ -34,6 +34,8 @@ let handbookOpen = false;
 let handbookQuery = '';
 let handbookWordId: string | undefined;
 let deskView: 'arrival' | 'idle' | 'inspect' | 'closed' = 'idle';
+let listeningFirst = false;
+const LISTENING_FIRST_KEY = 'kaishi-sensei-desk-listening-first';
 
 function host(): HostPolicy { return (window.KaishiActivityPolicy?.senseiDesk || {}) as HostPolicy; }
 function target(): HTMLElement | null { return document.querySelector<HTMLElement>('#senseiDesk'); }
@@ -48,7 +50,15 @@ function wordsFrom(value: unknown): SenseiWord[] {
   if (!Array.isArray(value)) return [];
   return value.map(item => {
     const word = item as Record<string, unknown>;
-    return { id: String(word.id ?? ''), word: String(word.word ?? word.text ?? ''), reading: String(word.reading ?? word.kana ?? ''), meaning: String(word.meaning ?? ''), wordAudio: typeof word.wordAudio === 'string' ? word.wordAudio : undefined };
+    return {
+      id: String(word.id ?? ''), word: String(word.word ?? word.text ?? ''), reading: String(word.reading ?? word.kana ?? ''), meaning: String(word.meaning ?? ''),
+      wordAudio: typeof word.wordAudio === 'string' ? word.wordAudio : undefined,
+      sentence: typeof word.sentence === 'string' ? word.sentence : undefined,
+      sentenceMeaning: typeof word.sentenceMeaning === 'string' ? word.sentenceMeaning : undefined,
+      sentenceReading: typeof word.sentenceFurigana === 'string' ? word.sentenceFurigana : typeof word.sentenceReading === 'string' ? word.sentenceReading : undefined,
+      sentenceAudio: typeof word.sentenceAudio === 'string' ? word.sentenceAudio : undefined,
+      sentenceIntroduced: word.sentenceIntroduced === true,
+    };
   }).filter(item => item.id && item.word && item.reading && item.meaning);
 }
 function availableWords(): SenseiWord[] {
@@ -70,7 +80,8 @@ function stateOrNull(): SenseiShiftState | null {
   if (!saved || saved.dateKey !== today()) return null;
   const introducedIds = new Set(availableWords().map(word => word.id));
   const usesOnlyIntroducedWords = saved.submissions.flatMap(submission => submission.lines).every(line => introducedIds.has(line.wordId));
-  if (!usesOnlyIntroducedWords) {
+  const usesCurrentLineFormat = saved.submissions.flatMap(submission => submission.lines).every(line => line.kind === 'word' || line.kind === 'sentence');
+  if (!usesOnlyIntroducedWords || !usesCurrentLineFormat) {
     repository.remove();
     return null;
   }
@@ -197,11 +208,12 @@ function bindTimer(state: SenseiShiftState | null): void {
 function lineMarkup(line: HomeworkLine, state: SenseiShiftState): string {
   const decision = draftDecisions[line.id];
   const verdict = decision?.verdict;
-  const correctionOptions = verdict === 'needs-correction' ? `<div class="sensei-error-tags" aria-label="What needs correction">${(['meaning', 'particle', 'kana'] as const).map(tag => `<button type="button" class="sensei-tag ${decision?.errorTag === tag ? 'is-selected' : ''}" data-sensei-error="${line.id}" data-sensei-error-tag="${tag}">${tag === 'meaning' ? 'Meaning' : tag === 'particle' ? 'Particle' : 'Kana'}</button>`).join('')}</div>` : '';
-  return `<article class="sensei-homework-line ${verdict ? `is-${verdict}` : ''}" data-sensei-line="${escapeHtml(line.id)}"><div class="sensei-line-copy"><span class="sensei-line-number">${state.currentIndex + 1}.${line.id.split('-').at(-1)}</span><strong lang="ja">${escapeHtml(line.japanese)}</strong><span>${escapeHtml(line.reading)} · ${escapeHtml(line.meaning)}</span></div>${line.audio ? `<button type="button" class="sensei-hear sensei-preflight-hear" data-sensei-hear="${escapeHtml(line.id)}">🔊 Hear it</button>` : ''}<div class="sensei-verdicts"><button type="button" class="sensei-verdict ${verdict === 'correct' ? 'is-selected' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${verdict === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="needs-correction">✎ Needs correction</button></div>${correctionOptions}</article>`;
+  const correctionOptions = verdict === 'needs-correction' ? `<div class="sensei-error-tags" aria-label="What needs correction">${(['meaning', 'kana'] as const).map(tag => `<button type="button" class="sensei-tag ${decision?.errorTag === tag ? 'is-selected' : ''}" data-sensei-error="${line.id}" data-sensei-error-tag="${tag}">${tag === 'meaning' ? 'English' : 'Reading'}</button>`).join('')}</div>` : '';
+  const japanese = listeningFirst ? `<button type="button" class="sensei-reveal-text" data-sensei-reveal="${escapeHtml(line.id)}">Reveal Japanese ${line.kind}</button>` : `<strong lang="ja">${escapeHtml(line.japanese)}</strong>`;
+  return `<article class="sensei-homework-line ${verdict ? `is-${verdict}` : ''} ${listeningFirst ? 'is-listening-first' : ''}" data-sensei-line="${escapeHtml(line.id)}"><div class="sensei-line-copy"><span class="sensei-line-number">${state.currentIndex + 1}.${line.id.split('-').at(-1)}</span><small>${line.kind === 'sentence' ? 'Japanese sentence' : 'Japanese word'}</small>${japanese}<span class="sensei-line-english"><b>${line.kind === 'sentence' ? 'English sentence' : 'English meaning'}:</b> ${escapeHtml(line.meaning)}</span>${!listeningFirst ? `<span class="sensei-line-reading">Reading: ${escapeHtml(line.reading)}</span>` : ''}</div>${line.audio ? `<button type="button" class="sensei-hear sensei-preflight-hear" data-sensei-hear="${escapeHtml(line.id)}">🔊 Hear it</button>` : ''}<div class="sensei-verdicts"><button type="button" class="sensei-verdict ${verdict === 'correct' ? 'is-selected' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${verdict === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-verdict="${line.id}" data-sensei-value="needs-correction">✎ Needs correction</button></div>${correctionOptions}</article>`;
 }
 function frame(title: string, content: string): string {
-  return `<div class="sensei-desk-shell"><header class="sensei-desk-header"><div><span class="eyebrow">SENSEI’S DESK · 先生の机</span><h1>${title}</h1><p>Grade one small answer at a time. Every correction teaches a word.</p></div><div class="sensei-desk-header-actions"><label class="sensei-audio-toggle"><input type="checkbox" data-sensei-audio ${senseiDeskAudioEnabled() ? 'checked' : ''}> Sound</label><button type="button" class="sensei-exit" data-sensei-exit>← Leave desk</button></div></header>${content}<p class="sensei-desk-note">A beginner can learn through the desk: read the pupil’s answer, identify the issue, then check the explanation.</p></div>`;
+  return `<div class="sensei-desk-shell"><header class="sensei-desk-header"><div><span class="eyebrow">SENSEI’S DESK · 先生の机</span><h1>${title}</h1><p>Review only language you have already met. Every correction teaches one clear connection.</p></div><div class="sensei-desk-header-actions"><label class="sensei-audio-toggle"><input type="checkbox" data-sensei-audio ${senseiDeskAudioEnabled() ? 'checked' : ''}> Sound</label><label class="sensei-audio-toggle"><input type="checkbox" data-sensei-listening-first ${listeningFirst ? 'checked' : ''}> Listen first</label><button type="button" class="sensei-exit" data-sensei-exit>← Leave desk</button></div></header>${content}<p class="sensei-desk-note">Early shifts use word cards. Sentences appear only after you have met that exact sentence in a lesson.</p></div>`;
 }
 function handbookMarkup(): string {
   const query = handbookQuery.trim().toLocaleLowerCase();
@@ -235,12 +247,12 @@ function enhanceDesk(state: SenseiShiftState, targetElement: HTMLElement): void 
 function renderTutorial(state: SenseiShiftState | null): void {
   const choice = tutorialChoice;
   const choiceFeedback = choice === 'correct'
-    ? '<p class="sensei-tutorial-feedback is-correct" data-sensei-tutorial-feedback>Correct. The Japanese, reading, and meaning agree, so mark <b>Looks right</b>.</p>'
+    ? '<p class="sensei-tutorial-feedback is-correct" data-sensei-tutorial-feedback>Correct. The Japanese word, reading, and English meaning agree, so mark <b>Looks right</b>.</p>'
     : choice === 'needs-correction'
-      ? '<p class="sensei-tutorial-feedback is-wrong" data-sensei-tutorial-feedback>Almost—but this example is consistent. On a real mistake, choose <b>Needs correction</b>, then name the issue: Meaning, Particle, or Kana.</p>'
+      ? '<p class="sensei-tutorial-feedback is-wrong" data-sensei-tutorial-feedback>Almost—but this example is consistent. On a real mistake, choose <b>Needs correction</b>, then name whether the English or reading is wrong.</p>'
       : '<p class="sensei-tutorial-prompt">Try the decision below. You can change your choice at any time.</p>';
   const actionLabel = state && (state.phase === 'desk' || state.phase === 'correction') ? 'Continue my shift' : 'Start my first shift';
-  const content = `<section class="sensei-tutorial"><div class="sensei-tutorial-heading"><span class="sensei-seal">学</span><div><span class="eyebrow">First shift briefing · はじめに</span><h2>How to grade a paper</h2><p>You are the Sensei for a small class. Open each paper on the desk, check the clues, then leave a helpful mark.</p></div></div><div class="sensei-tutorial-grid"><ol class="sensei-tutorial-steps"><li><b>Open the paper</b><span>Tap the new homework on the desk. The handbook and audio are always there if you need them.</span></li><li><b>Read the three clues</b><span>Compare the Japanese answer, its reading, and the English meaning.</span></li><li><b>Make one decision</b><span>Choose <strong>Looks right</strong> when they agree, or <strong>Needs correction</strong> when they do not.</span></li><li><b>Stamp and learn</b><span>Name a mistake if there is one, stamp the paper, then read Sensei’s feedback.</span></li></ol><section class="sensei-tutorial-example" aria-labelledby="senseiTutorialExampleTitle"><span class="eyebrow">Worked example</span><h3 id="senseiTutorialExampleTitle">Does this answer match?</h3><article class="sensei-tutorial-line"><span class="sensei-line-number">EXAMPLE</span><strong lang="ja">わたしは みずを のみます</strong><span>わたしは みずを のみます · I drink water</span></article><div class="sensei-verdicts"><button type="button" class="sensei-verdict ${choice === 'correct' ? 'is-selected' : ''}" data-sensei-tutorial-choice="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${choice === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-tutorial-choice="needs-correction">✎ Needs correction</button></div>${choiceFeedback}<aside class="sensei-tutorial-mistake"><b>When it is wrong</b><span><span lang="ja">みずに おぼえます</span> · “I remember water”</span><small>The connector に is the issue here. Mark <b>Needs correction → Particle</b>.</small></aside></section></div><button type="button" class="sensei-primary sensei-tutorial-start" data-sensei-tutorial-start>${actionLabel} <span>判</span></button></section>`;
+  const content = `<section class="sensei-tutorial"><div class="sensei-tutorial-heading"><span class="sensei-seal">学</span><div><span class="eyebrow">First shift briefing · はじめに</span><h2>How to grade a paper</h2><p>You are the Sensei for a small class. Open each paper on the desk, check the clues, then leave a helpful mark.</p></div></div><div class="sensei-tutorial-grid"><ol class="sensei-tutorial-steps"><li><b>Open the paper</b><span>Tap the new homework on the desk. The handbook and audio are always there if you need them.</span></li><li><b>Compare what was taught</b><span>Early papers use a Japanese word and its English meaning. Later, previously taught sentences also show their English translation.</span></li><li><b>Make one decision</b><span>Choose <strong>Looks right</strong> when the clues agree, or <strong>Needs correction</strong> when they do not.</span></li><li><b>Stamp and learn</b><span>Name a mistake if there is one, stamp the paper, then read Sensei’s feedback.</span></li></ol><section class="sensei-tutorial-example" aria-labelledby="senseiTutorialExampleTitle"><span class="eyebrow">Worked example</span><h3 id="senseiTutorialExampleTitle">Does this answer match?</h3><article class="sensei-tutorial-line"><span class="sensei-line-number">EXAMPLE</span><strong lang="ja">みず</strong><span>みず · water</span></article><div class="sensei-verdicts"><button type="button" class="sensei-verdict ${choice === 'correct' ? 'is-selected' : ''}" data-sensei-tutorial-choice="correct">✓ Looks right</button><button type="button" class="sensei-verdict ${choice === 'needs-correction' ? 'is-selected is-wrong' : ''}" data-sensei-tutorial-choice="needs-correction">✎ Needs correction</button></div>${choiceFeedback}<aside class="sensei-tutorial-mistake"><b>When it is wrong</b><span><span lang="ja">みず</span> · “book”</span><small>The English meaning is the issue here. Mark <b>Needs correction → English</b>.</small></aside></section></div><button type="button" class="sensei-primary sensei-tutorial-start" data-sensei-tutorial-start>${actionLabel} <span>判</span></button></section>`;
   const targetElement = target();
   if (targetElement) targetElement.innerHTML = frame('Your first paper, step by step', content);
   bind();
@@ -333,9 +345,12 @@ function bind(): void {
   element.querySelectorAll<HTMLElement>('[data-sensei-error]').forEach(button => button.addEventListener('click', () => selectError(button.dataset.senseiError ?? '', button.dataset.senseiErrorTag as GradeDecision['errorTag'])));
   element.querySelectorAll<HTMLElement>('[data-sensei-hear]').forEach(button => button.addEventListener('click', () => { const state = stateOrNull(); if (state) { const line = lineFor(state, button.dataset.senseiHear ?? ''); playSenseiDeskWordAudio(line?.audio, line?.reading ?? ''); } }));
   element.querySelector<HTMLInputElement>('[data-sensei-audio]')?.addEventListener('change', event => { const input = event.currentTarget as HTMLInputElement; setSenseiDeskAudioEnabled(input.checked); if (input.checked) startSenseiDeskMusic(); });
+  element.querySelector<HTMLInputElement>('[data-sensei-listening-first]')?.addEventListener('change', event => { listeningFirst = (event.currentTarget as HTMLInputElement).checked; deviceStorage().setItem(LISTENING_FIRST_KEY, String(listeningFirst)); render(stateOrNull()); });
+  element.querySelectorAll<HTMLElement>('[data-sensei-reveal]').forEach(button => button.addEventListener('click', () => { listeningFirst = false; deviceStorage().setItem(LISTENING_FIRST_KEY, 'false'); render(stateOrNull()); }));
 }
 
 export function installSenseiDesk(): void {
+  listeningFirst = deviceStorage().getItem(LISTENING_FIRST_KEY) === 'true';
   const nav = document.querySelector<HTMLElement>('[data-experimental-nav="sensei-desk"]');
   nav?.addEventListener('click', () => { if (!document.querySelector('#senseiDesk.active')) host().show?.('senseiDesk'); document.body.classList.add('experimental-immersive-active'); render(stateOrNull()); });
   window.addEventListener('kaishi-sensei-desk-host-ready', () => { if (document.querySelector('#senseiDesk.active')) render(stateOrNull()); });

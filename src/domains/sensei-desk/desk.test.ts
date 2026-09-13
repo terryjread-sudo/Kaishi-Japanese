@@ -11,11 +11,19 @@ const words = [
 ];
 
 describe('Sensei Desk shifts', () => {
-  it('creates five deterministic papers with teachable errors', () => {
+  it('creates five deterministic papers with teachable word-card errors', () => {
     const first = createShift(words, '2026-09-12', 42), second = createShift(words, '2026-09-12', 42);
     expect(first.submissions).toHaveLength(5);
     expect(first.submissions.map(item => item.pupil.id)).toEqual(second.submissions.map(item => item.pupil.id));
-    expect(first.submissions.flatMap(item => item.lines).some(line => line.errorTag === 'particle')).toBe(true);
+    expect(first.submissions.flatMap(item => item.lines).some(line => line.errorTag === 'meaning')).toBe(true);
+    expect(first.submissions.flatMap(item => item.lines).every(line => line.kind === 'word')).toBe(true);
+  });
+
+  it('uses an exact previously introduced sentence, its English translation, and its audio', () => {
+    const sentenceWord = { id: 'sentence', word: 'ここ', reading: 'ここ', meaning: 'here', sentence: 'ここに本があります。', sentenceMeaning: "There's a book here.", sentenceReading: 'ここに ほんが あります。', sentenceAudio: 'koko-sentence.mp3', sentenceIntroduced: true };
+    const shift = createShift([sentenceWord, ...words], '2026-09-12', 9);
+    const line = shift.submissions.flatMap(paper => paper.lines).find(item => item.wordId === 'sentence');
+    expect(line).toMatchObject({ kind: 'sentence', correctJapanese: 'ここに本があります。', correctMeaning: "There's a book here.", audio: 'koko-sentence.mp3' });
   });
 
   it('never creates a shift with fallback or unintroduced vocabulary', () => {
