@@ -20,6 +20,7 @@ test('a brand-new learner can start the day-one kana checkpoint', async ({ page 
   await expect(page.locator('.checkpoint-document')).toHaveCount(2);
   await expect(page.locator('.checkpoint-passport')).toBeVisible();
   await expect(page.locator('.checkpoint-passport')).toContainText('Passport No.');
+  await expect(page.locator('.checkpoint-passport-record')).toBeVisible();
   await expect(page.locator('[data-checkpoint-stamp="approve"]')).toBeVisible();
 });
 
