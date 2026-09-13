@@ -54,7 +54,8 @@ export function createShift(words: readonly SenseiWord[], dateKey: string, seed 
     const rightScore = (rightProgress.deskMisses ?? 0) * 10 + (rightProgress.due && rightProgress.due <= Date.now() ? 5 : 0) - (rightProgress.strength ?? 0);
     return rightScore - leftScore;
   });
-  const usable = pool.length ? pool : [{ id: 'beginner-water', word: 'みず', reading: 'みず', meaning: 'water' }];
+  if (!pool.length) throw new Error('Sensei Desk needs introduced vocabulary before a shift can begin.');
+  const usable = pool;
   const paperCount = guided ? 2 : SHIFT_PAPERS;
   const submissions = Array.from({ length: paperCount }, (_, paperIndex) => {
     const selected = [0, 1].map(offset => usable[(paperIndex * 2 + offset) % usable.length]!);
