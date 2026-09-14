@@ -51,6 +51,42 @@ function speak(w: RepairWord) {
     speechSynthesis.speak(u);
   }
 }
+function tactileSound(kind: "click" | "snap" | "strike" | "tape") {
+  try {
+    const audio = new AudioContext();
+    const o = audio.createOscillator(),
+      gain = audio.createGain();
+    o.type = kind === "strike" ? "sawtooth" : "square";
+    o.frequency.setValueAtTime(
+      kind === "strike" ? 115 : kind === "tape" ? 90 : 280,
+      audio.currentTime,
+    );
+    o.frequency.exponentialRampToValueAtTime(
+      kind === "snap" ? 520 : 55,
+      audio.currentTime + (kind === "tape" ? 0.28 : 0.09),
+    );
+    gain.gain.setValueAtTime(0.075, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      audio.currentTime + (kind === "tape" ? 0.3 : 0.11),
+    );
+    o.connect(gain).connect(audio.destination);
+    o.start();
+    o.stop(audio.currentTime + (kind === "tape" ? 0.31 : 0.12));
+  } catch {
+    /* Audio is optional on restricted browsers. */
+  }
+}
+function playDiagnostic(w: RepairWord) {
+  tactileSound("tape");
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(w.word);
+  u.lang = "ja-JP";
+  u.rate = 0.72;
+  u.pitch = 0.82;
+  speechSynthesis.speak(u);
+}
 async function words(track: RepairTrack) {
   const all = host()?.words() ?? [];
   let pool = all;
@@ -113,13 +149,15 @@ async function begin(track: RepairTrack) {
   draw();
 }
 function kind(f: RepairFault | null) {
-  return ["battery", "cell", "contacts", "film", "spool"].includes(f?.id ?? "")
-    ? "battery"
-    : ["controls", "equalizer", "tuner", "flash", "acknowledge"].includes(
-          f?.id ?? "",
-        )
-      ? "dial"
-      : "part";
+  return f?.id === "spool"
+    ? "tape"
+    : ["battery", "cell", "contacts", "film"].includes(f?.id ?? "")
+      ? "battery"
+      : ["controls", "equalizer", "tuner", "flash", "acknowledge"].includes(
+            f?.id ?? "",
+          )
+        ? "dial"
+        : "part";
 }
 function manual(
   w: RepairWord,
@@ -136,10 +174,12 @@ function manual(
   const act =
     k === "battery"
       ? "電池をタップして、＋と－の向きを直す。"
-      : k === "dial"
-        ? "ダイヤルをタップして、正しい目盛りに合わせる。"
-        : "本体に印刷された部品をタップする。";
-  return `<aside class="repair-manual"><b>サービスマニュアル · ${final ? "FINAL" : "REPAIR"}</b><h3>${final ? "最後の起動手順" : "修理指示"}</h3><p lang="ja">${ask}</p><p lang="ja">${act}</p><hr><strong>Target: <span lang="ja">${esc(w.word)}</span> · ${esc(w.reading)}</strong><small>${final ? `New word: ${esc(w.meaning)}` : "The Japanese on the physical device is part of the solution."}</small></aside>`;
+      : k === "tape"
+        ? "カセットを入れて、再生ボタンを押して音を聞く。"
+        : k === "dial"
+          ? "ダイヤルをタップして、正しい目盛りに合わせる。"
+          : "本体に印刷された部品をタップする。";
+  return `<aside class="repair-manual" id="repairManual"><button class="manual-close" data-manual-close aria-label="Close manual">×</button><b>サービスマニュアル · ${final ? "FINAL" : "REPAIR"}</b><h3>${final ? "最後の起動手順" : "修理指示"}</h3><p lang="ja">${ask}</p><p lang="ja">${act}</p><div class="manual-terms"><button data-term="向き|むき|direction / orientation">向き</button><button data-term="直す|なおす|to fix / correct">直す</button><button data-term="電池|でんち|battery">電池</button></div><hr><strong>Target: <span lang="ja">${esc(w.word)}</span> · ${esc(w.reading)}</strong><small>${final ? `New word: ${esc(w.meaning)}` : "The Japanese on the physical device is part of the solution."}</small><output id="repairDictionary" aria-live="polite"></output></aside>`;
 }
 function draw() {
   const r = run,
@@ -152,7 +192,26 @@ function draw() {
     w = f ? r.knownWords[stage]! : r.newWord,
     k = kind(f),
     final = !f;
-  t.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])}</span><h2>${final ? "Power-on repair" : esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag in any direction to inspect · tap a labelled physical part</p></div><section class="device-repair-instructions">${manual(w, f, k, final)}${f?.skill === "listening" || final ? '<button class="audio" data-audio>🔊 Play device audio</button>' : ""}<div class="device-repair-progress">${r.faults.map((x, i) => `<span class="${r.solvedFaultIds.includes(x.id) ? "done" : i === stage ? "current" : ""}">${i + 1}</span>`).join("")}<i></i><span class="${r.revealedNewWord ? "done" : ""}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Inspect the model and use the Japanese service manual.</p></section></section></main>`;
+  const batterySteps = [
+    "Open the battery hatch",
+    "Read the printed + / − polarity",
+    "Set both cells",
+    "Close hatch and test start",
+  ];
+  const tapeSteps = [
+    "Insert the labelled cassette",
+    "Press PLAY and hear the diagnostic",
+    "Press illuminated test start",
+  ];
+  const sequence =
+    k === "battery"
+      ? batterySteps[r.diagnosticStep ?? 0]
+      : k === "tape"
+        ? tapeSteps[r.diagnosticStep ?? 0]
+        : (r.diagnosticStep ?? 0)
+          ? "Press the illuminated test start"
+          : "Identify the matching Japanese part";
+  t.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])}</span><h2>${final ? "Power-on repair" : esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div class="device-repair-model"><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag in any direction to inspect · tap glowing physical parts</p><p class="device-repair-step">Step ${(r.diagnosticStep ?? 0) + 1}: ${sequence}</p></div><section class="device-repair-instructions"><button class="manual-toggle" data-manual>☰ Service manual</button>${manual(w, f, k, final)}${f?.skill === "listening" || final ? '<button class="audio" data-audio>▶ Play diagnostic tape</button>' : ""}<div class="device-repair-progress">${r.faults.map((x, i) => `<span class="${r.solvedFaultIds.includes(x.id) ? "done" : i === stage ? "current" : ""}">${i + 1}</span>`).join("")}<i></i><span class="${r.revealedNewWord ? "done" : ""}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Inspect the model and use the Japanese service manual.</p></section></section></main>`;
   try {
     scene(
       document.querySelector<HTMLElement>("#deviceRepairCanvas")!,
@@ -160,6 +219,11 @@ function draw() {
       w,
       k,
       (ok) => operate(ok, w, f?.skill ?? "meaning"),
+      () => {
+        r.diagnosticStep = (r.diagnosticStep ?? 0) + 1;
+        h.saveRun(r);
+        draw();
+      },
     );
   } catch {
     document.querySelector("#deviceRepairCanvas")!.textContent =
@@ -168,7 +232,26 @@ function draw() {
   t.querySelector("[data-quit]")?.addEventListener("click", () =>
     finish(false),
   );
-  t.querySelector("[data-audio]")?.addEventListener("click", () => speak(w));
+  t.querySelector("[data-audio]")?.addEventListener("click", () =>
+    playDiagnostic(w),
+  );
+  const drawer = t.querySelector<HTMLElement>("#repairManual");
+  const setManual = (open: boolean) =>
+    drawer?.classList.toggle("manual-open", open);
+  t.querySelector("[data-manual]")?.addEventListener("click", () =>
+    setManual(true),
+  );
+  t.querySelector("[data-manual-close]")?.addEventListener("click", () =>
+    setManual(false),
+  );
+  t.querySelectorAll<HTMLButtonElement>("[data-term]").forEach((button) =>
+    button.addEventListener("click", () => {
+      const [word, reading, meaning] = button.dataset.term!.split("|");
+      const dictionary = t.querySelector("#repairDictionary");
+      if (dictionary)
+        dictionary.textContent = `${word}（${reading}）— ${meaning}`;
+    }),
+  );
   t.querySelector("[data-hint]")?.addEventListener("click", () => {
     r.hintsUsed++;
     h.saveRun(r);
@@ -194,6 +277,7 @@ function operate(ok: boolean, w: RepairWord, s: RepairSkill) {
       r.revealedNewWord = true;
       host()?.introduce(r.newWord.id);
     }
+    r.diagnosticStep = 0;
     host()?.saveRun(r);
     draw();
   } else {
@@ -333,17 +417,23 @@ function tag(g: THREE.Group, text: string, p: [number, number, number]) {
   c.height = 100;
   const x = c.getContext("2d")!;
   x.fillStyle = "#fff4cf";
-  x.fillRect(0, 0, 400, 100);
+  x.fillRect(4, 4, 392, 92);
+  x.strokeStyle = "#b98b39";
+  x.lineWidth = 8;
+  x.strokeRect(4, 4, 392, 92);
   x.fillStyle = "#17233e";
   x.font = "700 42px sans-serif";
   x.textAlign = "center";
   x.textBaseline = "middle";
   x.fillText(text, 200, 50);
-  const s = new THREE.Sprite(
-    new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c) }),
+  const s = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.15, 0.3),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.CanvasTexture(c),
+      transparent: true,
+    }),
   );
   s.position.set(...p);
-  s.scale.set(1.45, 0.36, 1);
   g.add(s);
 }
 function body(type: DeviceKind, g: THREE.Group) {
@@ -441,6 +531,7 @@ function scene(
   w: RepairWord,
   k: string,
   done: (ok: boolean) => void,
+  progress: () => void,
 ) {
   const s = new THREE.Scene();
   s.background = new THREE.Color("#07152b");
@@ -459,55 +550,157 @@ function scene(
   body(r.device, g);
   const hits: { m: THREE.Object3D; f: () => void }[] = [],
     stage = r.solvedFaultIds.length,
-    base = stage * 2;
+    base = stage * 2,
+    step = r.diagnosticStep ?? 0;
+  const ledMaterial = new THREE.MeshStandardMaterial({
+    color: 0x3f1118,
+    emissive: 0x120005,
+  });
+  const led = new THREE.Mesh(
+    new THREE.SphereGeometry(0.16, 16, 12),
+    ledMaterial,
+  );
+  led.position.set(2.2, 1.15, 0.75);
+  g.add(led);
+  const glow = (object: THREE.Object3D, on: boolean) =>
+    object.traverse((node) => {
+      if (!(node instanceof THREE.Mesh)) return;
+      const materials = Array.isArray(node.material)
+        ? node.material
+        : [node.material];
+      materials.forEach((material) => {
+        if (material instanceof THREE.MeshStandardMaterial) {
+          material.emissive.setHex(on ? 0x3b93ff : 0x000000);
+          material.emissiveIntensity = on ? 0.7 : 0;
+        }
+      });
+    });
+  const strike = () => {
+    ledMaterial.color.setHex(0xff2538);
+    ledMaterial.emissive.setHex(0xaa0015);
+    ledMaterial.emissiveIntensity = 2;
+    tactileSound("strike");
+    window.setTimeout(() => {
+      ledMaterial.color.setHex(0x3f1118);
+      ledMaterial.emissive.setHex(0x120005);
+      ledMaterial.emissiveIntensity = 1;
+      ren.render(s, cam);
+    }, 360);
+  };
   const add = (m: THREE.Object3D, f: () => void) => hits.push({ m, f });
+  const testStart = () => {
+    const test = cyl(g, 0.32, 0.18, [2.05, -1.15, 0.82], 0x4ade80);
+    test.rotation.x = Math.PI / 2;
+    tag(g, "START", [2.05, -1.15, 1.02]);
+    add(test, () => {
+      tactileSound("snap");
+      ledMaterial.color.setHex(0x42f57b);
+      ledMaterial.emissive.setHex(0x1ecb5b);
+      ledMaterial.emissiveIntensity = 2;
+      done(true);
+    });
+  };
   if (k === "part") {
     const cs = shuffled([
       w,
       ...shuffled(r.knownWords.filter((x) => x.id !== w.id)).slice(0, 2),
     ]);
-    cs.forEach((x, i) => {
-      const m = box(
-        g,
-        [1.15, 0.28, 0.72],
-        [-1.5 + i * 1.5, -1.15, 0.82],
-        i ? 0x71839a : 0x4f6d96,
-      );
-      tag(g, x.word, [-1.5 + i * 1.5, -0.95, 1.2]);
-      add(m, () => done(x.id === w.id));
-    });
-  } else if (k === "battery") {
-    const goals = [hash(w.id) % 2, hash(w.id + "b") % 2];
-    [-1.1, 1.1].forEach((x, i) => {
-      const v = r.interactionValues[base + i] ?? 0,
-        m = cyl(g, 0.3, 1.75, [x, -1.1, 0.85], v ? 0xf87171 : 0xfacc15);
-      m.rotation.z = v ? Math.PI / 2 : -Math.PI / 2;
-      tag(g, v ? "＋" : "－", [x, -0.75, 1.2]);
-      add(m, () => {
-        r.interactionValues[base + i] = v ? 0 : 1;
-        host()?.saveRun(r);
-        if (
-          (r.interactionValues[base] ?? 0) === goals[0] &&
-          (r.interactionValues[base + 1] ?? 0) === goals[1]
-        )
-          done(true);
-        else draw();
+    if (step === 0)
+      cs.forEach((x, i) => {
+        const m = box(
+          g,
+          [1.15, 0.28, 0.72],
+          [-1.5 + i * 1.5, -1.15, 0.82],
+          i ? 0x71839a : 0x4f6d96,
+        );
+        tag(g, x.word, [-1.5 + i * 1.5, -1.15, 1.2]);
+        add(m, () => {
+          if (x.id === w.id) {
+            tactileSound("click");
+            progress();
+          } else {
+            strike();
+            done(false);
+          }
+        });
       });
-    });
+    else testStart();
+  } else if (k === "tape") {
+    if (step === 0) {
+      const tape = box(g, [3.3, 1.8, 0.42], [0, -0.5, 0.82], 0x4f3150);
+      [-0.9, 0.9].forEach((x) => {
+        const reel = cyl(g, 0.38, 0.12, [x, -0.5, 1.08], 0xe8d6a0);
+        reel.rotation.x = Math.PI / 2;
+      });
+      tag(g, w.word, [0, -1.05, 1.08]);
+      add(tape, () => {
+        tactileSound("snap");
+        progress();
+      });
+    } else if (step === 1) {
+      const play = box(g, [1.25, 0.5, 0.28], [0, -1.15, 0.85], 0x4ade80);
+      tag(g, "▶ PLAY", [0, -1.15, 1.02]);
+      add(play, () => {
+        playDiagnostic(w);
+        window.setTimeout(progress, 420);
+      });
+    } else testStart();
+  } else if (k === "battery") {
+    const goals = [
+      hash(`${r.seed}:${stage}:a`) % 2,
+      hash(`${r.seed}:${stage}:b`) % 2,
+    ];
+    const hatch = new THREE.Group();
+    hatch.position.set(-1.62, 0.1, 0.62);
+    const door = box(hatch, [3.2, 1.8, 0.14], [1.62, 0, 0], 0x263a55);
+    tag(hatch, "＋        －", [1.62, 0.48, 0.1]);
+    if (step === 1 || step === 2) {
+      hatch.rotation.y = -1.1;
+      hatch.position.x -= 0.18;
+    }
+    g.add(hatch);
+    if (step === 0 || step === 2)
+      add(door, () => {
+        tactileSound("snap");
+        progress();
+      });
+    if (step === 1)
+      [-1.1, 1.1].forEach((x, i) => {
+        const v = r.interactionValues[base + i] ?? 0,
+          m = cyl(g, 0.3, 1.75, [x, -1.1, 0.85], v ? 0xf87171 : 0xfacc15);
+        m.rotation.z = v ? Math.PI / 2 : -Math.PI / 2;
+        tag(g, v ? "＋" : "－", [x, -0.75, 1.2]);
+        add(m, () => {
+          r.interactionValues[base + i] = v ? 0 : 1;
+          host()?.saveRun(r);
+          if (
+            (r.interactionValues[base] ?? 0) === goals[0] &&
+            (r.interactionValues[base + 1] ?? 0) === goals[1]
+          ) {
+            tactileSound("snap");
+            progress();
+          } else draw();
+        });
+      });
+    if (step === 3) testStart();
   } else {
-    const goal = hash(w.id) % 3,
+    const goal = hash(`${r.seed}:${stage}:dial`) % 3,
       v = r.interactionValues[base] ?? 0,
       d = cyl(g, 0.75, 0.34, [0, -1.05, 0.86], 0xf4c869);
     d.rotation.x = Math.PI / 2;
     ["一", "二", "三"].forEach((x, i) =>
       tag(g, x, [-1.15 + i * 1.15, -0.45, 1.2]),
     );
-    add(d, () => {
-      r.interactionValues[base] = (v + 1) % 3;
-      host()?.saveRun(r);
-      if (r.interactionValues[base] === goal) done(true);
-      else draw();
-    });
+    if (step === 0)
+      add(d, () => {
+        r.interactionValues[base] = (v + 1) % 3;
+        host()?.saveRun(r);
+        if (r.interactionValues[base] === goal) {
+          tactileSound("snap");
+          progress();
+        } else draw();
+      });
+    else testStart();
   }
   const ray = new THREE.Raycaster(),
     p = new THREE.Vector2();
@@ -516,7 +709,25 @@ function scene(
     lastY = 0,
     moved = false,
     rot = 0.25,
-    tilt = -0.25;
+    tilt = -0.25,
+    hovered: THREE.Object3D | null = null;
+  const targetAt = (e: PointerEvent) => {
+    const q = ren.domElement.getBoundingClientRect();
+    p.set(
+      ((e.clientX - q.left) / q.width) * 2 - 1,
+      (-(e.clientY - q.top) / q.height) * 2 + 1,
+    );
+    ray.setFromCamera(p, cam);
+    return hits.find((h) => ray.intersectObject(h.m, true).length) ?? null;
+  };
+  const setHover = (target: { m: THREE.Object3D } | null) => {
+    if (hovered === target?.m) return;
+    if (hovered) glow(hovered, false);
+    hovered = target?.m ?? null;
+    if (hovered) glow(hovered, true);
+    ren.domElement.style.cursor = hovered ? "pointer" : "grab";
+    ren.render(s, cam);
+  };
   const size = () => {
     const w = Math.max(el.clientWidth, 1),
       h = Math.max(el.clientHeight, 380);
@@ -533,7 +744,10 @@ function scene(
       ren.domElement.setPointerCapture(e.pointerId);
     },
     move = (e: PointerEvent) => {
-      if (!drag) return;
+      if (!drag) {
+        setHover(targetAt(e));
+        return;
+      }
       const deltaX = e.clientX - lastX,
         deltaY = e.clientY - lastY;
       if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) moved = true;
@@ -549,13 +763,7 @@ function scene(
       if (!drag) return;
       drag = false;
       if (moved) return;
-      const q = ren.domElement.getBoundingClientRect();
-      p.set(
-        ((e.clientX - q.left) / q.width) * 2 - 1,
-        (-(e.clientY - q.top) / q.height) * 2 + 1,
-      );
-      ray.setFromCamera(p, cam);
-      hits.find((h) => ray.intersectObject(h.m, true).length)?.f();
+      targetAt(e)?.f();
     };
   ren.domElement.addEventListener("pointerdown", down);
   ren.domElement.addEventListener("pointermove", move);
