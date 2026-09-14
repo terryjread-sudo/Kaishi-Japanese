@@ -34,6 +34,7 @@ export interface DeviceRepairRun {
   revealedNewWord: boolean;
   completed: boolean;
   hintsUsed: number;
+  interactionValues: number[];
 }
 
 export const DEVICE_LABELS: Record<DeviceKind, string> = {
@@ -78,7 +79,7 @@ export function createRepairRun(input: { seed: number; track: RepairTrack; known
   return {
     schemaVersion: 1, id: `repair-${input.seed.toString(36)}-${now.toString(36)}`, seed: input.seed, track: input.track, device,
     startedAt: now, deadlineAt: now + 10 * 60_000, faults, knownWords: input.knownWords.slice(0, 3), newWord: input.newWord,
-    solvedFaultIds: [], revealedNewWord: false, completed: false, hintsUsed: 0,
+    solvedFaultIds: [], revealedNewWord: false, completed: false, hintsUsed: 0, interactionValues: [0, 0, 0, 0, 0, 0],
   };
 }
 

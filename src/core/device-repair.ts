@@ -1,154 +1,21 @@
 import * as THREE from 'three';
 import './device-repair.css';
-import { DEVICE_LABELS, canRevealNewWord, createRepairRun, nextFault, repairScore, type DeviceRepairRun, type RepairSkill, type RepairTrack, type RepairWord } from '../domains/device-repair/run';
+import { DEVICE_LABELS, canRevealNewWord, createRepairRun, nextFault, repairScore, type DeviceKind, type DeviceRepairRun, type RepairFault, type RepairSkill, type RepairTrack, type RepairWord } from '../domains/device-repair/run';
 
-type HostWord = RepairWord & { introduced: boolean; due: boolean };
-type DeviceRepairHost = {
-  show(id: string): void;
-  words(): HostWord[];
-  grade(wordId: string, skill: RepairSkill, correct: boolean): void;
-  introduce(wordId: string): void;
-  saveRun(run: DeviceRepairRun): void;
-  finishRun(run: DeviceRepairRun, success: boolean, score: number): void;
-  loadRun(): DeviceRepairRun | null;
-};
-
-let current: DeviceRepairRun | null = null;
-let timer: number | null = null;
-let sceneCleanup: (() => void) | null = null;
-
-const root = () => document.querySelector<HTMLElement>('#deviceRepairRoot');
-const host = () => (window as Window & { KaishiActivityPolicy?: { deviceRepair?: DeviceRepairHost } }).KaishiActivityPolicy?.deviceRepair;
-const escape = (text: string) => text.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]!);
-
-function randomSeed() { return Math.floor(Math.random() * 0x7fffffff); }
-function shuffled<T>(items: T[]) { return [...items].sort(() => Math.random() - .5); }
-
-async function selectWords(track: RepairTrack) {
-  const words = host()?.words() ?? [];
-  let pool = words;
-  if (track === 'japan-ready') {
-    try {
-      const response = await fetch('data/japan-ready-v90.json');
-      const content = await response.json() as { scenarios?: Array<{ wordIds?: string[] }> };
-      const ids = new Set(content.scenarios?.flatMap((scenario) => scenario.wordIds ?? []) ?? []);
-      pool = words.filter((word) => ids.has(word.id));
-    } catch { /* The standard vocabulary pool is a safe online-content fallback. */ }
-  }
-  const known = [...pool.filter((word) => word.introduced && word.due), ...pool.filter((word) => word.introduced && !word.due)]
-    .filter((word, index, list) => list.findIndex((candidate) => candidate.id === word.id) === index);
-  const fallbackKnown = words.filter((word) => word.introduced);
-  const selectedKnown = (known.length >= 3 ? known : [...known, ...fallbackKnown.filter((word) => !known.some((candidate) => candidate.id === word.id))]).slice(0, 3);
-  const newWord = pool.find((word) => !word.introduced) ?? words.find((word) => !word.introduced);
-  return selectedKnown.length === 3 && newWord ? { known: selectedKnown, newWord } : null;
-}
-
-function speak(word: RepairWord) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(word.word || word.reading);
-  utterance.lang = 'ja-JP';
-  window.speechSynthesis.speak(utterance);
-}
-
-function showSetup() {
-  const element = root();
-  if (!element) return;
-  sceneCleanup?.(); sceneCleanup = null;
-  const savedRun = host()?.loadRun() ?? null;
-  element.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button type="button" data-repair-back>← Games</button><div><span class="eyebrow">Device Repair</span><h2>Restore a Japanese device</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">🔧</span><h3>One device. One linked repair chain.</h3><p>Test three known words through physical repairs. Powering the device reveals one new Japanese word, which you need for the final fix.</p><p class="muted">A 10-minute countdown is active once you begin. Hints lower your score, but your learning progress is always saved.</p></div><div class="device-repair-track">${savedRun ? '<button type="button" class="primary" data-repair-resume>Resume saved repair</button><small>Your timer continues while a repair is paused.</small>' : ''}<button type="button" class="primary" data-repair-track="review">Learn &amp; Review</button><small>Due and learned words first</small><button type="button" data-repair-track="japan-ready">Japan Ready</button><small>Travel words and phrases first</small></div></section></main>`;
-  element.querySelector('[data-repair-back]')?.addEventListener('click', () => host()?.show('games'));
-  element.querySelector('[data-repair-resume]')?.addEventListener('click', () => { current = savedRun; renderRun(); });
-  element.querySelectorAll<HTMLButtonElement>('[data-repair-track]').forEach((button) => button.addEventListener('click', () => { void begin(button.dataset.repairTrack === 'japan-ready' ? 'japan-ready' : 'review'); }));
-}
-
-async function begin(track: RepairTrack) {
-  const selection = await selectWords(track);
-  if (!selection) { root()!.innerHTML = `<main class="device-repair-shell"><p role="status">Learn at least three words before starting Device Repair. Your next new word will then be introduced through the repair.</p><button type="button" data-repair-back>← Games</button></main>`; root()?.querySelector('[data-repair-back]')?.addEventListener('click', () => host()?.show('games')); return; }
-  current = createRepairRun({ seed: randomSeed(), track, knownWords: selection.known, newWord: selection.newWord });
-  host()?.saveRun(current);
-  renderRun();
-}
-
-function choices(word: RepairWord, all: RepairWord[]) {
-  return shuffled([word, ...shuffled(all.filter((candidate) => candidate.id !== word.id)).slice(0, 3)]);
-}
-
-function promptFor(word: RepairWord, skill: RepairSkill) {
-  if (skill === 'reading') return { label: 'Manual reading', question: `Which component reads “${escape(word.reading)}”?`, replay: false };
-  if (skill === 'listening') return { label: 'Audio diagnostic', question: 'Which Japanese component name did you hear?', replay: true };
-  return { label: 'Service slip', question: `Which Japanese label means “${escape(word.meaning)}”?`, replay: false };
-}
-
-function renderRun() {
-  const run = current, element = root(), api = host();
-  if (!run || !element || !api) return;
-  sceneCleanup?.();
-  const fault = nextFault(run);
-  const word = fault ? run.knownWords[run.solvedFaultIds.length]! : run.newWord;
-  const final = !fault;
-  const prompt = final ? { label: 'Boot screen', question: `Use the new word to finish the repair: which label is “${escape(word.meaning)}”?`, replay: true } : promptFor(word, fault.skill);
-  const answerOptions = choices(word, [...run.knownWords, run.newWord]);
-  element.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button type="button" data-repair-quit>Quit repair</button><div><span class="eyebrow">${escape(DEVICE_LABELS[run.device])} · ${run.track === 'review' ? 'Learn & Review' : 'Japan Ready'}</span><h2>${final ? 'Final boot repair' : escape(fault!.title)}</h2></div><strong id="deviceRepairTimer" aria-live="polite">10:00</strong></header><section class="device-repair-board"><div class="device-repair-canvas" id="deviceRepairCanvas" aria-label="Interactive 3D ${escape(DEVICE_LABELS[run.device])}"></div><section class="device-repair-panel"><div class="device-repair-progress">${run.faults.map((item, index) => `<span class="${run.solvedFaultIds.includes(item.id) ? 'done' : index === run.solvedFaultIds.length ? 'current' : ''}">${index + 1}</span>`).join('')}<i></i><span class="${run.revealedNewWord ? 'done' : ''}">新</span></div><span class="eyebrow">${prompt.label}</span><h3>${prompt.question}</h3>${prompt.replay ? '<button type="button" class="audio" data-repair-audio>🔊 Hear Japanese</button>' : ''}<div class="device-repair-choices">${answerOptions.map((choice) => `<button type="button" data-repair-answer="${escape(choice.id)}" lang="ja"><strong>${escape(choice.word)}</strong><small>${escape(choice.reading)}</small></button>`).join('')}</div><button type="button" class="hint" data-repair-hint>Open repair hint</button><p id="deviceRepairFeedback" class="muted">${fault ? `Repairing the ${escape(fault.subsystem)}. Each successful repair unlocks the next subsystem.` : `New word: ${escape(word.word)} · ${escape(word.reading)} · ${escape(word.meaning)}`}</p></section></section></main>`;
-  const canvas = document.querySelector<HTMLElement>('#deviceRepairCanvas')!;
-  try { mountDeviceScene(canvas, run, run.solvedFaultIds.length, final); }
-  catch { canvas.innerHTML = `<div class="device-repair-fallback"><span>🔧</span><strong>${escape(DEVICE_LABELS[run.device])}</strong><p>Interactive repair controls are available beside the device.</p></div>`; }
-  element.querySelector('[data-repair-quit]')?.addEventListener('click', failRun);
-  element.querySelector('[data-repair-audio]')?.addEventListener('click', () => speak(word));
-  element.querySelector('[data-repair-hint]')?.addEventListener('click', () => { run.hintsUsed++; api.saveRun(run); const feedback = document.querySelector('#deviceRepairFeedback'); if (feedback) feedback.textContent = final ? `The boot screen needs ${word.meaning}: ${word.word}.` : `${fault!.instruction} Hint used: final score reduced.`; });
-  element.querySelectorAll<HTMLButtonElement>('[data-repair-answer]').forEach((button) => button.addEventListener('click', () => answer(button.dataset.repairAnswer === word.id, word, fault?.skill ?? 'meaning')));
-  if (prompt.replay) speak(word);
-  startTimer();
-}
-
-function answer(correct: boolean, word: RepairWord, skill: RepairSkill) {
-  const run = current, api = host(); if (!run || !api) return;
-  api.grade(word.id, skill, correct);
-  const feedback = document.querySelector('#deviceRepairFeedback');
-  if (!correct) { if (feedback) feedback.textContent = `Not quite. The correct Japanese is ${word.word} · ${word.reading}. Try again before time runs out.`; return; }
-  const fault = nextFault(run);
-  if (fault) { run.solvedFaultIds.push(fault.id); if (canRevealNewWord(run)) { run.revealedNewWord = true; api.introduce(run.newWord.id); } api.saveRun(run); renderRun(); return; }
-  run.completed = true; api.finishRun(run, true, repairScore(run)); finish(true);
-}
-
-function startTimer() {
-  if (timer !== null) window.clearInterval(timer);
-  const tick = () => { const run = current, target = document.querySelector('#deviceRepairTimer'); if (!run || !target) return; const remaining = Math.max(0, run.deadlineAt - Date.now()); target.textContent = `${Math.floor(remaining / 60000)}:${String(Math.floor(remaining / 1000) % 60).padStart(2, '0')}`; if (remaining === 0) failRun(); };
-  tick(); timer = window.setInterval(tick, 250);
-}
-
-function failRun() { const run = current; if (!run) return; host()?.finishRun(run, false, 0); finish(false); }
-function finish(success: boolean) {
-  if (timer !== null) { window.clearInterval(timer); timer = null; }
-  sceneCleanup?.(); sceneCleanup = null;
-  const run = current, element = root(); if (!run || !element) return;
-  const score = success ? repairScore(run) : 0;
-  element.innerHTML = `<main class="device-repair-shell device-repair-result"><span class="device-repair-icon">${success ? '✨' : '⏱️'}</span><span class="eyebrow">${success ? 'Repair complete' : 'Repair timed out'}</span><h2>${success ? `${escape(DEVICE_LABELS[run.device])} restored` : 'The bench powers down'}</h2><p>${success ? `You repaired every subsystem and learned ${escape(run.newWord.word)} — ${escape(run.newWord.meaning)}.` : 'Your correct answers were saved. Try another random device whenever you are ready.'}</p>${success ? `<strong class="device-repair-score">${score} points</strong>` : ''}<div><button type="button" class="primary" data-repair-again>Repair another device</button><button type="button" data-repair-back>Back to Games</button></div></main>`;
-  element.querySelector('[data-repair-again]')?.addEventListener('click', () => showSetup());
-  element.querySelector('[data-repair-back]')?.addEventListener('click', () => host()?.show('games'));
-  current = null;
-}
-
-function mountDeviceScene(container: HTMLElement, run: DeviceRepairRun, completed: number, final: boolean) {
-  const scene = new THREE.Scene(); scene.background = new THREE.Color('#0c1731');
-  const camera = new THREE.PerspectiveCamera(42, 1, .1, 100); camera.position.set(0, 2.2, 6);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); container.append(renderer.domElement);
-  scene.add(new THREE.HemisphereLight(0xdbeafe, 0x111827, 2)); const light = new THREE.DirectionalLight(0xffffff, 2); light.position.set(3, 5, 4); scene.add(light);
-  const device = new THREE.Group(); scene.add(device);
-  const shell = new THREE.Mesh(new THREE.BoxGeometry(4.8, .55, 3), new THREE.MeshStandardMaterial({ color: run.device === 'handheld' ? 0x5c75a5 : 0x6b7280, roughness: .55 })); device.add(shell);
-  const screen = new THREE.Mesh(new THREE.BoxGeometry(2.1, .08, 1.2), new THREE.MeshStandardMaterial({ color: completed >= 3 ? 0x67e8f9 : 0x13223a, emissive: completed >= 3 ? 0x0e7490 : 0x000000 })); screen.position.set(0, .34, -.35); device.add(screen);
-  const dpad = new THREE.Mesh(new THREE.BoxGeometry(.85, .1, .85), new THREE.MeshStandardMaterial({ color: 0x18233b })); dpad.position.set(-1.25, .34, .85); device.add(dpad);
-  [-.35, .35].forEach((x) => { const button = new THREE.Mesh(new THREE.CylinderGeometry(.23, .23, .12, 20), new THREE.MeshStandardMaterial({ color: final ? 0xfbbf24 : 0xef4444 })); button.rotation.x = Math.PI / 2; button.position.set(1.25 + x, .36, .85); device.add(button); });
-  if (completed === 0) [-.55, .55].forEach((x) => { const battery = new THREE.Mesh(new THREE.CylinderGeometry(.18, .18, 1.3, 16), new THREE.MeshStandardMaterial({ color: 0xfacc15 })); battery.rotation.z = Math.PI / 2; battery.position.set(x, -.42, 0); device.add(battery); });
-  let angle = .28, dragging = false, lastX = 0;
-  const resize = () => { const width = Math.max(1, container.clientWidth), height = Math.max(260, container.clientHeight); renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix(); };
-  const draw = () => { device.rotation.y = angle; renderer.render(scene, camera); }; resize(); draw();
-  const down = (event: PointerEvent) => { dragging = true; lastX = event.clientX; renderer.domElement.setPointerCapture(event.pointerId); };
-  const move = (event: PointerEvent) => { if (!dragging) return; angle += (event.clientX - lastX) * .012; lastX = event.clientX; draw(); };
-  const up = () => { dragging = false; };
-  renderer.domElement.addEventListener('pointerdown', down); renderer.domElement.addEventListener('pointermove', move); renderer.domElement.addEventListener('pointerup', up);
-  const observer = new ResizeObserver(() => { resize(); draw(); }); observer.observe(container);
-  sceneCleanup = () => { observer.disconnect(); renderer.domElement.removeEventListener('pointerdown', down); renderer.domElement.removeEventListener('pointermove', move); renderer.domElement.removeEventListener('pointerup', up); renderer.dispose(); container.replaceChildren(); };
-}
-
-export function launchDeviceRepair() { host()?.show('deviceRepair'); showSetup(); }
+type Word=RepairWord&{introduced:boolean;due:boolean};type Host={show(id:string):void;words():Word[];grade(id:string,s:RepairSkill,ok:boolean):void;introduce(id:string):void;saveRun(r:DeviceRepairRun):void;finishRun(r:DeviceRepairRun,ok:boolean,score:number):void;loadRun():DeviceRepairRun|null};
+let run:DeviceRepairRun|null=null,timer:number|null=null,clean:(()=>void)|null=null;
+const root=()=>document.querySelector<HTMLElement>('#deviceRepairRoot');const host=()=>((window as Window&{KaishiActivityPolicy?:{deviceRepair?:Host}}).KaishiActivityPolicy?.deviceRepair);const esc=(s:string)=>s.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]!));const hash=(s:string)=>[...s].reduce((n,c)=>(n*31+c.codePointAt(0)!)>>>0,7);const shuffled=<T>(a:T[])=>[...a].sort(()=>Math.random()-.5);
+function speak(w:RepairWord){if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w.word);u.lang='ja-JP';speechSynthesis.speak(u)}}
+async function words(track:RepairTrack){const all=host()?.words()??[];let pool=all;if(track==='japan-ready')try{const d=await(await fetch('data/japan-ready-v90.json')).json()as{scenarios?:{wordIds?:string[]}[]};const ids=new Set(d.scenarios?.flatMap(s=>s.wordIds??[])??[]);pool=all.filter(w=>ids.has(w.id))}catch{pool=all}const known=[...pool.filter(w=>w.introduced&&w.due),...pool.filter(w=>w.introduced&&!w.due),...all.filter(w=>w.introduced)].filter((w,i,a)=>a.findIndex(x=>x.id===w.id)===i).slice(0,3),fresh=pool.find(w=>!w.introduced)??all.find(w=>!w.introduced);return known.length===3&&fresh?{known,fresh}:null}
+function setup(){const r=root();if(!r)return;clean?.();clean=null;const saved=host()?.loadRun();r.innerHTML=`<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Repair it with Japanese</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">🔧</span><h3>The device and manual work together.</h3><p>Read Japanese repair instructions, inspect labels printed on the 3D device, then physically operate the correct component.</p></div><div class="device-repair-track">${saved?'<button class="primary" data-resume>Resume repair</button>':''}<button class="primary" data-track="review">Learn &amp; Review</button><button data-track="japan-ready">Japan Ready</button></div></section></main>`;r.querySelector('[data-back]')?.addEventListener('click',()=>host()?.show('gameHub'));r.querySelector('[data-resume]')?.addEventListener('click',()=>{run=saved??null;draw()});r.querySelectorAll<HTMLButtonElement>('[data-track]').forEach(b=>b.onclick=()=>void begin(b.dataset.track==='japan-ready'?'japan-ready':'review'))}
+async function begin(track:RepairTrack){const picked=await words(track);if(!picked){root()!.innerHTML='<main class="device-repair-shell"><h2>Learn three words first</h2><p>Complete a little Journey practice, then return.</p></main>';return}run=createRepairRun({seed:Math.floor(Math.random()*2**31),track,knownWords:picked.known,newWord:picked.fresh});host()?.saveRun(run);draw()}
+function kind(f:RepairFault|null){return['battery','cell','contacts','film','spool'].includes(f?.id??'')?'battery':['controls','equalizer','tuner','flash','acknowledge'].includes(f?.id??'')?'dial':'part'}
+function manual(w:RepairWord,f:RepairFault|null,k:string,final:boolean){const ask=f?.skill==='reading'?`「${esc(w.reading)}」と読むラベルを探す。`:f?.skill==='listening'?'音声を聞いて、同じ日本語ラベルを探す。':`「${esc(w.meaning)}」を表す日本語ラベルを探す。`;const act=k==='battery'?'電池をタップして、＋と－の向きを直す。':k==='dial'?'ダイヤルをタップして、正しい目盛りに合わせる。':'本体に印刷された部品をタップする。';return`<aside class="repair-manual"><b>サービスマニュアル · ${final?'FINAL':'REPAIR'}</b><h3>${final?'最後の起動手順':'修理指示'}</h3><p lang="ja">${ask}</p><p lang="ja">${act}</p><hr><strong>Target: <span lang="ja">${esc(w.word)}</span> · ${esc(w.reading)}</strong><small>${final?`New word: ${esc(w.meaning)}`:'The Japanese on the physical device is part of the solution.'}</small></aside>`}
+function draw(){const r=run,t=root(),h=host();if(!r||!t||!h)return;clean?.();const f=nextFault(r),stage=r.solvedFaultIds.length,w=f?r.knownWords[stage]!:r.newWord,k=kind(f),final=!f;t.innerHTML=`<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])}</span><h2>${final?'Power-on repair':esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag to inspect · tap a labelled physical part</p></div><section class="device-repair-instructions">${manual(w,f,k,final)}${f?.skill==='listening'||final?'<button class="audio" data-audio>🔊 Play device audio</button>':''}<div class="device-repair-progress">${r.faults.map((x,i)=>`<span class="${r.solvedFaultIds.includes(x.id)?'done':i===stage?'current':''}">${i+1}</span>`).join('')}<i></i><span class="${r.revealedNewWord?'done':''}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Inspect the model and use the Japanese service manual.</p></section></section></main>`;try{scene(document.querySelector<HTMLElement>('#deviceRepairCanvas')!,r,w,k,ok=>operate(ok,w,f?.skill??'meaning'))}catch{document.querySelector('#deviceRepairCanvas')!.textContent='WebGL device view unavailable.'}t.querySelector('[data-quit]')?.addEventListener('click',()=>finish(false));t.querySelector('[data-audio]')?.addEventListener('click',()=>speak(w));t.querySelector('[data-hint]')?.addEventListener('click',()=>{r.hintsUsed++;h.saveRun(r);document.querySelector('#deviceRepairFeedback')!.textContent=`Hint: operate the part labelled ${w.word} (${w.meaning}).`});if(f?.skill==='listening'||final)speak(w);clock()}
+function operate(ok:boolean,w:RepairWord,s:RepairSkill){const r=run;if(!r)return;host()?.grade(w.id,s,ok);if(!ok){document.querySelector('#deviceRepairFeedback')!.textContent='That is not the matching part. Read the Japanese label and manual again.';return}const f=nextFault(r);if(f){r.solvedFaultIds.push(f.id);if(canRevealNewWord(r)){r.revealedNewWord=true;host()?.introduce(r.newWord.id)}host()?.saveRun(r);draw()}else{r.completed=true;host()?.finishRun(r,true,repairScore(r));finish(true)}}
+function clock(){if(timer)clearInterval(timer);const tick=()=>{if(!run)return;const left=Math.max(0,run.deadlineAt-Date.now()),e=document.querySelector('#deviceRepairTimer');if(e)e.textContent=`${Math.floor(left/60000)}:${String(Math.floor(left/1000)%60).padStart(2,'0')}`;if(!left)finish(false)};tick();timer=window.setInterval(tick,250)}
+function finish(ok:boolean){if(timer)clearInterval(timer);timer=null;clean?.();clean=null;const r=run,t=root();if(!r||!t)return;if(!r.completed)host()?.finishRun(r,false,0);t.innerHTML=`<main class="device-repair-shell device-repair-result"><span class="device-repair-icon">${ok?'✨':'⏱️'}</span><h2>${ok?'Device restored':'Repair timed out'}</h2><p>${ok?`You physically repaired it and learned ${esc(r.newWord.word)} — ${esc(r.newWord.meaning)}.`:'Your correct Japanese practice was saved.'}</p><button class="primary" data-again>Another device</button><button data-back>Games</button></main>`;t.querySelector('[data-again]')?.addEventListener('click',setup);t.querySelector('[data-back]')?.addEventListener('click',()=>host()?.show('gameHub'));run=null}
+function mat(c:number){return new THREE.MeshStandardMaterial({color:c,roughness:.38,metalness:.16})}function box(g:THREE.Group,s:[number,number,number],p:[number,number,number],c:number){const m=new THREE.Mesh(new THREE.BoxGeometry(...s),mat(c));m.position.set(...p);g.add(m);return m}function cyl(g:THREE.Group,r:number,d:number,p:[number,number,number],c:number){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d,24),mat(c));m.position.set(...p);g.add(m);return m}function tag(g:THREE.Group,text:string,p:[number,number,number]){const c=document.createElement('canvas');c.width=400;c.height=100;const x=c.getContext('2d')!;x.fillStyle='#fff4cf';x.fillRect(0,0,400,100);x.fillStyle='#17233e';x.font='700 42px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(text,200,50);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c)}));s.position.set(...p);s.scale.set(1.45,.36,1);g.add(s)}
+function body(type:DeviceKind,g:THREE.Group){const dark=0x16243a,steel=0x71839a,cream=0xe8d6a0,red=0xc9414c;if(type==='handheld'){box(g,[5.5,.7,3.5],[0,0,0],steel);box(g,[2.4,.14,1.5],[0,.43,-.35],dark);box(g,[.9,.14,.9],[-1.45,.44,.9],dark);[-.35,.35].forEach(x=>{const m=cyl(g,.24,.15,[1.2+x,.45,.9],red);m.rotation.x=Math.PI/2});box(g,[2.2,.18,.55],[0,.43,1.35],cream)}if(type==='cassette'){box(g,[5.4,.75,3.35],[0,0,0],0x48576b);box(g,[3.5,.15,1.7],[0,.45,0],dark);[-.9,.9].forEach(x=>{const m=cyl(g,.56,.18,[x,.54,0],cream);m.rotation.x=Math.PI/2});[0,.65,1.3].forEach(x=>box(g,[.44,.18,.34],[-1.5+x,.46,1.3],steel))}if(type==='radio'){box(g,[5,.85,3.7],[0,0,0],steel);for(let y=0;y<4;y++)for(let x=0;x<5;x++){const m=cyl(g,.06,.1,[-1.25+x*.3,.48,-.35+y*.25],dark);m.rotation.x=Math.PI/2}box(g,[1.45,.14,.5],[.9,.5,-.9],0x99f6e4);const a=cyl(g,.035,3.3,[1.75,.75,0],cream);a.rotation.z=-.45}if(type==='camera'){box(g,[5.5,1.2,3],[0,0,0],0x2d3d50);const l=cyl(g,1.1,.75,[0,.1,-1.65],dark);l.rotation.x=Math.PI/2;const r=cyl(g,.72,.8,[0,.1,-2],cream);r.rotation.x=Math.PI/2;box(g,[1.1,.25,.65],[1.55,.75,-1.1],cream)}if(type==='pager'){box(g,[3.8,.7,5.3],[0,0,0],0x36465a);box(g,[2.5,.14,1.3],[0,.42,-1.1],0xa7f3d0);for(let y=0;y<3;y++)for(let x=0;x<3;x++){const b=cyl(g,.16,.1,[-.55+x*.55,.44,.35+y*.5],cream);b.rotation.x=Math.PI/2}}}
+function scene(el:HTMLElement,r:DeviceRepairRun,w:RepairWord,k:string,done:(ok:boolean)=>void){const s=new THREE.Scene();s.background=new THREE.Color('#07152b');const cam=new THREE.PerspectiveCamera(38,1,.1,100);cam.position.set(0,4.2,8);const ren=new THREE.WebGLRenderer({antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio,2));el.append(ren.domElement);s.add(new THREE.HemisphereLight(0xdbeafe,0x07111f,2.4));const light=new THREE.DirectionalLight(0xffffff,2.2);light.position.set(4,6,5);s.add(light);const g=new THREE.Group();g.rotation.x=-.25;s.add(g);body(r.device,g);const hits:{m:THREE.Object3D;f:()=>void}[]=[],stage=r.solvedFaultIds.length,base=stage*2;const add=(m:THREE.Object3D,f:()=>void)=>hits.push({m,f});if(k==='part'){const cs=shuffled([w,...shuffled(r.knownWords.filter(x=>x.id!==w.id)).slice(0,2)]);cs.forEach((x,i)=>{const m=box(g,[1.15,.28,.72],[-1.5+i*1.5,.72,1.7],i?0x71839a:0x4f6d96);tag(g,x.word,[-1.5+i*1.5,1.15,1.7]);add(m,()=>done(x.id===w.id))})}else if(k==='battery'){const goals=[hash(w.id)%2,hash(w.id+'b')%2];[-1.1,1.1].forEach((x,i)=>{const v=r.interactionValues[base+i]??0,m=cyl(g,.3,1.75,[x,.75,1.65],v?0xf87171:0xfacc15);m.rotation.z=v?Math.PI/2:-Math.PI/2;tag(g,v?'＋':'－',[x,1.35,1.65]);add(m,()=>{r.interactionValues[base+i]=v?0:1;host()?.saveRun(r);if((r.interactionValues[base]??0)===goals[0]&&(r.interactionValues[base+1]??0)===goals[1])done(true);else draw()})})}else{const goal=hash(w.id)%3,v=r.interactionValues[base]??0,d=cyl(g,.75,.34,[0,.72,1.65],0xf4c869);d.rotation.x=Math.PI/2;['一','二','三'].forEach((x,i)=>tag(g,x,[-1.15+i*1.15,1.35,1.65]));add(d,()=>{r.interactionValues[base]=(v+1)%3;host()?.saveRun(r);if(r.interactionValues[base]===goal)done(true);else draw()})}const ray=new THREE.Raycaster(),p=new THREE.Vector2();let drag=false,last=0,moved=false,rot=.25;const size=()=>{const w=Math.max(el.clientWidth,1),h=Math.max(el.clientHeight,380);ren.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();ren.render(s,cam)};const down=(e:PointerEvent)=>{drag=true;moved=false;last=e.clientX;ren.domElement.setPointerCapture(e.pointerId)},move=(e:PointerEvent)=>{if(!drag)return;if(Math.abs(e.clientX-last)>3)moved=true;rot+=(e.clientX-last)*.012;g.rotation.y=rot;last=e.clientX;ren.render(s,cam)},up=(e:PointerEvent)=>{if(!drag)return;drag=false;if(moved)return;const q=ren.domElement.getBoundingClientRect();p.set((e.clientX-q.left)/q.width*2-1,-(e.clientY-q.top)/q.height*2+1);ray.setFromCamera(p,cam);hits.find(h=>ray.intersectObject(h.m,true).length)?.f()};ren.domElement.addEventListener('pointerdown',down);ren.domElement.addEventListener('pointermove',move);ren.domElement.addEventListener('pointerup',up);const ob=new ResizeObserver(size);ob.observe(el);size();clean=()=>{ob.disconnect();ren.dispose();el.replaceChildren()}}
+export function launchDeviceRepair(){host()?.show('deviceRepair');setup()}
