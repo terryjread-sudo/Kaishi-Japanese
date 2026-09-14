@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import "./device-repair.css";
+import "./device-repair-mobile.css";
 import {
   DEVICE_LABELS,
   canRevealNewWord,
@@ -360,7 +361,7 @@ function scene(
   const s = new THREE.Scene();
   s.background = new THREE.Color("#07152b");
   const cam = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-  cam.position.set(0, 4.2, 8);
+  cam.position.set(0, 1.8, 9.2);
   const ren = new THREE.WebGLRenderer({ antialias: true });
   ren.setPixelRatio(Math.min(devicePixelRatio, 2));
   el.append(ren.domElement);
