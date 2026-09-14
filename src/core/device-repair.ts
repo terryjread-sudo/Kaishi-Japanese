@@ -152,7 +152,7 @@ function draw() {
     w = f ? r.knownWords[stage]! : r.newWord,
     k = kind(f),
     final = !f;
-  t.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])}</span><h2>${final ? "Power-on repair" : esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag to inspect · tap a labelled physical part</p></div><section class="device-repair-instructions">${manual(w, f, k, final)}${f?.skill === "listening" || final ? '<button class="audio" data-audio>🔊 Play device audio</button>' : ""}<div class="device-repair-progress">${r.faults.map((x, i) => `<span class="${r.solvedFaultIds.includes(x.id) ? "done" : i === stage ? "current" : ""}">${i + 1}</span>`).join("")}<i></i><span class="${r.revealedNewWord ? "done" : ""}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Inspect the model and use the Japanese service manual.</p></section></section></main>`;
+  t.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])}</span><h2>${final ? "Power-on repair" : esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag in any direction to inspect · tap a labelled physical part</p></div><section class="device-repair-instructions">${manual(w, f, k, final)}${f?.skill === "listening" || final ? '<button class="audio" data-audio>🔊 Play device audio</button>' : ""}<div class="device-repair-progress">${r.faults.map((x, i) => `<span class="${r.solvedFaultIds.includes(x.id) ? "done" : i === stage ? "current" : ""}">${i + 1}</span>`).join("")}<i></i><span class="${r.revealedNewWord ? "done" : ""}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Inspect the model and use the Japanese service manual.</p></section></section></main>`;
   try {
     scene(
       document.querySelector<HTMLElement>("#deviceRepairCanvas")!,
@@ -231,14 +231,44 @@ function finish(ok: boolean) {
   );
   run = null;
 }
-const skinTexture = new THREE.TextureLoader().load('media/device-repair/retro-device-skins-v1.png');
+const skinTexture = new THREE.TextureLoader().load(
+  "media/device-repair/retro-device-skins-v1.png",
+);
 skinTexture.colorSpace = THREE.SRGBColorSpace;
+
+const skinPanels: Record<DeviceKind, number> = {
+  handheld: 0,
+  cassette: 1,
+  radio: 2,
+  camera: 3,
+  pager: 4,
+};
+const skinMaterials = new Map<DeviceKind, THREE.MeshStandardMaterial>();
+
+function skinFor(type: DeviceKind) {
+  const existing = skinMaterials.get(type);
+  if (existing) return existing;
+
+  // The source image is a five-panel atlas. Crop it per device rather than
+  // applying the complete atlas to every small control and casing surface.
+  const texture = skinTexture.clone();
+  texture.repeat.set(1 / 5, 1);
+  texture.offset.set(skinPanels[type] / 5, 0);
+  texture.needsUpdate = true;
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: texture,
+    roughness: 0.48,
+    metalness: 0.08,
+  });
+  skinMaterials.set(type, material);
+  return material;
+}
 
 function mat(c: number) {
   return new THREE.MeshStandardMaterial({
     color: c,
-    map: skinTexture,
-    roughness: 0.38,
+    roughness: 0.42,
     metalness: 0.16,
   });
 }
@@ -247,8 +277,9 @@ function box(
   s: [number, number, number],
   p: [number, number, number],
   c: number,
+  material?: THREE.Material,
 ) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(...s), mat(c));
+  const m = new THREE.Mesh(new THREE.BoxGeometry(...s), material ?? mat(c));
   m.position.set(...p);
   g.add(m);
   return m;
@@ -290,7 +321,7 @@ function body(type: DeviceKind, g: THREE.Group) {
     cream = 0xe8d6a0,
     red = 0xc9414c;
   if (type === "handheld") {
-    box(g, [5.5, 0.7, 3.5], [0, 0, 0], steel);
+    box(g, [5.5, 0.7, 3.5], [0, 0, 0], steel, skinFor(type));
     box(g, [2.4, 0.14, 1.5], [0, 0.43, -0.35], dark);
     box(g, [0.9, 0.14, 0.9], [-1.45, 0.44, 0.9], dark);
     [-0.35, 0.35].forEach((x) => {
@@ -300,7 +331,7 @@ function body(type: DeviceKind, g: THREE.Group) {
     box(g, [2.2, 0.18, 0.55], [0, 0.43, 1.35], cream);
   }
   if (type === "cassette") {
-    box(g, [5.4, 0.75, 3.35], [0, 0, 0], 0x48576b);
+    box(g, [5.4, 0.75, 3.35], [0, 0, 0], 0x48576b, skinFor(type));
     box(g, [3.5, 0.15, 1.7], [0, 0.45, 0], dark);
     [-0.9, 0.9].forEach((x) => {
       const m = cyl(g, 0.56, 0.18, [x, 0.54, 0], cream);
@@ -311,7 +342,7 @@ function body(type: DeviceKind, g: THREE.Group) {
     );
   }
   if (type === "radio") {
-    box(g, [5, 0.85, 3.7], [0, 0, 0], steel);
+    box(g, [5, 0.85, 3.7], [0, 0, 0], steel, skinFor(type));
     for (let y = 0; y < 4; y++)
       for (let x = 0; x < 5; x++) {
         const m = cyl(
@@ -328,7 +359,7 @@ function body(type: DeviceKind, g: THREE.Group) {
     a.rotation.z = -0.45;
   }
   if (type === "camera") {
-    box(g, [5.5, 1.2, 3], [0, 0, 0], 0x2d3d50);
+    box(g, [5.5, 1.2, 3], [0, 0, 0], 0x2d3d50, skinFor(type));
     const l = cyl(g, 1.1, 0.75, [0, 0.1, -1.65], dark);
     l.rotation.x = Math.PI / 2;
     const r = cyl(g, 0.72, 0.8, [0, 0.1, -2], cream);
@@ -336,7 +367,7 @@ function body(type: DeviceKind, g: THREE.Group) {
     box(g, [1.1, 0.25, 0.65], [1.55, 0.75, -1.1], cream);
   }
   if (type === "pager") {
-    box(g, [3.8, 0.7, 5.3], [0, 0, 0], 0x36465a);
+    box(g, [3.8, 0.7, 5.3], [0, 0, 0], 0x36465a, skinFor(type));
     box(g, [2.5, 0.14, 1.3], [0, 0.42, -1.1], 0xa7f3d0);
     for (let y = 0; y < 3; y++)
       for (let x = 0; x < 3; x++) {
@@ -428,9 +459,11 @@ function scene(
   const ray = new THREE.Raycaster(),
     p = new THREE.Vector2();
   let drag = false,
-    last = 0,
+    lastX = 0,
+    lastY = 0,
     moved = false,
-    rot = 0.25;
+    rot = 0.25,
+    tilt = -0.25;
   const size = () => {
     const w = Math.max(el.clientWidth, 1),
       h = Math.max(el.clientHeight, 380);
@@ -442,15 +475,21 @@ function scene(
   const down = (e: PointerEvent) => {
       drag = true;
       moved = false;
-      last = e.clientX;
+      lastX = e.clientX;
+      lastY = e.clientY;
       ren.domElement.setPointerCapture(e.pointerId);
     },
     move = (e: PointerEvent) => {
       if (!drag) return;
-      if (Math.abs(e.clientX - last) > 3) moved = true;
-      rot += (e.clientX - last) * 0.012;
+      const deltaX = e.clientX - lastX,
+        deltaY = e.clientY - lastY;
+      if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) moved = true;
+      rot += deltaX * 0.012;
+      tilt = THREE.MathUtils.clamp(tilt + deltaY * 0.009, -0.85, 0.5);
       g.rotation.y = rot;
-      last = e.clientX;
+      g.rotation.x = tilt;
+      lastX = e.clientX;
+      lastY = e.clientY;
       ren.render(s, cam);
     },
     up = (e: PointerEvent) => {
