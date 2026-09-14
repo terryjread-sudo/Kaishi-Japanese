@@ -231,38 +231,50 @@ function finish(ok: boolean) {
   );
   run = null;
 }
-const skinTexture = new THREE.TextureLoader().load(
-  "media/device-repair/retro-device-skins-v1.png",
-);
-skinTexture.colorSpace = THREE.SRGBColorSpace;
+const panelTextures = new Map<DeviceKind, THREE.CanvasTexture>();
 
-const skinPanels: Record<DeviceKind, number> = {
-  handheld: 0,
-  cassette: 1,
-  radio: 2,
-  camera: 3,
-  pager: 4,
-};
-const skinMaterials = new Map<DeviceKind, THREE.MeshStandardMaterial>();
-
-function skinFor(type: DeviceKind) {
-  const existing = skinMaterials.get(type);
+function panelTexture(type: DeviceKind) {
+  const existing = panelTextures.get(type);
   if (existing) return existing;
-
-  // The source image is a five-panel atlas. Crop it per device rather than
-  // applying the complete atlas to every small control and casing surface.
-  const texture = skinTexture.clone();
-  texture.repeat.set(1 / 5, 1);
-  texture.offset.set(skinPanels[type] / 5, 0);
-  texture.needsUpdate = true;
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    map: texture,
-    roughness: 0.48,
-    metalness: 0.08,
-  });
-  skinMaterials.set(type, material);
-  return material;
+  const canvas = document.createElement("canvas");
+  canvas.width = 900;
+  canvas.height = 560;
+  const c = canvas.getContext("2d")!;
+  const colours: Record<DeviceKind, [string, string]> = {
+    handheld: ["#304b70", "#a5c7ea"],
+    cassette: ["#5b4555", "#edc98d"],
+    radio: ["#3f6c67", "#d9e6c3"],
+    camera: ["#4b3a35", "#f0c77a"],
+    pager: ["#3e4964", "#8ce0ce"],
+  };
+  const [base, accent] = colours[type];
+  c.fillStyle = base;
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  c.fillStyle = "rgba(255,255,255,.08)";
+  for (let x = 0; x < canvas.width; x += 46) c.fillRect(x, 0, 2, canvas.height);
+  for (let y = 0; y < canvas.height; y += 46) c.fillRect(0, y, canvas.width, 2);
+  c.strokeStyle = accent;
+  c.globalAlpha = 0.65;
+  c.lineWidth = 7;
+  c.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+  c.globalAlpha = 1;
+  c.fillStyle = accent;
+  c.font = "700 44px sans-serif";
+  c.fillText("KAISHI", 58, 90);
+  c.font = "600 23px sans-serif";
+  c.fillText(`${DEVICE_LABELS[type].toUpperCase()} / SERVICE PANEL`, 58, 130);
+  c.globalAlpha = 0.35;
+  c.font = "700 150px sans-serif";
+  c.fillText(
+    type === "camera" ? "写" : type === "radio" ? "音" : "機",
+    650,
+    410,
+  );
+  c.globalAlpha = 1;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  panelTextures.set(type, texture);
+  return texture;
 }
 
 function mat(c: number) {
@@ -281,6 +293,25 @@ function box(
 ) {
   const m = new THREE.Mesh(new THREE.BoxGeometry(...s), material ?? mat(c));
   m.position.set(...p);
+  g.add(m);
+  return m;
+}
+function face(
+  g: THREE.Group,
+  type: DeviceKind,
+  width: number,
+  height: number,
+  z: number,
+) {
+  const m = new THREE.Mesh(
+    new THREE.PlaneGeometry(width, height),
+    new THREE.MeshStandardMaterial({
+      map: panelTexture(type),
+      roughness: 0.55,
+      metalness: 0.08,
+    }),
+  );
+  m.position.z = z;
   g.add(m);
   return m;
 }
@@ -321,65 +352,87 @@ function body(type: DeviceKind, g: THREE.Group) {
     cream = 0xe8d6a0,
     red = 0xc9414c;
   if (type === "handheld") {
-    box(g, [5.5, 0.7, 3.5], [0, 0, 0], steel, skinFor(type));
-    box(g, [2.4, 0.14, 1.5], [0, 0.43, -0.35], dark);
-    box(g, [0.9, 0.14, 0.9], [-1.45, 0.44, 0.9], dark);
+    box(g, [5.5, 3.5, 0.7], [0, 0, 0], steel);
+    face(g, type, 5.15, 3.15, 0.37);
+    box(g, [2.45, 1.45, 0.15], [0.65, 0.3, 0.48], dark);
+    box(g, [0.9, 0.9, 0.14], [-1.55, 0.25, 0.49], dark);
     [-0.35, 0.35].forEach((x) => {
-      const m = cyl(g, 0.24, 0.15, [1.2 + x, 0.45, 0.9], red);
+      const m = cyl(g, 0.24, 0.15, [1.4 + x, -0.65, 0.5], red);
       m.rotation.x = Math.PI / 2;
     });
-    box(g, [2.2, 0.18, 0.55], [0, 0.43, 1.35], cream);
+    box(g, [2.2, 0.42, 0.55], [0, 1.92, 0], cream);
+    [-2.2, 2.2].forEach((x) => box(g, [0.6, 0.22, 0.3], [x, 1.58, 0], dark));
   }
   if (type === "cassette") {
-    box(g, [5.4, 0.75, 3.35], [0, 0, 0], 0x48576b, skinFor(type));
-    box(g, [3.5, 0.15, 1.7], [0, 0.45, 0], dark);
+    box(g, [5.4, 3.35, 0.7], [0, 0, 0], 0x48576b);
+    face(g, type, 5.05, 3, 0.37);
+    box(g, [3.5, 1.7, 0.14], [0, 0, 0.48], dark);
     [-0.9, 0.9].forEach((x) => {
-      const m = cyl(g, 0.56, 0.18, [x, 0.54, 0], cream);
+      const m = cyl(g, 0.56, 0.18, [x, 0, 0.5], cream);
       m.rotation.x = Math.PI / 2;
     });
     [0, 0.65, 1.3].forEach((x) =>
-      box(g, [0.44, 0.18, 0.34], [-1.5 + x, 0.46, 1.3], steel),
+      box(g, [0.44, 0.34, 0.18], [-1.5 + x, 1.75, 0], steel),
+    );
+    [-2.2, 2.2].forEach((x) =>
+      [-1.25, 1.25].forEach((y) => {
+        const screw = cyl(g, 0.1, 0.08, [x, y, 0.48], cream);
+        screw.rotation.x = Math.PI / 2;
+      }),
     );
   }
   if (type === "radio") {
-    box(g, [5, 0.85, 3.7], [0, 0, 0], steel, skinFor(type));
+    box(g, [5, 3.7, 0.85], [0, 0, 0], steel);
+    face(g, type, 4.65, 3.35, 0.45);
     for (let y = 0; y < 4; y++)
       for (let x = 0; x < 5; x++) {
         const m = cyl(
           g,
           0.06,
           0.1,
-          [-1.25 + x * 0.3, 0.48, -0.35 + y * 0.25],
+          [-1.35 + x * 0.32, -0.7 + y * 0.42, 0.51],
           dark,
         );
         m.rotation.x = Math.PI / 2;
       }
-    box(g, [1.45, 0.14, 0.5], [0.9, 0.5, -0.9], 0x99f6e4);
-    const a = cyl(g, 0.035, 3.3, [1.75, 0.75, 0], cream);
+    box(g, [1.65, 0.55, 0.13], [1, 0.75, 0.52], 0x99f6e4);
+    const a = cyl(g, 0.035, 3.3, [1.85, 2.15, 0], cream);
     a.rotation.z = -0.45;
+    [0.3, 0.85, 1.4].forEach((x) => {
+      const knob = cyl(g, 0.17, 0.14, [x, -1.25, 0.53], cream);
+      knob.rotation.x = Math.PI / 2;
+    });
   }
   if (type === "camera") {
-    box(g, [5.5, 1.2, 3], [0, 0, 0], 0x2d3d50, skinFor(type));
-    const l = cyl(g, 1.1, 0.75, [0, 0.1, -1.65], dark);
+    box(g, [5.5, 3, 1.2], [0, 0, 0], 0x2d3d50);
+    face(g, type, 5.1, 2.6, 0.62);
+    const l = cyl(g, 1.12, 0.75, [0, -0.1, 0.92], dark);
     l.rotation.x = Math.PI / 2;
-    const r = cyl(g, 0.72, 0.8, [0, 0.1, -2], cream);
+    const r = cyl(g, 0.72, 0.8, [0, -0.1, 1.3], cream);
     r.rotation.x = Math.PI / 2;
-    box(g, [1.1, 0.25, 0.65], [1.55, 0.75, -1.1], cream);
+    const glass = cyl(g, 0.52, 0.08, [0, -0.1, 1.72], 0x172f45);
+    glass.rotation.x = Math.PI / 2;
+    box(g, [0.9, 0.52, 0.14], [-1.7, 0.65, 0.7], cream);
+    box(g, [1.1, 0.42, 0.65], [1.55, 1.72, 0], cream);
+    const shutter = cyl(g, 0.18, 0.13, [1.45, 1.55, 0.45], red);
+    shutter.rotation.x = Math.PI / 2;
   }
   if (type === "pager") {
-    box(g, [3.8, 0.7, 5.3], [0, 0, 0], 0x36465a, skinFor(type));
-    box(g, [2.5, 0.14, 1.3], [0, 0.42, -1.1], 0xa7f3d0);
+    box(g, [3.8, 5.3, 0.7], [0, 0, 0], 0x36465a);
+    face(g, type, 3.45, 4.95, 0.37);
+    box(g, [2.5, 1.3, 0.13], [0, 1.1, 0.48], 0xa7f3d0);
     for (let y = 0; y < 3; y++)
       for (let x = 0; x < 3; x++) {
         const b = cyl(
           g,
           0.16,
           0.1,
-          [-0.55 + x * 0.55, 0.44, 0.35 + y * 0.5],
+          [-0.55 + x * 0.55, -0.45 + y * 0.55, 0.5],
           cream,
         );
         b.rotation.x = Math.PI / 2;
       }
+    box(g, [1.4, 0.3, 0.35], [0, 2.85, 0], dark);
   }
 }
 function scene(
@@ -417,19 +470,19 @@ function scene(
       const m = box(
         g,
         [1.15, 0.28, 0.72],
-        [-1.5 + i * 1.5, 0.72, 1.7],
+        [-1.5 + i * 1.5, -1.15, 0.82],
         i ? 0x71839a : 0x4f6d96,
       );
-      tag(g, x.word, [-1.5 + i * 1.5, 1.15, 1.7]);
+      tag(g, x.word, [-1.5 + i * 1.5, -0.95, 1.2]);
       add(m, () => done(x.id === w.id));
     });
   } else if (k === "battery") {
     const goals = [hash(w.id) % 2, hash(w.id + "b") % 2];
     [-1.1, 1.1].forEach((x, i) => {
       const v = r.interactionValues[base + i] ?? 0,
-        m = cyl(g, 0.3, 1.75, [x, 0.75, 1.65], v ? 0xf87171 : 0xfacc15);
+        m = cyl(g, 0.3, 1.75, [x, -1.1, 0.85], v ? 0xf87171 : 0xfacc15);
       m.rotation.z = v ? Math.PI / 2 : -Math.PI / 2;
-      tag(g, v ? "＋" : "－", [x, 1.35, 1.65]);
+      tag(g, v ? "＋" : "－", [x, -0.75, 1.2]);
       add(m, () => {
         r.interactionValues[base + i] = v ? 0 : 1;
         host()?.saveRun(r);
@@ -444,10 +497,10 @@ function scene(
   } else {
     const goal = hash(w.id) % 3,
       v = r.interactionValues[base] ?? 0,
-      d = cyl(g, 0.75, 0.34, [0, 0.72, 1.65], 0xf4c869);
+      d = cyl(g, 0.75, 0.34, [0, -1.05, 0.86], 0xf4c869);
     d.rotation.x = Math.PI / 2;
     ["一", "二", "三"].forEach((x, i) =>
-      tag(g, x, [-1.15 + i * 1.15, 1.35, 1.65]),
+      tag(g, x, [-1.15 + i * 1.15, -0.45, 1.2]),
     );
     add(d, () => {
       r.interactionValues[base] = (v + 1) % 3;
