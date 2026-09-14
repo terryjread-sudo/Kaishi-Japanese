@@ -81,6 +81,11 @@ installSeasonalHero();
 installKotobaCheckpoint();
 offlineUI.install();
 
+// The WebGL repair bench is intentionally loaded only when the learner opens it.
+document.querySelectorAll<HTMLElement>('[data-device-repair-launch]').forEach((button) => button.addEventListener('click', () => {
+  void import('./core/device-repair').then(({ launchDeviceRepair }) => launchDeviceRepair());
+}));
+
 // app.js starts before this module. Refresh its derived Journey controls once
 // the curriculum policy is available, rather than leaving a stale first render.
 window.setTimeout(() => {

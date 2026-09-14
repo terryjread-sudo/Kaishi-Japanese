@@ -68,6 +68,15 @@ export function mergeSyncPayloads(local: unknown, remote: unknown, now = new Dat
   meta.conversationProgress = mergeRecordMap(localMeta.conversationProgress, remoteMeta.conversationProgress, localUpdated, remoteUpdated);
   meta.theatreProgress = mergeRecordMap(localMeta.theatreProgress, remoteMeta.theatreProgress, localUpdated, remoteUpdated);
   meta.topicProgress = mergeRecordMap(localMeta.topicProgress, remoteMeta.topicProgress, localUpdated, remoteUpdated);
+  const localRepair = asRecord(localMeta.deviceRepairProgress), remoteRepair = asRecord(remoteMeta.deviceRepairProgress);
+  if (Object.keys(localRepair).length || Object.keys(remoteRepair).length) {
+    const newestRepair = newestRecord(localRepair, remoteRepair, localUpdated, remoteUpdated);
+    meta.deviceRepairProgress = {
+      ...newestRepair,
+      schemaVersion: 1,
+      devices: mergeRecordMap(localRepair.devices, remoteRepair.devices, localUpdated, remoteUpdated),
+    };
+  }
   meta.rhythmHistory = rhythmHistory;
   meta.streak = rhythmDays(rhythmHistory, now);
   meta.sessionHistory = mergeHistory(localMeta.sessionHistory, remoteMeta.sessionHistory);

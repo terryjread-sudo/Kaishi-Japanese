@@ -48,7 +48,7 @@
 <div class="journey-home-main"><img id="journeyHomeAvatar" src="media/profiles/boy-base.webp" alt="Your journey character"><div><span class="eyebrow">Current topic</span><strong id="currentTopicTitle">Core Japanese</strong><small id="currentTopicStatus">Preparing topic progress…</small></div></div>
 <div class="journey-home-progress"><span id="journeyHomeProgress">Preparing today’s route…</span><i><b id="journeyHomeFill"></b></i></div>
 <div class="journey-home-actions"><button id="continueJourney" class="primary adventure-continue">Continue Adventure <small lang="ja">冒険を続ける</small></button><button id="openReviews">🧠 Today’s Reviews <b id="homeReviewCount">0</b></button></div>
-<div class="adventure-home-links"><button id="openCollection">📚 <span>Collection</span></button><button id="openNotebook">📓 <span>Notebook</span></button></div>
+<div class="adventure-home-links"><button id="openCollection">📚 <span>Collection</span></button><button id="openNotebook">📓 <span>Notebook</span></button><button type="button" data-device-repair-launch>🔧 <span>Device Repair</span></button></div>
 <div class="journey-utility-actions"><button id="journeyCommunity">🏆 Community</button><button id="journeySkills">📊 Skills</button><button id="journeyInvite">💌 Invite</button></div>
 </section>
 </div>
@@ -169,11 +169,14 @@
 <button id="karutaMode" class="karuta-mode">🎴 Karuta · Audio Reflex Match</button>
 <button id="kanjiBuilderMode" class="kanji-builder-mode">🧩 Kanji Builder · Component Match</button>
 <button id="decayBattleMode" class="battle-mode">⚔️ SRS Decay Battle</button>
+<button type="button" data-device-repair-launch class="device-repair-mode">🔧 Device Repair · 3D Japanese puzzles</button>
 </div>
 <button id="streakRescueMode" class="rescue-mode" hidden>⚡ One-chance streak rescue</button>
 <p id="streakRescueMessage" class="rescue-message" hidden></p>
 <label>Difficulty<select id="pictureDifficulty"><option value="2">Easy — 2 choices</option><option value="4">Normal — 4 choices</option><option value="6">Expert — 6 choices</option></select></label>
 </article></section>
+
+<section id="deviceRepair" class="screen" aria-hidden="true"><div id="deviceRepairRoot"></div></section>
 
 <section id="listenBattle" class="screen" aria-hidden="true">
   <div class="study-top"><button id="kbBack">← Journey</button><h2>Kotoba Colosseum · 言葉コロシアム</h2></div>

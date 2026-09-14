@@ -269,7 +269,7 @@ function resetScreenScroll(id,focusTarget=''){
  if(id!=='study')return;
  requestAnimationFrame(()=>{reset();requestAnimationFrame(()=>{reset();const targetSelector=focusTarget||(id==='study'?'#exitBtn':'');const target=targetSelector?$(targetSelector):null;if(target?.focus)target.focus({preventScroll:true})})});
 }
-function show(id,options={}){document.body.classList.add('screen-transitioning');screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-japan-ready-active',id==='japanReady'||id==='japanReadyCheatSheet');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');document.body.classList.toggle('experimental-immersive-active',['study','games','kana','manga','conversation','theatre','grammar','kanjiBuilder','kotobaEcho','listenBattle','senseiDesk'].includes(id));$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(()=>{document.body.classList.remove('screen-transitioning');syncExperimentalHeaderClearance()});}
+function show(id,options={}){document.body.classList.add('screen-transitioning');screens.forEach(s=>s.classList.toggle('active',s.id===id));resetScreenScroll(id,options.focusTarget||'');document.body.classList.add('experimental-journey-enabled');document.body.classList.toggle('experimental-settings-active',id==='settings');document.body.classList.toggle('experimental-japan-ready-active',id==='japanReady'||id==='japanReadyCheatSheet');document.body.classList.toggle('experimental-journey-screen-active',id==='home'||id==='journey');document.body.classList.toggle('experimental-immersive-active',['study','games','kana','manga','conversation','theatre','grammar','kanjiBuilder','kotobaEcho','listenBattle','senseiDesk','deviceRepair'].includes(id));$('#appHeader')?.classList.add('experimental-journey-enabled');updateExperimentalNavVisibility();syncExperimentalHeaderAction(id);requestAnimationFrame(()=>{document.body.classList.remove('screen-transitioning');syncExperimentalHeaderClearance()});}
 let experimentalPanelOrigin='journey';
 let experimentalPanelHistoryActive=false;
 let experimentalNotebookHistoryActive=false;
@@ -523,10 +523,11 @@ function setAdminTestActivityReady(ready){
 async function launchAdminTestActivity(id){
  const button=$('#adminTestActivityGo');
  if(!appReady){toast('Activities are still loading. Please try again in a moment.');return false}
- if(id!=='colosseum'&&id!=='kotobaEcho'&&id!=='senseiDesk'&&!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
+ if(id!=='colosseum'&&id!=='kotobaEcho'&&id!=='senseiDesk'&&id!=='deviceRepair'&&!PATH_MILESTONES.some(item=>item.id===id)){toast('Choose a valid immersive activity');return false}
  if(button){button.disabled=true;button.textContent='Launching...'}
  try{
   if(id==='senseiDesk'){show('senseiDesk');document.body.classList.add('experimental-immersive-active');window.dispatchEvent(new Event('kaishi-sensei-desk-host-ready'));return true}
+  if(id==='deviceRepair'){document.querySelector('[data-device-repair-launch]')?.click();return true}
   if(id==='kotobaEcho'){startKotobaEcho();return true}
   if(id==='colosseum'){
    const launch=$('#kotobaColosseumMode');
@@ -2405,7 +2406,15 @@ const kanjiStrokeObserver=new MutationObserver(()=>attachKanjiStrokePlayer());ka
 document.addEventListener('click',event=>{const button=event.target.closest('[data-kanji-strokes]');if(!button)return;const character=button.dataset.kanjiStrokes,asset=strokeAsset(character),tools=button.closest('.kanji-stroke-tools');if(!asset||!tools)return;tools.innerHTML=`<button type="button" data-kanji-strokes="${esc(character)}">↻ Replay stroke order</button><small>Animated strokes from KanjiVG</small><object class="kanji-stroke-animation" type="image/svg+xml" data="${asset}" aria-label="Animated stroke order for ${esc(character)}"></object>`});
 bindExperimentalBottomNav();
 bindExperimentalHeader();
-window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),kotobaCheckpoint:{
+window.KaishiActivityPolicy={...(window.KaishiActivityPolicy||{}),deviceRepair:{
+ show:(id)=>show(id),
+ words:()=>vocab.map(word=>({...word,introduced:Boolean(wordIntroduced(word)),due:Number(progress[word.id]?.due||0)<=Date.now()})),
+ grade:(wordId,skill,correct)=>{const word=vocab.find(item=>item.id===wordId);if(!word)return;startedAt=Date.now();hintUsed=false;grade(word,skill,correct?3:1,Boolean(correct),false);},
+ introduce:(wordId)=>{const word=vocab.find(item=>item.id===wordId);if(word){const state=pFor(word.id);state.stage=Math.max(1,Number(state.stage||0));state.due=Date.now();save();}},
+ saveRun:(run)=>{meta.deviceRepairProgress=meta.deviceRepairProgress||{schemaVersion:1,devices:{}};meta.deviceRepairProgress.activeRun=run;save();},
+ loadRun:()=>meta.deviceRepairProgress?.activeRun||null,
+ finishRun:(run,success,score)=>{meta.deviceRepairProgress=meta.deviceRepairProgress||{schemaVersion:1,devices:{}};const devices=meta.deviceRepairProgress.devices||(meta.deviceRepairProgress.devices={}),state=devices[run.device]||(devices[run.device]={repairs:0,bestScore:0});if(success){state.repairs=Number(state.repairs||0)+1;state.bestScore=Math.max(Number(state.bestScore||0),Number(score||0));state.updatedAt=Date.now()}delete meta.deviceRepairProgress.activeRun;save();updateHome();},
+},kotobaCheckpoint:{
  show:(id)=>show(id),
  currentLessonWords:()=>chapterWords(Number.isInteger(activeVocabularyChapter)?activeVocabularyChapter:0),
  introducedVocabulary:()=>vocab.filter(wordIntroduced).map(word=>({...word,sentenceIntroduced:Number(progress[word.id]?.skills?.sentence?.attempts||0)>0})),
