@@ -25,6 +25,7 @@ import { installJapanReady } from './core/japan-ready';
 import { createOfflineUI } from './core/offline-ui';
 import { installSeasonalHero } from './core/seasonal-hero';
 import { installKotobaCheckpoint } from './core/kotoba-checkpoint';
+import { installGameHub } from './core/game-hub';
 
 defineElement();
 
@@ -79,12 +80,14 @@ window.dispatchEvent(new Event('kaishi-cloud-sync-ready'));
 installJapanReady();
 installSeasonalHero();
 installKotobaCheckpoint();
+installGameHub();
 offlineUI.install();
 
 // The WebGL repair bench is intentionally loaded only when the learner opens it.
-document.querySelectorAll<HTMLElement>('[data-device-repair-launch]').forEach((button) => button.addEventListener('click', () => {
+document.addEventListener('click', (event) => {
+  if (!(event.target instanceof Element) || !event.target.closest('[data-device-repair-launch]')) return;
   void import('./core/device-repair').then(({ launchDeviceRepair }) => launchDeviceRepair());
-}));
+});
 
 // app.js starts before this module. Refresh its derived Journey controls once
 // the curriculum policy is available, rather than leaving a stale first render.
