@@ -429,10 +429,25 @@ function cyl(
   p: [number, number, number],
   c: number,
 ) {
-  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, d, 24), mat(c));
+  // 40 sides reads as a smooth manufactured component on a phone while
+  // keeping even the most detailed repair bench comfortably lightweight.
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, d, 40), mat(c));
   m.position.set(...p);
   g.add(m);
   return m;
+}
+function screw(g: THREE.Group, p: [number, number, number], c = 0xc8d0dc) {
+  const head = cyl(g, 0.1, 0.09, p, c);
+  head.rotation.x = Math.PI / 2;
+  const slot = box(g, [0.12, 0.018, 0.018], [p[0], p[1], p[2] + 0.06], 0x223247);
+  return { head, slot };
+}
+function grill(g: THREE.Group, origin: [number, number, number], columns: number, rows: number, gap = 0.15) {
+  for (let row = 0; row < rows; row++)
+    for (let column = 0; column < columns; column++) {
+      const hole = cyl(g, 0.045, 0.06, [origin[0] + column * gap, origin[1] + row * gap, origin[2]], 0x0c1525);
+      hole.rotation.x = Math.PI / 2;
+    }
 }
 function tag(g: THREE.Group, text: string, p: [number, number, number]) {
   const c = document.createElement("canvas");
@@ -466,15 +481,19 @@ function body(type: DeviceKind, g: THREE.Group) {
     red = 0xc9414c;
   if (type === "handheld") {
     box(g, [5.5, 3.5, 0.7], [0, 0, 0], steel);
+    box(g, [5.28, 3.28, 0.12], [0, 0, 0.39], 0x293b55);
     face(g, type, 5.15, 3.15, 0.37);
     box(g, [2.45, 1.45, 0.15], [0.65, 0.3, 0.48], dark);
-    box(g, [0.9, 0.9, 0.14], [-1.55, 0.25, 0.49], dark);
+    box(g, [0.9, 0.22, 0.14], [-1.55, 0.25, 0.53], dark);
+    box(g, [0.22, 0.9, 0.14], [-1.55, 0.25, 0.55], dark);
     [-0.35, 0.35].forEach((x) => {
       const m = cyl(g, 0.24, 0.15, [1.4 + x, -0.65, 0.5], red);
       m.rotation.x = Math.PI / 2;
     });
     box(g, [2.2, 0.42, 0.55], [0, 1.92, 0], cream);
     [-2.2, 2.2].forEach((x) => box(g, [0.6, 0.22, 0.3], [x, 1.58, 0], dark));
+    grill(g, [-2.05, -1.15, 0.5], 5, 2, 0.14);
+    [-2.45, 2.45].forEach((x) => [-1.45, 1.45].forEach((y) => screw(g, [x, y, 0.48])));
   }
   if (type === "cassette") {
     box(g, [5.4, 3.35, 0.7], [0, 0, 0], 0x48576b);
@@ -489,51 +508,46 @@ function body(type: DeviceKind, g: THREE.Group) {
       m.name = "cassette-reel";
       const hub = cyl(g, 0.17, 0.2, [x, -0.08, 0.77], 0x48576b);
       hub.rotation.x = Math.PI / 2;
+      for (let spoke = 0; spoke < 8; spoke++) {
+        const spokePart = box(g, [0.06, 0.36, 0.04], [x, -0.08, 0.79], 0xb8a66f);
+        spokePart.rotation.z = (Math.PI / 4) * spoke;
+      }
     });
     [0, 0.65, 1.3, 1.95].forEach((x) =>
       box(g, [0.44, 0.34, 0.18], [-1.72 + x, 1.75, 0], steel),
     );
-    for (let row = 0; row < 2; row++)
-      for (let column = 0; column < 8; column++) {
-        const grill = cyl(g, 0.045, 0.08, [1.85 + column * 0.11, -1.08 + row * 0.14, 0.54], cream);
-        grill.rotation.x = Math.PI / 2;
-      }
+    grill(g, [1.85, -1.08, 0.54], 8, 2, 0.11);
     const dial = cyl(g, 0.34, 0.2, [-2.05, -1.07, 0.62], cream);
     dial.rotation.x = Math.PI / 2;
     box(g, [0.05, 0.28, 0.06], [-2.05, -0.96, 0.76], red);
     [-2.2, 2.2].forEach((x) =>
       [-1.25, 1.25].forEach((y) => {
-        const screw = cyl(g, 0.1, 0.08, [x, y, 0.48], cream);
-        screw.rotation.x = Math.PI / 2;
+        screw(g, [x, y, 0.48], cream);
       }),
     );
   }
   if (type === "radio") {
     box(g, [5, 3.7, 0.85], [0, 0, 0], steel);
+    box(g, [4.82, 3.52, 0.11], [0, 0, 0.46], 0x294958);
     face(g, type, 4.65, 3.35, 0.45);
-    for (let y = 0; y < 4; y++)
-      for (let x = 0; x < 5; x++) {
-        const m = cyl(
-          g,
-          0.06,
-          0.1,
-          [-1.35 + x * 0.32, -0.7 + y * 0.42, 0.51],
-          dark,
-        );
-        m.rotation.x = Math.PI / 2;
-      }
+    grill(g, [-1.5, -0.8, 0.52], 6, 5, 0.27);
     box(g, [1.65, 0.55, 0.13], [1, 0.75, 0.52], 0x99f6e4);
+    box(g, [1.92, 0.12, 0.06], [0.88, 0.93, 0.61], 0x182d44);
+    for (let tick = 0; tick < 9; tick++) box(g, [0.025, 0.12, 0.035], [0.1 + tick * 0.2, 0.93, 0.65], cream);
     const a = cyl(g, 0.035, 3.3, [1.85, 2.15, 0], cream);
     a.rotation.z = -0.45;
     [0.3, 0.85, 1.4].forEach((x) => {
       const knob = cyl(g, 0.17, 0.14, [x, -1.25, 0.53], cream);
       knob.rotation.x = Math.PI / 2;
+      box(g, [0.03, 0.13, 0.03], [x, -1.17, 0.64], red);
     });
+    [-2.2, 2.2].forEach((x) => [-1.5, 1.5].forEach((y) => screw(g, [x, y, 0.52])));
   }
   if (type === "camera") {
     box(g, [5.5, 3, 1.2], [0, 0, 0], 0x2d3d50);
+    box(g, [5.22, 2.72, 0.12], [0, 0, 0.64], 0x17243a);
     face(g, type, 5.1, 2.6, 0.62);
-    const l = cyl(g, 1.12, 0.75, [0, -0.1, 0.92], dark);
+    const l = cyl(g, 1.18, 0.78, [0, -0.1, 0.92], dark);
     l.rotation.x = Math.PI / 2;
     const r = cyl(g, 0.72, 0.8, [0, -0.1, 1.3], cream);
     r.rotation.x = Math.PI / 2;
@@ -543,9 +557,19 @@ function body(type: DeviceKind, g: THREE.Group) {
     box(g, [1.1, 0.42, 0.65], [1.55, 1.72, 0], cream);
     const shutter = cyl(g, 0.18, 0.13, [1.45, 1.55, 0.45], red);
     shutter.rotation.x = Math.PI / 2;
+    const focusRing = cyl(g, 0.92, 0.16, [0, -0.1, 1.45], 0x8393a8);
+    focusRing.rotation.x = Math.PI / 2;
+    for (let groove = 0; groove < 12; groove++) {
+      const ridge = box(g, [0.06, 0.18, 0.05], [0, -0.1, 1.57], 0xd5b67a);
+      ridge.rotation.z = (Math.PI * 2 * groove) / 12;
+    }
+    box(g, [1.72, 0.08, 0.05], [-1.25, -1.05, 0.7], 0x0f1a2c);
+    screw(g, [-2.3, 1.15, 0.72]);
+    screw(g, [2.3, -1.15, 0.72]);
   }
   if (type === "pager") {
     box(g, [3.8, 5.3, 0.7], [0, 0, 0], 0x36465a);
+    box(g, [3.58, 5.08, 0.1], [0, 0, 0.39], 0x202f47);
     face(g, type, 3.45, 4.95, 0.37);
     box(g, [2.5, 1.3, 0.13], [0, 1.1, 0.48], 0xa7f3d0);
     for (let y = 0; y < 3; y++)
@@ -560,6 +584,9 @@ function body(type: DeviceKind, g: THREE.Group) {
         b.rotation.x = Math.PI / 2;
       }
     box(g, [1.4, 0.3, 0.35], [0, 2.85, 0], dark);
+    grill(g, [-0.9, 2.15, 0.5], 7, 1, 0.22);
+    box(g, [0.32, 0.42, 0.11], [1.35, -1.75, 0.5], cream);
+    [-1.55, 1.55].forEach((x) => [-2.3, 2.3].forEach((y) => screw(g, [x, y, 0.48])));
   }
 }
 function scene(
