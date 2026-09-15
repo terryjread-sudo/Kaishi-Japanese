@@ -1,6 +1,7 @@
 export type RepairTrack = "review" | "japan-ready";
 export type DeviceKind = "handheld" | "cassette" | "radio" | "camera" | "pager";
 export type RepairSkill = "meaning" | "reading" | "listening" | "sentence";
+export type RepairInteraction = "drag" | "switch" | "dial" | "press" | "sequence" | "listen";
 
 export interface RepairWord {
   id: string;
@@ -19,8 +20,20 @@ export interface RepairFault {
   output: string;
 }
 
+export interface RepairModule {
+  id: string;
+  title: string;
+  component: string;
+  interaction: RepairInteraction;
+  skill: RepairSkill;
+  prerequisiteIds: string[];
+  wordIndex: number;
+  instruction: string;
+  output: string;
+}
+
 export interface DeviceRepairRun {
-  schemaVersion: 1;
+  schemaVersion: 2;
   id: string;
   seed: number;
   track: RepairTrack;
@@ -38,6 +51,59 @@ export interface DeviceRepairRun {
   diagnosticStep: number;
   /** Changeable repair labels let a real component practise any introduced word. */
   serviceTags: ServiceTag[];
+  modules: RepairModule[];
+  timePenalties: number;
+}
+
+const module = (id: string, title: string, component: string, interaction: RepairInteraction, skill: RepairSkill, wordIndex: number, instruction: string, output: string, prerequisiteIds: string[] = []): RepairModule => ({ id, title, component, interaction, skill, wordIndex, instruction, output, prerequisiteIds });
+
+const MODULES: Record<DeviceKind, RepairModule[]> = {
+  cassette: [
+    module("unlock", "Release cassette door", "door latch", "press", "reading", 0, "Find the matching maintenance code and release the latch.", "The cassette bay opens."),
+    module("insert", "Seat the cassette", "cassette well", "drag", "meaning", 1, "Place the marked cassette into its matching guide.", "The cassette locks into the transport.", ["unlock"]),
+    module("direction", "Set tape direction", "direction switch", "switch", "reading", 2, "Move the switch to the handbook's Japanese code.", "Tape direction is correct.", ["insert"]),
+    module("levels", "Balance audio levels", "equalizer dial", "dial", "listening", 0, "Hear the code, then rotate the marked dial.", "The level meter steadies.", ["direction"]),
+    module("transport", "Start diagnostic tape", "transport key", "sequence", "sentence", 1, "Read the short service instruction and press the codes in order.", "The reels begin turning.", ["levels"]),
+    module("confirm", "Confirm playback", "test button", "press", "listening", 2, "Listen for the final Japanese confirmation, then press the matching control.", "Diagnostic tape plays clearly.", ["transport"]),
+    module("head-clean", "Clean tape head", "head-cleaner", "drag", "meaning", 0, "Place the correct cleaning card on the tape head.", "Playback distortion clears.", ["confirm"]),
+    module("record", "Save calibration", "record lock", "switch", "reading", 1, "Set the calibration lock to the listed code.", "Calibration is stored.", ["head-clean"]),
+  ],
+  handheld: [
+    module("cover", "Open battery cover", "battery cover", "press", "reading", 0, "Release the cover with the matching code.", "Battery bay is accessible."),
+    module("cells", "Install power cells", "battery slots", "drag", "meaning", 1, "Drag each coded cell into the matching slot.", "Power reaches the console.", ["cover"]),
+    module("cart", "Insert game cartridge", "cartridge bay", "drag", "reading", 2, "Seat the cartridge bearing the handbook code.", "The cartridge clicks in.", ["cells"]),
+    module("power", "Set power switch", "power slider", "switch", "listening", 0, "Hear the code and move the power slider.", "The screen wakes.", ["cart"]),
+    module("pad", "Enter boot code", "D-pad", "sequence", "sentence", 1, "Read the code order and enter it on the D-pad.", "Boot check accepts the sequence.", ["power"]),
+    module("start", "Run boot test", "start button", "press", "listening", 2, "Press the matching control after the spoken prompt.", "Console boot succeeds."),
+  ],
+  radio: [
+    module("hatch", "Open cell hatch", "battery hatch", "press", "reading", 0, "Release the hatch using the matching code.", "The battery bay opens."),
+    module("cells", "Install radio cells", "battery slots", "drag", "meaning", 1, "Place the labelled cells into their matching contacts.", "The radio powers up.", ["hatch"]),
+    module("antenna", "Extend antenna", "antenna switch", "switch", "reading", 2, "Move the antenna control to the listed code.", "Signal strength rises.", ["cells"]),
+    module("band", "Choose broadcast band", "band dial", "dial", "listening", 0, "Hear the code and tune the dial.", "A station becomes available.", ["antenna"]),
+    module("preset", "Store station code", "preset buttons", "sequence", "sentence", 1, "Follow the Japanese order in the handbook.", "Station is stored.", ["band"]),
+    module("confirm", "Confirm transmission", "confirm button", "press", "listening", 2, "Press the matching key after the station call.", "Broadcast is clear."),
+  ],
+  camera: [
+    module("door", "Release film door", "film latch", "press", "reading", 0, "Find the code and release the film latch.", "Film door opens."),
+    module("film", "Load film pack", "film rails", "drag", "meaning", 1, "Place the marked film pack into the matching rails.", "Film pack seats correctly.", ["door"]),
+    module("focus", "Set focus ring", "focus ring", "dial", "reading", 2, "Turn the ring until it shows the handbook code.", "Viewfinder sharpens.", ["film"]),
+    module("flash", "Set flash mode", "flash switch", "switch", "listening", 0, "Hear the code, then move the flash switch.", "Flash charges.", ["focus"]),
+    module("exposure", "Set exposure", "exposure wheel", "sequence", "sentence", 1, "Read the order of Japanese calibration codes.", "Exposure is balanced.", ["flash"]),
+    module("shutter", "Capture test frame", "shutter button", "press", "listening", 2, "Press the matching shutter prompt.", "A test photo ejects."),
+  ],
+  pager: [
+    module("cover", "Open rear cover", "cover latch", "press", "reading", 0, "Release the coded rear latch.", "The contact panel opens."),
+    module("contacts", "Install contact strip", "contact bay", "drag", "meaning", 1, "Drag the marked strip to its matching rail.", "The pager vibrates.", ["cover"]),
+    module("wheel", "Set message code", "code wheel", "dial", "reading", 2, "Turn the code wheel to the Japanese label.", "A message header appears.", ["contacts"]),
+    module("channel", "Set relay channel", "channel switch", "switch", "listening", 0, "Hear the code and set the relay switch.", "Incoming signal locks.", ["wheel"]),
+    module("reply", "Compose reply", "keypad", "sequence", "sentence", 1, "Use the handbook's Japanese code sequence.", "Reply is queued.", ["channel"]),
+    module("send", "Send acknowledgement", "send key", "press", "listening", 2, "Press the matching key after the audio cue.", "Message is delivered."),
+  ],
+};
+
+export function repairModules(device: DeviceKind, advanced = false): RepairModule[] {
+  return MODULES[device].slice(0, advanced ? 8 : 6);
 }
 
 export type RepairComponent =
@@ -225,6 +291,7 @@ export function createRepairRun(input: {
   knownWords: RepairWord[];
   newWord: RepairWord;
   device?: DeviceKind;
+  advanced?: boolean;
   now?: number;
 }): DeviceRepairRun {
   if (input.knownWords.length < 3)
@@ -233,7 +300,7 @@ export function createRepairRun(input: {
   const device = input.device ?? pick(Object.keys(FAULTS) as DeviceKind[], input.seed);
   const faults = FAULTS[device];
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: `repair-${input.seed.toString(36)}-${now.toString(36)}`,
     seed: input.seed,
     track: input.track,
@@ -250,6 +317,8 @@ export function createRepairRun(input: {
     interactionValues: [0, 0, 0, 0, 0, 0],
     diagnosticStep: 0,
     serviceTags: createServiceTags(input.knownWords),
+    modules: repairModules(device, input.advanced),
+    timePenalties: 0,
   };
 }
 
@@ -259,13 +328,17 @@ export function nextFault(run: DeviceRepairRun): RepairFault | null {
   );
 }
 
+export function nextRepairModule(run: DeviceRepairRun): RepairModule | null {
+  return run.modules.find((item) => !run.solvedFaultIds.includes(item.id)) ?? null;
+}
+
 export function canRevealNewWord(run: DeviceRepairRun) {
-  return run.solvedFaultIds.length === run.faults.length;
+  return run.solvedFaultIds.length === run.modules.length;
 }
 export function repairScore(run: DeviceRepairRun, now = Date.now()) {
   const remaining = Math.max(0, run.deadlineAt - now);
   return Math.max(
     0,
-    Math.round(500 + (remaining / 1000) * 2 - run.hintsUsed * 75),
+    Math.round(500 + (remaining / 1000) * 2 - run.hintsUsed * 75 - run.timePenalties * 30),
   );
 }

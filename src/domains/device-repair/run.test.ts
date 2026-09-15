@@ -1,4 +1,4 @@
-import { canRevealNewWord, createRepairRun, createServiceTags, nextFault } from "./run";
+import { canRevealNewWord, createRepairRun, createServiceTags, nextRepairModule } from "./run";
 import { describe, expect, it } from "vitest";
 
 const words = ["one", "two", "three", "new"].map((id) => ({
@@ -9,7 +9,7 @@ const words = ["one", "two", "three", "new"].map((id) => ({
 }));
 
 describe("device repair run", () => {
-  it("creates a deterministic three-fault chain before revealing its new word", () => {
+  it("creates a deterministic six-module repair before revealing its new word", () => {
     const run = createRepairRun({
       seed: 4,
       track: "review",
@@ -18,7 +18,7 @@ describe("device repair run", () => {
       now: 10,
     });
     expect(run.device).toBe("pager");
-    expect(nextFault(run)?.id).toBe("contacts");
+    expect(nextRepairModule(run)?.id).toBe("cover");
     expect(run.diagnosticStep).toBe(0);
     expect(run.serviceTags.map((tag) => tag.wordId)).toEqual(["one", "two", "three"]);
     expect(run.serviceTags.map((tag) => tag.component)).toEqual([
@@ -27,7 +27,8 @@ describe("device repair run", () => {
       "volume-dial",
     ]);
     expect(canRevealNewWord(run)).toBe(false);
-    run.solvedFaultIds.push(...run.faults.map((fault) => fault.id));
+    expect(run.modules).toHaveLength(6);
+    run.solvedFaultIds.push(...run.modules.map((item) => item.id));
     expect(canRevealNewWord(run)).toBe(true);
   });
 
@@ -37,19 +38,18 @@ describe("device repair run", () => {
     ]);
   });
 
-  it("can explicitly start the cassette-only learning repair", () => {
+  it("builds an eight-module advanced cassette repair", () => {
     const run = createRepairRun({
       seed: 4,
       track: "review",
       knownWords: words.slice(0, 3),
       newWord: words[3]!,
       device: "cassette",
+      advanced: true,
     });
     expect(run.device).toBe("cassette");
-    expect(run.faults.map((fault) => fault.id)).toEqual([
-      "spool",
-      "contacts",
-      "equalizer",
-    ]);
+    expect(run.modules).toHaveLength(8);
+    expect(run.modules.map((item) => item.interaction)).toContain("drag");
+    expect(run.modules.map((item) => item.interaction)).toContain("sequence");
   });
 });
