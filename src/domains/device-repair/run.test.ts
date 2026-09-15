@@ -1,4 +1,5 @@
-import { canRevealNewWord, createRepairRun, nextFault } from "./run";
+import { canRevealNewWord, createRepairRun, createServiceTags, nextFault } from "./run";
+import { describe, expect, it } from "vitest";
 
 const words = ["one", "two", "three", "new"].map((id) => ({
   id,
@@ -19,8 +20,20 @@ describe("device repair run", () => {
     expect(run.device).toBe("pager");
     expect(nextFault(run)?.id).toBe("contacts");
     expect(run.diagnosticStep).toBe(0);
+    expect(run.serviceTags.map((tag) => tag.wordId)).toEqual(["one", "two", "three"]);
+    expect(run.serviceTags.map((tag) => tag.component)).toEqual([
+      "cassette-door",
+      "play-button",
+      "volume-dial",
+    ]);
     expect(canRevealNewWord(run)).toBe(false);
     run.solvedFaultIds.push(...run.faults.map((fault) => fault.id));
     expect(canRevealNewWord(run)).toBe(true);
+  });
+
+  it("uses only supplied introduced words for the changeable service tags", () => {
+    expect(createServiceTags(words.slice(0, 3)).map((tag) => tag.word)).toEqual([
+      "one", "two", "three",
+    ]);
   });
 });
