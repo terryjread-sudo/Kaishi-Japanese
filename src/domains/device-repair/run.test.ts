@@ -36,4 +36,20 @@ describe("device repair run", () => {
       "one", "two", "three",
     ]);
   });
+
+  it("can explicitly start the cassette-only learning repair", () => {
+    const run = createRepairRun({
+      seed: 4,
+      track: "review",
+      knownWords: words.slice(0, 3),
+      newWord: words[3]!,
+      device: "cassette",
+    });
+    expect(run.device).toBe("cassette");
+    expect(run.faults.map((fault) => fault.id)).toEqual([
+      "spool",
+      "contacts",
+      "equalizer",
+    ]);
+  });
 });

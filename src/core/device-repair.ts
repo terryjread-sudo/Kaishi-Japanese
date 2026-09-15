@@ -116,13 +116,17 @@ function setup() {
   if (!r) return;
   clean?.();
   clean = null;
+  // Earlier releases saved generic radio/camera/etc. repairs. They pair
+  // arbitrary Japanese with unrelated physical actions, so never resume one.
+  // Only the learning-led cassette run is eligible for resumption.
   const saved = host()?.loadRun();
-  r.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Restore the study cassette</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">📼</span><h3>Your Japanese labels repair a real machine.</h3><p>Each temporary service tag uses a word from your learning record. Read it, hear it if needed, then operate the matching moving cassette component.</p></div><div class="device-repair-track">${saved ? '<button class="primary" data-resume>Resume repair</button>' : ""}<button class="primary" data-track="review">Repair with Journey words</button><button data-track="japan-ready">Repair with Japan Ready words</button></div></section></main>`;
+  const resumable = saved?.device === "cassette" ? saved : null;
+  r.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Restore the study cassette</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">📼</span><h3>Your Japanese labels repair a real machine.</h3><p>Each temporary service tag uses a word from your learning record. Read it, hear it if needed, then operate the matching moving cassette component.</p></div><div class="device-repair-track">${resumable ? '<button class="primary" data-resume>Resume cassette repair</button>' : ""}<button class="primary" data-track="review">Repair with Journey words</button><button data-track="japan-ready">Repair with Japan Ready words</button></div></section></main>`;
   r.querySelector("[data-back]")?.addEventListener("click", () =>
     host()?.show("gameHub"),
   );
   r.querySelector("[data-resume]")?.addEventListener("click", () => {
-    run = saved ?? null;
+    run = resumable;
     if (run && !run.serviceTags?.length) {
       run.serviceTags = createServiceTags(run.knownWords);
       host()?.saveRun(run);
