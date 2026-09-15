@@ -74,7 +74,9 @@ const MODULES: Record<DeviceKind, RepairModule[]> = {
     module("cart", "Insert game cartridge", "cartridge bay", "drag", "reading", 2, "Seat the cartridge bearing the handbook code.", "The cartridge clicks in.", ["cells"]),
     module("power", "Set power switch", "power slider", "switch", "listening", 0, "Hear the code and move the power slider.", "The screen wakes.", ["cart"]),
     module("pad", "Enter boot code", "D-pad", "sequence", "sentence", 1, "Read the code order and enter it on the D-pad.", "Boot check accepts the sequence.", ["power"]),
-    module("start", "Run boot test", "start button", "press", "listening", 2, "Press the matching control after the spoken prompt.", "Console boot succeeds."),
+    module("start", "Run boot test", "start button", "press", "listening", 2, "Press the matching control after the spoken prompt.", "Console boot succeeds.", ["pad"]),
+    module("speaker", "Balance speaker output", "speaker dial", "dial", "meaning", 0, "Turn the speaker dial to the matching handbook code.", "The start tone is clear.", ["start"]),
+    module("save", "Store repair profile", "save switch", "switch", "reading", 1, "Set the profile switch to the listed Japanese code.", "The repair profile is saved.", ["speaker"]),
   ],
   radio: [
     module("hatch", "Open cell hatch", "battery hatch", "press", "reading", 0, "Release the hatch using the matching code.", "The battery bay opens."),
@@ -82,7 +84,9 @@ const MODULES: Record<DeviceKind, RepairModule[]> = {
     module("antenna", "Extend antenna", "antenna switch", "switch", "reading", 2, "Move the antenna control to the listed code.", "Signal strength rises.", ["cells"]),
     module("band", "Choose broadcast band", "band dial", "dial", "listening", 0, "Hear the code and tune the dial.", "A station becomes available.", ["antenna"]),
     module("preset", "Store station code", "preset buttons", "sequence", "sentence", 1, "Follow the Japanese order in the handbook.", "Station is stored.", ["band"]),
-    module("confirm", "Confirm transmission", "confirm button", "press", "listening", 2, "Press the matching key after the station call.", "Broadcast is clear."),
+    module("confirm", "Confirm transmission", "confirm button", "press", "listening", 2, "Press the matching key after the station call.", "Broadcast is clear.", ["preset"]),
+    module("volume", "Balance volume", "volume dial", "dial", "meaning", 0, "Tune the volume dial to the maintenance code.", "The output is balanced.", ["confirm"]),
+    module("record", "Store signal profile", "memory switch", "switch", "reading", 1, "Set the memory switch to the handbook code.", "The signal profile is stored.", ["volume"]),
   ],
   camera: [
     module("door", "Release film door", "film latch", "press", "reading", 0, "Find the code and release the film latch.", "Film door opens."),
@@ -90,7 +94,9 @@ const MODULES: Record<DeviceKind, RepairModule[]> = {
     module("focus", "Set focus ring", "focus ring", "dial", "reading", 2, "Turn the ring until it shows the handbook code.", "Viewfinder sharpens.", ["film"]),
     module("flash", "Set flash mode", "flash switch", "switch", "listening", 0, "Hear the code, then move the flash switch.", "Flash charges.", ["focus"]),
     module("exposure", "Set exposure", "exposure wheel", "sequence", "sentence", 1, "Read the order of Japanese calibration codes.", "Exposure is balanced.", ["flash"]),
-    module("shutter", "Capture test frame", "shutter button", "press", "listening", 2, "Press the matching shutter prompt.", "A test photo ejects."),
+    module("shutter", "Capture test frame", "shutter button", "press", "listening", 2, "Press the matching shutter prompt.", "A test photo ejects.", ["exposure"]),
+    module("advance", "Advance film", "film advance lever", "press", "meaning", 0, "Use the matching Japanese code to advance the film.", "The film advances one frame.", ["shutter"]),
+    module("date", "Set date imprint", "date switch", "switch", "reading", 1, "Set the imprint switch to the listed handbook code.", "Date imprint is calibrated.", ["advance"]),
   ],
   pager: [
     module("cover", "Open rear cover", "cover latch", "press", "reading", 0, "Release the coded rear latch.", "The contact panel opens."),
@@ -98,7 +104,9 @@ const MODULES: Record<DeviceKind, RepairModule[]> = {
     module("wheel", "Set message code", "code wheel", "dial", "reading", 2, "Turn the code wheel to the Japanese label.", "A message header appears.", ["contacts"]),
     module("channel", "Set relay channel", "channel switch", "switch", "listening", 0, "Hear the code and set the relay switch.", "Incoming signal locks.", ["wheel"]),
     module("reply", "Compose reply", "keypad", "sequence", "sentence", 1, "Use the handbook's Japanese code sequence.", "Reply is queued.", ["channel"]),
-    module("send", "Send acknowledgement", "send key", "press", "listening", 2, "Press the matching key after the audio cue.", "Message is delivered."),
+    module("send", "Send acknowledgement", "send key", "press", "listening", 2, "Press the matching key after the audio cue.", "Message is delivered.", ["reply"]),
+    module("screen", "Calibrate display", "screen dial", "dial", "meaning", 0, "Turn the display dial to the matching Japanese code.", "Display contrast is calibrated.", ["send"]),
+    module("lock", "Secure relay lock", "relay switch", "switch", "reading", 1, "Set the relay lock to the handbook code.", "The pager is secured.", ["screen"]),
   ],
 };
 
