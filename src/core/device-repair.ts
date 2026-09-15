@@ -4,6 +4,7 @@ import "./device-repair-mobile.css";
 import {
   DEVICE_LABELS,
   canRevealNewWord,
+  createServiceTags,
   createRepairRun,
   nextFault,
   repairScore,
@@ -116,12 +117,16 @@ function setup() {
   clean?.();
   clean = null;
   const saved = host()?.loadRun();
-  r.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Repair it with Japanese</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">🔧</span><h3>The device and manual work together.</h3><p>Read Japanese repair instructions, inspect labels printed on the 3D device, then physically operate the correct component.</p></div><div class="device-repair-track">${saved ? '<button class="primary" data-resume>Resume repair</button>' : ""}<button class="primary" data-track="review">Learn &amp; Review</button><button data-track="japan-ready">Japan Ready</button></div></section></main>`;
+  r.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Restore the study cassette</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">📼</span><h3>Your Japanese labels repair a real machine.</h3><p>Each temporary service tag uses a word from your learning record. Read it, hear it if needed, then operate the matching moving cassette component.</p></div><div class="device-repair-track">${saved ? '<button class="primary" data-resume>Resume repair</button>' : ""}<button class="primary" data-track="review">Repair with Journey words</button><button data-track="japan-ready">Repair with Japan Ready words</button></div></section></main>`;
   r.querySelector("[data-back]")?.addEventListener("click", () =>
     host()?.show("gameHub"),
   );
   r.querySelector("[data-resume]")?.addEventListener("click", () => {
     run = saved ?? null;
+    if (run && !run.serviceTags?.length) {
+      run.serviceTags = createServiceTags(run.knownWords);
+      host()?.saveRun(run);
+    }
     draw();
   });
   r.querySelectorAll<HTMLButtonElement>("[data-track]").forEach(
@@ -144,6 +149,9 @@ async function begin(track: RepairTrack) {
     track,
     knownWords: picked.known,
     newWord: picked.fresh,
+    // The cassette is the complete, learning-led repair experience. Other
+    // device definitions retain the shared model contract for their rebuilds.
+    device: "cassette",
   });
   host()?.saveRun(run);
   draw();
@@ -165,13 +173,19 @@ function manual(
   k: string,
   final: boolean,
 ) {
-  const ask =
+  const tags = run?.serviceTags ?? [];
+  const cassetteMode = run?.device === "cassette";
+  const ask = cassetteMode
+    ? `サービス札「${esc(w.word)}」を さがしてください。`
+    :
     f?.skill === "reading"
       ? `「${esc(w.reading)}」と読むラベルを探す。`
       : f?.skill === "listening"
         ? "音声を聞いて、同じ日本語ラベルを探す。"
         : `「${esc(w.meaning)}」を表す日本語ラベルを探す。`;
-  const act =
+  const act = cassetteMode
+    ? "同じ札が付いた部品を タップしてください。"
+    :
     k === "battery"
       ? "電池をタップして、＋と－の向きを直す。"
       : k === "tape"
@@ -179,7 +193,8 @@ function manual(
         : k === "dial"
           ? "ダイヤルをタップして、正しい目盛りに合わせる。"
           : "本体に印刷された部品をタップする。";
-  return `<aside class="repair-manual" id="repairManual"><button class="manual-close" data-manual-close aria-label="Close manual">×</button><b>サービスマニュアル · ${final ? "FINAL" : "REPAIR"}</b><h3>${final ? "最後の起動手順" : "修理指示"}</h3><p lang="ja">${ask}</p><p lang="ja">${act}</p><div class="manual-terms"><button data-term="向き|むき|direction / orientation">向き</button><button data-term="直す|なおす|to fix / correct">直す</button><button data-term="電池|でんち|battery">電池</button></div><hr><strong>Target: <span lang="ja">${esc(w.word)}</span> · ${esc(w.reading)}</strong><small>${final ? `New word: ${esc(w.meaning)}` : "The Japanese on the physical device is part of the solution."}</small><output id="repairDictionary" aria-live="polite"></output></aside>`;
+  const tagList = tags.map((tag) => `<button data-term="${esc(`${tag.word}|${tag.reading}|${tag.meaning}`)}" data-repair-hear="${esc(tag.word)}"><b lang="ja">${esc(tag.word)}</b><small>${esc(tag.reading)}</small></button>`).join("");
+  return `<aside class="repair-manual" id="repairManual"><button class="manual-close" data-manual-close aria-label="Close manual">×</button><b>サービスマニュアル · ${final ? "FINAL" : "REPAIR"}</b><h3>${final ? "最後の起動手順" : "修理指示"}</h3><p lang="ja">${ask}</p><p lang="ja">${act}</p><div class="manual-terms">${tagList}</div><hr><strong>${final ? "New word preview" : "Target"}: <span lang="ja">${esc(final ? run?.newWord.word ?? w.word : w.word)}</span> · ${esc(final ? run?.newWord.reading ?? w.reading : w.reading)}</strong><small>${final ? `You will meet ${esc(run?.newWord.meaning ?? "this word")} in a future repair.` : "Match this introduced Japanese word to its temporary service tag."}</small><output id="repairDictionary" aria-live="polite"></output></aside>`;
 }
 function draw() {
   const r = run,
@@ -189,7 +204,7 @@ function draw() {
   clean?.();
   const f = nextFault(r),
     stage = r.solvedFaultIds.length,
-    w = f ? r.knownWords[stage]! : r.newWord,
+    w = f ? r.knownWords[stage]! : r.knownWords[r.knownWords.length - 1]!,
     k = kind(f),
     final = !f;
   const batterySteps = [
@@ -203,7 +218,11 @@ function draw() {
     "Press PLAY and hear the diagnostic",
     "Press illuminated test start",
   ];
-  const sequence =
+  const sequence = r.device === "cassette"
+    ? final
+      ? "Press START to test the restored player"
+      : `Find the physical control with the service tag 「${w.word}」`
+    :
     k === "battery"
       ? batterySteps[r.diagnosticStep ?? 0]
       : k === "tape"
@@ -211,7 +230,7 @@ function draw() {
         : (r.diagnosticStep ?? 0)
           ? "Press the illuminated test start"
           : "Identify the matching Japanese part";
-  t.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])}</span><h2>${final ? "Power-on repair" : esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div class="device-repair-model"><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag in any direction to inspect · tap glowing physical parts</p><p class="device-repair-step">Step ${(r.diagnosticStep ?? 0) + 1}: ${sequence}</p></div><section class="device-repair-instructions"><button class="manual-toggle" data-manual>☰ Service manual</button>${manual(w, f, k, final)}${f?.skill === "listening" || final ? '<button class="audio" data-audio>▶ Play diagnostic tape</button>' : ""}<div class="device-repair-progress">${r.faults.map((x, i) => `<span class="${r.solvedFaultIds.includes(x.id) ? "done" : i === stage ? "current" : ""}">${i + 1}</span>`).join("")}<i></i><span class="${r.revealedNewWord ? "done" : ""}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Inspect the model and use the Japanese service manual.</p></section></section></main>`;
+  t.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-quit>Quit repair</button><div><span class="eyebrow">${esc(DEVICE_LABELS[r.device])} · vocabulary repair</span><h2>${final ? "Power-on repair" : esc(f!.title)}</h2></div><strong id="deviceRepairTimer">10:00</strong></header><section class="device-repair-workbench"><div class="device-repair-model"><div class="device-repair-canvas" id="deviceRepairCanvas"></div><p class="device-repair-gesture">Drag to inspect · tap the labelled physical control</p><p class="device-repair-step">${sequence}</p></div><section class="device-repair-instructions"><button class="manual-toggle" data-manual>☰ Service manual</button>${manual(w, f, k, final)}${f?.skill === "listening" || final ? '<button class="audio" data-audio>▶ Play diagnostic tape</button>' : ""}<div class="device-repair-progress">${r.faults.map((x, i) => `<span class="${r.solvedFaultIds.includes(x.id) ? "done" : i === stage ? "current" : ""}">${i + 1}</span>`).join("")}<i></i><span class="${r.revealedNewWord ? "done" : ""}">新</span></div><button class="hint" data-hint>Translated hint</button><p id="deviceRepairFeedback">Every temporary service tag uses a word you have already met.</p></section></section></main>`;
   try {
     scene(
       document.querySelector<HTMLElement>("#deviceRepairCanvas")!,
@@ -232,9 +251,7 @@ function draw() {
   t.querySelector("[data-quit]")?.addEventListener("click", () =>
     finish(false),
   );
-  t.querySelector("[data-audio]")?.addEventListener("click", () =>
-    playDiagnostic(w),
-  );
+  t.querySelector("[data-audio]")?.addEventListener("click", () => playDiagnostic(w));
   const drawer = t.querySelector<HTMLElement>("#repairManual");
   const setManual = (open: boolean) =>
     drawer?.classList.toggle("manual-open", open);
@@ -251,6 +268,11 @@ function draw() {
       if (dictionary)
         dictionary.textContent = `${word}（${reading}）— ${meaning}`;
     }),
+  );
+  t.querySelectorAll<HTMLButtonElement>("[data-repair-hear]").forEach((button) =>
+    button.addEventListener("click", () =>
+      playDiagnostic({ ...w, word: button.dataset.repairHear ?? w.word }),
+    ),
   );
   t.querySelector("[data-hint]")?.addEventListener("click", () => {
     r.hintsUsed++;
@@ -273,10 +295,7 @@ function operate(ok: boolean, w: RepairWord, s: RepairSkill) {
   const f = nextFault(r);
   if (f) {
     r.solvedFaultIds.push(f.id);
-    if (canRevealNewWord(r)) {
-      r.revealedNewWord = true;
-      host()?.introduce(r.newWord.id);
-    }
+    if (canRevealNewWord(r)) r.revealedNewWord = true;
     r.diagnosticStep = 0;
     host()?.saveRun(r);
     draw();
@@ -308,7 +327,7 @@ function finish(ok: boolean) {
     t = root();
   if (!r || !t) return;
   if (!r.completed) host()?.finishRun(r, false, 0);
-  t.innerHTML = `<main class="device-repair-shell device-repair-result"><span class="device-repair-icon">${ok ? "✨" : "⏱️"}</span><h2>${ok ? "Device restored" : "Repair timed out"}</h2><p>${ok ? `You physically repaired it and learned ${esc(r.newWord.word)} — ${esc(r.newWord.meaning)}.` : "Your correct Japanese practice was saved."}</p><button class="primary" data-again>Another device</button><button data-back>Games</button></main>`;
+  t.innerHTML = `<main class="device-repair-shell device-repair-result"><span class="device-repair-icon">${ok ? "✨" : "⏱️"}</span><h2>${ok ? "Device restored" : "Repair timed out"}</h2><p>${ok ? `You repaired the player using words already in your Journey. Previewed next: ${esc(r.newWord.word)} — ${esc(r.newWord.meaning)}.` : "Your correct Japanese practice was saved."}</p><button class="primary" data-again>Another device</button><button data-back>Games</button></main>`;
   t.querySelector("[data-again]")?.addEventListener("click", setup);
   t.querySelector("[data-back]")?.addEventListener("click", () =>
     host()?.show("gameHub"),
@@ -456,14 +475,28 @@ function body(type: DeviceKind, g: THREE.Group) {
   if (type === "cassette") {
     box(g, [5.4, 3.35, 0.7], [0, 0, 0], 0x48576b);
     face(g, type, 5.05, 3, 0.37);
-    box(g, [3.5, 1.7, 0.14], [0, 0, 0.48], dark);
+    // A layered transport window gives the player a believable cassette
+    // mechanism rather than a flat panel.
+    box(g, [3.72, 1.92, 0.1], [0, -0.08, 0.48], 0x101827);
+    box(g, [3.5, 1.7, 0.14], [0, -0.08, 0.56], dark);
     [-0.9, 0.9].forEach((x) => {
-      const m = cyl(g, 0.56, 0.18, [x, 0, 0.5], cream);
+      const m = cyl(g, 0.56, 0.18, [x, -0.08, 0.65], cream);
       m.rotation.x = Math.PI / 2;
+      m.name = "cassette-reel";
+      const hub = cyl(g, 0.17, 0.2, [x, -0.08, 0.77], 0x48576b);
+      hub.rotation.x = Math.PI / 2;
     });
-    [0, 0.65, 1.3].forEach((x) =>
-      box(g, [0.44, 0.34, 0.18], [-1.5 + x, 1.75, 0], steel),
+    [0, 0.65, 1.3, 1.95].forEach((x) =>
+      box(g, [0.44, 0.34, 0.18], [-1.72 + x, 1.75, 0], steel),
     );
+    for (let row = 0; row < 2; row++)
+      for (let column = 0; column < 8; column++) {
+        const grill = cyl(g, 0.045, 0.08, [1.85 + column * 0.11, -1.08 + row * 0.14, 0.54], cream);
+        grill.rotation.x = Math.PI / 2;
+      }
+    const dial = cyl(g, 0.34, 0.2, [-2.05, -1.07, 0.62], cream);
+    dial.rotation.x = Math.PI / 2;
+    box(g, [0.05, 0.28, 0.06], [-2.05, -0.96, 0.76], red);
     [-2.2, 2.2].forEach((x) =>
       [-1.25, 1.25].forEach((y) => {
         const screw = cyl(g, 0.1, 0.08, [x, y, 0.48], cream);
@@ -600,7 +633,51 @@ function scene(
       done(true);
     });
   };
-  if (k === "part") {
+  const final = !nextFault(r);
+  if (r.device === "cassette") {
+    if (final) {
+      testStart();
+    } else {
+      const controls: Record<string, { mesh: THREE.Object3D; label: [number, number, number] }> = {
+        "cassette-door": {
+          mesh: box(g, [3.65, 1.85, 0.12], [0, -0.08, 0.8], 0x263a55),
+          label: [0, -1.24, 1.02],
+        },
+        "play-button": {
+          mesh: box(g, [0.62, 0.4, 0.25], [-1.7, 1.75, 0.35], 0x4ade80),
+          label: [-1.7, 1.3, 0.76],
+        },
+        "volume-dial": {
+          mesh: cyl(g, 0.43, 0.26, [-2.05, -1.07, 0.82], 0xf4c869),
+          label: [-2.05, -1.52, 1.02],
+        },
+      };
+      (controls["volume-dial"]!.mesh as THREE.Mesh).rotation.x = Math.PI / 2;
+      r.serviceTags.forEach((serviceTag) => {
+        const control = controls[serviceTag.component];
+        if (!control) return;
+        tag(g, serviceTag.word, control.label);
+        add(control.mesh, () => {
+          if (serviceTag.wordId !== w.id) {
+            strike();
+            done(false);
+            return;
+          }
+          tactileSound(serviceTag.component === "volume-dial" ? "click" : "snap");
+          if (serviceTag.component === "cassette-door") control.mesh.rotation.x = -0.82;
+          if (serviceTag.component === "play-button") {
+            control.mesh.scale.z = 0.45;
+            g.getObjectsByProperty("name", "cassette-reel").forEach((reel) => {
+              reel.rotation.z += Math.PI * 5;
+            });
+          }
+          if (serviceTag.component === "volume-dial") control.mesh.rotation.z += Math.PI / 2;
+          glow(control.mesh, true);
+          window.setTimeout(() => done(true), 280);
+        });
+      });
+    }
+  } else if (k === "part") {
     const cs = shuffled([
       w,
       ...shuffled(r.knownWords.filter((x) => x.id !== w.id)).slice(0, 2),

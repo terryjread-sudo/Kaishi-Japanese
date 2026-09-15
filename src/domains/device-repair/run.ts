@@ -36,6 +36,31 @@ export interface DeviceRepairRun {
   hintsUsed: number;
   interactionValues: number[];
   diagnosticStep: number;
+  /** Changeable repair labels let a real component practise any introduced word. */
+  serviceTags: ServiceTag[];
+}
+
+export type RepairComponent =
+  | "cassette-door"
+  | "play-button"
+  | "volume-dial";
+
+export interface ServiceTag {
+  component: RepairComponent;
+  wordId: string;
+  word: string;
+  reading: string;
+  meaning: string;
+}
+
+export function createServiceTags(words: readonly RepairWord[]): ServiceTag[] {
+  return words.slice(0, 3).map((word, index) => ({
+    component: (["cassette-door", "play-button", "volume-dial"] as const)[index]!,
+    wordId: word.id,
+    word: word.word,
+    reading: word.reading,
+    meaning: word.meaning,
+  }));
 }
 
 export const DEVICE_LABELS: Record<DeviceKind, string> = {
@@ -199,12 +224,13 @@ export function createRepairRun(input: {
   track: RepairTrack;
   knownWords: RepairWord[];
   newWord: RepairWord;
+  device?: DeviceKind;
   now?: number;
 }): DeviceRepairRun {
   if (input.knownWords.length < 3)
     throw new Error("A repair run needs three known words.");
   const now = input.now ?? Date.now();
-  const device = pick(Object.keys(FAULTS) as DeviceKind[], input.seed);
+  const device = input.device ?? pick(Object.keys(FAULTS) as DeviceKind[], input.seed);
   const faults = FAULTS[device];
   return {
     schemaVersion: 1,
@@ -223,6 +249,7 @@ export function createRepairRun(input: {
     hintsUsed: 0,
     interactionValues: [0, 0, 0, 0, 0, 0],
     diagnosticStep: 0,
+    serviceTags: createServiceTags(input.knownWords),
   };
 }
 
