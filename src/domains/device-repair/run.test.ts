@@ -1,4 +1,4 @@
-import { canRevealNewWord, createRepairRun, createServiceTags, nextRepairModule } from "./run";
+import { canRevealNewWord, createRepairRun, createServiceTags, nextRepairModule, repairModules } from "./run";
 import { describe, expect, it } from "vitest";
 
 const words = ["one", "two", "three", "new"].map((id) => ({
@@ -51,5 +51,12 @@ describe("device repair run", () => {
     expect(run.modules).toHaveLength(8);
     expect(run.modules.map((item) => item.interaction)).toContain("drag");
     expect(run.modules.map((item) => item.interaction)).toContain("sequence");
+  });
+
+  it("expands every device from six foundation modules to eight advanced modules", () => {
+    for (const device of ["handheld", "cassette", "radio", "camera", "pager"] as const) {
+      expect(repairModules(device)).toHaveLength(6);
+      expect(repairModules(device, true)).toHaveLength(8);
+    }
   });
 });
