@@ -1087,7 +1087,7 @@
     ].filter(Boolean).join(' ');
 
     const label =
-      item.type === 'past' ? 'Completed' :
+      item.type === 'past' ? 'Completed · Review again' :
       item.type === 'retry' ? 'Retry this lesson' :
       item.type === 'side' ? (item.required ? 'Required side quest' : 'Optional side quest') :
       item.type === 'horizon' ? 'Journey horizon' :
@@ -1284,11 +1284,11 @@
       const focused = item.id === selected.id;
       const itemAction = item.type === 'past' ? 'retry' : item.type === 'side' ? 'activity' : 'current';
       const locked = item.type === 'future' && item.chapter !== currentChapter();
-      const itemCta = locked ? 'Locked' : item.type === 'side' ? 'Start side quest' : item.type === 'past' ? 'Practice' : item.type === 'future' ? 'Start lesson' : 'Continue lesson';
+      const itemCta = locked ? 'Locked' : item.type === 'side' ? 'Start side quest' : item.type === 'past' ? 'Practice again' : item.type === 'future' ? 'Start lesson' : 'Continue lesson';
       const progressMatch = String(item.detail || '').match(/(\d+)%/);
       const progress = Math.max(0, Math.min(100, Number(progressMatch?.[1] || (item.done ? 100 : 0))));
-      const status = item.type === 'past' ? 'Completed' : item.type === 'current' ? 'In progress' : item.type === 'future' ? (item.chapter === currentChapter() ? 'Next up' : 'Locked') : 'Side quest';
-      const duration = item.type === 'past' ? 'Practice' : item.type === 'side' ? 'Activity' : 'Lesson';
+      const status = item.type === 'past' ? 'Completed · Review again' : item.type === 'current' ? 'In progress' : item.type === 'future' ? (item.chapter === currentChapter() ? 'Next up' : 'Locked') : 'Side quest';
+      const duration = item.type === 'past' ? 'Practice again' : item.type === 'side' ? 'Activity' : 'Lesson';
       const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
       const itemClasses = ['experimental-timeline-item', focused ? 'active' : '', item.done ? 'is-completed' : '', item.type === 'side' ? 'is-side-quest' : '', locked ? 'is-locked' : ''].filter(Boolean).join(' ');
       const lantern = '<svg class="experimental-lantern-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L4 6H20L12 2Z"/><rect x="6" y="6" width="12" height="3"/><rect x="7" y="9" width="10" height="7" rx="1"/><line x1="12" y1="9" x2="12" y2="16"/><path d="M5 16H19L21 22H3L5 16Z"/></svg>';
