@@ -15,6 +15,7 @@ export const CONTENT_DATA_FILES = [
   './data/anki-content-v72.json',
   './data/topics-v72.json',
   './data/learning-graph-v82.json',
+  './data/reading-dojo.json',
   './visual-mnemonics.json',
 ] as const;
 

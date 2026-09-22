@@ -73,8 +73,9 @@ export function mergeSyncPayloads(local: unknown, remote: unknown, now = new Dat
     const newestRepair = newestRecord(localRepair, remoteRepair, localUpdated, remoteUpdated);
     meta.deviceRepairProgress = {
       ...newestRepair,
-      schemaVersion: 1,
+      schemaVersion: 2,
       devices: mergeRecordMap(localRepair.devices, remoteRepair.devices, localUpdated, remoteUpdated),
+      workshop: newestRecord(localRepair.workshop, remoteRepair.workshop, localUpdated, remoteUpdated),
     };
   }
   meta.rhythmHistory = rhythmHistory;

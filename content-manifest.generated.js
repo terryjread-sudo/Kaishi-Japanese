@@ -19,6 +19,7 @@
     "./data/anki-content-v72.json",
     "./data/topics-v72.json",
     "./data/learning-graph-v82.json",
+    "./data/reading-dojo.json",
     "./visual-mnemonics.json"
   ],
   "coreFiles": [
@@ -73,6 +74,7 @@
     "./data/anki-content-v72.json",
     "./data/topics-v72.json",
     "./data/learning-graph-v82.json",
+    "./data/reading-dojo.json",
     "./visual-mnemonics.json",
     "./icons/icon-192.png",
     "./icons/icon-512.png",

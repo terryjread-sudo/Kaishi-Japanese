@@ -14,6 +14,7 @@ import {
   type RepairTrack,
   type RepairWord,
 } from "../domains/device-repair/run";
+import type { RepairWorkshopState } from "../domains/device-repair/workshop";
 
 type Word = RepairWord & { introduced: boolean; due: boolean };
 type Host = {
@@ -24,10 +25,13 @@ type Host = {
   saveRun(r: DeviceRepairRun): void;
   finishRun(r: DeviceRepairRun, ok: boolean, score: number): void;
   loadRun(): DeviceRepairRun | null;
+  workshop?(): RepairWorkshopState;
 };
 let run: DeviceRepairRun | null = null,
   timer: number | null = null,
-  clean: (() => void) | null = null;
+  clean: (() => void) | null = null,
+  visibilityHandler: (() => void) | null = null,
+  hiddenAt = 0;
 const root = () => document.querySelector<HTMLElement>("#deviceRepairRoot");
 const host = () =>
   (window as Window & { KaishiActivityPolicy?: { deviceRepair?: Host } })
@@ -116,8 +120,9 @@ function setup() {
   clean?.();
   clean = null;
   const saved = host()?.loadRun();
-  const resumable = saved?.schemaVersion === 2 ? saved : null;
-  r.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Japanese maintenance challenge</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">🔧</span><h3>Read the handbook. Operate the machine.</h3><p>Earlier modules unlock later ones. Incorrect actions cost time, but never end your repair.</p></div><div class="device-repair-track">${resumable ? `<button class="primary" data-resume>Resume ${esc(DEVICE_LABELS[resumable.device])}</button>` : ""}<div class="device-repair-device-grid">${(Object.keys(DEVICE_LABELS) as DeviceKind[]).map((device, index) => `<button data-device="${device}" class="${index === 0 ? "selected" : ""}"><b>${DEVICE_LABELS[device]}</b><small>${device === "cassette" ? "Reels & transport" : device === "handheld" ? "Cells & cartridge" : device === "radio" ? "Signal & tuning" : device === "camera" ? "Film & focus" : "Codes & relay"}</small></button>`).join("")}</div><button class="primary" data-track="review">Start timed Journey repair</button><button data-track="japan-ready">Start timed Japan Ready repair</button></div></section></main>`;
+  const resumable = saved && saved.schemaVersion >= 2 ? saved : null;
+  const workshop = host()?.workshop?.();
+  r.innerHTML = `<main class="device-repair-shell"><header class="device-repair-top"><button data-back>← Games</button><div><span class="eyebrow">Device Repair bench</span><h2>Japanese maintenance challenge</h2></div></header><section class="device-repair-intro"><div><span class="device-repair-icon">🔧</span><h3>Read the handbook. Operate the machine.</h3><p>Earlier modules unlock later ones. Incorrect actions cost time, but never end your repair.</p>${workshop ? `<p class="repair-workshop-badge">Workshop level ${workshop.level} · ${workshop.xp} XP · ${workshop.unlockedSkins.length} bench skins</p>` : ""}</div><div class="device-repair-track">${resumable ? `<button class="primary" data-resume>Resume ${esc(DEVICE_LABELS[resumable.device])}</button>` : ""}<div class="device-repair-device-grid">${(Object.keys(DEVICE_LABELS) as DeviceKind[]).map((device, index) => `<button data-device="${device}" class="${index === 0 ? "selected" : ""}"><b>${DEVICE_LABELS[device]}</b><small>${device === "cassette" ? "Reels & transport" : device === "handheld" ? "Cells & cartridge" : device === "radio" ? "Signal & tuning" : device === "camera" ? "Film & focus" : "Codes & relay"}</small></button>`).join("")}</div><button class="primary" data-track="review">Start timed Journey repair</button><button data-track="japan-ready">Start timed Japan Ready repair</button></div></section></main>`;
   r.querySelector("[data-back]")?.addEventListener("click", () =>
     host()?.show("gameHub"),
   );
@@ -155,7 +160,7 @@ async function begin(track: RepairTrack, device: DeviceKind) {
     knownWords: picked.known,
     newWord: picked.fresh,
     device,
-    advanced: picked.known.every((word) => word.due),
+    advanced: picked.known.every((word) => word.due) || Boolean(host()?.workshop?.().unlockedModules.includes("advanced")),
   });
   host()?.saveRun(run);
   draw();
@@ -280,6 +285,17 @@ function operate(ok: boolean, w: RepairWord, s: RepairSkill) {
 }
 function clock() {
   if (timer) clearInterval(timer);
+  if (visibilityHandler) document.removeEventListener("visibilitychange", visibilityHandler);
+  visibilityHandler = () => {
+    if (!run) return;
+    if (document.hidden) hiddenAt = Date.now();
+    else if (hiddenAt) {
+      run.deadlineAt += Date.now() - hiddenAt;
+      hiddenAt = 0;
+      host()?.saveRun(run);
+    }
+  };
+  document.addEventListener("visibilitychange", visibilityHandler);
   const tick = () => {
     if (!run) return;
     const left = Math.max(0, run.deadlineAt - Date.now()),
@@ -294,6 +310,9 @@ function clock() {
 function finish(ok: boolean) {
   if (timer) clearInterval(timer);
   timer = null;
+  if (visibilityHandler) document.removeEventListener("visibilitychange", visibilityHandler);
+  visibilityHandler = null;
+  hiddenAt = 0;
   clean?.();
   clean = null;
   const r = run,
@@ -944,6 +963,18 @@ function scene(
   size();
   clean = () => {
     ob.disconnect();
+    s.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
+      object.geometry.dispose();
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach((material) => {
+        if (material instanceof THREE.Material) {
+          const map = (material as THREE.MeshStandardMaterial).map;
+          if (map && ![...panelTextures.values()].some((texture) => texture === map)) map.dispose();
+          material.dispose();
+        }
+      });
+    });
     ren.dispose();
     el.replaceChildren();
   };
