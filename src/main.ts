@@ -81,6 +81,16 @@ installJapanReady();
 installSeasonalHero();
 installKotobaCheckpoint();
 installGameHub();
+let learningStudioLoaded = false;
+document.addEventListener('click', (event) => {
+  const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-learning-studio]') : null;
+  if (!target || learningStudioLoaded) return;
+  learningStudioLoaded = true;
+  void import('./core/learning-studio').then(({ installLearningStudio }) => {
+    installLearningStudio();
+    target.click();
+  });
+});
 offlineUI.install();
 
 // The WebGL repair bench is intentionally loaded only when the learner opens it.

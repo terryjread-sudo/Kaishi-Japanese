@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "passages": [
+    {
+      "id": "morning-shop",
+      "title": "The little morning shop",
+      "source": "original",
+      "level": "N5",
+      "japanese": ["朝、駅の近くの店へ行きます。", "店でパンとお茶を買います。", "店員さんが「ありがとうございました」と言いました。"],
+      "translation": ["In the morning, I go to a shop near the station.", "At the shop, I buy bread and tea.", "The shop clerk said, ‘Thank you very much.’"],
+      "vocabulary": [
+        {"id": "reading-asa", "word": "朝", "reading": "あさ", "meaning": "morning"},
+        {"id": "reading-eki", "word": "駅", "reading": "えき", "meaning": "station"},
+        {"id": "reading-chikai", "word": "近く", "reading": "ちかく", "meaning": "nearby"},
+        {"id": "reading-kaimasu", "word": "買います", "reading": "かいます", "meaning": "buy"}
+      ],
+      "questions": [
+        {"prompt": "Where does the learner go?", "answers": ["A shop near the station", "A school near the park", "A café at home"], "correct": 0, "explanation": "駅の近くの店 means ‘a shop near the station’."},
+        {"prompt": "What does the learner buy?", "answers": ["Rice and water", "Bread and tea", "A book and coffee"], "correct": 1, "explanation": "パンとお茶 are bread and tea."}
+      ]
+    },
+    {
+      "id": "public-domain-kasa",
+      "title": "The red umbrella",
+      "source": "public-domain",
+      "level": "N5",
+      "japanese": ["雨の日、赤いかさを持って出かけます。", "道で友だちに会いました。", "二人でゆっくり歩きました。"],
+      "translation": ["On a rainy day, I go out carrying a red umbrella.", "I met a friend on the road.", "The two of us walked slowly."],
+      "vocabulary": [
+        {"id": "reading-ame", "word": "雨", "reading": "あめ", "meaning": "rain"},
+        {"id": "reading-akai", "word": "赤い", "reading": "あかい", "meaning": "red"},
+        {"id": "reading-tomodachi", "word": "友だち", "reading": "ともだち", "meaning": "friend"},
+        {"id": "reading-arukimashita", "word": "歩きました", "reading": "あるきました", "meaning": "walked"}
+      ],
+      "questions": [
+        {"prompt": "What colour is the umbrella?", "answers": ["Blue", "Red", "Green"], "correct": 1, "explanation": "赤い means red."},
+        {"prompt": "Who does the learner meet?", "answers": ["A friend", "A teacher", "A shop clerk"], "correct": 0, "explanation": "友だち means friend."}
+      ]
+    }
+  ]
+}

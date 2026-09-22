@@ -33,7 +33,7 @@ export interface RepairModule {
 }
 
 export interface DeviceRepairRun {
-  schemaVersion: 2;
+  schemaVersion: 3;
   id: string;
   seed: number;
   track: RepairTrack;
@@ -308,7 +308,7 @@ export function createRepairRun(input: {
   const device = input.device ?? pick(Object.keys(FAULTS) as DeviceKind[], input.seed);
   const faults = FAULTS[device];
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     id: `repair-${input.seed.toString(36)}-${now.toString(36)}`,
     seed: input.seed,
     track: input.track,
