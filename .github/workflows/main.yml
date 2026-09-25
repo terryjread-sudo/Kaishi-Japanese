@@ -88,6 +88,8 @@ jobs:
           git add \
             version.js \
             version.json \
+            package.json \
+            package-lock.json \
             service-worker.js \
             index.html \
             README-*.txt

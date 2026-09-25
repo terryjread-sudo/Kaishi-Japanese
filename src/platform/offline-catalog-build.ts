@@ -29,8 +29,12 @@ export async function buildOfflineCatalog(root: string, production: boolean) {
   const core=new Set<string>();
   for(const entry of OFFLINE_CORE_FILES){const url=await add(entry);if(url)core.add(url);}
   const html=await fs.readFile(path.join(root,'index.html'),'utf8');
-  for(const match of html.matchAll(/(?:src|href)="([^"#]+)"/g)){const url=await add(match[1]||'');if(url)core.add(url);}
-  if(production){for(const name of await fs.readdir(path.join(root,'assets'))){const url=await add(`assets/${name}`);if(url)core.add(url);}}
+  // Only executable/style references belong to the automatic shell. Images in
+  // hidden screens and optional chunks remain available to explicit packs.
+  for(const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"#]+)"/g)){const url=await add(match[1]||'');if(url)core.add(url);}
+  // Keep every generated chunk in the catalog for a Full pack without turning
+  // lazy feature chunks into mandatory service-worker downloads.
+  if(production){for(const name of await fs.readdir(path.join(root,'assets'))){await add(`assets/${name}`);}}
   const vocabulary: Word[]=await json('data/vocabulary.json');
   const katakana=await json('data/katakana-core-10k.json');
   const extra: Word[]=Array.isArray(katakana)?katakana:(katakana.records||[]);
@@ -44,9 +48,12 @@ export async function buildOfflineCatalog(root: string, production: boolean) {
   const travel=await json('data/japan-ready-v90.json');
   for(const scenario of travel.scenarios){groups.push({id:`travel-${scenario.id}`,title:scenario.title,wordIds:[],urls:['data/japan-ready-v90.json','media/guides/aiko-guide-icon.webp','media/guides/aiko-guide-portrait.webp'],speechOnly:true});}
   for(const file of CONTENT_DATA_FILES)await references(await json(file));
-  // Avatar evolutions and guides are selected dynamically from progress rather than JSON.
-  for(const directory of ['media/profiles','media/guides/sensei','media/branding']) {
-    try{for(const name of await fs.readdir(path.join(root,directory))){const url=await add(`${directory}/${name}`);if(url)core.add(url);}}catch{/* Optional art directory. */}
+  // Optional tools, games, avatar evolutions and guides are selected dynamically
+  // rather than through content JSON. Inventory them for Full packs without
+  // making them part of the automatic shell.
+  await add('image-diagnostics.html');
+  for(const directory of ['media/profiles','media/guides/sensei','media/branding','media/battle-listen','media/kotoba-checkpoint','media/bonsai','media/journey-scenes','media/sentence-lab','media/celebrations']) {
+    try{for(const name of await fs.readdir(path.join(root,directory)))await add(`${directory}/${name}`);}catch{/* Optional art directory. */}
   }
   return {schemaVersion:1,production,core:[...core],assets:[...assets.values()],groups};
 }

@@ -67,7 +67,19 @@ const updatedVersionJson = {
 fs.writeFileSync(versionJsonPath, JSON.stringify(updatedVersionJson, null, 2) + '\n', 'utf8');
 console.log('? Updated version.json');
 
-// 5. Update index.html
+// 5. Keep npm package metadata aligned with the browser release metadata.
+const packageJsonPath = path.join(rootDir, 'package.json');
+const packageLockPath = path.join(rootDir, 'package-lock.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+const packageLock = JSON.parse(fs.readFileSync(packageLockPath, 'utf8'));
+packageJson.version = newVersion;
+packageLock.version = newVersion;
+if (packageLock.packages && packageLock.packages['']) packageLock.packages[''].version = newVersion;
+fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
+fs.writeFileSync(packageLockPath, JSON.stringify(packageLock, null, 2) + '\n', 'utf8');
+console.log('? Updated package.json and package-lock.json');
+
+// 6. Update index.html
 const indexHtmlPath = path.join(rootDir, 'index.html');
 let indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 indexHtml = indexHtml.replaceAll(oldVersion, newVersion);
@@ -90,13 +102,13 @@ if (badgeAriaLabelPattern.test(indexHtml)) {
 fs.writeFileSync(indexHtmlPath, indexHtml, 'utf8');
 console.log('? Updated index.html cache-busters and version badge');
 
-// 6. Create README release notes file
+// 7. Create README release notes file
 const readmePath = path.join(rootDir, `README-${newVersion}.txt`);
 const readmeContent = `Kaishi Japanese ${newVersion}\n\n${title}\n\nChanges:\n${(changes.length ? changes : [title]).map(c => `- ${c}`).join('\n')}\n`;
 fs.writeFileSync(readmePath, readmeContent, 'utf8');
 console.log(`? Created README-${newVersion}.txt`);
 
-// 7. Run smoke tests
+// 8. Run smoke tests
 console.log('\nRunning validation test suite...');
 try {
   execSync('node scripts/test.js', { stdio: 'inherit', cwd: rootDir });
@@ -105,10 +117,10 @@ try {
   process.exit(1);
 }
 
-// 8. Optional git commit / push
+// 9. Optional git commit / push
 if (flags.has('--commit') || flags.has('--push')) {
   console.log('\nStaging and committing files...');
-  execSync(`git add version.js service-worker.js version.json index.html README-${newVersion}.txt app.js`, { stdio: 'inherit', cwd: rootDir });
+  execSync(`git add version.js service-worker.js version.json package.json package-lock.json index.html README-${newVersion}.txt app.js`, { stdio: 'inherit', cwd: rootDir });
   execSync(`git commit -m "${newVersion}"`, { stdio: 'inherit', cwd: rootDir });
   console.log(`? Committed ${newVersion}`);
 
