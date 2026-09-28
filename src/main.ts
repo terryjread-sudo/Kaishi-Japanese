@@ -6,6 +6,7 @@ export { offlinePackStatus } from './domains/offline/offline-pack';
 export { createEchoRun, reinforcedProductionStrength, retryWords } from './domains/kotoba-echo/run';
 import { defineElement } from '@lordicon/element';
 import { findLessonStoryScene, selectLessonStoryScene } from './domains/lesson-stories/story-scenes';
+import { answerMatches, evidenceLabel, lessonEvidenceDue, outcomeForLesson, parseLessonOutcomeCatalog, recordLessonEvidence, validateLessonOutcomeCatalog } from './domains/curriculum/lesson-outcomes';
 import {
   buildJourneyCurriculum,
   CONNECTOR_STEPS,
@@ -40,6 +41,13 @@ export {
   resolveJourneyVocabulary,
   selectLessonStoryScene,
   validateJourneyCurriculum,
+  answerMatches,
+  evidenceLabel,
+  lessonEvidenceDue,
+  outcomeForLesson,
+  parseLessonOutcomeCatalog,
+  recordLessonEvidence,
+  validateLessonOutcomeCatalog,
 };
 
 export { hasStartedProgress as hasStartedCloudProgress, mergeSyncPayloads as mergeCloudPayloads };
@@ -73,6 +81,13 @@ window.KaishiActivityPolicy = {
   sessionPosition,
   decorateLesson,
   showAnswerFeedback,
+  answerMatches,
+  evidenceLabel,
+  lessonEvidenceDue,
+  outcomeForLesson,
+  parseLessonOutcomeCatalog,
+  recordLessonEvidence,
+  validateLessonOutcomeCatalog,
   offline: offlineUI,
 };
 

@@ -13,14 +13,17 @@ describe('cloud sync merge', () => {
 
   it('unions durable histories while omitting temporary journey state and settings', () => {
     const merged = mergeSyncPayloads(
-      { progress: {}, meta: { updatedAt: 1, dailyJourneyRoute: { chapter: 1 }, rhythmHistory: { '2026-09-05': { completedAt: 1 } }, notebook: { words: [{ wordId: 'a', savedAt: 1 }] }, sessionHistory: [{ id: 'one', completedAt: 1 }] } },
-      { progress: {}, meta: { updatedAt: 2, dailyActivity: { tested: 2 }, rhythmHistory: { '2026-09-06': { completedAt: 2 } }, notebook: { words: [{ wordId: 'b', savedAt: 2 }] }, sessionHistory: [{ id: 'two', completedAt: 2 }] } },
+      { progress: {}, meta: { updatedAt: 1, dailyJourneyRoute: { chapter: 1 }, rhythmHistory: { '2026-09-05': { completedAt: 1 } }, notebook: { words: [{ wordId: 'a', savedAt: 1 }], mistakes: [{ key: 'meaning|yes|no|a|0', answer: 'yes', selected: 'no', count: 1, updatedAt: 1 }] }, sessionHistory: [{ id: 'one', completedAt: 1 }], canDoEvidence: { '1': { updatedAt: 10, listening: { passed: true } } } } },
+      { progress: {}, meta: { updatedAt: 2, dailyActivity: { tested: 2 }, rhythmHistory: { '2026-09-06': { completedAt: 2 } }, notebook: { words: [{ wordId: 'b', savedAt: 2 }], mistakes: [{ key: 'meaning|yes|no|a|0', answer: 'yes', selected: 'no', count: 3, updatedAt: 2 }, { key: 'reading|hai|iie|b|0', answer: 'hai', selected: 'iie', count: 1, updatedAt: 2 }] }, sessionHistory: [{ id: 'two', completedAt: 2 }], canDoEvidence: { '1': { updatedAt: 20, transfer: { passed: true } }, '2': { updatedAt: 5 } } } },
       new Date('2026-09-06T12:00:00Z'),
     );
     expect(merged.meta.dailyJourneyRoute).toBeUndefined();
     expect(merged.meta.dailyActivity).toBeUndefined();
     expect((merged.meta.notebook as { words: unknown[] }).words).toHaveLength(2);
+    expect((merged.meta.notebook as { mistakes: Array<{ count: number }> }).mistakes).toHaveLength(2);
+    expect((merged.meta.notebook as { mistakes: Array<{ count: number }> }).mistakes.at(0)!.count).toBe(3);
     expect(merged.meta.sessionHistory).toHaveLength(2);
+    expect(merged.meta.canDoEvidence).toEqual({ '1': { updatedAt: 20, transfer: { passed: true } }, '2': { updatedAt: 5 } });
     expect(merged.meta.streak).toBe(2);
   });
 

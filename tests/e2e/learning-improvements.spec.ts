@@ -16,11 +16,13 @@ test('a complete Journey lesson includes assessments and stable prerequisite cou
   await expect(page.locator('#journeySessionPreviewTitle')).toContainText('Meeting people');
   await page.getByRole('button',{name:'Start session',exact:true}).click();
   const total=await page.locator('#sessionCounter').getAttribute('aria-valuemax');let recalls=0;
-  for(let step=0;step<35;step++){
+  for(let step=0;step<45;step++){
     if(await page.locator('#finishMissionNow').isVisible())break;
     if(await page.locator('#engagementCelebration[open]').isVisible()){await page.locator('#engagementCelebration').getByRole('button',{name:'Continue',exact:true}).click();continue;}
     await expect(page.locator('#sessionCounter')).toHaveAttribute('aria-valuemax',total!);
     const card=page.locator('#card');
+    if(await card.locator('[data-outcome-listen]').first().isVisible()){await card.locator('[data-outcome-listen]').first().click();await card.locator('#outcomeListenNext').click();continue;}
+    if(await card.locator('[data-outcome-response]').first().isVisible()){await card.locator('[data-outcome-response]').first().click();await card.locator('#outcomeResponseNext').click();continue;}
     if(await card.locator('#revealBtn').isVisible()){recalls++;await card.locator('#revealBtn').click();await card.getByRole('button',{name:'Good',exact:true}).click();continue;}
     let advanced=false;
     for(const id of ['kanaUnlockContinue','firstEncounterContinue','continueBtn','pronunciationSkip','exampleContinue']){
@@ -40,6 +42,22 @@ test('a complete Journey lesson includes assessments and stable prerequisite cou
   await expect(page.locator('#toast')).not.toContainText('Mission paused');
 });
 
+test('Lesson 1 starts with audio-only meaning and records communicative evidence',async({page})=>{
+  await page.goto('/',{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
+  await page.getByRole('button',{name:'Continue lesson',exact:true}).click();
+  await expect(page.locator('.lesson-outcome-preview')).toContainText('I can respond and share basic information');
+  await expect(page.locator('.lesson-outcome-preview')).toContainText('About');
+  await page.getByRole('button',{name:'Start session',exact:true}).click();
+  const card=page.locator('#card');
+  await expect(card).toContainText('listen first');
+  await expect(card.locator('#outcomeListeningReveal')).toBeHidden();
+  await expect(card).not.toContainText('A「山田さんですか。」');
+  await card.getByRole('button',{name:/Yes, I am/}).click();
+  await expect(card.locator('#outcomeListeningReveal')).toContainText('A「山田さんですか。」');
+  const evidence=await page.evaluate(()=>(window as unknown as {KaishiJapanReadyBridge:{getMeta:()=>{canDoEvidence:Record<string,{listening?:{passed:boolean}}>}}}).KaishiJapanReadyBridge.getMeta().canDoEvidence['1']);
+  expect(evidence?.listening?.passed).toBe(true);
+});
+
 test('wrong answers persist until Continue and are recorded once',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.evaluate(()=>{
@@ -52,6 +70,8 @@ test('wrong answers persist until Continue and are recorded once',async({page})=
   const wrong=page.locator('#card .choice').filter({hasNotText:'だいじょうぶ'}).first();await wrong.click();
   await expect(page.locator('.lesson-answer-feedback')).toContainText('Your choice');
   await expect(page.locator('.lesson-answer-feedback')).toContainText('大丈夫');
+  const mistakes=await page.evaluate(()=>(window as unknown as {KaishiNotebook:{mistakes:()=>Array<{answer:string;count:number}>}}).KaishiNotebook.mistakes());
+  expect(mistakes).toHaveLength(1);expect(mistakes[0]?.answer).toBe('だいじょうぶ');expect(mistakes[0]?.count).toBe(1);
   const count=await page.evaluate(()=>(window as unknown as {KaishiJapanReadyBridge:{getMeta:()=>{totalAnswers:number}}}).KaishiJapanReadyBridge.getMeta().totalAnswers);
   await page.waitForTimeout(1300);await expect(page.locator('.lesson-answer-feedback')).toBeVisible();
   expect(await page.evaluate(()=>(window as unknown as {KaishiJapanReadyBridge:{getMeta:()=>{totalAnswers:number}}}).KaishiJapanReadyBridge.getMeta().totalAnswers)).toBe(count);

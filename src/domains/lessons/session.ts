@@ -7,7 +7,7 @@ export interface LessonStep<W extends LessonWord = LessonWord> {
   reinforcementRepair?: boolean;
   adaptiveRepair?: boolean;
 }
-const passive = new Set(['kanaUnlock', 'firstEncounter', 'intro', 'pronunciation', 'example']);
+const passive = new Set(['kanaUnlock', 'firstEncounter', 'intro', 'pronunciation', 'example', 'outcomeListen', 'outcomeProduce', 'outcomeTransfer']);
 
 /** Expand prerequisites once, and reserve recall before optional context can fill a mission. */
 export function prepareLesson<W extends LessonWord, S extends LessonStep<W>>(
@@ -39,6 +39,9 @@ export function prepareLesson<W extends LessonWord, S extends LessonStep<W>>(
 }
 
 export function lessonPhase(skill: string): string {
+  if (skill === 'outcomeListen') return 'Listen for meaning';
+  if (skill === 'outcomeProduce') return 'Build your response';
+  if (skill === 'outcomeTransfer') return 'Use it somewhere new';
   if (skill === 'kanaUnlock') return 'Learn a sound';
   if (skill === 'firstEncounter') return 'Meet the word';
   if (skill === 'intro') return 'Make a memory';
