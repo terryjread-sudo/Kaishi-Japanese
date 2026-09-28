@@ -1,4 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function continuePastCommunicativeOpener(page: Page) {
+  const choice = page.locator('[data-outcome-listen]').first();
+  if (await choice.isVisible()) {
+    await choice.click();
+    await page.locator('#outcomeListenNext').click();
+  }
+}
 
 test('migrates legacy progress into an isolated guest profile', async ({ page }) => {
   await page.addInitScript(() => {
@@ -46,6 +54,7 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
   await page.getByRole('button', { name: 'Explore Journey' }).click();
   await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
   await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+  await continuePastCommunicativeOpener(page);
 
   for (let index = 0; index < 3; index++) {
     await page.locator('#firstEncounterContinue').click();
@@ -210,6 +219,7 @@ test('new words offer optional compact pronunciation practice', async ({ page })
   await page.goto('/');
   await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
   await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+  await continuePastCommunicativeOpener(page);
 
   await page.locator('#firstEncounterContinue').click();
   await page.locator('#continueBtn').click();
@@ -222,7 +232,7 @@ test('new words offer optional compact pronunciation practice', async ({ page })
   await expect(page.locator('#pronunciationCoachDialog .pronunciation-mode')).toBeHidden();
   await page.locator('#pronunciationCoachDialog .pronunciation-close').click();
   await page.locator('#pronunciationSkip').click();
-  await expect(page.locator('#sessionCounter')).toHaveAttribute('aria-label', /card 4 of/);
+  await expect(page.locator('#sessionCounter')).toHaveAttribute('aria-label', /card 5 of/);
 });
 
 test('compact pronunciation results let a learner continue their lesson', async ({ page }) => {
@@ -257,6 +267,7 @@ test('compact pronunciation results let a learner continue their lesson', async 
   await page.goto('/');
   await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
   await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+  await continuePastCommunicativeOpener(page);
   await page.locator('#firstEncounterContinue').click();
   await page.locator('#continueBtn').click();
 
@@ -282,6 +293,7 @@ test('a learner can save a word without losing their active lesson card', async 
   await page.goto('/');
   await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
   await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+  await continuePastCommunicativeOpener(page);
 
   const counter = page.locator('#sessionCounter');
   const before = await counter.innerText();
@@ -309,6 +321,7 @@ test('the first notebook star explains how to save a word once', async ({ page }
   await page.goto('/');
   await expect.poll(() => page.evaluate(() => Boolean((window as typeof window & { KaishiBonsaiBridge?: { startFirst: () => void } }).KaishiBonsaiBridge))).toBe(true);
   await page.evaluate(() => (window as typeof window & { KaishiBonsaiBridge: { startFirst: () => void } }).KaishiBonsaiBridge.startFirst());
+  await continuePastCommunicativeOpener(page);
 
   await expect(page.locator('.notebook-star-hint')).toContainText('Tap the star to save this word to your Notebook.');
   await page.getByRole('button', { name: 'Got it' }).click();

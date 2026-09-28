@@ -27,7 +27,7 @@ export interface ConnectorStep {
 export const CURRICULUM_LESSON_SIZE = 3;
 export const CURATED_FOUNDATION_LESSON_COUNT = 100;
 /** Increment when saved Journey route metadata must be rebuilt. */
-export const JOURNEY_CURRICULUM_REVISION = 'spoken-first-v1';
+export const JOURNEY_CURRICULUM_REVISION = 'communicative-foundation-v2';
 
 export interface StoredJourneyRoute {
   curriculumRevision?: unknown;

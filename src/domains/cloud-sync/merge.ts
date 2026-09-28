@@ -30,6 +30,22 @@ function mergeNotebook(left: unknown, right: unknown) {
   return unique(entries.map(asRecord), item => String(item.wordId)).sort((a, b) => timestamp(b.savedAt) - timestamp(a.savedAt)).slice(0, 100);
 }
 
+function mergeNotebookMistakes(left: unknown, right: unknown) {
+  const grouped = new Map<string, Record<string, unknown>>();
+  for (const value of [...(Array.isArray(left) ? left : []), ...(Array.isArray(right) ? right : [])]) {
+    const item = asRecord(value);
+    if (!item.answer || !item.selected) continue;
+    const key = String(item.key || [item.kind, item.answer, item.selected, item.wordId, item.outcomeLesson].join('|'));
+    const previous = grouped.get(key);
+    if (!previous) grouped.set(key, { ...item, key });
+    else {
+      const newest = timestamp(item.updatedAt) >= timestamp(previous.updatedAt) ? item : previous;
+      grouped.set(key, { ...newest, key, count: Math.max(1, timestamp(previous.count), timestamp(item.count)) });
+    }
+  }
+  return [...grouped.values()].sort((a, b) => timestamp(b.updatedAt) - timestamp(a.updatedAt)).slice(0, 100);
+}
+
 function mergeHistory(left: unknown, right: unknown) {
   const entries = [...(Array.isArray(left) ? left : []), ...(Array.isArray(right) ? right : [])].map(asRecord).filter(item => item.id);
   return unique(entries, item => String(item.id)).sort((a, b) => timestamp(a.completedAt) - timestamp(b.completedAt)).slice(-200);
@@ -64,6 +80,7 @@ export function mergeSyncPayloads(local: unknown, remote: unknown, now = new Dat
   meta.kanaProgress = mergeRecordMap(localMeta.kanaProgress, remoteMeta.kanaProgress, localUpdated, remoteUpdated);
   meta.grammarProgress = mergeRecordMap(localMeta.grammarProgress, remoteMeta.grammarProgress, localUpdated, remoteUpdated);
   meta.connectorProgress = mergeRecordMap(localMeta.connectorProgress, remoteMeta.connectorProgress, localUpdated, remoteUpdated);
+  meta.canDoEvidence = mergeRecordMap(localMeta.canDoEvidence, remoteMeta.canDoEvidence, localUpdated, remoteUpdated);
   meta.mangaProgress = mergeRecordMap(localMeta.mangaProgress, remoteMeta.mangaProgress, localUpdated, remoteUpdated);
   meta.conversationProgress = mergeRecordMap(localMeta.conversationProgress, remoteMeta.conversationProgress, localUpdated, remoteUpdated);
   meta.theatreProgress = mergeRecordMap(localMeta.theatreProgress, remoteMeta.theatreProgress, localUpdated, remoteUpdated);
@@ -82,7 +99,11 @@ export function mergeSyncPayloads(local: unknown, remote: unknown, now = new Dat
   meta.streak = rhythmDays(rhythmHistory, now);
   meta.sessionHistory = mergeHistory(localMeta.sessionHistory, remoteMeta.sessionHistory);
   meta.tripPlan = mergeTripPlan(localMeta.tripPlan, remoteMeta.tripPlan);
-  meta.notebook = { ...asRecord(latestMeta.notebook), words: mergeNotebook(asRecord(localMeta.notebook).words, asRecord(remoteMeta.notebook).words) };
+  meta.notebook = {
+    ...asRecord(latestMeta.notebook),
+    words: mergeNotebook(asRecord(localMeta.notebook).words, asRecord(remoteMeta.notebook).words),
+    mistakes: mergeNotebookMistakes(asRecord(localMeta.notebook).mistakes, asRecord(remoteMeta.notebook).mistakes),
+  };
   for (const key of ['pathUnlocks', 'canDoAwards', 'activityPurchases', 'unlockNoticesSeen', 'unlockNoticesDismissed']) {
     meta[key] = unique([...(Array.isArray(localMeta[key]) ? localMeta[key] : []), ...(Array.isArray(remoteMeta[key]) ? remoteMeta[key] : [])], item => JSON.stringify(item));
   }

@@ -1,0 +1,6011 @@
+{
+  "schemaVersion": 1,
+  "lessons": [
+    {
+      "lesson": 1,
+      "canDo": "I can respond and share basic information using はい、いいえ、大丈夫.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439902",
+        "1708637439903",
+        "1708637439971"
+      ],
+      "opening": {
+        "wordId": "1708637439902",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "A: Are you Yamada-san?\nB: Yes, I am.",
+          "A: Are you Yamada-san?\nB: No, I'm not.",
+          "Are you alright?"
+        ],
+        "answer": "A: Are you Yamada-san?\nB: Yes, I am.",
+        "explanation": "The key expression is はい (はい): yes (polite)."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: A: Are you Yamada-san?\nB: Yes, I am.",
+        "model": "A「山田さんですか。」\nB「はい。」",
+        "reading": "A「 山[やま] 田[だ]さんですか。」\nB「はい。」",
+        "meaning": "A: Are you Yamada-san?\nB: Yes, I am.",
+        "acceptable": [
+          "A「山田さんですか。」\nB「はい。」"
+        ],
+        "tiles": [
+          "A",
+          "「",
+          "山田",
+          "さん",
+          "です",
+          "か",
+          "」",
+          "B",
+          "「",
+          "はい",
+          "」"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439903",
+        "prompt": "Now use the same skill in a new situation: A: Are you Yamada-san?\nB: No, I'm not.",
+        "model": "A「山田さんですか。」\nB「いいえ。」",
+        "reading": "A「 山[やま] 田[だ]さんですか。」\nB「いいえ。」",
+        "meaning": "A: Are you Yamada-san?\nB: No, I'm not.",
+        "acceptable": [
+          "A「山田さんですか。」\nB「いいえ。」"
+        ],
+        "tiles": [
+          "A",
+          "「",
+          "山田",
+          "さん",
+          "です",
+          "か",
+          "」",
+          "B",
+          "「",
+          "いいえ",
+          "」"
+        ]
+      }
+    },
+    {
+      "lesson": 2,
+      "canDo": "I can respond and share basic information using 私、あなた、名前.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439854",
+        "1708637439855",
+        "1708637439889"
+      ],
+      "opening": {
+        "wordId": "1708637439855",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Are you Tom-san?",
+          "I am Ann.",
+          "Please tell me your name."
+        ],
+        "answer": "Are you Tom-san?",
+        "explanation": "The key expression is あなた (あなた): you (usually when one doesn't know the person)."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: Are you Tom-san?",
+        "model": "あなたはトムさんですか。",
+        "reading": "あなたはトムさんですか。",
+        "meaning": "Are you Tom-san?",
+        "acceptable": [
+          "あなたはトムさんですか。"
+        ],
+        "tiles": [
+          "あなた",
+          "は",
+          "トム",
+          "さん",
+          "です",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439889",
+        "prompt": "Now use the same skill in a new situation: Please tell me your name.",
+        "model": "あなたの名前を教えてください。",
+        "reading": "あなたの名[な] 前[まえ]を 教[おし]えてください。",
+        "meaning": "Please tell me your name.",
+        "acceptable": [
+          "あなたの名前を教えてください。"
+        ],
+        "tiles": [
+          "あなた",
+          "の",
+          "名前",
+          "を",
+          "教え",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 3,
+      "canDo": "I can respond and share basic information using 日本、日本語、先生.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439904",
+        "1708637439862",
+        "1708637439887"
+      ],
+      "opening": {
+        "wordId": "1708637439887",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I want to become a Japanese teacher.",
+          "Japanese games are fun.",
+          "I'm studying Japanese."
+        ],
+        "answer": "I want to become a Japanese teacher.",
+        "explanation": "The key expression is 先生 (せんせい): teacher."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: I want to become a Japanese teacher.",
+        "model": "私は日本語の先生になりたいです。",
+        "reading": "私[わたし]は 日本[にほん] 語[ご]の先[せん] 生[せい]になりたいです。",
+        "meaning": "I want to become a Japanese teacher.",
+        "acceptable": [
+          "私は日本語の先生になりたいです。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "日本語",
+          "の",
+          "先生",
+          "に",
+          "なり",
+          "たい",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439904",
+        "prompt": "Now use the same skill in a new situation: Japanese games are fun.",
+        "model": "日本のゲームは面白いです。",
+        "reading": "日本[にほん]のゲームは 面[おも] 白[しろ]いです。",
+        "meaning": "Japanese games are fun.",
+        "acceptable": [
+          "日本のゲームは面白いです。"
+        ],
+        "tiles": [
+          "日本",
+          "の",
+          "ゲーム",
+          "は",
+          "面白い",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 4,
+      "canDo": "I can respond and share basic information using これ、それ、あれ.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439865",
+        "1708637439867",
+        "1708637439868"
+      ],
+      "opening": {
+        "wordId": "1708637439865",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "This is a Japanese book.",
+          "That is a book.",
+          "What's that?"
+        ],
+        "answer": "This is a Japanese book.",
+        "explanation": "The key expression is これ (これ): this."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: This is a Japanese book.",
+        "model": "これは日本語の本です。",
+        "reading": "これは 日本[にほん] 語[ご]の 本[ほん]です。",
+        "meaning": "This is a Japanese book.",
+        "acceptable": [
+          "これは日本語の本です。"
+        ],
+        "tiles": [
+          "これ",
+          "は",
+          "日本語",
+          "の",
+          "本",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439867",
+        "prompt": "Now use the same skill in a new situation: That is a book.",
+        "model": "それは本です。",
+        "reading": "それは 本[ほん]です。",
+        "meaning": "That is a book.",
+        "acceptable": [
+          "それは本です。"
+        ],
+        "tiles": [
+          "それ",
+          "は",
+          "本",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 5,
+      "canDo": "I can respond and share basic information using この、その、あの.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439878",
+        "1708637439879",
+        "1708637439880"
+      ],
+      "opening": {
+        "wordId": "1708637439879",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Is it that book?",
+          "Which book is Yamada-san's? Is it this book?",
+          "That book (over there)?"
+        ],
+        "answer": "Is it that book?",
+        "explanation": "The key expression is その (その): that one."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: Is it that book?",
+        "model": "その本ですか。",
+        "reading": "その 本[ほん]ですか。",
+        "meaning": "Is it that book?",
+        "acceptable": [
+          "その本ですか。"
+        ],
+        "tiles": [
+          "その",
+          "本",
+          "です",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439880",
+        "prompt": "Now use the same skill in a new situation: That book (over there)?",
+        "model": "あの本ですか。",
+        "reading": "あの 本[ほん]ですか。",
+        "meaning": "That book (over there)?",
+        "acceptable": [
+          "あの本ですか。"
+        ],
+        "tiles": [
+          "あの",
+          "本",
+          "です",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 6,
+      "canDo": "I can respond and share basic information using ここ、そこ、あそこ.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439891",
+        "1708637439892",
+        "1708637439893"
+      ],
+      "opening": {
+        "wordId": "1708637439893",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "He is over there.",
+          "There's a book here.",
+          "There is the bathroom."
+        ],
+        "answer": "He is over there.",
+        "explanation": "The key expression is あそこ (あそこ): over there."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: He is over there.",
+        "model": "彼はあそこにいます。",
+        "reading": "彼[かれ]はあそこにいます。",
+        "meaning": "He is over there.",
+        "acceptable": [
+          "彼はあそこにいます。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "あそこ",
+          "に",
+          "い",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439891",
+        "prompt": "Now use the same skill in a new situation: There's a book here.",
+        "model": "ここに本があります。",
+        "reading": "ここに 本[ほん]があります。",
+        "meaning": "There's a book here.",
+        "acceptable": [
+          "ここに本があります。"
+        ],
+        "tiles": [
+          "ここ",
+          "に",
+          "本",
+          "が",
+          "あり",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 7,
+      "canDo": "I can respond and share basic information using 誰、何、どこ.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439983",
+        "1708637439866",
+        "1708637439894"
+      ],
+      "opening": {
+        "wordId": "1708637439983",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Who would you like to meet one day?",
+          "A: What is this?\nB: It's a book.",
+          "Where did you put that book?"
+        ],
+        "answer": "Who would you like to meet one day?",
+        "explanation": "The key expression is 誰 (だれ): who."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: Who would you like to meet one day?",
+        "model": "誰と会ってみたいですか。",
+        "reading": "誰[だれ]と 会[あ]ってみたいですか。",
+        "meaning": "Who would you like to meet one day?",
+        "acceptable": [
+          "誰と会ってみたいですか。"
+        ],
+        "tiles": [
+          "誰",
+          "と",
+          "会",
+          "って",
+          "みたい",
+          "です",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439866",
+        "prompt": "Now use the same skill in a new situation: A: What is this?\nB: It's a book.",
+        "model": "A「これは何ですか。」\nB「本です。」",
+        "reading": "A「これは何[なん]ですか。」\nB「 本[ほん]です。」",
+        "meaning": "A: What is this?\nB: It's a book.",
+        "acceptable": [
+          "A「これは何ですか。」\nB「本です。」"
+        ],
+        "tiles": [
+          "A",
+          "「",
+          "これ",
+          "は",
+          "何",
+          "です",
+          "か",
+          "」",
+          "B",
+          "「",
+          "本",
+          "です",
+          "」"
+        ]
+      }
+    },
+    {
+      "lesson": 8,
+      "canDo": "I can respond and share basic information using いい、悪い、好き.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439860",
+        "1708637439975",
+        "1708637439858"
+      ],
+      "opening": {
+        "wordId": "1708637439975",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "That person is a bad person.",
+          "That person is a good person.",
+          "I like wine."
+        ],
+        "answer": "That person is a bad person.",
+        "explanation": "The key expression is 悪い (わるい): bad."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: That person is a bad person.",
+        "model": "あの人は悪い人です。",
+        "reading": "あの 人[ひと]は悪[わる]い 人[ひと]です。",
+        "meaning": "That person is a bad person.",
+        "acceptable": [
+          "あの人は悪い人です。"
+        ],
+        "tiles": [
+          "あの",
+          "人",
+          "は",
+          "悪い",
+          "人",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439858",
+        "prompt": "Now use the same skill in a new situation: I like wine.",
+        "model": "私はワインが好きです。",
+        "reading": "私[わたし]はワインが好[す]きです。",
+        "meaning": "I like wine.",
+        "acceptable": [
+          "私はワインが好きです。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "ワイン",
+          "が",
+          "好き",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 9,
+      "canDo": "I can respond and share basic information using 家、部屋、学校.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439896",
+        "1708637439974",
+        "1708637439905"
+      ],
+      "opening": {
+        "wordId": "1708637439905",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The school is in Japan.",
+          "This is my house.",
+          "The room has a kitchen."
+        ],
+        "answer": "The school is in Japan.",
+        "explanation": "The key expression is 学校 (がっこう): school."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: The school is in Japan.",
+        "model": "学校は日本にあります。",
+        "reading": "学[がっ] 校[こう]は 日本[にほん]にあります。",
+        "meaning": "The school is in Japan.",
+        "acceptable": [
+          "学校は日本にあります。"
+        ],
+        "tiles": [
+          "学校",
+          "は",
+          "日本",
+          "に",
+          "あり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439896",
+        "prompt": "Now use the same skill in a new situation: This is my house.",
+        "model": "ここが私の家です。",
+        "reading": "ここが 私[わたし]の家[いえ]です。",
+        "meaning": "This is my house.",
+        "acceptable": [
+          "ここが私の家です。"
+        ],
+        "tiles": [
+          "ここ",
+          "が",
+          "私",
+          "の",
+          "家",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 10,
+      "canDo": "I can respond and share basic information using 今日、明日、昨日.",
+      "situation": "Meeting someone for the first time.",
+      "targetWordIds": [
+        "1708637439973",
+        "1708637439907",
+        "1708637439933"
+      ],
+      "opening": {
+        "wordId": "1708637439973",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Let's begin today's studies.",
+          "Tomorrow, I will go to school.",
+          "I met a friend yesterday."
+        ],
+        "answer": "Let's begin today's studies.",
+        "explanation": "The key expression is 今日 (きょう): today."
+      },
+      "production": {
+        "mode": "choice",
+        "prompt": "Build or say the model response for: Let's begin today's studies.",
+        "model": "今日の勉強を始めましょう。",
+        "reading": "今日[きょう]の 勉[べん] 強[きょう]を 始[はじ]めましょう。",
+        "meaning": "Let's begin today's studies.",
+        "acceptable": [
+          "今日の勉強を始めましょう。"
+        ],
+        "tiles": [
+          "今日",
+          "の",
+          "勉強",
+          "を",
+          "始め",
+          "ま",
+          "しょう"
+        ]
+      },
+      "transfer": {
+        "mode": "choice",
+        "wordId": "1708637439907",
+        "prompt": "Now use the same skill in a new situation: Tomorrow, I will go to school.",
+        "model": "明日、学校へ行きます。",
+        "reading": "明日[あした]、 学[がっ] 校[こう]へ 行[い]きます。",
+        "meaning": "Tomorrow, I will go to school.",
+        "acceptable": [
+          "明日、学校へ行きます。"
+        ],
+        "tiles": [
+          "明日",
+          "学校",
+          "へ",
+          "行き",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 11,
+      "canDo": "I can talk about places and time using 今、朝、夜.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637439875",
+        "1708637440321",
+        "1708637440026"
+      ],
+      "opening": {
+        "wordId": "1708637440321",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I wake up at 6 A.M. in the morning.",
+          "He's studying now.",
+          "I was at home last night."
+        ],
+        "answer": "I wake up at 6 A.M. in the morning.",
+        "explanation": "The key expression is 朝 (あさ): morning."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I wake up at 6 A.M. in the morning.",
+        "model": "朝、6時に起きます。",
+        "reading": "朝[あさ]、 6[ろく] 時[じ]に 起[お]きます。",
+        "meaning": "I wake up at 6 A.M. in the morning.",
+        "acceptable": [
+          "朝、6時に起きます。"
+        ],
+        "tiles": [
+          "朝",
+          "6",
+          "時に",
+          "起",
+          "き",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440026",
+        "prompt": "Now use the same skill in a new situation: I was at home last night.",
+        "model": "昨日の夜は家にいました。",
+        "reading": "昨日[きのう]の夜[よる]は 家[いえ]にいました。",
+        "meaning": "I was at home last night.",
+        "acceptable": [
+          "昨日の夜は家にいました。"
+        ],
+        "tiles": [
+          "昨日",
+          "の",
+          "夜",
+          "は",
+          "家",
+          "に",
+          "いま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 12,
+      "canDo": "I can talk about places and time using 一、二、三.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637440056",
+        "1708637440057",
+        "1708637440058"
+      ],
+      "opening": {
+        "wordId": "1708637440058",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "She's the mother of three children.",
+          "Let's start from the beginning.",
+          "I met that person twice."
+        ],
+        "answer": "She's the mother of three children.",
+        "explanation": "The key expression is 三 (さん): three."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: She's the mother of three children.",
+        "model": "彼女は三人の子供の母親だ。",
+        "reading": "彼[かの] 女[じょ]は三[さん] 人[にん]の 子[こ] 供[ども]の 母[はは] 親[おや]だ。",
+        "meaning": "She's the mother of three children.",
+        "acceptable": [
+          "彼女は三人の子供の母親だ。"
+        ],
+        "tiles": [
+          "彼女",
+          "は",
+          "三人",
+          "の",
+          "子供",
+          "の",
+          "母親",
+          "だ"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440056",
+        "prompt": "Now use the same skill in a new situation: Let's start from the beginning.",
+        "model": "一から始めましょう。",
+        "reading": "一[いち]から 始[はじ]めましょう。",
+        "meaning": "Let's start from the beginning.",
+        "acceptable": [
+          "一から始めましょう。"
+        ],
+        "tiles": [
+          "一",
+          "から",
+          "始め",
+          "ま",
+          "しょう"
+        ]
+      }
+    },
+    {
+      "lesson": 13,
+      "canDo": "I can talk about places and time using 四、五、六.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637440059",
+        "1708637440060",
+        "1708637440061"
+      ],
+      "opening": {
+        "wordId": "1708637440059",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "This is my fourth trip to Hawaii.",
+          "Five of us went on a trip.",
+          "He has six children."
+        ],
+        "answer": "This is my fourth trip to Hawaii.",
+        "explanation": "The key expression is 四 (よん・し): four."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: This is my fourth trip to Hawaii.",
+        "model": "ハワイは四回目です。",
+        "reading": "ハワイは四[よん] 回[かい] 目[め]です。",
+        "meaning": "This is my fourth trip to Hawaii.",
+        "acceptable": [
+          "ハワイは四回目です。"
+        ],
+        "tiles": [
+          "ハワイ",
+          "は",
+          "四",
+          "回",
+          "目",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440060",
+        "prompt": "Now use the same skill in a new situation: Five of us went on a trip.",
+        "model": "五人で旅行に行きました。",
+        "reading": "五[ご] 人[にん]で 旅[りょ] 行[こう]に 行[い]きました。",
+        "meaning": "Five of us went on a trip.",
+        "acceptable": [
+          "五人で旅行に行きました。"
+        ],
+        "tiles": [
+          "五人",
+          "で",
+          "旅行",
+          "に",
+          "行き",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 14,
+      "canDo": "I can talk about places and time using 七、八、九.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637440062",
+        "1708637440063",
+        "1708637440064"
+      ],
+      "opening": {
+        "wordId": "1708637440063",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please give me eight apples.",
+          "There are seven bananas.",
+          "In baseball there are nine people on one team."
+        ],
+        "answer": "Please give me eight apples.",
+        "explanation": "The key expression is 八 (はち): eight."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Please give me eight apples.",
+        "model": "りんごを八個ください。",
+        "reading": "りんごを八[はち] 個[こ]ください。",
+        "meaning": "Please give me eight apples.",
+        "acceptable": [
+          "りんごを八個ください。"
+        ],
+        "tiles": [
+          "りんご",
+          "を",
+          "八個",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440064",
+        "prompt": "Now use the same skill in a new situation: In baseball there are nine people on one team.",
+        "model": "野球は九人で1チームです。",
+        "reading": "野[や] 球[きゅう]は九[きゅう] 人[にん]で 1[ひと]チームです。",
+        "meaning": "In baseball there are nine people on one team.",
+        "acceptable": [
+          "野球は九人で1チームです。"
+        ],
+        "tiles": [
+          "野球",
+          "は",
+          "九",
+          "人",
+          "で",
+          "1",
+          "チーム",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 15,
+      "canDo": "I can talk about places and time using 日曜日、月曜日、火曜日.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637441344",
+        "1708637441338",
+        "1708637441339"
+      ],
+      "opening": {
+        "wordId": "1708637441339",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "There's a meeting on Tuesday.",
+          "We went to the beach on Sunday.",
+          "Let's meet on Monday."
+        ],
+        "answer": "There's a meeting on Tuesday.",
+        "explanation": "The key expression is 火曜日 (かようび): Tuesday."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: There's a meeting on Tuesday.",
+        "model": "火曜日に会議があります。",
+        "reading": "火[か] 曜[よう] 日[び]に 会[かい] 議[ぎ]があります。",
+        "meaning": "There's a meeting on Tuesday.",
+        "acceptable": [
+          "火曜日に会議があります。"
+        ],
+        "tiles": [
+          "火曜日",
+          "に",
+          "会議",
+          "が",
+          "あり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637441344",
+        "prompt": "Now use the same skill in a new situation: We went to the beach on Sunday.",
+        "model": "日曜日は海に行きました。",
+        "reading": "日[にち] 曜[よう] 日[び]は 海[うみ]に 行[い]きました。",
+        "meaning": "We went to the beach on Sunday.",
+        "acceptable": [
+          "日曜日は海に行きました。"
+        ],
+        "tiles": [
+          "日曜日",
+          "は",
+          "海",
+          "に",
+          "行き",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 16,
+      "canDo": "I can talk about places and time using 水曜日、木曜日、金曜日.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637441340",
+        "1708637441341",
+        "1708637441342"
+      ],
+      "opening": {
+        "wordId": "1708637441340",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I work part time on Wednesdays.",
+          "I don't have work on Thursday.",
+          "I go out with my friends on Friday nights."
+        ],
+        "answer": "I work part time on Wednesdays.",
+        "explanation": "The key expression is 水曜日 (すいようび): Wednesday."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I work part time on Wednesdays.",
+        "model": "水曜日はバイトがあります。",
+        "reading": "水[すい] 曜[よう] 日[び]はバイトがあります。",
+        "meaning": "I work part time on Wednesdays.",
+        "acceptable": [
+          "水曜日はバイトがあります。"
+        ],
+        "tiles": [
+          "水曜日",
+          "は",
+          "バイト",
+          "が",
+          "あり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637441341",
+        "prompt": "Now use the same skill in a new situation: I don't have work on Thursday.",
+        "model": "木曜日は仕事が休みです。",
+        "reading": "木[もく] 曜[よう] 日[び]は 仕[し] 事[ごと]が 休[やす]みです。",
+        "meaning": "I don't have work on Thursday.",
+        "acceptable": [
+          "木曜日は仕事が休みです。"
+        ],
+        "tiles": [
+          "木曜日",
+          "は",
+          "仕事",
+          "が",
+          "休み",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 17,
+      "canDo": "I can talk about places and time using 土曜日、時間、分.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637441343",
+        "1708637439876",
+        "1708637440482"
+      ],
+      "opening": {
+        "wordId": "1708637439876",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I don't have time now.",
+          "I'm going to a club Saturday night.",
+          "This cake is your portion."
+        ],
+        "answer": "I don't have time now.",
+        "explanation": "The key expression is 時間 (じかん): time, hour."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I don't have time now.",
+        "model": "今は時間がありません。",
+        "reading": "今[いま]は時[じ] 間[かん]がありません。",
+        "meaning": "I don't have time now.",
+        "acceptable": [
+          "今は時間がありません。"
+        ],
+        "tiles": [
+          "今",
+          "は",
+          "時間",
+          "が",
+          "ありま",
+          "せん"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440482",
+        "prompt": "Now use the same skill in a new situation: This cake is your portion.",
+        "model": "このケーキはあなたの分です。",
+        "reading": "このケーキはあなたの分[ぶん]です。",
+        "meaning": "This cake is your portion.",
+        "acceptable": [
+          "このケーキはあなたの分です。"
+        ],
+        "tiles": [
+          "この",
+          "ケーキ",
+          "は",
+          "あなた",
+          "の",
+          "分",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 18,
+      "canDo": "I can talk about places and time using する、行く、来る.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637439885",
+        "1708637439906",
+        "1708637439908"
+      ],
+      "opening": {
+        "wordId": "1708637439908",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Will you come tomorrow?",
+          "He plays tennis (lit: \"He does tennis\").",
+          "I will go to school."
+        ],
+        "answer": "Will you come tomorrow?",
+        "explanation": "The key expression is 来る (くる): to come."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Will you come tomorrow?",
+        "model": "明日、来ますか。",
+        "reading": "明日[あした]、来[き]ますか。",
+        "meaning": "Will you come tomorrow?",
+        "acceptable": [
+          "明日、来ますか。"
+        ],
+        "tiles": [
+          "明日",
+          "来",
+          "ます",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439885",
+        "prompt": "Now use the same skill in a new situation: He plays tennis (lit: \"He does tennis\").",
+        "model": "彼はテニスをします。",
+        "reading": "彼[かれ]はテニスをします。",
+        "meaning": "He plays tennis (lit: \"He does tennis\").",
+        "acceptable": [
+          "彼はテニスをします。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "テニス",
+          "を",
+          "し",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 19,
+      "canDo": "I can talk about places and time using 帰る、見る、聞く.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637439897",
+        "1708637439882",
+        "1708637439919"
+      ],
+      "opening": {
+        "wordId": "1708637439897",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Let's go home.",
+          "My older brother watches TV every day.",
+          "She's listening to the radio."
+        ],
+        "answer": "Let's go home.",
+        "explanation": "The key expression is 帰る (かえる): to return, to go back."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Let's go home.",
+        "model": "家に帰ろう。",
+        "reading": "家[うち]に帰[かえ]ろう。",
+        "meaning": "Let's go home.",
+        "acceptable": [
+          "家に帰ろう。"
+        ],
+        "tiles": [
+          "家",
+          "に",
+          "帰",
+          "ろう"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439882",
+        "prompt": "Now use the same skill in a new situation: My older brother watches TV every day.",
+        "model": "兄は毎日テレビを見ます。",
+        "reading": "兄[あに]は 毎[まい] 日[にち]テレビを見[み]ます。",
+        "meaning": "My older brother watches TV every day.",
+        "acceptable": [
+          "兄は毎日テレビを見ます。"
+        ],
+        "tiles": [
+          "兄",
+          "は",
+          "毎日",
+          "テレビ",
+          "を",
+          "見",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 20,
+      "canDo": "I can talk about places and time using 話す、読む、書く.",
+      "situation": "Making a simple plan with a friend.",
+      "targetWordIds": [
+        "1708637439927",
+        "1708637440222",
+        "1708637440195"
+      ],
+      "opening": {
+        "wordId": "1708637440222",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I read a Japanese language book.",
+          "I speak Japanese with the teacher.",
+          "I wrote him a letter."
+        ],
+        "answer": "I read a Japanese language book.",
+        "explanation": "The key expression is 読む (よむ): to read."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I read a Japanese language book.",
+        "model": "日本語の本を読みます。",
+        "reading": "日本[にほん] 語[ご]の 本[ほん]を読[よ]みます。",
+        "meaning": "I read a Japanese language book.",
+        "acceptable": [
+          "日本語の本を読みます。"
+        ],
+        "tiles": [
+          "日本語",
+          "の",
+          "本",
+          "を",
+          "読み",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440195",
+        "prompt": "Now use the same skill in a new situation: I wrote him a letter.",
+        "model": "彼に手紙を書きました。",
+        "reading": "彼[かれ]に 手[て] 紙[がみ]を書[か]きました。",
+        "meaning": "I wrote him a letter.",
+        "acceptable": [
+          "彼に手紙を書きました。"
+        ],
+        "tiles": [
+          "彼",
+          "に",
+          "手紙",
+          "を",
+          "書き",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 21,
+      "canDo": "I can describe everyday actions using 食べる、飲む、買う.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637439977",
+        "1708637440052",
+        "1708637440027"
+      ],
+      "opening": {
+        "wordId": "1708637440027",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Yesterday, I bought a CD.",
+          "I ate Thai curry yesterday.",
+          "I drink water."
+        ],
+        "answer": "Yesterday, I bought a CD.",
+        "explanation": "The key expression is 買う (かう): to buy."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Yesterday, I bought a CD.",
+        "model": "昨日、シーディーを買いました。",
+        "reading": "昨日[きのう]、シーディーを買[か]いました。",
+        "meaning": "Yesterday, I bought a CD.",
+        "acceptable": [
+          "昨日、シーディーを買いました。"
+        ],
+        "tiles": [
+          "昨日",
+          "シーディー",
+          "を",
+          "買い",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439977",
+        "prompt": "Now use the same skill in a new situation: I ate Thai curry yesterday.",
+        "model": "昨日タイカレーを食べました。",
+        "reading": "昨日[きのう]タイカレーを食[た]べました。",
+        "meaning": "I ate Thai curry yesterday.",
+        "acceptable": [
+          "昨日タイカレーを食べました。"
+        ],
+        "tiles": [
+          "昨日",
+          "タイ",
+          "カレー",
+          "を",
+          "食",
+          "べ",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 22,
+      "canDo": "I can describe everyday actions using 作る、使う、持つ.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637440085",
+        "1708637439970",
+        "1708637439968"
+      ],
+      "opening": {
+        "wordId": "1708637440085",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I'm making breakfast now.",
+          "I use the computer every day.",
+          "I have a car."
+        ],
+        "answer": "I'm making breakfast now.",
+        "explanation": "The key expression is 作る (つくる): to make, to create."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I'm making breakfast now.",
+        "model": "今、朝ご飯を作っています。",
+        "reading": "今[いま]、 朝[あさ]ご 飯[はん]を作[つく]っています。",
+        "meaning": "I'm making breakfast now.",
+        "acceptable": [
+          "今、朝ご飯を作っています。"
+        ],
+        "tiles": [
+          "今",
+          "朝",
+          "ご飯",
+          "を",
+          "作",
+          "って",
+          "い",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439970",
+        "prompt": "Now use the same skill in a new situation: I use the computer every day.",
+        "model": "毎日、コンピューターを使います。",
+        "reading": "毎[まい] 日[にち]、コンピューターを使[つか]います。",
+        "meaning": "I use the computer every day.",
+        "acceptable": [
+          "毎日、コンピューターを使います。"
+        ],
+        "tiles": [
+          "毎日",
+          "コンピューター",
+          "を",
+          "使い",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 23,
+      "canDo": "I can describe everyday actions using 会う、待つ、歩く.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637439915",
+        "1708637439932",
+        "1708637440125"
+      ],
+      "opening": {
+        "wordId": "1708637439932",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I waited for my friend for an hour.",
+          "I will meet him tomorrow.",
+          "Let's walk to the station."
+        ],
+        "answer": "I waited for my friend for an hour.",
+        "explanation": "The key expression is 待つ (まつ): to wait."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I waited for my friend for an hour.",
+        "model": "1時間友達を待ちました。",
+        "reading": "1[いち] 時[じ] 間[かん] 友[とも] 達[だち]を待[ま]ちました。",
+        "meaning": "I waited for my friend for an hour.",
+        "acceptable": [
+          "1時間友達を待ちました。"
+        ],
+        "tiles": [
+          "1",
+          "時間",
+          "友達",
+          "を",
+          "待ち",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440125",
+        "prompt": "Now use the same skill in a new situation: Let's walk to the station.",
+        "model": "駅まで歩きましょう。",
+        "reading": "駅[えき]まで歩[ある]きましょう。",
+        "meaning": "Let's walk to the station.",
+        "acceptable": [
+          "駅まで歩きましょう。"
+        ],
+        "tiles": [
+          "駅",
+          "まで",
+          "歩き",
+          "ま",
+          "しょう"
+        ]
+      }
+    },
+    {
+      "lesson": 24,
+      "canDo": "I can describe everyday actions using 入る、出る、休む.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637439954",
+        "1708637440071",
+        "1708637440541"
+      ],
+      "opening": {
+        "wordId": "1708637440541",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Yesterday, I took a day off work.",
+          "I will enter the restaurant.",
+          "I left the house early this morning."
+        ],
+        "answer": "Yesterday, I took a day off work.",
+        "explanation": "The key expression is 休む (やすむ): to rest, to take time off."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Yesterday, I took a day off work.",
+        "model": "昨日、会社を休みました。",
+        "reading": "昨日[きのう]、 会[かい] 社[しゃ]を休[やす]みました。",
+        "meaning": "Yesterday, I took a day off work.",
+        "acceptable": [
+          "昨日、会社を休みました。"
+        ],
+        "tiles": [
+          "昨日",
+          "会社",
+          "を",
+          "休み",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439954",
+        "prompt": "Now use the same skill in a new situation: I will enter the restaurant.",
+        "model": "レストランに入ります。",
+        "reading": "レストランに入[はい]ります。",
+        "meaning": "I will enter the restaurant.",
+        "acceptable": [
+          "レストランに入ります。"
+        ],
+        "tiles": [
+          "レストラン",
+          "に",
+          "入り",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 25,
+      "canDo": "I can describe everyday actions using 起きる、寝る、勉強.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637440207",
+        "1708637440040",
+        "1708637439863"
+      ],
+      "opening": {
+        "wordId": "1708637440207",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Some burglaries occurred in the neighborhood.",
+          "Let's sleep.",
+          "I'm studying Japanese."
+        ],
+        "answer": "Some burglaries occurred in the neighborhood.",
+        "explanation": "The key expression is 起きる (おきる): to occur."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Some burglaries occurred in the neighborhood.",
+        "model": "近所で盗難事件が起きました。",
+        "reading": "近[きん] 所[じょ]で 盗[とう] 難[なん] 事[じ] 件[けん]が起[お]きました。",
+        "meaning": "Some burglaries occurred in the neighborhood.",
+        "acceptable": [
+          "近所で盗難事件が起きました。"
+        ],
+        "tiles": [
+          "近所",
+          "で",
+          "盗難",
+          "事件",
+          "が",
+          "起",
+          "き",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440040",
+        "prompt": "Now use the same skill in a new situation: Let's sleep.",
+        "model": "もう寝よう。",
+        "reading": "もう寝[ね]よう。",
+        "meaning": "Let's sleep.",
+        "acceptable": [
+          "もう寝よう。"
+        ],
+        "tiles": [
+          "もう",
+          "寝",
+          "よう"
+        ]
+      }
+    },
+    {
+      "lesson": 26,
+      "canDo": "I can describe everyday actions using 仕事、遊ぶ、分かる.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637440002",
+        "1708637440411",
+        "1708637439922"
+      ],
+      "opening": {
+        "wordId": "1708637440411",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The children are playing in the park.",
+          "I help with my father's work.",
+          "I didn't understand the Japanese news at all."
+        ],
+        "answer": "The children are playing in the park.",
+        "explanation": "The key expression is 遊ぶ (あそぶ): to play."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: The children are playing in the park.",
+        "model": "子供たちが公園で遊んでいる。",
+        "reading": "子[こ] 供[ども]たちが 公[こう] 園[えん]で遊[あそ]んでいる。",
+        "meaning": "The children are playing in the park.",
+        "acceptable": [
+          "子供たちが公園で遊んでいる。"
+        ],
+        "tiles": [
+          "子供",
+          "たち",
+          "が",
+          "公園",
+          "で",
+          "遊",
+          "んで",
+          "いる"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439922",
+        "prompt": "Now use the same skill in a new situation: I didn't understand the Japanese news at all.",
+        "model": "日本語のニュースが全然分かりませんでした。",
+        "reading": "日本[にほん] 語[ご]のニュースが 全[ぜん] 然[ぜん]分[わ]かりませんでした。",
+        "meaning": "I didn't understand the Japanese news at all.",
+        "acceptable": [
+          "日本語のニュースが全然分かりませんでした。"
+        ],
+        "tiles": [
+          "日本語",
+          "の",
+          "ニュース",
+          "が",
+          "全然",
+          "分",
+          "か",
+          "り",
+          "ま",
+          "せん",
+          "で",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 27,
+      "canDo": "I can describe everyday actions using 知る、思う、言う.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637439899",
+        "1708637439911",
+        "1708637439930"
+      ],
+      "opening": {
+        "wordId": "1708637439930",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please say it slowly.",
+          "Do you know that person?",
+          "I think this is good."
+        ],
+        "answer": "Please say it slowly.",
+        "explanation": "The key expression is 言う (いう): to say."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Please say it slowly.",
+        "model": "ゆっくり言ってください。",
+        "reading": "ゆっくり言[い]ってください。",
+        "meaning": "Please say it slowly.",
+        "acceptable": [
+          "ゆっくり言ってください。"
+        ],
+        "tiles": [
+          "ゆっくり",
+          "言",
+          "って",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439899",
+        "prompt": "Now use the same skill in a new situation: Do you know that person?",
+        "model": "あの人を知っていますか。",
+        "reading": "あの 人[ひと]を知[し]っていますか。",
+        "meaning": "Do you know that person?",
+        "acceptable": [
+          "あの人を知っていますか。"
+        ],
+        "tiles": [
+          "あの",
+          "人",
+          "を",
+          "知",
+          "って",
+          "い",
+          "ます",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 28,
+      "canDo": "I can describe everyday actions using 教える、ください、お願い.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637439890",
+        "1708637439888",
+        "1708637440046"
+      ],
+      "opening": {
+        "wordId": "1708637439890",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please tell me your name.",
+          "Please give me a coffee.",
+          "I have a favor to ask."
+        ],
+        "answer": "Please tell me your name.",
+        "explanation": "The key expression is 教える (おしえる): to teach, to tell."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: Please tell me your name.",
+        "model": "あなたの名前を教えてください。",
+        "reading": "あなたの 名[な] 前[まえ]を教[おし]えてください。",
+        "meaning": "Please tell me your name.",
+        "acceptable": [
+          "あなたの名前を教えてください。"
+        ],
+        "tiles": [
+          "あなた",
+          "の",
+          "名前",
+          "を",
+          "教え",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637439888",
+        "prompt": "Now use the same skill in a new situation: Please give me a coffee.",
+        "model": "コーヒーをください。",
+        "reading": "コーヒーをください。",
+        "meaning": "Please give me a coffee.",
+        "acceptable": [
+          "コーヒーをください。"
+        ],
+        "tiles": [
+          "コーヒー",
+          "を",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 29,
+      "canDo": "I can describe everyday actions using お茶、水、ご飯.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637440760",
+        "1708637440051",
+        "1708637440076"
+      ],
+      "opening": {
+        "wordId": "1708637440051",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I drink water.",
+          "Shall I make tea?",
+          "I prefer rice to bread."
+        ],
+        "answer": "I drink water.",
+        "explanation": "The key expression is 水 (みず): water."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: I drink water.",
+        "model": "水を飲みます。",
+        "reading": "水[みず]を 飲[の]みます。",
+        "meaning": "I drink water.",
+        "acceptable": [
+          "水を飲みます。"
+        ],
+        "tiles": [
+          "水",
+          "を",
+          "飲",
+          "み",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637440076",
+        "prompt": "Now use the same skill in a new situation: I prefer rice to bread.",
+        "model": "私はパンよりご飯が好きだ。",
+        "reading": "私[わたし]はパンよりご 飯[はん]が 好[す]きだ。",
+        "meaning": "I prefer rice to bread.",
+        "acceptable": [
+          "私はパンよりご飯が好きだ。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "パン",
+          "より",
+          "ご飯",
+          "が",
+          "好き",
+          "だ"
+        ]
+      }
+    },
+    {
+      "lesson": 30,
+      "canDo": "I can describe everyday actions using パン、魚、肉.",
+      "situation": "Talking about an ordinary day.",
+      "targetWordIds": [
+        "1708637441056",
+        "1708637441145",
+        "1708637440504"
+      ],
+      "opening": {
+        "wordId": "1708637440504",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The meat is cooked.",
+          "I always eat bread for breakfast.",
+          "I will cook the fish for about 10 minutes."
+        ],
+        "answer": "The meat is cooked.",
+        "explanation": "The key expression is 肉 (にく): flesh, meat."
+      },
+      "production": {
+        "mode": "tiles",
+        "prompt": "Build or say the model response for: The meat is cooked.",
+        "model": "肉が焼けました。",
+        "reading": "肉[にく]が 焼[や]けました。",
+        "meaning": "The meat is cooked.",
+        "acceptable": [
+          "肉が焼けました。"
+        ],
+        "tiles": [
+          "肉",
+          "が",
+          "焼け",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles",
+        "wordId": "1708637441056",
+        "prompt": "Now use the same skill in a new situation: I always eat bread for breakfast.",
+        "model": "朝ご飯にはいつもパンを食べる。",
+        "reading": "朝[あさ]ご 飯[はん]にはいつもパンを 食[た]べる。",
+        "meaning": "I always eat bread for breakfast.",
+        "acceptable": [
+          "朝ご飯にはいつもパンを食べる。"
+        ],
+        "tiles": [
+          "朝",
+          "ご飯",
+          "に",
+          "は",
+          "いつも",
+          "パン",
+          "を",
+          "食べる"
+        ]
+      }
+    },
+    {
+      "lesson": 31,
+      "canDo": "I can make requests and talk about food using 猫、犬、車.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440777",
+        "1708637440778",
+        "1708637440874"
+      ],
+      "opening": {
+        "wordId": "1708637440777",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I love cats.",
+          "I want a poster of a dog.",
+          "My younger brother bought a car."
+        ],
+        "answer": "I love cats.",
+        "explanation": "The key expression is 猫 (ねこ): cat."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: I love cats.",
+        "model": "私は猫が大好きです。",
+        "reading": "私[わたし]は猫[ねこ]が 大[だい] 好[す]きです。",
+        "meaning": "I love cats.",
+        "acceptable": [
+          "私は猫が大好きです。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "猫",
+          "が",
+          "大好き",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440778",
+        "prompt": "Now use the same skill in a new situation: I want a poster of a dog.",
+        "model": "犬のポスターが欲しいです。",
+        "reading": "犬[いぬ]のポスターが 欲[ほ]しいです。",
+        "meaning": "I want a poster of a dog.",
+        "acceptable": [
+          "犬のポスターが欲しいです。"
+        ],
+        "tiles": [
+          "犬",
+          "の",
+          "ポスター",
+          "が",
+          "欲しい",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 32,
+      "canDo": "I can make requests and talk about food using 写真、電話、お金.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440786",
+        "1708637440818",
+        "1708637440619"
+      ],
+      "opening": {
+        "wordId": "1708637440818",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I spoke with my mother on the phone.",
+          "This is a photograph of my family.",
+          "The Japanese currency is yen."
+        ],
+        "answer": "I spoke with my mother on the phone.",
+        "explanation": "The key expression is 電話 (でんわ): telephone."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: I spoke with my mother on the phone.",
+        "model": "母と電話で話しました。",
+        "reading": "母[はは]と電[でん] 話[わ]で 話[はな]しました。",
+        "meaning": "I spoke with my mother on the phone.",
+        "acceptable": [
+          "母と電話で話しました。"
+        ],
+        "tiles": [
+          "母",
+          "と",
+          "電話",
+          "で",
+          "話",
+          "しま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440619",
+        "prompt": "Now use the same skill in a new situation: The Japanese currency is yen.",
+        "model": "日本のお金は円です。",
+        "reading": "日本[にほん]のお 金[かね]は 円[えん]です。",
+        "meaning": "The Japanese currency is yen.",
+        "acceptable": [
+          "日本のお金は円です。"
+        ],
+        "tiles": [
+          "日本",
+          "の",
+          "お金",
+          "は",
+          "円",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 33,
+      "canDo": "I can make requests and talk about food using 本、雨、雪.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637439864",
+        "1708637440761",
+        "1708637441124"
+      ],
+      "opening": {
+        "wordId": "1708637441124",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "It snowed at Christmas.",
+          "It was a good book, wasn't it?",
+          "It's raining."
+        ],
+        "answer": "It snowed at Christmas.",
+        "explanation": "The key expression is 雪 (ゆき): snow, snowfall."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: It snowed at Christmas.",
+        "model": "クリスマスに雪が降りました。",
+        "reading": "クリスマスに雪[ゆき]が 降[ふ]りました。",
+        "meaning": "It snowed at Christmas.",
+        "acceptable": [
+          "クリスマスに雪が降りました。"
+        ],
+        "tiles": [
+          "クリスマス",
+          "に",
+          "雪",
+          "が",
+          "降り",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439864",
+        "prompt": "Now use the same skill in a new situation: It was a good book, wasn't it?",
+        "model": "いい本でしたね。",
+        "reading": "いい本[ほん]でしたね。",
+        "meaning": "It was a good book, wasn't it?",
+        "acceptable": [
+          "いい本でしたね。"
+        ],
+        "tiles": [
+          "いい",
+          "本",
+          "で",
+          "した",
+          "ね"
+        ]
+      }
+    },
+    {
+      "lesson": 34,
+      "canDo": "I can make requests and talk about food using 寒い、熱い、冷たい.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440942",
+        "1708637440363",
+        "1708637440468"
+      ],
+      "opening": {
+        "wordId": "1708637440942",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "This room is cold.",
+          "This soup is very hot.",
+          "I want to drink cold juice."
+        ],
+        "answer": "This room is cold.",
+        "explanation": "The key expression is 寒い (さむい): cold (temperature)."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: This room is cold.",
+        "model": "この部屋は寒いです。",
+        "reading": "この 部屋[へや]は寒[さむ]いです。",
+        "meaning": "This room is cold.",
+        "acceptable": [
+          "この部屋は寒いです。"
+        ],
+        "tiles": [
+          "この",
+          "部屋",
+          "は",
+          "寒い",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440363",
+        "prompt": "Now use the same skill in a new situation: This soup is very hot.",
+        "model": "このスープはとても熱い。",
+        "reading": "このスープはとても熱[あつ]い。",
+        "meaning": "This soup is very hot.",
+        "acceptable": [
+          "このスープはとても熱い。"
+        ],
+        "tiles": [
+          "この",
+          "スープ",
+          "は",
+          "とても",
+          "熱い"
+        ]
+      }
+    },
+    {
+      "lesson": 35,
+      "canDo": "I can make requests and talk about food using 楽しい、面白い、難しい.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637439998",
+        "1708637439884",
+        "1708637440035"
+      ],
+      "opening": {
+        "wordId": "1708637439884",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "This book wasn't interesting at all.",
+          "He's a very fun person.",
+          "This book is difficult."
+        ],
+        "answer": "This book wasn't interesting at all.",
+        "explanation": "The key expression is 面白い (おもしろい): interesting, amusing."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: This book wasn't interesting at all.",
+        "model": "この本は全然面白くなかった。",
+        "reading": "この 本[ほん]は 全[ぜん] 然[ぜん]面[おも] 白[しろ]くなかった。",
+        "meaning": "This book wasn't interesting at all.",
+        "acceptable": [
+          "この本は全然面白くなかった。"
+        ],
+        "tiles": [
+          "この",
+          "本",
+          "は",
+          "全然",
+          "面白",
+          "く",
+          "なか",
+          "っ",
+          "た"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440035",
+        "prompt": "Now use the same skill in a new situation: This book is difficult.",
+        "model": "この本は難しいですね。",
+        "reading": "この 本[ほん]は難[むずか]しいですね。",
+        "meaning": "This book is difficult.",
+        "acceptable": [
+          "この本は難しいですね。"
+        ],
+        "tiles": [
+          "この",
+          "本",
+          "は",
+          "難しい",
+          "です",
+          "ね"
+        ]
+      }
+    },
+    {
+      "lesson": 36,
+      "canDo": "I can make requests and talk about food using 簡単、早い、遅い.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440045",
+        "1708637440103",
+        "1708637440395"
+      ],
+      "opening": {
+        "wordId": "1708637440395",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The car in front is very slow.",
+          "This test is really simple.",
+          "A: I woke up at 5 A.M. this morning.\nB: That's early, isn't it?"
+        ],
+        "answer": "The car in front is very slow.",
+        "explanation": "The key expression is 遅い (おそい): slow, late."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: The car in front is very slow.",
+        "model": "前の車はとても遅い。",
+        "reading": "前[まえ]の 車[くるま]はとても遅[おそ]い。",
+        "meaning": "The car in front is very slow.",
+        "acceptable": [
+          "前の車はとても遅い。"
+        ],
+        "tiles": [
+          "前",
+          "の",
+          "車",
+          "は",
+          "とても",
+          "遅い"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440045",
+        "prompt": "Now use the same skill in a new situation: This test is really simple.",
+        "model": "このテストはとても簡単です。",
+        "reading": "このテストはとても簡[かん] 単[たん]です。",
+        "meaning": "This test is really simple.",
+        "acceptable": [
+          "このテストはとても簡単です。"
+        ],
+        "tiles": [
+          "この",
+          "テスト",
+          "は",
+          "とても",
+          "簡単",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 37,
+      "canDo": "I can make requests and talk about food using 一緒、みんな、友達.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440496",
+        "1708637439969",
+        "1708637439931"
+      ],
+      "opening": {
+        "wordId": "1708637440496",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Do you want to eat together?",
+          "Everyone in my family is doing well.",
+          "I went to the restaurant with my friend."
+        ],
+        "answer": "Do you want to eat together?",
+        "explanation": "The key expression is 一緒 (いっしょ): together."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Do you want to eat together?",
+        "model": "一緒に食事しよっか。",
+        "reading": "一[いっ] 緒[しょ]に 食[しょく] 事[じ]しようか。",
+        "meaning": "Do you want to eat together?",
+        "acceptable": [
+          "一緒に食事しよっか。"
+        ],
+        "tiles": [
+          "一緒",
+          "に",
+          "食事",
+          "し",
+          "よ",
+          "っ",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439969",
+        "prompt": "Now use the same skill in a new situation: Everyone in my family is doing well.",
+        "model": "家族はみんな元気です。",
+        "reading": "家[か] 族[ぞく]はみんな 元[げん] 気[き]です。",
+        "meaning": "Everyone in my family is doing well.",
+        "acceptable": [
+          "家族はみんな元気です。"
+        ],
+        "tiles": [
+          "家族",
+          "は",
+          "みんな",
+          "元気",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 38,
+      "canDo": "I can make requests and talk about food using 彼、彼女、家族.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637439857",
+        "1708637439900",
+        "1708637439955"
+      ],
+      "opening": {
+        "wordId": "1708637439900",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Do you know her name?",
+          "He is Tom-san.",
+          "The family watched television."
+        ],
+        "answer": "Do you know her name?",
+        "explanation": "The key expression is 彼女 (かのじょ): she, her, girlfriend."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Do you know her name?",
+        "model": "彼女の名前を知っていますか。",
+        "reading": "彼[かの] 女[じょ]の 名[な] 前[まえ]を 知[し]っていますか。",
+        "meaning": "Do you know her name?",
+        "acceptable": [
+          "彼女の名前を知っていますか。"
+        ],
+        "tiles": [
+          "彼女",
+          "の",
+          "名前",
+          "を",
+          "知",
+          "って",
+          "い",
+          "ます",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439955",
+        "prompt": "Now use the same skill in a new situation: The family watched television.",
+        "model": "家族がテレビを見た。",
+        "reading": "家[か] 族[ぞく]がテレビを 見[み]た。",
+        "meaning": "The family watched television.",
+        "acceptable": [
+          "家族がテレビを見た。"
+        ],
+        "tiles": [
+          "家族",
+          "が",
+          "テレビ",
+          "を",
+          "見",
+          "た"
+        ]
+      }
+    },
+    {
+      "lesson": 39,
+      "canDo": "I can make requests and talk about food using 男、女、子供.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440081",
+        "1708637440120",
+        "1708637440215"
+      ],
+      "opening": {
+        "wordId": "1708637440215",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Kids were making a racket in the train.",
+          "A man began talking to us.",
+          "The salesclerk was a young woman."
+        ],
+        "answer": "Kids were making a racket in the train.",
+        "explanation": "The key expression is 子供 (こども): child, kid."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Kids were making a racket in the train.",
+        "model": "電車で子供が騒いでいた。",
+        "reading": "電[でん] 車[しゃ]で子[こ] 供[ども]が 騒[さわ]いでいた。",
+        "meaning": "Kids were making a racket in the train.",
+        "acceptable": [
+          "電車で子供が騒いでいた。"
+        ],
+        "tiles": [
+          "電車",
+          "で",
+          "子供",
+          "が",
+          "騒",
+          "い",
+          "で",
+          "い",
+          "た"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440081",
+        "prompt": "Now use the same skill in a new situation: A man began talking to us.",
+        "model": "男の人が私たちに話しかけた。",
+        "reading": "男[おとこ]の 人[ひと]が 私[わたし]たちに 話[はな]しかけた。",
+        "meaning": "A man began talking to us.",
+        "acceptable": [
+          "男の人が私たちに話しかけた。"
+        ],
+        "tiles": [
+          "男",
+          "の",
+          "人",
+          "が",
+          "私",
+          "たち",
+          "に",
+          "話",
+          "しか",
+          "けた"
+        ]
+      }
+    },
+    {
+      "lesson": 40,
+      "canDo": "I can make requests and talk about food using お父さん、お母さん、お兄さん.",
+      "situation": "Ordering or asking for something politely.",
+      "targetWordIds": [
+        "1708637440864",
+        "1708637440865",
+        "1708637440866"
+      ],
+      "opening": {
+        "wordId": "1708637440864",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "My father's a company employee.",
+          "His mother is a beauty.",
+          "How old is your big brother?"
+        ],
+        "answer": "My father's a company employee.",
+        "explanation": "The key expression is お父さん (おとうさん): father."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: My father's a company employee.",
+        "model": "お父さんは会社員です。",
+        "reading": "お 父[とう]さんは 会[かい] 社[しゃ] 員[いん]です。",
+        "meaning": "My father's a company employee.",
+        "acceptable": [
+          "お父さんは会社員です。"
+        ],
+        "tiles": [
+          "お父さん",
+          "は",
+          "会",
+          "社員",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440865",
+        "prompt": "Now use the same skill in a new situation: His mother is a beauty.",
+        "model": "彼のお母さんは美人です。",
+        "reading": "彼[かれ]のお 母[かあ]さんは 美[び] 人[じん]です。",
+        "meaning": "His mother is a beauty.",
+        "acceptable": [
+          "彼のお母さんは美人です。"
+        ],
+        "tiles": [
+          "彼",
+          "の",
+          "お母さん",
+          "は",
+          "美人",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 41,
+      "canDo": "I can describe people and things using お姉さん、店、場所.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637440867",
+        "1708637440375",
+        "1708637439979"
+      ],
+      "opening": {
+        "wordId": "1708637440375",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I come to this store quite often.",
+          "I met your older sister yesterday.",
+          "There are many places I want to go to."
+        ],
+        "answer": "I come to this store quite often.",
+        "explanation": "The key expression is 店 (みせ): shop, store."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: I come to this store quite often.",
+        "model": "私はこの店によく来ます。",
+        "reading": "私[わたし]はこの店[みせ]によく 来[き]ます。",
+        "meaning": "I come to this store quite often.",
+        "acceptable": [
+          "私はこの店によく来ます。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "この",
+          "店",
+          "に",
+          "よく",
+          "来",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439979",
+        "prompt": "Now use the same skill in a new situation: There are many places I want to go to.",
+        "model": "行ってみたい場所がたくさんあります。",
+        "reading": "行[い]ってみたい場[ば] 所[しょ]がたくさんあります。",
+        "meaning": "There are many places I want to go to.",
+        "acceptable": [
+          "行ってみたい場所がたくさんあります。"
+        ],
+        "tiles": [
+          "行",
+          "って",
+          "みたい",
+          "場所",
+          "が",
+          "たくさん",
+          "あり",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 42,
+      "canDo": "I can describe people and things using 病院、道、人.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637441134",
+        "1708637440289",
+        "1708637439859"
+      ],
+      "opening": {
+        "wordId": "1708637439859",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "That person is a good person.",
+          "I will go to the hospital.",
+          "I know this road."
+        ],
+        "answer": "That person is a good person.",
+        "explanation": "The key expression is 人 (ひと): person."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: That person is a good person.",
+        "model": "あの人はいい人です。",
+        "reading": "あの人[ひと]はいい 人[ひと]です。",
+        "meaning": "That person is a good person.",
+        "acceptable": [
+          "あの人はいい人です。"
+        ],
+        "tiles": [
+          "あの",
+          "人",
+          "は",
+          "いい",
+          "人",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637441134",
+        "prompt": "Now use the same skill in a new situation: I will go to the hospital.",
+        "model": "病院へ行きます。",
+        "reading": "病[びょう] 院[いん]へ 行[い]きます。",
+        "meaning": "I will go to the hospital.",
+        "acceptable": [
+          "病院へ行きます。"
+        ],
+        "tiles": [
+          "病院",
+          "へ",
+          "行き",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 43,
+      "canDo": "I can describe people and things using 大きい、小さい、新しい.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637439958",
+        "1708637440042",
+        "1708637440326"
+      ],
+      "opening": {
+        "wordId": "1708637439958",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "He lives in a big house.",
+          "My camera is small.",
+          "His car is new."
+        ],
+        "answer": "He lives in a big house.",
+        "explanation": "The key expression is 大きい (おおきい): big, large."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: He lives in a big house.",
+        "model": "彼は大きい家に住んでいる。",
+        "reading": "彼[かれ]は大[おお]きい 家[いえ]に 住[す]んでいる。",
+        "meaning": "He lives in a big house.",
+        "acceptable": [
+          "彼は大きい家に住んでいる。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "大きい",
+          "家",
+          "に",
+          "住",
+          "んで",
+          "いる"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440042",
+        "prompt": "Now use the same skill in a new situation: My camera is small.",
+        "model": "私のカメラは小さいです。",
+        "reading": "私[わたし]のカメラは小[ちい]さいです。",
+        "meaning": "My camera is small.",
+        "acceptable": [
+          "私のカメラは小さいです。"
+        ],
+        "tiles": [
+          "私",
+          "の",
+          "カメラ",
+          "は",
+          "小さい",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 44,
+      "canDo": "I can describe people and things using 古い、多い、少ない.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637441127",
+        "1708637440166",
+        "1708637440312"
+      ],
+      "opening": {
+        "wordId": "1708637440166",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "It rains a lot in June.",
+          "I like old cars.",
+          "There's not much rain this year."
+        ],
+        "answer": "It rains a lot in June.",
+        "explanation": "The key expression is 多い (おおい): a lot."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: It rains a lot in June.",
+        "model": "6月は雨が多いです。",
+        "reading": "6[ろく] 月[がつ]は 雨[あめ]が多[おお]いです。",
+        "meaning": "It rains a lot in June.",
+        "acceptable": [
+          "6月は雨が多いです。"
+        ],
+        "tiles": [
+          "6",
+          "月",
+          "は",
+          "雨",
+          "が",
+          "多い",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440312",
+        "prompt": "Now use the same skill in a new situation: There's not much rain this year.",
+        "model": "今年は雨が少ないです。",
+        "reading": "今年[ことし]は 雨[あめ]が少[すく]ないです。",
+        "meaning": "There's not much rain this year.",
+        "acceptable": [
+          "今年は雨が少ないです。"
+        ],
+        "tiles": [
+          "今年",
+          "は",
+          "雨",
+          "が",
+          "少ない",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 45,
+      "canDo": "I can describe people and things using すみません、ごめん、どうも.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637440067",
+        "1708637440170",
+        "1708637440562"
+      ],
+      "opening": {
+        "wordId": "1708637440562",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "For some reason, I don't feel very well today.",
+          "Sorry, I have something to do today.",
+          "I am sorry. There is no beer."
+        ],
+        "answer": "For some reason, I don't feel very well today.",
+        "explanation": "The key expression is どうも (どうも): for some reason, somehow."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: For some reason, I don't feel very well today.",
+        "model": "今日はどうも体の調子が悪い。",
+        "reading": "今日[きょう]はどうも 体[からだ]の 調[ちょう] 子[し]が 悪[わる]い。",
+        "meaning": "For some reason, I don't feel very well today.",
+        "acceptable": [
+          "今日はどうも体の調子が悪い。"
+        ],
+        "tiles": [
+          "今日",
+          "は",
+          "どうも",
+          "体",
+          "の",
+          "調子",
+          "が",
+          "悪い"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440067",
+        "prompt": "Now use the same skill in a new situation: Sorry, I have something to do today.",
+        "model": "すみません。今日は用事があります。",
+        "reading": "すみません。 今日[きょう]は 用[よう] 事[じ]があります。",
+        "meaning": "Sorry, I have something to do today.",
+        "acceptable": [
+          "すみません。今日は用事があります。"
+        ],
+        "tiles": [
+          "すみません",
+          "今日",
+          "は",
+          "用事",
+          "が",
+          "あり",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 46,
+      "canDo": "I can describe people and things using いつ、どう、どうして.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637439910",
+        "1708637439914",
+        "1708637440108"
+      ],
+      "opening": {
+        "wordId": "1708637439910",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "When is she coming?",
+          "What do you think?",
+          "Why are you crying?"
+        ],
+        "answer": "When is she coming?",
+        "explanation": "The key expression is いつ (いつ): when."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: When is she coming?",
+        "model": "彼女はいつ来ますか。",
+        "reading": "彼[かの] 女[じょ]はいつ 来[き]ますか。",
+        "meaning": "When is she coming?",
+        "acceptable": [
+          "彼女はいつ来ますか。"
+        ],
+        "tiles": [
+          "彼女",
+          "は",
+          "いつ",
+          "来",
+          "ます",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439914",
+        "prompt": "Now use the same skill in a new situation: What do you think?",
+        "model": "あなたはどう思いますか。",
+        "reading": "あなたはどう 思[おも]いますか。",
+        "meaning": "What do you think?",
+        "acceptable": [
+          "あなたはどう思いますか。"
+        ],
+        "tiles": [
+          "あなた",
+          "は",
+          "どう",
+          "思い",
+          "ます",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 47,
+      "canDo": "I can describe people and things using ある、いる、無い.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637439873",
+        "1708637439872",
+        "1708637439877"
+      ],
+      "opening": {
+        "wordId": "1708637439872",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I have an older brother.",
+          "There is a pen.",
+          "I don't have much time now."
+        ],
+        "answer": "I have an older brother.",
+        "explanation": "The key expression is いる (いる): to have, to exist (animate)."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: I have an older brother.",
+        "model": "兄がいます。",
+        "reading": "兄[あに]がいます。",
+        "meaning": "I have an older brother.",
+        "acceptable": [
+          "兄がいます。"
+        ],
+        "tiles": [
+          "兄",
+          "がい",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439877",
+        "prompt": "Now use the same skill in a new situation: I don't have much time now.",
+        "model": "今はあまり時間が無いのです。",
+        "reading": "今[いま]はあまり 時[じ] 間[かん]が無[な]いのです。",
+        "meaning": "I don't have much time now.",
+        "acceptable": [
+          "今はあまり時間が無いのです。"
+        ],
+        "tiles": [
+          "今",
+          "は",
+          "あまり",
+          "時間",
+          "が",
+          "無い",
+          "の",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 48,
+      "canDo": "I can describe people and things using 本当、同じ、違う.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637439951",
+        "1708637439994",
+        "1708637440080"
+      ],
+      "opening": {
+        "wordId": "1708637440080",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "That's the wrong answer.",
+          "Is that story true?",
+          "I was thinking the same thing."
+        ],
+        "answer": "That's the wrong answer.",
+        "explanation": "The key expression is 違う (ちがう): to differ, to be wrong."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: That's the wrong answer.",
+        "model": "答えが違います。",
+        "reading": "答[こた]えが違[ちが]います。",
+        "meaning": "That's the wrong answer.",
+        "acceptable": [
+          "答えが違います。"
+        ],
+        "tiles": [
+          "答え",
+          "が",
+          "違い",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439951",
+        "prompt": "Now use the same skill in a new situation: Is that story true?",
+        "model": "その話は本当ですか。",
+        "reading": "その 話[はなし]は本[ほん] 当[とう]ですか。",
+        "meaning": "Is that story true?",
+        "acceptable": [
+          "その話は本当ですか。"
+        ],
+        "tiles": [
+          "その",
+          "話",
+          "は",
+          "本当",
+          "です",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 49,
+      "canDo": "I can describe people and things using 前、後、中.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637439953",
+        "1708637440114",
+        "1708637439949"
+      ],
+      "opening": {
+        "wordId": "1708637439953",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Lara-chan is standing in front of the house.",
+          "I saw a movie after work.",
+          "My father is inside the house."
+        ],
+        "answer": "Lara-chan is standing in front of the house.",
+        "explanation": "The key expression is 前 (まえ): front, before."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Lara-chan is standing in front of the house.",
+        "model": "ララちゃんは家の前に立っています。",
+        "reading": "ララちゃんは 家[いえ]の前[まえ]に 立[た]っています。",
+        "meaning": "Lara-chan is standing in front of the house.",
+        "acceptable": [
+          "ララちゃんは家の前に立っています。"
+        ],
+        "tiles": [
+          "ラ",
+          "ラ",
+          "ちゃん",
+          "は",
+          "家",
+          "の",
+          "前",
+          "に",
+          "立",
+          "って",
+          "い",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440114",
+        "prompt": "Now use the same skill in a new situation: I saw a movie after work.",
+        "model": "仕事の後、映画を見た。",
+        "reading": "仕[し] 事[ごと]の後[あと]、 映[えい] 画[が]を 見[み]た。",
+        "meaning": "I saw a movie after work.",
+        "acceptable": [
+          "仕事の後、映画を見た。"
+        ],
+        "tiles": [
+          "仕事",
+          "の",
+          "後",
+          "映画",
+          "を",
+          "見",
+          "た"
+        ]
+      }
+    },
+    {
+      "lesson": 50,
+      "canDo": "I can describe people and things using 上、外、手.",
+      "situation": "Helping someone identify the right person or object.",
+      "targetWordIds": [
+        "1708637440087",
+        "1708637440138",
+        "1708637439961"
+      ],
+      "opening": {
+        "wordId": "1708637440138",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "It's hot outside.",
+          "Look up.",
+          "The people who understood, please raise your hand."
+        ],
+        "answer": "It's hot outside.",
+        "explanation": "The key expression is 外 (そと): outside."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: It's hot outside.",
+        "model": "外は暑いよ。",
+        "reading": "外[そと]は 暑[あつ]いよ。",
+        "meaning": "It's hot outside.",
+        "acceptable": [
+          "外は暑いよ。"
+        ],
+        "tiles": [
+          "外",
+          "は",
+          "暑い",
+          "よ"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439961",
+        "prompt": "Now use the same skill in a new situation: The people who understood, please raise your hand.",
+        "model": "分かった人は手を上げてください。",
+        "reading": "分[わ]かった 人[ひと]は手[て]を 上[あ]げてください。",
+        "meaning": "The people who understood, please raise your hand.",
+        "acceptable": [
+          "分かった人は手を上げてください。"
+        ],
+        "tiles": [
+          "分",
+          "か",
+          "っ",
+          "た",
+          "人",
+          "は",
+          "手",
+          "を",
+          "上げ",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 51,
+      "canDo": "I can keep an everyday conversation going using 顔、目、口.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637440069",
+        "1708637439960",
+        "1708637440137"
+      ],
+      "opening": {
+        "wordId": "1708637440137",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Open wide, please.",
+          "He wiped his face with a towel.",
+          "Lara-chan has big eyes."
+        ],
+        "answer": "Open wide, please.",
+        "explanation": "The key expression is 口 (くち): mouth."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Open wide, please.",
+        "model": "口を大きく開けてください。",
+        "reading": "口[くち]を 大[おお]きく 開[あ]けてください。",
+        "meaning": "Open wide, please.",
+        "acceptable": [
+          "口を大きく開けてください。"
+        ],
+        "tiles": [
+          "口",
+          "を",
+          "大きく",
+          "開",
+          "け",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440069",
+        "prompt": "Now use the same skill in a new situation: He wiped his face with a towel.",
+        "model": "彼はタオルで顔を拭きました。",
+        "reading": "彼[かれ]はタオルで顔[かお]を 拭[ふ]きました。",
+        "meaning": "He wiped his face with a towel.",
+        "acceptable": [
+          "彼はタオルで顔を拭きました。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "タオル",
+          "で",
+          "顔",
+          "を",
+          "拭",
+          "き",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 52,
+      "canDo": "I can keep an everyday conversation going using 声、音、言葉.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439959",
+        "1708637440122",
+        "1708637439987"
+      ],
+      "opening": {
+        "wordId": "1708637439959",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "He spoke with a loud voice.",
+          "There is a loud noise outside.",
+          "I don't understand the meaning of this word."
+        ],
+        "answer": "He spoke with a loud voice.",
+        "explanation": "The key expression is 声 (こえ): voice, sound."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: He spoke with a loud voice.",
+        "model": "彼は大きな声で話した。",
+        "reading": "彼[かれ]は 大[おお]きな声[こえ]で 話[はな]した。",
+        "meaning": "He spoke with a loud voice.",
+        "acceptable": [
+          "彼は大きな声で話した。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "大きな",
+          "声",
+          "で",
+          "話",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440122",
+        "prompt": "Now use the same skill in a new situation: There is a loud noise outside.",
+        "model": "外で大きい音がします。",
+        "reading": "外[そと]で 大[おお]きい音[おと]がします。",
+        "meaning": "There is a loud noise outside.",
+        "acceptable": [
+          "外で大きい音がします。"
+        ],
+        "tiles": [
+          "外",
+          "で",
+          "大きい",
+          "音",
+          "が",
+          "し",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 53,
+      "canDo": "I can keep an everyday conversation going using 自分、相手、方.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439991",
+        "1708637440100",
+        "1708637439917"
+      ],
+      "opening": {
+        "wordId": "1708637440100",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Who is the opponent of the match?",
+          "Please look up any words you don't know on your own.",
+          "He looked in my direction."
+        ],
+        "answer": "Who is the opponent of the match?",
+        "explanation": "The key expression is 相手 (あいて): partner, opponent."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Who is the opponent of the match?",
+        "model": "試合の相手は誰ですか。",
+        "reading": "試[し] 合[あい]の相[あい] 手[て]は 誰[だれ]ですか。",
+        "meaning": "Who is the opponent of the match?",
+        "acceptable": [
+          "試合の相手は誰ですか。"
+        ],
+        "tiles": [
+          "試合",
+          "の",
+          "相手",
+          "は",
+          "誰",
+          "です",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439917",
+        "prompt": "Now use the same skill in a new situation: He looked in my direction.",
+        "model": "彼は私の方を見ました。",
+        "reading": "彼[かれ]は 私[わたし]の方[ほう]を 見[み]ました。",
+        "meaning": "He looked in my direction.",
+        "acceptable": [
+          "彼は私の方を見ました。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "私",
+          "の",
+          "方",
+          "を",
+          "見",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 54,
+      "canDo": "I can keep an everyday conversation going using ただ、もう、まだ.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637440082",
+        "1708637439939",
+        "1708637440073"
+      ],
+      "opening": {
+        "wordId": "1708637440073",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I haven't finished my homework yet.",
+          "This hot spring is free.",
+          "He's already gone home."
+        ],
+        "answer": "I haven't finished my homework yet.",
+        "explanation": "The key expression is まだ (まだ): yet, more."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: I haven't finished my homework yet.",
+        "model": "宿題はまだ終わっていません。",
+        "reading": "宿[しゅく] 題[だい]はまだ 終[お]わっていません。",
+        "meaning": "I haven't finished my homework yet.",
+        "acceptable": [
+          "宿題はまだ終わっていません。"
+        ],
+        "tiles": [
+          "宿題",
+          "は",
+          "まだ",
+          "終",
+          "わ",
+          "って",
+          "いま",
+          "せん"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440082",
+        "prompt": "Now use the same skill in a new situation: This hot spring is free.",
+        "model": "この温泉はただです。",
+        "reading": "この 温[おん] 泉[せん]はただです。",
+        "meaning": "This hot spring is free.",
+        "acceptable": [
+          "この温泉はただです。"
+        ],
+        "tiles": [
+          "この",
+          "温泉",
+          "は",
+          "ただ",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 55,
+      "canDo": "I can keep an everyday conversation going using また、もっと、よく.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439909",
+        "1708637439928",
+        "1708637439923"
+      ],
+      "opening": {
+        "wordId": "1708637439909",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I'll come again tomorrow.",
+          "I thought that I would have to study more.",
+          "I understood well."
+        ],
+        "answer": "I'll come again tomorrow.",
+        "explanation": "The key expression is また (また): again, also."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: I'll come again tomorrow.",
+        "model": "明日、また来ます。",
+        "reading": "明日[あした]、また 来[き]ます。",
+        "meaning": "I'll come again tomorrow.",
+        "acceptable": [
+          "明日、また来ます。"
+        ],
+        "tiles": [
+          "明日",
+          "また",
+          "来",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439928",
+        "prompt": "Now use the same skill in a new situation: I thought that I would have to study more.",
+        "model": "もっと勉強しなければいけないと思った。",
+        "reading": "もっと 勉[べん] 強[きょう]しなければいけないと 思[おも]った。",
+        "meaning": "I thought that I would have to study more.",
+        "acceptable": [
+          "もっと勉強しなければいけないと思った。"
+        ],
+        "tiles": [
+          "もっと",
+          "勉強",
+          "しな",
+          "け",
+          "れ",
+          "ばい",
+          "け",
+          "ない",
+          "と",
+          "思",
+          "っ",
+          "た"
+        ]
+      }
+    },
+    {
+      "lesson": 56,
+      "canDo": "I can keep an everyday conversation going using 少し、ちょっと、いつも.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637440078",
+        "1708637439938",
+        "1708637439967"
+      ],
+      "opening": {
+        "wordId": "1708637439938",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "This is a little expensive.",
+          "I'm a little tired.",
+          "She's always full of energy."
+        ],
+        "answer": "This is a little expensive.",
+        "explanation": "The key expression is ちょっと (ちょっと): a little."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: This is a little expensive.",
+        "model": "これはちょっと高いですね。",
+        "reading": "これはちょっと 高[たか]いですね。",
+        "meaning": "This is a little expensive.",
+        "acceptable": [
+          "これはちょっと高いですね。"
+        ],
+        "tiles": [
+          "これ",
+          "は",
+          "ちょっと",
+          "高い",
+          "です",
+          "ね"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439967",
+        "prompt": "Now use the same skill in a new situation: She's always full of energy.",
+        "model": "彼女はいつも元気だ。",
+        "reading": "彼[かの] 女[じょ]はいつも 元[げん] 気[き]だ。",
+        "meaning": "She's always full of energy.",
+        "acceptable": [
+          "彼女はいつも元気だ。"
+        ],
+        "tiles": [
+          "彼女",
+          "は",
+          "いつも",
+          "元気",
+          "だ"
+        ]
+      }
+    },
+    {
+      "lesson": 57,
+      "canDo": "I can keep an everyday conversation going using 出来る、必要、問題.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439950",
+        "1708637440111",
+        "1708637440144"
+      ],
+      "opening": {
+        "wordId": "1708637440144",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "There's one problem.",
+          "Can you ski?",
+          "This book is necessary for class."
+        ],
+        "answer": "There's one problem.",
+        "explanation": "The key expression is 問題 (もんだい): problem, question."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: There's one problem.",
+        "model": "問題が一つあります。",
+        "reading": "問[もん] 題[だい]が 一[ひと]つあります。",
+        "meaning": "There's one problem.",
+        "acceptable": [
+          "問題が一つあります。"
+        ],
+        "tiles": [
+          "問題",
+          "が",
+          "一つ",
+          "あり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439950",
+        "prompt": "Now use the same skill in a new situation: Can you ski?",
+        "model": "あなたはスキーが出来ますか。",
+        "reading": "あなたはスキーが出[で] 来[き]ますか。",
+        "meaning": "Can you ski?",
+        "acceptable": [
+          "あなたはスキーが出来ますか。"
+        ],
+        "tiles": [
+          "あなた",
+          "は",
+          "スキー",
+          "が",
+          "出来",
+          "ます",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 58,
+      "canDo": "I can keep an everyday conversation going using 始める、終わる、続ける.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439972",
+        "1708637440112",
+        "1708637440003"
+      ],
+      "opening": {
+        "wordId": "1708637439972",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please start the test.",
+          "The conference ends at four o'clock.",
+          "Please continue your work."
+        ],
+        "answer": "Please start the test.",
+        "explanation": "The key expression is 始める (はじめる): to start."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Please start the test.",
+        "model": "テストを始めてください。",
+        "reading": "テストを始[はじ]めてください。",
+        "meaning": "Please start the test.",
+        "acceptable": [
+          "テストを始めてください。"
+        ],
+        "tiles": [
+          "テスト",
+          "を",
+          "始めて",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440112",
+        "prompt": "Now use the same skill in a new situation: The conference ends at four o'clock.",
+        "model": "会議は4時に終わります。",
+        "reading": "会[かい] 議[ぎ]は 4[よ] 時[じ]に終[お]わります。",
+        "meaning": "The conference ends at four o'clock.",
+        "acceptable": [
+          "会議は4時に終わります。"
+        ],
+        "tiles": [
+          "会議",
+          "は",
+          "4",
+          "時に",
+          "終",
+          "わり",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 59,
+      "canDo": "I can keep an everyday conversation going using 動く、変わる、戻る.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439981",
+        "1708637440118",
+        "1708637440106"
+      ],
+      "opening": {
+        "wordId": "1708637440118",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The traffic light turned green.",
+          "The elevator is moving.",
+          "I'm going back to the office now."
+        ],
+        "answer": "The traffic light turned green.",
+        "explanation": "The key expression is 変わる (かわる): to change."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: The traffic light turned green.",
+        "model": "信号が青に変わりました。",
+        "reading": "信[しん] 号[ごう]が 青[あお]に変[か]わりました。",
+        "meaning": "The traffic light turned green.",
+        "acceptable": [
+          "信号が青に変わりました。"
+        ],
+        "tiles": [
+          "信号",
+          "が",
+          "青",
+          "に",
+          "変わり",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637440106",
+        "prompt": "Now use the same skill in a new situation: I'm going back to the office now.",
+        "model": "今、会社に戻ります。",
+        "reading": "今[いま]、 会[かい] 社[しゃ]に戻[もど]ります。",
+        "meaning": "I'm going back to the office now.",
+        "acceptable": [
+          "今、会社に戻ります。"
+        ],
+        "tiles": [
+          "今",
+          "会社",
+          "に",
+          "戻り",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 60,
+      "canDo": "I can keep an everyday conversation going using 呼ぶ、見せる、置く.",
+      "situation": "Having a short friendly conversation.",
+      "targetWordIds": [
+        "1708637439980",
+        "1708637440004",
+        "1708637439895"
+      ],
+      "opening": {
+        "wordId": "1708637439895",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Where did you put that book?",
+          "Let's call the waiter.",
+          "Please show me that camera."
+        ],
+        "answer": "Where did you put that book?",
+        "explanation": "The key expression is 置く (おく): to put, to place."
+      },
+      "production": {
+        "mode": "tiles-or-type",
+        "prompt": "Build or say the model response for: Where did you put that book?",
+        "model": "あの本をどこに置きましたか。",
+        "reading": "あの 本[ほん]をどこに置[お]きましたか。",
+        "meaning": "Where did you put that book?",
+        "acceptable": [
+          "あの本をどこに置きましたか。"
+        ],
+        "tiles": [
+          "あの",
+          "本",
+          "を",
+          "どこ",
+          "に",
+          "置",
+          "き",
+          "ま",
+          "した",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "tiles-or-type",
+        "wordId": "1708637439980",
+        "prompt": "Now use the same skill in a new situation: Let's call the waiter.",
+        "model": "ウェイターを呼びましょう。",
+        "reading": "ウェイターを呼[よ]びましょう。",
+        "meaning": "Let's call the waiter.",
+        "acceptable": [
+          "ウェイターを呼びましょう。"
+        ],
+        "tiles": [
+          "ウェイター",
+          "を",
+          "呼",
+          "び",
+          "ま",
+          "しょう"
+        ]
+      }
+    },
+    {
+      "lesson": 61,
+      "canDo": "I can talk about movement and direction using 出す、上げる、掛ける.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440089",
+        "1708637439962",
+        "1708637440124"
+      ],
+      "opening": {
+        "wordId": "1708637440089",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "He took the textbook out of his bag.",
+          "The people who understood, please raise your hand.",
+          "I put my husband's clothes on a hanger."
+        ],
+        "answer": "He took the textbook out of his bag.",
+        "explanation": "The key expression is 出す (だす): to take out."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: He took the textbook out of his bag.",
+        "model": "彼はかばんから教科書を出した。",
+        "reading": "彼[かれ]はかばんから 教[きょう] 科[か] 書[しょ]を出[だ]した。",
+        "meaning": "He took the textbook out of his bag.",
+        "acceptable": [
+          "彼はかばんから教科書を出した。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "かばん",
+          "から",
+          "教科書",
+          "を",
+          "出",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439962",
+        "prompt": "Now use the same skill in a new situation: The people who understood, please raise your hand.",
+        "model": "分かった人は手を上げてください。",
+        "reading": "分[わ]かった 人[ひと]は 手[て]を上[あ]げてください。",
+        "meaning": "The people who understood, please raise your hand.",
+        "acceptable": [
+          "分かった人は手を上げてください。"
+        ],
+        "tiles": [
+          "分",
+          "か",
+          "っ",
+          "た",
+          "人",
+          "は",
+          "手",
+          "を",
+          "上げ",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 62,
+      "canDo": "I can talk about movement and direction using 感じる、気持ち、心配.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440086",
+        "1708637439982",
+        "1708637439988"
+      ],
+      "opening": {
+        "wordId": "1708637439982",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I don't understand his feelings.",
+          "I feel a pain in my knee.",
+          "My mother is worried."
+        ],
+        "answer": "I don't understand his feelings.",
+        "explanation": "The key expression is 気持ち (きもち): feeling, sensation."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I don't understand his feelings.",
+        "model": "彼の気持ちが分からない。",
+        "reading": "彼[かれ]の気[き] 持[も]ちが 分[わ]からない。",
+        "meaning": "I don't understand his feelings.",
+        "acceptable": [
+          "彼の気持ちが分からない。"
+        ],
+        "tiles": [
+          "彼",
+          "の",
+          "気持ち",
+          "が",
+          "分",
+          "から",
+          "ない"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439988",
+        "prompt": "Now use the same skill in a new situation: My mother is worried.",
+        "model": "母が心配しています。",
+        "reading": "母[はは]が心[しん] 配[ぱい]しています。",
+        "meaning": "My mother is worried.",
+        "acceptable": [
+          "母が心配しています。"
+        ],
+        "tiles": [
+          "母",
+          "が",
+          "心配",
+          "し",
+          "てい",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 63,
+      "canDo": "I can talk about movement and direction using 花、木、山.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440487",
+        "1708637440595",
+        "1708637440523"
+      ],
+      "opening": {
+        "wordId": "1708637440523",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The mountain air is clean.",
+          "My mother likes flowers.",
+          "There is a tree in the yard."
+        ],
+        "answer": "The mountain air is clean.",
+        "explanation": "The key expression is 山 (やま): mountain."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: The mountain air is clean.",
+        "model": "山の空気はきれいだ。",
+        "reading": "山[やま]の 空[くう] 気[き]はきれいだ。",
+        "meaning": "The mountain air is clean.",
+        "acceptable": [
+          "山の空気はきれいだ。"
+        ],
+        "tiles": [
+          "山",
+          "の",
+          "空気",
+          "は",
+          "きれい",
+          "だ"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440487",
+        "prompt": "Now use the same skill in a new situation: My mother likes flowers.",
+        "model": "母は花が好きです。",
+        "reading": "母[はは]は花[はな]が 好[す]きです。",
+        "meaning": "My mother likes flowers.",
+        "acceptable": [
+          "母は花が好きです。"
+        ],
+        "tiles": [
+          "母",
+          "は",
+          "花",
+          "が",
+          "好き",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 64,
+      "canDo": "I can talk about movement and direction using 海、川、空.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440446",
+        "1708637440990",
+        "1708637440314"
+      ],
+      "opening": {
+        "wordId": "1708637440446",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The sea is vast and wide.",
+          "I crossed a small river.",
+          "The sky is bright blue."
+        ],
+        "answer": "The sea is vast and wide.",
+        "explanation": "The key expression is 海 (うみ): sea, ocean."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: The sea is vast and wide.",
+        "model": "海は広くて大きい。",
+        "reading": "海[うみ]は 広[ひろ]くて 大[おお]きい。",
+        "meaning": "The sea is vast and wide.",
+        "acceptable": [
+          "海は広くて大きい。"
+        ],
+        "tiles": [
+          "海",
+          "は",
+          "広",
+          "く",
+          "て",
+          "大きい"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440990",
+        "prompt": "Now use the same skill in a new situation: I crossed a small river.",
+        "model": "小さな川を渡りました。",
+        "reading": "小[ちい]さな川[かわ]を 渡[わた]りました。",
+        "meaning": "I crossed a small river.",
+        "acceptable": [
+          "小さな川を渡りました。"
+        ],
+        "tiles": [
+          "小さな",
+          "川",
+          "を",
+          "渡り",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 65,
+      "canDo": "I can talk about movement and direction using 赤い、青い、白い.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440317",
+        "1708637440954",
+        "1708637440352"
+      ],
+      "opening": {
+        "wordId": "1708637440954",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The sea here is very blue.",
+          "I bought a red coat.",
+          "His teeth are white."
+        ],
+        "answer": "The sea here is very blue.",
+        "explanation": "The key expression is 青い (あおい): blue."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: The sea here is very blue.",
+        "model": "ここの海はとても青い。",
+        "reading": "ここの 海[うみ]はとても青[あお]い。",
+        "meaning": "The sea here is very blue.",
+        "acceptable": [
+          "ここの海はとても青い。"
+        ],
+        "tiles": [
+          "ここ",
+          "の",
+          "海",
+          "は",
+          "とても",
+          "青い"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440352",
+        "prompt": "Now use the same skill in a new situation: His teeth are white.",
+        "model": "彼は歯が白い。",
+        "reading": "彼[かれ]は 歯[は]が白[しろ]い。",
+        "meaning": "His teeth are white.",
+        "acceptable": [
+          "彼は歯が白い。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "歯",
+          "が",
+          "白い"
+        ]
+      }
+    },
+    {
+      "lesson": 66,
+      "canDo": "I can talk about movement and direction using 黒い、長い、短い.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440475",
+        "1708637440188",
+        "1708637440720"
+      ],
+      "opening": {
+        "wordId": "1708637440720",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Lara-chan's hair is short.",
+          "She's wearing a black dress.",
+          "Her hair is very long."
+        ],
+        "answer": "Lara-chan's hair is short.",
+        "explanation": "The key expression is 短い (みじかい): short, brief."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Lara-chan's hair is short.",
+        "model": "ララちゃんは髪が短いです。",
+        "reading": "ララちゃんは 髪[かみ]が短[みじか]いです。",
+        "meaning": "Lara-chan's hair is short.",
+        "acceptable": [
+          "ララちゃんは髪が短いです。"
+        ],
+        "tiles": [
+          "ラ",
+          "ラ",
+          "ちゃん",
+          "は",
+          "髪",
+          "が",
+          "短い",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440475",
+        "prompt": "Now use the same skill in a new situation: She's wearing a black dress.",
+        "model": "彼女は黒いドレスを着ています。",
+        "reading": "彼[かの] 女[じょ]は黒[くろ]いドレスを 着[き]ています。",
+        "meaning": "She's wearing a black dress.",
+        "acceptable": [
+          "彼女は黒いドレスを着ています。"
+        ],
+        "tiles": [
+          "彼女",
+          "は",
+          "黒い",
+          "ドレス",
+          "を",
+          "着",
+          "てい",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 67,
+      "canDo": "I can talk about movement and direction using 元気、静か、有名.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637439966",
+        "1708637440350",
+        "1708637441063"
+      ],
+      "opening": {
+        "wordId": "1708637439966",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Smith-san's grandmother is doing well.",
+          "I like quiet places.",
+          "This sea is famous, so many people come here."
+        ],
+        "answer": "Smith-san's grandmother is doing well.",
+        "explanation": "The key expression is 元気 (げんき): energetic, healthy."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Smith-san's grandmother is doing well.",
+        "model": "スミスさんのおばあさんは元気です。",
+        "reading": "スミスさんのおばあさんは元[げん] 気[き]です。",
+        "meaning": "Smith-san's grandmother is doing well.",
+        "acceptable": [
+          "スミスさんのおばあさんは元気です。"
+        ],
+        "tiles": [
+          "スミス",
+          "さん",
+          "の",
+          "おばあさん",
+          "は",
+          "元気",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440350",
+        "prompt": "Now use the same skill in a new situation: I like quiet places.",
+        "model": "静かな所が好きです。",
+        "reading": "静[しず]かな 所[ところ]が 好[す]きです。",
+        "meaning": "I like quiet places.",
+        "acceptable": [
+          "静かな所が好きです。"
+        ],
+        "tiles": [
+          "静か",
+          "な",
+          "所",
+          "が",
+          "好き",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 68,
+      "canDo": "I can talk about movement and direction using 大切、大変、特別.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440486",
+        "1708637440227",
+        "1708637440511"
+      ],
+      "opening": {
+        "wordId": "1708637440227",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "A terrible thing happened.",
+          "This is a ring that meant a lot to my mother.",
+          "You're special to me."
+        ],
+        "answer": "A terrible thing happened.",
+        "explanation": "The key expression is 大変 (たいへん): terrible, serious, grave."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: A terrible thing happened.",
+        "model": "大変なことが起こりました。",
+        "reading": "大[たい] 変[へん]なことが 起[お]こりました。",
+        "meaning": "A terrible thing happened.",
+        "acceptable": [
+          "大変なことが起こりました。"
+        ],
+        "tiles": [
+          "大変",
+          "な",
+          "こと",
+          "が",
+          "起",
+          "こ",
+          "り",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440511",
+        "prompt": "Now use the same skill in a new situation: You're special to me.",
+        "model": "あなたは私にとって特別な人です。",
+        "reading": "あなたは 私[わたし]にとって特[とく] 別[べつ]な 人[ひと]です。",
+        "meaning": "You're special to me.",
+        "acceptable": [
+          "あなたは私にとって特別な人です。"
+        ],
+        "tiles": [
+          "あなた",
+          "は",
+          "私",
+          "にとって",
+          "特別",
+          "な",
+          "人",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 69,
+      "canDo": "I can talk about movement and direction using 去年、来年、来月.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637440131",
+        "1708637440132",
+        "1708637440261"
+      ],
+      "opening": {
+        "wordId": "1708637440261",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I'll be a college student starting next month.",
+          "I went to France last year.",
+          "Let's travel together next year."
+        ],
+        "answer": "I'll be a college student starting next month.",
+        "explanation": "The key expression is 来月 (らいげつ): next month."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I'll be a college student starting next month.",
+        "model": "来月から大学生になります。",
+        "reading": "来[らい] 月[げつ]から 大[だい] 学[がく] 生[せい]になります。",
+        "meaning": "I'll be a college student starting next month.",
+        "acceptable": [
+          "来月から大学生になります。"
+        ],
+        "tiles": [
+          "来月",
+          "から",
+          "大学生",
+          "に",
+          "なり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440131",
+        "prompt": "Now use the same skill in a new situation: I went to France last year.",
+        "model": "私は去年フランスへ行った。",
+        "reading": "私[わたし]は去[きょ] 年[ねん]フランスへ 行[い]った。",
+        "meaning": "I went to France last year.",
+        "acceptable": [
+          "私は去年フランスへ行った。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "去年",
+          "フランス",
+          "へ",
+          "行",
+          "っ",
+          "た"
+        ]
+      }
+    },
+    {
+      "lesson": 70,
+      "canDo": "I can talk about movement and direction using 一つ、二つ、三つ.",
+      "situation": "Finding a place and explaining where to go.",
+      "targetWordIds": [
+        "1708637441345",
+        "1708637441346",
+        "1708637441347"
+      ],
+      "opening": {
+        "wordId": "1708637441345",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please give me one of those.",
+          "Please give me two ice cream cones.",
+          "I bought three cups."
+        ],
+        "answer": "Please give me one of those.",
+        "explanation": "The key expression is 一つ (ひとつ): one (thing)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Please give me one of those.",
+        "model": "それを一つください。",
+        "reading": "それを一[ひと]つください。",
+        "meaning": "Please give me one of those.",
+        "acceptable": [
+          "それを一つください。"
+        ],
+        "tiles": [
+          "それ",
+          "を",
+          "一つ",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637441346",
+        "prompt": "Now use the same skill in a new situation: Please give me two ice cream cones.",
+        "model": "ソフトクリームを二つください。",
+        "reading": "ソフトクリームを二[ふた]つください。",
+        "meaning": "Please give me two ice cream cones.",
+        "acceptable": [
+          "ソフトクリームを二つください。"
+        ],
+        "tiles": [
+          "ソフトクリーム",
+          "を",
+          "二つ",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 71,
+      "canDo": "I can use time, numbers, and nature words using 四つ、五つ、六つ.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637441348",
+        "1708637441349",
+        "1708637441350"
+      ],
+      "opening": {
+        "wordId": "1708637441349",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I'd like five peaches, please.",
+          "I have four wristwatches.",
+          "I made six rice balls."
+        ],
+        "answer": "I'd like five peaches, please.",
+        "explanation": "The key expression is 五つ (いつつ): five (things)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I'd like five peaches, please.",
+        "model": "桃を五つください。",
+        "reading": "桃[もも]を五[いつ]つください。",
+        "meaning": "I'd like five peaches, please.",
+        "acceptable": [
+          "桃を五つください。"
+        ],
+        "tiles": [
+          "桃",
+          "を",
+          "五つ",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637441350",
+        "prompt": "Now use the same skill in a new situation: I made six rice balls.",
+        "model": "おにぎりを六つ作りました。",
+        "reading": "おにぎりを六[むっ]つ 作[つく]りました。",
+        "meaning": "I made six rice balls.",
+        "acceptable": [
+          "おにぎりを六つ作りました。"
+        ],
+        "tiles": [
+          "おにぎり",
+          "を",
+          "六つ",
+          "作り",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 72,
+      "canDo": "I can use time, numbers, and nature words using 七つ、八つ、九つ.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637441351",
+        "1708637441352",
+        "1708637441353"
+      ],
+      "opening": {
+        "wordId": "1708637441353",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "My older brother ate nine rice balls.",
+          "Please go and buy seven bread rolls.",
+          "There are eight clocks in that house."
+        ],
+        "answer": "My older brother ate nine rice balls.",
+        "explanation": "The key expression is 九つ (ここのつ): nine (things)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: My older brother ate nine rice balls.",
+        "model": "兄はおにぎりを九つも食べた。",
+        "reading": "兄[あに]はおにぎりを九[ここの]つも 食[た]べた。",
+        "meaning": "My older brother ate nine rice balls.",
+        "acceptable": [
+          "兄はおにぎりを九つも食べた。"
+        ],
+        "tiles": [
+          "兄",
+          "は",
+          "おにぎり",
+          "を",
+          "九つ",
+          "も",
+          "食",
+          "べた"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637441351",
+        "prompt": "Now use the same skill in a new situation: Please go and buy seven bread rolls.",
+        "model": "ロールパンを七つ買ってきてください。",
+        "reading": "ロールパンを七[なな]つ 買[か]ってきてください。",
+        "meaning": "Please go and buy seven bread rolls.",
+        "acceptable": [
+          "ロールパンを七つ買ってきてください。"
+        ],
+        "tiles": [
+          "ロール",
+          "パン",
+          "を",
+          "七つ",
+          "買",
+          "って",
+          "き",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 73,
+      "canDo": "I can use time, numbers, and nature words using 質問、答え、説明.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637440544",
+        "1708637440473",
+        "1708637440202"
+      ],
+      "opening": {
+        "wordId": "1708637440544",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please read the questions carefully.",
+          "I don't know the answer.",
+          "I don't really understand the explanation of this grammar."
+        ],
+        "answer": "Please read the questions carefully.",
+        "explanation": "The key expression is 質問 (しつもん): question."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Please read the questions carefully.",
+        "model": "質問を良く読んでください。",
+        "reading": "質[しつ] 問[もん]を 良[よ]く 読[よ]んでください。",
+        "meaning": "Please read the questions carefully.",
+        "acceptable": [
+          "質問を良く読んでください。"
+        ],
+        "tiles": [
+          "質問",
+          "を",
+          "良く",
+          "読",
+          "んで",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440473",
+        "prompt": "Now use the same skill in a new situation: I don't know the answer.",
+        "model": "答えが分かりません。",
+        "reading": "答[こた]えが 分[わ]かりません。",
+        "meaning": "I don't know the answer.",
+        "acceptable": [
+          "答えが分かりません。"
+        ],
+        "tiles": [
+          "答え",
+          "が",
+          "分",
+          "か",
+          "り",
+          "ま",
+          "せん"
+        ]
+      }
+    },
+    {
+      "lesson": 74,
+      "canDo": "I can use time, numbers, and nature words using 事、なる、そう.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637439993",
+        "1708637439886",
+        "1708637439913"
+      ],
+      "opening": {
+        "wordId": "1708637439886",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I have come to like Japanese study.",
+          "I researched things about Japan on the internet.",
+          "That's what I think too."
+        ],
+        "answer": "I have come to like Japanese study.",
+        "explanation": "The key expression is なる (なる): to become, to result in, to come (to do)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I have come to like Japanese study.",
+        "model": "日本語の勉強が好きになりました。",
+        "reading": "日本[にほん] 語[ご]の 勉[べん] 強[きょう]が 好[す]きになりました。",
+        "meaning": "I have come to like Japanese study.",
+        "acceptable": [
+          "日本語の勉強が好きになりました。"
+        ],
+        "tiles": [
+          "日本語",
+          "の",
+          "勉強",
+          "が",
+          "好き",
+          "に",
+          "なり",
+          "ま",
+          "した"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439913",
+        "prompt": "Now use the same skill in a new situation: That's what I think too.",
+        "model": "私もそう思います。",
+        "reading": "私[わたし]もそう 思[おも]います。",
+        "meaning": "That's what I think too.",
+        "acceptable": [
+          "私もそう思います。"
+        ],
+        "tiles": [
+          "私",
+          "も",
+          "そう",
+          "思い",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 75,
+      "canDo": "I can use time, numbers, and nature words using さん、くれる、俺.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637439856",
+        "1708637439945",
+        "1708637440034"
+      ],
+      "opening": {
+        "wordId": "1708637440034",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I like to listen to rock music.",
+          "Are you Tom-san?",
+          "My father gave me a book."
+        ],
+        "answer": "I like to listen to rock music.",
+        "explanation": "The key expression is 俺 (おれ): I (male)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I like to listen to rock music.",
+        "model": "俺はロックを聞くのが好きだ。",
+        "reading": "俺[おれ]はロックを 聞[き]くのが 好[す]きだ。",
+        "meaning": "I like to listen to rock music.",
+        "acceptable": [
+          "俺はロックを聞くのが好きだ。"
+        ],
+        "tiles": [
+          "俺",
+          "は",
+          "ロック",
+          "を",
+          "聞く",
+          "の",
+          "が",
+          "好き",
+          "だ"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439856",
+        "prompt": "Now use the same skill in a new situation: Are you Tom-san?",
+        "model": "あなたはトムさんですか。",
+        "reading": "あなたはトムさんですか。",
+        "meaning": "Are you Tom-san?",
+        "acceptable": [
+          "あなたはトムさんですか。"
+        ],
+        "tiles": [
+          "あなた",
+          "は",
+          "トム",
+          "さん",
+          "です",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 76,
+      "canDo": "I can use time, numbers, and nature words using やる、物、もう.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637440068",
+        "1708637439947",
+        "1708637439940"
+      ],
+      "opening": {
+        "wordId": "1708637440068",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Let's do our homework together.",
+          "I received many things.",
+          "I want to eat a little more."
+        ],
+        "answer": "Let's do our homework together.",
+        "explanation": "The key expression is やる (やる): to do."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Let's do our homework together.",
+        "model": "一緒に宿題をやろう。",
+        "reading": "一[いっ] 緒[しょ]に 宿[しゅく] 題[だい]をやろう。",
+        "meaning": "Let's do our homework together.",
+        "acceptable": [
+          "一緒に宿題をやろう。"
+        ],
+        "tiles": [
+          "一緒",
+          "に",
+          "宿題",
+          "を",
+          "や",
+          "ろう"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439947",
+        "prompt": "Now use the same skill in a new situation: I received many things.",
+        "model": "色々な物をもらいました。",
+        "reading": "色[いろ] 々[いろ]な物[もの]をもらいました。",
+        "meaning": "I received many things.",
+        "acceptable": [
+          "色々な物をもらいました。"
+        ],
+        "tiles": [
+          "色々",
+          "な",
+          "物",
+          "を",
+          "も",
+          "ら",
+          "いま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 77,
+      "canDo": "I can use time, numbers, and nature words using 聞く、人、今朝.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637439920",
+        "1708637439861",
+        "1708637440070"
+      ],
+      "opening": {
+        "wordId": "1708637439861",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I am British.",
+          "Ask Tom.",
+          "I left the house early this morning."
+        ],
+        "answer": "I am British.",
+        "explanation": "The key expression is 人 (じん): person from (nationality)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I am British.",
+        "model": "私はイギリス人です。",
+        "reading": "私[わたし]はイギリス人[じん]です。",
+        "meaning": "I am British.",
+        "acceptable": [
+          "私はイギリス人です。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "イギリス",
+          "人",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440070",
+        "prompt": "Now use the same skill in a new situation: I left the house early this morning.",
+        "model": "今朝は早く家を出ました。",
+        "reading": "今朝[けさ]は 早[はや]く 家[いえ]を 出[で]ました。",
+        "meaning": "I left the house early this morning.",
+        "acceptable": [
+          "今朝は早く家を出ました。"
+        ],
+        "tiles": [
+          "今朝",
+          "は",
+          "早く",
+          "家",
+          "を",
+          "出",
+          "ま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 78,
+      "canDo": "I can use time, numbers, and nature words using そして、考える、じゃ.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637440072",
+        "1708637439925",
+        "1708637440074"
+      ],
+      "opening": {
+        "wordId": "1708637440074",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Okay, then I'll have that one.",
+          "This robot understands words. On top of that, it can also dance.",
+          "Please think carefully."
+        ],
+        "answer": "Okay, then I'll have that one.",
+        "explanation": "The key expression is じゃ (じゃ): then, well."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Okay, then I'll have that one.",
+        "model": "じゃ、それをください。",
+        "reading": "じゃ、それをください。",
+        "meaning": "Okay, then I'll have that one.",
+        "acceptable": [
+          "じゃ、それをください。"
+        ],
+        "tiles": [
+          "じゃ",
+          "それ",
+          "を",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440072",
+        "prompt": "Now use the same skill in a new situation: This robot understands words. On top of that, it can also dance.",
+        "model": "このロボットは言葉が分かります。そして、ダンスも出来ます。",
+        "reading": "このロボットは 言[こと] 葉[ば]が 分[わ]かります。そして、ダンスも 出[で] 来[き]ます。",
+        "meaning": "This robot understands words. On top of that, it can also dance.",
+        "acceptable": [
+          "このロボットは言葉が分かります。そして、ダンスも出来ます。"
+        ],
+        "tiles": [
+          "この",
+          "ロボット",
+          "は",
+          "言葉",
+          "が",
+          "分",
+          "か",
+          "り",
+          "ます",
+          "そして",
+          "ダンス",
+          "も",
+          "出来",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 79,
+      "canDo": "I can use time, numbers, and nature words using 話、ため、もらう.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637439898",
+        "1708637440075",
+        "1708637439946"
+      ],
+      "opening": {
+        "wordId": "1708637439898",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Your story is interesting.",
+          "This is a website made for doctors.",
+          "I got a present from her."
+        ],
+        "answer": "Your story is interesting.",
+        "explanation": "The key expression is 話 (はなし): talk, story."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Your story is interesting.",
+        "model": "あなたの話は面白いね。",
+        "reading": "あなたの話[はなし]は 面[おも] 白[しろ]いね。",
+        "meaning": "Your story is interesting.",
+        "acceptable": [
+          "あなたの話は面白いね。"
+        ],
+        "tiles": [
+          "あなた",
+          "の",
+          "話",
+          "は",
+          "面白い",
+          "ね"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440075",
+        "prompt": "Now use the same skill in a new situation: This is a website made for doctors.",
+        "model": "これは医者のためのサイトです。",
+        "reading": "これは 医[い] 者[しゃ]のためのサイトです。",
+        "meaning": "This is a website made for doctors.",
+        "acceptable": [
+          "これは医者のためのサイトです。"
+        ],
+        "tiles": [
+          "これ",
+          "は",
+          "医者",
+          "の",
+          "ため",
+          "の",
+          "サイト",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 80,
+      "canDo": "I can use time, numbers, and nature words using ちゃん、ところ、見える.",
+      "situation": "Understanding practical details around you.",
+      "targetWordIds": [
+        "1708637439901",
+        "1708637440077",
+        "1708637440079"
+      ],
+      "opening": {
+        "wordId": "1708637440077",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I stayed at my friend's place for the night.",
+          "She is Lara-chan.",
+          "You can see Mount Fuji well from here."
+        ],
+        "answer": "I stayed at my friend's place for the night.",
+        "explanation": "The key expression is ところ (ところ): place."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I stayed at my friend's place for the night.",
+        "model": "私は友達のところに泊まった。",
+        "reading": "私[わたし]は 友[とも] 達[だち]のところに 泊[と]まった。",
+        "meaning": "I stayed at my friend's place for the night.",
+        "acceptable": [
+          "私は友達のところに泊まった。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "友達",
+          "の",
+          "ところ",
+          "に",
+          "泊",
+          "まっ",
+          "た"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440079",
+        "prompt": "Now use the same skill in a new situation: You can see Mount Fuji well from here.",
+        "model": "ここから富士山がよく見えます。",
+        "reading": "ここから 富[ふ] 士[じ] 山[さん]がよく見[み]えます。",
+        "meaning": "You can see Mount Fuji well from here.",
+        "acceptable": [
+          "ここから富士山がよく見えます。"
+        ],
+        "tiles": [
+          "ここ",
+          "から",
+          "富士山",
+          "が",
+          "よく",
+          "見え",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 81,
+      "canDo": "I can expand a useful conversation using 方、くん、ただ.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637439918",
+        "1708637440066",
+        "1708637440083"
+      ],
+      "opening": {
+        "wordId": "1708637440083",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I just wanted to speak with her.",
+          "The next person, please.",
+          "Ken-kun is one year old."
+        ],
+        "answer": "I just wanted to speak with her.",
+        "explanation": "The key expression is ただ (ただ): simply."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I just wanted to speak with her.",
+        "model": "私はただ彼女と話したかっただけです。",
+        "reading": "私[わたし]はただ 彼[かの] 女[じょ]と 話[はな]したかっただけです。",
+        "meaning": "I just wanted to speak with her.",
+        "acceptable": [
+          "私はただ彼女と話したかっただけです。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "ただ",
+          "彼女",
+          "と",
+          "話",
+          "した",
+          "か",
+          "っ",
+          "た",
+          "だけ",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439918",
+        "prompt": "Now use the same skill in a new situation: The next person, please.",
+        "model": "次の方、どうぞ。",
+        "reading": "次[つぎ]の方[かた]、どうぞ。",
+        "meaning": "The next person, please.",
+        "acceptable": [
+          "次の方、どうぞ。"
+        ],
+        "tiles": [
+          "次",
+          "の",
+          "方",
+          "どうぞ"
+        ]
+      }
+    },
+    {
+      "lesson": 82,
+      "canDo": "I can expand a useful conversation using 僕、君、人間.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440050",
+        "1708637439948",
+        "1708637440084"
+      ],
+      "opening": {
+        "wordId": "1708637440050",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I love you.",
+          "I'm going to give you this book.",
+          "The human mind is a complex thing."
+        ],
+        "answer": "I love you.",
+        "explanation": "The key expression is 僕 (ぼく): I (male)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I love you.",
+        "model": "僕は君が大好きです。",
+        "reading": "僕[ぼく]は 君[きみ]が 大[だい] 好[す]きです。",
+        "meaning": "I love you.",
+        "acceptable": [
+          "僕は君が大好きです。"
+        ],
+        "tiles": [
+          "僕",
+          "は",
+          "君",
+          "が",
+          "大好き",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439948",
+        "prompt": "Now use the same skill in a new situation: I'm going to give you this book.",
+        "model": "この本を君にあげます。",
+        "reading": "この 本[ほん]を君[きみ]にあげます。",
+        "meaning": "I'm going to give you this book.",
+        "acceptable": [
+          "この本を君にあげます。"
+        ],
+        "tiles": [
+          "この",
+          "本",
+          "を",
+          "君",
+          "に",
+          "あ",
+          "げ",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 83,
+      "canDo": "I can expand a useful conversation using まあ、強い、よく.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637439976",
+        "1708637440088",
+        "1708637439924"
+      ],
+      "opening": {
+        "wordId": "1708637440088",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "The wind is strong today.",
+          "Well, this will do I suppose.",
+          "I listen to Jazz CDs often."
+        ],
+        "answer": "The wind is strong today.",
+        "explanation": "The key expression is 強い (つよい): strong."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: The wind is strong today.",
+        "model": "今日は風が強い。",
+        "reading": "今日[きょう]は 風[かぜ]が強[つよ]い。",
+        "meaning": "The wind is strong today.",
+        "acceptable": [
+          "今日は風が強い。"
+        ],
+        "tiles": [
+          "今日",
+          "は",
+          "風",
+          "が",
+          "強い"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439924",
+        "prompt": "Now use the same skill in a new situation: I listen to Jazz CDs often.",
+        "model": "ジャズのCDをよく聞きます。",
+        "reading": "ジャズのCDをよく 聞[き]きます。",
+        "meaning": "I listen to Jazz CDs often.",
+        "acceptable": [
+          "ジャズのCDをよく聞きます。"
+        ],
+        "tiles": [
+          "ジャズ",
+          "の",
+          "CD",
+          "を",
+          "よく",
+          "聞",
+          "き",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 84,
+      "canDo": "I can expand a useful conversation using 笑う、多く、くらい.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440090",
+        "1708637440093",
+        "1708637440094"
+      ],
+      "opening": {
+        "wordId": "1708637440094",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I sleep for about seven hours every day.",
+          "The baby is laughing.",
+          "Each year, a lot of people travel abroad."
+        ],
+        "answer": "I sleep for about seven hours every day.",
+        "explanation": "The key expression is くらい (くらい): approximately, about."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I sleep for about seven hours every day.",
+        "model": "毎日、７時間くらい眠ります。",
+        "reading": "毎[まい] 日[にち]、 ７[しち] 時[じ] 間[かん]くらい 眠[ねむ]ります。",
+        "meaning": "I sleep for about seven hours every day.",
+        "acceptable": [
+          "毎日、７時間くらい眠ります。"
+        ],
+        "tiles": [
+          "毎日",
+          "７",
+          "時間",
+          "くらい",
+          "眠り",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440090",
+        "prompt": "Now use the same skill in a new situation: The baby is laughing.",
+        "model": "赤ん坊が笑っています。",
+        "reading": "赤[あか]ん 坊[ぼう]が笑[わら]っています。",
+        "meaning": "The baby is laughing.",
+        "acceptable": [
+          "赤ん坊が笑っています。"
+        ],
+        "tiles": [
+          "赤ん坊",
+          "が",
+          "笑",
+          "って",
+          "い",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 85,
+      "canDo": "I can expand a useful conversation using 力、世界、姿.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440098",
+        "1708637440099",
+        "1708637440101"
+      ],
+      "opening": {
+        "wordId": "1708637440098",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "My younger sister has more strength than I do.",
+          "Do you have a map of the world?",
+          "Her figure was visible from a distance."
+        ],
+        "answer": "My younger sister has more strength than I do.",
+        "explanation": "The key expression is 力 (ちから): strength, power."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: My younger sister has more strength than I do.",
+        "model": "私より妹の方が力があります。",
+        "reading": "私[わたし]より 妹[いもうと]の 方[ほう]が力[ちから]があります。",
+        "meaning": "My younger sister has more strength than I do.",
+        "acceptable": [
+          "私より妹の方が力があります。"
+        ],
+        "tiles": [
+          "私",
+          "より",
+          "妹",
+          "の",
+          "方",
+          "が",
+          "力",
+          "が",
+          "あり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440099",
+        "prompt": "Now use the same skill in a new situation: Do you have a map of the world?",
+        "model": "世界の地図はありますか。",
+        "reading": "世[せ] 界[かい]の 地[ち] 図[ず]はありますか。",
+        "meaning": "Do you have a map of the world?",
+        "acceptable": [
+          "世界の地図はありますか。"
+        ],
+        "tiles": [
+          "世界",
+          "の",
+          "地図",
+          "は",
+          "ありま",
+          "すか"
+        ]
+      }
+    },
+    {
+      "lesson": 86,
+      "canDo": "I can expand a useful conversation using 死ぬ、早い、頭.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440102",
+        "1708637440104",
+        "1708637440105"
+      ],
+      "opening": {
+        "wordId": "1708637440104",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "A: It takes two and a half hours from Tokyo to Osaka.\nB: That's fast, isn't it?",
+          "My dog died due to sickness.",
+          "My head has been hurting since this morning."
+        ],
+        "answer": "A: It takes two and a half hours from Tokyo to Osaka.\nB: That's fast, isn't it?",
+        "explanation": "The key expression is 早い (はやい): fast (in terms of time)."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: A: It takes two and a half hours from Tokyo to Osaka.\nB: That's fast, isn't it?",
+        "model": "A「東京から大阪まで2時間半です。」\nB「早いですね。」",
+        "reading": "A:「 東[とう] 京[きょう]から 大[おお] 阪[さか]まで 2[に] 時[じ] 間[かん] 半[はん]です。」\nB:「早[はや]いですね。」",
+        "meaning": "A: It takes two and a half hours from Tokyo to Osaka.\nB: That's fast, isn't it?",
+        "acceptable": [
+          "A「東京から大阪まで2時間半です。」\nB「早いですね。」"
+        ],
+        "tiles": [
+          "A",
+          "「",
+          "東京",
+          "から",
+          "大阪",
+          "まで",
+          "2",
+          "時間",
+          "半",
+          "です",
+          "」",
+          "B",
+          "「",
+          "早い",
+          "です",
+          "ね",
+          "」"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440105",
+        "prompt": "Now use the same skill in a new situation: My head has been hurting since this morning.",
+        "model": "今朝から頭が痛い。",
+        "reading": "今朝[けさ]から頭[あたま]が 痛[いた]い。",
+        "meaning": "My head has been hurting since this morning.",
+        "acceptable": [
+          "今朝から頭が痛い。"
+        ],
+        "tiles": [
+          "今朝",
+          "から",
+          "頭",
+          "が",
+          "痛い"
+        ]
+      }
+    },
+    {
+      "lesson": 87,
+      "canDo": "I can expand a useful conversation using ずっと、あげる、こう.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440107",
+        "1708637439944",
+        "1708637439912"
+      ],
+      "opening": {
+        "wordId": "1708637439912",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Let’s do this (“this way”).",
+          "I always thought that I'd like to study abroad in Japan.",
+          "I will give a present to my friend."
+        ],
+        "answer": "Let’s do this (“this way”).",
+        "explanation": "The key expression is こう (こう): like this, this kind of."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Let’s do this (“this way”).",
+        "model": "こうしましょう。",
+        "reading": "こうしましょう。",
+        "meaning": "Let’s do this (“this way”).",
+        "acceptable": [
+          "こうしましょう。"
+        ],
+        "tiles": [
+          "こう",
+          "しま",
+          "しょう"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440107",
+        "prompt": "Now use the same skill in a new situation: I always thought that I'd like to study abroad in Japan.",
+        "model": "ずっと日本へ留学したいと思っていました。",
+        "reading": "ずっと 日本[にほん]へ 留[りゅう] 学[がく]したいと 思[おも]っていました。",
+        "meaning": "I always thought that I'd like to study abroad in Japan.",
+        "acceptable": [
+          "ずっと日本へ留学したいと思っていました。"
+        ],
+        "tiles": [
+          "ずっと",
+          "日本",
+          "へ",
+          "留学",
+          "した",
+          "いと",
+          "思",
+          "って",
+          "いま",
+          "した"
+        ]
+      }
+    },
+    {
+      "lesson": 88,
+      "canDo": "I can expand a useful conversation using やっぱり、つもり、者.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440109",
+        "1708637440110",
+        "1708637440113"
+      ],
+      "opening": {
+        "wordId": "1708637440109",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I really love to travel after all.",
+          "I intend to stop smoking starting tomorrow.",
+          "I'm the person who called a while earlier."
+        ],
+        "answer": "I really love to travel after all.",
+        "explanation": "The key expression is やっぱり (やっぱり): just as I thought, after all."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I really love to travel after all.",
+        "model": "やっぱり旅が大好きだ。",
+        "reading": "やっぱり 旅[たび]が 大[だい] 好[す]きだ。",
+        "meaning": "I really love to travel after all.",
+        "acceptable": [
+          "やっぱり旅が大好きだ。"
+        ],
+        "tiles": [
+          "やっぱり",
+          "旅",
+          "が",
+          "大好き",
+          "だ"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440110",
+        "prompt": "Now use the same skill in a new situation: I intend to stop smoking starting tomorrow.",
+        "model": "明日からタバコを止めるつもりです。",
+        "reading": "明日[あした]からタバコを 止[や]めるつもりです。",
+        "meaning": "I intend to stop smoking starting tomorrow.",
+        "acceptable": [
+          "明日からタバコを止めるつもりです。"
+        ],
+        "tiles": [
+          "明日",
+          "から",
+          "タバコ",
+          "を",
+          "止める",
+          "つもり",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 89,
+      "canDo": "I can expand a useful conversation using こちら、向かう、きっと.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440115",
+        "1708637440116",
+        "1708637440117"
+      ],
+      "opening": {
+        "wordId": "1708637440116",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I'm heading for the office right now.",
+          "The reception desk is this way.",
+          "It will surely rain tomorrow."
+        ],
+        "answer": "I'm heading for the office right now.",
+        "explanation": "The key expression is 向かう (むかう): to face, to head toward."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I'm heading for the office right now.",
+        "model": "今、会社に向かっています。",
+        "reading": "今[いま]、 会[かい] 社[しゃ]に向[む]かっています。",
+        "meaning": "I'm heading for the office right now.",
+        "acceptable": [
+          "今、会社に向かっています。"
+        ],
+        "tiles": [
+          "今",
+          "会社",
+          "に",
+          "向",
+          "かって",
+          "い",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440117",
+        "prompt": "Now use the same skill in a new situation: It will surely rain tomorrow.",
+        "model": "明日はきっと雨が降ります。",
+        "reading": "明日[あした]はきっと 雨[あめ]が 降[ふ]ります。",
+        "meaning": "It will surely rain tomorrow.",
+        "acceptable": [
+          "明日はきっと雨が降ります。"
+        ],
+        "tiles": [
+          "明日",
+          "は",
+          "きっと",
+          "雨",
+          "が",
+          "降り",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 90,
+      "canDo": "I can expand a useful conversation using 凄い、次、ちゃんと.",
+      "situation": "Adding detail to something you already understand.",
+      "targetWordIds": [
+        "1708637440119",
+        "1708637439916",
+        "1708637440121"
+      ],
+      "opening": {
+        "wordId": "1708637440121",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Did you properly eat breakfast?",
+          "It began raining heavily.",
+          "When next shall we meet?"
+        ],
+        "answer": "Did you properly eat breakfast?",
+        "explanation": "The key expression is ちゃんと (ちゃんと): properly."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Did you properly eat breakfast?",
+        "model": "朝食はちゃんと食べましたか。",
+        "reading": "朝[ちょう] 食[しょく]はちゃんと 食[た]べましたか。",
+        "meaning": "Did you properly eat breakfast?",
+        "acceptable": [
+          "朝食はちゃんと食べましたか。"
+        ],
+        "tiles": [
+          "朝食",
+          "は",
+          "ちゃんと",
+          "食",
+          "べ",
+          "ま",
+          "した",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440119",
+        "prompt": "Now use the same skill in a new situation: It began raining heavily.",
+        "model": "凄い雨になった。",
+        "reading": "凄[すご]い 雨[あめ]になった。",
+        "meaning": "It began raining heavily.",
+        "acceptable": [
+          "凄い雨になった。"
+        ],
+        "tiles": [
+          "凄い",
+          "雨",
+          "に",
+          "な",
+          "っ",
+          "た"
+        ]
+      }
+    },
+    {
+      "lesson": 91,
+      "canDo": "I can combine foundation Japanese independently using 体、子、どんな.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440123",
+        "1708637439984",
+        "1708637439985"
+      ],
+      "opening": {
+        "wordId": "1708637440123",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "My sister has a weak body.",
+          "That kid doesn't understand Japanese.",
+          "What kind of person is Smith-san?"
+        ],
+        "answer": "My sister has a weak body.",
+        "explanation": "The key expression is 体 (からだ): body."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: My sister has a weak body.",
+        "model": "妹は体が弱いです。",
+        "reading": "妹[いもうと]は体[からだ]が 弱[よわ]いです。",
+        "meaning": "My sister has a weak body.",
+        "acceptable": [
+          "妹は体が弱いです。"
+        ],
+        "tiles": [
+          "妹",
+          "は",
+          "体",
+          "が",
+          "弱い",
+          "です"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439984",
+        "prompt": "Now use the same skill in a new situation: That kid doesn't understand Japanese.",
+        "model": "その子は日本語が分からない。",
+        "reading": "その子[こ]は 日本[にほん] 語[ご]が 分[わ]からない。",
+        "meaning": "That kid doesn't understand Japanese.",
+        "acceptable": [
+          "その子は日本語が分からない。"
+        ],
+        "tiles": [
+          "その子",
+          "は",
+          "日本語",
+          "が",
+          "分",
+          "から",
+          "ない"
+        ]
+      }
+    },
+    {
+      "lesson": 92,
+      "canDo": "I can combine foundation Japanese independently using うち、意味、様子.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440005",
+        "1708637439986",
+        "1708637439989"
+      ],
+      "opening": {
+        "wordId": "1708637439986",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I don't understand what you mean.",
+          "I will go home.",
+          "I'm going to see how she's doing."
+        ],
+        "answer": "I don't understand what you mean.",
+        "explanation": "The key expression is 意味 (いみ): meaning, significance."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I don't understand what you mean.",
+        "model": "意味が分かりません。",
+        "reading": "意[い] 味[み]が 分[わ]かりません。",
+        "meaning": "I don't understand what you mean.",
+        "acceptable": [
+          "意味が分かりません。"
+        ],
+        "tiles": [
+          "意味",
+          "が",
+          "分",
+          "か",
+          "り",
+          "ま",
+          "せん"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637439989",
+        "prompt": "Now use the same skill in a new situation: I'm going to see how she's doing.",
+        "model": "彼女の様子を見てきます。",
+        "reading": "彼[かの] 女[じょ]の様[よう] 子[す]を 見[み]てきます。",
+        "meaning": "I'm going to see how she's doing.",
+        "acceptable": [
+          "彼女の様子を見てきます。"
+        ],
+        "tiles": [
+          "彼女",
+          "の",
+          "様子",
+          "を",
+          "見",
+          "て",
+          "き",
+          "ます"
+        ]
+      }
+    },
+    {
+      "lesson": 93,
+      "canDo": "I can combine foundation Japanese independently using 存在、過ぎる、聞こえる.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440126",
+        "1708637440127",
+        "1708637440128"
+      ],
+      "opening": {
+        "wordId": "1708637440128",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I can hear the sound of the television from the next room.",
+          "Do you think that aliens exist?",
+          "Time passes quickly."
+        ],
+        "answer": "I can hear the sound of the television from the next room.",
+        "explanation": "The key expression is 聞こえる (きこえる): to be able to hear."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I can hear the sound of the television from the next room.",
+        "model": "隣の部屋からテレビの音が聞こえる。",
+        "reading": "隣[となり]の 部屋[へや]からテレビの 音[おと]が聞[き]こえる。",
+        "meaning": "I can hear the sound of the television from the next room.",
+        "acceptable": [
+          "隣の部屋からテレビの音が聞こえる。"
+        ],
+        "tiles": [
+          "隣",
+          "の",
+          "部屋",
+          "から",
+          "テレビ",
+          "の",
+          "音",
+          "が",
+          "聞こえる"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440126",
+        "prompt": "Now use the same skill in a new situation: Do you think that aliens exist?",
+        "model": "宇宙人は存在すると思いますか。",
+        "reading": "宇[う] 宙[ちゅう] 人[じん]は存[そん] 在[ざい]すると 思[おも]いますか。",
+        "meaning": "Do you think that aliens exist?",
+        "acceptable": [
+          "宇宙人は存在すると思いますか。"
+        ],
+        "tiles": [
+          "宇宙",
+          "人",
+          "は",
+          "存在",
+          "すると",
+          "思い",
+          "ます",
+          "か"
+        ]
+      }
+    },
+    {
+      "lesson": 94,
+      "canDo": "I can combine foundation Japanese independently using 受ける、殺す、まさか.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440129",
+        "1708637440133",
+        "1708637440134"
+      ],
+      "opening": {
+        "wordId": "1708637440129",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I was terribly shocked at my friend's words.",
+          "I hate killing living things.",
+          "No way. He didn’t do that, did he?"
+        ],
+        "answer": "I was terribly shocked at my friend's words.",
+        "explanation": "The key expression is 受ける (うける): to receive, to accept."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I was terribly shocked at my friend's words.",
+        "model": "親友の言葉に、酷いショックを受けた。",
+        "reading": "親[しん] 友[ゆう]の 言[こと] 葉[ば]に、 酷[ひど]いショックを受[う]けた。",
+        "meaning": "I was terribly shocked at my friend's words.",
+        "acceptable": [
+          "親友の言葉に、酷いショックを受けた。"
+        ],
+        "tiles": [
+          "親友",
+          "の",
+          "言葉",
+          "に",
+          "酷い",
+          "ショック",
+          "を",
+          "受け",
+          "た"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440133",
+        "prompt": "Now use the same skill in a new situation: I hate killing living things.",
+        "model": "私は生き物を殺すのが嫌いだ。",
+        "reading": "私[わたし]は 生[い]き 物[もの]を殺[ころ]すのが 嫌[きら]いだ。",
+        "meaning": "I hate killing living things.",
+        "acceptable": [
+          "私は生き物を殺すのが嫌いだ。"
+        ],
+        "tiles": [
+          "私",
+          "は",
+          "生き物",
+          "を",
+          "殺す",
+          "の",
+          "が",
+          "嫌い",
+          "だ"
+        ]
+      }
+    },
+    {
+      "lesson": 95,
+      "canDo": "I can combine foundation Japanese independently using 絶対、信じる、理由.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440135",
+        "1708637439990",
+        "1708637440136"
+      ],
+      "opening": {
+        "wordId": "1708637439990",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "I believe his words.",
+          "I can never ever do such a thing.",
+          "Please tell me why you were late."
+        ],
+        "answer": "I believe his words.",
+        "explanation": "The key expression is 信じる (しんじる): to believe, to trust."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: I believe his words.",
+        "model": "彼の言葉を信じています。",
+        "reading": "彼[かれ]の 言[こと] 葉[ば]を信[しん]じています。",
+        "meaning": "I believe his words.",
+        "acceptable": [
+          "彼の言葉を信じています。"
+        ],
+        "tiles": [
+          "彼",
+          "の",
+          "言葉",
+          "を",
+          "信",
+          "じ",
+          "てい",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440136",
+        "prompt": "Now use the same skill in a new situation: Please tell me why you were late.",
+        "model": "遅れた理由を教えてください。",
+        "reading": "遅[おく]れた理[り] 由[ゆう]を 教[おし]えてください。",
+        "meaning": "Please tell me why you were late.",
+        "acceptable": [
+          "遅れた理由を教えてください。"
+        ],
+        "tiles": [
+          "遅れ",
+          "た",
+          "理由",
+          "を",
+          "教え",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      }
+    },
+    {
+      "lesson": 96,
+      "canDo": "I can combine foundation Japanese independently using 逃げる、忘れる、誰か.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440139",
+        "1708637440007",
+        "1708637440140"
+      ],
+      "opening": {
+        "wordId": "1708637440140",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Please try asking someone.",
+          "The bird flew out of the window.",
+          "Please don't forget your promise."
+        ],
+        "answer": "Please try asking someone.",
+        "explanation": "The key expression is 誰か (だれか): someone."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Please try asking someone.",
+        "model": "誰かに聞いてみてください。",
+        "reading": "誰[だれ]かに 聞[き]いてみてください。",
+        "meaning": "Please try asking someone.",
+        "acceptable": [
+          "誰かに聞いてみてください。"
+        ],
+        "tiles": [
+          "誰か",
+          "に",
+          "聞",
+          "い",
+          "て",
+          "み",
+          "て",
+          "くだ",
+          "さい"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440139",
+        "prompt": "Now use the same skill in a new situation: The bird flew out of the window.",
+        "model": "鳥が窓から逃げたよ。",
+        "reading": "鳥[とり]が 窓[まど]から逃[に]げたよ。",
+        "meaning": "The bird flew out of the window.",
+        "acceptable": [
+          "鳥が窓から逃げたよ。"
+        ],
+        "tiles": [
+          "鳥",
+          "が",
+          "窓",
+          "から",
+          "逃げ",
+          "たよ"
+        ]
+      }
+    },
+    {
+      "lesson": 97,
+      "canDo": "I can combine foundation Japanese independently using まるで、他、他.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440141",
+        "1708637440142",
+        "1708637440143"
+      ],
+      "opening": {
+        "wordId": "1708637440141",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "He was excited just like a kid.",
+          "There's no other way.",
+          "The majority of foreign students are Asian, with 30 percent from other regions."
+        ],
+        "answer": "He was excited just like a kid.",
+        "explanation": "The key expression is まるで (まるで): just like, completely."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: He was excited just like a kid.",
+        "model": "彼はまるで子供のようにはしゃいだよ。",
+        "reading": "彼[かれ]はまるで 子[こ] 供[ども]のようにはしゃいだよ。",
+        "meaning": "He was excited just like a kid.",
+        "acceptable": [
+          "彼はまるで子供のようにはしゃいだよ。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "まるで",
+          "子供",
+          "の",
+          "よう",
+          "に",
+          "は",
+          "し",
+          "ゃ",
+          "い",
+          "だ",
+          "よ"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440142",
+        "prompt": "Now use the same skill in a new situation: There's no other way.",
+        "model": "他に方法がありません。",
+        "reading": "他[ほか]に 方[ほう] 法[ほう]がありません。",
+        "meaning": "There's no other way.",
+        "acceptable": [
+          "他に方法がありません。"
+        ],
+        "tiles": [
+          "他",
+          "に",
+          "方法",
+          "が",
+          "ありま",
+          "せん"
+        ]
+      }
+    },
+    {
+      "lesson": 98,
+      "canDo": "I can combine foundation Japanese independently using さっき、今度、今度.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440010",
+        "1708637440011",
+        "1708637440036"
+      ],
+      "opening": {
+        "wordId": "1708637440011",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "Where do you want to go next time?",
+          "Let's continue the conversation we had earlier.",
+          "The test this time was really difficult."
+        ],
+        "answer": "Where do you want to go next time?",
+        "explanation": "The key expression is 今度 (こんど): next time."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: Where do you want to go next time?",
+        "model": "今度はどこに行きたいですか。",
+        "reading": "今[こん] 度[ど]はどこに 行[い]きたいですか。",
+        "meaning": "Where do you want to go next time?",
+        "acceptable": [
+          "今度はどこに行きたいですか。"
+        ],
+        "tiles": [
+          "今度",
+          "は",
+          "どこ",
+          "に",
+          "行き",
+          "たい",
+          "です",
+          "か"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440036",
+        "prompt": "Now use the same skill in a new situation: The test this time was really difficult.",
+        "model": "今度のテストはとても難しかった。",
+        "reading": "今[こん] 度[ど]のテストはとても 難[むずか]しかった。",
+        "meaning": "The test this time was really difficult.",
+        "acceptable": [
+          "今度のテストはとても難しかった。"
+        ],
+        "tiles": [
+          "今度",
+          "の",
+          "テスト",
+          "は",
+          "とても",
+          "難",
+          "しか",
+          "っ",
+          "た"
+        ]
+      }
+    },
+    {
+      "lesson": 99,
+      "canDo": "I can combine foundation Japanese independently using 普通、もちろん、心.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440146",
+        "1708637439996",
+        "1708637440147"
+      ],
+      "opening": {
+        "wordId": "1708637440147",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "He has an honest heart.",
+          "The food and the service at that restaurant is average.",
+          "Of course we'll go together."
+        ],
+        "answer": "He has an honest heart.",
+        "explanation": "The key expression is 心 (こころ): heart, mind."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: He has an honest heart.",
+        "model": "彼は素直な心を持っている。",
+        "reading": "彼[かれ]は 素[す] 直[なお]な心[こころ]を 持[も]っている。",
+        "meaning": "He has an honest heart.",
+        "acceptable": [
+          "彼は素直な心を持っている。"
+        ],
+        "tiles": [
+          "彼",
+          "は",
+          "素直",
+          "な",
+          "心",
+          "を",
+          "持",
+          "って",
+          "いる"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440146",
+        "prompt": "Now use the same skill in a new situation: The food and the service at that restaurant is average.",
+        "model": "あの店は料理もサービスも普通です。",
+        "reading": "あの 店[みせ]は 料[りょう] 理[り]もサービスも普[ふ] 通[つう]です。",
+        "meaning": "The food and the service at that restaurant is average.",
+        "acceptable": [
+          "あの店は料理もサービスも普通です。"
+        ],
+        "tiles": [
+          "あの",
+          "店",
+          "は",
+          "料理",
+          "も",
+          "サービス",
+          "も",
+          "普通",
+          "です"
+        ]
+      }
+    },
+    {
+      "lesson": 100,
+      "canDo": "I can combine foundation Japanese independently using 以上、それで、生きる.",
+      "situation": "Handling a complete beginner-level exchange.",
+      "targetWordIds": [
+        "1708637440152",
+        "1708637440153",
+        "1708637440154"
+      ],
+      "opening": {
+        "wordId": "1708637440152",
+        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "choices": [
+          "There are several days in the summer that are 30 degrees Celsius or more.",
+          "I had a fever yesterday. Because of this, I took the day off from school.",
+          "I want to live to 100."
+        ],
+        "answer": "There are several days in the summer that are 30 degrees Celsius or more.",
+        "explanation": "The key expression is 以上 (いじょう): ... or more, beyond."
+      },
+      "production": {
+        "mode": "type-or-tiles",
+        "prompt": "Build or say the model response for: There are several days in the summer that are 30 degrees Celsius or more.",
+        "model": "夏は３０度以上の日が何日もあります。",
+        "reading": "夏[なつ]は３０ 度[ど]以[い] 上[じょう]の 日[ひ]が 何[なん] 日[にち]もあります。",
+        "meaning": "There are several days in the summer that are 30 degrees Celsius or more.",
+        "acceptable": [
+          "夏は３０度以上の日が何日もあります。"
+        ],
+        "tiles": [
+          "夏",
+          "は",
+          "３０",
+          "度",
+          "以上",
+          "の",
+          "日",
+          "が",
+          "何",
+          "日",
+          "も",
+          "あり",
+          "ます"
+        ]
+      },
+      "transfer": {
+        "mode": "type-or-tiles",
+        "wordId": "1708637440153",
+        "prompt": "Now use the same skill in a new situation: I had a fever yesterday. Because of this, I took the day off from school.",
+        "model": "昨日は熱がありました。それで、学校を休みました。",
+        "reading": "昨日[きのう]は 熱[ねつ]がありました。それで、 学[がっ] 校[こう]を 休[やす]みました。",
+        "meaning": "I had a fever yesterday. Because of this, I took the day off from school.",
+        "acceptable": [
+          "昨日は熱がありました。それで、学校を休みました。"
+        ],
+        "tiles": [
+          "昨日",
+          "は",
+          "熱",
+          "が",
+          "ありま",
+          "した",
+          "それで",
+          "学校",
+          "を",
+          "休み",
+          "ま",
+          "した"
+        ]
+      }
+    }
+  ]
+}

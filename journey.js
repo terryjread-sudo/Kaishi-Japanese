@@ -216,6 +216,22 @@
       .join(' · ');
   }
 
+  function lessonOutcome(chapter) {
+    const policy = window.KaishiActivityPolicy;
+    return policy?.outcomeForLesson?.(policy.lessonOutcomeCatalog, chapter + 1) || null;
+  }
+
+  function lessonEvidence(chapter) {
+    return window.KaishiJapanReadyBridge?.getMeta?.()?.canDoEvidence?.[String(chapter + 1)] || null;
+  }
+
+  function evidenceSummary(chapter) {
+    const evidence = lessonEvidence(chapter);
+    if (window.KaishiActivityPolicy?.lessonEvidenceDue?.(evidence)) return 'Communicative review due';
+    const passed = ['listening','recall','production','transfer'].filter(kind => evidence?.[kind]?.passed).length;
+    return passed ? `${passed}/4 abilities demonstrated` : 'Goal ready to begin';
+  }
+
   function futureMissionForChapter(chapter, current) {
     try {
       return window.KaishiActivitySchedule?.previewMissionForLesson?.(
@@ -241,6 +257,7 @@
 
     for (let chapter = from; chapter < to; chapter++) {
       const stats = lessonStats(chapter);
+      const outcome = lessonOutcome(chapter);
       const topic = {...topicFor(stats.words),title:window.KaishiActivityPolicy?.buildJourneyCurriculum?.(window.KaishiJapanReadyBridge?.getVocab?.()||[])?.[chapter]?.arc?.title||topicFor(stats.words)?.title};
       const done = chapter < current || stats.complete;
       const isCurrent = chapter === current && !done;
@@ -256,6 +273,9 @@
         title: lessonTitle(chapter, stats.words),
         subtitle: lessonSubtitle(stats.words),
         vocabulary: lessonVocabulary(stats.words),
+        canDo: outcome?.canDo || '',
+        situation: outcome?.situation || '',
+        evidence: evidenceSummary(chapter),
         detail: done
           ? `${stats.label || 'Learned'} · ${stats.strength ?? stats.percent ?? 0}% strength`
           : isCurrent
@@ -1288,18 +1308,20 @@
       const progressMatch = String(item.detail || '').match(/(\d+)%/);
       const progress = Math.max(0, Math.min(100, Number(progressMatch?.[1] || (item.done ? 100 : 0))));
       const status = item.type === 'past' ? 'Completed · Review again' : item.type === 'current' ? 'In progress' : item.type === 'future' ? (item.chapter === currentChapter() ? 'Next up' : 'Locked') : 'Side quest';
-      const duration = item.type === 'past' ? 'Practice again' : item.type === 'side' ? 'Activity' : 'Lesson';
-      const description = item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
+      const duration = item.type === 'past' ? 'Practice again' : item.type === 'side' ? 'Activity' : '≈ 6 min';
+      const description = item.situation || item.detail || (item.vocabulary ? `Build confidence with ${item.vocabulary}.` : 'Keep building your Japanese journey one focused lesson at a time.');
       const itemClasses = ['experimental-timeline-item', focused ? 'active' : '', item.done ? 'is-completed' : '', item.type === 'side' ? 'is-side-quest' : '', locked ? 'is-locked' : ''].filter(Boolean).join(' ');
       const lantern = '<svg class="experimental-lantern-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L4 6H20L12 2Z"/><rect x="6" y="6" width="12" height="3"/><rect x="7" y="9" width="10" height="7" rx="1"/><line x1="12" y1="9" x2="12" y2="16"/><path d="M5 16H19L21 22H3L5 16Z"/></svg>';
       const marker = item.type === 'side' ? esc(item.icon || '⚔️') : item.done ? '✓' : lantern;
-      const displayTitle = item.subtitle && Number.isFinite(item.chapter)
+      const displayTitle = item.canDo && Number.isFinite(item.chapter)
+        ? `Lesson ${item.chapter + 1} · ${item.canDo.replace(/^I can /, '')}`
+        : item.subtitle && Number.isFinite(item.chapter)
         ? `Lesson ${item.chapter + 1} · ${item.vocabulary || item.subtitle}`
         : item.title;
       const subtitle = item.subtitle && Number.isFinite(item.chapter) ? `<span class="experimental-card-subtitle">${esc(item.subtitle)}</span>` : '';
       const cardCharacters = ['journey-girl-base.png','journey-boy-base.png','journey-friend-base.png','journey-guide-base.png'];
       const characterArt = `<img class="experimental-card-character" src="media/profiles/${cardCharacters[index % cardCharacters.length]}" alt="" aria-hidden="true">`;
-      return `<article class="${itemClasses}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;--experimental-strength:${progress}%"><span class="experimental-lesson-marker">${marker}</span><div class="experimental-lesson-node"><div class="experimental-card-content"><button type="button" class="experimental-card-select" data-experimental-select aria-expanded="${focused}"${item.type === 'current' ? ' aria-current="step"' : ''}><span class="experimental-card-header"><span><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(displayTitle)}</strong>${subtitle}</span><span class="experimental-card-duration">${duration}</span></span></button><div class="experimental-card-details">${characterArt}<p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${progress}% strength</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}"${locked ? ' disabled aria-disabled="true"' : ''}>${itemCta}</button></div></div></div></div></article>`;
+      return `<article class="${itemClasses}" data-experimental-lesson="${esc(item.id)}" data-virtual-index="${index}" role="listitem" style="top:${offsets[index]}px;--experimental-strength:${progress}%"><span class="experimental-lesson-marker">${marker}</span><div class="experimental-lesson-node"><div class="experimental-card-content"><button type="button" class="experimental-card-select" data-experimental-select aria-expanded="${focused}"${item.type === 'current' ? ' aria-current="step"' : ''}><span class="experimental-card-header"><span><small class="experimental-card-status">${status}</small><strong class="experimental-node-copy">${esc(displayTitle)}</strong>${subtitle}</span><span class="experimental-card-duration">${duration}</span></span></button><div class="experimental-card-details">${characterArt}<p class="experimental-card-description">${esc(description)}</p><div class="experimental-progress-track"><span style="width:${progress}%"></span></div><div class="experimental-card-footer"><span class="experimental-card-xp">${esc(item.evidence || `${progress}% strength`)}</span><button type="button" class="primary experimental-lesson-cta" data-experimental-action="${itemAction}" data-kq-chapter="${item.chapter}" data-kq-activity="${esc(item.activityId || '')}"${locked ? ' disabled aria-disabled="true"' : ''}>${itemCta}</button></div></div></div></div></article>`;
     };
 
     const updateCardStyles = () => {

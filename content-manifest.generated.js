@@ -5,6 +5,7 @@
   "dataFiles": [
     "./data/japan-ready-v90.json",
     "./data/sentence-lab.json",
+    "./data/lesson-outcomes.json",
     "./data/lesson-story-scenes.json",
     "./data/vocabulary.json",
     "./data/katakana-core-10k.json",
@@ -59,6 +60,7 @@
     "./battle-ui-patch.js",
     "./data/japan-ready-v90.json",
     "./data/sentence-lab.json",
+    "./data/lesson-outcomes.json",
     "./data/lesson-story-scenes.json",
     "./data/vocabulary.json",
     "./data/katakana-core-10k.json",
