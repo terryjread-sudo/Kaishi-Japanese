@@ -22,20 +22,31 @@ var SHELL = (manifestFiles || ['./','./index.html','./version.js','./app.js']).m
 
 self.addEventListener('install', function(event) {
   event.waitUntil((async function() {
+    var cache;
     try {
-      var cache = await caches.open(SHELL_CACHE);
+      cache = await caches.open(SHELL_CACHE);
       var shell = SHELL;
       try { var manifest = await fetch('./offline-shell.json', {cache:'no-cache'}); if(manifest.ok) shell = await manifest.json(); } catch(e) {}
-      await Promise.all(shell.map(function(url) { return cache.add(url).catch(function(){return null;}); }));
-    } catch (e) {}
-    try { await self.skipWaiting(); } catch (e) {}
+      await cache.addAll(shell);
+      await self.skipWaiting();
+    } catch (error) {
+      // Never activate a release with a partially populated application shell.
+      if (cache) await caches.delete(SHELL_CACHE).catch(function() {});
+      throw error;
+    }
   })());
 });
 
 self.addEventListener('activate', function(event) {
   event.waitUntil((async function() {
     try {
-      // Keep usable previous downloads until the replacement has been verified.
+      var current = [SHELL_CACHE, IMAGE_CACHE, AUDIO_CACHE, OFFLINE_CACHE];
+      var keys = await caches.keys();
+      await Promise.all(keys.filter(function(key) {
+        var runtime = key.indexOf('kaishi-shell-') === 0 || key.indexOf('kaishi-images-') === 0 || key.indexOf('kaishi-audio-') === 0;
+        return runtime && current.indexOf(key) === -1;
+      }).map(function(key) { return caches.delete(key); }));
+      // Previous explicit offline packs are retained until the replacement is verified.
     } catch (e) {}
     try { await self.clients.claim(); } catch (e) {}
   })());

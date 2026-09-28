@@ -966,7 +966,12 @@
       .settings-card,.settings-panel{display:grid;gap:18px;min-width:0;max-width:100%}
       .settings-panel>*{min-width:0;max-width:100%}
       .settings-panel[hidden]{display:none}
-      @media(max-width:480px){.settings-tab{padding:9px 11px;font-size:.76rem}}
+      #settings>.study-top h2{color:#fff;text-shadow:0 1px 3px #02061799}
+      @media(max-width:560px){
+        .settings-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;overflow:visible;padding:0;margin:0 0 10px}
+        .settings-tab{justify-content:flex-start;width:100%;min-height:44px;padding:9px 11px;font-size:.76rem}
+        .settings-tab:last-child{grid-column:1/-1;justify-content:center}
+      }
     `;
     document.head.appendChild(style);
   }

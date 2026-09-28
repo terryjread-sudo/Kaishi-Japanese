@@ -85,6 +85,7 @@ test('experimental mobile Journey keeps lessons separated and restores them afte
   await page.getByRole('button',{name:'Continue lesson',exact:true}).click();
   await page.getByRole('button',{name:'Start session',exact:true}).click();
   await expect(page.locator('#study')).toHaveClass(/active/);
+  await expect(page.locator('#experimentalBottomNav')).toHaveAttribute('inert','');
   const clearance=await page.evaluate(()=>{const header=document.querySelector('#appHeader')!.getBoundingClientRect(),exit=document.querySelector('#exitBtn')!.getBoundingClientRect(),progress=document.querySelector('#sessionCounter')!.getBoundingClientRect();return{scrollY,headerBottom:header.bottom,exitTop:exit.top,progressTop:progress.top}});
   expect(clearance.scrollY).toBe(0);expect(clearance.exitTop).toBeGreaterThanOrEqual(clearance.headerBottom);expect(clearance.progressTop).toBeGreaterThanOrEqual(clearance.headerBottom);
 
@@ -92,6 +93,7 @@ test('experimental mobile Journey keeps lessons separated and restores them afte
   await page.getByRole('button',{name:'Keep learning',exact:true}).click();await expect(page.locator('#study')).toHaveClass(/active/);
   await page.locator('#exitBtn').click();await page.getByRole('button',{name:'Exit lesson',exact:true}).click();
   await expect(page.locator('#journey')).toHaveClass(/active/);
+  await expect(page.locator('#experimentalBottomNav')).not.toHaveAttribute('inert','');
   await expect.poll(() => page.locator('#journeyHistoryTrack .experimental-timeline-item').count()).toBeGreaterThanOrEqual(8);
 });
 
