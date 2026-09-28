@@ -252,7 +252,7 @@ function updateExperimentalNavVisibility(){
  const activeAction={home:'journey',journey:'journey',collection:'collection',community:'community',japanReady:'japan-ready',gameHub:'games'}[active]||'';
  nav.querySelectorAll('[data-experimental-nav]').forEach(item=>{const current=item.dataset.experimentalNav===activeAction;item.classList.toggle('is-active',current);if(current)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
  const visible=!inLesson&&(inPanel||active==='home'||active==='journey'||active==='japanReady'||active==='senseiDesk');
- nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));
+ nav.classList.toggle('is-hidden',!visible);nav.setAttribute('aria-hidden',String(!visible));nav.toggleAttribute('inert',!visible);
 }
 function syncExperimentalHeaderAction(){
  const button=$('#experimentalJapanReady');if(!button)return;
