@@ -121,7 +121,19 @@
   const{data:existing,error:readError}=await client.from('leaderboard_entries').select('user_id,avatar_key').eq('user_id',user.id).maybeSingle();
   if(readError)throw readError;
   selectedAvatar=avatarKey(existing?.avatar_key||selectedAvatar);
-  const values={user_id:user.id,...p,...stats,avatar_key:selectedAvatar};
+  // Keep private or client-only statistics (such as avatarUnlocks) out of the
+  // public leaderboard. PostgREST rejects the entire write for unknown keys.
+  const values={
+   user_id:user.id,
+   ...p,
+   xp:Number(stats.xp||0),
+   mastered:Number(stats.mastered||0),
+   accuracy:Number(stats.accuracy||0),
+   reviews:Number(stats.reviews||0),
+   monsters_defeated:Number(stats.monsters_defeated||0),
+   streak:Number(stats.streak||0),
+   avatar_key:selectedAvatar
+  };
   const write=existing?await client.from('leaderboard_entries').update(values).eq('user_id',user.id):await client.from('leaderboard_entries').insert({...values,opted_in:true});
   if(write.error)throw write.error;
   const{data,error}=await client.from('leaderboard_entries').select('*').eq('user_id',user.id).maybeSingle();
