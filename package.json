@@ -1,6 +1,6 @@
 {
   "name": "kaishi-quest",
-  "version": "11.168.0",
+  "version": "11.169.0",
   "description": "Japanese vocabulary learner with visual mnemonics, speech, and games",
   "private": true,
   "scripts": {
