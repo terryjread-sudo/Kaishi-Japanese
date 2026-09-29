@@ -18,7 +18,7 @@ import {
   validateJourneyCurriculum,
 } from './domains/curriculum/journey-curriculum';
 import { hasStartedProgress, mergeSyncPayloads } from './domains/cloud-sync/merge';
-import { prepareLesson, sessionPosition } from './domains/lessons/session';
+import { communicativeOutcomePlacement, prepareLesson, sessionPosition } from './domains/lessons/session';
 import { decorateLesson, showAnswerFeedback } from './core/lesson-ui';
 import './core/learning.css';
 import './core/journey-shell';
@@ -78,6 +78,7 @@ window.KaishiActivityPolicy = {
   mergeCloudPayloads: mergeSyncPayloads,
   hasStartedCloudProgress: hasStartedProgress,
   prepareLesson,
+  communicativeOutcomePlacement,
   sessionPosition,
   decorateLesson,
   showAnswerFeedback,

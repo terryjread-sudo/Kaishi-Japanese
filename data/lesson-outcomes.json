@@ -12,14 +12,14 @@
       ],
       "opening": {
         "wordId": "1708637439902",
-        "prompt": "Listen once. Which meaning best matches what you heard?",
+        "prompt": "Listen for the reply you learned. Which conversation matches it?",
         "choices": [
           "A: Are you Yamada-san?\nB: Yes, I am.",
           "A: Are you Yamada-san?\nB: No, I'm not.",
           "Are you alright?"
         ],
         "answer": "A: Are you Yamada-san?\nB: Yes, I am.",
-        "explanation": "The key expression is はい (はい): yes (polite)."
+        "explanation": "The reply はい is the polite ‘yes.’ You do not need every word yet: 山田さんですか means ‘Are you Yamada-san?’"
       },
       "production": {
         "mode": "choice",
