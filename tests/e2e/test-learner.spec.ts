@@ -61,6 +61,7 @@ test('focused lesson practice shows the learner-facing mastery path', async ({ p
     await page.locator('#continueBtn').click();
     await page.locator('#pronunciationSkip').click();
   }
+  await continuePastCommunicativeOpener(page);
   for (let index = 0; index < 3; index++) {
     await page.locator('#revealBtn').click();
     await page.getByRole('button', { name: 'Easy' }).click();

@@ -8,6 +8,38 @@ export interface LessonStep<W extends LessonWord = LessonWord> {
   adaptiveRepair?: boolean;
 }
 const passive = new Set(['kanaUnlock', 'firstEncounter', 'intro', 'pronunciation', 'example', 'outcomeListen', 'outcomeProduce', 'outcomeTransfer']);
+const instruction = new Set(['kanaUnlock', 'firstEncounter', 'intro', 'pronunciation', 'example']);
+
+export type CommunicativeOutcomePlacement =
+  | { kind: 'opening'; index: 0 }
+  | { kind: 'after-teaching'; index: number }
+  | { kind: 'unavailable' };
+
+/**
+ * A listening check may open a lesson only when all of its target expressions
+ * have already been introduced. Otherwise, wait until this session has taught
+ * every new target; if it cannot do that, omit the outcome instead of asking
+ * the learner to guess.
+ */
+export function communicativeOutcomePlacement<W extends LessonWord>(
+  steps: Array<LessonStep<W>>,
+  targetWordIds: string[],
+  isIntroduced: (wordId: string) => boolean,
+): CommunicativeOutcomePlacement {
+  const unseen = new Set(targetWordIds.filter(id => !isIntroduced(id)));
+  if (!unseen.size) return { kind: 'opening', index: 0 };
+
+  const explicitlyTaught = new Set(
+    steps.filter(step => step.skill === 'firstEncounter' && unseen.has(step.v.id)).map(step => step.v.id),
+  );
+  if ([...unseen].some(id => !explicitlyTaught.has(id))) return { kind: 'unavailable' };
+
+  let lastTeachingIndex = -1;
+  steps.forEach((step, index) => {
+    if (unseen.has(step.v.id) && instruction.has(step.skill)) lastTeachingIndex = index;
+  });
+  return { kind: 'after-teaching', index: lastTeachingIndex + 1 };
+}
 
 /** Expand prerequisites once, and reserve recall before optional context can fill a mission. */
 export function prepareLesson<W extends LessonWord, S extends LessonStep<W>>(

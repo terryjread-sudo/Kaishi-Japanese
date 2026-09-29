@@ -51,10 +51,14 @@ const lessons = lessonIds.slice(0, 100).map((ids, index) => {
     targetWordIds: ids,
     opening: {
       wordId: openingWord.id,
-      prompt: 'Listen once. Which meaning best matches what you heard?',
+      prompt: lesson === 1
+        ? 'Listen for the reply you learned. Which conversation matches it?'
+        : 'Listen once. Which meaning best matches what you heard?',
       choices: [meaningFor(openingWord), ...distractors],
       answer: meaningFor(openingWord),
-      explanation: `The key expression is ${openingWord.word} (${openingWord.reading}): ${openingWord.meaning}.`,
+      explanation: lesson === 1
+        ? 'The reply はい is the polite ‘yes.’ You do not need every word yet: 山田さんですか means ‘Are you Yamada-san?’'
+        : `The key expression is ${openingWord.word} (${openingWord.reading}): ${openingWord.meaning}.`,
     },
     production: {
       mode: band,

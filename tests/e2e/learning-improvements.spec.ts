@@ -42,18 +42,32 @@ test('a complete Journey lesson includes assessments and stable prerequisite cou
   await expect(page.locator('#toast')).not.toContainText('Mission paused');
 });
 
-test('Lesson 1 starts with audio-only meaning and records communicative evidence',async({page})=>{
+test('Lesson 1 teaches new replies before checking listening and records communicative evidence',async({page})=>{
   await page.goto('/',{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.getByRole('button',{name:'Continue lesson',exact:true}).click();
   await expect(page.locator('.lesson-outcome-preview')).toContainText('I can respond and share basic information');
   await expect(page.locator('.lesson-outcome-preview')).toContainText('About');
   await page.getByRole('button',{name:'Start session',exact:true}).click();
   const card=page.locator('#card');
-  await expect(card).toContainText('listen first');
+  await expect(card.locator('[data-outcome-listen]')).toHaveCount(0);
+  const taught=new Set<string>();
+  for(let step=0;step<24&&!await card.locator('[data-outcome-listen]').first().isVisible();step++){
+    const encounter=card.locator('.first-encounter-word');
+    if(await encounter.isVisible())taught.add((await encounter.innerText()).trim());
+    let advanced=false;
+    for(const id of ['kanaUnlockContinue','firstEncounterContinue','continueBtn','pronunciationSkip','exampleContinue']){
+      if(await card.locator(`#${id}`).isVisible()){await card.locator(`#${id}`).click();advanced=true;break;}
+    }
+    if(!advanced)throw new Error(`Listening check appeared after an unexpected card: ${await card.innerText()}`);
+  }
+  expect([...taught]).toEqual(expect.arrayContaining(['はい','いいえ','大丈夫']));
+  await expect(card).toContainText('listening check');
+  await expect(card).toContainText('reply you learned');
   await expect(card.locator('#outcomeListeningReveal')).toBeHidden();
   await expect(card).not.toContainText('A「山田さんですか。」');
   await card.getByRole('button',{name:/Yes, I am/}).click();
   await expect(card.locator('#outcomeListeningReveal')).toContainText('A「山田さんですか。」');
+  await expect(card.locator('#outcomeListeningReveal')).toContainText('You do not need every word yet');
   const evidence=await page.evaluate(()=>(window as unknown as {KaishiJapanReadyBridge:{getMeta:()=>{canDoEvidence:Record<string,{listening?:{passed:boolean}}>}}}).KaishiJapanReadyBridge.getMeta().canDoEvidence['1']);
   expect(evidence?.listening?.passed).toBe(true);
 });
