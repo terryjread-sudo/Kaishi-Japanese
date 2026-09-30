@@ -37,18 +37,39 @@ test('a brand-new learner decodes and correctly escalates the first signal', asy
   await expect(page.locator('[data-signal-evidence="red"]')).toHaveClass(/is-guided/);
   await page.locator('[data-signal-evidence="red"]').click();
   await expect(page.locator('.signal-evidence-list')).toContainText('red');
+  await page.locator('[data-signal-evidence-status="red"]').click();
+  await expect(page.locator('.signal-evidence-card')).toHaveClass(/doubtful/);
+  await page.locator('[data-signal-confidence="fair"]').click();
+  await expect(page.locator('[data-signal-confidence="fair"]')).toHaveClass(/selected/);
   await page.locator('[data-signal-verdict="escalate"]').click();
   await expect(page.locator('.signal-feedback')).toContainText('Good judgement');
   await expect(page.locator('.signal-feedback')).toContainText('Evidence identified correctly');
   await expect(page.locator('.signal-feedback-translation')).toContainText('A red flower.');
   await expect(page.locator('.signal-consequence')).toContainText('FIELD CONSEQUENCE');
   await expect(page.locator('.signal-feedback-audio')).toContainText('Natural audio');
+  await page.locator('[data-signal-operation="verify"]').click();
+  await expect(page.locator('[data-signal-operation="verify"]')).toHaveClass(/selected/);
+  await expect(page.locator('.signal-consequence')).toContainText('second analyst');
   await page.locator('.signal-language-debrief summary').click();
   await expect(page.locator('.signal-evidence-comparison')).toContainText('red');
   await page.locator('[data-signal-practice="赤い"]').click();
   await expect(page.locator('[data-signal-practice="赤い"]')).toContainText('In practice file');
   await expect(page.locator('.signal-feedback-backdrop')).toHaveCSS('position', 'fixed');
   await expect(page.locator('[data-signal-continue]')).toBeInViewport();
+});
+
+test('agent specialisation, equipment and debrief pacing form a persistent loadout', async ({ page }) => {
+  await openSignalDesk(page);
+  await page.locator('.signal-loadout').click();
+  await page.locator('[data-signal-specialisation="linguist"]').click();
+  await page.locator('.signal-loadout').click();
+  await page.locator('[data-signal-equipment="phrasebook"]').click();
+  await page.locator('.signal-loadout').click();
+  await page.locator('[data-signal-debrief-mode="operational"]').click();
+  await page.locator('.signal-loadout').click();
+  await expect(page.locator('[data-signal-specialisation="linguist"]')).toHaveClass(/selected/);
+  await expect(page.locator('[data-signal-equipment="phrasebook"]')).toHaveClass(/selected/);
+  await expect(page.locator('[data-signal-debrief-mode="operational"]')).toHaveClass(/selected/);
 });
 
 test('training manual, pause and Journey exit remain usable', async ({ page }) => {

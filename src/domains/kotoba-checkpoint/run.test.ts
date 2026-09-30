@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SIGNAL_SHIFTS } from './content';
-import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, markSignalWordForPractice, migrateSignalCareer, recordTokenLookup, recordTokenRecall, revealSignalReading, revealSignalTranslation, selectSignalEvidence, signalLearningObjective, signalPriorityWords } from './run';
+import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, markSignalWordForPractice, migrateSignalCareer, recordSignalOperationalAction, recordTokenLookup, recordTokenRecall, revealSignalReading, revealSignalTranslation, selectSignalEvidence, setSignalConfidence, setSignalDebriefMode, setSignalEvidenceStatus, setSignalSpecialisation, signalLearningObjective, signalPriorityWords, toggleSignalEquipment } from './run';
 import type { SignalRule, SignalRun } from './types';
 
 describe('Section K signal rules', () => {
@@ -65,6 +65,44 @@ describe('Section K signal rules', () => {
     run = markSignalWordForPractice(run, shift.cases[0]!.tokens[0]!);
     expect(signalPriorityWords(run.career)[0]).toMatchObject({ surface: '赤い', markedForPractice: true });
     expect(signalLearningObjective(shift, run.career).surface).not.toBe('赤い');
+  });
+
+  it('builds a persistent investigation from confidence-aware evidence and operations', () => {
+    const shift = SIGNAL_SHIFTS[0]!;
+    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    run = selectSignalEvidence(run, 'red');
+    run = setSignalEvidenceStatus(run, 'red', 'doubtful');
+    run = setSignalConfidence(run, 'fair');
+    run = judgeSignal(run, 'escalate', shift);
+    expect(run.decisions[0]).toMatchObject({ confidence: 'fair' });
+    expect(run.career.investigation.doubtfulFacts).toContain('red');
+    expect(Object.values(run.career.investigation.sources)[0]).toMatchObject({ reports: 1, accurateFilings: 1 });
+    run = recordSignalOperationalAction(run, 'verify');
+    run = recordSignalOperationalAction(run, 'monitor');
+    expect(run.decisions[0]).toMatchObject({ operationalAction: 'monitor' });
+    expect(run.career.investigation.operationalActions).toEqual(['monitor']);
+  });
+
+  it('persists specialist loadouts and gives field analysts calibrated starting confidence', () => {
+    let run = createSignalRun();
+    run = setSignalSpecialisation(run, 'field');
+    run = toggleSignalEquipment(run, 'phrasebook');
+    run = toggleSignalEquipment(run, 'tape-machine');
+    run = toggleSignalEquipment(run, 'evidence-lamp');
+    run = setSignalDebriefMode(run, 'operational');
+    expect(run.career).toMatchObject({ specialisation: 'field', equippedTools: ['tape-machine', 'evidence-lamp'], debriefMode: 'operational' });
+    expect(createSignalRun(undefined, run.career).confidence).toBe('fair');
+  });
+
+  it('archives a cleared shift as a collectible case file', () => {
+    const shift = SIGNAL_SHIFTS[0]!;
+    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    for (let index = 0; index < shift.cases.length; index += 1) {
+      run = judgeSignal(run, expectedSignalVerdict(shift, shift.cases[index]!), shift);
+      run = advanceSignal(run, shift);
+    }
+    expect(run.phase).toBe('report');
+    expect(run.career.archive).toEqual([expect.objectContaining({ shiftId: shift.id, cleared: true, independentFilings: shift.cases.length })]);
   });
 
   it('migrates prior checkpoint credit without pretending the new campaign was cleared', () => {

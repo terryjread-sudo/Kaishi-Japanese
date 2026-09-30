@@ -2,6 +2,11 @@ export type SignalChannel = 'telegram' | 'letter' | 'telephone' | 'intercept';
 export type SignalVerdict = 'standard' | 'escalate';
 export type SignalAid = 'full' | 'reading' | 'dictionary';
 export type SignalPhase = 'briefing' | 'decode' | 'feedback' | 'report' | 'failed';
+export type SignalConfidence = 'uncertain' | 'fair' | 'confident';
+export type SignalOperationalAction = 'monitor' | 'verify' | 'dispatch';
+export type SignalSpecialisation = 'linguist' | 'listener' | 'field' | 'cryptographer';
+export type SignalDebriefMode = 'guided' | 'operational' | 'sealed';
+export type SignalEvidenceStatus = 'confirmed' | 'doubtful' | 'contradiction';
 
 export type SignalRule =
   | { op: 'fact'; fact: string }
@@ -69,6 +74,8 @@ export interface SignalDecision {
   evidenceCorrect: boolean;
   selectedEvidence: string[];
   assisted: boolean;
+  confidence?: SignalConfidence;
+  operationalAction?: SignalOperationalAction;
 }
 
 export interface SignalWordMemory {
@@ -90,6 +97,29 @@ export interface SignalRelationships {
   crane: number;
 }
 
+export interface SignalSourceRecord {
+  name: string;
+  reports: number;
+  accurateFilings: number;
+  lastClaim: string;
+}
+
+export interface SignalInvestigation {
+  facts: string[];
+  doubtfulFacts: string[];
+  contradictions: string[];
+  sources: Record<string, SignalSourceRecord>;
+  operationalActions: SignalOperationalAction[];
+}
+
+export interface SignalArchiveEntry {
+  shiftId: string;
+  title: string;
+  cleared: boolean;
+  independentFilings: number;
+  collectedAt: number;
+}
+
 export interface SignalCareer {
   schemaVersion: 1;
   credits: number;
@@ -101,6 +131,11 @@ export interface SignalCareer {
   timerDisabled: boolean;
   wordMemory: Record<string, SignalWordMemory>;
   relationships: SignalRelationships;
+  specialisation?: SignalSpecialisation;
+  equippedTools: string[];
+  debriefMode: SignalDebriefMode;
+  investigation: SignalInvestigation;
+  archive: SignalArchiveEntry[];
 }
 
 export interface SignalRun {
@@ -115,6 +150,8 @@ export interface SignalRun {
   remaining: number;
   assisted: boolean;
   recalledTokens?: string[];
+  confidence?: SignalConfidence;
+  evidenceStatus?: Record<string, SignalEvidenceStatus>;
   readingVisible?: boolean;
   translationVisible?: boolean;
   daily: boolean;

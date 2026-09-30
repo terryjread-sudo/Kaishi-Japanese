@@ -1,7 +1,7 @@
 import { SIGNAL_SHIFTS, signalShift } from './content';
-import type { LegacyCheckpointState, SignalCareer, SignalCase, SignalRule, SignalRun, SignalShift, SignalToken, SignalVerdict, SignalWordMemory } from './types';
+import type { LegacyCheckpointState, SignalCareer, SignalCase, SignalConfidence, SignalDebriefMode, SignalEvidenceStatus, SignalOperationalAction, SignalRule, SignalRun, SignalShift, SignalSpecialisation, SignalToken, SignalVerdict, SignalWordMemory } from './types';
 
-export const DEFAULT_SIGNAL_CAREER: SignalCareer = { schemaVersion: 1, credits: 0, attempts: 0, completedShiftIds: [], rank: 'Trainee Analyst', commendations: [], strikes: 0, timerDisabled: false, wordMemory: {}, relationships: { mori: 0, kuroda: 0, crane: 0 } };
+export const DEFAULT_SIGNAL_CAREER: SignalCareer = { schemaVersion: 1, credits: 0, attempts: 0, completedShiftIds: [], rank: 'Trainee Analyst', commendations: [], strikes: 0, timerDisabled: false, wordMemory: {}, relationships: { mori: 0, kuroda: 0, crane: 0 }, equippedTools: [], debriefMode: 'guided', investigation: { facts: [], doubtfulFacts: [], contradictions: [], sources: {}, operationalActions: [] }, archive: [] };
 
 export function evaluateSignalRule(rule: SignalRule, facts: readonly string[]): boolean {
   if (rule.op === 'fact') return facts.includes(rule.fact);
@@ -26,7 +26,7 @@ export function migrateSignalCareer(value: unknown): SignalCareer {
   if (!value || typeof value !== 'object') return { ...DEFAULT_SIGNAL_CAREER };
   const legacy = value as LegacyCheckpointState & Partial<SignalCareer>;
   if (legacy.schemaVersion === 1 && Array.isArray(legacy.completedShiftIds)) {
-    return { ...DEFAULT_SIGNAL_CAREER, ...legacy, completedShiftIds: [...new Set(legacy.completedShiftIds)], commendations: [...new Set(legacy.commendations || [])], wordMemory: legacy.wordMemory && typeof legacy.wordMemory === 'object' ? legacy.wordMemory : {}, relationships: { ...DEFAULT_SIGNAL_CAREER.relationships, ...(legacy.relationships || {}) } };
+    return { ...DEFAULT_SIGNAL_CAREER, ...legacy, completedShiftIds: [...new Set(legacy.completedShiftIds)], commendations: [...new Set(legacy.commendations || [])], wordMemory: legacy.wordMemory && typeof legacy.wordMemory === 'object' ? legacy.wordMemory : {}, relationships: { ...DEFAULT_SIGNAL_CAREER.relationships, ...(legacy.relationships || {}) }, equippedTools: Array.isArray(legacy.equippedTools) ? legacy.equippedTools.slice(0, 2) : [], debriefMode: legacy.debriefMode || 'guided', investigation: { ...DEFAULT_SIGNAL_CAREER.investigation, ...(legacy.investigation || {}), sources: { ...(legacy.investigation?.sources || {}) } }, archive: Array.isArray(legacy.archive) ? legacy.archive : [] };
   }
   const cleared = Array.isArray(legacy.cleared) ? legacy.cleared : Array.isArray(legacy.completedLevels) ? legacy.completedLevels : [];
   return {
@@ -44,12 +44,23 @@ export function firstAvailableShift(career: SignalCareer): SignalShift {
 
 export function createSignalRun(shiftId = SIGNAL_SHIFTS[0]!.id, career: SignalCareer = DEFAULT_SIGNAL_CAREER, daily = false): SignalRun {
   const shift = signalShift(shiftId);
-  return { version: 3, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, readingVisible: shift.aid === 'full', translationVisible: false, daily, career: migrateSignalCareer(career) };
+  return { version: 3, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, confidence: career.specialisation === 'field' ? 'fair' : 'uncertain', evidenceStatus: {}, readingVisible: shift.aid === 'full', translationVisible: false, daily, career: migrateSignalCareer(career) };
 }
 
 export function selectSignalEvidence(run: SignalRun, evidence: string): SignalRun {
   const selectedEvidence = run.selectedEvidence.includes(evidence) ? run.selectedEvidence.filter(item => item !== evidence) : [...run.selectedEvidence, evidence];
-  return { ...run, selectedEvidence };
+  const evidenceStatus = { ...(run.evidenceStatus || {}) };
+  if (!selectedEvidence.includes(evidence)) delete evidenceStatus[evidence]; else evidenceStatus[evidence] ||= 'confirmed';
+  return { ...run, selectedEvidence, evidenceStatus };
+}
+
+export function setSignalEvidenceStatus(run: SignalRun, evidence: string, status: SignalEvidenceStatus): SignalRun { return run.selectedEvidence.includes(evidence) ? { ...run, evidenceStatus: { ...(run.evidenceStatus || {}), [evidence]: status } } : run; }
+export function setSignalConfidence(run: SignalRun, confidence: SignalConfidence): SignalRun { return { ...run, confidence }; }
+export function setSignalDebriefMode(run: SignalRun, mode: SignalDebriefMode): SignalRun { return { ...run, career: { ...run.career, debriefMode: mode } }; }
+export function setSignalSpecialisation(run: SignalRun, specialisation: SignalSpecialisation): SignalRun { return { ...run, career: { ...run.career, specialisation } }; }
+export function toggleSignalEquipment(run: SignalRun, tool: string): SignalRun {
+  const equippedTools = run.career.equippedTools.includes(tool) ? run.career.equippedTools.filter(item => item !== tool) : [...run.career.equippedTools, tool].slice(-2);
+  return { ...run, career: { ...run.career, equippedTools } };
 }
 
 export function recordTokenLookup(run: SignalRun, tokenSurface: string, assisted = false): SignalRun {
@@ -132,14 +143,35 @@ export function judgeSignal(run: SignalRun, verdict: SignalVerdict, shift = sign
     evidenceCorrect: active.decisiveFacts.every(item => run.selectedEvidence.includes(item)),
     selectedEvidence: [...run.selectedEvidence],
     assisted: run.assisted,
+    confidence: run.confidence || 'uncertain',
   };
-  const career = { ...run.career, wordMemory: updateWordMemory(run, shift, active, decision.evidenceCorrect), relationships: updateRelationships(run, shift, active, decision.correct) };
+  const sourceName = active.speaker || active.event?.speaker || `${active.channel} source`;
+  const priorSource = run.career.investigation.sources[sourceName] || { name: sourceName, reports: 0, accurateFilings: 0, lastClaim: '' };
+  const statuses = run.evidenceStatus || {};
+  const confirmed = run.selectedEvidence.filter(item => (statuses[item] || 'confirmed') === 'confirmed');
+  const doubtful = run.selectedEvidence.filter(item => statuses[item] === 'doubtful');
+  const contradictions = run.selectedEvidence.filter(item => statuses[item] === 'contradiction');
+  const investigation = {
+    ...run.career.investigation,
+    facts: [...new Set([...run.career.investigation.facts.filter(item => !run.selectedEvidence.includes(item)), ...confirmed])],
+    doubtfulFacts: [...new Set([...run.career.investigation.doubtfulFacts.filter(item => !run.selectedEvidence.includes(item)), ...doubtful])],
+    contradictions: [...new Set([...run.career.investigation.contradictions.filter(item => !run.selectedEvidence.includes(item)), ...contradictions])],
+    sources: { ...run.career.investigation.sources, [sourceName]: { ...priorSource, reports: priorSource.reports + 1, accurateFilings: priorSource.accurateFilings + (decision.correct ? 1 : 0), lastClaim: active.english } },
+  };
+  const career = { ...run.career, wordMemory: updateWordMemory(run, shift, active, decision.evidenceCorrect), relationships: updateRelationships(run, shift, active, decision.correct), investigation };
   return { ...run, career, decisions: [...run.decisions, decision], phase: 'feedback' };
+}
+
+export function recordSignalOperationalAction(run: SignalRun, action: SignalOperationalAction): SignalRun {
+  if (run.phase !== 'feedback' || !run.decisions.length) return run;
+  const decisions = [...run.decisions]; const latest = decisions.at(-1)!; decisions[decisions.length - 1] = { ...latest, operationalAction: action };
+  const operationalActions = latest.operationalAction ? [...run.career.investigation.operationalActions.slice(0, -1), action] : [...run.career.investigation.operationalActions, action];
+  return { ...run, decisions, career: { ...run.career, investigation: { ...run.career.investigation, operationalActions } } };
 }
 
 export function advanceSignal(run: SignalRun, shift = signalShift(run.shiftId)): SignalRun {
   if (run.phase !== 'feedback') return run;
-  if (run.index + 1 < shift.cases.length) return { ...run, index: run.index + 1, phase: 'decode', selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], assisted: false, readingVisible: shift.aid === 'full', translationVisible: false };
+  if (run.index + 1 < shift.cases.length) return { ...run, index: run.index + 1, phase: 'decode', selectedEvidence: [], evidenceStatus: {}, lookedUpTokens: [], recalledTokens: [], assisted: false, confidence: run.career.specialisation === 'field' ? 'fair' : 'uncertain', readingVisible: shift.aid === 'full', translationVisible: false };
   const correct = run.decisions.filter(item => item.correct).length;
   const passed = correct >= Math.ceil(shift.cases.length * .6);
   const completedShiftIds = passed && !run.daily ? [...new Set([...run.career.completedShiftIds, shift.id])] : run.career.completedShiftIds;
@@ -153,6 +185,7 @@ export function advanceSignal(run: SignalRun, shift = signalShift(run.shiftId)):
     rank: rankFor(completedShiftIds.length),
     commendations,
     strikes: passed ? Math.max(0, run.career.strikes - 1) : run.career.strikes + 1,
+    archive: [...run.career.archive.filter(item => item.shiftId !== shift.id), { shiftId: shift.id, title: shift.title, cleared: passed, independentFilings: run.decisions.filter(item => item.correct && !item.assisted).length, collectedAt: Date.now() }],
   };
   return { ...run, career, phase: passed ? 'report' : 'failed' };
 }
