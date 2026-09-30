@@ -71,6 +71,25 @@ export interface SignalDecision {
   assisted: boolean;
 }
 
+export interface SignalWordMemory {
+  surface: string;
+  reading: string;
+  meaning: string;
+  encounters: number;
+  independentRecalls: number;
+  assistedRecalls: number;
+  misses: number;
+  readingStrength: number;
+  listeningStrength: number;
+  markedForPractice: boolean;
+}
+
+export interface SignalRelationships {
+  mori: number;
+  kuroda: number;
+  crane: number;
+}
+
 export interface SignalCareer {
   schemaVersion: 1;
   credits: number;
@@ -80,6 +99,8 @@ export interface SignalCareer {
   commendations: string[];
   strikes: number;
   timerDisabled: boolean;
+  wordMemory: Record<string, SignalWordMemory>;
+  relationships: SignalRelationships;
 }
 
 export interface SignalRun {
@@ -93,6 +114,7 @@ export interface SignalRun {
   paused: boolean;
   remaining: number;
   assisted: boolean;
+  recalledTokens?: string[];
   readingVisible?: boolean;
   translationVisible?: boolean;
   daily: boolean;

@@ -13,7 +13,7 @@ export function startCheckpointAmbience(): void {
 }
 export function stopCheckpointAmbience(): void { ambience?.pause(); if (ambience) ambience.currentTime = 0; ambience = null; }
 export function playCheckpointEffect(effect: keyof typeof EFFECTS): void { if (checkpointAudioEnabled()) { const sound = new Audio(EFFECTS[effect]); sound.volume = effect === 'stamp' ? .42 : .3; void sound.play().catch(() => undefined); } }
-export function playCheckpointAudio(text: string): void {
+export function playCheckpointAudio(text: string, rate = .82): void {
   if (!checkpointAudioEnabled() || !text || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
-  window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'ja-JP'; utterance.rate = .82; window.speechSynthesis.speak(utterance);
+  window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'ja-JP'; utterance.rate = rate; window.speechSynthesis.speak(utterance);
 }

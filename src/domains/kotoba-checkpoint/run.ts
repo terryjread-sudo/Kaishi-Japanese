@@ -1,7 +1,7 @@
 import { SIGNAL_SHIFTS, signalShift } from './content';
-import type { LegacyCheckpointState, SignalCareer, SignalCase, SignalRule, SignalRun, SignalShift, SignalVerdict } from './types';
+import type { LegacyCheckpointState, SignalCareer, SignalCase, SignalRule, SignalRun, SignalShift, SignalToken, SignalVerdict, SignalWordMemory } from './types';
 
-export const DEFAULT_SIGNAL_CAREER: SignalCareer = { schemaVersion: 1, credits: 0, attempts: 0, completedShiftIds: [], rank: 'Trainee Analyst', commendations: [], strikes: 0, timerDisabled: false };
+export const DEFAULT_SIGNAL_CAREER: SignalCareer = { schemaVersion: 1, credits: 0, attempts: 0, completedShiftIds: [], rank: 'Trainee Analyst', commendations: [], strikes: 0, timerDisabled: false, wordMemory: {}, relationships: { mori: 0, kuroda: 0, crane: 0 } };
 
 export function evaluateSignalRule(rule: SignalRule, facts: readonly string[]): boolean {
   if (rule.op === 'fact') return facts.includes(rule.fact);
@@ -26,7 +26,7 @@ export function migrateSignalCareer(value: unknown): SignalCareer {
   if (!value || typeof value !== 'object') return { ...DEFAULT_SIGNAL_CAREER };
   const legacy = value as LegacyCheckpointState & Partial<SignalCareer>;
   if (legacy.schemaVersion === 1 && Array.isArray(legacy.completedShiftIds)) {
-    return { ...DEFAULT_SIGNAL_CAREER, ...legacy, completedShiftIds: [...new Set(legacy.completedShiftIds)], commendations: [...new Set(legacy.commendations || [])] };
+    return { ...DEFAULT_SIGNAL_CAREER, ...legacy, completedShiftIds: [...new Set(legacy.completedShiftIds)], commendations: [...new Set(legacy.commendations || [])], wordMemory: legacy.wordMemory && typeof legacy.wordMemory === 'object' ? legacy.wordMemory : {}, relationships: { ...DEFAULT_SIGNAL_CAREER.relationships, ...(legacy.relationships || {}) } };
   }
   const cleared = Array.isArray(legacy.cleared) ? legacy.cleared : Array.isArray(legacy.completedLevels) ? legacy.completedLevels : [];
   return {
@@ -44,7 +44,7 @@ export function firstAvailableShift(career: SignalCareer): SignalShift {
 
 export function createSignalRun(shiftId = SIGNAL_SHIFTS[0]!.id, career: SignalCareer = DEFAULT_SIGNAL_CAREER, daily = false): SignalRun {
   const shift = signalShift(shiftId);
-  return { version: 3, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, readingVisible: shift.aid === 'full', translationVisible: false, daily, career: migrateSignalCareer(career) };
+  return { version: 3, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, readingVisible: shift.aid === 'full', translationVisible: false, daily, career: migrateSignalCareer(career) };
 }
 
 export function selectSignalEvidence(run: SignalRun, evidence: string): SignalRun {
@@ -55,6 +55,65 @@ export function selectSignalEvidence(run: SignalRun, evidence: string): SignalRu
 export function recordTokenLookup(run: SignalRun, tokenSurface: string, assisted = false): SignalRun {
   const lookedUpTokens = run.lookedUpTokens.includes(tokenSurface) ? run.lookedUpTokens : [...run.lookedUpTokens, tokenSurface];
   return { ...run, lookedUpTokens, assisted: run.assisted || assisted };
+}
+
+export function recordTokenRecall(run: SignalRun, tokenSurface: string, correct: boolean): SignalRun {
+  if (!correct || run.recalledTokens?.includes(tokenSurface)) return run;
+  return { ...run, recalledTokens: [...(run.recalledTokens || []), tokenSurface] };
+}
+
+const boundedStrength = (value: number): number => Math.max(0, Math.min(5, value));
+function updateWordMemory(run: SignalRun, shift: SignalShift, active: SignalCase, evidenceCorrect: boolean): Record<string, SignalWordMemory> {
+  const memory = { ...run.career.wordMemory };
+  for (const token of active.tokens) {
+    const prior = memory[token.surface] || { surface: token.surface, reading: token.reading, meaning: token.meaning, encounters: 0, independentRecalls: 0, assistedRecalls: 0, misses: 0, readingStrength: 0, listeningStrength: 0, markedForPractice: false };
+    const decisive = Boolean(token.fact && active.decisiveFacts.includes(token.fact));
+    const recalled = Boolean(run.recalledTokens?.includes(token.surface)) || Boolean(decisive && token.fact && run.selectedEvidence.includes(token.fact) && !run.lookedUpTokens.includes(token.surface));
+    const assisted = run.lookedUpTokens.includes(token.surface) && !recalled;
+    const missed = decisive && !evidenceCorrect && !recalled;
+    const delta = recalled ? 1 : missed ? -1 : 0;
+    memory[token.surface] = {
+      ...prior,
+      surface: token.surface,
+      reading: token.reading,
+      meaning: token.meaning,
+      encounters: prior.encounters + 1,
+      independentRecalls: prior.independentRecalls + (recalled ? 1 : 0),
+      assistedRecalls: prior.assistedRecalls + (assisted ? 1 : 0),
+      misses: prior.misses + (missed ? 1 : 0),
+      readingStrength: boundedStrength(prior.readingStrength + (active.channel === 'telephone' ? 0 : delta)),
+      listeningStrength: boundedStrength(prior.listeningStrength + (active.channel === 'telephone' ? delta : 0)),
+      markedForPractice: missed ? true : prior.markedForPractice,
+    };
+  }
+  return memory;
+}
+
+function updateRelationships(run: SignalRun, shift: SignalShift, active: SignalCase, correct: boolean): SignalCareer['relationships'] {
+  const relationships = { ...run.career.relationships };
+  const change = correct ? 2 : -1;
+  const contact = active.event?.portrait === 'crane' || shift.story?.portrait === 'crane' ? 'crane' : shift.sequence >= 16 || active.event?.portrait === 'kuroda' || shift.story?.portrait === 'kuroda' ? 'kuroda' : 'mori';
+  relationships[contact] = Math.max(0, Math.min(100, relationships[contact] + change));
+  return relationships;
+}
+
+export function markSignalWordForPractice(run: SignalRun, token: SignalToken): SignalRun {
+  const prior = run.career.wordMemory[token.surface] || { surface: token.surface, reading: token.reading, meaning: token.meaning, encounters: 0, independentRecalls: 0, assistedRecalls: 0, misses: 0, readingStrength: 0, listeningStrength: 0, markedForPractice: false };
+  return { ...run, career: { ...run.career, wordMemory: { ...run.career.wordMemory, [token.surface]: { ...prior, markedForPractice: !prior.markedForPractice } } } };
+}
+
+export function signalLearningObjective(shift: SignalShift, career: SignalCareer): SignalToken {
+  const candidates = shift.cases.flatMap(item => item.tokens).filter((token, index, all) => Boolean(token.fact) && all.findIndex(other => other.surface === token.surface) === index);
+  return candidates.sort((a, b) => {
+    const left = career.wordMemory[a.surface]; const right = career.wordMemory[b.surface];
+    const leftStrength = shift.cases.some(item => item.channel === 'telephone' && item.tokens.some(token => token.surface === a.surface)) ? left?.listeningStrength || 0 : left?.readingStrength || 0;
+    const rightStrength = shift.cases.some(item => item.channel === 'telephone' && item.tokens.some(token => token.surface === b.surface)) ? right?.listeningStrength || 0 : right?.readingStrength || 0;
+    return leftStrength - rightStrength || (right?.misses || 0) - (left?.misses || 0);
+  })[0] || shift.cases[0]!.tokens[0]!;
+}
+
+export function signalPriorityWords(career: SignalCareer, limit = 4): SignalWordMemory[] {
+  return Object.values(career.wordMemory).filter(item => item.markedForPractice || item.misses > item.independentRecalls).sort((a, b) => Number(b.markedForPractice) - Number(a.markedForPractice) || b.misses - a.misses || a.readingStrength + a.listeningStrength - b.readingStrength - b.listeningStrength).slice(0, limit);
 }
 
 export function markSignalAssisted(run: SignalRun): SignalRun { return { ...run, assisted: true }; }
@@ -74,12 +133,13 @@ export function judgeSignal(run: SignalRun, verdict: SignalVerdict, shift = sign
     selectedEvidence: [...run.selectedEvidence],
     assisted: run.assisted,
   };
-  return { ...run, decisions: [...run.decisions, decision], phase: 'feedback' };
+  const career = { ...run.career, wordMemory: updateWordMemory(run, shift, active, decision.evidenceCorrect), relationships: updateRelationships(run, shift, active, decision.correct) };
+  return { ...run, career, decisions: [...run.decisions, decision], phase: 'feedback' };
 }
 
 export function advanceSignal(run: SignalRun, shift = signalShift(run.shiftId)): SignalRun {
   if (run.phase !== 'feedback') return run;
-  if (run.index + 1 < shift.cases.length) return { ...run, index: run.index + 1, phase: 'decode', selectedEvidence: [], lookedUpTokens: [], assisted: false, readingVisible: shift.aid === 'full', translationVisible: false };
+  if (run.index + 1 < shift.cases.length) return { ...run, index: run.index + 1, phase: 'decode', selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], assisted: false, readingVisible: shift.aid === 'full', translationVisible: false };
   const correct = run.decisions.filter(item => item.correct).length;
   const passed = correct >= Math.ceil(shift.cases.length * .6);
   const completedShiftIds = passed && !run.daily ? [...new Set([...run.career.completedShiftIds, shift.id])] : run.career.completedShiftIds;
@@ -88,7 +148,7 @@ export function advanceSignal(run: SignalRun, shift = signalShift(run.shiftId)):
   const career: SignalCareer = {
     ...run.career,
     attempts: run.career.attempts + 1,
-    credits: run.career.credits + correct * 4 + (passed ? 8 : 0),
+    credits: run.career.credits + correct * 4 + (passed ? 8 : 0) + (shift.sequence > 3 ? run.decisions.filter(item => item.correct && !item.assisted).length * 2 : 0),
     completedShiftIds,
     rank: rankFor(completedShiftIds.length),
     commendations,

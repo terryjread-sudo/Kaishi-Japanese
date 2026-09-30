@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SIGNAL_SHIFTS } from './content';
-import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, migrateSignalCareer, recordTokenLookup, revealSignalReading, revealSignalTranslation, selectSignalEvidence } from './run';
+import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, markSignalWordForPractice, migrateSignalCareer, recordTokenLookup, recordTokenRecall, revealSignalReading, revealSignalTranslation, selectSignalEvidence, signalLearningObjective, signalPriorityWords } from './run';
 import type { SignalRule, SignalRun } from './types';
 
 describe('Section K signal rules', () => {
@@ -51,6 +51,20 @@ describe('Section K signal rules', () => {
     expect(classified).toMatchObject({ lookedUpTokens: ['至急'], assisted: true });
     expect(revealSignalReading(classified, true)).toMatchObject({ readingVisible: true, assisted: true });
     expect(revealSignalTranslation(classified, true)).toMatchObject({ translationVisible: true, assisted: true });
+  });
+
+  it('tracks word memory, contact trust and learner-selected practice priorities', () => {
+    const shift = SIGNAL_SHIFTS[0]!;
+    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    run = recordTokenLookup(run, '赤い');
+    run = recordTokenRecall(run, '赤い', true);
+    run = selectSignalEvidence(run, 'red');
+    run = judgeSignal(run, 'escalate', shift);
+    expect(run.career.wordMemory['赤い']).toMatchObject({ encounters: 1, independentRecalls: 1, readingStrength: 1 });
+    expect(run.career.relationships.mori).toBe(2);
+    run = markSignalWordForPractice(run, shift.cases[0]!.tokens[0]!);
+    expect(signalPriorityWords(run.career)[0]).toMatchObject({ surface: '赤い', markedForPractice: true });
+    expect(signalLearningObjective(shift, run.career).surface).not.toBe('赤い');
   });
 
   it('migrates prior checkpoint credit without pretending the new campaign was cleared', () => {

@@ -31,6 +31,9 @@ test('a brand-new learner decodes and correctly escalates the first signal', asy
   await page.locator('[data-signal-token="0"]').click();
   await expect.poll(() => page.evaluate(() => (window as typeof window & { __signalSpoken?: string[] }).__signalSpoken || [])).toContain('赤い');
   await expect(page.locator('.signal-dictionary-card')).toContainText('red');
+  await expect(page.locator('.signal-dictionary-card')).toContainText('What do you think this word means?');
+  await page.locator('[data-signal-dictionary-guess="red"]').click();
+  await expect(page.locator('.signal-recall-result')).toContainText('Independent recall strengthened');
   await expect(page.locator('[data-signal-evidence="red"]')).toHaveClass(/is-guided/);
   await page.locator('[data-signal-evidence="red"]').click();
   await expect(page.locator('.signal-evidence-list')).toContainText('red');
@@ -38,6 +41,12 @@ test('a brand-new learner decodes and correctly escalates the first signal', asy
   await expect(page.locator('.signal-feedback')).toContainText('Good judgement');
   await expect(page.locator('.signal-feedback')).toContainText('Evidence identified correctly');
   await expect(page.locator('.signal-feedback-translation')).toContainText('A red flower.');
+  await expect(page.locator('.signal-consequence')).toContainText('FIELD CONSEQUENCE');
+  await expect(page.locator('.signal-feedback-audio')).toContainText('Natural audio');
+  await page.locator('.signal-language-debrief summary').click();
+  await expect(page.locator('.signal-evidence-comparison')).toContainText('red');
+  await page.locator('[data-signal-practice="赤い"]').click();
+  await expect(page.locator('[data-signal-practice="赤い"]')).toContainText('In practice file');
   await expect(page.locator('.signal-feedback-backdrop')).toHaveCSS('position', 'fixed');
   await expect(page.locator('[data-signal-continue]')).toBeInViewport();
 });
