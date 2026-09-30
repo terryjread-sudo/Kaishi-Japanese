@@ -102,7 +102,10 @@
     "./media/profiles/girl-base.webp",
     "./media/profiles/master-base.webp",
     "./media/profiles/man-base.webp",
-    "./media/profiles/woman-base.webp"
+    "./media/profiles/woman-base.webp",
+    "./media/kotoba-checkpoint/stamp.wav",
+    "./media/kotoba-checkpoint/clear.mp3",
+    "./media/kotoba-checkpoint/terminal-ambience.ogg"
   ]
 });
 })(typeof self!=='undefined'?self:window);

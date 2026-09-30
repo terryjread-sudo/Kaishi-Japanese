@@ -1,32 +1,58 @@
 import { describe, expect, it } from 'vitest';
-import { checkpointLevel, CHECKPOINT_LEVELS } from './content';
-import { advanceCheckpoint, createCheckpointRun, judgeCheckpoint } from './run';
+import { SIGNAL_SHIFTS } from './content';
+import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, migrateSignalCareer, selectSignalEvidence } from './run';
+import type { SignalRule, SignalRun } from './types';
 
-describe('Kotoba Checkpoint progression', () => {
-  it('has a ten-level, day-one curriculum with generous early shifts', () => {
-    expect(CHECKPOINT_LEVELS).toHaveLength(10);
-    expect(CHECKPOINT_LEVELS.every(level => level.travellers === 6)).toBe(true);
-    expect(checkpointLevel(7).teaching.examples).toHaveLength(2);
-    expect(checkpointLevel(1).seconds).toBeGreaterThan(checkpointLevel(9).seconds);
+describe('Section K signal rules', () => {
+  it('evaluates nested all, any and not rules', () => {
+    const rule: SignalRule = { op: 'all', rules: [{ op: 'any', rules: [{ op: 'fact', fact: 'red' }, { op: 'fact', fact: 'blue' }] }, { op: 'not', rule: { op: 'fact', fact: 'cancelled' } }] };
+    expect(evaluateSignalRule(rule, ['blue'])).toBe(true);
+    expect(evaluateSignalRule(rule, ['red', 'cancelled'])).toBe(false);
+    expect(evaluateSignalRule(rule, ['park'])).toBe(false);
   });
 
-  it('starts with visual kana matching without requiring learner vocabulary', () => {
-    const run = createCheckpointRun();
-    expect(run.cases).toHaveLength(6);
-    expect(run.cases.every(item => item.identity.passportNumber.startsWith('TR1'))).toBe(true);
-    expect(run.cases.every(item => item.ruleId === 'kana-match')).toBe(true);
+  it('ships twenty authored shifts and a varied pool of uniquely solvable cases', () => {
+    expect(SIGNAL_SHIFTS).toHaveLength(20);
+    expect(SIGNAL_SHIFTS.flatMap(shift => shift.cases)).toHaveLength(86);
+    for (const shift of SIGNAL_SHIFTS) {
+      expect(shift.cases.length).toBeGreaterThanOrEqual(4);
+      const verdicts = shift.cases.map(item => expectedSignalVerdict(shift, item));
+      expect(verdicts).toContain('standard');
+      expect(verdicts).toContain('escalate');
+      expect(shift.cases.every(item => item.decisiveFacts.length > 0 && item.tokens.length > 0)).toBe(true);
+    }
   });
 
-  it('only links checkpoint vocabulary cases to vocabulary supplied by the learner', () => {
-    const word = { id: 'hello', word: 'こんにちは', reading: 'こんにちは', meaning: 'hello' };
-    const run = createCheckpointRun(5, [word]);
-    expect(run.cases.every(item => item.practiceIds.every(id => id === word.id))).toBe(true);
+  it('uses authored emergency amendments for occasional unexpected events', () => {
+    const events = SIGNAL_SHIFTS.flatMap(shift => shift.cases.map(item => ({ shift, item }))).filter(({ item }) => item.event);
+    expect(events).toHaveLength(7);
+    expect(events.every(({ item }) => Boolean(item.event?.ruleOverride && item.event.ruleText))).toBe(true);
+    const compromisedCrane = events.find(({ item }) => item.id === 'f17-3')!;
+    expect(evaluateSignalRule(compromisedCrane.shift.rule, compromisedCrane.item.facts)).toBe(true);
+    expect(expectedSignalVerdict(compromisedCrane.shift, compromisedCrane.item)).toBe('standard');
+    expect(SIGNAL_SHIFTS.filter(shift => shift.story && shift.debrief)).toHaveLength(5);
   });
 
-  it('records an inspection then advances without silently changing the answer', () => {
-    const run = { ...createCheckpointRun(), phase: 'inspect' as const };
-    const judged = judgeCheckpoint(run, run.cases[0]!.expected);
-    expect(judged.correct).toBe(1);
-    expect(advanceCheckpoint(judged).index).toBe(1);
+  it('scores evidence separately from the final filing decision', () => {
+    const shift = SIGNAL_SHIFTS[0]!;
+    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    run = selectSignalEvidence(run, 'red');
+    const judged = judgeSignal(run, expectedSignalVerdict(shift, shift.cases[0]!), shift);
+    expect(judged.decisions[0]).toMatchObject({ correct: true, evidenceCorrect: true });
+    const advanced = advanceSignal(judged, shift);
+    expect(advanced.index).toBe(1);
+    expect(advanced.selectedEvidence).toEqual([]);
+  });
+
+  it('migrates prior checkpoint credit without pretending the new campaign was cleared', () => {
+    expect(migrateSignalCareer({ credits: 42, attempts: 3, cleared: [1, 2] })).toMatchObject({ credits: 42, attempts: 3, completedShiftIds: [], commendations: ['Immigration Service Veteran'] });
+  });
+
+  it('creates deterministic six-case daily shifts with both verdicts', () => {
+    const first = createDailySignalShift('2026-09-29');
+    const again = createDailySignalShift('2026-09-29');
+    expect(first.cases.map(item => item.id)).toEqual(again.cases.map(item => item.id));
+    expect(first.cases).toHaveLength(6);
+    expect(new Set(first.cases.map(item => expectedSignalVerdict(first, item)))).toEqual(new Set(['standard', 'escalate']));
   });
 });

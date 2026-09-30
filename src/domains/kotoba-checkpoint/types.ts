@@ -1,59 +1,105 @@
-export type CheckpointSkill = 'kana' | 'numbers' | 'listening' | 'vocabulary' | 'reading' | 'grammar' | 'compound';
-export type Verdict = 'approve' | 'deny';
+export type SignalChannel = 'telegram' | 'letter' | 'telephone' | 'intercept';
+export type SignalVerdict = 'standard' | 'escalate';
+export type SignalAid = 'full' | 'reading' | 'dictionary';
+export type SignalPhase = 'briefing' | 'decode' | 'feedback' | 'report' | 'failed';
 
-export interface CheckpointLevel {
-  id: number;
-  title: string;
-  location: string;
-  skill: CheckpointSkill;
-  rule: string;
-  guidance: string;
-  aid: 'full' | 'romaji' | 'minimal';
-  seconds: number;
-  travellers: number;
-  teaching: { title: string; explanation: string; examples: Array<{ japanese: string; romaji: string; english: string }> };
+export type SignalRule =
+  | { op: 'fact'; fact: string }
+  | { op: 'all' | 'any'; rules: SignalRule[] }
+  | { op: 'not'; rule: SignalRule };
+
+export interface SignalToken { surface: string; reading: string; meaning: string; fact?: string }
+
+export type SignalEventKind = 'amendment' | 'blackout' | 'priority' | 'visitor' | 'warning';
+
+export interface SignalEvent {
+  kind: SignalEventKind;
+  headline: string;
+  body: string;
+  speaker?: string;
+  portrait?: 'kuroda' | 'crane' | 'mori';
+  ruleText?: string;
+  ruleOverride?: SignalRule;
 }
 
-export interface CheckpointDocument {
-  label: string;
-  japanese: string;
-  romaji: string;
-  english: string;
+export interface SignalStoryBeat {
+  speaker: string;
+  text: string;
+  portrait: 'kuroda' | 'crane' | 'mori';
 }
 
-export interface CheckpointCase {
+export interface SignalCase {
   id: string;
-  traveller: string;
-  portrait: string;
-  city: string;
-  identity: { nationality: string; birthDate: string; sex: 'F' | 'M'; passportNumber: string; expires: string };
-  passport: CheckpointDocument;
-  entry: CheckpointDocument;
-  question?: { japanese: string; romaji: string; english: string; answer: string };
-  ruleId: string;
-  expected: Verdict;
+  channel: SignalChannel;
+  japanese: string;
+  reading: string;
+  english: string;
+  tokens: SignalToken[];
+  facts: string[];
+  decisiveFacts: string[];
   explanation: string;
   practiceIds: string[];
+  speaker?: string;
+  event?: SignalEvent;
+  storyAfter?: string;
 }
 
-export interface CheckpointRun {
-  version: 2;
-  level: number;
+export interface SignalShift {
+  id: string;
+  sequence: number;
+  department: string;
+  title: string;
+  location: string;
+  briefing: string;
+  guidance: string;
+  ruleText: string;
+  rule: SignalRule;
+  aid: SignalAid;
+  seconds: number | null;
+  delayedFeedback: boolean;
+  story?: SignalStoryBeat;
+  debrief?: string;
+  cases: SignalCase[];
+}
+
+export interface SignalDecision {
+  caseId: string;
+  verdict: SignalVerdict;
+  correct: boolean;
+  evidenceCorrect: boolean;
+  selectedEvidence: string[];
+  assisted: boolean;
+}
+
+export interface SignalCareer {
+  schemaVersion: 1;
+  credits: number;
+  attempts: number;
+  completedShiftIds: string[];
+  rank: string;
+  commendations: string[];
+  strikes: number;
+  timerDisabled: boolean;
+}
+
+export interface SignalRun {
+  version: 3;
+  shiftId: string;
   index: number;
-  cases: CheckpointCase[];
-  correct: number;
-  mistakes: string[];
+  phase: SignalPhase;
+  decisions: SignalDecision[];
+  selectedEvidence: string[];
+  lookedUpTokens: string[];
   paused: boolean;
   remaining: number;
-  phase: 'briefing' | 'inspect' | 'feedback' | 'report' | 'failed';
-  credits: number;
-  completedLevels: number[];
+  assisted: boolean;
+  daily: boolean;
+  career: SignalCareer;
 }
 
-export interface CheckpointLearnerWord {
-  id: string;
-  word: string;
-  reading: string;
-  meaning: string;
-  wordAudio?: string;
+export interface LegacyCheckpointState {
+  credits?: number;
+  attempts?: number;
+  cleared?: number[];
+  completedLevels?: number[];
 }

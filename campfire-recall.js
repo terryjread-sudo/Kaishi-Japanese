@@ -6,6 +6,16 @@
  */
 (() => {
   let run=null;
+  let autoPlayTimer=null;
+  let roundAudio=null;
+
+  function stopRoundPlayback(){
+    if(autoPlayTimer!==null){clearTimeout(autoPlayTimer);autoPlayTimer=null}
+    if(roundAudio){
+      try{roundAudio.pause();roundAudio.currentTime=0}catch{}
+      roundAudio=null;
+    }
+  }
 
   function ensureScreen(){
     const screen=document.getElementById('campfireRecall');
@@ -72,6 +82,7 @@
   function start(ids=[],options={}){
     if(!ensureScreen()) return;
     ensureStyles();
+    stopRoundPlayback();
     const words=fillWords(ids);
     if(!words.length){
       toast('Learn a few words first, then Campfire Recall will be ready');
@@ -115,11 +126,13 @@
   }
 
   function playWord(word){
-    if(word.wordAudio) play(word.wordAudio);
+    stopRoundPlayback();
+    if(word.wordAudio) roundAudio=play(word.wordAudio);
     else speakJapanese(word.word);
   }
 
   function renderRound(){
+    stopRoundPlayback();
     const word=run.words[run.index];
     if(!word){
       renderSummary();
@@ -141,7 +154,11 @@
 
     if(item.skill==='listening'){
       document.getElementById('cfListen').onclick=()=>playWord(word);
-      setTimeout(()=>playWord(word),250);
+      const roundIndex=run.index;
+      autoPlayTimer=setTimeout(()=>{
+        autoPlayTimer=null;
+        if(run?.index===roundIndex&&run.current?.word?.id===word.id)playWord(word);
+      },250);
     }
 
     document.getElementById('cfReveal').onclick=()=>reveal();
@@ -170,6 +187,7 @@
   }
 
   function score(rating){
+    stopRoundPlayback();
     const {word,skill}=run.current;
     const ok=rating>1;
     grade(word,skill,rating,ok,false);
@@ -179,6 +197,7 @@
   }
 
   function renderSummary(){
+    stopRoundPlayback();
     const knew=run.results.filter(item=>item.rating===4).length;
     const almost=run.results.filter(item=>item.rating===3).length;
     const missed=run.results.filter(item=>item.rating===1).length;
@@ -205,13 +224,17 @@
       </div>
       <button id="cfDone" class="primary" type="button">Finish</button>
     `;
-    document.getElementById('cfDone').onclick=()=>show('journey');
+    document.getElementById('cfDone').onclick=returnToJourney;
     updateHome();
   }
 
-  function stop(){
-    show('journey');
+  function returnToJourney(){
+    stopRoundPlayback();
+    if(typeof openJourney==='function') openJourney('missions');
+    else show('journey');
   }
+
+  function stop(){returnToJourney()}
 
   function install(){
     ensureScreen();

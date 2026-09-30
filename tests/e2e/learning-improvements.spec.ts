@@ -92,6 +92,58 @@ test('wrong answers persist until Continue and are recorded once',async({page})=
   await page.locator('.lesson-answer-feedback').getByRole('button',{name:'Continue',exact:true}).click();
 });
 
+test('Campfire listening keeps the requested audio and revealed word aligned',async({page})=>{
+  await page.addInitScript(()=>{
+    localStorage.setItem('kq-profile-v1:guest:kq-progress',JSON.stringify({
+      '1708637439902':{stage:1},'1708637439903':{stage:1},'1708637439971':{stage:1}
+    }));
+  });
+  await page.goto('/',{waitUntil:'domcontentloaded'});
+  await page.evaluate(()=>{
+    const audioEvents:Array<{type:'play'|'pause';name:string}>=[];
+    const app=window as typeof window&{
+      __campfireAudioEvents:typeof audioEvents;
+      play:(name:string)=>{currentTime:number;pause:()=>void};
+      KaishiCampfire:{start:(ids:string[])=>void};
+    };
+    app.__campfireAudioEvents=audioEvents;
+    app.play=(name:string)=>({currentTime:0,pause:()=>audioEvents.push({type:'pause',name})});
+    const originalPlay=app.play;
+    app.play=(name:string)=>{audioEvents.push({type:'play',name});return originalPlay(name)};
+    app.KaishiCampfire.start(['1708637439902','1708637439903','1708637439971']);
+  });
+  await page.locator('#cfReveal').click();
+  await page.locator('[data-cf-grade="4"]').click();
+  await expect(page.locator('#cfCard')).toContainText('What does the Japanese word mean?');
+  await page.waitForTimeout(300);
+  const audioState=async()=>page.evaluate(()=>{
+    const app=window as typeof window&{
+      __campfireAudioEvents:Array<{type:'play'|'pause';name:string}>;
+      KaishiJapanReadyBridge:{getVocab:()=>Array<{word:string;wordAudio:string}>};
+    };
+    return{events:app.__campfireAudioEvents,expected:app.KaishiJapanReadyBridge.getVocab().find(word=>word.word==='いいえ')!.wordAudio};
+  });
+  let state=await audioState();
+  expect(state.events.at(-1)?.name).toBe(state.expected);
+  await page.locator('#cfReveal').click();
+  await expect(page.locator('#cfAnswer')).toContainText('いいえ');
+  await expect(page.locator('#cfAnswer')).toContainText('no (polite)');
+  await page.locator('#cfHearAnswer').click();
+  state=await audioState();
+  expect(state.events.at(-1)?.type).toBe('play');
+  expect(state.events.at(-1)?.name).toBe(state.expected);
+  await page.locator('[data-cf-grade="4"]').click();
+  state=await audioState();
+  expect(state.events.at(-1)?.type).toBe('pause');
+  expect(state.events.at(-1)?.name).toBe(state.expected);
+  await page.locator('#cfReveal').click();
+  await page.locator('[data-cf-grade="4"]').click();
+  await expect(page.locator('#cfCard')).toContainText('Campfire complete');
+  await page.locator('#cfDone').click();
+  await expect(page.locator('#journey')).toHaveClass(/active/);
+  await expect(page.locator('#dailyRoute')).not.toBeEmpty();
+});
+
 test('trip plan persists and prioritises selected scenarios after courtesy',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Explore Journey',exact:true}).click();
   await page.locator('#experimentalBottomNav [data-experimental-nav="japan-ready"]').click();
