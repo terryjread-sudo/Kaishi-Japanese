@@ -16,6 +16,16 @@ describe('live application configuration', () => {
     expect(runtimeConfigSchema.safeParse({ ...DEFAULT_RUNTIME_CONFIG, announcement: { ...DEFAULT_RUNTIME_CONFIG.announcement, message: 'x'.repeat(281) } }).success).toBe(false);
   });
 
+  it('keeps older published configurations compatible with default avatar limits', () => {
+    const olderConfig: Record<string, unknown> = structuredClone(DEFAULT_RUNTIME_CONFIG);
+    delete olderConfig.avatarUnlocks;
+    expect(parseRuntimeConfig(olderConfig).avatarUnlocks).toEqual(DEFAULT_RUNTIME_CONFIG.avatarUnlocks);
+  });
+
+  it('rejects unsafe avatar unlock limits', () => {
+    expect(runtimeConfigSchema.safeParse({ ...DEFAULT_RUNTIME_CONFIG, avatarUnlocks: { ...DEFAULT_RUNTIME_CONFIG.avatarUnlocks, journeyGirlRhythmDays: -1 } }).success).toBe(false);
+  });
+
   it('rejects executable links while allowing web and email destinations', () => {
     expect(validPublicUrl('javascript:alert(1)')).toBe(false);
     expect(validPublicUrl('https://kaishi.uk/help')).toBe(true);

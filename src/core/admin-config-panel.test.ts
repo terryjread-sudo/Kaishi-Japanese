@@ -14,7 +14,10 @@ describe('admin live application panel', () => {
     const enabled = document.querySelector<HTMLInputElement>('#adminAnnouncementEnabled')!;
     const title = document.querySelector<HTMLInputElement>('#adminAnnouncementTitle')!;
     const message = document.querySelector<HTMLTextAreaElement>('#adminAnnouncementMessage')!;
+    const avatarLimit = document.querySelector<HTMLInputElement>('#adminAvatarJourneyGirl')!;
+    expect(avatarLimit.value).toBe('5');
     enabled.checked = true; title.value = 'Service update'; message.value = 'New lessons are ready.';
+    avatarLimit.value = '3';
     document.querySelector<HTMLButtonElement>('#adminConfigPreview')!.click();
     expect(document.querySelector('#runtimeAnnouncement')?.textContent).toContain('Service update');
     expect(document.querySelector('#adminConfigStatus')?.textContent).toContain('Preview applied');

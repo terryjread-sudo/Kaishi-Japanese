@@ -24,6 +24,21 @@ export const runtimeConfigSchema = z.object({
     deviceTitle: z.string().trim().min(1).max(60),
     deviceDescription: z.string().trim().max(180),
   }),
+  avatarUnlocks: z.object({
+    journeyGirlRhythmDays: z.coerce.number().int().min(0).max(365),
+    journeyBoyRhythmDays: z.coerce.number().int().min(0).max(365),
+    journeyFriendRhythmDays: z.coerce.number().int().min(0).max(365),
+    harajukuGirlMasteredWords: z.coerce.number().int().min(0).max(2000),
+    harajukuGuyMasteredWords: z.coerce.number().int().min(0).max(2000),
+    izakayaCookMasteredWords: z.coerce.number().int().min(0).max(2000),
+  }).default({
+    journeyGirlRhythmDays: 5,
+    journeyBoyRhythmDays: 20,
+    journeyFriendRhythmDays: 30,
+    harajukuGirlMasteredWords: 10,
+    harajukuGuyMasteredWords: 25,
+    izakayaCookMasteredWords: 50,
+  }),
   support: z.object({
     enabled: z.boolean(),
     label: z.string().trim().max(50),
@@ -50,6 +65,14 @@ export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = {
     signalDescription: 'Decode Japanese intercepts, apply a changing codebook, and decide what must be escalated.',
     deviceTitle: 'Device Repair',
     deviceDescription: 'Restore a detailed cassette player with words you have already learned.',
+  },
+  avatarUnlocks: {
+    journeyGirlRhythmDays: 5,
+    journeyBoyRhythmDays: 20,
+    journeyFriendRhythmDays: 30,
+    harajukuGirlMasteredWords: 10,
+    harajukuGuyMasteredWords: 25,
+    izakayaCookMasteredWords: 50,
   },
   support: { enabled: false, label: 'Contact Kaishi support', url: '' },
 };

@@ -205,9 +205,9 @@
 
   async function loadSupabaseIssues(){
     if(!isAdmin)return;const status=$('#adminSupabaseIssueStatus'),list=$('#adminSupabaseIssueList');if(status)status.textContent='Loading Supabase issues…';
-    const{data,error}=await client.rpc('get_kaishi_supabase_issue_log',{p_limit:100});
+    const{data,error}=await client.rpc('get_kaishi_supabase_issue_log',{p_limit:20});
     if(error){if(status){status.textContent=error.message;status.dataset.state='error'}return}
-    const rows=data||[];if(status){status.textContent=`${rows.length} recent issue${rows.length===1?'':'s'}.`;status.dataset.state='ok'};
+    const rows=data||[];if(status){status.textContent=`Showing ${rows.length} of the latest 20 issue${rows.length===1?'':'s'}.`;status.dataset.state='ok'};
     renderOperationalRows(list,rows,row=>`<article class="admin-operational-row"><div><strong>${escapeHtml(row.context||'Supabase')}</strong><small>${escapeHtml(row.message)}</small></div><span class="report-status ${escapeHtml(row.severity)}">${escapeHtml(row.severity)}</span><small>${new Date(row.created_at).toLocaleString()}${row.github_login?` · @${escapeHtml(row.github_login)}`:''}</small></article>`,'No Supabase issues have been reported.');
   }
 

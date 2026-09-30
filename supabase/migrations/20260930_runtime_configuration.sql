@@ -36,6 +36,14 @@ values ('live', jsonb_build_object(
     'deviceTitle', 'Device Repair',
     'deviceDescription', 'Restore a detailed cassette player with words you have already learned.'
   ),
+  'avatarUnlocks', jsonb_build_object(
+    'journeyGirlRhythmDays', 5,
+    'journeyBoyRhythmDays', 20,
+    'journeyFriendRhythmDays', 30,
+    'harajukuGirlMasteredWords', 10,
+    'harajukuGuyMasteredWords', 25,
+    'izakayaCookMasteredWords', 50
+  ),
   'support', jsonb_build_object('enabled', false, 'label', 'Contact Kaishi support', 'url', '')
 ), 1)
 on conflict (id) do nothing;

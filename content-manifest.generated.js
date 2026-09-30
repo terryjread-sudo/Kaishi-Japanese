@@ -105,7 +105,10 @@
     "./media/profiles/woman-base.webp",
     "./media/kotoba-checkpoint/stamp.wav",
     "./media/kotoba-checkpoint/clear.mp3",
-    "./media/kotoba-checkpoint/terminal-ambience.ogg"
+    "./media/kotoba-checkpoint/terminal-ambience.ogg",
+    "./media/kotoba-checkpoint/file-open.wav",
+    "./media/kotoba-checkpoint/evidence-pin.wav",
+    "./media/kotoba-checkpoint/tray-ready.wav"
   ]
 });
 })(typeof self!=='undefined'?self:window);

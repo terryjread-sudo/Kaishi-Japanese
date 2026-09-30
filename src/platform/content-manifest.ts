@@ -47,4 +47,5 @@ export const OFFLINE_CORE_FILES = [
   './media/profiles/man-base.webp', './media/profiles/woman-base.webp',
   './media/kotoba-checkpoint/stamp.wav',
   './media/kotoba-checkpoint/clear.mp3', './media/kotoba-checkpoint/terminal-ambience.ogg',
+  './media/kotoba-checkpoint/file-open.wav', './media/kotoba-checkpoint/evidence-pin.wav', './media/kotoba-checkpoint/tray-ready.wav',
 ] as const;

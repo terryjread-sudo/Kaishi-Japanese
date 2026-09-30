@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('cached live controls customise learner entry points without a deployment', async ({ page }) => {
+  await page.route('**/rest/v1/rpc/get_kaishi_runtime_config', route => route.abort());
   await page.addInitScript(() => {
     window.localStorage.setItem('kq-runtime-config-cache-v1', JSON.stringify({
       revision: 7,
