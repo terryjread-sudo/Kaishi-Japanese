@@ -13,6 +13,11 @@ async function openSignalDesk(page: import('@playwright/test').Page): Promise<vo
 }
 
 test('a brand-new learner decodes and correctly escalates the first signal', async ({ page }) => {
+  await page.addInitScript(() => {
+    const spoken: string[] = [];
+    (window as typeof window & { __signalSpoken?: string[] }).__signalSpoken = spoken;
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { cancel: () => undefined, speak: (utterance: SpeechSynthesisUtterance) => spoken.push(utterance.text) } });
+  });
   await openSignalDesk(page);
   await expect(page.getByText('Director Mori')).toBeVisible();
   await expect(page.locator('.signal-rule-card')).toContainText('RED');
@@ -24,6 +29,7 @@ test('a brand-new learner decodes and correctly escalates the first signal', asy
   await expect(page.locator('[data-signal-token="0"]')).toHaveClass(/is-guided/);
   await expect(page.locator('[data-signal-translation]')).toContainText('training help');
   await page.locator('[data-signal-token="0"]').click();
+  await expect.poll(() => page.evaluate(() => (window as typeof window & { __signalSpoken?: string[] }).__signalSpoken || [])).toContain('赤い');
   await expect(page.locator('.signal-dictionary-card')).toContainText('red');
   await expect(page.locator('[data-signal-evidence="red"]')).toHaveClass(/is-guided/);
   await page.locator('[data-signal-evidence="red"]').click();
@@ -32,6 +38,8 @@ test('a brand-new learner decodes and correctly escalates the first signal', asy
   await expect(page.locator('.signal-feedback')).toContainText('Good judgement');
   await expect(page.locator('.signal-feedback')).toContainText('Evidence identified correctly');
   await expect(page.locator('.signal-feedback-translation')).toContainText('A red flower.');
+  await expect(page.locator('.signal-feedback-backdrop')).toHaveCSS('position', 'fixed');
+  await expect(page.locator('[data-signal-continue]')).toBeInViewport();
 });
 
 test('training manual, pause and Journey exit remain usable', async ({ page }) => {
@@ -122,4 +130,7 @@ test('the active desk fits a phone viewport without horizontal overflow', async 
   expect(layout.trayWidth).toBeLessThanOrEqual(390);
   await expect(page.locator('[data-signal-verdict="standard"]')).toBeVisible();
   await expect(page.locator('[data-signal-verdict="escalate"]')).toBeVisible();
+  await page.locator('[data-signal-verdict="standard"]').click();
+  await expect(page.locator('.signal-feedback-backdrop')).toBeVisible();
+  await expect(page.locator('[data-signal-continue]')).toBeInViewport();
 });
