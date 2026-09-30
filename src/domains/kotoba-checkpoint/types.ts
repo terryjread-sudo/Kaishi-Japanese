@@ -93,6 +93,8 @@ export interface SignalRun {
   paused: boolean;
   remaining: number;
   assisted: boolean;
+  readingVisible?: boolean;
+  translationVisible?: boolean;
   daily: boolean;
   career: SignalCareer;
 }

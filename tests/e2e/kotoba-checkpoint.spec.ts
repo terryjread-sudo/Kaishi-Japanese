@@ -19,13 +19,19 @@ test('a brand-new learner decodes and correctly escalates the first signal', asy
   await expect(page.locator('.signal-director')).toHaveAttribute('src', /director-mori\.png/);
   await page.locator('[data-signal-start]').click();
   await expect(page.locator('.signal-paper')).toContainText('赤い');
+  await expect(page.locator('.signal-paper')).not.toContainText('A red flower.');
+  await expect(page.locator('.signal-reading')).toContainText('あかい はな');
+  await expect(page.locator('[data-signal-token="0"]')).toHaveClass(/is-guided/);
+  await expect(page.locator('[data-signal-translation]')).toContainText('training help');
   await page.locator('[data-signal-token="0"]').click();
   await expect(page.locator('.signal-dictionary-card')).toContainText('red');
+  await expect(page.locator('[data-signal-evidence="red"]')).toHaveClass(/is-guided/);
   await page.locator('[data-signal-evidence="red"]').click();
   await expect(page.locator('.signal-evidence-list')).toContainText('red');
   await page.locator('[data-signal-verdict="escalate"]').click();
   await expect(page.locator('.signal-feedback')).toContainText('Good judgement');
   await expect(page.locator('.signal-feedback')).toContainText('Evidence identified correctly');
+  await expect(page.locator('.signal-feedback-translation')).toContainText('A red flower.');
 });
 
 test('training manual, pause and Journey exit remain usable', async ({ page }) => {
@@ -34,6 +40,11 @@ test('training manual, pause and Journey exit remain usable', async ({ page }) =
   await expect(page.locator('.signal-manual')).toContainText('Read. Mark. Decide.');
   await page.locator('[data-signal-tutorial-close]').click();
   await page.locator('[data-signal-start]').click();
+  await page.locator('[data-signal-handbook]').click();
+  await expect(page.locator('.signal-guide')).toContainText('How to decode a signal');
+  await expect(page.locator('.signal-guide')).toContainText('Pin useful evidence');
+  await page.locator('.signal-guide [data-signal-guide-close]').last().click();
+  await expect(page.locator('.signal-guide')).toHaveCount(0);
   await page.locator('[data-signal-pause]').first().click();
   await expect(page.locator('.signal-pause')).toBeVisible();
   await page.locator('.signal-pause [data-signal-pause]').click();

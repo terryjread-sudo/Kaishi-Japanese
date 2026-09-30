@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SIGNAL_SHIFTS } from './content';
-import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, migrateSignalCareer, selectSignalEvidence } from './run';
+import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, migrateSignalCareer, recordTokenLookup, revealSignalReading, revealSignalTranslation, selectSignalEvidence } from './run';
 import type { SignalRule, SignalRun } from './types';
 
 describe('Section K signal rules', () => {
@@ -42,6 +42,15 @@ describe('Section K signal rules', () => {
     const advanced = advanceSignal(judged, shift);
     expect(advanced.index).toBe(1);
     expect(advanced.selectedEvidence).toEqual([]);
+  });
+
+  it('records optional classified help while keeping training help consequence-free', () => {
+    const training = createSignalRun(SIGNAL_SHIFTS[0]!.id);
+    expect(revealSignalTranslation(training)).toMatchObject({ translationVisible: true, assisted: false });
+    const classified = recordTokenLookup(createSignalRun(SIGNAL_SHIFTS[3]!.id), '至急', true);
+    expect(classified).toMatchObject({ lookedUpTokens: ['至急'], assisted: true });
+    expect(revealSignalReading(classified, true)).toMatchObject({ readingVisible: true, assisted: true });
+    expect(revealSignalTranslation(classified, true)).toMatchObject({ translationVisible: true, assisted: true });
   });
 
   it('migrates prior checkpoint credit without pretending the new campaign was cleared', () => {

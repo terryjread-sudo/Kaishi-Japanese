@@ -44,7 +44,7 @@ export function firstAvailableShift(career: SignalCareer): SignalShift {
 
 export function createSignalRun(shiftId = SIGNAL_SHIFTS[0]!.id, career: SignalCareer = DEFAULT_SIGNAL_CAREER, daily = false): SignalRun {
   const shift = signalShift(shiftId);
-  return { version: 3, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, daily, career: migrateSignalCareer(career) };
+  return { version: 3, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, readingVisible: shift.aid === 'full', translationVisible: false, daily, career: migrateSignalCareer(career) };
 }
 
 export function selectSignalEvidence(run: SignalRun, evidence: string): SignalRun {
@@ -52,11 +52,14 @@ export function selectSignalEvidence(run: SignalRun, evidence: string): SignalRu
   return { ...run, selectedEvidence };
 }
 
-export function recordTokenLookup(run: SignalRun, tokenSurface: string): SignalRun {
-  return run.lookedUpTokens.includes(tokenSurface) ? run : { ...run, lookedUpTokens: [...run.lookedUpTokens, tokenSurface] };
+export function recordTokenLookup(run: SignalRun, tokenSurface: string, assisted = false): SignalRun {
+  const lookedUpTokens = run.lookedUpTokens.includes(tokenSurface) ? run.lookedUpTokens : [...run.lookedUpTokens, tokenSurface];
+  return { ...run, lookedUpTokens, assisted: run.assisted || assisted };
 }
 
 export function markSignalAssisted(run: SignalRun): SignalRun { return { ...run, assisted: true }; }
+export function revealSignalReading(run: SignalRun, assisted = false): SignalRun { return { ...run, readingVisible: true, assisted: run.assisted || assisted }; }
+export function revealSignalTranslation(run: SignalRun, assisted = false): SignalRun { return { ...run, translationVisible: true, assisted: run.assisted || assisted }; }
 
 export function judgeSignal(run: SignalRun, verdict: SignalVerdict, shift = signalShift(run.shiftId)): SignalRun {
   if (run.phase !== 'decode') return run;
@@ -76,7 +79,7 @@ export function judgeSignal(run: SignalRun, verdict: SignalVerdict, shift = sign
 
 export function advanceSignal(run: SignalRun, shift = signalShift(run.shiftId)): SignalRun {
   if (run.phase !== 'feedback') return run;
-  if (run.index + 1 < shift.cases.length) return { ...run, index: run.index + 1, phase: 'decode', selectedEvidence: [], lookedUpTokens: [], assisted: false };
+  if (run.index + 1 < shift.cases.length) return { ...run, index: run.index + 1, phase: 'decode', selectedEvidence: [], lookedUpTokens: [], assisted: false, readingVisible: shift.aid === 'full', translationVisible: false };
   const correct = run.decisions.filter(item => item.correct).length;
   const passed = correct >= Math.ceil(shift.cases.length * .6);
   const completedShiftIds = passed && !run.daily ? [...new Set([...run.career.completedShiftIds, shift.id])] : run.career.completedShiftIds;
