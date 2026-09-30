@@ -162,7 +162,7 @@
   }
 
   function arrangeAdminTabs(){
-    const placements={reports:['adminReportsSection'],email:['adminEmailAutomation','adminEmailLogSection'],learners:['adminUsersPanel'],system:['adminLocalLogSection','adminSupabaseIssueSection'],tools:['adminToolsSection']};
+    const placements={reports:['adminReportsSection'],live:['adminConfigSection'],email:['adminEmailAutomation','adminEmailLogSection'],learners:['adminUsersPanel'],system:['adminLocalLogSection','adminSupabaseIssueSection'],tools:['adminToolsSection']};
     Object.entries(placements).forEach(([tab,ids])=>{const panel=$(`#adminTab-${tab}`);ids.forEach(id=>{const section=$(`#${id}`);if(panel&&section&&!panel.contains(section))panel.appendChild(section)})});
   }
 
@@ -171,6 +171,7 @@
     document.querySelectorAll('[data-admin-tab]').forEach(button=>{const selected=button.dataset.adminTab===tab;button.classList.toggle('active',selected);button.setAttribute('aria-selected',String(selected))});
     document.querySelectorAll('[data-admin-panel]').forEach(panel=>panel.hidden=panel.dataset.adminPanel!==tab);
     if(tab==='email')window.KaishiCloud?.loadEmailAutomation?.();
+    if(tab==='live')window.dispatchEvent(new Event('kaishi-admin-config-open'));
     if(tab==='learners')window.KaishiCloud?.loadAdminUsers?.();
     if(tab==='reports')loadReports();
     if(tab==='system'){loadSupabaseIssues();window.kaishiLog?.('system','Opened system diagnostics')}

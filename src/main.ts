@@ -27,6 +27,9 @@ import { createOfflineUI } from './core/offline-ui';
 import { installSeasonalHero } from './core/seasonal-hero';
 import { installKotobaCheckpoint } from './core/kotoba-checkpoint';
 import { installGameHub } from './core/game-hub';
+import { installAdminConfigPanel } from './core/admin-config-panel';
+import { getRuntimeConfig, installRuntimeConfig, refreshRuntimeConfig } from './platform/runtime-config';
+import './core/runtime-config.css';
 
 defineElement();
 
@@ -90,6 +93,7 @@ window.KaishiActivityPolicy = {
   recordLessonEvidence,
   validateLessonOutcomeCatalog,
   offline: offlineUI,
+  runtimeConfig: { get: getRuntimeConfig, refresh: refreshRuntimeConfig },
 };
 
 window.dispatchEvent(new Event('kaishi-cloud-sync-ready'));
@@ -97,6 +101,8 @@ installJapanReady();
 installSeasonalHero();
 installKotobaCheckpoint();
 installGameHub();
+installRuntimeConfig();
+installAdminConfigPanel();
 let learningStudioLoaded = false;
 document.addEventListener('click', (event) => {
   const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-learning-studio]') : null;
@@ -112,6 +118,7 @@ offlineUI.install();
 // The WebGL repair bench is intentionally loaded only when the learner opens it.
 document.addEventListener('click', (event) => {
   if (!(event.target instanceof Element) || !event.target.closest('[data-device-repair-launch]')) return;
+  if (!getRuntimeConfig().features.deviceRepair) return;
   void import('./core/device-repair').then(({ launchDeviceRepair }) => launchDeviceRepair());
 });
 

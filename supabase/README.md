@@ -27,6 +27,10 @@ password, or a Supabase secret/service-role key.
    Harajuku Guy, and Izakaya Cook keys in saved cloud and community profiles.
 7. Run `migrations/20260909_safer_cloud_sync.sql` to add revisioned progress
    writes and reset protection for multi-device sync.
+8. Run `migrations/20260930_runtime_configuration.sql` to enable the Admin
+   area’s live announcements, feature controls, editable game copy and
+   revision rollback. The public RPC exposes only the published configuration;
+   publishing and history remain protected by `is_app_admin()`.
 
 The migration creates private progress storage, public opt-in leaderboard
 entries, Row Level Security policies, and the learner-controlled cloud-account
