@@ -43,6 +43,7 @@ class SignalDeskScene extends Phaser.Scene {
   private dragFile?: Phaser.GameObjects.Container;
   private standardZone = new Phaser.Geom.Rectangle(540, 740, 360, 120);
   private escalateZone = new Phaser.Geom.Rectangle(920, 740, 360, 120);
+  private evidenceBreaks: [number, number] = [965, 1100];
 
   constructor(private readonly controller: SignalDeskController) { super('signal-desk'); }
 
@@ -62,6 +63,7 @@ class SignalDeskScene extends Phaser.Scene {
 
   create(): void {
     this.unsubscribe = this.controller.subscribe(() => this.draw());
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.draw, this);
     this.input.on('drag', (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject, x: number, y: number) => {
       const target = object as Phaser.GameObjects.Container; target.setPosition(x, y);
     });
@@ -74,9 +76,12 @@ class SignalDeskScene extends Phaser.Scene {
         return;
       }
       const fact = target.getData('evidence') as string | undefined;
-      if (fact) this.controller.setEvidenceStatus(fact, target.x < 1100 ? target.x < 965 ? 'confirmed' : 'doubtful' : 'contradiction');
+      if (fact) this.controller.setEvidenceStatus(fact, target.x < this.evidenceBreaks[1] ? target.x < this.evidenceBreaks[0] ? 'confirmed' : 'doubtful' : 'contradiction');
     });
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.unsubscribe?.());
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.unsubscribe?.();
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.draw, this);
+    });
     this.draw();
   }
 
@@ -118,11 +123,229 @@ class SignalDeskScene extends Phaser.Scene {
   private draw(): void {
     this.children.removeAll(true);
     const snapshot = this.controller.snapshot();
+    const width = this.scale.width;
+    const height = this.scale.height;
+    const mobile = width <= 760 || (height <= 620 && width > height);
+    const host = this.game.canvas.closest<HTMLElement>('#signalPhaserHost');
+    if (host) host.dataset.signalLayout = mobile ? (height > width ? 'portrait' : 'landscape') : 'desktop';
+    if (mobile) {
+      this.cameras.main.setZoom(1).setScroll(0, 0);
+      this.drawMobile(snapshot, width, height, height > width);
+      return;
+    }
+    const zoom = Math.min(width / W, height / H);
+    this.cameras.main.setZoom(zoom).centerOn(W / 2, H / 2);
     this.background(snapshot.shift.sequence >= 10);
     this.header(snapshot);
     if (snapshot.run.phase === 'briefing') this.briefing(snapshot);
     else if (snapshot.run.phase === 'report' || snapshot.run.phase === 'failed') this.report(snapshot);
     else this.desk(snapshot);
+  }
+
+  private mobileBackground(width: number, height: number, night: boolean): void {
+    const key = night ? 'office-night' : 'office-dusk';
+    if (this.textures.exists(key)) {
+      const source = this.textures.get(key).getSourceImage() as HTMLImageElement;
+      const scale = Math.max(width / source.width, height / source.height);
+      this.add.image(width / 2, height / 2, key).setDisplaySize(source.width * scale, source.height * scale).setTint(night ? 0xaab5d1 : 0xffdfb2);
+    } else this.add.rectangle(width / 2, height / 2, width, height, 0x120f0d);
+    this.add.rectangle(width / 2, height / 2, width, height, C.black, .46);
+  }
+
+  private mobileHeader(snapshot: SignalDeskSnapshot, width: number): void {
+    this.panel(width / 2, 27, width - 12, 48, 0x101214, .97);
+    this.label(13, 10, 'ことば局 · SECTION K', 12, '#e8b85f', { fontStyle: 'bold' });
+    this.label(13, 29, `${snapshot.shift.department.toUpperCase()} · ${snapshot.run.career.rank.toUpperCase()}`, 10, C.muted);
+    this.label(width - 150, 11, `◎ ${snapshot.run.career.credits}  ·  V ${snapshot.run.verification}/${snapshot.run.maxVerification}`, 11, '#e8b85f', { fontStyle: 'bold' });
+    this.button(width - 42, 27, 68, 36, 'LEAVE', () => this.controller.exit(), 0x3a2822);
+  }
+
+  private drawMobile(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
+    this.mobileBackground(width, height, snapshot.shift.sequence >= 10);
+    this.mobileHeader(snapshot, width);
+    if (snapshot.run.phase === 'briefing') this.mobileBriefing(snapshot, width, height, portrait);
+    else if (snapshot.run.phase === 'report' || snapshot.run.phase === 'failed') this.mobileReport(snapshot, width, height, portrait);
+    else this.mobileDesk(snapshot, width, height, portrait);
+  }
+
+  private mobileBriefing(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
+    const { shift, run } = snapshot;
+    if (!portrait) {
+      const portraitKey = shift.story?.portrait || 'mori';
+      if (this.textures.exists(portraitKey)) this.add.image(width * .14, height, portraitKey).setOrigin(.5, 1).setDisplaySize(Math.min(250, width * .24), height - 58);
+      this.panel(width * .61, height * .52 + 22, width * .72, height - 68, C.paper, .98, 0xb29662);
+      this.label(width * .27, 67, `SHIFT ${shift.sequence} · ${shift.department.toUpperCase()}`, 12, '#81322e', { fontStyle: 'bold' });
+      this.label(width * .27, 88, shift.title, 30, '#241c17', { fontFamily: 'Georgia, serif', fontStyle: 'bold', wordWrap: { width: width * .63 } });
+      this.label(width * .27, 128, shift.briefing, 15, '#4c4036', { wordWrap: { width: width * .64 }, lineSpacing: 4 });
+      this.add.rectangle(width * .61, height * .48, width * .65, 92, 0xfff5d8, .88).setStrokeStyle(2, C.red);
+      this.label(width * .30, height * .39, 'TODAY’S CODEBOOK', 11, '#8f302c', { fontStyle: 'bold' });
+      this.label(width * .30, height * .44, shift.ruleText, 17, '#211a16', { fontStyle: 'bold', wordWrap: { width: width * .58 } });
+      this.label(width * .30, height * .60, 'SPECIALISATION', 10, '#762d29', { fontStyle: 'bold' });
+      (['linguist', 'listener', 'field', 'cryptographer'] as const).forEach((value, index) => this.button(width * .34 + index * width * .155, height * .70, width * .14, 38, value.toUpperCase(), () => this.controller.specialise(value), run.career.specialisation === value ? C.red : 0x5b4b3c));
+      this.button(width * .47, height - 43, width * .25, 54, 'CLOCK IN →', () => this.controller.start(), C.red);
+      this.button(width * .73, height - 43, width * .23, 54, run.career.timerDisabled ? 'ENABLE TIMER' : 'DISABLE TIMER', () => this.controller.toggleTimer());
+      return;
+    }
+    this.panel(width / 2, (height + 57) / 2, width - 14, height - 65, C.paper, .98, 0xb29662);
+    this.label(20, 70, `SHIFT ${shift.sequence} · ${shift.department.toUpperCase()}`, 12, '#81322e', { fontStyle: 'bold' });
+    this.label(20, 94, shift.title, 28, '#241c17', { fontFamily: 'Georgia, serif', fontStyle: 'bold', wordWrap: { width: width - 40 } });
+    this.label(20, 135, shift.briefing, 15, '#4c4036', { wordWrap: { width: width - 40 }, lineSpacing: 3 });
+    const ruleY = Math.min(260, height * .34);
+    this.add.rectangle(width / 2, ruleY, width - 34, 104, 0xfff5d8, .9).setStrokeStyle(2, C.red);
+    this.label(29, ruleY - 42, 'TODAY’S CODEBOOK', 11, '#8f302c', { fontStyle: 'bold' });
+    this.label(29, ruleY - 17, shift.ruleText, 18, '#211a16', { fontStyle: 'bold', wordWrap: { width: width - 58 } });
+    if (shift.story?.text) this.label(25, ruleY + 72, `“${shift.story.text}” — ${shift.story.speaker}`, 14, '#5c302b', { fontFamily: 'Georgia, serif', fontStyle: 'italic', wordWrap: { width: width - 50 } });
+    const specY = height - 215;
+    this.label(20, specY - 33, 'SPECIALISATION', 11, '#762d29', { fontStyle: 'bold' });
+    (['linguist', 'listener', 'field', 'cryptographer'] as const).forEach((value, index) => this.button(width * (.26 + (index % 2) * .49), specY + Math.floor(index / 2) * 48, width * .44, 42, value.toUpperCase(), () => this.controller.specialise(value), run.career.specialisation === value ? C.red : 0x5b4b3c));
+    this.button(width * .31, height - 49, width * .55, 66, 'CLOCK IN →', () => this.controller.start(), C.red);
+    this.button(width * .79, height - 49, width * .34, 66, run.career.timerDisabled ? 'TIMER ON' : 'TIMER OFF', () => this.controller.toggleTimer());
+  }
+
+  private mobileDesk(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
+    if (portrait) this.mobilePortraitDesk(snapshot, width, height);
+    else this.mobileLandscapeDesk(snapshot, width, height);
+    if (snapshot.run.phase === 'feedback') this.mobileFeedback(snapshot, width, height);
+    if (snapshot.run.paused) this.mobilePause(width, height);
+  }
+
+  private mobileQueue(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number, horizontal: boolean): void {
+    this.panel(x + width / 2, y + height / 2, width, height);
+    this.label(x + 9, y + 7, `INCOMING · ${snapshot.run.queuedCaseIds.length} QUEUED`, 11, '#e8b85f', { fontStyle: 'bold' });
+    const visible = snapshot.run.queuedCaseIds.slice(0, horizontal ? 3 : 4);
+    visible.forEach((id, index) => {
+      const item = snapshot.shift.cases.find(candidate => candidate.id === id)!;
+      const active = id === snapshot.run.activeCaseId;
+      if (horizontal) {
+        const cardWidth = (width - 18 - (visible.length - 1) * 5) / Math.max(1, visible.length);
+        this.button(x + 9 + cardWidth / 2 + index * (cardWidth + 5), y + height - 29, cardWidth, 48, `${item.channel.toUpperCase()} ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+      } else this.button(x + width / 2, y + 57 + index * 58, width - 18, 50, `${item.channel.toUpperCase()} · FILE ${String(snapshot.shift.cases.indexOf(item) + 1).padStart(3, '0')} · ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+    });
+  }
+
+  private mobileCodebook(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number): void {
+    const rule = snapshot.active?.event?.ruleText || snapshot.shift.ruleText;
+    this.panel(x + width / 2, y + height / 2, width, height, 0x211c18);
+    this.label(x + 10, y + 7, snapshot.active?.event?.ruleOverride ? 'EMERGENCY AMENDMENT' : 'ACTIVE CODEBOOK', 11, snapshot.active?.event?.ruleOverride ? '#ff7668' : '#e8b85f', { fontStyle: 'bold' });
+    this.label(x + 10, y + 28, rule, 15, C.cream, { fontStyle: 'bold', wordWrap: { width: width - 120 } });
+    this.button(x + width - 48, y + height - 24, 86, 36, 'VERIFY', () => this.controller.verify('source-check'));
+  }
+
+  private mobileFile(snapshot: SignalDeskSnapshot, active: SignalCase, x: number, y: number, width: number, height: number): void {
+    const file = this.add.container(x + width / 2, y + height / 2);
+    file.add(this.add.rectangle(0, 0, width, height, active.channel === 'intercept' ? 0xd1c5aa : C.paper, 1).setStrokeStyle(2, 0x8f7952));
+    file.add(this.label(-width / 2 + 10, -height / 2 + 9, `${active.channel.toUpperCase()} · ${active.speaker || 'SOURCE CLASSIFIED'}`, 10, '#5e4a38', { fontStyle: 'bold' }));
+    if (active.channel === 'telephone' && !snapshot.run.assisted) {
+      file.add(this.label(0, -height * .20, '☎', Math.min(56, height * .25), '#4c3828').setOrigin(.5));
+      file.add(this.button(0, height * .12, Math.min(220, width - 30), 44, 'PLAY INTERCEPT', () => this.controller.speak(active.japanese, .78), C.green));
+      file.add(this.button(0, height * .34, Math.min(250, width - 30), 40, 'SHOW TRANSCRIPT · 1', () => this.controller.verify('translation'), C.red));
+    } else {
+      const tokenWidth = Math.min(92, (width - 30) / Math.max(1, active.tokens.length));
+      const startX = -(active.tokens.length - 1) * tokenWidth / 2;
+      active.tokens.forEach((token, index) => {
+        const inspected = snapshot.run.lookedUpTokens.includes(token.surface);
+        file.add(this.button(startX + index * tokenWidth, -height * .11, tokenWidth - 5, 48, token.surface, () => this.controller.inspectToken(index), inspected ? 0x8a4434 : 0xefe2c2, inspected ? '#fff1cf' : '#201a17'));
+      });
+      if (snapshot.run.readingVisible) file.add(this.label(0, height * .05, active.reading, 14, '#615344', { align: 'center', wordWrap: { width: width - 20 } }).setOrigin(.5));
+      const token = snapshot.openTokenIndex === null ? undefined : active.tokens[snapshot.openTokenIndex];
+      if (token) {
+        file.add(this.label(0, height * .18, snapshot.dictionaryRevealed ? `${token.reading} · ${token.meaning}` : `${token.reading} · recall the meaning`, 15, '#762d29', { fontStyle: 'bold', align: 'center', wordWrap: { width: width - 20 } }).setOrigin(.5));
+        if (!snapshot.dictionaryRevealed) file.add(this.button(-width * .19, height * .36, width * .34, 38, 'REVEAL · 1', () => this.controller.revealDictionary(), C.red));
+        if (token.fact) file.add(this.button(width * .19, height * .36, width * .34, 38, snapshot.run.selectedEvidence.includes(token.fact) ? 'UNPIN' : 'PIN EVIDENCE', () => this.controller.pinEvidence(token.fact!), C.green));
+      }
+    }
+    file.setSize(width, height).setInteractive({ useHandCursor: true });
+    this.input.setDraggable(file); this.dragFile = file;
+  }
+
+  private mobileEvidence(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number): void {
+    this.panel(x + width / 2, y + height / 2, width, height, 0x171513);
+    this.label(x + 9, y + 7, 'EVIDENCE WALL', 11, '#e8b85f', { fontStyle: 'bold' });
+    const columns: [number, number, number] = [x + width * .18, x + width * .50, x + width * .82];
+    this.evidenceBreaks = [x + width * .34, x + width * .66];
+    ['CONFIRMED', 'DOUBTFUL', 'CONTRADICTION'].forEach((value, index) => this.label(columns[index]!, y + 28, value, 9, index === 0 ? '#8fc6a4' : index === 1 ? '#e2c47b' : '#ef8b80', { fontStyle: 'bold' }).setOrigin(.5));
+    const counts: [number, number, number] = [0, 0, 0];
+    snapshot.run.selectedEvidence.slice(0, 6).forEach(fact => {
+      const status = snapshot.run.evidenceStatus?.[fact] || 'confirmed';
+      const column = status === 'confirmed' ? 0 : status === 'doubtful' ? 1 : 2;
+      const chip = this.button(columns[column], y + 53 + counts[column]++ * 39, width * .28, 34, fact.toUpperCase(), () => undefined, column === 0 ? C.green : column === 1 ? 0x715c2b : C.red);
+      chip.setData('evidence', fact); this.input.setDraggable(chip);
+    });
+    const confidenceY = y + height - 24;
+    (['uncertain', 'fair', 'confident'] as const).forEach((value, index) => this.button(columns[index]!, confidenceY, width * .28, 36, value.toUpperCase(), () => this.controller.setConfidence(value), snapshot.run.confidence === value ? C.red : 0x332b25));
+  }
+
+  private mobilePortraitDesk(snapshot: SignalDeskSnapshot, width: number, height: number): void {
+    const trayHeight = 78;
+    this.mobileQueue(snapshot, 6, 57, width - 12, 75, true);
+    this.mobileCodebook(snapshot, 6, 138, width - 12, 82);
+    const fileY = 226;
+    const fileHeight = Math.max(190, Math.min(248, height * .34));
+    if (snapshot.active) this.mobileFile(snapshot, snapshot.active, 10, fileY, width - 20, fileHeight);
+    const evidenceY = fileY + fileHeight + 7;
+    const evidenceHeight = Math.max(108, height - evidenceY - trayHeight - 8);
+    this.mobileEvidence(snapshot, 6, evidenceY, width - 12, evidenceHeight);
+    this.standardZone = new Phaser.Geom.Rectangle(4, height - trayHeight, width / 2 - 6, trayHeight - 4);
+    this.escalateZone = new Phaser.Geom.Rectangle(width / 2 + 2, height - trayHeight, width / 2 - 6, trayHeight - 4);
+    this.button(width * .25, height - trayHeight / 2, width * .48, trayHeight - 8, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
+    this.button(width * .75, height - trayHeight / 2, width * .48, trayHeight - 8, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+  }
+
+  private mobileLandscapeDesk(snapshot: SignalDeskSnapshot, width: number, height: number): void {
+    const top = 57;
+    const trayHeight = 68;
+    const contentHeight = height - top - trayHeight - 6;
+    const queueWidth = width * .20;
+    const centreWidth = width * .45;
+    const evidenceX = queueWidth + centreWidth + 18;
+    this.mobileQueue(snapshot, 6, top, queueWidth - 8, contentHeight, false);
+    this.mobileCodebook(snapshot, queueWidth + 4, top, centreWidth, 78);
+    if (snapshot.active) this.mobileFile(snapshot, snapshot.active, queueWidth + 4, top + 84, centreWidth, contentHeight - 84);
+    this.mobileEvidence(snapshot, evidenceX, top, width - evidenceX - 6, contentHeight);
+    const traysX = queueWidth + 4;
+    const traysWidth = width - traysX - 6;
+    this.standardZone = new Phaser.Geom.Rectangle(traysX, height - trayHeight, traysWidth / 2 - 3, trayHeight - 3);
+    this.escalateZone = new Phaser.Geom.Rectangle(traysX + traysWidth / 2 + 3, height - trayHeight, traysWidth / 2 - 3, trayHeight - 3);
+    this.button(traysX + traysWidth * .25, height - trayHeight / 2, traysWidth * .49, trayHeight - 7, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
+    this.button(traysX + traysWidth * .75, height - trayHeight / 2, traysWidth * .49, trayHeight - 7, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+  }
+
+  private mobileFeedback(snapshot: SignalDeskSnapshot, width: number, height: number): void {
+    const decision = snapshot.run.decisions.at(-1)!;
+    const active = snapshot.active;
+    this.add.rectangle(width / 2, height / 2, width, height, 0x050505, .85);
+    const panelWidth = Math.min(width - 20, 650);
+    const panelHeight = Math.min(height - 74, 440);
+    this.panel(width / 2, height / 2 + 15, panelWidth, panelHeight, C.paper, 1, decision.correct ? C.green : C.red);
+    const left = (width - panelWidth) / 2 + 20;
+    const top = (height - panelHeight) / 2 + 20;
+    this.label(left, top, decision.correct ? 'CORRECT FILING' : decision.expired ? 'SIGNAL EXPIRED' : 'CODEBOOK ERROR', 14, decision.correct ? '#285543' : '#8f302c', { fontStyle: 'bold' });
+    this.label(left, top + 35, decision.correct ? 'Good judgement' : 'Review the evidence', 27, '#211a16', { fontFamily: 'Georgia, serif', fontStyle: 'bold' });
+    this.label(left, top + 82, `${active?.english || ''}\n\n${active?.explanation || ''}`, 15, '#4d4035', { wordWrap: { width: panelWidth - 40 }, lineSpacing: 4 });
+    this.button(width / 2, height / 2 + panelHeight / 2 - 32, Math.min(280, panelWidth - 40), 54, snapshot.run.queuedCaseIds.length + snapshot.run.unreleasedCaseIds.length > 1 ? 'NEXT SIGNAL →' : 'OPEN REPORT →', () => this.controller.continue(), C.red);
+  }
+
+  private mobilePause(width: number, height: number): void {
+    this.add.rectangle(width / 2, height / 2, width, height, 0x050505, .92);
+    this.label(width / 2, height / 2 - 65, 'SHIFT PAUSED', 34, C.cream, { fontFamily: 'Georgia, serif', fontStyle: 'bold' }).setOrigin(.5);
+    this.label(width / 2, height / 2 - 20, 'Your queue is held safely.', 16, C.muted).setOrigin(.5);
+    this.button(width / 2, height / 2 + 48, Math.min(260, width - 40), 58, 'RESUME SHIFT', () => this.controller.pause(), C.red);
+  }
+
+  private mobileReport(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
+    const correct = snapshot.run.decisions.filter(item => item.correct).length;
+    const passed = snapshot.run.phase === 'report';
+    const panelWidth = portrait ? width - 16 : Math.min(width * .78, 900);
+    this.panel(width / 2, height / 2 + 25, panelWidth, height - 64, C.paper, .99, passed ? C.green : C.red);
+    const left = (width - panelWidth) / 2 + 20;
+    this.label(left, 73, passed ? 'SHIFT CLEARED' : 'TRAINING REASSIGNMENT', 14, passed ? '#285543' : '#8f302c', { fontStyle: 'bold' });
+    this.label(left, 104, snapshot.shift.title, portrait ? 28 : 34, '#211a16', { fontFamily: 'Georgia, serif', fontStyle: 'bold', wordWrap: { width: panelWidth - 40 } });
+    this.label(left, 157, `${correct}/${snapshot.shift.cases.length} correct · ${snapshot.run.expiredCaseIds.length} expired · ◎ ${snapshot.run.career.credits}`, 15, '#514337');
+    snapshot.run.decisions.slice(0, portrait ? 6 : 4).forEach((decision, index) => {
+      const item = snapshot.shift.cases.find(candidate => candidate.id === decision.caseId);
+      this.label(left + 5, 215 + index * 34, `${decision.correct ? '✓' : '×'}  ${item?.japanese || decision.caseId} · ${decision.verdict.toUpperCase()}`, 15, decision.correct ? '#285543' : '#8f302c');
+    });
+    this.button(width / 2, height - 48, Math.min(300, panelWidth - 40), 60, passed ? 'NEXT ASSIGNMENT →' : 'REPEAT SHIFT →', () => this.controller.next(), C.red);
   }
 
   private briefing(snapshot: SignalDeskSnapshot): void {
@@ -295,7 +518,7 @@ export function createSignalDeskGame(parent: HTMLElement, controller: SignalDesk
     backgroundColor: '#090b0e',
     transparent: false,
     render: { antialias: true, pixelArt: false, powerPreference: 'high-performance' },
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: W, height: H },
+    scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.NO_CENTER, width: parent.clientWidth || W, height: parent.clientHeight || H },
     input: { keyboard: true, mouse: true, touch: true },
     audio: { disableWebAudio: false },
     scene: [new SignalDeskScene(controller)],
