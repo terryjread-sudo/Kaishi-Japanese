@@ -129,7 +129,7 @@ test('the desk reflows to a full-width landscape phone layout', async ({ page })
   expect(layout.height).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
 });
 
-test('leaving and repeatedly reopening wakes and resizes the existing Phaser scene', async ({ page }) => {
+test('leaving and repeatedly reopening recreates and resizes the Phaser scene', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSignalDesk(page);
   await semanticClick(page, '[data-signal-start]');

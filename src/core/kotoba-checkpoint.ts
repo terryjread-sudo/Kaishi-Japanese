@@ -70,7 +70,7 @@ const controller: SignalDeskController = {
   exit() {
     const run = load();
     if (run.phase === 'decode' && !run.paused) { run.paused = true; save(run); }
-    setGameVisible(false); stopCheckpointAmbience(); const bridge = host(); if (bridge.returnToJourney) bridge.returnToJourney(); else bridge.show?.('journey');
+    disposeGame(); stopCheckpointAmbience(); const bridge = host(); if (bridge.returnToJourney) bridge.returnToJourney(); else bridge.show?.('journey');
   },
   requestExit() { const run = load(); if (run.phase === 'decode' && !run.paused) { run.paused = true; save(run); } exitPending = true; emit(); },
   cancelExit() { exitPending = false; emit(); },
@@ -171,6 +171,12 @@ function renderSemantic(): void {
   semantic.querySelectorAll<HTMLElement>('[data-signal-confidence]').forEach(button => button.addEventListener('click', () => controller.setConfidence('fair')));
   semantic.querySelectorAll<HTMLElement>('[data-signal-verdict]').forEach(button => button.addEventListener('click', () => controller.file(button.dataset.signalVerdict as SignalVerdict)));
   semantic.querySelectorAll<HTMLElement>('[data-signal-tab]').forEach(button => button.addEventListener('click', () => controller.setPortraitTab(button.dataset.signalTab as SignalDeskPortraitTab)));
+}
+
+function disposeGame(): void {
+  if (!game) return;
+  game.destroy(true);
+  game = null;
 }
 
 function setGameVisible(visible: boolean): void {
