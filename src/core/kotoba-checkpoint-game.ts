@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { SignalCase, SignalEvidenceStatus, SignalRun, SignalShift, SignalVerdict, SignalVerificationAction } from '../domains/kotoba-checkpoint/types';
+import { signalDeskLayout, type SignalDeskPortraitTab, type SignalDeskRect } from './signal-desk-layout';
 
 export interface SignalDeskSnapshot {
   run: SignalRun;
@@ -8,6 +9,8 @@ export interface SignalDeskSnapshot {
   openTokenIndex: number | null;
   dictionaryRevealed: boolean;
   notice?: string;
+  portraitTab: SignalDeskPortraitTab;
+  exitPending: boolean;
 }
 
 export interface SignalDeskController {
@@ -15,6 +18,11 @@ export interface SignalDeskController {
   subscribe(listener: () => void): () => void;
   start(): void;
   exit(): void;
+  requestExit(): void;
+  cancelExit(): void;
+  confirmExit(): void;
+  setPortraitTab(tab: SignalDeskPortraitTab): void;
+  refreshLayout(): void;
   pause(): void;
   selectCase(id: string): void;
   inspectToken(index: number): void;
@@ -44,6 +52,15 @@ class SignalDeskScene extends Phaser.Scene {
   private standardZone = new Phaser.Geom.Rectangle(540, 740, 360, 120);
   private escalateZone = new Phaser.Geom.Rectangle(920, 740, 360, 120);
   private evidenceBreaks: [number, number] = [965, 1100];
+  private previousPhase = '';
+  private previousActive = '';
+  private previousQueue = new Set<string>();
+  private previousEvidence = new Set<string>();
+  private previousVerification = -1;
+  private reducedMotion = false;
+  private activeChanged = false;
+  private newQueue = new Set<string>();
+  private newEvidence = new Set<string>();
 
   constructor(private readonly controller: SignalDeskController) { super('signal-desk'); }
 
@@ -62,6 +79,7 @@ class SignalDeskScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.unsubscribe = this.controller.subscribe(() => this.draw());
     this.scale.on(Phaser.Scale.Events.RESIZE, this.draw, this);
     this.input.on('drag', (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject, x: number, y: number) => {
@@ -85,6 +103,8 @@ class SignalDeskScene extends Phaser.Scene {
     this.draw();
   }
 
+  refreshLayout(): void { this.draw(); }
+
   private label(x: number, y: number, value: string, size = 18, color = C.cream, style: Phaser.Types.GameObjects.Text.TextStyle = {}): Phaser.GameObjects.Text {
     return this.add.text(x, y, value, { fontFamily: 'Inter, Arial, sans-serif', fontSize: `${size}px`, color, ...style });
   }
@@ -99,6 +119,8 @@ class SignalDeskScene extends Phaser.Scene {
     const container = this.add.container(x, y, [box, text]).setSize(width, height).setInteractive({ useHandCursor: true });
     container.on('pointerover', () => box.setFillStyle(0x59422c));
     container.on('pointerout', () => box.setFillStyle(fill));
+    container.on('pointerdown', () => { if (!this.reducedMotion) this.tweens.add({ targets: container, scale: .97, duration: 70 }); });
+    container.on('pointerup', () => { if (!this.reducedMotion) this.tweens.add({ targets: container, scale: 1, duration: 100, ease: 'Back.Out' }); });
     container.on('pointerdown', action);
     return container;
   }
@@ -125,12 +147,17 @@ class SignalDeskScene extends Phaser.Scene {
     const snapshot = this.controller.snapshot();
     const width = this.scale.width;
     const height = this.scale.height;
-    const mobile = width <= 760 || (height <= 620 && width > height);
+    const layout = signalDeskLayout(width, height);
+    const mobile = layout.mode !== 'desktop';
+    this.activeChanged = Boolean(this.previousActive && this.previousActive !== snapshot.run.activeCaseId);
+    this.newQueue = new Set(snapshot.run.queuedCaseIds.filter(id => !this.previousQueue.has(id)));
+    this.newEvidence = new Set(snapshot.run.selectedEvidence.filter(id => !this.previousEvidence.has(id)));
     const host = this.game.canvas.closest<HTMLElement>('#signalPhaserHost');
-    if (host) host.dataset.signalLayout = mobile ? (height > width ? 'portrait' : 'landscape') : 'desktop';
+    if (host) { host.dataset.signalLayout = layout.mode; host.dataset.signalAnimation = this.reducedMotion ? 'reduced' : 'full'; }
     if (mobile) {
       this.cameras.main.setZoom(1).setScroll(0, 0);
-      this.drawMobile(snapshot, width, height, height > width);
+      this.drawMobile(snapshot, width, height, layout.mode === 'portrait');
+      this.afterDraw(snapshot);
       return;
     }
     const zoom = Math.min(width / W, height / H);
@@ -140,6 +167,39 @@ class SignalDeskScene extends Phaser.Scene {
     if (snapshot.run.phase === 'briefing') this.briefing(snapshot);
     else if (snapshot.run.phase === 'report' || snapshot.run.phase === 'failed') this.report(snapshot);
     else this.desk(snapshot);
+    this.afterDraw(snapshot);
+  }
+
+  private afterDraw(snapshot: SignalDeskSnapshot): void {
+    const phaseChanged = snapshot.run.phase !== this.previousPhase;
+    if (!this.reducedMotion && phaseChanged) this.cameras.main.fadeIn(180, 5, 5, 5);
+    if (phaseChanged && snapshot.run.phase === 'feedback') { if (this.cache.audio.exists('stamp')) this.sound.play('stamp', { volume: .3 }); if (!this.reducedMotion) this.cameras.main.shake(90, .0025); }
+    if (this.newQueue.size && this.previousQueue.size && this.cache.audio.exists('ready')) this.sound.play('ready', { volume: .22 });
+    if (this.newEvidence.size && this.cache.audio.exists('pin')) this.sound.play('pin', { volume: .2 });
+    if (this.previousVerification >= 0 && snapshot.run.verification < this.previousVerification && !this.reducedMotion) this.cameras.main.flash(100, 216, 164, 77, false);
+    this.previousPhase = snapshot.run.phase;
+    this.previousActive = snapshot.run.activeCaseId || '';
+    this.previousQueue = new Set(snapshot.run.queuedCaseIds);
+    this.previousEvidence = new Set(snapshot.run.selectedEvidence);
+    this.previousVerification = snapshot.run.verification;
+  }
+
+  private guidance(snapshot: SignalDeskSnapshot): string {
+    if (snapshot.notice) return snapshot.notice.toUpperCase();
+    if (snapshot.run.phase === 'briefing') return 'READ THE CODEBOOK · CHOOSE YOUR SETUP · CLOCK IN';
+    if (snapshot.run.phase === 'feedback') return 'REVIEW THE RESULT · CHOOSE A RESPONSE · CONTINUE';
+    if (snapshot.run.paused) return 'PAUSED · RESUME, LEAVE SAFELY, OR EXIT THE MISSION';
+    if (!snapshot.active) return '1  SELECT AN INCOMING SIGNAL';
+    if (!snapshot.run.lookedUpTokens.length && !snapshot.run.assisted) return '2  INSPECT THE FILE OR PLAY THE INTERCEPT';
+    if (!snapshot.run.selectedEvidence.length) return '3  PIN THE DECISIVE CLUE · CLASSIFY IT ON THE WALL';
+    if (!snapshot.run.confidence || snapshot.run.confidence === 'uncertain') return '4  SET CONFIDENCE · THEN CHOOSE A FILING';
+    return '5  FILE STANDARD OR ESCALATE · VERIFY CHARGES BUY ASSISTANCE';
+  }
+
+  private guidanceBar(snapshot: SignalDeskSnapshot, area: SignalDeskRect): void {
+    this.panel(area.x + area.width / 2, area.y + area.height / 2, area.width, area.height, 0x121619, .97, 0x6f5934);
+    this.label(area.x + 12, area.y + 8, 'DESK PROCEDURE', 10, '#e8b85f', { fontStyle: 'bold' });
+    this.label(area.x + 12, area.y + 23, this.guidance(snapshot), Math.max(10, Math.min(13, area.height * .25)), C.cream, { fontStyle: 'bold', wordWrap: { width: area.width - 24 } });
   }
 
   private mobileBackground(width: number, height: number, night: boolean): void {
@@ -203,10 +263,12 @@ class SignalDeskScene extends Phaser.Scene {
   }
 
   private mobileDesk(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
+    const layout = signalDeskLayout(width, height);
+    this.guidanceBar(snapshot, layout.guidance);
     if (portrait) this.mobilePortraitDesk(snapshot, width, height);
     else this.mobileLandscapeDesk(snapshot, width, height);
     if (snapshot.run.phase === 'feedback') this.mobileFeedback(snapshot, width, height);
-    if (snapshot.run.paused) this.mobilePause(width, height);
+    if (snapshot.run.paused) this.mobilePause(snapshot, width, height);
   }
 
   private mobileQueue(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number, horizontal: boolean): void {
@@ -218,8 +280,12 @@ class SignalDeskScene extends Phaser.Scene {
       const active = id === snapshot.run.activeCaseId;
       if (horizontal) {
         const cardWidth = (width - 18 - (visible.length - 1) * 5) / Math.max(1, visible.length);
-        this.button(x + 9 + cardWidth / 2 + index * (cardWidth + 5), y + height - 29, cardWidth, 48, `${item.channel.toUpperCase()} ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
-      } else this.button(x + width / 2, y + 57 + index * 58, width - 18, 50, `${item.channel.toUpperCase()} · FILE ${String(snapshot.shift.cases.indexOf(item) + 1).padStart(3, '0')} · ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+        const card = this.button(x + 9 + cardWidth / 2 + index * (cardWidth + 5), y + height - 29, cardWidth, 48, `${item.channel.toUpperCase()} ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+        if (!this.reducedMotion && this.newQueue.has(id)) this.tweens.add({ targets: card, x: card.x + 18, alpha: { from: 0, to: 1 }, duration: 260, ease: 'Back.Out' });
+      } else {
+        const card = this.button(x + width / 2, y + 57 + index * 58, width - 18, 50, `${item.channel.toUpperCase()} · FILE ${String(snapshot.shift.cases.indexOf(item) + 1).padStart(3, '0')} · ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+        if (!this.reducedMotion && this.newQueue.has(id)) this.tweens.add({ targets: card, x: card.x + 20, alpha: { from: 0, to: 1 }, duration: 260, ease: 'Back.Out' });
+      }
     });
   }
 
@@ -242,20 +308,23 @@ class SignalDeskScene extends Phaser.Scene {
     } else {
       const tokenWidth = Math.min(92, (width - 30) / Math.max(1, active.tokens.length));
       const startX = -(active.tokens.length - 1) * tokenWidth / 2;
+      const compactFile = height < 160;
+      const tokenY = compactFile ? -20 : -height * .11;
       active.tokens.forEach((token, index) => {
         const inspected = snapshot.run.lookedUpTokens.includes(token.surface);
-        file.add(this.button(startX + index * tokenWidth, -height * .11, tokenWidth - 5, 48, token.surface, () => this.controller.inspectToken(index), inspected ? 0x8a4434 : 0xefe2c2, inspected ? '#fff1cf' : '#201a17'));
+        file.add(this.button(startX + index * tokenWidth, tokenY, tokenWidth - 5, compactFile ? 42 : 48, token.surface, () => this.controller.inspectToken(index), inspected ? 0x8a4434 : 0xefe2c2, inspected ? '#fff1cf' : '#201a17'));
       });
-      if (snapshot.run.readingVisible) file.add(this.label(0, height * .05, active.reading, 14, '#615344', { align: 'center', wordWrap: { width: width - 20 } }).setOrigin(.5));
       const token = snapshot.openTokenIndex === null ? undefined : active.tokens[snapshot.openTokenIndex];
+      if (snapshot.run.readingVisible && !(compactFile && token)) file.add(this.label(0, compactFile ? 26 : height * .05, active.reading, 14, '#615344', { align: 'center', wordWrap: { width: width - 20 } }).setOrigin(.5));
       if (token) {
-        file.add(this.label(0, height * .18, snapshot.dictionaryRevealed ? `${token.reading} · ${token.meaning}` : `${token.reading} · recall the meaning`, 15, '#762d29', { fontStyle: 'bold', align: 'center', wordWrap: { width: width - 20 } }).setOrigin(.5));
+        file.add(this.label(0, compactFile ? 24 : height * .18, snapshot.dictionaryRevealed ? `${token.reading} · ${token.meaning}` : `${token.reading} · recall the meaning`, compactFile ? 13 : 15, '#762d29', { fontStyle: 'bold', align: 'center', wordWrap: { width: width - 20 } }).setOrigin(.5));
         if (!snapshot.dictionaryRevealed) file.add(this.button(-width * .19, height * .36, width * .34, 38, 'REVEAL · 1', () => this.controller.revealDictionary(), C.red));
         if (token.fact) file.add(this.button(width * .19, height * .36, width * .34, 38, snapshot.run.selectedEvidence.includes(token.fact) ? 'UNPIN' : 'PIN EVIDENCE', () => this.controller.pinEvidence(token.fact!), C.green));
       }
     }
     file.setSize(width, height).setInteractive({ useHandCursor: true });
     this.input.setDraggable(file); this.dragFile = file;
+    if (!this.reducedMotion && this.activeChanged) this.tweens.add({ targets: file, y: file.y + 18, alpha: { from: 0, to: 1 }, duration: 240, ease: 'Cubic.Out' });
   }
 
   private mobileEvidence(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number): void {
@@ -270,44 +339,49 @@ class SignalDeskScene extends Phaser.Scene {
       const column = status === 'confirmed' ? 0 : status === 'doubtful' ? 1 : 2;
       const chip = this.button(columns[column], y + 53 + counts[column]++ * 39, width * .28, 34, fact.toUpperCase(), () => undefined, column === 0 ? C.green : column === 1 ? 0x715c2b : C.red);
       chip.setData('evidence', fact); this.input.setDraggable(chip);
+      if (!this.reducedMotion && this.newEvidence.has(fact)) this.tweens.add({ targets: chip, scale: { from: .7, to: 1 }, duration: 220, ease: 'Back.Out' });
     });
     const confidenceY = y + height - 24;
     (['uncertain', 'fair', 'confident'] as const).forEach((value, index) => this.button(columns[index]!, confidenceY, width * .28, 36, value.toUpperCase(), () => this.controller.setConfidence(value), snapshot.run.confidence === value ? C.red : 0x332b25));
   }
 
   private mobilePortraitDesk(snapshot: SignalDeskSnapshot, width: number, height: number): void {
-    const trayHeight = 78;
-    this.mobileQueue(snapshot, 6, 57, width - 12, 75, true);
-    this.mobileCodebook(snapshot, 6, 138, width - 12, 82);
-    const fileY = 226;
-    const fileHeight = Math.max(190, Math.min(248, height * .34));
-    if (snapshot.active) this.mobileFile(snapshot, snapshot.active, 10, fileY, width - 20, fileHeight);
-    const evidenceY = fileY + fileHeight + 7;
-    const evidenceHeight = Math.max(108, height - evidenceY - trayHeight - 8);
-    this.mobileEvidence(snapshot, 6, evidenceY, width - 12, evidenceHeight);
-    this.standardZone = new Phaser.Geom.Rectangle(4, height - trayHeight, width / 2 - 6, trayHeight - 4);
-    this.escalateZone = new Phaser.Geom.Rectangle(width / 2 + 2, height - trayHeight, width / 2 - 6, trayHeight - 4);
-    this.button(width * .25, height - trayHeight / 2, width * .48, trayHeight - 8, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
-    this.button(width * .75, height - trayHeight / 2, width * .48, trayHeight - 8, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+    const layout = signalDeskLayout(width, height);
+    this.mobileCodebook(snapshot, layout.codebook.x, layout.codebook.y, layout.codebook.width, layout.codebook.height);
+    if (snapshot.active) this.mobileFile(snapshot, snapshot.active, layout.file.x, layout.file.y, layout.file.width, layout.file.height);
+    const auxiliary = snapshot.portraitTab === 'queue' ? layout.queue : layout.evidence;
+    if (snapshot.portraitTab === 'queue') this.mobileQueue(snapshot, auxiliary.x, auxiliary.y, auxiliary.width, auxiliary.height, true);
+    else if (snapshot.portraitTab === 'evidence') this.mobileEvidence(snapshot, auxiliary.x, auxiliary.y, auxiliary.width, auxiliary.height);
+    else this.mobileTools(snapshot, auxiliary);
+    const tabs = layout.tabs!;
+    (['queue', 'evidence', 'tools'] as const).forEach((tab, index) => this.button(tabs.x + tabs.width * ((index + .5) / 3), tabs.y + tabs.height / 2, tabs.width / 3 - 4, Math.max(44, tabs.height - 2), tab.toUpperCase(), () => this.controller.setPortraitTab(tab), snapshot.portraitTab === tab ? C.red : 0x2f2923));
+    const trays = layout.trays;
+    this.standardZone = new Phaser.Geom.Rectangle(trays.x, trays.y, trays.width / 2 - 3, trays.height);
+    this.escalateZone = new Phaser.Geom.Rectangle(trays.x + trays.width / 2 + 3, trays.y, trays.width / 2 - 3, trays.height);
+    this.button(trays.x + trays.width * .25, trays.y + trays.height / 2, trays.width * .49, trays.height, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
+    this.button(trays.x + trays.width * .75, trays.y + trays.height / 2, trays.width * .49, trays.height, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+  }
+
+  private mobileTools(snapshot: SignalDeskSnapshot, area: SignalDeskRect): void {
+    this.panel(area.x + area.width / 2, area.y + area.height / 2, area.width, area.height, 0x171513);
+    this.label(area.x + 10, area.y + 7, `VERIFY TOOLS · ${snapshot.run.verification}/${snapshot.run.maxVerification} CHARGES`, 10, '#e8b85f', { fontStyle: 'bold' });
+    this.label(area.x + 10, area.y + 25, 'Optional help costs a charge and marks the filing assisted.', 10, C.muted, { wordWrap: { width: area.width - 20 } });
+    const y = area.y + area.height - 24;
+    this.button(area.x + area.width * .22, y, area.width * .39, 44, 'SOURCE CHECK', () => this.controller.verify('source-check'));
+    this.button(area.x + area.width * .68, y, area.width * .46, 44, 'DIRECTOR HINT', () => this.controller.verify('director-hint'), C.red);
   }
 
   private mobileLandscapeDesk(snapshot: SignalDeskSnapshot, width: number, height: number): void {
-    const top = 57;
-    const trayHeight = 68;
-    const contentHeight = height - top - trayHeight - 6;
-    const queueWidth = width * .20;
-    const centreWidth = width * .45;
-    const evidenceX = queueWidth + centreWidth + 18;
-    this.mobileQueue(snapshot, 6, top, queueWidth - 8, contentHeight, false);
-    this.mobileCodebook(snapshot, queueWidth + 4, top, centreWidth, 78);
-    if (snapshot.active) this.mobileFile(snapshot, snapshot.active, queueWidth + 4, top + 84, centreWidth, contentHeight - 84);
-    this.mobileEvidence(snapshot, evidenceX, top, width - evidenceX - 6, contentHeight);
-    const traysX = queueWidth + 4;
-    const traysWidth = width - traysX - 6;
-    this.standardZone = new Phaser.Geom.Rectangle(traysX, height - trayHeight, traysWidth / 2 - 3, trayHeight - 3);
-    this.escalateZone = new Phaser.Geom.Rectangle(traysX + traysWidth / 2 + 3, height - trayHeight, traysWidth / 2 - 3, trayHeight - 3);
-    this.button(traysX + traysWidth * .25, height - trayHeight / 2, traysWidth * .49, trayHeight - 7, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
-    this.button(traysX + traysWidth * .75, height - trayHeight / 2, traysWidth * .49, trayHeight - 7, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+    const layout = signalDeskLayout(width, height);
+    this.mobileQueue(snapshot, layout.queue.x, layout.queue.y, layout.queue.width, layout.queue.height, false);
+    this.mobileCodebook(snapshot, layout.codebook.x, layout.codebook.y, layout.codebook.width, layout.codebook.height);
+    if (snapshot.active) this.mobileFile(snapshot, snapshot.active, layout.file.x, layout.file.y, layout.file.width, layout.file.height);
+    this.mobileEvidence(snapshot, layout.evidence.x, layout.evidence.y, layout.evidence.width, layout.evidence.height);
+    const trays = layout.trays;
+    this.standardZone = new Phaser.Geom.Rectangle(trays.x, trays.y, trays.width / 2 - 3, trays.height);
+    this.escalateZone = new Phaser.Geom.Rectangle(trays.x + trays.width / 2 + 3, trays.y, trays.width / 2 - 3, trays.height);
+    this.button(trays.x + trays.width * .25, trays.y + trays.height / 2, trays.width * .49, trays.height, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
+    this.button(trays.x + trays.width * .75, trays.y + trays.height / 2, trays.width * .49, trays.height, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
   }
 
   private mobileFeedback(snapshot: SignalDeskSnapshot, width: number, height: number): void {
@@ -325,11 +399,23 @@ class SignalDeskScene extends Phaser.Scene {
     this.button(width / 2, height / 2 + panelHeight / 2 - 32, Math.min(280, panelWidth - 40), 54, snapshot.run.queuedCaseIds.length + snapshot.run.unreleasedCaseIds.length > 1 ? 'NEXT SIGNAL →' : 'OPEN REPORT →', () => this.controller.continue(), C.red);
   }
 
-  private mobilePause(width: number, height: number): void {
+  private mobilePause(snapshot: SignalDeskSnapshot, width: number, height: number): void {
     this.add.rectangle(width / 2, height / 2, width, height, 0x050505, .92);
-    this.label(width / 2, height / 2 - 65, 'SHIFT PAUSED', 34, C.cream, { fontFamily: 'Georgia, serif', fontStyle: 'bold' }).setOrigin(.5);
-    this.label(width / 2, height / 2 - 20, 'Your queue is held safely.', 16, C.muted).setOrigin(.5);
-    this.button(width / 2, height / 2 + 48, Math.min(260, width - 40), 58, 'RESUME SHIFT', () => this.controller.pause(), C.red);
+    if (snapshot.exitPending) { this.exitConfirmation(width, height); return; }
+    this.label(width / 2, height / 2 - 105, 'SHIFT PAUSED', 32, C.cream, { fontFamily: 'Georgia, serif', fontStyle: 'bold' }).setOrigin(.5);
+    this.label(width / 2, height / 2 - 65, 'Your queue is held safely.', 15, C.muted).setOrigin(.5);
+    this.button(width / 2, height / 2, Math.min(280, width - 40), 52, 'RESUME SHIFT', () => this.controller.pause(), C.red);
+    this.button(width / 2, height / 2 + 62, Math.min(280, width - 40), 48, 'LEAVE · RESUME LATER', () => this.controller.exit());
+    this.button(width / 2, height / 2 + 120, Math.min(280, width - 40), 48, 'EXIT MISSION', () => this.controller.requestExit(), 0x612523);
+  }
+
+  private exitConfirmation(width: number, height: number): void {
+    const panel = this.panel(width / 2, height / 2, Math.min(width - 24, 600), Math.min(330, height - 36), 0x171513, .99, C.red);
+    if (!this.reducedMotion) this.tweens.add({ targets: panel, alpha: { from: 0, to: 1 }, duration: 160 });
+    this.label(width / 2, height / 2 - 105, 'EXIT THIS MISSION?', 27, C.cream, { fontFamily: 'Georgia, serif', fontStyle: 'bold' }).setOrigin(.5);
+    this.label(width / 2, height / 2 - 55, 'The unfinished shift will be discarded.\nCompleted career progress will remain safe.', 15, C.muted, { align: 'center', wordWrap: { width: Math.min(width - 60, 500) } }).setOrigin(.5);
+    this.button(width / 2, height / 2 + 38, Math.min(280, width - 50), 52, 'CONFIRM EXIT MISSION', () => this.controller.confirmExit(), C.red);
+    this.button(width / 2, height / 2 + 103, Math.min(220, width - 70), 46, 'CANCEL', () => this.controller.cancelExit());
   }
 
   private mobileReport(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
@@ -374,6 +460,7 @@ class SignalDeskScene extends Phaser.Scene {
 
   private desk(snapshot: SignalDeskSnapshot): void {
     const { run, shift, active } = snapshot;
+    this.guidanceBar(snapshot, signalDeskLayout(W, H).guidance);
     this.queue(snapshot);
     this.codebook(snapshot);
     if (active) this.file(snapshot, active);
@@ -383,8 +470,7 @@ class SignalDeskScene extends Phaser.Scene {
     if (shift.seconds !== null && !run.career.timerDisabled) this.label(1210, 88, `${run.remaining}s`, 25, run.remaining < 45 ? '#ff7c6b' : C.cream, { fontStyle: 'bold' });
     this.button(1325, 104, 96, 34, run.paused ? 'RESUME' : 'PAUSE', () => this.controller.pause());
     if (run.phase === 'feedback') this.feedback(snapshot);
-    if (run.paused) this.pauseOverlay();
-    if (snapshot.notice) this.label(720, 708, snapshot.notice, 16, '#ffd576', { align: 'center', wordWrap: { width: 700 } }).setOrigin(.5);
+    if (run.paused) this.pauseOverlay(snapshot);
   }
 
   private queue(snapshot: SignalDeskSnapshot): void {
@@ -485,11 +571,14 @@ class SignalDeskScene extends Phaser.Scene {
     this.button(W / 2, 635, 300, 60, snapshot.run.queuedCaseIds.length + snapshot.run.unreleasedCaseIds.length > 1 ? 'NEXT SIGNAL →' : 'OPEN REPORT →', () => this.controller.continue(), C.red);
   }
 
-  private pauseOverlay(): void {
+  private pauseOverlay(snapshot: SignalDeskSnapshot): void {
     this.add.rectangle(W / 2, H / 2, W, H, 0x050505, .9);
-    this.label(W / 2, 385, 'SHIFT PAUSED', 44, C.cream, { fontFamily: 'Georgia, serif', fontStyle: 'bold' }).setOrigin(.5);
-    this.label(W / 2, 445, 'The office can wait. Your queue is held safely.', 19, C.muted).setOrigin(.5);
-    this.button(W / 2, 530, 250, 60, 'RESUME SHIFT', () => this.controller.pause(), C.red);
+    if (snapshot.exitPending) { this.exitConfirmation(W, H); return; }
+    this.label(W / 2, 330, 'SHIFT PAUSED', 44, C.cream, { fontFamily: 'Georgia, serif', fontStyle: 'bold' }).setOrigin(.5);
+    this.label(W / 2, 390, 'The office can wait. Your queue is held safely.', 19, C.muted).setOrigin(.5);
+    this.button(W / 2, 475, 300, 60, 'RESUME SHIFT', () => this.controller.pause(), C.red);
+    this.button(W / 2, 550, 300, 54, 'LEAVE · RESUME LATER', () => this.controller.exit());
+    this.button(W / 2, 620, 300, 54, 'EXIT MISSION', () => this.controller.requestExit(), 0x612523);
   }
 
   private report(snapshot: SignalDeskSnapshot): void {

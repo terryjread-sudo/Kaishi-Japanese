@@ -6,6 +6,7 @@ import type { SignalCareer, SignalOperationalAction, SignalRun, SignalShift, Sig
 import { playCheckpointAudio, startCheckpointAmbience, stopCheckpointAmbience } from '../platform/kotoba-checkpoint-audio';
 import { createVersionedRepository, sessionStorage } from '../platform/storage';
 import type { SignalDeskController, SignalDeskSnapshot } from './kotoba-checkpoint-game';
+import type { SignalDeskPortraitTab } from './signal-desk-layout';
 import './kotoba-checkpoint.css';
 
 type SignalResult = { career: SignalCareer; shiftId: string; passed: boolean; creditsEarned: number; practiceIds: string[]; languageMistakes: string[]; ruleMistakes: string[] };
@@ -16,11 +17,16 @@ const repo = createVersionedRepository<SignalRun>({
   schema: z.custom<SignalRun>(value => Boolean(value && typeof value === 'object' && (value as SignalRun).version === 4)),
   migrate: () => null,
 });
+const uiRepo = createVersionedRepository<{ portraitTab: SignalDeskPortraitTab }>({
+  storage: sessionStorage(), key: 'kaishi-kotoba-checkpoint-ui', version: 1,
+  schema: z.object({ portraitTab: z.enum(['queue', 'evidence', 'tools']) }), migrate: () => null,
+});
 
 let dailyShift: SignalShift | null = null;
 let openTokenIndex: number | null = null;
 let dictionaryRevealed = false;
 let notice = '';
+let exitPending = false;
 let game: Game | null = null;
 let gameLoading: Promise<void> | null = null;
 const listeners = new Set<() => void>();
@@ -55,10 +61,15 @@ function reportCompletion(before: SignalRun, run: SignalRun, shift: SignalShift)
 }
 
 const controller: SignalDeskController = {
-  snapshot(): SignalDeskSnapshot { const run = load(), shift = shiftFor(run); return { run, shift, active: activeSignalCase(run, shift), openTokenIndex, dictionaryRevealed, notice }; },
+  snapshot(): SignalDeskSnapshot { const run = load(), shift = shiftFor(run); return { run, shift, active: activeSignalCase(run, shift), openTokenIndex, dictionaryRevealed, notice, portraitTab: uiRepo.load()?.portraitTab || 'queue', exitPending }; },
   subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
   start() { const current = load(), run = startSignalShift(current, shiftFor(current)); save(run); startCheckpointAmbience(); resetCaseView(); emit(); },
-  exit() { stopCheckpointAmbience(); const bridge = host(); if (bridge.returnToJourney) bridge.returnToJourney(); else bridge.show?.('journey'); },
+  exit() { setGameVisible(false); stopCheckpointAmbience(); const bridge = host(); if (bridge.returnToJourney) bridge.returnToJourney(); else bridge.show?.('journey'); },
+  requestExit() { const run = load(); if (run.phase === 'decode' && !run.paused) { run.paused = true; save(run); } exitPending = true; emit(); },
+  cancelExit() { exitPending = false; emit(); },
+  confirmExit() { const career = load().career; repo.remove(); dailyShift = null; resetCaseView(); exitPending = false; save(createSignalRun(firstAvailableShift(career).id, career)); controller.exit(); },
+  setPortraitTab(tab) { uiRepo.save({ portraitTab: tab }); emit(); },
+  refreshLayout() { emit(); },
   pause() { const run = load(); if (run.phase !== 'decode') return; run.paused = !run.paused; save(run); emit(); },
   selectCase(id) { const current = load(); save(selectQueuedSignal(current, id, shiftFor(current))); resetCaseView(); emit(); },
   inspectToken(index) {
@@ -113,7 +124,20 @@ function semanticButtons(snapshot: SignalDeskSnapshot): string {
   if (run.phase === 'report' || run.phase === 'failed') return `<button data-signal-next>${run.phase === 'report' ? 'Next assignment' : 'Repeat shift'}</button><button data-signal-exit>Return to Journey</button>`;
   const tokens = active?.tokens.map((item, index) => `<button data-signal-token="${index}">${escape(item.surface)}</button>`).join('') || '';
   const evidence = active?.tokens.filter(item => item.fact).map(item => `<button data-signal-evidence="${escape(item.fact)}">Pin ${escape(item.fact)}</button>`).join('') || '';
-  return `${run.queuedCaseIds.map(id => `<button data-signal-case="${escape(id)}">Open ${escape(id)}</button>`).join('')}<div class="signal-message-line">${tokens}</div>${evidence}<button data-signal-confidence="fair">Fair confidence</button><button data-signal-verdict="standard">Standard</button><button data-signal-verdict="escalate">Escalate</button><button data-signal-pause>${run.paused ? 'Resume' : 'Pause'}</button>${run.phase === 'feedback' ? '<button data-signal-continue>Continue</button>' : ''}<button data-signal-exit>Leave</button>`;
+  const exitControls = snapshot.exitPending ? '<p>Exit mission? The unfinished shift will be discarded; completed career progress is safe.</p><button data-signal-confirm-exit>Confirm exit mission</button><button data-signal-cancel-exit>Cancel</button>' : '<button data-signal-request-exit>Exit mission</button>';
+  return `<button data-signal-tab="queue">Queue panel</button><button data-signal-tab="evidence">Evidence panel</button><button data-signal-tab="tools">Verify tools panel</button>${run.queuedCaseIds.map(id => `<button data-signal-case="${escape(id)}">Open ${escape(id)}</button>`).join('')}<div class="signal-message-line">${tokens}</div>${evidence}<button data-signal-confidence="fair">Fair confidence</button><button data-signal-verdict="standard">Standard</button><button data-signal-verdict="escalate">Escalate</button><button data-signal-pause>${run.paused ? 'Resume' : 'Pause'}</button>${run.phase === 'feedback' ? '<button data-signal-continue>Continue</button>' : ''}<button data-signal-exit>Leave and resume later</button>${exitControls}`;
+}
+
+function guidance(snapshot: SignalDeskSnapshot): string {
+  if (snapshot.run.phase === 'briefing') return 'Read the codebook, choose your desk setup, then clock in.';
+  if (snapshot.run.phase === 'feedback') return 'Review the filing result, choose an operational response, then continue.';
+  if (snapshot.run.phase === 'report' || snapshot.run.phase === 'failed') return 'Review the shift report and choose your next assignment.';
+  if (snapshot.run.paused) return 'Shift paused. Resume, leave and return later, or exit the mission.';
+  if (!snapshot.active) return 'Select an incoming signal from the queue.';
+  if (!snapshot.run.lookedUpTokens.length && !snapshot.run.assisted) return 'Inspect the active file. Tap its words or play the intercept.';
+  if (!snapshot.run.selectedEvidence.length) return 'Pin the decisive clue, then classify it on the evidence wall.';
+  if (!snapshot.run.confidence || snapshot.run.confidence === 'uncertain') return 'Set your confidence, then file the signal as Standard or Escalate.';
+  return 'File the signal as Standard or Escalate. Verify charges reveal optional assistance.';
 }
 
 function renderSemantic(): void {
@@ -121,21 +145,37 @@ function renderSemantic(): void {
   target.dataset.signalPhase = snapshot.run.phase; target.dataset.signalActiveCase = snapshot.run.activeCaseId || ''; target.dataset.signalQueue = snapshot.run.queuedCaseIds.join(','); target.dataset.signalVerification = String(snapshot.run.verification);
   let semantic = target.querySelector<HTMLElement>('.signal-semantic');
   if (!semantic) { semantic = document.createElement('section'); semantic.className = 'signal-semantic'; semantic.setAttribute('aria-live', 'polite'); target.appendChild(semantic); }
-  semantic.innerHTML = `<h1>Signal Desk · ${escape(snapshot.shift.title)}</h1><p>${escape(snapshot.shift.ruleText)}</p><p>${escape(snapshot.active?.japanese || '')}</p><p>${escape(notice)}</p>${semanticButtons(snapshot)}`;
+  target.dataset.signalGuidance = guidance(snapshot); target.dataset.signalExitPending = String(snapshot.exitPending); target.dataset.signalPortraitTab = snapshot.portraitTab;
+  semantic.innerHTML = `<h1>Signal Desk · ${escape(snapshot.shift.title)}</h1><p data-signal-guidance>${escape(guidance(snapshot))}</p><p>${escape(snapshot.shift.ruleText)}</p><p>${escape(snapshot.active?.japanese || '')}</p><p>${escape(notice)}</p>${semanticButtons(snapshot)}`;
   semantic.querySelector('[data-signal-start]')?.addEventListener('click', () => controller.start());
   semantic.querySelectorAll('[data-signal-exit]').forEach(button => button.addEventListener('click', () => controller.exit()));
+  semantic.querySelector('[data-signal-request-exit]')?.addEventListener('click', () => controller.requestExit());
+  semantic.querySelector('[data-signal-confirm-exit]')?.addEventListener('click', () => controller.confirmExit());
+  semantic.querySelector('[data-signal-cancel-exit]')?.addEventListener('click', () => controller.cancelExit());
   semantic.querySelector('[data-signal-next]')?.addEventListener('click', () => controller.next()); semantic.querySelector('[data-signal-pause]')?.addEventListener('click', () => controller.pause()); semantic.querySelector('[data-signal-continue]')?.addEventListener('click', () => controller.continue());
   semantic.querySelectorAll<HTMLElement>('[data-signal-case]').forEach(button => button.addEventListener('click', () => controller.selectCase(button.dataset.signalCase || '')));
   semantic.querySelectorAll<HTMLElement>('[data-signal-token]').forEach(button => button.addEventListener('click', () => controller.inspectToken(Number(button.dataset.signalToken))));
   semantic.querySelectorAll<HTMLElement>('[data-signal-evidence]').forEach(button => button.addEventListener('click', () => controller.pinEvidence(button.dataset.signalEvidence || '')));
   semantic.querySelectorAll<HTMLElement>('[data-signal-confidence]').forEach(button => button.addEventListener('click', () => controller.setConfidence('fair')));
   semantic.querySelectorAll<HTMLElement>('[data-signal-verdict]').forEach(button => button.addEventListener('click', () => controller.file(button.dataset.signalVerdict as SignalVerdict)));
+  semantic.querySelectorAll<HTMLElement>('[data-signal-tab]').forEach(button => button.addEventListener('click', () => controller.setPortraitTab(button.dataset.signalTab as SignalDeskPortraitTab)));
+}
+
+function setGameVisible(visible: boolean): void {
+  if (!game) return;
+  if (!visible) { if (game.scene.isActive('signal-desk')) game.scene.sleep('signal-desk'); return; }
+  if (game.scene.isSleeping('signal-desk')) game.scene.wake('signal-desk');
+  const mount = root()?.querySelector<HTMLElement>('#signalPhaserHost');
+  if (mount && mount.clientWidth > 0 && mount.clientHeight > 0) game.scale.resize(mount.clientWidth, mount.clientHeight);
+  game.scale.refresh();
+  controller.refreshLayout();
 }
 
 function ensureGame(): void {
   const target = root(); if (!target) return; let mount = target.querySelector<HTMLElement>('#signalPhaserHost');
   if (!mount) { mount = document.createElement('div'); mount.id = 'signalPhaserHost'; target.appendChild(mount); }
-  if (!game && !gameLoading) gameLoading = import('./kotoba-checkpoint-game').then(({ createSignalDeskGame }) => { if (!game && mount) game = createSignalDeskGame(mount, controller); }).finally(() => { gameLoading = null; });
+  if (!game && !gameLoading) gameLoading = import('./kotoba-checkpoint-game').then(({ createSignalDeskGame }) => { if (!game && mount) game = createSignalDeskGame(mount, controller); }).then(() => { window.requestAnimationFrame(() => setGameVisible(true)); }).finally(() => { gameLoading = null; });
+  else window.requestAnimationFrame(() => setGameVisible(true));
   const run = load(); if (run.career.schemaVersion === 2) host().saveCheckpointCareer?.(run.career); renderSemantic();
 }
 
@@ -150,6 +190,9 @@ export function installKotobaCheckpoint(): void {
   window.setInterval(tick, 1000);
   document.querySelector<HTMLElement>('[data-experimental-nav="sensei-desk"]')?.addEventListener('click', ensureGame);
   window.addEventListener('kaishi-sensei-desk-host-ready', ensureGame);
+  const desk = root(); if (desk) new MutationObserver(() => setGameVisible(desk.classList.contains('active'))).observe(desk, { attributes: true, attributeFilter: ['class'] });
+  document.addEventListener('visibilitychange', () => setGameVisible(!document.hidden && Boolean(root()?.classList.contains('active'))));
+  window.addEventListener('orientationchange', () => window.requestAnimationFrame(() => setGameVisible(true)));
   document.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || !root()?.classList.contains('active')) return;
     if (event.key.toLowerCase() === 's') controller.file('standard');
