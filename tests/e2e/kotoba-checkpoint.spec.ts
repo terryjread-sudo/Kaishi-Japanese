@@ -128,3 +128,61 @@ test('the desk reflows to a full-width landscape phone layout', async ({ page })
   expect(layout.width).toBeGreaterThanOrEqual(layout.viewportWidth - 1);
   expect(layout.height).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
 });
+
+test('leaving and repeatedly reopening wakes and resizes the existing Phaser scene', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSignalDesk(page);
+  await semanticClick(page, '[data-signal-start]');
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    await semanticClick(page, '[data-signal-exit]');
+    await expect(page.locator('#journey')).toHaveClass(/active/);
+    await page.locator('#experimentalBottomNav [data-experimental-nav="games"]').click();
+    await page.locator('[data-games-checkpoint]').click();
+    await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
+    await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'decode');
+    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight }))).toEqual({ width: 390, height: 844 });
+  }
+});
+
+test('portrait tabs expose queue, evidence, and verify tools without changing the active file', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 640 });
+  await openSignalDesk(page);
+  await semanticClick(page, '[data-signal-start]');
+  const activeCase = await page.locator('#senseiDesk').getAttribute('data-signal-active-case');
+  for (const tab of ['evidence', 'tools', 'queue']) {
+    await semanticClick(page, `[data-signal-tab="${tab}"]`);
+    await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-portrait-tab', tab);
+    await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-active-case', activeCase || '');
+  }
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /Inspect the active file/i);
+});
+
+test('exit mission can be cancelled or confirmed without erasing career progress', async ({ page }) => {
+  await openSignalDesk(page);
+  await semanticClick(page, '[data-signal-start]');
+  await page.evaluate(() => {
+    const envelope = JSON.parse(sessionStorage.getItem('kaishi-kotoba-checkpoint') || '{}');
+    envelope.value.career.credits = 17;
+    sessionStorage.setItem('kaishi-kotoba-checkpoint', JSON.stringify(envelope));
+  });
+  await semanticClick(page, '[data-signal-pause]');
+  await semanticClick(page, '[data-signal-request-exit]');
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-exit-pending', 'true');
+  await semanticClick(page, '[data-signal-cancel-exit]');
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-exit-pending', 'false');
+  await semanticClick(page, '[data-signal-request-exit]');
+  await semanticClick(page, '[data-signal-confirm-exit]');
+  await expect(page.locator('#journey')).toHaveClass(/active/);
+  const run = await page.evaluate(() => JSON.parse(sessionStorage.getItem('kaishi-kotoba-checkpoint') || '{}').value);
+  expect(run).toMatchObject({ phase: 'briefing', index: 0, decisions: [], career: { credits: 17 } });
+});
+
+test('orientation changes refresh the live canvas and reduced motion is exposed', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSignalDesk(page);
+  await expect(page.locator('#signalPhaserHost')).toHaveAttribute('data-signal-animation', 'reduced');
+  await page.setViewportSize({ width: 844, height: 390 });
+  await expect(page.locator('#signalPhaserHost')).toHaveAttribute('data-signal-layout', 'landscape');
+  await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight }))).toEqual({ width: 844, height: 390 });
+});
