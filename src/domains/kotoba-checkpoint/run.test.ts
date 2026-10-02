@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SIGNAL_SHIFTS } from './content';
-import { advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, markSignalWordForPractice, migrateSignalCareer, recordSignalOperationalAction, recordTokenLookup, recordTokenRecall, revealSignalReading, revealSignalTranslation, selectSignalEvidence, setSignalConfidence, setSignalDebriefMode, setSignalEvidenceStatus, setSignalSpecialisation, signalLearningObjective, signalPriorityWords, toggleSignalEquipment } from './run';
+import { activeSignalCase, advanceSignal, createDailySignalShift, createSignalRun, evaluateSignalRule, expectedSignalVerdict, judgeSignal, markSignalWordForPractice, migrateSignalCareer, recordSignalOperationalAction, recordTokenLookup, recordTokenRecall, revealSignalReading, revealSignalTranslation, selectQueuedSignal, selectSignalEvidence, setSignalConfidence, setSignalDebriefMode, setSignalEvidenceStatus, setSignalSpecialisation, signalLearningObjective, signalPriorityWords, spendSignalVerification, startSignalShift, tickSignalQueue, toggleSignalEquipment } from './run';
 import type { SignalRule, SignalRun } from './types';
 
 describe('Section K signal rules', () => {
@@ -35,7 +35,7 @@ describe('Section K signal rules', () => {
 
   it('scores evidence separately from the final filing decision', () => {
     const shift = SIGNAL_SHIFTS[0]!;
-    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    let run: SignalRun = startSignalShift(createSignalRun(shift.id), shift);
     run = selectSignalEvidence(run, 'red');
     const judged = judgeSignal(run, expectedSignalVerdict(shift, shift.cases[0]!), shift);
     expect(judged.decisions[0]).toMatchObject({ correct: true, evidenceCorrect: true });
@@ -55,7 +55,7 @@ describe('Section K signal rules', () => {
 
   it('tracks word memory, contact trust and learner-selected practice priorities', () => {
     const shift = SIGNAL_SHIFTS[0]!;
-    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    let run: SignalRun = startSignalShift(createSignalRun(shift.id), shift);
     run = recordTokenLookup(run, '赤い');
     run = recordTokenRecall(run, '赤い', true);
     run = selectSignalEvidence(run, 'red');
@@ -69,7 +69,7 @@ describe('Section K signal rules', () => {
 
   it('builds a persistent investigation from confidence-aware evidence and operations', () => {
     const shift = SIGNAL_SHIFTS[0]!;
-    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    let run: SignalRun = startSignalShift(createSignalRun(shift.id), shift);
     run = selectSignalEvidence(run, 'red');
     run = setSignalEvidenceStatus(run, 'red', 'doubtful');
     run = setSignalConfidence(run, 'fair');
@@ -96,17 +96,44 @@ describe('Section K signal rules', () => {
 
   it('archives a cleared shift as a collectible case file', () => {
     const shift = SIGNAL_SHIFTS[0]!;
-    let run: SignalRun = { ...createSignalRun(shift.id), phase: 'decode' };
+    let run: SignalRun = startSignalShift(createSignalRun(shift.id), shift);
     for (let index = 0; index < shift.cases.length; index += 1) {
-      run = judgeSignal(run, expectedSignalVerdict(shift, shift.cases[index]!), shift);
+      const active = activeSignalCase(run, shift)!;
+      run = judgeSignal(run, expectedSignalVerdict(shift, active), shift);
       run = advanceSignal(run, shift);
     }
     expect(run.phase).toBe('report');
     expect(run.career.archive).toEqual([expect.objectContaining({ shiftId: shift.id, cleared: true, independentFilings: shift.cases.length })]);
   });
 
-  it('migrates prior checkpoint credit without pretending the new campaign was cleared', () => {
-    expect(migrateSignalCareer({ credits: 42, attempts: 3, cleared: [1, 2] })).toMatchObject({ credits: 42, attempts: 3, completedShiftIds: [], commendations: ['Immigration Service Veteran'] });
+  it('resets the superseded sequential campaign exactly once', () => {
+    expect(migrateSignalCareer({ schemaVersion: 1, credits: 42, attempts: 3, completedShiftIds: ['training-colour'] })).toMatchObject({ schemaVersion: 2, credits: 0, attempts: 0, completedShiftIds: [], commendations: [] });
+    const current = { ...migrateSignalCareer(undefined), credits: 12 };
+    expect(migrateSignalCareer(current)).toMatchObject({ schemaVersion: 2, credits: 12 });
+  });
+
+  it('releases signals into a selectable queue and spends verification resources', () => {
+    const shift = SIGNAL_SHIFTS[3]!;
+    let run = startSignalShift(createSignalRun(shift.id), shift);
+    expect(run.queuedCaseIds).toEqual([shift.cases[0]!.id]);
+    for (let second = 0; second < 24; second += 1) run = tickSignalQueue(run, shift);
+    expect(run.queuedCaseIds).toHaveLength(2);
+    run = selectQueuedSignal(run, shift.cases[1]!.id, shift);
+    expect(activeSignalCase(run, shift)?.id).toBe(shift.cases[1]!.id);
+    const before = run.verification;
+    run = spendSignalVerification(run, 'dictionary');
+    expect(run.verification).toBe(before - 1);
+    expect(run.assisted).toBe(true);
+  });
+
+  it('lets an urgent queued signal expire without ending the shift', () => {
+    const base = SIGNAL_SHIFTS[3]!;
+    const shift = { ...base, cases: base.cases.map((item, index) => ({ ...item, urgency: index === 0 ? 'urgent' as const : item.urgency })) };
+    let run = startSignalShift(createSignalRun(base.id), shift);
+    for (let second = 0; second < 48; second += 1) run = tickSignalQueue(run, shift);
+    expect(run.expiredCaseIds).toContain(shift.cases[0]!.id);
+    expect(run.decisions[0]).toMatchObject({ correct: false, expired: true });
+    expect(run.phase).toBe('decode');
   });
 
   it('creates deterministic six-case daily shifts with both verdicts', () => {

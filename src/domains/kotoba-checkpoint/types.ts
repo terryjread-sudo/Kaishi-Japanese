@@ -7,6 +7,8 @@ export type SignalOperationalAction = 'monitor' | 'verify' | 'dispatch';
 export type SignalSpecialisation = 'linguist' | 'listener' | 'field' | 'cryptographer';
 export type SignalDebriefMode = 'guided' | 'operational' | 'sealed';
 export type SignalEvidenceStatus = 'confirmed' | 'doubtful' | 'contradiction';
+export type SignalUrgency = 'routine' | 'priority' | 'urgent';
+export type SignalVerificationAction = 'dictionary' | 'slow-replay' | 'source-check' | 'translation' | 'director-hint';
 
 export type SignalRule =
   | { op: 'fact'; fact: string }
@@ -47,6 +49,10 @@ export interface SignalCase {
   speaker?: string;
   event?: SignalEvent;
   storyAfter?: string;
+  urgency?: SignalUrgency;
+  arrivalDelay?: number;
+  investigationThread?: string;
+  location?: string;
 }
 
 export interface SignalShift {
@@ -76,6 +82,9 @@ export interface SignalDecision {
   assisted: boolean;
   confidence?: SignalConfidence;
   operationalAction?: SignalOperationalAction;
+  expired?: boolean;
+  verificationSpent?: number;
+  quickFiled?: boolean;
 }
 
 export interface SignalWordMemory {
@@ -110,6 +119,16 @@ export interface SignalInvestigation {
   contradictions: string[];
   sources: Record<string, SignalSourceRecord>;
   operationalActions: SignalOperationalAction[];
+  threads: Record<string, SignalThreadRecord>;
+}
+
+export interface SignalThreadRecord {
+  id: string;
+  reports: number;
+  accurateFilings: number;
+  facts: string[];
+  locations: string[];
+  lastUpdated: number;
 }
 
 export interface SignalArchiveEntry {
@@ -121,7 +140,7 @@ export interface SignalArchiveEntry {
 }
 
 export interface SignalCareer {
-  schemaVersion: 1;
+  schemaVersion: 2;
   credits: number;
   attempts: number;
   completedShiftIds: string[];
@@ -139,7 +158,7 @@ export interface SignalCareer {
 }
 
 export interface SignalRun {
-  version: 3;
+  version: 4;
   shiftId: string;
   index: number;
   phase: SignalPhase;
@@ -156,6 +175,18 @@ export interface SignalRun {
   translationVisible?: boolean;
   daily: boolean;
   career: SignalCareer;
+  queuedCaseIds: string[];
+  unreleasedCaseIds: string[];
+  expiredCaseIds: string[];
+  activeCaseId?: string;
+  queueAge: Record<string, number>;
+  nextArrivalIn: number;
+  verification: number;
+  maxVerification: number;
+  verificationSpent: number;
+  equipmentUses: Record<string, number>;
+  quickFiledCaseIds: string[];
+  elapsed: number;
 }
 
 export interface LegacyCheckpointState {
