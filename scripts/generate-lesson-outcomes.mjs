@@ -87,7 +87,9 @@ const output = `${JSON.stringify({ schemaVersion: 1, lessons }, null, 2)}\n`;
 const target = resolve(root, 'data/lesson-outcomes.json');
 if (process.argv.includes('--check')) {
   const current = await readFile(target, 'utf8').catch(() => '');
-  if (current !== output) {
+  // Git may check this generated JSON out with CRLF on Windows while the
+  // generator consistently emits LF. Compare content, not checkout style.
+  if (current.replace(/\r\n/g, '\n') !== output) {
     console.error('data/lesson-outcomes.json is out of date. Run npm run generate:outcomes.');
     process.exitCode = 1;
   }
