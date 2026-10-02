@@ -94,6 +94,13 @@ describe('Section K signal rules', () => {
     expect(createSignalRun(undefined, run.career).confidence).toBe('fair');
   });
 
+  it('gives cryptographers readings on written intercepts', () => {
+    let run = createSignalRun();
+    run = setSignalSpecialisation(run, 'cryptographer');
+    const cryptographer = createSignalRun(undefined, run.career);
+    expect(cryptographer.readingVisible).toBe(true);
+  });
+
   it('archives a cleared shift as a collectible case file', () => {
     const shift = SIGNAL_SHIFTS[0]!;
     let run: SignalRun = startSignalShift(createSignalRun(shift.id), shift);

@@ -40,7 +40,7 @@ export function firstAvailableShift(career: SignalCareer): SignalShift {
 
 export function createSignalRun(shiftId = SIGNAL_SHIFTS[0]!.id, career: SignalCareer = DEFAULT_SIGNAL_CAREER, daily = false): SignalRun {
   const shift = signalShift(shiftId);
-  return { version: 4, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, confidence: career.specialisation === 'field' ? 'fair' : 'uncertain', evidenceStatus: {}, readingVisible: shift.aid === 'full', translationVisible: false, daily, career: migrateSignalCareer(career), queuedCaseIds: [], unreleasedCaseIds: shift.cases.map(item => item.id), expiredCaseIds: [], queueAge: {}, nextArrivalIn: 0, verification: 0, maxVerification: 0, verificationSpent: 0, equipmentUses: {}, quickFiledCaseIds: [], elapsed: 0 };
+  return { version: 4, shiftId: shift.id, index: 0, phase: 'briefing', decisions: [], selectedEvidence: [], lookedUpTokens: [], recalledTokens: [], paused: false, remaining: shift.seconds || 0, assisted: false, confidence: career.specialisation === 'field' ? 'fair' : 'uncertain', evidenceStatus: {}, readingVisible: shift.aid === 'full' || career.specialisation === 'cryptographer', translationVisible: false, daily, career: migrateSignalCareer(career), queuedCaseIds: [], unreleasedCaseIds: shift.cases.map(item => item.id), expiredCaseIds: [], queueAge: {}, nextArrivalIn: 0, verification: 0, maxVerification: 0, verificationSpent: 0, equipmentUses: {}, quickFiledCaseIds: [], elapsed: 0 };
 }
 
 const caseIndex = (shift: SignalShift, caseId: string | undefined): number => Math.max(0, shift.cases.findIndex(item => item.id === caseId));
@@ -57,7 +57,7 @@ export function startSignalShift(run: SignalRun, shift = signalShift(run.shiftId
 
 export function selectQueuedSignal(run: SignalRun, caseId: string, shift = signalShift(run.shiftId)): SignalRun {
   if (run.phase !== 'decode' || !run.queuedCaseIds.includes(caseId)) return run;
-  return { ...run, activeCaseId: caseId, index: caseIndex(shift, caseId), selectedEvidence: [], evidenceStatus: {}, lookedUpTokens: [], recalledTokens: [], assisted: false, confidence: run.career.specialisation === 'field' ? 'fair' : 'uncertain', readingVisible: shift.aid === 'full', translationVisible: false };
+  return { ...run, activeCaseId: caseId, index: caseIndex(shift, caseId), selectedEvidence: [], evidenceStatus: {}, lookedUpTokens: [], recalledTokens: [], assisted: false, confidence: run.career.specialisation === 'field' ? 'fair' : 'uncertain', readingVisible: shift.aid === 'full' || run.career.specialisation === 'cryptographer', translationVisible: false };
 }
 
 const FREE_TOOL: Partial<Record<SignalVerificationAction, string>> = { dictionary: 'phrasebook', 'slow-replay': 'tape-machine', 'source-check': 'evidence-lamp', 'director-hint': 'red-phone' };
@@ -227,7 +227,7 @@ export function advanceSignal(run: SignalRun, shift = signalShift(run.shiftId)):
   const queueAge = { ...run.queueAge }; if (completedId) delete queueAge[completedId];
   if (!queuedCaseIds.length && unreleasedCaseIds.length) { const released = unreleasedCaseIds.shift()!; queuedCaseIds = [released]; queueAge[released] = 0; }
   const activeCaseId = queuedCaseIds[0];
-  const progressed = { ...run, queuedCaseIds, unreleasedCaseIds, queueAge, activeCaseId, index: caseIndex(shift, activeCaseId), phase: 'decode' as const, selectedEvidence: [], evidenceStatus: {}, lookedUpTokens: [], recalledTokens: [], assisted: false, confidence: run.career.specialisation === 'field' ? 'fair' as const : 'uncertain' as const, readingVisible: shift.aid === 'full', translationVisible: false, verificationSpent: 0 };
+  const progressed = { ...run, queuedCaseIds, unreleasedCaseIds, queueAge, activeCaseId, index: caseIndex(shift, activeCaseId), phase: 'decode' as const, selectedEvidence: [], evidenceStatus: {}, lookedUpTokens: [], recalledTokens: [], assisted: false, confidence: run.career.specialisation === 'field' ? 'fair' as const : 'uncertain' as const, readingVisible: shift.aid === 'full' || run.career.specialisation === 'cryptographer', translationVisible: false, verificationSpent: 0 };
   if (activeCaseId || unreleasedCaseIds.length) return progressed;
   return finishSignalShift(progressed, shift);
 }
