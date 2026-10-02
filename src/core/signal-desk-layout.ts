@@ -17,7 +17,7 @@ export interface SignalDeskLayout {
 
 const rect = (x: number, y: number, width: number, height: number): SignalDeskRect => ({ x, y, width, height });
 
-export function signalDeskLayout(width: number, height: number): SignalDeskLayout {
+export function signalDeskLayout(width: number, height: number, queuedCount = 4): SignalDeskLayout {
   const w = Math.max(320, width);
   const h = Math.max(360, height);
   const mode: SignalDeskLayoutMode = h > w && w <= 820 ? 'portrait' : h <= 620 && w > h ? 'landscape' : 'desktop';
@@ -27,7 +27,9 @@ export function signalDeskLayout(width: number, height: number): SignalDeskLayou
     const fileTop = headerHeight + guidanceHeight + codebookHeight + gap * 3;
     const tabsTop = h - traysHeight - tabsHeight - gap;
     const workspaceHeight = Math.max(228, tabsTop - fileTop - gap);
-    const fileHeight = Math.max(116, Math.floor(workspaceHeight * .50));
+    const desiredAuxiliaryHeight = Math.min(180, Math.max(92, 54 + Math.min(4, Math.max(0, queuedCount)) * 30));
+    const auxiliaryHeight = Math.min(desiredAuxiliaryHeight, Math.max(92, workspaceHeight - 116 - gap));
+    const fileHeight = workspaceHeight - auxiliaryHeight - gap;
     const auxiliaryTop = fileTop + fileHeight + gap;
     return {
       mode, viewport: rect(0, 0, w, h), header: rect(6, 4, w - 12, headerHeight - 4),
@@ -35,8 +37,8 @@ export function signalDeskLayout(width: number, height: number): SignalDeskLayou
       codebook: rect(6, headerHeight + guidanceHeight + gap * 2, w - 12, codebookHeight),
       file: rect(8, fileTop, w - 16, fileHeight),
       tabs: rect(6, tabsTop, w - 12, tabsHeight),
-      queue: rect(6, auxiliaryTop, w - 12, Math.max(62, tabsTop - auxiliaryTop - gap)),
-      evidence: rect(6, auxiliaryTop, w - 12, Math.max(62, tabsTop - auxiliaryTop - gap)),
+      queue: rect(6, auxiliaryTop, w - 12, Math.max(92, tabsTop - auxiliaryTop - gap)),
+      evidence: rect(6, auxiliaryTop, w - 12, Math.max(92, tabsTop - auxiliaryTop - gap)),
       trays: rect(4, h - traysHeight, w - 8, traysHeight - 4),
     };
   }

@@ -186,3 +186,19 @@ test('orientation changes refresh the live canvas and reduced motion is exposed'
   await expect(page.locator('#signalPhaserHost')).toHaveAttribute('data-signal-layout', 'landscape');
   await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight }))).toEqual({ width: 844, height: 390 });
 });
+
+test('Signal Desk stays inside the Pixel 10 and representative mobile bounds', async ({ page }) => {
+  for (const size of [[320, 568], [360, 640], [390, 844], [412, 915], [667, 375], [844, 390], [1024, 768], [1440, 900]] as const) {
+    await page.setViewportSize({ width: size[0], height: size[1] });
+    await openSignalDesk(page);
+    await semanticClick(page, '[data-signal-start]');
+    const metrics = await page.evaluate(() => {
+      const canvas = document.querySelector('#signalPhaserHost canvas')?.getBoundingClientRect();
+      return { overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, width: canvas?.width || 0, height: canvas?.height || 0, mode: document.querySelector<HTMLElement>('#signalPhaserHost')?.dataset.signalLayout };
+    });
+    expect(metrics.overflow).toBeLessThanOrEqual(1);
+    expect(metrics.width).toBeGreaterThanOrEqual(size[0] - 1);
+    expect(metrics.height).toBeGreaterThanOrEqual(size[1] - 1);
+    expect(metrics.mode).toMatch(/portrait|landscape|desktop/);
+  }
+});

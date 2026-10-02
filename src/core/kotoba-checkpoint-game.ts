@@ -67,6 +67,8 @@ class SignalDeskScene extends Phaser.Scene {
   private activeChanged = false;
   private newQueue = new Set<string>();
   private newEvidence = new Set<string>();
+  private standardTray?: Phaser.GameObjects.Container;
+  private escalateTray?: Phaser.GameObjects.Container;
 
   constructor(private readonly controller: SignalDeskController) { super('signal-desk'); }
 
@@ -90,10 +92,20 @@ class SignalDeskScene extends Phaser.Scene {
     this.scale.on(Phaser.Scale.Events.RESIZE, this.draw, this);
     this.input.on('drag', (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject, x: number, y: number) => {
       const target = object as Phaser.GameObjects.Container; target.setPosition(x, y);
+      if (target === this.dragFile) {
+        const standardBox = this.standardTray?.first as Phaser.GameObjects.Rectangle | undefined;
+        const escalateBox = this.escalateTray?.first as Phaser.GameObjects.Rectangle | undefined;
+        standardBox?.setFillStyle(this.standardZone.contains(x, y) ? 0x4b8a6a : 0x285543);
+        escalateBox?.setFillStyle(this.escalateZone.contains(x, y) ? 0xb54b3e : 0x8f302c);
+      }
     });
     this.input.on('dragend', (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject) => {
       const target = object as Phaser.GameObjects.Container;
       if (target === this.dragFile) {
+        const standardBox = this.standardTray?.first as Phaser.GameObjects.Rectangle | undefined;
+        const escalateBox = this.escalateTray?.first as Phaser.GameObjects.Rectangle | undefined;
+        standardBox?.setFillStyle(0x285543);
+        escalateBox?.setFillStyle(0x8f302c);
         if (this.standardZone.contains(target.x, target.y)) this.controller.file('standard');
         else if (this.escalateZone.contains(target.x, target.y)) this.controller.file('escalate');
         else this.draw();
@@ -153,7 +165,7 @@ class SignalDeskScene extends Phaser.Scene {
     const snapshot = this.controller.snapshot();
     const width = this.scale.width;
     const height = this.scale.height;
-    const layout = signalDeskLayout(width, height);
+    const layout = signalDeskLayout(width, height, snapshot.run.queuedCaseIds.length);
     const mobile = layout.mode !== 'desktop';
     this.activeChanged = Boolean(this.previousActive && this.previousActive !== snapshot.run.activeCaseId);
     this.newQueue = new Set(snapshot.run.queuedCaseIds.filter(id => !this.previousQueue.has(id)));
@@ -222,8 +234,9 @@ class SignalDeskScene extends Phaser.Scene {
     this.panel(width / 2, 27, width - 12, 48, 0x101214, .97);
     this.label(13, 10, 'ことば局 · SECTION K', 12, '#e8b85f', { fontStyle: 'bold' });
     this.label(13, 29, `${snapshot.shift.department.toUpperCase()} · ${snapshot.run.career.rank.toUpperCase()}`, 10, C.muted);
-    this.label(width - 150, 11, `◎ ${snapshot.run.career.credits}  ·  V ${snapshot.run.verification}/${snapshot.run.maxVerification}`, 11, '#e8b85f', { fontStyle: 'bold' });
-    this.button(width - 42, 27, 68, 36, 'LEAVE', () => this.controller.exit(), 0x3a2822);
+    this.label(Math.max(112, width - 208), 11, `◎ ${snapshot.run.career.credits} · V ${snapshot.run.verification}/${snapshot.run.maxVerification}`, 10, '#e8b85f', { fontStyle: 'bold' });
+    if (snapshot.run.phase === 'decode') this.button(width - 113, 27, 46, 36, snapshot.run.paused ? 'RESUME' : 'PAUSE', () => this.controller.pause(), 0x342b22);
+    this.button(snapshot.run.phase === 'decode' ? width - 54 : width - 42, 27, snapshot.run.phase === 'decode' ? 48 : 68, 36, 'LEAVE', () => this.controller.exit(), 0x3a2822);
   }
 
   private drawMobile(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
@@ -274,18 +287,23 @@ class SignalDeskScene extends Phaser.Scene {
     const rows = Math.ceil(SPECIALISATIONS.length / columns);
     const gap = 7;
     const cardWidth = (width - gap * (columns - 1)) / columns;
-    const cardHeight = Math.max(portrait ? 90 : 42, Math.min(portrait ? 112 : 44, (height - 42 - gap * (rows - 1)) / rows));
+    const detailHeight = portrait ? 34 : 0;
+    const cardHeight = Math.max(portrait ? 66 : 42, Math.min(portrait ? 84 : 44, (height - 42 - detailHeight - gap * (rows - 1)) / rows));
     SPECIALISATIONS.forEach((role, index) => {
       const column = index % columns, row = Math.floor(index / columns);
       const cardX = x + column * (cardWidth + gap) + cardWidth / 2;
       const cardY = cardTop + row * (cardHeight + gap) + cardHeight / 2;
       const selected = run.career.specialisation === role.id;
-      this.button(cardX, cardY, cardWidth, cardHeight, portrait ? `${role.label}\n${role.description}` : `${role.label}\n${role.compact}`, () => this.controller.specialise(role.id), selected ? C.red : 0x5b4b3c);
+      this.button(cardX, cardY, cardWidth, cardHeight, `${role.label}\n${role.compact}`, () => this.controller.specialise(role.id), selected ? C.red : 0x5b4b3c);
     });
+    if (portrait) {
+      const selected = SPECIALISATIONS.find(role => role.id === run.career.specialisation) || SPECIALISATIONS[0];
+      this.label(x, cardTop + rows * cardHeight + (rows - 1) * gap + 8, `WHAT THIS CHANGES · ${selected.description}`, 9, '#55493e', { wordWrap: { width } });
+    }
   }
 
   private mobileDesk(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
-    const layout = signalDeskLayout(width, height);
+    const layout = signalDeskLayout(width, height, snapshot.run.queuedCaseIds.length);
     this.guidanceBar(snapshot, layout.guidance);
     if (portrait) this.mobilePortraitDesk(snapshot, width, height);
     else this.mobileLandscapeDesk(snapshot, width, height);
@@ -296,16 +314,19 @@ class SignalDeskScene extends Phaser.Scene {
   private mobileQueue(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number, horizontal: boolean): void {
     this.panel(x + width / 2, y + height / 2, width, height);
     this.label(x + 9, y + 7, `INCOMING · ${snapshot.run.queuedCaseIds.length} QUEUED`, 11, '#e8b85f', { fontStyle: 'bold' });
+    this.label(x + 9, y + 24, 'INCOMING SIGNALS', 8, C.muted, { fontStyle: 'bold' });
     const visible = snapshot.run.queuedCaseIds.slice(0, horizontal ? 3 : 4);
     visible.forEach((id, index) => {
       const item = snapshot.shift.cases.find(candidate => candidate.id === id)!;
       const active = id === snapshot.run.activeCaseId;
       if (horizontal) {
         const cardWidth = (width - 18 - (visible.length - 1) * 5) / Math.max(1, visible.length);
-        const card = this.button(x + 9 + cardWidth / 2 + index * (cardWidth + 5), y + height - 29, cardWidth, 48, `${item.channel.toUpperCase()} ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+        const urgency = snapshot.run.queueAge[id] || 0;
+        const card = this.button(x + 9 + cardWidth / 2 + index * (cardWidth + 5), y + height - 29, cardWidth, 48, `${item.channel.toUpperCase()} ${urgency}s`, () => this.controller.selectCase(id), active ? C.red : urgency > 20 ? 0x6d382d : 0x2f2923);
         if (!this.reducedMotion && this.newQueue.has(id)) this.tweens.add({ targets: card, x: card.x + 18, alpha: { from: 0, to: 1 }, duration: 260, ease: 'Back.Out' });
       } else {
-        const card = this.button(x + width / 2, y + 57 + index * 58, width - 18, 50, `${item.channel.toUpperCase()} · FILE ${String(snapshot.shift.cases.indexOf(item) + 1).padStart(3, '0')} · ${snapshot.run.queueAge[id] || 0}s`, () => this.controller.selectCase(id), active ? C.red : 0x2f2923);
+        const urgency = snapshot.run.queueAge[id] || 0;
+        const card = this.button(x + width / 2, y + 57 + index * 58, width - 18, 50, `${item.channel.toUpperCase()} · FILE ${String(snapshot.shift.cases.indexOf(item) + 1).padStart(3, '0')} · ${urgency}s`, () => this.controller.selectCase(id), active ? C.red : urgency > 20 ? 0x6d382d : 0x2f2923);
         if (!this.reducedMotion && this.newQueue.has(id)) this.tweens.add({ targets: card, x: card.x + 20, alpha: { from: 0, to: 1 }, duration: 260, ease: 'Back.Out' });
       }
     });
@@ -323,6 +344,7 @@ class SignalDeskScene extends Phaser.Scene {
     const file = this.add.container(x + width / 2, y + height / 2);
     file.add(this.add.rectangle(0, 0, width, height, active.channel === 'intercept' ? 0xd1c5aa : C.paper, 1).setStrokeStyle(2, 0x8f7952));
     file.add(this.label(-width / 2 + 10, -height / 2 + 9, `${active.channel.toUpperCase()} · ${active.speaker || 'SOURCE CLASSIFIED'}`, 10, '#5e4a38', { fontStyle: 'bold' }));
+    file.add(this.label(-width / 2 + 10, -height / 2 + 25, 'TAP A WORD TO INSPECT', 8, '#8f302c', { fontStyle: 'bold' }));
     if (active.channel === 'telephone' && !snapshot.run.assisted) {
       file.add(this.label(0, -height * .20, '☎', Math.min(56, height * .25), '#4c3828').setOrigin(.5));
       file.add(this.button(0, height * .12, Math.min(220, width - 30), 44, 'PLAY INTERCEPT', () => this.controller.speak(active.japanese, .78), C.green));
@@ -352,9 +374,10 @@ class SignalDeskScene extends Phaser.Scene {
   private mobileEvidence(snapshot: SignalDeskSnapshot, x: number, y: number, width: number, height: number): void {
     this.panel(x + width / 2, y + height / 2, width, height, 0x171513);
     this.label(x + 9, y + 7, 'EVIDENCE WALL', 11, '#e8b85f', { fontStyle: 'bold' });
+    this.label(x + 9, y + 23, 'DRAG EVIDENCE TO CLASSIFY', 8, C.muted, { fontStyle: 'bold' });
     const columns: [number, number, number] = [x + width * .18, x + width * .50, x + width * .82];
     this.evidenceBreaks = [x + width * .34, x + width * .66];
-    ['CONFIRMED', 'DOUBTFUL', 'CONTRADICTION'].forEach((value, index) => this.label(columns[index]!, y + 28, value, 9, index === 0 ? '#8fc6a4' : index === 1 ? '#e2c47b' : '#ef8b80', { fontStyle: 'bold' }).setOrigin(.5));
+    ['CONFIRMED', 'DOUBTFUL', 'CONTRADICTION'].forEach((value, index) => this.label(columns[index]!, y + 42, value, 9, index === 0 ? '#8fc6a4' : index === 1 ? '#e2c47b' : '#ef8b80', { fontStyle: 'bold' }).setOrigin(.5));
     const counts: [number, number, number] = [0, 0, 0];
     snapshot.run.selectedEvidence.slice(0, 6).forEach(fact => {
       const status = snapshot.run.evidenceStatus?.[fact] || 'confirmed';
@@ -363,12 +386,14 @@ class SignalDeskScene extends Phaser.Scene {
       chip.setData('evidence', fact); this.input.setDraggable(chip);
       if (!this.reducedMotion && this.newEvidence.has(fact)) this.tweens.add({ targets: chip, scale: { from: .7, to: 1 }, duration: 220, ease: 'Back.Out' });
     });
+    if (!snapshot.run.selectedEvidence.length) this.label(x + width / 2, y + height * .52, 'PIN A CLUE TO CLASSIFY IT', 11, C.muted, { align: 'center', wordWrap: { width: width - 24 } }).setOrigin(.5);
     const confidenceY = y + height - 24;
+    this.label(x + 9, confidenceY - 38, 'CONFIDENCE BEFORE FILING', 8, C.muted, { fontStyle: 'bold' });
     (['uncertain', 'fair', 'confident'] as const).forEach((value, index) => this.button(columns[index]!, confidenceY, width * .28, 36, value.toUpperCase(), () => this.controller.setConfidence(value), snapshot.run.confidence === value ? C.red : 0x332b25));
   }
 
   private mobilePortraitDesk(snapshot: SignalDeskSnapshot, width: number, height: number): void {
-    const layout = signalDeskLayout(width, height);
+    const layout = signalDeskLayout(width, height, snapshot.run.queuedCaseIds.length);
     this.mobileCodebook(snapshot, layout.codebook.x, layout.codebook.y, layout.codebook.width, layout.codebook.height);
     if (snapshot.active) this.mobileFile(snapshot, snapshot.active, layout.file.x, layout.file.y, layout.file.width, layout.file.height);
     const auxiliary = snapshot.portraitTab === 'queue' ? layout.queue : layout.evidence;
@@ -376,12 +401,16 @@ class SignalDeskScene extends Phaser.Scene {
     else if (snapshot.portraitTab === 'evidence') this.mobileEvidence(snapshot, auxiliary.x, auxiliary.y, auxiliary.width, auxiliary.height);
     else this.mobileTools(snapshot, auxiliary);
     const tabs = layout.tabs!;
-    (['queue', 'evidence', 'tools'] as const).forEach((tab, index) => this.button(tabs.x + tabs.width * ((index + .5) / 3), tabs.y + tabs.height / 2, tabs.width / 3 - 4, Math.max(44, tabs.height - 2), tab.toUpperCase(), () => this.controller.setPortraitTab(tab), snapshot.portraitTab === tab ? C.red : 0x2f2923));
+    (['queue', 'evidence', 'tools'] as const).forEach((tab, index) => {
+      const selected = snapshot.portraitTab === tab;
+      const label = tab === 'queue' ? `${selected ? '● ' : ''}QUEUE · ${snapshot.run.queuedCaseIds.length}` : `${selected ? '● ' : ''}${tab.toUpperCase()}`;
+      this.button(tabs.x + tabs.width * ((index + .5) / 3), tabs.y + tabs.height / 2, tabs.width / 3 - 4, Math.max(44, tabs.height - 2), label, () => this.controller.setPortraitTab(tab), selected ? C.red : 0x2f2923);
+    });
     const trays = layout.trays;
     this.standardZone = new Phaser.Geom.Rectangle(trays.x, trays.y, trays.width / 2 - 3, trays.height);
     this.escalateZone = new Phaser.Geom.Rectangle(trays.x + trays.width / 2 + 3, trays.y, trays.width / 2 - 3, trays.height);
-    this.button(trays.x + trays.width * .25, trays.y + trays.height / 2, trays.width * .49, trays.height, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
-    this.button(trays.x + trays.width * .75, trays.y + trays.height / 2, trays.width * .49, trays.height, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+    this.standardTray = this.button(trays.x + trays.width * .25, trays.y + trays.height / 2, trays.width * .49, trays.height, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
+    this.escalateTray = this.button(trays.x + trays.width * .75, trays.y + trays.height / 2, trays.width * .49, trays.height, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
   }
 
   private mobileTools(snapshot: SignalDeskSnapshot, area: SignalDeskRect): void {
@@ -394,7 +423,7 @@ class SignalDeskScene extends Phaser.Scene {
   }
 
   private mobileLandscapeDesk(snapshot: SignalDeskSnapshot, width: number, height: number): void {
-    const layout = signalDeskLayout(width, height);
+    const layout = signalDeskLayout(width, height, snapshot.run.queuedCaseIds.length);
     this.mobileQueue(snapshot, layout.queue.x, layout.queue.y, layout.queue.width, layout.queue.height, false);
     this.mobileCodebook(snapshot, layout.codebook.x, layout.codebook.y, layout.codebook.width, layout.codebook.height);
     if (snapshot.active) this.mobileFile(snapshot, snapshot.active, layout.file.x, layout.file.y, layout.file.width, layout.file.height);
@@ -402,8 +431,8 @@ class SignalDeskScene extends Phaser.Scene {
     const trays = layout.trays;
     this.standardZone = new Phaser.Geom.Rectangle(trays.x, trays.y, trays.width / 2 - 3, trays.height);
     this.escalateZone = new Phaser.Geom.Rectangle(trays.x + trays.width / 2 + 3, trays.y, trays.width / 2 - 3, trays.height);
-    this.button(trays.x + trays.width * .25, trays.y + trays.height / 2, trays.width * .49, trays.height, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
-    this.button(trays.x + trays.width * .75, trays.y + trays.height / 2, trays.width * .49, trays.height, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
+    this.standardTray = this.button(trays.x + trays.width * .25, trays.y + trays.height / 2, trays.width * .49, trays.height, '通常 · STANDARD', () => this.controller.file('standard'), C.green);
+    this.escalateTray = this.button(trays.x + trays.width * .75, trays.y + trays.height / 2, trays.width * .49, trays.height, '至急 · ESCALATE', () => this.controller.file('escalate'), C.red);
   }
 
   private mobileFeedback(snapshot: SignalDeskSnapshot, width: number, height: number): void {
@@ -576,8 +605,8 @@ class SignalDeskScene extends Phaser.Scene {
     const disabled = snapshot.run.phase !== 'decode';
     this.standardZone = new Phaser.Geom.Rectangle(540, 740, 360, 120);
     this.escalateZone = new Phaser.Geom.Rectangle(920, 740, 360, 120);
-    this.button(720, 800, 350, 110, '通常\nSTANDARD', () => { if (!disabled) { this.sound.play('stamp', { volume: .35 }); this.controller.file('standard'); } }, C.green);
-    this.button(1100, 800, 350, 110, '至急\nESCALATE', () => { if (!disabled) { this.sound.play('stamp', { volume: .35 }); this.controller.file('escalate'); } }, C.red);
+    this.standardTray = this.button(720, 800, 350, 110, '通常\nSTANDARD', () => { if (!disabled) { this.sound.play('stamp', { volume: .35 }); this.controller.file('standard'); } }, C.green);
+    this.escalateTray = this.button(1100, 800, 350, 110, '至急\nESCALATE', () => { if (!disabled) { this.sound.play('stamp', { volume: .35 }); this.controller.file('escalate'); } }, C.red);
     this.label(350, 770, 'DRAG THE ACTIVE FILE\nOR PRESS S / E', 14, C.muted, { align: 'center' }).setOrigin(.5);
   }
 

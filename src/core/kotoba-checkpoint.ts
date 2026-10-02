@@ -29,6 +29,8 @@ let notice = '';
 let exitPending = false;
 let game: Game | null = null;
 let gameLoading: Promise<void> | null = null;
+let installed = false;
+let resizeFrame = 0;
 const listeners = new Set<() => void>();
 
 const root = (): HTMLElement | null => document.querySelector<HTMLElement>('#senseiDesk');
@@ -72,7 +74,7 @@ const controller: SignalDeskController = {
   setPortraitTab(tab) { uiRepo.save({ portraitTab: tab }); emit(); },
   refreshLayout() { emit(); },
   pause() { const run = load(); if (run.phase !== 'decode') return; run.paused = !run.paused; save(run); emit(); },
-  selectCase(id) { const current = load(); save(selectQueuedSignal(current, id, shiftFor(current))); resetCaseView(); emit(); },
+  selectCase(id) { const current = load(); save(selectQueuedSignal(current, id, shiftFor(current))); resetCaseView(); emit('FILE OPENED: inspect the message and mark its decisive clue.'); },
   inspectToken(index) {
     const run = load(), shift = shiftFor(run), active = activeSignalCase(run, shift), item = active?.tokens[index]; if (!item) return;
     openTokenIndex = index; dictionaryRevealed = shift.sequence <= 3; playCheckpointAudio(item.surface, run.career.specialisation === 'listener' ? .72 : .82);
@@ -84,8 +86,8 @@ const controller: SignalDeskController = {
     if (spent === run && shift.sequence > 3 && run.verification === 0 && !((run.equipmentUses.phrasebook || 0) > 0)) { emit('No verification charges remain. Trust your reading.'); return; }
     dictionaryRevealed = true; save(revealSignalReading(spent, shift.sequence > 3)); emit();
   },
-  pinEvidence(fact) { save(selectSignalEvidence(load(), fact)); emit(); },
-  setEvidenceStatus(fact, status) { save(setSignalEvidenceStatus(load(), fact, status)); emit(); },
+  pinEvidence(fact) { save(selectSignalEvidence(load(), fact)); emit('EVIDENCE PINNED: drag it to a confidence column.'); },
+  setEvidenceStatus(fact, status) { save(setSignalEvidenceStatus(load(), fact, status)); emit(`EVIDENCE CLASSIFIED: ${status.toUpperCase()}.`); },
   verify(action: SignalVerificationAction) {
     const run = load(), shift = shiftFor(run); const spent = shift.sequence <= 3 ? run : spendSignalVerification(run, action);
     if (spent === run && shift.sequence > 3) { emit('No verification charges remain.'); return; }
@@ -96,7 +98,7 @@ const controller: SignalDeskController = {
     if (action === 'slow-replay') { const active = activeSignalCase(next, shift); if (active) playCheckpointAudio(active.japanese, .62); }
     save(next); emit(message);
   },
-  setConfidence(value) { save(setSignalConfidence(load(), value)); emit(); },
+  setConfidence(value) { save(setSignalConfidence(load(), value)); emit(`CONFIDENCE SET: ${value.toUpperCase()}.`); },
   file(verdict: SignalVerdict) {
     const run = load(); if (run.phase !== 'decode' || run.paused) return;
     const shift = shiftFor(run), active = activeSignalCase(run, shift); if (!active) return;
@@ -181,6 +183,15 @@ function ensureGame(): void {
   const run = load(); if (run.career.schemaVersion === 2) host().saveCheckpointCareer?.(run.career); renderSemantic();
 }
 
+function scheduleLayoutRefresh(): void {
+  if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+  resizeFrame = window.requestAnimationFrame(() => {
+    resizeFrame = 0;
+    const desk = root();
+    if (desk?.classList.contains('active')) setGameVisible(true);
+  });
+}
+
 function tick(): void {
   const current = load(), shift = shiftFor(current); if (current.phase !== 'decode' || current.paused) return;
   const next = tickSignalQueue(current, shift); save(next, next.expiredCaseIds.length !== current.expiredCaseIds.length);
@@ -189,12 +200,18 @@ function tick(): void {
 }
 
 export function installKotobaCheckpoint(): void {
+  if (installed) return;
+  installed = true;
   window.setInterval(tick, 1000);
   document.querySelector<HTMLElement>('[data-experimental-nav="sensei-desk"]')?.addEventListener('click', ensureGame);
   window.addEventListener('kaishi-sensei-desk-host-ready', ensureGame);
   const desk = root(); if (desk) new MutationObserver(() => setGameVisible(desk.classList.contains('active'))).observe(desk, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', () => setGameVisible(!document.hidden && Boolean(root()?.classList.contains('active'))));
-  window.addEventListener('orientationchange', () => window.requestAnimationFrame(() => setGameVisible(true)));
+  window.addEventListener('resize', scheduleLayoutRefresh, { passive: true });
+  window.visualViewport?.addEventListener('resize', scheduleLayoutRefresh, { passive: true });
+  window.addEventListener('orientationchange', scheduleLayoutRefresh, { passive: true });
+  window.addEventListener('pageshow', scheduleLayoutRefresh, { passive: true });
+  window.addEventListener('pagehide', () => setGameVisible(false), { passive: true });
   document.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || !root()?.classList.contains('active')) return;
     if (event.key.toLowerCase() === 's') controller.file('standard');

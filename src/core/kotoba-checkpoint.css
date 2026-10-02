@@ -1,5 +1,5 @@
 #senseiDesk.active{display:block!important;position:fixed;z-index:120;inset:0;width:auto!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden;background:#090b0e}
-#signalPhaserHost{position:absolute;inset:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overflow:hidden;background:#090b0e}
+#signalPhaserHost{position:absolute;inset:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);box-sizing:border-box;padding-bottom:max(8px,env(safe-area-inset-bottom));overflow:hidden;background:#090b0e}
 #signalPhaserHost canvas{display:block;width:100%!important;height:100%!important;touch-action:none;outline:0;box-shadow:0 0 90px #000}
 .signal-semantic{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .signal-semantic:focus-within{position:fixed!important;z-index:5!important;left:12px!important;bottom:12px!important;width:auto!important;height:auto!important;margin:0!important;padding:10px!important;overflow:visible!important;clip:auto!important;white-space:normal!important;border:2px solid #e3b35d!important;background:#171513!important;color:#fff1cf!important}
