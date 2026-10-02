@@ -45,6 +45,12 @@ export interface SignalDeskController {
 const W = 1440;
 const H = 900;
 const C = { ink: 0x211a16, paper: 0xeadbb8, paperLight: 0xfff5d8, brass: 0xd8a44d, red: 0x8f302c, green: 0x285543, cream: '#fff1cf', muted: '#c8b99d', black: 0x090b0e };
+const SPECIALISATIONS = [
+  { id: 'linguist', label: 'LINGUIST', compact: '+1 VERIFY', description: 'One extra verification charge after Basic Training.' },
+  { id: 'listener', label: 'LISTENER', compact: 'SLOWER AUDIO', description: 'Slower replay when you inspect spoken Japanese.' },
+  { id: 'field', label: 'FIELD', compact: 'FAIR CONFIDENCE', description: 'Begins each file with Fair confidence selected.' },
+  { id: 'cryptographer', label: 'CRYPTOGRAPHER', compact: 'SHOW READINGS', description: 'Shows readings on written intercepts.' },
+] as const;
 
 class SignalDeskScene extends Phaser.Scene {
   private unsubscribe?: () => void;
@@ -232,34 +238,50 @@ class SignalDeskScene extends Phaser.Scene {
     const { shift, run } = snapshot;
     if (!portrait) {
       const portraitKey = shift.story?.portrait || 'mori';
-      if (this.textures.exists(portraitKey)) this.add.image(width * .14, height, portraitKey).setOrigin(.5, 1).setDisplaySize(Math.min(250, width * .24), height - 58);
-      this.panel(width * .61, height * .52 + 22, width * .72, height - 68, C.paper, .98, 0xb29662);
-      this.label(width * .27, 67, `SHIFT ${shift.sequence} · ${shift.department.toUpperCase()}`, 12, '#81322e', { fontStyle: 'bold' });
-      this.label(width * .27, 88, shift.title, 30, '#241c17', { fontFamily: 'Georgia, serif', fontStyle: 'bold', wordWrap: { width: width * .63 } });
-      this.label(width * .27, 128, shift.briefing, 15, '#4c4036', { wordWrap: { width: width * .64 }, lineSpacing: 4 });
-      this.add.rectangle(width * .61, height * .48, width * .65, 92, 0xfff5d8, .88).setStrokeStyle(2, C.red);
-      this.label(width * .30, height * .39, 'TODAY’S CODEBOOK', 11, '#8f302c', { fontStyle: 'bold' });
-      this.label(width * .30, height * .44, shift.ruleText, 17, '#211a16', { fontStyle: 'bold', wordWrap: { width: width * .58 } });
-      this.label(width * .30, height * .60, 'SPECIALISATION', 10, '#762d29', { fontStyle: 'bold' });
-      (['linguist', 'listener', 'field', 'cryptographer'] as const).forEach((value, index) => this.button(width * .34 + index * width * .155, height * .70, width * .14, 38, value.toUpperCase(), () => this.controller.specialise(value), run.career.specialisation === value ? C.red : 0x5b4b3c));
-      this.button(width * .47, height - 43, width * .25, 54, 'CLOCK IN →', () => this.controller.start(), C.red);
-      this.button(width * .73, height - 43, width * .23, 54, run.career.timerDisabled ? 'ENABLE TIMER' : 'DISABLE TIMER', () => this.controller.toggleTimer());
+      const portraitWidth = Math.min(190, width * .21), contentX = portraitWidth + 18, contentWidth = width - contentX - 12;
+      if (this.textures.exists(portraitKey)) this.add.image(portraitWidth / 2 + 4, height, portraitKey).setOrigin(.5, 1).setDisplaySize(portraitWidth, height - 58);
+      this.panel(contentX + contentWidth / 2, height / 2 + 2, contentWidth, height - 66, C.paper, .98, 0xb29662);
+      this.label(contentX + 18, 66, `SHIFT ${shift.sequence} · ${shift.department.toUpperCase()}`, 11, '#81322e', { fontStyle: 'bold' });
+      this.label(contentX + 18, 86, shift.title, 27, '#241c17', { fontFamily: 'Georgia, serif', fontStyle: 'bold', wordWrap: { width: contentWidth - 36 } });
+      this.label(contentX + 18, 120, shift.briefing, 13, '#4c4036', { wordWrap: { width: contentWidth - 36 }, lineSpacing: 3 });
+      const ruleY = Math.min(210, height * .53);
+      this.add.rectangle(contentX + contentWidth / 2, ruleY, contentWidth - 36, 68, 0xfff5d8, .9).setStrokeStyle(2, C.red);
+      this.label(contentX + 26, ruleY - 25, 'TODAY’S CODEBOOK', 10, '#8f302c', { fontStyle: 'bold' });
+      this.label(contentX + 26, ruleY - 3, shift.ruleText, 16, '#211a16', { fontStyle: 'bold', wordWrap: { width: contentWidth - 52 } });
+      this.mobileSpecialisations(contentX + 18, ruleY + 44, contentWidth - 36, 64, run, false);
+      this.button(contentX + contentWidth * .31, height - 27, contentWidth * .50, 40, 'CLOCK IN →', () => this.controller.start(), C.red);
+      this.button(contentX + contentWidth * .74, height - 27, contentWidth * .33, 40, run.career.timerDisabled ? 'ENABLE TIMER' : 'DISABLE TIMER', () => this.controller.toggleTimer());
       return;
     }
     this.panel(width / 2, (height + 57) / 2, width - 14, height - 65, C.paper, .98, 0xb29662);
     this.label(20, 70, `SHIFT ${shift.sequence} · ${shift.department.toUpperCase()}`, 12, '#81322e', { fontStyle: 'bold' });
     this.label(20, 94, shift.title, 28, '#241c17', { fontFamily: 'Georgia, serif', fontStyle: 'bold', wordWrap: { width: width - 40 } });
     this.label(20, 135, shift.briefing, 15, '#4c4036', { wordWrap: { width: width - 40 }, lineSpacing: 3 });
-    const ruleY = Math.min(260, height * .34);
-    this.add.rectangle(width / 2, ruleY, width - 34, 104, 0xfff5d8, .9).setStrokeStyle(2, C.red);
-    this.label(29, ruleY - 42, 'TODAY’S CODEBOOK', 11, '#8f302c', { fontStyle: 'bold' });
-    this.label(29, ruleY - 17, shift.ruleText, 18, '#211a16', { fontStyle: 'bold', wordWrap: { width: width - 58 } });
-    if (shift.story?.text) this.label(25, ruleY + 72, `“${shift.story.text}” — ${shift.story.speaker}`, 14, '#5c302b', { fontFamily: 'Georgia, serif', fontStyle: 'italic', wordWrap: { width: width - 50 } });
-    const specY = height - 215;
-    this.label(20, specY - 33, 'SPECIALISATION', 11, '#762d29', { fontStyle: 'bold' });
-    (['linguist', 'listener', 'field', 'cryptographer'] as const).forEach((value, index) => this.button(width * (.26 + (index % 2) * .49), specY + Math.floor(index / 2) * 48, width * .44, 42, value.toUpperCase(), () => this.controller.specialise(value), run.career.specialisation === value ? C.red : 0x5b4b3c));
+    const ruleY = 246;
+    this.add.rectangle(width / 2, ruleY, width - 34, 94, 0xfff5d8, .9).setStrokeStyle(2, C.red);
+    this.label(29, ruleY - 38, 'TODAY’S CODEBOOK', 11, '#8f302c', { fontStyle: 'bold' });
+    this.label(29, ruleY - 13, shift.ruleText, 18, '#211a16', { fontStyle: 'bold', wordWrap: { width: width - 58 } });
+    this.mobileSpecialisations(20, ruleY + 62, width - 40, Math.max(215, height - ruleY - 190), run, true);
     this.button(width * .31, height - 49, width * .55, 66, 'CLOCK IN →', () => this.controller.start(), C.red);
     this.button(width * .79, height - 49, width * .34, 66, run.career.timerDisabled ? 'TIMER ON' : 'TIMER OFF', () => this.controller.toggleTimer());
+  }
+
+  private mobileSpecialisations(x: number, y: number, width: number, height: number, run: SignalRun, portrait: boolean): void {
+    this.label(x, y, 'CHOOSE YOUR SPECIALISATION', 11, '#762d29', { fontStyle: 'bold' });
+    this.label(x, y + 16, 'Each role changes how the desk helps you.', 10, '#55493e');
+    const cardTop = y + 40;
+    const columns = portrait ? 2 : 4;
+    const rows = Math.ceil(SPECIALISATIONS.length / columns);
+    const gap = 7;
+    const cardWidth = (width - gap * (columns - 1)) / columns;
+    const cardHeight = Math.max(portrait ? 90 : 42, Math.min(portrait ? 112 : 44, (height - 42 - gap * (rows - 1)) / rows));
+    SPECIALISATIONS.forEach((role, index) => {
+      const column = index % columns, row = Math.floor(index / columns);
+      const cardX = x + column * (cardWidth + gap) + cardWidth / 2;
+      const cardY = cardTop + row * (cardHeight + gap) + cardHeight / 2;
+      const selected = run.career.specialisation === role.id;
+      this.button(cardX, cardY, cardWidth, cardHeight, portrait ? `${role.label}\n${role.description}` : `${role.label}\n${role.compact}`, () => this.controller.specialise(role.id), selected ? C.red : 0x5b4b3c);
+    });
   }
 
   private mobileDesk(snapshot: SignalDeskSnapshot, width: number, height: number, portrait: boolean): void {
@@ -449,10 +471,11 @@ class SignalDeskScene extends Phaser.Scene {
     this.label(580, 575, shift.guidance, 16, '#55493e', { wordWrap: { width: 640 } });
     const timing = shift.seconds === null || run.career.timerDisabled ? 'UNTIMED TRAINING' : `${Math.ceil((shift.seconds || 0) / 60)} MINUTE SHIFT`;
     this.label(580, 635, `${shift.cases.length} FILES   ·   ${timing}   ·   ${shift.location}`, 14, '#655748');
-    this.label(580, 668, 'SPECIALISATION', 12, '#762d29', { fontStyle: 'bold' });
-    (['linguist', 'listener', 'field', 'cryptographer'] as const).forEach((value, index) => this.button(635 + index * 145, 700, 132, 34, value.toUpperCase(), () => this.controller.specialise(value), run.career.specialisation === value ? C.red : 0x5b4b3c));
+    this.label(580, 668, 'CHOOSE YOUR SPECIALISATION', 12, '#762d29', { fontStyle: 'bold' });
+    this.label(580, 685, 'A desk role changes how the shift helps you: +1 verify · slower audio · Fair confidence · written readings.', 12, '#55493e', { wordWrap: { width: 650 } });
+    SPECIALISATIONS.forEach((role, index) => this.button(635 + index * 145, 722, 132, 38, `${role.label}\n${role.compact}`, () => this.controller.specialise(role.id), run.career.specialisation === role.id ? C.red : 0x5b4b3c));
     const tools = [{ id: 'phrasebook', at: 0 }, { id: 'tape-machine', at: 3 }, { id: 'evidence-lamp', at: 7 }, { id: 'night-map', at: 10 }, { id: 'red-phone', at: 15 }].filter(item => run.career.completedShiftIds.length >= item.at);
-    tools.forEach((tool, index) => this.button(625 + index * 155, 744, 145, 32, tool.id.toUpperCase(), () => this.controller.equip(tool.id), run.career.equippedTools.includes(tool.id) ? C.green : 0x5b4b3c));
+    tools.forEach((tool, index) => this.button(625 + index * 155, 755, 145, 24, tool.id.toUpperCase(), () => this.controller.equip(tool.id), run.career.equippedTools.includes(tool.id) ? C.green : 0x5b4b3c));
     this.button(680, 802, 220, 58, 'CLOCK IN  →', () => { this.sound.play('file', { volume: .25 }); this.controller.start(); }, C.red);
     this.button(915, 802, 200, 58, run.career.timerDisabled ? 'ENABLE TIMER' : 'DISABLE TIMER', () => this.controller.toggleTimer());
     this.button(1135, 802, 210, 58, 'RETURN TO JOURNEY', () => this.controller.exit());

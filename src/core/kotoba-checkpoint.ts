@@ -34,6 +34,7 @@ const listeners = new Set<() => void>();
 const root = (): HTMLElement | null => document.querySelector<HTMLElement>('#senseiDesk');
 const host = (): Host => ((window as Window & { KaishiActivityPolicy?: { kotobaCheckpoint?: Host } }).KaishiActivityPolicy?.kotobaCheckpoint || {});
 const escape = (value: unknown): string => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character] || character));
+const specialisationDescription = 'Specialisation is your desk role: Linguist adds a verification charge; Listener slows audio replay; Field begins with Fair confidence; Cryptographer shows readings on written intercepts.';
 const dateSeed = (): string => new Date().toISOString().slice(0, 10);
 const shiftFor = (run: SignalRun): SignalShift => { if (run.daily) { dailyShift ||= createDailySignalShift(run.shiftId.replace(/^daily-/, '')); return dailyShift; } return signalShift(run.shiftId); };
 
@@ -146,7 +147,8 @@ function renderSemantic(): void {
   let semantic = target.querySelector<HTMLElement>('.signal-semantic');
   if (!semantic) { semantic = document.createElement('section'); semantic.className = 'signal-semantic'; semantic.setAttribute('aria-live', 'polite'); target.appendChild(semantic); }
   target.dataset.signalGuidance = guidance(snapshot); target.dataset.signalExitPending = String(snapshot.exitPending); target.dataset.signalPortraitTab = snapshot.portraitTab;
-  semantic.innerHTML = `<h1>Signal Desk · ${escape(snapshot.shift.title)}</h1><p data-signal-guidance>${escape(guidance(snapshot))}</p><p>${escape(snapshot.shift.ruleText)}</p><p>${escape(snapshot.active?.japanese || '')}</p><p>${escape(notice)}</p>${semanticButtons(snapshot)}`;
+  const roleDescription = snapshot.run.phase === 'briefing' ? `<p data-signal-specialisation>${escape(specialisationDescription)}</p>` : '';
+  semantic.innerHTML = `<h1>Signal Desk · ${escape(snapshot.shift.title)}</h1><p data-signal-guidance>${escape(guidance(snapshot))}</p><p>${escape(snapshot.shift.ruleText)}</p>${roleDescription}<p>${escape(snapshot.active?.japanese || '')}</p><p>${escape(notice)}</p>${semanticButtons(snapshot)}`;
   semantic.querySelector('[data-signal-start]')?.addEventListener('click', () => controller.start());
   semantic.querySelectorAll('[data-signal-exit]').forEach(button => button.addEventListener('click', () => controller.exit()));
   semantic.querySelector('[data-signal-request-exit]')?.addEventListener('click', () => controller.requestExit());
