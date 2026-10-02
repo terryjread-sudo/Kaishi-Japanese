@@ -140,7 +140,10 @@ test('leaving and repeatedly reopening wakes and resizes the existing Phaser sce
     await page.locator('[data-games-checkpoint]').click();
     await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
     await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'decode');
+    await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /paused/i);
     await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight, backingWidth: canvas.width, backingHeight: canvas.height, attached: canvas.parentElement?.id }))).toEqual({ width: 390, height: 844, backingWidth: expect.any(Number), backingHeight: expect.any(Number), attached: 'signalPhaserHost' });
+    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => Array.from(canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data).some((value, index) => index % 4 === 0 && value > 18))).toBe(true);
+    await semanticClick(page, '[data-signal-pause]');
   }
 });
 
@@ -155,6 +158,8 @@ test('portrait tabs expose queue, evidence, and verify tools without changing th
     await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-active-case', activeCase || '');
   }
   await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /Inspect the active file/i);
+  await semanticClick(page, '[data-signal-confidence="fair"]');
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /SUPPORTED/i);
 });
 
 test('exit mission can be cancelled or confirmed without erasing career progress', async ({ page }) => {

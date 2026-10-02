@@ -210,8 +210,8 @@ class SignalDeskScene extends Phaser.Scene {
     if (!snapshot.active) return '1  SELECT AN INCOMING SIGNAL';
     if (!snapshot.run.lookedUpTokens.length && !snapshot.run.assisted) return '2  INSPECT THE FILE OR PLAY THE INTERCEPT';
     if (!snapshot.run.selectedEvidence.length) return '3  PIN THE DECISIVE CLUE · CLASSIFY IT ON THE WALL';
-    if (!snapshot.run.confidence || snapshot.run.confidence === 'uncertain') return '4  SET CONFIDENCE · THEN CHOOSE A FILING';
-    return '5  FILE STANDARD OR ESCALATE · VERIFY CHARGES BUY ASSISTANCE';
+    if (!snapshot.run.confidence || snapshot.run.confidence === 'uncertain') return '4  SET CONFIDENCE · UNCERTAIN NEEDS PROOF · FAIR IS SUPPORTED · CONFIDENT IS CLEAR';
+    return '5  STANDARD = ROUTINE · ESCALATE = URGENT/RED · VERIFY COSTS 1 CHARGE';
   }
 
   private guidanceBar(snapshot: SignalDeskSnapshot, area: SignalDeskRect): void {
@@ -337,6 +337,7 @@ class SignalDeskScene extends Phaser.Scene {
     this.panel(x + width / 2, y + height / 2, width, height, 0x211c18);
     this.label(x + 10, y + 7, snapshot.active?.event?.ruleOverride ? 'EMERGENCY AMENDMENT' : 'ACTIVE CODEBOOK', 11, snapshot.active?.event?.ruleOverride ? '#ff7668' : '#e8b85f', { fontStyle: 'bold' });
     this.label(x + 10, y + 28, rule, 15, C.cream, { fontStyle: 'bold', wordWrap: { width: width - 120 } });
+    this.label(x + 10, y + height - 21, 'VERIFY: 1 CHARGE FOR OPTIONAL HELP', 8, C.muted, { fontStyle: 'bold' });
     this.button(x + width - 48, y + height - 24, 86, 36, 'VERIFY', () => this.controller.verify('source-check'));
   }
 
@@ -389,6 +390,7 @@ class SignalDeskScene extends Phaser.Scene {
     if (!snapshot.run.selectedEvidence.length) this.label(x + width / 2, y + height * .52, 'PIN A CLUE TO CLASSIFY IT', 11, C.muted, { align: 'center', wordWrap: { width: width - 24 } }).setOrigin(.5);
     const confidenceY = y + height - 24;
     this.label(x + 9, confidenceY - 38, 'CONFIDENCE BEFORE FILING', 8, C.muted, { fontStyle: 'bold' });
+    if (height >= 145) this.label(x + 9, confidenceY - 26, 'UNCERTAIN = NEEDS PROOF · FAIR = SUPPORTED · CONFIDENT = CLEAR', 7, C.muted, { wordWrap: { width: width - 18 } });
     (['uncertain', 'fair', 'confident'] as const).forEach((value, index) => this.button(columns[index]!, confidenceY, width * .28, 36, value.toUpperCase(), () => this.controller.setConfidence(value), snapshot.run.confidence === value ? C.red : 0x332b25));
   }
 

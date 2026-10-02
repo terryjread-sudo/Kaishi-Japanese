@@ -67,7 +67,11 @@ const controller: SignalDeskController = {
   snapshot(): SignalDeskSnapshot { const run = load(), shift = shiftFor(run); return { run, shift, active: activeSignalCase(run, shift), openTokenIndex, dictionaryRevealed, notice, portraitTab: uiRepo.load()?.portraitTab || 'queue', exitPending }; },
   subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
   start() { const current = load(), run = startSignalShift(current, shiftFor(current)); save(run); startCheckpointAmbience(); resetCaseView(); emit(); },
-  exit() { setGameVisible(false); stopCheckpointAmbience(); const bridge = host(); if (bridge.returnToJourney) bridge.returnToJourney(); else bridge.show?.('journey'); },
+  exit() {
+    const run = load();
+    if (run.phase === 'decode' && !run.paused) { run.paused = true; save(run); }
+    setGameVisible(false); stopCheckpointAmbience(); const bridge = host(); if (bridge.returnToJourney) bridge.returnToJourney(); else bridge.show?.('journey');
+  },
   requestExit() { const run = load(); if (run.phase === 'decode' && !run.paused) { run.paused = true; save(run); } exitPending = true; emit(); },
   cancelExit() { exitPending = false; emit(); },
   confirmExit() { const career = load().career; repo.remove(); dailyShift = null; resetCaseView(); exitPending = false; save(createSignalRun(firstAvailableShift(career).id, career)); controller.exit(); },
@@ -98,7 +102,11 @@ const controller: SignalDeskController = {
     if (action === 'slow-replay') { const active = activeSignalCase(next, shift); if (active) playCheckpointAudio(active.japanese, .62); }
     save(next); emit(message);
   },
-  setConfidence(value) { save(setSignalConfidence(load(), value)); emit(`CONFIDENCE SET: ${value.toUpperCase()}.`); },
+  setConfidence(value) {
+    save(setSignalConfidence(load(), value));
+    const explanation = value === 'uncertain' ? 'NEEDS MORE PROOF' : value === 'fair' ? 'SUPPORTED, BUT SOME DOUBT REMAINS' : 'CLEARLY SUPPORTED BY THE EVIDENCE';
+    emit(`CONFIDENCE ${value.toUpperCase()}: ${explanation}.`);
+  },
   file(verdict: SignalVerdict) {
     const run = load(); if (run.phase !== 'decode' || run.paused) return;
     const shift = shiftFor(run), active = activeSignalCase(run, shift); if (!active) return;
@@ -174,7 +182,8 @@ function setGameVisible(visible: boolean): void {
     return;
   }
   if (game.canvas.parentElement !== mount) mount.appendChild(game.canvas);
-  if (game.scene.isSleeping('signal-desk')) game.scene.wake('signal-desk');
+  if (game.scene.isSleeping('signal-desk')) { game.scene.restart('signal-desk'); window.requestAnimationFrame(() => setGameVisible(true)); return; }
+  if (!game.scene.isActive('signal-desk')) { game.scene.start('signal-desk'); window.requestAnimationFrame(() => setGameVisible(true)); return; }
   game.scale.resize(mount.clientWidth, mount.clientHeight);
   game.scale.refresh();
   controller.refreshLayout();
