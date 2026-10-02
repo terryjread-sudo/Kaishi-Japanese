@@ -168,9 +168,14 @@ function renderSemantic(): void {
 function setGameVisible(visible: boolean): void {
   if (!game) return;
   if (!visible) { if (game.scene.isActive('signal-desk')) game.scene.sleep('signal-desk'); return; }
-  if (game.scene.isSleeping('signal-desk')) game.scene.wake('signal-desk');
   const mount = root()?.querySelector<HTMLElement>('#signalPhaserHost');
-  if (mount && mount.clientWidth > 0 && mount.clientHeight > 0) game.scale.resize(mount.clientWidth, mount.clientHeight);
+  if (!mount || mount.clientWidth <= 0 || mount.clientHeight <= 0) {
+    window.requestAnimationFrame(() => setGameVisible(true));
+    return;
+  }
+  if (game.canvas.parentElement !== mount) mount.appendChild(game.canvas);
+  if (game.scene.isSleeping('signal-desk')) game.scene.wake('signal-desk');
+  game.scale.resize(mount.clientWidth, mount.clientHeight);
   game.scale.refresh();
   controller.refreshLayout();
 }
@@ -178,8 +183,9 @@ function setGameVisible(visible: boolean): void {
 function ensureGame(): void {
   const target = root(); if (!target) return; let mount = target.querySelector<HTMLElement>('#signalPhaserHost');
   if (!mount) { mount = document.createElement('div'); mount.id = 'signalPhaserHost'; target.appendChild(mount); }
-  if (!game && !gameLoading) gameLoading = import('./kotoba-checkpoint-game').then(({ createSignalDeskGame }) => { if (!game && mount) game = createSignalDeskGame(mount, controller); }).then(() => { window.requestAnimationFrame(() => setGameVisible(true)); }).finally(() => { gameLoading = null; });
-  else window.requestAnimationFrame(() => setGameVisible(true));
+  if (!game && !gameLoading) gameLoading = import('./kotoba-checkpoint-game').then(({ createSignalDeskGame }) => { const currentMount = root()?.querySelector<HTMLElement>('#signalPhaserHost') || mount; if (!game && currentMount) game = createSignalDeskGame(currentMount, controller); }).then(() => { window.requestAnimationFrame(() => setGameVisible(true)); }).finally(() => { gameLoading = null; });
+  else if (game) window.requestAnimationFrame(() => setGameVisible(true));
+  else window.requestAnimationFrame(ensureGame);
   const run = load(); if (run.career.schemaVersion === 2) host().saveCheckpointCareer?.(run.career); renderSemantic();
 }
 
@@ -205,7 +211,7 @@ export function installKotobaCheckpoint(): void {
   window.setInterval(tick, 1000);
   document.querySelector<HTMLElement>('[data-experimental-nav="sensei-desk"]')?.addEventListener('click', ensureGame);
   window.addEventListener('kaishi-sensei-desk-host-ready', ensureGame);
-  const desk = root(); if (desk) new MutationObserver(() => setGameVisible(desk.classList.contains('active'))).observe(desk, { attributes: true, attributeFilter: ['class'] });
+  const desk = root(); if (desk) new MutationObserver(() => { if (desk.classList.contains('active')) { if (!desk.querySelector('#signalPhaserHost')) ensureGame(); else scheduleLayoutRefresh(); } else setGameVisible(false); }).observe(desk, { attributes: true, attributeFilter: ['class'], childList: true });
   document.addEventListener('visibilitychange', () => setGameVisible(!document.hidden && Boolean(root()?.classList.contains('active'))));
   window.addEventListener('resize', scheduleLayoutRefresh, { passive: true });
   window.visualViewport?.addEventListener('resize', scheduleLayoutRefresh, { passive: true });

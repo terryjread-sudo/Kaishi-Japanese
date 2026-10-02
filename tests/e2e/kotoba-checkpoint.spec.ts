@@ -140,7 +140,7 @@ test('leaving and repeatedly reopening wakes and resizes the existing Phaser sce
     await page.locator('[data-games-checkpoint]').click();
     await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
     await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'decode');
-    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight }))).toEqual({ width: 390, height: 844 });
+    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight, backingWidth: canvas.width, backingHeight: canvas.height, attached: canvas.parentElement?.id }))).toEqual({ width: 390, height: 844, backingWidth: expect.any(Number), backingHeight: expect.any(Number), attached: 'signalPhaserHost' });
   }
 });
 
