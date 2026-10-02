@@ -202,3 +202,21 @@ test('Signal Desk stays inside the Pixel 10 and representative mobile bounds', a
     expect(metrics.mode).toMatch(/portrait|landscape|desktop/);
   }
 });
+
+test('rotation preserves briefing, pause, and feedback states', async ({ page }) => {
+  await page.setViewportSize({ width: 412, height: 915 });
+  await openSignalDesk(page);
+  await page.setViewportSize({ width: 915, height: 412 });
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'briefing');
+  await semanticClick(page, '[data-signal-start]');
+  await page.setViewportSize({ width: 412, height: 915 });
+  await semanticClick(page, '[data-signal-pause]');
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /paused/i);
+  await page.setViewportSize({ width: 915, height: 412 });
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /paused/i);
+  await semanticClick(page, '[data-signal-pause]');
+  await semanticClick(page, '[data-signal-verdict="escalate"]');
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'feedback');
+  await page.setViewportSize({ width: 412, height: 915 });
+  await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'feedback');
+});
