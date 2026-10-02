@@ -14,6 +14,7 @@ async function openSignalDesk(page: Page): Promise<void> {
   await page.locator('[data-games-checkpoint]').click();
   await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
   await expect(page.locator('#signalPhaserHost canvas')).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('#signalPhaserHost')).toHaveAttribute('data-signal-layout', /desktop|portrait|landscape/, { timeout: 20_000 });
   await expect(page.locator('.signal-semantic')).toContainText('The red condition');
 }
 
@@ -99,14 +100,31 @@ test('keyboard filing and Journey exit work without DOM pointer controls', async
   await expect(page.locator('#journey')).toHaveClass(/active/);
 });
 
-test('the canvas scales into a phone viewport without document overflow', async ({ page }) => {
+test('the canvas uses the full portrait phone viewport without document overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSignalDesk(page);
   await semanticClick(page, '[data-signal-start]');
   const layout = await page.evaluate(() => {
     const canvas = document.querySelector('#signalPhaserHost canvas')?.getBoundingClientRect();
-    return { overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, width: canvas?.width || 0, viewport: innerWidth };
+    const host = document.querySelector<HTMLElement>('#signalPhaserHost');
+    return { overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, width: canvas?.width || 0, height: canvas?.height || 0, viewportWidth: innerWidth, viewportHeight: innerHeight, mode: host?.dataset.signalLayout };
   });
   expect(layout.overflow).toBeLessThanOrEqual(1);
-  expect(layout.width).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.mode).toBe('portrait');
+  expect(layout.width).toBeGreaterThanOrEqual(layout.viewportWidth - 1);
+  expect(layout.height).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
+});
+
+test('the desk reflows to a full-width landscape phone layout', async ({ page }) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await openSignalDesk(page);
+  await semanticClick(page, '[data-signal-start]');
+  const layout = await page.evaluate(() => {
+    const canvas = document.querySelector('#signalPhaserHost canvas')?.getBoundingClientRect();
+    const host = document.querySelector<HTMLElement>('#signalPhaserHost');
+    return { width: canvas?.width || 0, height: canvas?.height || 0, viewportWidth: innerWidth, viewportHeight: innerHeight, mode: host?.dataset.signalLayout };
+  });
+  expect(layout.mode).toBe('landscape');
+  expect(layout.width).toBeGreaterThanOrEqual(layout.viewportWidth - 1);
+  expect(layout.height).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
 });
