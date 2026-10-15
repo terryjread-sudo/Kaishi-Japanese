@@ -159,6 +159,8 @@ test('an eligible lesson renders an Aiko and Kai story scene', async ({ page }) 
   await expect(page.locator('.lesson-story-scene')).toBeVisible();
   await expect(page.locator('.lesson-story-scene')).toContainText('Aiko');
   await expect(page.locator('.lesson-story-scene')).toContainText('Kai');
+  await expect(page.getByRole('button', { name: '▶ Hear Kai’s line', exact: true })).toBeVisible();
+  await expect(page.locator('.lesson-story-copy')).toContainText('I am Kai.');
   await page.getByRole('button', { name: 'Aiko', exact: true }).click();
   await expect(page.locator('.lesson-answer-feedback')).toContainText('Let’s compare');
   await expect(page.getByRole('button', { name: '🔊 Hear the answer', exact: true })).toBeVisible();
