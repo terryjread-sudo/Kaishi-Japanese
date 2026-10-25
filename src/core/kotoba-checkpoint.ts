@@ -188,7 +188,7 @@ function setGameVisible(visible: boolean): void {
     return;
   }
   if (game.canvas.parentElement !== mount) mount.appendChild(game.canvas);
-  if (game.scene.isSleeping('signal-desk')) { game.scene.restart('signal-desk'); window.requestAnimationFrame(() => setGameVisible(true)); return; }
+  if (game.scene.isSleeping('signal-desk')) { game.scene.wake('signal-desk'); window.requestAnimationFrame(() => setGameVisible(true)); return; }
   if (!game.scene.isActive('signal-desk')) { game.scene.start('signal-desk'); window.requestAnimationFrame(() => setGameVisible(true)); return; }
   game.scale.resize(mount.clientWidth, mount.clientHeight);
   game.scale.refresh();

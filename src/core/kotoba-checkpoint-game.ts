@@ -653,7 +653,6 @@ class SignalDeskScene extends Phaser.Scene {
 }
 
 export function createSignalDeskGame(parent: HTMLElement, controller: SignalDeskController): Phaser.Game {
-  const resolution = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
   return new Phaser.Game({
     type: Phaser.AUTO,
     parent,
@@ -661,7 +660,7 @@ export function createSignalDeskGame(parent: HTMLElement, controller: SignalDesk
     height: H,
     backgroundColor: '#090b0e',
     transparent: false,
-    render: { antialias: true, pixelArt: false, resolution, powerPreference: 'high-performance' },
+    render: { antialias: true, pixelArt: false, powerPreference: 'high-performance' },
     scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.NO_CENTER, width: parent.clientWidth || W, height: parent.clientHeight || H },
     input: { keyboard: true, mouse: true, touch: true },
     audio: { disableWebAudio: false },

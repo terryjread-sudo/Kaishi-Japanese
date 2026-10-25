@@ -141,8 +141,8 @@ test('leaving and repeatedly reopening recreates and resizes the Phaser scene', 
     await expect(page.locator('#senseiDesk')).toHaveClass(/active/);
     await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-phase', 'decode');
     await expect(page.locator('#senseiDesk')).toHaveAttribute('data-signal-guidance', /paused/i);
-    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => ({ width: canvas.clientWidth, height: canvas.clientHeight, backingWidth: canvas.width, backingHeight: canvas.height, attached: canvas.parentElement?.id }))).toEqual({ width: 390, height: 844, backingWidth: expect.any(Number), backingHeight: expect.any(Number), attached: 'signalPhaserHost' });
-    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(canvas => Array.from(canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data).some((value, index) => index % 4 === 0 && value > 18))).toBe(true);
+    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(node => { const canvas = node as HTMLCanvasElement; return { width: canvas.clientWidth, height: canvas.clientHeight, backingWidth: canvas.width, backingHeight: canvas.height, attached: canvas.parentElement?.id }; })).toEqual({ width: 390, height: 844, backingWidth: expect.any(Number), backingHeight: expect.any(Number), attached: 'signalPhaserHost' });
+    await expect.poll(async () => page.locator('#signalPhaserHost canvas').evaluate(node => { const canvas = node as HTMLCanvasElement; return Array.from(canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data).some((value, index) => index % 4 === 0 && value > 18); })).toBe(true);
     await semanticClick(page, '[data-signal-pause]');
   }
 });
