@@ -2,7 +2,7 @@ name: Learner email automations
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
