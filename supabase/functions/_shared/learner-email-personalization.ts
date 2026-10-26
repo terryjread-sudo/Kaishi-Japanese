@@ -1,7 +1,16 @@
 export type EmailProgramKey = "reengagement" | "weekly_recap" | "monthly_sensei_letter" | "onboarding_nudge";
 
 type ProgressRecord = { interval?: unknown; skills?: unknown; updatedAt?: unknown };
-type VocabularyWord = { id: string; word: string };
+export type DailyWord = {
+  id: string;
+  word: string;
+  reading: string;
+  meaning: string;
+  sentence: string;
+  sentenceMeaning: string;
+  order?: number;
+};
+type VocabularyWord = Pick<DailyWord, "id" | "word">;
 
 export type LearnerEmailSnapshot = {
   name: string;
@@ -60,6 +69,39 @@ export function buildLearnerEmailSnapshot(payload: unknown, name: string, vocabu
     masteredWords: Object.values(progress).filter(mastered).length,
     rhythmDays: Math.max(0, Math.floor(asNumber(meta.streak))),
     learningDaysThisWeek: weeklyLearningDays(meta.rhythmHistory, now),
+  };
+}
+
+function londonDateIndex(date: string): number {
+  const parts = date.split("-").map(Number);
+  const year = parts[0] ?? 0;
+  const month = parts[1] ?? 1;
+  const day = parts[2] ?? 1;
+  return Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+}
+
+export function selectDailyWord(vocabulary: readonly DailyWord[], londonDate: string): DailyWord | null {
+  const available = vocabulary
+    .filter(word => word.word && word.reading && word.meaning && word.sentence && word.sentenceMeaning)
+    .slice()
+    .sort((left, right) => (left.order ?? Number.MAX_SAFE_INTEGER) - (right.order ?? Number.MAX_SAFE_INTEGER) || left.id.localeCompare(right.id));
+  if (!available.length) return null;
+  const index = ((londonDateIndex(londonDate) % available.length) + available.length) % available.length;
+  return available[index] ?? null;
+}
+
+export function isDailyWordScheduled(london: { hour?: string; minute?: string }): boolean {
+  const hour = Number(london.hour);
+  return Number.isInteger(hour) && hour >= 7 && hour <= 23;
+}
+
+export function dailyWordEmailContent(name: string, word: DailyWord): PersonalisedEmailContent {
+  return {
+    subject: `Your Japanese word of the day: ${word.word}`,
+    eyebrow: "Your Japanese word of the day",
+    title: word.word,
+    body: `Hello ${name}, today's word is ${word.word} (${word.reading}) — ${word.meaning}. Example: ${word.sentence} — ${word.sentenceMeaning}`,
+    cta: "Practise this word",
   };
 }
 

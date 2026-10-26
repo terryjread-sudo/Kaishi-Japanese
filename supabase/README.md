@@ -45,9 +45,10 @@ or add it to browser configuration.
    create a replacement there.
 2. Run `migrations/20260905_email_campaigns.sql`, then
    `migrations/20260905_email_programs.sql`, then
-   `migrations/20260906_milestone_email_programs.sql`, in the Supabase SQL
-   Editor. Run `migrations/20260907_admin_operational_logs.sql` to enable the
-   Admin email-delivery and Supabase-issue logs.
+   `migrations/20260906_milestone_email_programs.sql`, then
+   `migrations/20261024_daily_word_email.sql`, in the Supabase SQL Editor.
+   Run `migrations/20260907_admin_operational_logs.sql` to enable the Admin
+   email-delivery and Supabase-issue logs.
 3. Deploy the owner-mail function with `supabase functions deploy admin-email`.
    Deploy the scheduler with
    `supabase functions deploy email-program-scheduler --no-verify-jwt`; its
@@ -63,7 +64,11 @@ or add it to browser configuration.
 5. In GitHub repository secrets, set only `KAISHI_EMAIL_CRON_SECRET` to the
    same random value. The scheduled workflow never receives the Resend key.
 
-The hourly GitHub Actions workflow calls the scheduler. It uses the
+The GitHub Actions workflow calls the scheduler every five minutes. The
+function then applies each program's Europe/London time gate, so this
+supports daylight-saving changes and the 07:00 daily-word schedule. The daily
+word remains due for the rest of the London day if a scheduler invocation is
+delayed. It uses the
 `Europe/London` time zone, so UK daylight-saving changes do not alter the
 learner-facing schedule. Each program is disabled until the owner enables it in
 the Admin area: Friday return-to-learning reminders, Sunday weekly recaps,
@@ -71,7 +76,9 @@ monthly Sensei letters, and onboarding nudges. Scheduled emails use the
 learner's private synced lesson, words, mastered total and learning rhythm when
 available; no progress snapshot is retained in email-delivery logs. Phase 2 adds optional milestone
 emails for a first lesson, 10 mastered words, each completed chapter, and 3,
-7, 14, 30 and 60 rhythm days. Resetting learning progress starts a new
+7, 14, 30 and 60 rhythm days. The optional daily word program sends a
+deterministic vocabulary word at 07:00 Europe/London to every member who
+has learning emails enabled. Resetting learning progress starts a new
 milestone cycle, so learners can earn the same celebrations again.
 
 ## Security model

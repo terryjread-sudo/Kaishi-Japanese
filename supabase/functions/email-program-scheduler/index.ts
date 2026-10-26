@@ -1,25 +1,28 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { buildLearnerEmailSnapshot, personalisedEmailContent, type LearnerEmailSnapshot } from "../_shared/learner-email-personalization.ts";
+import { buildLearnerEmailSnapshot, dailyWordEmailContent, isDailyWordScheduled, personalisedEmailContent, selectDailyWord, type DailyWord, type LearnerEmailSnapshot } from "../_shared/learner-email-personalization.ts";
 
-type ProgramKey = "reengagement" | "weekly_recap" | "monthly_sensei_letter" | "onboarding_nudge";
-type Recipient = { id: string; email: string; snapshot: LearnerEmailSnapshot };
+type ProgramKey = "reengagement" | "weekly_recap" | "monthly_sensei_letter" | "onboarding_nudge" | "daily_word";
+type Recipient = { id: string; email: string; snapshot: LearnerEmailSnapshot; dailyWord?: DailyWord };
 
 const programs: Record<ProgramKey, { templateKey: string; scheduled: (now: Record<string, string>) => boolean; eligible: (user: Record<string, unknown>, now: Date) => boolean }> = {
   reengagement: { templateKey: "journey_waiting", scheduled: now => now.weekday === "Fri" && now.hour === "17", eligible: (user, now) => Boolean(user.last_sign_in_at) && new Date(String(user.last_sign_in_at)).getTime() <= now.getTime() - 7 * 86400000 },
   weekly_recap: { templateKey: "weekly_recap", scheduled: now => now.weekday === "Sun" && now.hour === "10", eligible: (user, now) => Boolean(user.last_sign_in_at) && new Date(String(user.last_sign_in_at)).getTime() > now.getTime() - 7 * 86400000 },
   monthly_sensei_letter: { templateKey: "monthly_sensei_letter", scheduled: now => now.day === "01" && now.hour === "10", eligible: user => Boolean(user.last_sign_in_at) },
   onboarding_nudge: { templateKey: "onboarding_nudge", scheduled: now => now.hour === "10", eligible: (user, now) => { const created = new Date(String(user.created_at)).getTime(); const lastSignIn = new Date(String(user.last_sign_in_at || user.created_at)).getTime(); return created <= now.getTime() - 3 * 86400000 && created > now.getTime() - 10 * 86400000 && lastSignIn <= created + 5 * 60000; } },
+  daily_word: { templateKey: "daily_word", scheduled: isDailyWordScheduled, eligible: () => true },
 };
 
 const escape = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]!));
 
 function londonParts() {
-  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hour12: false }).formatToParts();
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts();
   return Object.fromEntries(parts.filter(part => part.type !== "literal").map(part => [part.type, part.value]));
 }
 
 function email(program: ProgramKey, recipient: Recipient, token: string, appUrl: string, unsubscribeBase: string) {
-  const template = personalisedEmailContent(program, recipient.snapshot);
+  const template = program === "daily_word" && recipient.dailyWord
+    ? dailyWordEmailContent(recipient.snapshot.name, recipient.dailyWord)
+    : personalisedEmailContent(program as Exclude<ProgramKey, "daily_word">, recipient.snapshot);
   const unsubscribe = `${unsubscribeBase}?unsubscribe=${encodeURIComponent(token)}`;
   const logo = `${appUrl.replace(/\/$/, "")}/media/branding/kaishi-japanese-mark.png`;
   return { subject: template.subject.replace(/[\r\n]+/g, " "), html: `<div style="margin:0;padding:28px 14px;background:#eef4f0;font-family:Georgia,'Hiragino Mincho ProN',serif;color:#173d32"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="560" style="max-width:560px;background:#fffdf7;border-radius:22px;overflow:hidden;border:1px solid #d7e5dc"><tr><td style="padding:28px 34px 18px;background:#173d32;color:#fff"><img src="${logo}" width="54" height="54" alt="Kaishi Japanese" style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#f7d676">${escape(template.eyebrow)}</div><h1 style="margin:8px 0 0;font-size:28px;line-height:1.15;color:#fff">${escape(template.title)}</h1></td></tr><tr><td style="padding:30px 34px;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#25352f"><p style="margin-top:0">${escape(template.body)}</p><p style="margin:26px 0"><a href="${appUrl}" style="display:inline-block;padding:13px 20px;border-radius:12px;background:#16835f;color:#fff;text-decoration:none;font-weight:bold">${escape(template.cta)}</a></p><p style="margin-bottom:0;color:#64736d;font-size:13px">You are receiving this because you have a Kaishi Japanese account. <a href="${unsubscribe}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`, text: `${template.title}\n\n${template.body}\n\n${appUrl}\n\nUnsubscribe: ${unsubscribe}` };
@@ -29,7 +32,7 @@ async function vocabularyFor(appUrl: string) {
   try {
     const response = await fetch(new URL("data/vocabulary.json", appUrl).href);
     const data = await response.json();
-    return Array.isArray(data) ? data.filter((word): word is { id: string; word: string } => typeof word?.id === "string" && typeof word?.word === "string") : [];
+    return Array.isArray(data) ? data.filter((word): word is DailyWord => typeof word?.id === "string" && typeof word?.word === "string" && typeof word?.reading === "string" && typeof word?.meaning === "string" && typeof word?.sentence === "string" && typeof word?.sentenceMeaning === "string") : [];
   } catch { return []; }
 }
 
@@ -62,10 +65,11 @@ Deno.serve(async request => {
   const appUrl = Deno.env.get("KAISHI_APP_URL") || "https://www.kaishi.uk/";
   const admin = createClient(supabaseUrl, serviceKey);
   const vocabulary = await vocabularyFor(appUrl);
-  const london = londonParts(), now = new Date(), results: Record<string, unknown> = {};
+  const london = londonParts(), now = new Date(), londonDate = `${london.year}-${london.month}-${london.day}`, dailyWord = selectDailyWord(vocabulary, londonDate), results: Record<string, unknown> = {};
   for (const [key, program] of Object.entries(programs) as [ProgramKey, typeof programs[ProgramKey]][]) {
     if (!program.scheduled(london)) { results[key] = "outside-schedule"; continue; }
-    const runKey = `${key}:${london.year}-${london.month}-${london.day}-${london.hour}`;
+    if (key === "daily_word" && !dailyWord) { results[key] = "no-word-available"; continue; }
+    const runKey = key === "daily_word" ? `${key}:${londonDate}` : `${key}:${londonDate}-${london.hour}`;
     const { data: claimed, error: claimError } = await admin.rpc("claim_kaishi_email_program", { p_program_key: key, p_run_key: runKey });
     if (claimError) { results[key] = `claim failed: ${claimError.message}`; continue; }
     if (!claimed) { results[key] = "disabled-or-already-run"; continue; }
@@ -80,7 +84,7 @@ Deno.serve(async request => {
         const { data: savedProgress } = await admin.from("user_progress").select("payload").eq("user_id", user.id).maybeSingle();
         const name = String(user.user_metadata?.full_name || user.user_metadata?.name || user.user_metadata?.user_name || "learner");
         const snapshot = buildLearnerEmailSnapshot(savedProgress?.payload, name, vocabulary, now);
-        const outcome = await send(admin, resendKey, from, appUrl, `${supabaseUrl}/functions/v1/admin-email`, key, { id: user.id, email: user.email, snapshot }, runKey);
+        const outcome = await send(admin, resendKey, from, appUrl, `${supabaseUrl}/functions/v1/admin-email`, key, { id: user.id, email: user.email, snapshot, dailyWord: key === "daily_word" ? dailyWord || undefined : undefined }, runKey);
         if (outcome === "sent") sent++; else if (outcome === "failed") failed++;
       }
       if ((data.users || []).length < 200) break;

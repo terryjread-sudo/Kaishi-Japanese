@@ -1,10 +1,37 @@
 import { describe, expect, it } from 'vitest';
-import { buildLearnerEmailSnapshot, personalisedEmailContent } from '../../../supabase/functions/_shared/learner-email-personalization';
+import { buildLearnerEmailSnapshot, dailyWordEmailContent, isDailyWordScheduled, personalisedEmailContent, selectDailyWord } from '../../../supabase/functions/_shared/learner-email-personalization';
 
-const vocabulary = [{ id: 'yes', word: 'はい' }, { id: 'no', word: 'いいえ' }, { id: 'okay', word: '大丈夫' }];
+const vocabulary = [
+  { id: 'yes', word: 'はい', reading: 'はい', meaning: 'yes', sentence: 'はい、そうです。', sentenceMeaning: 'Yes, that is right.', order: 1 },
+  { id: 'no', word: 'いいえ', reading: 'いいえ', meaning: 'no', sentence: 'いいえ、違います。', sentenceMeaning: 'No, that is different.', order: 2 },
+  { id: 'okay', word: '大丈夫', reading: 'だいじょうぶ', meaning: 'okay', sentence: '大丈夫です。', sentenceMeaning: 'It is okay.', order: 3 },
+];
 const now = new Date('2026-09-06T12:00:00.000Z');
 
 describe('learner email personalisation', () => {
+  it('selects a stable ordered word for each London date and wraps safely', () => {
+    expect(selectDailyWord(vocabulary, '1970-01-01')?.id).toBe('yes');
+    expect(selectDailyWord(vocabulary, '1970-01-02')?.id).toBe('no');
+    expect(selectDailyWord(vocabulary, '1970-01-04')?.id).toBe('yes');
+    expect(selectDailyWord(vocabulary, '1970-01-01')).toEqual(selectDailyWord(vocabulary, '1970-01-01'));
+  });
+
+  it('makes the daily word due from 07:00 London time to catch up delayed runs', () => {
+    expect(isDailyWordScheduled({ hour: '07' })).toBe(true);
+    expect(isDailyWordScheduled({ hour: '06' })).toBe(false);
+    expect(isDailyWordScheduled({ hour: '17' })).toBe(true);
+    expect(isDailyWordScheduled({ hour: 'invalid' })).toBe(false);
+  });
+
+  it('renders the complete daily word lesson', () => {
+    const email = dailyWordEmailContent('Aiko', vocabulary[0]!);
+    expect(email.subject).toContain('はい');
+    expect(email.body).toContain('はい (はい) — yes');
+    expect(email.body).toContain('はい、そうです。');
+    expect(email.body).toContain('Yes, that is right.');
+    expect(email.cta).toBe('Practise this word');
+  });
+
   it('derives only warm private progress facts for an active learner', () => {
     const snapshot = buildLearnerEmailSnapshot({
       progress: {
