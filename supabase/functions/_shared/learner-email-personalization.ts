@@ -5,6 +5,7 @@ export type DailyWord = {
   id: string;
   word: string;
   reading: string;
+  romaji: string;
   meaning: string;
   sentence: string;
   sentenceMeaning: string;
@@ -82,7 +83,7 @@ function londonDateIndex(date: string): number {
 
 export function selectDailyWord(vocabulary: readonly DailyWord[], londonDate: string): DailyWord | null {
   const available = vocabulary
-    .filter(word => word.word && word.reading && word.meaning && word.sentence && word.sentenceMeaning)
+    .filter(word => word.word && word.reading && word.romaji && word.meaning && word.sentence && word.sentenceMeaning)
     .slice()
     .sort((left, right) => (left.order ?? Number.MAX_SAFE_INTEGER) - (right.order ?? Number.MAX_SAFE_INTEGER) || left.id.localeCompare(right.id));
   if (!available.length) return null;
@@ -100,7 +101,7 @@ export function dailyWordEmailContent(name: string, word: DailyWord): Personalis
     subject: `Your Japanese word of the day: ${word.word}`,
     eyebrow: "Your Japanese word of the day",
     title: word.word,
-    body: `Hello ${name}, today's word is ${word.word} (${word.reading}) — ${word.meaning}. Example: ${word.sentence} — ${word.sentenceMeaning}`,
+    body: `Hello ${name}, today's word is ${word.word} (${word.reading}, ${word.romaji}) — ${word.meaning}. Example: ${word.sentence} — ${word.sentenceMeaning}`,
     cta: "Practise this word",
   };
 }

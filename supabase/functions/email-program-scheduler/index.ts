@@ -25,14 +25,27 @@ function email(program: ProgramKey, recipient: Recipient, token: string, appUrl:
     : personalisedEmailContent(program as Exclude<ProgramKey, "daily_word">, recipient.snapshot);
   const unsubscribe = `${unsubscribeBase}?unsubscribe=${encodeURIComponent(token)}`;
   const logo = `${appUrl.replace(/\/$/, "")}/media/branding/kaishi-japanese-mark.png`;
-  return { subject: template.subject.replace(/[\r\n]+/g, " "), html: `<div style="margin:0;padding:28px 14px;background:#eef4f0;font-family:Georgia,'Hiragino Mincho ProN',serif;color:#173d32"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="560" style="max-width:560px;background:#fffdf7;border-radius:22px;overflow:hidden;border:1px solid #d7e5dc"><tr><td style="padding:28px 34px 18px;background:#173d32;color:#fff"><img src="${logo}" width="54" height="54" alt="Kaishi Japanese" style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#f7d676">${escape(template.eyebrow)}</div><h1 style="margin:8px 0 0;font-size:28px;line-height:1.15;color:#fff">${escape(template.title)}</h1></td></tr><tr><td style="padding:30px 34px;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#25352f"><p style="margin-top:0">${escape(template.body)}</p><p style="margin:26px 0"><a href="${appUrl}" style="display:inline-block;padding:13px 20px;border-radius:12px;background:#16835f;color:#fff;text-decoration:none;font-weight:bold">${escape(template.cta)}</a></p><p style="margin-bottom:0;color:#64736d;font-size:13px">You are receiving this because you have a Kaishi Japanese account. <a href="${unsubscribe}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`, text: `${template.title}\n\n${template.body}\n\n${appUrl}\n\nUnsubscribe: ${unsubscribe}` };
+  const ctaUrl = program === "daily_word" && recipient.dailyWord
+    ? `${appUrl.replace(/\/?$/, "/")}?dailyWord=${encodeURIComponent(recipient.dailyWord.id)}`
+    : appUrl;
+  return { subject: template.subject.replace(/[\r\n]+/g, " "), html: `<div style="margin:0;padding:28px 14px;background:#eef4f0;font-family:Georgia,'Hiragino Mincho ProN',serif;color:#173d32"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="560" style="max-width:560px;background:#fffdf7;border-radius:22px;overflow:hidden;border:1px solid #d7e5dc"><tr><td style="padding:28px 34px 18px;background:#173d32;color:#fff"><img src="${logo}" width="54" height="54" alt="Kaishi Japanese" style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#f7d676">${escape(template.eyebrow)}</div><h1 style="margin:8px 0 0;font-size:28px;line-height:1.15;color:#fff">${escape(template.title)}</h1></td></tr><tr><td style="padding:30px 34px;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#25352f"><p style="margin-top:0">${escape(template.body)}</p><p style="margin:26px 0"><a href="${escape(ctaUrl)}" style="display:inline-block;padding:13px 20px;border-radius:12px;background:#16835f;color:#fff;text-decoration:none;font-weight:bold">${escape(template.cta)}</a></p><p style="margin-bottom:0;color:#64736d;font-size:13px">You are receiving this because you have a Kaishi Japanese account. <a href="${unsubscribe}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`, text: `${template.title}\n\n${template.body}\n\n${ctaUrl}\n\nUnsubscribe: ${unsubscribe}` };
 }
 
 async function vocabularyFor(appUrl: string) {
   try {
-    const response = await fetch(new URL("data/vocabulary.json", appUrl).href);
-    const data = await response.json();
-    return Array.isArray(data) ? data.filter((word): word is DailyWord => typeof word?.id === "string" && typeof word?.word === "string" && typeof word?.reading === "string" && typeof word?.meaning === "string" && typeof word?.sentence === "string" && typeof word?.sentenceMeaning === "string") : [];
+    const [vocabularyResponse, ankiResponse] = await Promise.all([
+      fetch(new URL("data/vocabulary.json", appUrl)),
+      fetch(new URL("data/anki-content-v72.json", appUrl)),
+    ]);
+    const data = await vocabularyResponse.json();
+    const anki = await ankiResponse.json();
+    const romajiByWord = new Map(Array.isArray(anki?.records)
+      ? anki.records.filter((record: Record<string, unknown>) => typeof record?.word === "string" && typeof record?.romaji === "string").map((record: Record<string, string>) => [record.word, record.romaji])
+      : []);
+    return Array.isArray(data) ? data.map(word => ({
+      ...word,
+      romaji: typeof word?.romaji === "string" ? word.romaji : romajiByWord.get(word?.word) || romajiByWord.get(word?.reading) || "",
+    })).filter((word): word is DailyWord => typeof word?.id === "string" && typeof word?.word === "string" && typeof word?.reading === "string" && typeof word?.romaji === "string" && typeof word?.meaning === "string" && typeof word?.sentence === "string" && typeof word?.sentenceMeaning === "string") : [];
   } catch { return []; }
 }
 

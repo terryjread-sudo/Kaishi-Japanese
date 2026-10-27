@@ -769,6 +769,16 @@ function lifetimeXp(){return Math.max(0,Number(meta.totalCorrect||0)*10+Object.v
 function adventurePoints(){return Math.max(0,lifetimeXp()-Number(meta.adventurePointsSpent||0))}
 function startFirstLesson(){const chapter=currentWordChapterIndex(),words=chapterWords(chapter).slice(0,3);if(words.length<2){toast('Learning content is still loading');return false}activeFirstLesson=true;activeQuickStep=false;activeVocabularyChapter=chapter;activityReturnScreen='home';pictureGameActive=false;introGuidanceCount=0;session=[...words.flatMap(v=>[{v,skill:'firstEncounter'},{v,skill:'intro'},{v,skill:'pronunciation'}]),...words.map(v=>({v,skill:'meaning'}))];session=attachCommunicativeOutcome(session,chapter,words);session=window.KaishiActivityPolicy?.prepareLesson?.(session,unknownKanaFor)||session;index=0;current=null;clearMissionResume();meta.firstLessonStartedAt=Date.now();save();show('study');renderCurrent();return true}
 function startQuickStep(){const activity=todayActivity(),rhythm=reconcileRhythm();if(activity.qualified){toast('Today’s learning rhythm is already complete');return false}if(rhythm.quickUsed>=2){toast('Both Quick Steps have been used this week');return false}const pool=[...new Map([...dueWords(),...vocab.filter(wordIntroduced),...vocab].map(word=>[word.id,word])).values()].slice(0,3);if(!pool.length){toast('Learning content is still loading');return false}activity.quickStep=true;activity.quickTarget=3;activity.quickStartTested=Number(activity.tested||0);activeQuickStep=true;activeFirstLesson=false;activityReturnScreen='home';pictureGameActive=false;session=pool.map((v,itemIndex)=>({v,skill:itemIndex===1&&v.wordAudio?'listening':itemIndex===2&&v.word!==v.reading?'reading':'meaning'}));index=0;current=null;clearMissionResume();save();show('study');renderCurrent();return true}
+function startDailyWordPractice(wordId){
+ const word=vocab.find(item=>item.id===wordId);
+ if(!word){toast('That daily word is no longer available.');return false}
+ const skills=[];
+ if(unknownKanaFor(word).length)skills.push('kanaUnlock');
+ if(!wordIntroduced(word))skills.push('firstEncounter','intro');
+ skills.push(word.word!==word.reading?'production':'meaning');
+ session=skills.slice(0,4).map(skill=>({v:word,skill}));
+ activeQuickStep=false;activeFirstLesson=false;activeVocabularyChapter=null;activityReturnScreen='home';pictureGameActive=false;index=0;current=null;clearMissionResume();save();show('study');renderCurrent();return true;
+}
 function introducedWords(){return vocab.filter(wordIntroduced)}
 function activitySupportedWords(id){
  const introduced=introducedWords();
@@ -2356,6 +2366,8 @@ async function init(){
   weaveKatakanaCore();
   updateHome();
   appReady=true;
+  const dailyWordId=new URLSearchParams(window.location.search).get('dailyWord');
+  if(dailyWordId){history.replaceState(null,'',window.location.pathname);startDailyWordPractice(dailyWordId);}
   const defer=window.requestIdleCallback||((callback)=>window.setTimeout(callback,1200));
   defer(()=>{void ensureDeferredContent()});
   setAdminTestActivityReady(true);

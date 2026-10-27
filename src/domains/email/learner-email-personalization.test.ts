@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { buildLearnerEmailSnapshot, dailyWordEmailContent, isDailyWordScheduled, personalisedEmailContent, selectDailyWord } from '../../../supabase/functions/_shared/learner-email-personalization';
 
 const vocabulary = [
-  { id: 'yes', word: 'はい', reading: 'はい', meaning: 'yes', sentence: 'はい、そうです。', sentenceMeaning: 'Yes, that is right.', order: 1 },
-  { id: 'no', word: 'いいえ', reading: 'いいえ', meaning: 'no', sentence: 'いいえ、違います。', sentenceMeaning: 'No, that is different.', order: 2 },
-  { id: 'okay', word: '大丈夫', reading: 'だいじょうぶ', meaning: 'okay', sentence: '大丈夫です。', sentenceMeaning: 'It is okay.', order: 3 },
+  { id: 'yes', word: 'はい', reading: 'はい', romaji: 'hai', meaning: 'yes', sentence: 'はい、そうです。', sentenceMeaning: 'Yes, that is right.', order: 1 },
+  { id: 'no', word: 'いいえ', reading: 'いいえ', romaji: 'iie', meaning: 'no', sentence: 'いいえ、違います。', sentenceMeaning: 'No, that is different.', order: 2 },
+  { id: 'okay', word: '大丈夫', reading: 'だいじょうぶ', romaji: 'daijoubu', meaning: 'okay', sentence: '大丈夫です。', sentenceMeaning: 'It is okay.', order: 3 },
 ];
 const now = new Date('2026-09-06T12:00:00.000Z');
 
@@ -26,7 +26,7 @@ describe('learner email personalisation', () => {
   it('renders the complete daily word lesson', () => {
     const email = dailyWordEmailContent('Aiko', vocabulary[0]!);
     expect(email.subject).toContain('はい');
-    expect(email.body).toContain('はい (はい) — yes');
+    expect(email.body).toContain('はい (はい, hai) — yes');
     expect(email.body).toContain('はい、そうです。');
     expect(email.body).toContain('Yes, that is right.');
     expect(email.cta).toBe('Practise this word');
