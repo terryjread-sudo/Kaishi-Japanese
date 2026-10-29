@@ -12,7 +12,9 @@ const templates: Record<Exclude<TemplateKey, "daily_word">, { subject: string; e
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-kaishi-cron-secret" };
 const escape = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]!));
 
-function validTemplate(value: unknown): value is TemplateKey { return typeof value === "string" && value in templates; }
+function validTemplate(value: unknown): value is TemplateKey {
+  return value === "daily_word" || (typeof value === "string" && value in templates);
+}
 
 function londonParts() {
   const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts();
