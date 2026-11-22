@@ -1,8 +1,9 @@
 {
-  "version": "11.180.0",
-  "released": "2026-10-02T18:17:59.662Z",
-  "title": "Automatic minor version bump",
+  "version": "11.181.0",
+  "released": "2026-11-22T14:28:23.225Z",
+  "title": "Faster initial loading and image prioritization",
   "changes": [
-    "Automated by GitHub Actions after changes were pushed to main. [auto-version]"
+    "Preconnect to the Supabase CDN before the cloud SDK loads",
+    "Prioritize above-the-fold images while lazy-loading the rest"
   ]
 }

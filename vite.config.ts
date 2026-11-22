@@ -26,7 +26,7 @@ function preserveLegacyRuntimeReferences(): Plugin {
           .replace(/<script\b(?![^>]*\btype="module")/g, '<script vite-ignore')
           .replace(/<img\b([^>]*)>/g, (tag) => {
             const critical = /kaishi-journey-hero|class="brand-mark"|id="dashboardAvatar"/.test(tag);
-            const loading = critical ? '' : ' loading="lazy"';
+            const loading = critical ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"';
             return tag.replace('<img', `<img vite-ignore decoding="async"${loading}`);
           });
       },
