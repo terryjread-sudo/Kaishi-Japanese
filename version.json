@@ -1,9 +1,11 @@
 {
-  "version": "11.181.0",
-  "released": "2026-11-22T14:28:23.225Z",
-  "title": "Faster initial loading and image prioritization",
+  "version": "11.182.0",
+  "released": "2026-11-22T16:26:07.010Z",
+  "title": "Mini lessons and learner rewards",
   "changes": [
-    "Preconnect to the Supabase CDN before the cloud SDK loads",
-    "Prioritize above-the-fold images while lazy-loading the rest"
+    "Fixed daily word timing and format",
+    "Added unlockable character elements",
+    "Aligned Japan Ready with Journey",
+    "Centered bilingual loading state"
   ]
 }

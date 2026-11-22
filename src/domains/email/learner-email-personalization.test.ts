@@ -16,17 +16,18 @@ describe('learner email personalisation', () => {
     expect(selectDailyWord(vocabulary, '1970-01-01')).toEqual(selectDailyWord(vocabulary, '1970-01-01'));
   });
 
-  it('makes the daily word due from 07:00 London time to catch up delayed runs', () => {
-    expect(isDailyWordScheduled({ hour: '07' })).toBe(true);
-    expect(isDailyWordScheduled({ hour: '06' })).toBe(false);
-    expect(isDailyWordScheduled({ hour: '17' })).toBe(true);
+  it('sends the daily word at a fixed 08:00 London time', () => {
+    expect(isDailyWordScheduled({ hour: '08', minute: '00' })).toBe(true);
+    expect(isDailyWordScheduled({ hour: '07', minute: '55' })).toBe(false);
+    expect(isDailyWordScheduled({ hour: '08', minute: '05' })).toBe(false);
     expect(isDailyWordScheduled({ hour: 'invalid' })).toBe(false);
   });
 
   it('renders the complete daily word lesson', () => {
     const email = dailyWordEmailContent('Aiko', vocabulary[0]!);
     expect(email.subject).toContain('はい');
-    expect(email.body).toContain('はい (はい, hai) — yes');
+    expect(email.body).toContain('はい (はい, hai) means yes');
+    expect(email.body).toContain('three-step mini-lesson');
     expect(email.body).toContain('はい、そうです。');
     expect(email.body).toContain('Yes, that is right.');
     expect(email.cta).toBe('Practise this word');

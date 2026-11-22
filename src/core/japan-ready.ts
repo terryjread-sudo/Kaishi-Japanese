@@ -9,7 +9,7 @@ interface Word { id: string; word: string; reading?: string; meaning: string; to
 interface Campaign { currentScenarioId: string; unlockedScenarioIds: string[]; scenarioProgress: Record<string, ScenarioProgress> }
 interface TravelMeta { activeCampaign?: string; tripPlan?: unknown; campaignProgress?: Record<string, Campaign> }
 interface TravelBridge {
-  getMeta(): TravelMeta; getVocab(): Word[]; save(): void; show(screen: string): void;
+  getMeta(): TravelMeta; getVocab(): Word[]; save(): void; show(screen: string): void; openJourney?(): void;
   wordIntroduced(word: Word): boolean; startFocusedStudy(ids: string[]): void;
   stats(): { started: number }; isTestMode?(): boolean;
 }
@@ -24,6 +24,7 @@ export function installJapanReady() {
   const bridge = window.KaishiJapanReadyBridge;
   if (!bridge) { if (!retryScheduled) { retryScheduled=true; window.setTimeout(() => { retryScheduled=false; installJapanReady(); }, 250); } return; }
   const b = bridge;
+  const backButton=q<HTMLButtonElement>('#japanReadyBack'); if(backButton) backButton.textContent='← Journey';
   let data: TravelContent | undefined, active: Scenario | undefined, turn=0, mistakes=0, parts: string[]=[], position=0, busy=false, activeCheatSheetGroup='';
   function campaign(): Campaign {
     const m=b.getMeta(); m.campaignProgress ||= {};
@@ -105,7 +106,7 @@ export function installJapanReady() {
     if(host&&selected){host.innerHTML=`<nav class="cheat-sheet-nav" aria-label="Phrase categories">${data.cheatSheet.map(group=>`<button type="button" data-cheat-group="${esc(group.title)}"${group.title===selected.title?' aria-current="page"':''}>${group.icon} ${esc(group.title)}</button>`).join('')}</nav><section class="cheat-sheet-group"><h3>${selected.icon} ${esc(selected.title)}</h3>${selected.phrases.map(p=>`<article class="cheat-phrase"><button class="audio" data-phrase="${esc(p.jp)}" aria-label="Play ${esc(p.en)}">🔊</button><div><strong lang="ja">${esc(p.jp)}</strong><small>${esc(p.romaji)}</small><span>${esc(p.en)}</span></div></article>`).join('')}</section>`;host.querySelectorAll<HTMLButtonElement>('[data-cheat-group]').forEach(button=>button.onclick=()=>cheatSheet(button.dataset.cheatGroup||''));host.querySelectorAll<HTMLButtonElement>('[data-phrase]').forEach(button=>button.onclick=()=>speak(button.dataset.phrase||''));}b.show('japanReadyCheatSheet');
   }
   async function load() { if(busy)return;busy=true;try{data=await loadContent('data/japan-ready-v90.json',travelContentSchema);render();}catch{const host=q('#japanReadyScenarioList');if(host){host.innerHTML='<p role="status">Travel content is unavailable. Connect and retry, or download it before travelling.</p><button id="travelRetry">Retry</button>';bind('travelRetry',()=>{void load()});}}finally{busy=false;} }
-  bind('continueJapanReadyCampaign',()=>{void open()});bind('japanReadyBack',()=>{b.getMeta().activeCampaign='journey';b.save();b.show('home')});bind('liveConversationBack',leaveConversation);bind('cheatSheetBack',()=>{void open()});bind('openJapanReadyCheatSheet',()=>cheatSheet());bind('liveConversationSubmit',submit);bind('kanaBuilderUndo',()=>{if(position){position--;parts.pop();renderBuilder();}});
+  bind('continueJapanReadyCampaign',()=>{void open()});bind('japanReadyBack',()=>{b.getMeta().activeCampaign='journey';b.save();if(b.openJourney)b.openJourney();else b.show('journey')});bind('liveConversationBack',leaveConversation);bind('cheatSheetBack',()=>{void open()});bind('openJapanReadyCheatSheet',()=>cheatSheet());bind('liveConversationSubmit',submit);bind('kanaBuilderUndo',()=>{if(position){position--;parts.pop();renderBuilder();}});
   window.addEventListener('kaishi-cloud-sync-ready',()=>{if(data)render();});
   void load();
 }

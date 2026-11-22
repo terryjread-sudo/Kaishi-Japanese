@@ -66,9 +66,8 @@ or add it to browser configuration.
 
 The GitHub Actions workflow calls the scheduler every five minutes. The
 function then applies each program's Europe/London time gate, so this
-supports daylight-saving changes and the 07:00 daily-word schedule. The daily
-word remains due for the rest of the London day if a scheduler invocation is
-delayed. It uses the
+supports daylight-saving changes and sends the daily word at 08:00 London time.
+It uses the
 `Europe/London` time zone, so UK daylight-saving changes do not alter the
 learner-facing schedule. Each program is disabled until the owner enables it in
 the Admin area: Friday return-to-learning reminders, Sunday weekly recaps,

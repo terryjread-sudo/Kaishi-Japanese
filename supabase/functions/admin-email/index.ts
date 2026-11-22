@@ -1,19 +1,20 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { dailyWordEmailContent, selectDailyWord, type DailyWord } from "../_shared/learner-email-personalization.ts";
+import { dailyWordEmailContent, personalisedEmailContent, selectDailyWord, type DailyWord, type LearnerEmailSnapshot } from "../_shared/learner-email-personalization.ts";
 
-type TemplateKey = "new_home" | "journey_waiting" | "learning_update" | "daily_word";
+type TemplateKey = "new_home" | "journey_waiting" | "learning_update" | "activity_invite" | "daily_word";
 
 const templates: Record<Exclude<TemplateKey, "daily_word">, { subject: string; eyebrow: string; title: string; body: (name: string) => string; cta: string }> = {
   new_home: { subject: "Kaishi Japanese has a new home", eyebrow: "A note from Sensei", title: "Kaishi Japanese is now at a new address", body: (name) => `Hello ${name}, Kaishi Japanese now lives at <strong>www.kaishi.uk</strong>. Your account and learning progress are still here, ready whenever you are.`, cta: "Visit Kaishi Japanese" },
   journey_waiting: { subject: "Your Japanese journey is waiting", eyebrow: "A small nudge from Sensei", title: "A few Japanese words are waiting for you", body: (name) => `Hello ${name}, it has been a little while since you last visited. A short review is a lovely way to keep the words you have met feeling familiar.`, cta: "Continue my journey" },
   learning_update: { subject: "A learning update from Kaishi Japanese", eyebrow: "From Sensei", title: "Your next small step is ready", body: (name) => `Hello ${name}, your Kaishi Japanese journey is always ready to pick up where you left off. Even a few minutes of practice can make a real difference.`, cta: "Open my journey" },
+  activity_invite: { subject: "A Japanese activity is ready for you", eyebrow: "A small invitation from Sensei", title: "Turn your words into a moment of Japanese", body: (name) => `Hello ${name}, you have enough learning momentum to try a short interactive activity. Open Kaishi Japanese and take the next small step.`, cta: "Try the activity" },
 };
 
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-kaishi-cron-secret" };
 const escape = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]!));
 
 function dailyWordHtml(word: DailyWord, logo: string, ctaUrl: string, unsubscribe: string): string {
-  return `<div style="margin:0;padding:28px 14px;background:#f3f4f6;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1f2937"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="500" style="width:100%;max-width:500px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden"><tr><td style="padding:28px 20px;background:#1e3a2b;color:#fff;text-align:center"><img src="${escape(logo)}" width="54" height="36" alt="Kaishi Japanese" style="display:block;width:auto;height:36px;margin:0 auto 12px"><div style="letter-spacing:2px;text-transform:uppercase;font-size:11px;color:#d1d5db;font-weight:600">Japanese Word of the Day</div><div style="font-size:56px;font-weight:700;margin-top:8px;line-height:1">${escape(word.word)}</div></td></tr><tr><td style="padding:24px;background:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"><div style="text-align:center;margin-bottom:24px"><div style="font-size:20px;font-weight:600;color:#111827">${escape(word.reading)} <span style="font-weight:400;color:#4b5563">(${escape(word.romaji)})</span></div><div style="font-size:16px;color:#4b5563;margin-top:4px">Meaning: <strong style="color:#111827">${escape(word.meaning)}</strong></div></div><div style="background:#f9fafb;border-left:4px solid #1e3a2b;padding:16px;border-radius:4px;margin-bottom:24px"><div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:6px;font-weight:600">Example</div><div style="font-size:16px;font-weight:500;color:#111827;margin-bottom:4px">${escape(word.sentence)}</div><div style="font-size:14px;color:#4b5563">${escape(word.sentenceMeaning)}</div></div><div style="text-align:center"><a href="${escape(ctaUrl)}" style="display:inline-block;background:#2d6a4f;color:#fff;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:6px;font-size:15px">Practise this word</a></div><p style="margin:24px 0 0;color:#6b7280;font-size:13px;line-height:1.5;text-align:center">You are receiving this because you have a Kaishi Japanese account. <a href="${escape(unsubscribe)}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`;
+  return `<div style="margin:0;padding:28px 14px;background:#f3f4f6;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1f2937"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="500" style="width:100%;max-width:500px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden"><tr><td style="padding:28px 20px;background:#1e3a2b;color:#fff;text-align:center"><img src="${escape(logo)}" width="54" height="36" alt="Kaishi Japanese" style="display:block;width:auto;height:36px;margin:0 auto 12px"><div style="letter-spacing:2px;text-transform:uppercase;font-size:11px;color:#d1d5db;font-weight:600">Japanese Word of the Day · Mini lesson</div><div style="font-size:56px;font-weight:700;margin-top:8px;line-height:1">${escape(word.word)}</div></td></tr><tr><td style="padding:24px;background:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"><div style="margin-bottom:18px"><div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#2d6a4f;margin-bottom:6px;font-weight:700">1 · Meet the word</div><div style="font-size:20px;font-weight:600;color:#111827">${escape(word.reading)} <span style="font-weight:400;color:#4b5563">(${escape(word.romaji)})</span></div><div style="font-size:16px;color:#4b5563;margin-top:4px">${escape(word.meaning)}</div></div><div style="background:#f9fafb;border-left:4px solid #1e3a2b;padding:16px;border-radius:4px;margin-bottom:18px"><div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#2d6a4f;margin-bottom:6px;font-weight:700">2 · Notice it in context</div><div style="font-size:16px;font-weight:500;color:#111827;margin-bottom:4px">${escape(word.sentence)}</div><div style="font-size:14px;color:#4b5563">${escape(word.sentenceMeaning)}</div></div><div style="margin-bottom:24px"><div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#2d6a4f;margin-bottom:6px;font-weight:700">3 · Make it stick</div><div style="font-size:15px;line-height:1.5;color:#374151">Say the Japanese word aloud, then practise it in Kaishi Japanese.</div></div><div style="text-align:center"><a href="${escape(ctaUrl)}" style="display:inline-block;background:#2d6a4f;color:#fff;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:6px;font-size:15px">Practise this word</a></div><p style="margin:24px 0 0;color:#6b7280;font-size:13px;line-height:1.5;text-align:center">You are receiving this because you have a Kaishi Japanese account. <a href="${escape(unsubscribe)}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`;
 }
 
 function validTemplate(value: unknown): value is TemplateKey {
@@ -25,17 +26,19 @@ function londonParts() {
   return Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
 }
 
-function message(templateKey: TemplateKey, recipient: { id: string; name: string }, token: string, appUrl: string, unsubscribeBase: string, dailyWord?: DailyWord) {
+function message(templateKey: TemplateKey, recipient: { id: string; name: string }, token: string, appUrl: string, unsubscribeBase: string, dailyWord?: DailyWord, activityMastered = 0) {
   const daily = templateKey === "daily_word" ? dailyWordEmailContent(recipient.name, dailyWord || { id: "", word: "", reading: "", romaji: "", meaning: "", sentence: "", sentenceMeaning: "" }) : null;
   if (templateKey === "daily_word" && !dailyWord) throw new Error("The daily word is unavailable");
-  const template = daily || templates[templateKey];
+  const activitySnapshot: LearnerEmailSnapshot = { name: recipient.name, lesson: null, words: [], masteredWords: activityMastered, rhythmDays: 0, learningDaysThisWeek: 0 };
+  const activity = personalisedEmailContent("activity_invite", activitySnapshot);
+  const template = daily || (templateKey === "activity_invite" ? { ...activity, body: () => activity.body } : templates[templateKey]);
   const unsubscribe = `${unsubscribeBase.replace(/\/$/, "")}?unsubscribe=${encodeURIComponent(token)}`;
   const logo = `${appUrl.replace(/\/$/, "")}/media/branding/kaishi-japanese-mark.png`;
   const ctaUrl = dailyWord ? `${appUrl.replace(/\/?$/, "/")}?dailyWord=${encodeURIComponent(dailyWord.id)}` : appUrl;
   return {
     subject: template.subject,
     html: dailyWord ? dailyWordHtml(dailyWord, logo, ctaUrl, unsubscribe) : `<div style="margin:0;padding:28px 14px;background:#eef4f0;font-family:Georgia,'Hiragino Mincho ProN',serif;color:#173d32"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table role="presentation" width="560" style="max-width:560px;background:#fffdf7;border-radius:22px;overflow:hidden;border:1px solid #d7e5dc"><tr><td style="padding:28px 34px 18px;background:#173d32;color:#fff"><img src="${logo}" width="54" height="54" alt="Kaishi Japanese" style="display:block;margin-bottom:12px"><div style="font-size:12px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#f7d676">${escape(template.eyebrow)}</div><h1 style="margin:8px 0 0;font-size:28px;line-height:1.15;color:#fff">${escape(template.title)}</h1></td></tr><tr><td style="padding:30px 34px;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#25352f"><p style="margin-top:0">${template.body(escape(recipient.name))}</p><p style="margin:26px 0"><a href="${escape(ctaUrl)}" style="display:inline-block;padding:13px 20px;border-radius:12px;background:#16835f;color:#fff;text-decoration:none;font-weight:bold">${escape(template.cta)}</a></p><p style="margin-bottom:0;color:#64736d;font-size:13px">You are receiving this because you have a Kaishi Japanese account. <a href="${unsubscribe}" style="color:#176c52">Unsubscribe from learning emails</a> or manage your preferences in Settings.</p></td></tr></table></td></tr></table></div>`,
-    text: `${template.title}\n\n${daily ? template.body : template.body(recipient.name).replace(/<[^>]+>/g, "")}\n\n${ctaUrl}\n\nUnsubscribe: ${unsubscribe}`,
+    text: `${template.title}\n\n${daily ? template.body : (typeof template.body === "function" ? template.body(recipient.name) : template.body).replace(/<[^>]+>/g, "")}\n\n${ctaUrl}\n\nUnsubscribe: ${unsubscribe}`,
   };
 }
 
@@ -135,9 +138,11 @@ Deno.serve(async (request) => {
     const recipientName = recipient.user?.user_metadata?.full_name || recipient.user?.user_metadata?.name || recipient.user?.user_metadata?.user_name || "learner";
     const token = await unsubscribeToken(admin, body.userId);
     const dailyWord = body.templateKey === "daily_word" ? await dailyWordFor(appUrl) : undefined;
-    if (action === "preview") return Response.json({ ...message(body.templateKey, { id: body.userId, name: recipientName }, token, appUrl, `${supabaseUrl}/functions/v1/admin-email`, dailyWord), recipient: { name: recipientName } }, { headers: cors });
+    const { data: learnerEntry } = await admin.from("leaderboard_entries").select("mastered").eq("user_id", body.userId).maybeSingle();
+    const activityMastered = Number(learnerEntry?.mastered || 0);
+    if (action === "preview") return Response.json({ ...message(body.templateKey, { id: body.userId, name: recipientName }, token, appUrl, `${supabaseUrl}/functions/v1/admin-email`, dailyWord, activityMastered), recipient: { name: recipientName } }, { headers: cors });
     if (action !== "send") throw new Error("Unsupported action");
-    const result = await sendEmail(admin, resendKey, from, appUrl, `${supabaseUrl}/functions/v1/admin-email`, body.userId, email, recipientName, body.templateKey, senderId, null, body.idempotencyKey, dailyWord);
+    const result = await sendEmail(admin, resendKey, from, appUrl, `${supabaseUrl}/functions/v1/admin-email`, body.userId, email, recipientName, body.templateKey, senderId, null, body.idempotencyKey, dailyWord, activityMastered);
     return Response.json(result, { headers: cors });
   } catch (error) {
     return Response.json({ error: String(error?.message || error) }, { status: 400, headers: cors });
@@ -152,11 +157,11 @@ async function unsubscribeToken(admin: ReturnType<typeof createClient>, userId: 
   return token;
 }
 
-async function sendEmail(admin: ReturnType<typeof createClient>, resendKey: string, from: string, appUrl: string, unsubscribeBase: string, recipientId: string, email: string, name: string, templateKey: TemplateKey, senderId: string | null, campaignKey: string | null, idempotencyKey?: string, dailyWord?: DailyWord | null) {
+async function sendEmail(admin: ReturnType<typeof createClient>, resendKey: string, from: string, appUrl: string, unsubscribeBase: string, recipientId: string, email: string, name: string, templateKey: TemplateKey, senderId: string | null, campaignKey: string | null, idempotencyKey?: string, dailyWord?: DailyWord | null, activityMastered = 0) {
   const { data: log, error: claimError } = await admin.from("kaishi_email_send_log").insert({ recipient_id: recipientId, sent_by: senderId, template_key: templateKey, campaign_key: campaignKey, idempotency_key: idempotencyKey || null }).select("id").maybeSingle();
   if (claimError || !log) return { sent: false, skipped: true, reason: "already-claimed" };
   const token = await unsubscribeToken(admin, recipientId);
-  const rendered = message(templateKey, { id: recipientId, name }, token, appUrl, unsubscribeBase, dailyWord || undefined);
+  const rendered = message(templateKey, { id: recipientId, name }, token, appUrl, unsubscribeBase, dailyWord || undefined, activityMastered);
   const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [email], ...rendered }) });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {

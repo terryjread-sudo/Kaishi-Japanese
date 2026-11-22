@@ -1,4 +1,4 @@
-export type EmailProgramKey = "reengagement" | "weekly_recap" | "monthly_sensei_letter" | "onboarding_nudge";
+export type EmailProgramKey = "reengagement" | "weekly_recap" | "monthly_sensei_letter" | "onboarding_nudge" | "activity_invite";
 
 type ProgressRecord = { interval?: unknown; skills?: unknown; updatedAt?: unknown };
 export type DailyWord = {
@@ -92,8 +92,7 @@ export function selectDailyWord(vocabulary: readonly DailyWord[], londonDate: st
 }
 
 export function isDailyWordScheduled(london: { hour?: string; minute?: string }): boolean {
-  const hour = Number(london.hour);
-  return Number.isInteger(hour) && hour >= 7 && hour <= 23;
+  return london.hour === "08" && london.minute === "00";
 }
 
 export function dailyWordEmailContent(name: string, word: DailyWord): PersonalisedEmailContent {
@@ -101,7 +100,7 @@ export function dailyWordEmailContent(name: string, word: DailyWord): Personalis
     subject: `Your Japanese word of the day: ${word.word}`,
     eyebrow: "Your Japanese word of the day",
     title: word.word,
-    body: `Hello ${name}, today's word is ${word.word} (${word.reading}, ${word.romaji}) — ${word.meaning}. Example: ${word.sentence} — ${word.sentenceMeaning}`,
+    body: `Hello ${name}, here is a three-step mini-lesson. 1) Meet it: ${word.word} (${word.reading}, ${word.romaji}) means ${word.meaning}. 2) Notice it in context: ${word.sentence} — ${word.sentenceMeaning}. 3) Say it aloud, then practise the word in Kaishi Japanese.`,
     cta: "Practise this word",
   };
 }
@@ -117,6 +116,17 @@ export function personalisedEmailContent(program: EmailProgramKey, snapshot: Lea
     subject: `${snapshot.name}, your first Japanese words are ready`, eyebrow: "A welcome from Sensei", title: "Your first practical lesson is ready",
     body: `Hello ${snapshot.name}, begin with three useful words: はい, いいえ, and 大丈夫. One small lesson is enough to start making Japanese feel familiar.`, cta: "Start my journey",
   };
+  if (program === "activity_invite") {
+    const activity = snapshot.masteredWords >= 10
+      ? "Kotoba Echo, a short speaking challenge using familiar words"
+      : snapshot.masteredWords >= 5
+        ? "Japan Ready, a practical travel scenario using words you already know"
+        : "your next Journey mission, which will gently build your first familiar set";
+    return {
+      subject: `${snapshot.name}, a Japanese activity is ready for you`, eyebrow: "A small invitation from Sensei", title: "Turn your words into a moment of Japanese",
+      body: `Hello ${snapshot.name}, you have enough learning momentum to try ${activity}. It is designed to feel like a short, achievable return to Japanese${snapshot.rhythmDays ? ` while your ${snapshot.rhythmDays}-day rhythm is still warm` : ""}. Open Kaishi Japanese and take the next small step.`, cta: "Try the activity",
+    };
+  }
   if (program === "reengagement") return {
     subject: snapshot.lesson ? `${snapshot.lesson} is ready when you are` : "Your Japanese journey is waiting", eyebrow: "A small nudge from Sensei", title: "Your Japanese is still with you",
     body: `Hello ${snapshot.name}, ${words ? `the words you were working on${lessonPhrase(snapshot)} — ${words} — are ready for a gentle return.` : "your Japanese journey is ready to pick up where you left off."}${masteredPhrase(snapshot)}${rhythmPhrase(snapshot)} A short review is a lovely way back in.`, cta: "Continue my journey",
