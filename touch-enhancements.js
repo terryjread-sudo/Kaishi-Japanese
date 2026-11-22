@@ -58,8 +58,8 @@
       .campaign-preview.touch-snap{transition:transform .16s ease!important}
 
       /* Campfire swipe grading. */
-      #cfCard{touch-action:pan-y;will-change:transform}
-      #cfCard.cf-touch-dragging{transition:none!important}
+      #cfCard{touch-action:pan-y}
+      #cfCard.cf-touch-dragging{transition:none!important;will-change:transform}
       #cfCard.cf-touch-snap{transition:transform .17s ease!important}
       #cfCard.cf-touch-right{box-shadow:0 10px 32px #16a34a40!important}
       #cfCard.cf-touch-left{box-shadow:0 10px 32px #dc262640!important}
@@ -303,7 +303,10 @@
         }
       }
     });
-    observer.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+    const wordRainCard=$('#wrCard');
+    const colosseumCard=$('#kbCard');
+    if(wordRainCard) observer.observe(wordRainCard,{subtree:true,attributes:true,attributeFilter:['class']});
+    if(colosseumCard) observer.observe(colosseumCard,{subtree:true,attributes:true,attributeFilter:['class']});
   }
 
   function refreshDynamicEnhancements(){
@@ -321,8 +324,11 @@
 
     // Campfire's answer panel is rebuilt each round, so refresh small
     // enhancements when screens change without touching learning state.
-    const observer=new MutationObserver(()=>requestAnimationFrame(refreshDynamicEnhancements));
-    observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','class']});
+    const campfireCard=$('#cfCard');
+    if(campfireCard){
+      const observer=new MutationObserver(()=>requestAnimationFrame(refreshDynamicEnhancements));
+      observer.observe(campfireCard,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','class']});
+    }
 
     [300,900,1800].forEach(ms=>setTimeout(refreshDynamicEnhancements,ms));
   }
