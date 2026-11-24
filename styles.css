@@ -2216,7 +2216,7 @@ body.journey-render-pending #journeyHistoryTrack{visibility:hidden}
 /* Keep the first paint calm while the data-driven shell is being hydrated. */
 html{overflow-x:clip}
 body{overflow-x:clip}
-body.app-loading{display:grid;place-items:center;min-height:100dvh;background:linear-gradient(145deg,#071b3b,#172554 58%,#1e3a8a);color:#dbeafe}
+body.app-loading{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;width:100%;height:100dvh;min-height:100dvh;margin:0;background:linear-gradient(145deg,#071b3b,#172554 58%,#1e3a8a);color:#dbeafe}
 body.app-loading::before{display:none}#appLoadingMessage{display:grid;gap:5px;justify-items:center;padding:16px 22px;border:1px solid #93c5fd55;border-radius:999px;background:#071b3bcc;box-shadow:0 12px 34px #02061755;font-size:.9rem;font-weight:800;letter-spacing:.03em;text-align:center}#appLoadingMessage small{font-size:.78rem;font-weight:600;letter-spacing:.02em;color:#bfdbfe}body:not(.app-loading) #appLoadingMessage{display:none}
 body.app-loading .experimental-bottom-nav{visibility:hidden}
 body.app-loading #appHeader{visibility:hidden}

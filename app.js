@@ -310,6 +310,7 @@ function openExperimentalPanel(id,render){
  const nextState={...history.state,kaishiExperimentalPanel:id};delete nextState.kaishiExperimentalNotebook;
  if(switching&&experimentalPanelHistoryActive)history.replaceState(nextState,'',location.href);else history.pushState(nextState,'',location.href);experimentalPanelHistoryActive=true;
 }
+function clearExperimentalPanelForNavigation(){if(!$('.screen.active.experimental-panel'))return;document.querySelectorAll('.screen.experimental-panel').forEach(removeExperimentalPanelChrome);setExperimentalPanelBackdrop(false);experimentalPanelHistoryActive=false}
 function openExperimentalNotebook(){
  const dialog=ensureNotebookDialog();dialog.classList.add('experimental-utility-dialog');openLearningNotebook('words');
  if(dialog.dataset.experimentalUtilityBound!=='1'){
@@ -362,12 +363,12 @@ function bindExperimentalBottomNav(){
  document.querySelectorAll('[data-experimental-nav]').forEach(button=>button.addEventListener('click',()=>{
   const action=button.dataset.experimentalNav;
   document.querySelectorAll('[data-experimental-nav]').forEach(item=>{item.classList.toggle('is-active',item===button);if(item===button)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current')});
-  if(action==='journey')openJourney('missions');
+  if(action==='journey'){clearExperimentalPanelForNavigation();openJourney('missions')}
   else if(action==='notebook')openExperimentalNotebook();
  else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));
  else if(action==='community')openExperimentalPanel('community',()=>window.KaishiCloud?.loadLeaderboard?.());
- else if(action==='japan-ready')openExperimentalJapanReady();
- else if(action==='games')window.dispatchEvent(new Event('kaishi-games-hub-open'));
+ else if(action==='japan-ready'){clearExperimentalPanelForNavigation();openExperimentalJapanReady()}
+ else if(action==='games'){clearExperimentalPanelForNavigation();window.dispatchEvent(new Event('kaishi-games-hub-open'))}
  }));
  document.addEventListener('click',event=>{const button=event.target.closest?.('[data-experimental-utility-action]');if(!button)return;const action=button.dataset.experimentalUtilityAction;if(action==='notebook')openExperimentalNotebook();else if(action==='collection')openExperimentalPanel('collection',()=>openCollection('words'));else if(action==='progress')openExperimentalPanel('skillsOverview',()=>renderSkillScores())});
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.screen.active.experimental-panel')&&!document.querySelector('dialog[open]')){event.preventDefault();closeExperimentalPanel()}});
