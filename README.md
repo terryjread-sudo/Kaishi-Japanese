@@ -1,5 +1,11 @@
 # Kaishi Japanese v11.8.49 — Answer Animation for the Learning Path
 
+## Scheduled learner email delivery
+
+Supabase Cron invokes the email-program scheduler every five minutes. The function checks each program's designated Europe/London time (including the daily word at 08:00) and uses database claims to prevent duplicate sends. The five-minute check does not itself send an email on every run.
+
+The cron request reads kaishi_email_cron_secret from Supabase Vault. Its value must match the Edge Function secret KAISHI_EMAIL_CRON_SECRET; keep both values out of source control. View job history in Supabase → Integrations → Cron → Jobs and invocation details in Logs → Edge Function.
+
 ## What's new
 
 ### v11.9.1 — Japan Ready reliability & Journey session preview
