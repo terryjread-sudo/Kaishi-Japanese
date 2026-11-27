@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+export const seasonalThemeIds = ['spring', 'summer', 'autumn', 'winter', 'halloween', 'christmas', 'new-year', 'tanabata'] as const;
+const seasonalThemeIdSchema = z.enum(seasonalThemeIds);
+
 export const runtimeConfigSchema = z.object({
   schemaVersion: z.literal(1),
   announcement: z.object({
@@ -44,6 +47,7 @@ export const runtimeConfigSchema = z.object({
     label: z.string().trim().max(50),
     url: z.string().trim().max(300),
   }),
+  theme: z.object({ override: seasonalThemeIdSchema.nullable() }).default({ override: null }),
 });
 
 export type RuntimeConfig = z.infer<typeof runtimeConfigSchema>;
@@ -75,6 +79,7 @@ export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = {
     izakayaCookMasteredWords: 50,
   },
   support: { enabled: false, label: 'Contact Kaishi support', url: '' },
+  theme: { override: null },
 };
 
 export function parseRuntimeConfig(value: unknown): RuntimeConfig {

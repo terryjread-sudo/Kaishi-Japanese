@@ -31,6 +31,10 @@ const seasonWindows:[SeasonalHeroId,number,number][]=[
   ['winter',1201,228],
 ];
 
+export function seasonalThemeSchedule(){
+  return [...eventWindows.map(([id,start,end])=>({id,start,end,kind:'event' as const})),...seasonWindows.map(([id,start,end])=>({id,start,end,kind:'season' as const}))];
+}
+
 function dateKey(date:Date){return(date.getMonth()+1)*100+date.getDate()}
 function inWindow(value:number,start:number,end:number){return start<=end?value>=start&&value<=end:value>=start||value<=end}
 
@@ -39,6 +43,11 @@ export function seasonalHeroForDate(date:Date=new Date()):SeasonalHero{
   const match=[...eventWindows,...seasonWindows].find(([,start,end])=>inWindow(value,start,end));
   return heroes[match?.[0]||'spring'];
 }
+
+function configuredOverride():SeasonalHeroId|null{
+  try { const override=(window as typeof window & {KaishiActivityPolicy?:{runtimeConfig?:{get?:()=>{theme?:{override?:SeasonalHeroId|null}}}}}).KaishiActivityPolicy?.runtimeConfig?.get?.()?.theme?.override; return override && override in heroes ? override : null; } catch { return null; }
+}
+export function activeSeasonalHero(date:Date=new Date()):SeasonalHero{return heroes[configuredOverride()||seasonalHeroForDate(date).id]}
 
 export function seasonalHeroCatalog(){return Object.values(heroes)}
 
@@ -55,7 +64,7 @@ export function installSeasonalHero(){
   };
   const apply=()=>{
     scheduled=false;
-    const selected=seasonalHeroForDate();
+    const selected=activeSeasonalHero();
     document.querySelectorAll<HTMLImageElement>(selector).forEach(image=>{
       if(image.dataset.seasonalHero===selected.id)return;
       void preload(selected.src).then(ok=>{if(!ok||!image.isConnected)return;image.src=selected.src;image.alt=selected.alt;image.dataset.seasonalHero=selected.id});
@@ -63,10 +72,11 @@ export function installSeasonalHero(){
   };
   const schedule=()=>{if(scheduled)return;scheduled=true;window.requestAnimationFrame(apply)};
   const observer=new MutationObserver(schedule);observer.observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('kaishi-runtime-config-changed',schedule);
   schedule();
   let midnightTimer=0;
   const refreshAtMidnight=()=>{schedule();midnightTimer=window.setTimeout(refreshAtMidnight,Math.max(60000,new Date(new Date().setHours(24,0,0,0)).getTime()-Date.now()))};
   midnightTimer=window.setTimeout(refreshAtMidnight,Math.max(60000,new Date(new Date().setHours(24,0,0,0)).getTime()-Date.now()));
   document.addEventListener('visibilitychange',schedule);
-  return()=>{observer.disconnect();window.clearTimeout(midnightTimer);document.removeEventListener('visibilitychange',schedule)};
+  return()=>{observer.disconnect();window.clearTimeout(midnightTimer);document.removeEventListener('visibilitychange',schedule);document.removeEventListener('kaishi-runtime-config-changed',schedule)};
 }
