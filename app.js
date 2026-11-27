@@ -2375,8 +2375,9 @@ async function init(){
   weaveKatakanaCore();
   updateHome();
   appReady=true;
-  const dailyWordId=new URLSearchParams(window.location.search).get('dailyWord');
+  const launchParams=new URLSearchParams(window.location.search),dailyWordId=launchParams.get('dailyWord'),activityId=launchParams.get('activity');
   if(dailyWordId){history.replaceState(null,'',window.location.pathname);startDailyWordPractice(dailyWordId);}
+  else if(activityId){history.replaceState(null,'',window.location.pathname);if(activityId==='kotobaEcho')startKotobaEcho();else if(activityId==='japanReady')openExperimentalJapanReady();else openJourney('missions');}
   const defer=window.requestIdleCallback||((callback)=>window.setTimeout(callback,1200));
   defer(()=>{void ensureDeferredContent()});
   setAdminTestActivityReady(true);
