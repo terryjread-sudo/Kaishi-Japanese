@@ -237,7 +237,10 @@
     const today = day();
     const previous = meta.dailyJourneyRoute;
     const same = previous?.date === today && previous?.chapter === chapter;
-    if (previous?.date === today && previous?.chapter === chapter && previous?.schemaVersion === 11 && Array.isArray(previous.steps)) return previous;
+    const requestedActivity = meta.pendingJourneyActivity;
+    const hasRequestedActivity = JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(requestedActivity) && Boolean(ruleFor(requestedActivity));
+    const routeHasRequestedActivity = safeArray(previous?.steps).some(step => step?.activityId === requestedActivity);
+    if (same && previous?.schemaVersion === 11 && Array.isArray(previous.steps) && (!hasRequestedActivity || routeHasRequestedActivity)) return previous;
 
     const schedule = lessonSchedule(chapter, chapter, words, {forceFirst:true});
     const lessonId = `lesson-${chapter}`;
@@ -283,24 +286,32 @@
       return score(b)-score(a);
     });
     const previousCompleted = new Set(safeArray(previous?.completed));
-    const pendingSide = !same && safeArray(previous?.steps).find(step =>
-      step?.kind === 'activity' && step?.optional && step.activityId && !previousCompleted.has(step.id) &&
-      JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(step.activityId) && activityReadiness(step.activityId).wordReady
-    );
+    const pendingSide = hasRequestedActivity
+      ? {activityId:requestedActivity, requested:true}
+      : !same && safeArray(previous?.steps).find(step =>
+          step?.kind === 'activity' && step?.optional && step.activityId && !previousCompleted.has(step.id) &&
+          JOURNEY_IMMERSIVE_ACTIVITY_IDS.has(step.activityId)
+        );
     const side=pendingSide?.activityId || ranked[0];
     if (side) {
       const rule=ruleFor(side);
-      const shouldShow=!meta.pathVisits?.[side] || chapter % 3 === 0;
+      const shouldShow=pendingSide?.requested || !meta.pathVisits?.[side] || chapter % 3 === 0;
       if (shouldShow) {
+        const readiness=activityReadiness(side);
+        const remaining=Math.max(0,Number(readiness.cfg.words||0)-Number(readiness.supported||0));
+        const detail=pendingSide?.requested && !readiness.wordReady
+          ? `${missionBrief(side,lesson).objective} Learn ${remaining} more familiar word${remaining===1?'':'s'}; this activity will stay here until it is ready.`
+          : `${missionBrief(side,lesson).objective} This is optional, and it matches your current practice.`;
         steps.push({
           id:`side-${side}-${chapter}`,
           kind:'activity',
           activityId:side,
           sideQuestFor:lessonId,
           optional:true,
+          pendingUnlock:Boolean(pendingSide?.requested),
           icon:rule.icon,
           title:`Sensei recommends · ${rule.label}`,
-          detail:`${missionBrief(side,lesson).objective} This is optional, and it matches your current practice.`,
+          detail,
           mission:missionBrief(side,lesson),
           required:false
         });
@@ -358,6 +369,8 @@
       : `Keep learning familiar words. Once ${required} relevant words are available, this activity will open automatically.`;
     action.onclick=()=>{
       if(action.dataset.mode==='learn'){
+        meta.pendingJourneyActivity=id;
+        try { save(); } catch (_) {}
         dialog.close();clearVillageFocus();openJourney('current');
         requestAnimationFrame(()=>document.querySelector('.word-chapter.current')?.scrollIntoView({behavior:'smooth',block:'center'}));
         return;
@@ -378,12 +391,23 @@
     const nextId=requiredNext?.id || null;
     const all=route.steps;
     container.innerHTML=all.map((step,index)=>{
-      const done=completed.includes(step.id), available=done?false:(step.optional?true:step.id===nextId);
-      const state=done?'complete':available?'available':'locked';
-      const label=done?'✓ Complete':step.optional?'Optional side quest': 'Start';
+      const done=completed.includes(step.id);
+      const readiness=step.optional?activityReadiness(step.activityId):null;
+      const waitingForWords=Boolean(step.pendingUnlock && readiness && !readiness.wordReady);
+      const available=done?false:(step.optional?true:step.id===nextId);
+      const state=done?'complete':waitingForWords?'locked':available?'available':'locked';
+      const remaining=waitingForWords?Math.max(0,Number(readiness.cfg.words||0)-Number(readiness.supported||0)):0;
+      const label=done?'✓ Complete':waitingForWords?`Learn ${remaining} more word${remaining===1?'':'s'}`:step.optional?'Optional side quest':'Start';
       return `<article class="daily-mission ${state} ${step.optional?'side-quest':''}"><span class="mission-step">${done?'✓':step.optional?'★':index+1}</span><div><b>${esc(step.icon)} ${esc(step.title)}${step.optional?' <small class="optional-tag">Optional</small>':''}</b><p>${esc(step.detail)}</p></div><button data-journey-mission="${esc(step.id)}"${available?'':' disabled'}>${label}</button></article>`;
     }).join('');
-    document.querySelectorAll('[data-journey-mission]').forEach(button=>button.onclick=()=>startJourneyMission(button.dataset.journeyMission));
+    document.querySelectorAll('[data-journey-mission]').forEach(button=>button.onclick=()=>{
+      const step=all.find(item=>item.id===button.dataset.journeyMission);
+      if(step?.kind==='activity' && step.pendingUnlock){
+        if(!activityReadiness(step.activityId).wordReady){if(requiredNext)startJourneyMission(requiredNext.id);else openJourney('current');return;}
+        if(meta.pendingJourneyActivity===step.activityId){delete meta.pendingJourneyActivity;try{save();}catch(_){}}
+      }
+      startJourneyMission(button.dataset.journeyMission);
+    });
     const start=$('#startNextMission');
     if(start){start.hidden=!requiredNext;start.textContent=requiredNext?requiredNext.title:'Today’s lesson complete ✓';start.disabled=!requiredNext;start.onclick=()=>requiredNext&&startJourneyMission(requiredNext.id)}
     renderJourneyUnlockNotice();
